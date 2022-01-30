@@ -3,6 +3,7 @@ layout: single
 title: "Blog history"
 categories: record
 tag: [record, blog, jekyll]
+toc: true
 ---
 # Blog history
 
