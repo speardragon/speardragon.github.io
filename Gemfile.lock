@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/eventmachine/eventmachine
+  revision: 9cb13a8a62363df5ebcc414169a3deb2c1608528
+  tag: v1.2.7
+  specs:
+    eventmachine (1.2.7)
+
 PATH
   remote: .
   specs:
@@ -19,7 +26,6 @@ GEM
     em-websocket (0.5.3)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
-    eventmachine (1.2.7)
     faraday (1.9.3)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -108,6 +114,7 @@ GEM
     terminal-table (2.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     unicode-display_width (1.8.0)
+    wdm (0.1.1)
     webrick (1.7.0)
 
 PLATFORMS
@@ -115,8 +122,10 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
+  eventmachine (= 1.2.7)!
   minimal-mistakes-jekyll!
   rake (>= 12.3.3)
+  wdm (>= 0.1.0)
   webrick (~> 1.7)
 
 BUNDLED WITH
