@@ -11,5 +11,6 @@ toc: true
 
 - Blog open
 
-
+## 2022-01-31
+- Editing blog's details 
 

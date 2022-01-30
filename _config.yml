@@ -18,7 +18,7 @@ minimal_mistakes_skin    : "dirt" # "air", "aqua", "contrast", "dark", "dirt", "
 locale                   : "ko-KR"
 title                    : "speardragon note"
 title_separator          : "|"
-subtitle                 : "small positive action"
+subtitle                 : "Believe in yourself"
 name                     : "Kang Chang Ryong"
 description              : "speardragon note"
 url                      : "https://speardragon.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
@@ -102,9 +102,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "speardragon"
+  name             : "Kang Chang Ryong"
   avatar           : "/assets/images/image_face.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "small positive action"
+  bio              : #"small positive action"
   location         : "Republic of Korea, Uijeongbu"
   email            :
   links:
