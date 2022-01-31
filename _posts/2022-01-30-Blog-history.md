@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Blog history"
-categories: record
+categories: ['Record','Reivew']
 tag: [record, blog, jekyll]
 toc: true
 toc_sticky: true
