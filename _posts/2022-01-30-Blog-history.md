@@ -4,6 +4,7 @@ title: "Blog history"
 categories: record
 tag: [record, blog, jekyll]
 toc: true
+toc_sticky: true
 ---
 # Blog history
 
