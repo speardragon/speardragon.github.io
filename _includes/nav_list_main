@@ -26,15 +26,17 @@
                 {% endfor %}
             </ul>
 
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
         <span class="nav__sub-title">🔠 Algorithm</span>
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
-                {% if category[0] == "Baekjoon" %}<li><a href="/categories/baekjoon" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% if category[0] == "Implementation" %}<li><a href="/categories/implementation" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>    
 
+      <!-------------------------------------- 상위 카테고리: Record-------------------------------------->
         <span class="nav__sub-title">🎬 Record</span>
             <ul>
                 <!-- 하위 카테고리 -->
