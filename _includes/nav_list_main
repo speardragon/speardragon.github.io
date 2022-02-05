@@ -36,6 +36,16 @@
                 {% endfor %}
             </ul>    
 
+      <!-------------------------------------- 상위 카테고리: Lecture-------------------------------------->
+        <span class="nav__sub-title">📗 Lecture</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                {% for category in site.categories %}
+                {% if category[0] == "Data structure and algorithm" %}<li><a href="/categories/datalgorithm" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>          
+
       <!-------------------------------------- 상위 카테고리: Record-------------------------------------->
         <span class="nav__sub-title">🎬 Record</span>
             <ul>
