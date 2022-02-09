@@ -7,7 +7,7 @@ toc: true
 toc_sticky: true
 ---
 
-
+<br>
 
 # LinkedList
 
@@ -177,7 +177,7 @@ LinkedList는 노드 기반이기 때문에 노드 또한 만들어주겠습니�
 
 또한 구현을 더 편하게 하기 위해서 생성자를 만들어주었는데 인자를 data 하나만 받는 경우와 data와 next pointer객체 두 가지를 받는 경우를 나누어 각각 경우에 맞게 초기화 시키는 생성자들을 만들어 주었습니다.
 
-
+<br>
 
 ## add
 
@@ -199,6 +199,8 @@ curr이라는 노드는 순회를 위해서 현재 위치를 특정짓기 위한
 순회는 null이전까지 해야 하기 때문에 while 문에 조건을 붙여 반복해 주었습니다. curr의 next pointer를 curr로 지정하면서 계속 앞쪽으로 쭉쭉 순회가 되는 개념입니다.
 
 반복문을 빠져나왔을 때는 LinkedList의 끝까지 왔을 때이므로 추가하고자 하는 node를 새로 만들고 curr의 next pointer가 이 노드를 가리키게 하고 size는 1만큼 증가 시킵니다.
+
+<br>
 
 ## insert
 
@@ -231,7 +233,7 @@ insert는 ArrayList와 크게 다르지 않습니다. 다만 ArrayList와 같이
 
  그 이후 삽입하고자 하는 node를 생성하되 인자로 curr노드를 넘겨 node 노드가 생성될 때 이 노드의 next pointer가 가리키는 노드는 curr 노드가 되도록 해줍니다. 그리고 prev의 next pointer가 가리키는 노드를 node로 해주어 연결을 마무리 짓고 삽입을 진행하였으니 배열의 크기를 1증가 시켜 주면서 마무리 합니다.
 
-
+<br>
 
 ## clear
 
@@ -247,7 +249,7 @@ ArrayList와 다르게 LinkedList 의 clear에서는 size를 0으로 초기화 �
 
 -  LinkedList를 타고 들어가는 방법은 오직 head노드를 통해서 밖에 없기 때문에 head노드와 다른 노드의 연결을 끊어주는 행위, 즉 null로 초기화 시키는 과정을 진행하면 자연스레 리스트의 초기화가 되는 것입니다.
 
-
+<br>
 
 ## delete
 
@@ -282,6 +284,8 @@ while문을 통해 노드를 순회하고 조건문을 통해 조건에 맞는 p
 
 항상 마무리는 리스트의 크기 조정으로 마무리해 줍니다.
 
+<br>
+
 ## deleteByindex
 
 ```java
@@ -313,7 +317,7 @@ deleteByindex 또한 다른 것들과 마찬가지로 prev 노드와 curr노드�
 
 반복문이 종료된 시점에는 curr노드는 index만큼의 노드가 되고 prev 노드는 그 이전의 노드가 됩니다. 따라서 위의 delete 기능과 동일한 방법으로 삭제시켜줍니다.
 
-
+<br>
 
 ## get
 
@@ -339,6 +343,8 @@ get은 원하는 노드의 data만을 얻고 싶은 것이기 때문에 prev노�
 
 - 위 코드에서 curr 노드에 head 노드를 대입시키는 것이 아니라 head 노드의 next pointer가 가리키는 노드를 대입시킨 이유는 head 노드에는 어차피 데이터(값)이 존재하지 않기 때문에 그렇습니다.
 
+<br>
+
 ## indexOf
 
 ```java
@@ -359,7 +365,7 @@ public boolean indexOf(T t) {
 
 indexOf 메소드는 인자로 받아온 t와 일치하는 노드의 index를 반환하는 메소드로 curr 노드를 생성하고 while 반복문을 index를 0부터 증가시키면서 리스트의 끝까지 반복시키고 curr 노드를 이동시킵니다. 그리고 현재 노드와 인자 t가 일치할 때 index를 반환하면 됩니다.
 
-
+<br>
 
 ## isEmpty
 
@@ -372,7 +378,7 @@ public boolean isEmpty() {
 
 ArrayList에서 했던 것처럼 size가 0인 것으로 isEmpty 메소드를 구현해도 되지만 LinkedList스럽게(?) 구현하려면 head 노드의 next pointer가 가리키고 있는 노드가 null이면 비어있는 것이므로 이것을 반환하면 됩니다.
 
-
+<br>
 
 ## contains
 
@@ -394,6 +400,8 @@ contains 메소드 역시 ArrayList와 마찬가지로 반복문을 통해 하�
 
 - 이 역시도 노드끼리의 연결을 바꿀 필요가 없기 때문에 prev 노드를 지정해 주지 않아도 구현가능합니다.
 
+<br>
+
 ## size
 
 ```java
@@ -407,7 +415,7 @@ public int size() {
 
 따라서 그냥 'simple is the best' 란 말처럼 this.size를 반환해 줍니다.
 
-
+<br>
 
 
 
