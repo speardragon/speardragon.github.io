@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] CH2-3. Double LinkedList"
-categories: ['Lecture', 'Data structure and algorithms']
+categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'LinkedList']
 tag: ['Data structure', 'Algorithm', '이중연결리스트', 'DoubleLinkedList']
 toc: true
 toc_sticky: true

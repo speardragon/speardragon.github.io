@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] CH4. Queue(큐)-선형 큐와 원형 큐"
-categories: ['Lecture', 'Data structure and algorithms']
+categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Queue']
 tag: ['Data structure', 'Algorithm', 'Queue', '큐', '선형 큐', '원형 큐']
 toc: true
 toc_sticky: true

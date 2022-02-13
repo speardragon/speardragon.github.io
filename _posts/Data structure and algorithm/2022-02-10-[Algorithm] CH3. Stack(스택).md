@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] CH3. Stack(스택)"
-categories: ['Lecture', 'Data structure and algorithms']
+categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Stack']
 tag: ['Data structure', 'Algorithm', 'Stack', '스택']
 toc: true
 toc_sticky: true

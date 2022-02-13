@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] CH5. Hash(해시)"
-categories: ['Lecture', 'Data structure and algorithms']
+categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Hash']
 tag: ['Data structure', 'Algorithm', 'Hash', '해시']
 toc: true
 toc_sticky: true
