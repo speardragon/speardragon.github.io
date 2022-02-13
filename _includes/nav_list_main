@@ -32,9 +32,14 @@
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
                 {% if category[0] == "Implementation" %}<li><a href="/categories/implementation" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "LinkedList" %}<li><a href="/categories/linkedList" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Stack" %}<li><a href="/categories/stack" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Queue" %}<li><a href="/categories/queue" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Hash" %}<li><a href="/categories/hash" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
-            </ul>    
+            </ul>
+                   
 
       <!-------------------------------------- 상위 카테고리: Lecture-------------------------------------->
         <span class="nav__sub-title">📗 Lecture</span>
