@@ -182,7 +182,7 @@ public void offer(T data) {
 
 새로 들어온 데이터는 tail의 다음 노드로 들어옵니다. 그 후 Tail 노드 위치를 tail 노드의 next pointer가 가리키던 노드 즉, 새로운 노드로 이동하면 offer(enqueue) 과정이 끝나게 되는 것입니다.
 
-![image-20220211142255437](C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20220211142255437.png)
+![image](https://user-images.githubusercontent.com/79521972/153754541-335ec4f5-ca46-4488-a4a0-8ddcc3ec08f7.png)
 
 <br>
 
