@@ -272,6 +272,12 @@ private void merge(int[] arr, int low, int mid, int high) {
 
 - T(n) = nlog₂n(비교) + 2nlog₂n(이동) = 3nlog₂n = O(nlog₂n)
 
+<br>
+
+> 합병 정렬은 일반적인 경우 다음 시간에 배울 퀵 정렬보다 느리지만 어떠한 상황에서도 정확히 O(NlogN)을 보장할 수 있다는 점에서 매우 효율적인 알고리즘 입니다.
+
+
+
 
 
 <br>
