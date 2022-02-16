@@ -38,6 +38,7 @@
                 {% elsif category[0] == "Hash" %}<li><a href="/categories/hash" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "Sorting" %}<li><a href="/categories/sorting" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "BinarySearch" %}<li><a href="/categories/binarysearch" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                 {% elsif category[0] == "Tree" %}<li><a href="/categories/tree" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>
