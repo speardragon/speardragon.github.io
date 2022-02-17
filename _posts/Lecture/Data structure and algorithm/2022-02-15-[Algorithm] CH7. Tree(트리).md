@@ -3,7 +3,7 @@ layout: single
 title: "[Algorithm] CH7. Tree(트리)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Tree']
 tag: ['Data structure', 'Algorithm', 'Tree', '트리', 'Binary Search Tree']
-toc: true
+toc: false
 toc_sticky: true
 ---
 
@@ -560,7 +560,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements ITree<T> {
 
 
 
-### 노드 클래스
+### **노드 클래스**
 
 ```java
 private class Node {
@@ -580,7 +580,7 @@ private class Node {
 
 
 
-### 멤버 변수
+### **멤버 변수**
 
 루트 노드가 시작이기 때문에 루트 노드를 가리키는 변수와 트리 구조 크기를 나타내는 변수 size를 선언합니다.
 
@@ -591,7 +591,7 @@ private int size;
 
 <br>
 
-### 생성자
+### **생성자**
 
 ```java
 public BinarySearchTree() {
@@ -602,7 +602,7 @@ public BinarySearchTree() {
 
 <br>
 
-### min(), minNode()
+### **min(), minNode()**
 
 트리의 데이터 중 가장 작은 값(최솟값)을 찾아주는 메소드입니다.
 
@@ -622,7 +622,7 @@ private T minNode(Node node) {
 
 가장 왼쪽의 값을 가져 오는 것이기 때문에 left노드를 계속 타고 들어가면 됩니다.
 
-**minNode()**
+**minNode()** :
 
 minData에는 최솟값을 계속해서 업데이트를 해 줄 것입니다. 
 
@@ -631,13 +631,13 @@ minData에는 최솟값을 계속해서 업데이트를 해 줄 것입니다.
 - 반복문 안의 내용은 left노드를 계속해서 타고 들어가며, 각 노드의 데이터를 minData변수에 업데이트를 해 줍니다.
   그러면 반복문이 끝났을 때는 더 이상 타고 들어갈 곳이 없는 가장 왼쪽 노드의 값을 가져오게 됩니다.
 
-**min()**
+**min()** :
 
 루트 노드부터 시작하여 타고 내려가기 때문에 인자로 루트 노드를 넘겨 minNode()의 리턴값을 리턴합니다.
 
 <br>
 
-### max(), minMax()
+**max(), minMax()**
 
 max() 메소드는 위의 min() 메소드와 다르게 최댓값을 찾는 것이므로 방향만 바꾸어 가장 오른쪽 값을 가져오도록 합니다.
 
@@ -659,7 +659,7 @@ private T maxNode(Node node) {
 
 <br>
 
-### 전위 탐색 - preOrder()
+### **전위 탐색 - preOrder()**
 
 ```java
 public List<T> preOrder() {
@@ -695,7 +695,7 @@ visited는 노드가 방문 했음을 기록하는 리스트 객체이고 이곳
 
 <br>
 
-### 중위 탐색 - inOrder()
+### **중위 탐색 - inOrder()**
 
 ```java
 public List<T> inOrder() {
@@ -725,7 +725,7 @@ private List<T> inoderTree(Node node, List<T> visited) {
 
 <br>
 
-### 후위 탐색 - postOrder()
+### **후위 탐색 - postOrder()**
 
 ```java
 public List<T> postOrder() {
@@ -753,7 +753,7 @@ private List<T> postoderTree(Node node, List<T> visited) {
 
 <br>
 
-### contains(T val)
+### **contains(T val)**
 
 인자로 넘겨준 값이 존재하는 지를 판단하는 메소드로 이 역시도 재귀 호출을 통해 구현해 보도록 하겠습니다. 그러기 위해서 별도로 containsNode() 메소드를 만들어줍니다.
 
@@ -802,7 +802,7 @@ if문으로 종료조건을 달아준다
 
 <br>
 
-### Insert(T val), insertNode(Node node, T val)
+### **Insert(T val), insertNode(Node node, T val)**
 
 삽입 같은 경우도 마찬가지로 값 비교를 통해 작다면 left노드에 크다면 right노드에 삽입을 진행해 주어야 합니다.
 
@@ -841,7 +841,7 @@ node가 null인 경우 데이터를 삽입할 수 있는 경우 이므로 val �
 
 <br>
 
-### delete(T val)
+### **delete(T val)**
 
 삭제 연산도 재귀 호출로 진행됩니다.
 
@@ -893,7 +893,7 @@ private Node deleteNode(Node node, T val) {
 
 <br>
 
-### size()
+### **size()**
 
 ```java
 @Override
