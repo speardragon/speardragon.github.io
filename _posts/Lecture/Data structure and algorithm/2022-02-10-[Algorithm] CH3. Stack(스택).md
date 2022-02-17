@@ -79,6 +79,8 @@ MyStack 클래스에서 IStack을 구현상속 해 보겠습니다.
 
 <br>
 
+## 노드 클래스
+
 ```java
 private class Node {
     T data;
