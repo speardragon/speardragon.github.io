@@ -12,11 +12,20 @@ toc_sticky: true
 
 ## DFS (Depth-First Search, 깊이 우선 탐색 )
 
+> DFS는 그래프의 개념이 반드시 선행되어야 하기 때문에 다음 포스트를 먼저 확인하길 바람.
+>
+> > [<u>그래프</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-CH9-1.-Graph(%EA%B7%B8%EB%9E%98%ED%94%84)/)
+> >
+> > [<u>트리</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/tree/Algorithm-CH7.-Tree(%ED%8A%B8%EB%A6%AC)/)
+
+<br>
+
 전에 배웠던 트리 탐색 중 `Preorder`,  `Inorder`, `Postorder`가 DFS의 예이다.
 
 <mark>Stack을 이용하여 구현</mark>
 
 - 재귀 호출로 구현하는 방법도 있으나 재귀 호출 자체가 call stack이 계속 쌓이는 형태이기 때문에 스택을 이용해서 구현 할 것이다.
+- 물론 재귀 호출을 이용한 DFS도 이후 내용에 있다.
 
 #### **깊이 우선 탐색(DFS)이란**
 
@@ -133,3 +142,18 @@ Return: 방문한 노드를 순서대로 저장한 리스트
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![Animated_BFS](https://user-images.githubusercontent.com/79521972/154641634-65bd2679-21ed-43d2-b8cd-6d828873c440.gif) | ![220px-Depth-First-Search](https://user-images.githubusercontent.com/79521972/154642490-211ab9c7-b333-4107-92a7-a0cc2c806a8e.gif) |
 | [Wikipedia](https://ko.wikipedia.org/wiki/%EB%84%88%EB%B9%84_%EC%9A%B0%EC%84%A0_%ED%83%90%EC%83%89) | [Wikipedia](https://ko.wikipedia.org/wiki/%EA%B9%8A%EC%9D%B4_%EC%9A%B0%EC%84%A0_%ED%83%90%EC%83%89) |
+
+
+
+<br>
+
+## 관련된 Post
+
+- 자료 구조 [<u>트리(Tree)</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/tree/Algorithm-CH7.-Tree(%ED%8A%B8%EB%A6%AC)/)
+- 자료 구조 [<u>그래프(Graph)</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-CH9-1.-Graph(%EA%B7%B8%EB%9E%98%ED%94%84)/)
+
+- [<u>너비 우선 탐색(BFS, Breath-First Search)</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-CH9-2.-%EB%84%88%EB%B9%84-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(BFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/)
+
+
+
+ 

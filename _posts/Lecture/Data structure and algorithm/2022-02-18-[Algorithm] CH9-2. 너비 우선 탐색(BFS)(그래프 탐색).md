@@ -23,6 +23,14 @@ toc_sticky: true
 
 ### BFS (Breath-First Search, 너비 우선 탐색 )
 
+> DFS는 그래프의 개념이 반드시 선행되어야 하기 때문에 다음 포스트를 먼저 확인하길 바람.
+>
+> >[<u>그래프</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-CH9-1.-Graph(%EA%B7%B8%EB%9E%98%ED%94%84)/)
+> >
+> >[<u>트리</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/tree/Algorithm-CH7.-Tree(%ED%8A%B8%EB%A6%AC)/)
+
+<br>
+
 #### **너비 우선 탐색(BFS)이란**
 
 루트 노드(혹은 임의의 다른 노드)에서부터 시작하여 인접한 노드를 먼저 탐색해 나가는 방법
@@ -129,7 +137,14 @@ Return: 방문한 노드를 순서대로 저장한 리스트
 
 
 
+<br>
 
+## 관련된 Post
+
+- 자료 구조 [<u>트리(Tree)</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/tree/Algorithm-CH7.-Tree(%ED%8A%B8%EB%A6%AC)/)
+- 자료 구조 [<u>그래프(Graph)</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-CH9-1.-Graph(%EA%B7%B8%EB%9E%98%ED%94%84)/)
+
+- [<u>깊이 우선 탐색(DFS, Depth-First Search)</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-CH9-3.-%EA%B9%8A%EC%9D%B4-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(DFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/)
 
 
 
