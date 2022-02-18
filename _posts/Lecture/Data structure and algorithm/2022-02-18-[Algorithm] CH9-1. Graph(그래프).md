@@ -1,0 +1,561 @@
+---
+layout: single
+title: "[Algorithm] CH9-1. Graph(그래프)"
+categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Graph']
+tag: ['Data structure', 'Algorithm', 'Graph', '그래프']
+toc: false
+toc_sticky: true
+---
+
+<br>
+
+# Graph - 그래프
+
+이번 시간에는 그래프에 대해 알아보도록 하겠습니다.
+
+아래의 그림과 같이 그래프는 
+
+- Vertex와 edge로 구성된 자료구조 입니다.
+
+![image](https://user-images.githubusercontent.com/79521972/154594112-cad57a73-fb5c-4d9b-9bb1-4479bb299c8e.png)
+
+vertex와 edge가 정확히 무엇을 의미할까요? 바로 아래에서 추가적인 용어를 다뤄 보도록 하겠습니다.
+
+**그래프에서 사용하는 용어**
+
+- vertex(정점): 노드(Node)라고도 하며 정점에는 데이터가 저장됩니다.
+- edge(간선): 링크(arcs)라고도 하며 선을 통해 노드간의 관계를 나타냅니다.
+- adjacent vertex(인접 정점): 하나의 정점에서 edge에 의해 직접적으로 연결된 정점을 나타냅니다.
+- simple-path(단순 경로): 경로 중 반복되는 정점이 없는 것, 같은 간선을 지나지 않는 경로를 뜻합니다.
+- degree(차수): 무방향 그래프에서 하나의 정점에 인접한 정점의 수를 의미합니다.
+- out-degree(진출 차수): 방향 그래프에서 사용되는 용어로 한 노드에서 외부로 향하는 간선의 수를 뜻합니다.
+- in-degree(진입 차수): 방향 그래프에서 사용되는 용어로 외부 노드에서 들어오는 간선의 수를 뜻합니다.
+
+<br>
+
+>  앞에서 배운 트리 또한 그래프의 일종이지만 그래프는 트리 구조 보다 훨씬 더 넓은 범위를 다루고 있습니다.
+
+<br>
+
+**그렇다면 그래프는 어디 쓰일까요?**
+
+![image](https://user-images.githubusercontent.com/79521972/154594248-c4eab8f0-4cc6-4e0f-af18-013ecb5c4bc7.png)
+
+
+
+- 네비게이션 길찾기
+  - 우리가 흔히 사용하는 네이게이션 길찾기 기능이 그래프의 탐색을 이용한 기능이라고 할 수 있습니다.
+- 게임 내 캐릭터 이동
+  - ![image-20220206144951900](https://user-images.githubusercontent.com/79521972/152672075-27d3592a-76ec-4d7c-978f-8114f3117553.png)
+  - 자료구조 및 알고리즘 첫 수업(OT) 때 잠깐 설명했단 게임 내 캐릭터 이동도 그래프라고 볼 수 있습니다.
+
+- 지식 그래프
+  - 지식 그래프도 그래프의 일종인데 지식 그래프란 무엇일까요?
+    - 전통적인 방식에서 검색은 역새김이라는 방식으로 아이유, 피카츄... 이런 식의 키워드 기반으로 데이터를 저장하는데요. 이렇게 하게 되면 아이유 혹은 피카츄를 검색했을 때 키워드에 대한 정보를 빠르게 얻을 수는 있지만 '아이유의 소속사 대표' 와 같은 연결관계가 있는 것의 데이터는 찾기가 어렵다는 단점이 있었습니다. 
+      지식 그래프는 각 객체의 연관성을 edge로 연결시켜서 키워드와 연결관계에 놓인 데이터들도 쉽게 찾을 수 있게 해 줍니다.
+    - 이러한 연관관계를 잘 관리할 수 있는 것이 그래프이기 때문에 그래프를 사용하는 것입니다.
+
+- 쾨니히스베르크의 다리 문제
+  - 쾨니히스베르크의 다리 문제도 역시 그래프와 관련된 것인데요.
+  - ![image](https://user-images.githubusercontent.com/79521972/154594998-f544b2ba-fea8-41a4-87a8-5abd8768adb2.png)
+  - 다음과 같은 다리가 있다고 하면 A, B, C, D 중에서 임의의 한 곳에서 출발 했을 때 모든 다리를 한 번씩 건널 수 있는가에 대한 문제인데 왼쪽 그림은 오른쪽처럼 나타낼 수 있습니다.
+    그리고 이 문제에 대한 답은 '그런 경우는 없다' 로 났었습니다.
+  - 관심있으신 분들은 한 번 보시길 바랍니다. -> [쾨니히스베르크의 다리 건너기 문제](https://namu.wiki/w/%EC%BE%A8%EB%8B%88%ED%9E%88%EC%8A%A4%EB%B2%A0%EB%A5%B4%ED%81%AC%20%EB%8B%A4%EB%A6%AC%20%EA%B1%B4%EB%84%88%EA%B8%B0%20%EB%AC%B8%EC%A0%9C)
+
+---
+
+
+
+**그래프의 종류**
+
+![image](https://user-images.githubusercontent.com/79521972/154622033-a806a337-81ce-4c53-a02f-1ac397fc341e.png)
+
+그래프는 vertex와 edge로 구성되어 있기만 하면은 굉장히 다양한 방법으로 그려질 수 있습니다. 그리고 특징에 따라 여러 그래프를 특정 지을 수 있습니다.
+
+
+
+- **방향 그래프(Directed Graph)**
+- ![image](https://user-images.githubusercontent.com/79521972/154622079-40dfe226-0cd8-4668-bb33-089c25b7ebdf.png)
+
+방향(화살표)이 있는 그래프를 `Directed Graph`, 없는 그래프를 `Undirected Graph` 라고 합니다.
+
+이 방향 그래프에서는 반드시 화살표 방향으로만 노드간의 이동을 할 수 있습니다.
+
+<br>
+
+- **가중치 그래프**
+
+![image](https://user-images.githubusercontent.com/79521972/154622177-837d58e2-134f-4f65-a565-2d101fe78f94.png)
+
+edge에 `가중치`가 부여된 그래프로 가중치는 양수와 음수 모두 될 수 있습니다.
+
+위의 그림에서 A 부터 B까지 갈 수있는 경로는 두 가지 입니다.
+
+- A -> B
+- A -> C -> B
+
+만약 가중치가 없다면 가장 적은 횟수로 갈 수 있는 첫번째 방법이 더 효율적일 것입니다. 하지만 가중치 그래프이기 때문에 가중치를 비교해 보면 첫번째 방법은 '7'의 비용이 소모되고 두번째 방법은 총 '3'의 비용이 소모되기 때문에 두번째 방법이 더 효율적인 방법이 될 수 있는 것입니다.
+
+이렇게 가중치 그래프에서 한 vertex에서 다른 vertex까지 가는데 최단 거리를 알아내는 알고리즘으로 다익스트라 알고리즘(Dijkstra Algorithm)과 벨만-포드 알고리즘(Bellman-Ford)알고리즘을 사용할 수 있는데 다음 시간에 다익스트라 알고리즘에 대해서 배워볼 것입니다.
+
+<br>
+
+
+
+- **루프 loop**
+
+![image](https://user-images.githubusercontent.com/79521972/154596953-90e982fa-138b-42e9-a3b1-575602b8cf0a.png)
+
+그래프에서 vertex는 자기 자신으로 이어질 수도 있는데요. 한 vertex에서 자기 자신으로 이어지는 edge가 있을 때 이것을 `loop(루프)`라고 합니다.
+
+<br>
+
+- **순환 그래프(Cyclic Graph)**
+
+![image](https://user-images.githubusercontent.com/79521972/154603249-22cdaa16-12b5-4e58-8eed-bbb6a476b049.png)
+
+한 vertex에서 edge를 타고 가다보면 다시 그 vertex로 돌아오게 되는 그래프를 순환 그래프라고 합니다.
+
+첫 번째 그림은 모든 vertex가 순환 구조를 이루고 있고, 두 번째 그림은 일부분에서 순환 구조가 구성되어 있음을 알 수 있습니다.
+
+반면, 순환이 되지 않는 그래프(사이클이 없는)는 **Acyclic Graph**(비순환 그래프)라고 하며 그래서 우리가 앞에서 배운 트리 구조는 순환이 없고 방향만 존재하는 **Directed Acyclic Graph**가 되겠습니다.
+
+<br>
+
+- **신장트리(Spanning Tree)**
+
+![image](https://user-images.githubusercontent.com/79521972/154614624-582cb696-9514-4a6a-878a-ee015f8692c7.png)
+
+기존 그래프에 모든 노드가 연결되어 있으면,트리의 속성을 만족하는 그래프로 트리의 속성을 만족하기 때문에 사이클이 존재하면 안됩니다.
+
+<br>
+
+- 최소 신장트리(Minimun Spanning Tree, MST)
+
+<img src="https://user-images.githubusercontent.com/79521972/154614774-659a5a59-d7d2-4471-a220-79fc061793a5.png" alt="image" style="zoom:67%;" />
+
+위의 신장트리(Spanning Tree) 중에서 edge의 가중치 합이 최소인 신장트리를 의미합니다.
+
+
+
+---
+
+## 그래프 알고리즘 방법
+
+1. **인접 행렬**
+
+- 그래프 내에 적은 숫자의 간선만을 가지는 **희소 그래프(Sparse Graph)**의 경우 사용합니다.
+- 이차원 배열로 표현할 수 있습니다.
+- 아래와 같은 그림에서 연결된 vertex는 숫자 '1'이 데이터로 들어가고 연결되지 않은 vertex는 숫자 '0' 혹은 음수가 들어가게 됩니다.
+
+![image](https://user-images.githubusercontent.com/79521972/154603837-e0878029-f0d9-4124-a969-77be2d7575b8.png)
+
+![image](https://user-images.githubusercontent.com/79521972/154603777-d69e3f3e-2b24-4a46-ad89-3d5d0718edaa.png)
+
+위 그래프에서는 한 vertex가 자기 자신으로 들어가는 edge가 존재하는 vertex가 있지 않기 때문에 자기 자신과의 데이터는 A, B, C, D 모두 0인 것을 보실 수 있습니다.
+
+- **인접행렬 장점**
+  1. 이차원 배열 안에 존재하는 모든 정점들의 edge(간선) 정보를 담기 때문에 배열의 위치를 확인할 수 있다면 두 점에 대한 연결 정보를 조회할 때 O(1)의 시간 복잡도를 갖습니다.
+  2. 구현이 비교적 간단하게 진행됩니다.
+- **인접행렬 단점**
+  1. 모든 정점에 대해 edge 정보를 대입해 주어야 하므로 O(n<sup>2</sup>)의 시간 복잡도가 소요됩니다.
+  2. 무조건 이차원 배열이 필요하기 때문에 사용되지 않는 쓰레기 공간이 생기게 되어 메모리 사용이 비효율적입니다.
+
+<br>
+
+2. **인접리스트**
+
+- 그래프에 간선이 많이 존재하는 **밀집 그래프(Dense Graph)**의 경우 사용합니다.
+- vertex의 갯수만큼 리스트를 사용합니다. 그래서 자신을 기준으로 연결된 vertex를 리스트에 저장하게 되는 방식입니다. 
+
+![image](https://user-images.githubusercontent.com/79521972/154603837-e0878029-f0d9-4124-a969-77be2d7575b8.png)
+
+![image](https://user-images.githubusercontent.com/79521972/154622325-748b461f-5229-4f9b-8762-4c8ccd013352.png)
+
+각 vertex별로 리스트가 생성이 되고 그 안의 객체로는 자기 자신과 연결된 vertex의 값이 들어가게 됩니다.
+
+- **인접리스트의 장점**
+  1. vertex들의 연결 정보를 탐색할 때 O(n)의 시간만 가능합니다. (n은 edge의 갯수입니다.)
+  2. 필요한 만큼의 공간만을 사용하기 때문에 메모리상으로 인접행렬보다 효율적입니다.
+
+- **인접리스트의 단점**
+  1. 특정 두 점이 연결되었는지 확인하기 위해서 인접행렬보다 많은 시간이 소요됩니다. (배열보다 탐색 속도가 느리기 때문)
+  2. 구현이 인접행렬에 비해서는 다소 어렵습니다.
+
+<br>
+
+> 따라서 인접행렬과 인접리스트를 적절히 섞어가면서 사용하는 것이 가장 좋습니다.
+
+<br>
+
+
+
+## 그래프 구현
+
+- **인접행렬 방식**
+
+먼저 그래프를 구현하기에 앞서 interface를 살펴봅시다.
+
+```java
+package graph;
+
+import ...
+    
+public interface IGraph {
+    
+    void add(int from, int to);
+    void add(int from, int to, Integer distance); //가중치 노드
+    Integer getDistance(int from, int to);
+    Map<Integer, Integer> getIndegrees(); //<노드, 차수의 수>
+    Set<Integer> getVertexes();
+    List<Integer> getNodes(int vertext):
+}
+```
+
+위 코드가 다른 자료구조 구현과 조금 다른 점이 있다면 그래프 interface는 제네릭 타입으로 선언하지 않았습니다. 이는 그래프 자체의 구조에 대해 이해를 돕기 위해 integer 정수 타입의 자료만 받아 구현을 할 것이기 때문입니다.
+
+<br>
+
+```java
+package graph;
+
+import java.util.*;
+
+public class AdjacencyMatrixGraph implements IGraph {
+    
+    ...
+}
+```
+
+
+
+### 멤버변수
+
+```java
+private Integer[][] matrix;
+private Set<Integer> vertexs;
+private Map<Integer, Integer> indegrees;
+```
+
+그래프의 연결 정보를 저장하기 위한 matrix와, 그래프의 vertex들의 정보를 저장하기 위한 vertexes(Set), 차수의 정보를 저장하는 indegrees(Map) 를 선언합니다.
+
+indegrees에 대해 더 설명을 하자면 
+
+- indegrees.get(3) = 5 는 '노드 3을 가르키는 노드의 갯수가 5개'라는 뜻입니다.
+
+<br>
+
+### 생성자
+
+```java
+public AdjacencyMatrixGraph(int numOfVertex) {
+    this.vertexes = new HashSet<>();
+    this.indegrees = new HasgMap<>();
+    this.matrix = new Integer[numOfVertex][];
+    for (int i = 0; i < numOfvertex; i++) {
+        this.matrix[i] = new Integer[NumOfVertext];
+    }
+}
+```
+
+- 인접행렬 방식 그래프를 생성할 때는 vertex의 갯수를 인자로 받습니다.
+- 갯수만큼의 행렬을 만들어 줍니다.
+
+
+
+ <br>
+
+### add
+
+```java
+@Override
+public void add(int from, int to, Integer distance) {
+    this.vertexes.add(from);
+    this.vertexes.add(to);
+    int count = this.indegrees.getOrDefault(to, 0);
+    indegrees.put(to, count + 1)
+        
+    matrix[from][to] = distance;
+}
+```
+
+from과 to를 vertex(노드) 정보에 추가를 합니다.
+
+- vertexes는 set 형식이기 때문에 중복된 데이터가 들어오면 저장을 진행하지 않습니다.
+
+이제 차수 정보를 추가합니다.
+
+- Map 구조에 데이터가 이미 있을 수도 있고 없을 수도 있기 때문에 count 변수에 to 값을 넣거나 to 값이 없으면 0을 넣는 과정을 진행합니다.(getOrDefault)
+
+- getOrDefault(a, b): 배열의 a 번째 index를 가져오거나 없는 경우 b를 가져옵니다.
+
+indegrees에 key, value가 각각 to, (count + 1) 인 정보를 추가합니다. 
+
+마지막으로 matrix의 vertex간의 연결정보를 저장하면서 마무리합니다.
+
+```java
+@Override
+public void add(int from, int to) {
+    this.vertexes.add(from);
+    this.vertexes.add(to);
+    int count = this.indegrees.getOrDefault(to, 0);
+    indegrees.put(to, count + 1)
+        
+    matrix[from][to] = 1;
+}
+```
+
+나머지 코드는 동일하고 distance를 받지 않는 경우이기 때문에 default값인 1을 넣어줍니다.
+
+만약 양방향 그래프인 경우 from - to 에만 데이터를 넣는 것이 아니라 to- from에도 데이터를 넣어주어야 합니다.
+
+연결이 되지 않는 경우는 null을 넣어줍니다.
+
+<br>
+
+### getNodes(int vertext)
+
+```java
+@Override
+public List<Integer> getNodes(int vertext) {
+    List<Integer> result = new ArrayList<>();
+    for (int i = 0, i < this.matrix[vertex].length; i++) {
+        if (this.matrix[vertex][i] != null) {
+            result.add(i);
+        }
+    }
+    return result;
+}
+```
+
+getNode()메소드는 인자로 입력 받은 값이 가리키고 있는 노드들을 가져오는 메소드 입니다.
+
+matrix[vertex] [i]는 vertex가 from, i가 to가 되어 vertex가 가리키는 i가 null이 아니라면, 즉 다시말해서 가중치가 얼만 되는 지는 모르지만 값이 존재하기만 하면 result 리스트에 추가를 해 줍니다.
+
+<br>
+
+### 그외의 get 메소드
+
+```java
+@Override
+public Integer getDistance(int from, int to) {
+    return this.matrix[from][to];
+}
+
+@Override
+public Map<Integer, Integer> getIndegrees() {
+    return this.indegrees;
+}
+
+@Override
+public Set<Integer> getVertexes() {
+    return this.vertexes;
+}
+```
+
+멤버 변수를 가져옴으로써 쉽게 구현가능합니다.
+
+<br>
+
+---
+
+- **인접리스트 방식**
+
+```java
+package graph;
+
+import java.util.*;
+
+public class AdjacencyListGraph implements IGraph {
+    
+    ...
+}
+```
+
+인접리스트는 노드를 사용하여 구현해 보도록 하겠습니다.
+
+
+
+### 노드 inner class
+
+```java
+private class Node {
+    Integer from;
+    Integer to;
+    int weight;
+    
+    Node(int from, int to) {
+        this.from = from;
+        this.to = to;
+        this.weight = 1;
+    }
+    
+    Node(int from ,int to, int weight) {
+        this.from = from;
+        this.to = to;
+        this.weight = weight;
+    }
+}
+```
+
+노드 클래스에는 출발 정보와 도착 정보, 가중치 정보가 들어 있어 이를 초기화 시킵니다.
+
+
+
+### 멤버 변수
+
+```java
+private List<List<Node>> graph;
+private Set<Integer> vertexes;
+private Map<Integer, Integer> indegrees;
+```
+
+인접리스트 방식은 vertex의 수만큼 리스트를 만드는 방식인데 해당 리스트를 graph라는 변수로 선언하였고 나머지 vertexes와 indegrees변수는 인접행렬 구현 때 했던 것과 동일한 기능의 변수입니다.
+
+<br>
+
+### 생성자
+
+```java
+public AdjacencyListGraph(int numOfVertexe) {
+    this.vertexes = new HashSet<>();
+    this.indegrees = new HashMap<>();
+    this.graph = new ArrayList<>(numOfVertex);
+    for (int i = 0; i < numOfVertex; i++) {
+        this.graph.add(new ArrayList<>());
+    }
+}
+```
+
+멤버변수로 선언한 변수들에 대한 초기화 과정을 진행합니다.
+<br>
+
+### add
+
+```java
+@Override
+public void add(int from, int to, Integer distance) {
+    vertexes.add(from);
+    vertexes.add(to);
+    
+    int count = indegrees.getOrDefault(to, 0);
+    indegrees.put(to, count + 1);
+    List<Node> neighbors = this.graph.get(from);
+    neighbors.add(new Node(from, to, distance))
+}
+```
+
+인접행렬과 비슷한 방식으로 진행이 됩니다.
+
+단지 인접리스트는 그래프의 형식이 리스트의 리스트로 리스트가 리스트 형식으로 나열되어 있습니다. 
+
+바깥 리스트의 index의 번호가 노드의 번호가 됩니다.
+
+예를 들어, 아래와 같은 상황에서
+
+-  0 -> [1, 2, 3]
+-  1 -> [2]
+-  2 -> [0, 1]
+-  3 -> []
+
+0 번 노드는 1, 2, 3번 노드를 가리키고 있고  1 번 노드는 2번 노드를 가리키고 있고 2번 노드는 0번과 1번 을 가리키고 있으며 3번 노드는 아무 노드도 가리키고있지 않다는 것을 의미합니다.
+
+그래서 from의 노드를 get하여 neighbors에 출발정보와 도착정보, 거리가 들어있는 노드를 저장을 하면 연결 정보가 추가가 됩니다.
+
+```java
+@Override
+public void add(int from, int to) {
+    vertexes.add(from);
+    vertexes.add(to);
+    
+    int count = indegrees.getOrDefault(to, 0);
+    indegrees.put(to, count + 1);
+    List<Node> neighbors = this.graph.get(from);
+    neighbors.add(new Node(from, to))
+}
+```
+
+위의 과정과 같고 distance 정보만 제거해 줍니다.
+
+<br>
+
+### getNodes(int vertex)
+
+이 메소드도 인접행렬의 방식과 유사합니다.
+
+```java
+@Override
+public List<Integer> getNodes(int vertex) {
+    List<Integer> nodes = new ArrayList<>();
+    for (Node node: this.graph.get(vertex)) {
+        nodes.add(node.to);
+    }
+    return nodes;
+}
+```
+
+parameter(인자) vertex가 가리키고 있는 노드들의 정보를 리턴합니다.
+
+<br>
+
+### getDistance(int from, int to)
+
+```java
+@Override
+public Integer getDistance(int from, int to) {
+    for (Node node : this.graph.get(from)) {
+        if (node.to.equals(to)) {
+            return node.weight;
+        }
+    }
+    return null;
+}
+```
+
+from이 가리키고 있는 노드 중에서 to 노드의 weight를 반환합니다.
+
+<br>
+
+### 그 외의 get메소드
+
+```java
+@Override
+public Map<Integer, Integer> getIndegrees() {return this.indegrees;}
+
+@Override
+public Set<Integer> getVertexes() {return this.vertexes;}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이번 그래프에 대한 설명은 마치겠고 챕터 9에서 배울 내용은 다음과 같습니다.
+
+- 그래프 탐색(BFS, DFS)
+- 위상정렬
+- 그래프의 최단거리
+- 다익스트라
+
+이것들은 코딩테스트에서 나오는 단골문제이므로 잘 알아두셔야 합니다.
+
+
+
+
+
+
+
+
+
+
+
