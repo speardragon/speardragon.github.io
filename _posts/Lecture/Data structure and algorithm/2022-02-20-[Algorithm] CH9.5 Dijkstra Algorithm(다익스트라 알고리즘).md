@@ -274,6 +274,12 @@ return:
 
 <br>
 
+## 관련된 문제
+
+[<u>백준 14567 선수과목 (Prerequisite)</u>](https://www.acmicpc.net/problem/14567)
+
+<br>
+
 ## 관련된 Post
 
 - 자료 구조 [<u>트리(Tree)</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/tree/Algorithm-CH7.-Tree(%ED%8A%B8%EB%A6%AC)/)
