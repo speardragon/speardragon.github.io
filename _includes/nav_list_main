@@ -42,6 +42,8 @@
                 {% elsif category[0] == "Heap" %}<li><a href="/categories/heap" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "Graph" %}<li><a href="/categories/graph" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "Dijkstra" %}<li><a href="/categories/dijkstra" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Greedy" %}<li><a href="/categories/greedy" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "DynamicProgramming" %}<li><a href="/categories/dynamicprogramming" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>
