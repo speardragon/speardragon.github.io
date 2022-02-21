@@ -135,9 +135,19 @@ Return: 방문한 노드를 순서대로 저장한 리스트
 | ![Animated_BFS](https://user-images.githubusercontent.com/79521972/154641634-65bd2679-21ed-43d2-b8cd-6d828873c440.gif) | ![220px-Depth-First-Search](https://user-images.githubusercontent.com/79521972/154642490-211ab9c7-b333-4107-92a7-a0cc2c806a8e.gif) |
 | [Wikipedia](https://ko.wikipedia.org/wiki/%EB%84%88%EB%B9%84_%EC%9A%B0%EC%84%A0_%ED%83%90%EC%83%89) | [Wikipedia](https://ko.wikipedia.org/wiki/%EA%B9%8A%EC%9D%B4_%EC%9A%B0%EC%84%A0_%ED%83%90%EC%83%89) |
 
+<br>
 
+## 관련된 문제
+
+[<u>백준 2667번 단지번호 붙이기</u>](https://www.acmicpc.net/problem/2667)
+
+[<u>백준 2468번 ABCDE</u>](https://www.acmicpc.net/problem/2468)
 
 <br>
+
+
+
+
 
 ## 관련된 Post
 

@@ -145,6 +145,12 @@ Return: 방문한 노드를 순서대로 저장한 리스트
 
 
 
+## 관련된 문제
+
+[<u>백준 2667번 단지번호 붙이기</u>](https://www.acmicpc.net/problem/2667)
+
+[백준 13023번 ABCDE](https://www.acmicpc.net/problem/13023)
+
 <br>
 
 ## 관련된 Post
