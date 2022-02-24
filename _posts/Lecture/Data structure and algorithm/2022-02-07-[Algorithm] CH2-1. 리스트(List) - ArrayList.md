@@ -5,10 +5,6 @@ categories: ['Lecture', 'Data structure and algorithms']
 tag: ['Data structure', 'Algorithm', '리스트', 'ArrayList', '배열', 'LinkedList']
 ---
 
-<br>
-
-## List
-
 이번 시간에는 리스트(배열)에 대해서 알아 볼 것이다.
 
 <br>

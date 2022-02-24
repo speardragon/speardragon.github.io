@@ -7,10 +7,6 @@ toc: true
 toc_sticky: true
 ---
 
-<br>
-
-# LinkedList
-
 ArrayList에서 했던 것과 마찬가지로 LinkedList에서의 데이터 삽입, 데이터 삭제, 리스트 검색 등의 기능에 대해서 다뤄보도록 하겠다.
 
 ![image](https://user-images.githubusercontent.com/79521972/153141261-49abcef4-65b2-455f-a4d4-b4fbd4de24ee.png)
