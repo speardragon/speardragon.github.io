@@ -13,7 +13,7 @@ toc_sticky: true
 
 ### 큐(Queue)란?
 
-queue는 [<u>지난시간</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/Algorithm-CH3.-Stack(%EC%8A%A4%ED%83%9D)/, "Stack")(링크 참조)에 배운 스택과 달리 선입선출(First-In-First-Out-FIFO)의 구조를 가지고 있다.
+queue는 [<u>지난시간</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/Algorithm-CH3.-Stack(%EC%8A%A4%ED%83%9D)/ "Stack")(링크 참조)에 배운 스택과 달리 선입선출(First-In-First-Out-FIFO)의 구조를 가지고 있다.
 
 즉, 가장 먼저 들어간 것이 가장 먼저 나오게 되는 구조인 것이다.
 
