@@ -7,10 +7,6 @@ toc: true
 toc_sticky: true
 ---
 
-<br>
-
-# Double LinkedList
-
 이번 시간에는 LinkedList의 종류 중에서 Double LinkedList에 대해서 알아 볼 것이다.
 
 이전 내용에 있는 LinkedList는 앞에 'Single'이 생략 되어있는 셈이라 생각하면 된다. 그럼 무엇이 single이고 double일까?

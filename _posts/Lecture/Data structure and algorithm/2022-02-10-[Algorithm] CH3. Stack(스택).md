@@ -7,10 +7,6 @@ toc: true
 toc_sticky: true
 ---
 
-<br>
-
-## Stack - 스택
-
 이번 시간에는 Stack 자료구조에 대해서 배워 볼 것이다.
 
 <br>
