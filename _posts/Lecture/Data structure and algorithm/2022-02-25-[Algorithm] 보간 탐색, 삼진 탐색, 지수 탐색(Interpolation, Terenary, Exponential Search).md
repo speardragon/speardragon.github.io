@@ -3,9 +3,7 @@ layout: single
 title: "[Algorithm] 보간 탐색, 삼진 탐색, 지수 탐색(Interpolation, Terenary, Exponential Search)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BinarySearch']
 tag: ['Data structure', 'Algorithm', 'Interpolation Search', '보간탐색']
-
 toc_sticky: true
-
 ---
 
 이번 시간에는 보간 탐색(Interpolation Search), 삼진 탐색(Ternary Search), 지수 탐색(Exponential Search)에 대해서 알아 보도록 하겠다.
