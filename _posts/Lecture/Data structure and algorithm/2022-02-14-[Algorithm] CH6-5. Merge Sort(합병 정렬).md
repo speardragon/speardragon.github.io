@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH6-4. Merge Sort(합병 정렬)"
+title: "[Algorithm] CH6-5. Merge Sort(합병 정렬)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Sorting']
 tag: ['Data structure', 'Algorithm', 'Sorting', '정렬', 'merge sort', '합병 정렬']
 toc: true

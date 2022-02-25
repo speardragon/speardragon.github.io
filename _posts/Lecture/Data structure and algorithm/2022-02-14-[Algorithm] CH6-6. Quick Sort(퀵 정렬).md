@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH6-5. Quick Sort(퀵 정렬)"
+title: "[Algorithm] CH6-6. Quick Sort(퀵 정렬)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Sorting']
 tag: ['Data structure', 'Algorithm', 'Sorting', '정렬', 'Quick sort', '퀵 정렬']
 toc: true

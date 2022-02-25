@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH6-2. Bubble Sort(버블 정렬)"
+title: "[Algorithm] CH6-3. Bubble Sort(버블 정렬)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Sorting']
 tag: ['Data structure', 'Algorithm', 'Sorting', 'Bubble Sort', '버블 정렬']
 toc: true
