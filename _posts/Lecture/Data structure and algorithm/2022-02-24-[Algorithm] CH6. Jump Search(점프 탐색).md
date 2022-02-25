@@ -4,7 +4,7 @@ title: "[Algorithm] CH6-2. Jump Search(점프 탐색)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BinarySearch']
 tag: ['Data structure', 'Algorithm', 'Jump Search', '점프 탐색']
 toc: true
-toc_sticky: trueㅇ
+toc_sticky: true
 ---
 
 
@@ -146,3 +146,13 @@ int jumpSearch(int arr[], int n, int key) {
 2. 블록의 크기만큼 점프하면서 key값을 포함하는 블록을 찾는다.
 3. key 값을 포함한 블록을 찾았다면 블록의 첫 번째 인덱스부터 선형 탐색을 시작한다.
 4. 검색 key를 찾은 경우 prev를 반환한다.
+
+<br>
+
+#### 시간 복잡도
+
+| 연산   | Best | Average | Worst |
+| ------ | ---- | ------- | ----- |
+| Search | O(1) | O(√n)   | O(√n) |
+
+<br>
