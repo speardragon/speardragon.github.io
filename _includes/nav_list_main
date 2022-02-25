@@ -27,7 +27,7 @@
             </ul>
 
       <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
-        <span class="nav__sub-title">🔠 Algorithm</span>
+        <span class="nav__sub-title">🔠 Algorithm 문제</span>
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
