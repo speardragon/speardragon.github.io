@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH9-4. Topological Sorting(위상 정렬)"
+title: "[Algorithm] Topological Sorting(위상 정렬)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Graph']
 tag: ['Data structure', 'Algorithm', 'Graph', 'Topological Sorting']
 toc: false

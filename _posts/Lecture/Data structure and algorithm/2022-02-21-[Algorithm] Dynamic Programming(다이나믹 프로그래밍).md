@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH11. Dynamic Programming(다이나믹 프로그래밍)"
+title: "[Algorithm] Dynamic Programming(다이나믹 프로그래밍)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'DynamicProgramming']
 tag: ['Data structure', 'Algorithm', 'DynamicProgramming', '다이나믹 프로그래밍', '동적 계획법']
 toc: false

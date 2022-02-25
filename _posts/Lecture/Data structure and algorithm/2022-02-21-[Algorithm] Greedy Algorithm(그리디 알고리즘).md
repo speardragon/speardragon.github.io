@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH10. Greedy Algorithm(그리디 알고리즘)"
+title: "[Algorithm] Greedy Algorithm(그리디 알고리즘)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Greedy']
 tag: ['Data structure', 'Algorithm', 'Greedy', '그리디 알고리즘']
 toc: false

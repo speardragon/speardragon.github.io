@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH6-4. Insert Sort(삽입 정렬)"
+title: "[Algorithm] Insert Sort(삽입 정렬)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Sorting']
 tag: ['Data structure', 'Algorithm', 'Insert Sort', '삽입 정렬', '정렬', 'Sorting']
 toc: true

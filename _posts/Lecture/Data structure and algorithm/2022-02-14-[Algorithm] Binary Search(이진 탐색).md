@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH6-1. Binary Search(이진 탐색)"
+title: "[Algorithm] Binary Search(이진 탐색)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BinarySearch']
 tag: ['Data structure', 'Algorithm', 'Binary Search', '이진 탐색']
 toc: true

@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH6-2. Jump Search(점프 탐색)"
+title: "[Algorithm] Jump Search(점프 탐색)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BinarySearch']
 tag: ['Data structure', 'Algorithm', 'Jump Search', '점프 탐색']
 toc: true

@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH9-2. 너비 우선 탐색(BFS)(그래프 탐색)"
+title: "[Algorithm] 너비 우선 탐색(BFS)(그래프 탐색)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Graph']
 tag: ['Data structure', 'Algorithm', 'BFS', '너비 우선 탐색']
 toc: false

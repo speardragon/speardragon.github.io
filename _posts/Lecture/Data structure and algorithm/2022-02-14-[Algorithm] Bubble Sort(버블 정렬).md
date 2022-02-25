@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH6-3. Bubble Sort(버블 정렬)"
+title: "[Algorithm] Bubble Sort(버블 정렬)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Sorting']
 tag: ['Data structure', 'Algorithm', 'Sorting', 'Bubble Sort', '버블 정렬']
 toc: true
@@ -9,7 +9,7 @@ toc_sticky: true
 
 <br>
 
-# 버블 정렬
+# Bubble Sort - 버블 정렬
 
 이번 시간에는 정렬의 종류 중 버블 정렬에 대해서 배워보도록 하겠습니다.
 

@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Algorithm] CH6. 보간 탐색, 삼진 탐색, 지수 탐색(Interpolation, Terenary, Exponential Search)"
+title: "[Algorithm] 보간 탐색, 삼진 탐색, 지수 탐색(Interpolation, Terenary, Exponential Search)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BinarySearch']
 tag: ['Data structure', 'Algorithm', 'Interpolation Search', '보간탐색']
 

@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[자료구조] CH2-3. Double LinkedList(이중 연결 리스트)"
+title: "[자료구조] Double LinkedList(이중 연결 리스트)"
 categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'LinkedList']
 tag: ['Data structure', 'Algorithm', '이중연결리스트', 'DoubleLinkedList']
 toc: true
