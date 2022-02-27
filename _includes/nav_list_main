@@ -44,6 +44,7 @@
                 {% elsif category[0] == "Dijkstra" %}<li><a href="/categories/dijkstra" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "Greedy" %}<li><a href="/categories/greedy" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "DynamicProgramming" %}<li><a href="/categories/dynamicprogramming" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "BruteForce" %}<li><a href="/categories/bruteforce" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>
