@@ -8,29 +8,36 @@ cover: '/assets/images/datalgoritm.png'
 toc_sticky: true
 ---
 
+이번 시간에는 다익스트라 라는 최단 거리를 알아내는 알고리즘에 대해 배워 보도록 하겠다.
+
 <br>
 
-## Dijkstra Algorithm - 다익스트라 알고리즘
-
-이번 시간에는 다익스트라 라는 최단 거리를 알아내는 알고리즘에 대해 배워 보도록 하겠습니다.
-
-### 다익스트라란?
+## Dijkstra Algorithm - 다익스트라 알고리즘이란?
 
 > 그래프에서 최단 경로를 찾아내는 알고리즘은 많이 나와있지만 그 중에서 가장 기본이 되는 알고리즘을 뜻함.
 
 다른 최단 거리 알고리즘은 다익스트라를 기반으로 나온 알고리즘이다.
 
-- 한 vertex에서 다른 vertex까지의 최단 경로
-- Edge의 가중치(weight)은 양수만 가능(음수 불가능)
+- 한 vertex에서 다른 vertex까지의 최단 경로이다.
+- Edge의 가중치(weight)은 양수만 가능(음수 불가능)하다.
   - 가중치에 음수가 있는 경우에는
-    - Bellman-Ford's algorithm(벨만-포드 알고리즘) 혹은 Floyd-Warshall(플로이드-워셜) 알고리즘을 사용
-  - 대부분의 생활 속의 문제에서 가중치는 양수를 갖기 때문에 보편적으로 다익스트라 사용
+    - Bellman-Ford's algorithm(벨만-포드 알고리즘) 혹은 Floyd-Warshall(플로이드-워셜) 알고리즘을 사용한다.
+  - 대부분의 생활 속의 문제에서 가중치는 양수를 갖기 때문에 보편적으로 다익스트라 사용한다.
 
 다익스트라 알고리즘은 우선순위큐를 이용하여 구현하기 때문에 우선순위 큐에 대한 내용을 다음 포스팅에서 확인하기 바람.
 
-> [<u>자료구조 힙(Heap)</u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/heap/Algorithm-CH8.-Heap(%ED%9E%99)/)
+> **Heap 정렬**은 우선순위 큐에서 사용하는 정렬이므로 해당 포스팅 [<u><span style="color:blue">이곳</span></u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/heap/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Heap-&-Priority-Queue(%ED%9E%99%EA%B3%BC-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90)/)을 참조<br>
 
+<br>
 
+다익스트라 알고리즘의 특징은 다음과 같다.
+
+- 음수 가중치를 가진 간선이 존재하지 않는다.
+- 탐욕 알고리즘(Greedy Algorithm을 사용한다.)
+  - **Greedy Algorithm**의 설명은 [<u><span style="color:blue">이곳</span></u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/greedy/Algorithm-Greedy-Algorithm(%EA%B7%B8%EB%A6%AC%EB%94%94-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)/)을 참조
+
+- 미방문 정점들을 저장하기 위해 우선순위 큐 사용
+  - **Heap 정렬**은 우선순위 큐에서 사용하는 정렬이므로 해당 포스팅 [<u><span style="color:blue">이곳</span></u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/heap/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Heap-&-Priority-Queue(%ED%9E%99%EA%B3%BC-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90)/)을 참조
 
 <br>
 
@@ -38,21 +45,23 @@ toc_sticky: true
 
 ![image](https://user-images.githubusercontent.com/79521972/154834579-477e4921-ffaf-4576-879e-91c8c3427e50.png)
 
-여러 도시 중 A라는 도시에서 G라는 도시까지 간다고 가정
+여러 도시 중 A라는 도시에서 G라는 도시까지 간다고 가정하자.
 
-- 경로는 여러가지가 있을 것임
+- 경로는 여러가지가 있을 것을 것이다.
   - A - B - G
   - A - D - F - G
   - ....
-- 만약 한 경로마다 소모되는 시간은 다음 그림과 같다고 하자
+- 만약 한 경로마다 소모되는 시간은 다음 그림과 같다고 하자.
 
 ![image](https://user-images.githubusercontent.com/79521972/154834650-cb0eff4d-a627-4b9f-b02a-2a79beacd932.png)
 
-그렇다면 이때 가장 최단 거리의 경로는 어떤 것일까?
+<br>
+
+그렇다면 이때 가장 **최단 거리의 경로**는 어떤 것일까?
 
 다익스트라 알고리즘은 이 문제를 다음과 같은 명제로 제시한다.
 
-> "부분 경로에서 최단 거리의 집합"
+**<mark>"부분 경로에서 최단 거리의 집합"</mark>**
 
 <br>
 
@@ -110,7 +119,7 @@ toc_sticky: true
 - 연결되어 있는 노드들을  탐색하며
 - 최단 거리를 업데이트
 
--> 특정 노드까지의 최단 거리 경로를 저장하는 방식이 중요함 -> 배열 사용
+→ 특정 노드까지의 최단 거리 경로를 저장하는 방식이 중요함 → 배열 사용
 
 <br>
 
@@ -122,28 +131,25 @@ toc_sticky: true
 
 배열에 값이 업데이트 된다는 것은 우선순위 큐에 삽입된다는 뜻이기도 하다.
 
-1. 노드 수만큼 배열을 생성
-2. 배열의 값을 출발 노드에는 0, 나머지는 infinite(무한)값으로 넣는다.
+1. **노드 수만큼 배열을 생성**
+2. **배열의 값을 출발 노드에는 0, 나머지는 infinite(무한, ∞)값으로 넣는다.**
    - 0번 index의 값 0은 A노드에서 A노드까지의 거리를 의미
    - 1번 index의 값은 A노드에서 B노드까지의 거리를 의미
 
-3. 출발 노드 큐에 삽입
-
+3. **출발 노드 큐에 삽입**
    - <img src="https://user-images.githubusercontent.com/79521972/154840696-61890654-8afe-4507-806b-df11cc6a1d4a.png" alt="image" style="zoom:50%;" />
-
-4. A 노드에서 갈 수 있는 경우 따져보기
-
+   
+4. **A 노드에서 갈 수 있는 경우 따져보기**
    - ![image](https://user-images.githubusercontent.com/79521972/154840812-173ba1c8-5575-4cea-855d-5d2da330cc78.png)
-
-   - B노드(1번 그림): 5
+   
+   - B노드(1번 그림): 5시간
      - 초기 컨셉에 의해 B노드의 초기 거리는 무한대로 A를 거쳐 B로 가는 거리가 무조건 더 짧을 것이기 때문에 이 값으로 업데이트한다.
-   - C노드(2번 그림): 2
+   - C노드(2번 그림): 2시간
      - 위의 이유와 같이 C노드 까지 가는 경로 중 A에서 C로 가는 거리가 가장 짧을 것이기 때문에 업데이트를 한다.
-   - D노드(3번 그림): 4
+   - D노드(3번 그림): 4시간
      - 위와 같은 이유로 D노드 까지 가는 경로가 아직 초기화 되어있지 않기 때문에 A에서 C까지 가는 거리가 무조건 짧을 것이기 때문에 이 값으로 업데이트를 한다.
-
-5. 그 다음 큐에서 데이터를 빼서 탐색 계속 진행(C 노드)
-
+   
+5. **그 다음 큐에서 데이터를 빼서 탐색 계속 진행(C 노드)**
    - C 노드에서 갈 수 있는 경우 따져보기
      - ![image](https://user-images.githubusercontent.com/79521972/154841832-135beb2a-8a90-424d-b66f-c7a9cc49fca8.png)
      - B노드(1번 그림): 3
@@ -151,16 +157,16 @@ toc_sticky: true
      - D노드/F노드 : 3/7
        - D노드도 위와 같은 이유로 업데이트 해야하고
        - F노드는 이전에 기록된 노드가 없었기 때문에 해당 값을 추가한다.
-
-6. 다음 우선순위 큐에 있는 노드에 대하여 탐색을 진행(B 노드)
+   
+6. **다음 우선순위 큐에 있는 노드에 대하여 탐색을 진행(B 노드)**
    - B노드에서 갈 수 있는 경우는 F노드 뿐이다.
    - ![image](https://user-images.githubusercontent.com/79521972/154843281-2f8df2df-8793-4c66-80c8-b9ea6e2162e6.png)
    - 이전에 기록된 F의 값은 7로, B노드를 거치는 경우가 업데이트 되었기 때문에 이를 적용하여 계산한 결과가 5이기 때문에 다시 F값이 업데이트 된다.
-7. 우선순위 큐에서 D노드 꺼내 탐색 진행
+7. **우선순위 큐에서 D노드 꺼내 탐색 진행**
    - ![image](https://user-images.githubusercontent.com/79521972/154843616-42244722-8311-4d9a-9e2b-906be03d9f6b.png)
    - E노드(1번 그림): 9
      - E노드는 이전 데이터가 무한이기 때문에 D노드를 거쳐 가는 것이 무조건 최단 경로일 것이기 때문에 이 값으로 업데이트한다.
-8. 그 다음 큐도 D 노드이기 때문에 7번 과정을 진행 하지만 이 값은 업데이트 되지 않는다.
+8. **그 다음 큐도 D 노드이기 때문에 7번 과정을 진행 하지만 이 값은 업데이트 되지 않는다.**
 9. <img src="https://user-images.githubusercontent.com/79521972/154844116-0dfa49e7-f85d-4f89-ba6a-a4aa9cc6bf2e.png" alt="image" style="zoom:67%;" />
    - 마찬 가지로 유선순위 큐에 있는 큐는 순서대로 탐색하며 위 과정을 반복하여 큐를 비운다.
 
@@ -275,6 +281,10 @@ return:
 5. 큐가 비어서 4번 반복문이 종료가 되면 최단 거리 배열의 목적지에 해당하는 index의 데이터 값을 리턴하면서 마무리한다.
 
 <br>
+
+
+
+
 
 ## 관련된 문제
 
