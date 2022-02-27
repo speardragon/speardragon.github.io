@@ -595,15 +595,15 @@ t1의 priority 와 t2의 priority를 빼기 연산으로 어떤 것의 우선순
 
 ### 정렬 간 시간복잡도 비교
 
-| 정렬 방식      | Average              | Worst                | Memory | Stable 여부 | In-Place 여부 | Run-time(정수 60,000개) 단위: sec |
-| -------------- | -------------------- | -------------------- | ------ | ----------- | ------------- | --------------------------------- |
-| Bubble 정렬    | O(n<sup>2</sup>)     | O(n<sup>2</sup>)     | O(1)   | O           | O             | 7.438                             |
-| Selection 정렬 | O(n<sup>2</sup>)     | O(n<sup>2</sup>)     | O(1)   | X           | O             | 10.842                            |
-| Insertion 정렬 | O(n<sup>2</sup>)     | O(n<sup>2</sup>)     | O(1)   | O           | O             | 22.894                            |
-| Shell 정렬     | O(nlog<sub>2</sub>n) | O(n<sup>2</sup>)     | O(1)   | X           | O             | 0.056                             |
-| Merge 정렬     | O(nlog<sub>2</sub>n) | O(nlog<sub>2</sub>n) | O(n)   | O           | X             | 0.014                             |
-| Quick 정렬     | O(nlog<sub>2</sub>n) | O(n<sup>2</sup>)     | O(1)   | X           | O             | 0.034                             |
-| Heap 정렬      | O(nlog<sub>2</sub>n) | O(nlog<sub>2</sub>n) | O(1)   | X           | O             | 0.026                             |
+| 정렬 방식              | Average                  | Worst                    | Memory   | Stable 여부 | In-Place 여부 | Run-time(정수 60,000개) 단위: sec |
+| ---------------------- | ------------------------ | ------------------------ | -------- | ----------- | ------------- | --------------------------------- |
+| Bubble 정렬            | O(n<sup>2</sup>)         | O(n<sup>2</sup>)         | O(1)     | O           | O             | 7.438                             |
+| Selection 정렬         | O(n<sup>2</sup>)         | O(n<sup>2</sup>)         | O(1)     | X           | O             | 10.842                            |
+| Insertion 정렬         | O(n<sup>2</sup>)         | O(n<sup>2</sup>)         | O(1)     | O           | O             | 22.894                            |
+| Shell 정렬             | O(nlog<sub>2</sub>n)     | O(n<sup>2</sup>)         | O(1)     | X           | O             | 0.056                             |
+| Merge 정렬             | O(nlog<sub>2</sub>n)     | O(nlog<sub>2</sub>n)     | O(n)     | O           | X             | 0.014                             |
+| Quick 정렬             | O(nlog<sub>2</sub>n)     | O(n<sup>2</sup>)         | O(1)     | X           | O             | 0.034                             |
+| <mark>Heap 정렬</mark> | **O(nlog<sub>2</sub>n)** | **O(nlog<sub>2</sub>n)** | **O(1)** | **X**       | **O**         | **0.026**                         |
 
 <br>
 

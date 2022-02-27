@@ -1156,11 +1156,48 @@ public int size() {
 
 size함수는 간단하게 변수를 리턴하면서 마무리 해 준다.
 
-
+<br>
 
 ## 관련된 문제
 
 [백준 9934번 완전 이진 트리](https://www.acmicpc.net/problem/9934)
+
+<br>
+
+### 자료구조 시간 복잡도 비교
+
+- 평균 시간 복잡도(Average)
+
+| 자료구조           | Access              | Search              | Insertion           | Deletion            |
+| ------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
+| Array              | O(1)                | O(n)                | O(n)                | O(n)                |
+| Stack              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Queue              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Singly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Doubly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Hash Table         | O(1)                | O(1)                | O(1)                | O(1)                |
+| Binary Search Tree | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| AVL Tree           | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| B Tree             | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+
+
+
+- 최악의 경우 시간 복잡도(Worst)
+
+| 자료구조           | Access              | Search              | Insertion           | Deletion            |
+| ------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
+| Array              | O(1)                | O(n)                | O(n)                | O(n)                |
+| Stack              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Queue              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Singly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Doubly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Hash Table         | O(n)                | O(n)                | O(n)                | O(n)                |
+| Binary Search Tree | O(n)                | O(n)                | O(n)                | O(n)                |
+| AVL Tree           | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| Binary Tree        | O(n)                | O(n)                | O(n)                | O(n)                |
+| B Tree             | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+
+
 
 
 

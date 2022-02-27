@@ -532,6 +532,41 @@ Double LinkeList에서 비어있다는 의미는 head 노드와 tail 노드가 �
 
 이상 List(리스트) 자료구조에 대한 내용이었습니다.
 
+<br>
+
+### 자료구조 시간 복잡도 비교
+
+- 평균 시간 복잡도(Average)
+
+| 자료구조           | Access              | Search              | Insertion           | Deletion            |
+| ------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
+| Array              | O(1)                | O(n)                | O(n)                | O(n)                |
+| Stack              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Queue              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Singly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Doubly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Hash Table         | O(1)                | O(1)                | O(1)                | O(1)                |
+| Binary Search Tree | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| AVL Tree           | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| B Tree             | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+
+
+
+- 최악의 경우 시간 복잡도(Worst)
+
+| 자료구조           | Access              | Search              | Insertion           | Deletion            |
+| ------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
+| Array              | O(1)                | O(n)                | O(n)                | O(n)                |
+| Stack              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Queue              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Singly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Doubly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Hash Table         | O(n)                | O(n)                | O(n)                | O(n)                |
+| Binary Search Tree | O(n)                | O(n)                | O(n)                | O(n)                |
+| AVL Tree           | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| Binary Tree        | O(n)                | O(n)                | O(n)                | O(n)                |
+| B Tree             | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+
 
 
 

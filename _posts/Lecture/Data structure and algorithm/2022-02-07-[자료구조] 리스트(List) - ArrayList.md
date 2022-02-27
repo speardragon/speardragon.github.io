@@ -423,8 +423,46 @@ clear는 리스트 안의 원소를 모두 비우는 것인데 사실상 배열�
 
 <br>
 
-맺으며
----
+### 자료구조 시간 복잡도 비교
+
+- 평균 시간 복잡도(Average)
+
+| 자료구조           | Access              | Search              | Insertion           | Deletion            |
+| ------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
+| Array              | O(1)                | O(n)                | O(n)                | O(n)                |
+| Stack              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Queue              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Singly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Doubly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Hash Table         | O(1)                | O(1)                | O(1)                | O(1)                |
+| Binary Search Tree | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| AVL Tree           | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| B Tree             | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+
+
+
+- 최악의 경우 시간 복잡도(Worst)
+
+| 자료구조           | Access              | Search              | Insertion           | Deletion            |
+| ------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
+| Array              | O(1)                | O(n)                | O(n)                | O(n)                |
+| Stack              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Queue              | O(n)                | O(n)                | O(1)                | O(1)                |
+| Singly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Doubly Linked List | O(n)                | O(n)                | O(1)                | O(1)                |
+| Hash Table         | O(n)                | O(n)                | O(n)                | O(n)                |
+| Binary Search Tree | O(n)                | O(n)                | O(n)                | O(n)                |
+| AVL Tree           | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+| Binary Tree        | O(n)                | O(n)                | O(n)                | O(n)                |
+| B Tree             | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) | O(log<sub>2</sub>n) |
+
+
+
+
+
+
+
+### 정리
 
 이로써 MyArrayList라는 클래스에서 배열을 이용하여 리스트를 구현한 **ArrayList**의 수많은 기능을 모두 구현해 보았다. 자료구조 및 알고리즘은 메소드 사용 방법을 공부하는 과목이 아니다. 그렇기 때문에 이러한 그 안의 메소드들을 하나하나 직접 구현해 보면서 작동하는 원리를 습득해야 알고리즘을 구현하기 훨씬 쉬워질 것이다.
 
