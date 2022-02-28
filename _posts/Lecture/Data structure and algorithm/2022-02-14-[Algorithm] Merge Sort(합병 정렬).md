@@ -358,12 +358,6 @@ private void merge(int[] arr, int low, int mid, int high) {
 
 **Heap 정렬**은 우선순위 큐에서 사용하는 정렬이므로 해당 포스팅 [<u><span style="color:blue">이곳</span></u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/heap/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Heap-&-Priority-Queue(%ED%9E%99%EA%B3%BC-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90)/)을 참조<br>
 
-**Counting 정렬**의 설명은 [<u><span style="color:blue">이곳</span></u>]()을 참조<br>
-
-**Radix 정렬**의 설명은 [<u><span style="color:blue">이곳</span></u>]()을 참조<br>
-
-**Bucket 정렬**의 설명은 [<u><span style="color:blue">이곳</span></u>]()을 참조<br>
-
 **Topological 정렬**의 설명은 [<u><span style="color:blue">이곳</span></u>](https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-Topological-Sorting(%EC%9C%84%EC%83%81-%EC%A0%95%EB%A0%AC)/)을 참조<br>
 
 
