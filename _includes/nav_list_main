@@ -14,7 +14,7 @@
       <li>
       <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
         <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
-        <span class="nav__sub-title">🌎 Language</span>
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
             <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
             <ul>
                 <!-- 하위 카테고리 -->
@@ -27,7 +27,7 @@
             </ul>
 
       <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
-        <span class="nav__sub-title">🔠 Algorithm 문제</span>
+        <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
@@ -45,13 +45,14 @@
                 {% elsif category[0] == "Greedy" %}<li><a href="/categories/greedy" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "DynamicProgramming" %}<li><a href="/categories/dynamicprogramming" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "BruteForce" %}<li><a href="/categories/bruteforce" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "BackTracking" %}<li><a href="/categories/backtracking" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>
                    
 
       <!-------------------------------------- 상위 카테고리: Lecture-------------------------------------->
-        <span class="nav__sub-title">📗 Lecture</span>
+        <span class="nav__sub-title">📗 Lecture: 이론 강의</span>
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
@@ -61,7 +62,7 @@
             </ul>          
 
       <!-------------------------------------- 상위 카테고리: Record-------------------------------------->
-        <span class="nav__sub-title">🎬 Record</span>
+        <span class="nav__sub-title">🎬 Record: 기록</span>
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
