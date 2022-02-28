@@ -289,7 +289,7 @@ private void quickSort(int[] arr, int low, int high) {
 
 또 다른 예로 pivot을 맨 왼쪽으로 잡은 경우를 도식화한 것을 보고 마무리 하도록 하겠다.
 
-![image](https://user-images.githubusercontent.com/79521972/153901057-238955ac-bb29-453b-9ff0-6978bf6a308f.png)
+image](https://user-images.githubusercontent.com/79521972/153901057-238955ac-bb29-453b-9ff0-6978bf6a308f.png)
 
 
 
