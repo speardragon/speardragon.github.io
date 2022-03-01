@@ -59,7 +59,17 @@
                 {% if category[0] == "Data structure and algorithms" %}<li><a href="/categories/datalgorithm" class="">{{"Data structure and algorithms(Java)"}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
-            </ul>          
+            </ul>         
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                {% for category in site.categories %}
+                {% if category[0] == "StockPredict" %}<li><a href="/categories/datalgorithm" class="">{{"Data structure and algorithms(Java)"}} ({{category[1].size}})</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>   
 
       <!-------------------------------------- 상위 카테고리: Record-------------------------------------->
         <span class="nav__sub-title">🎬 Record: 기록</span>
