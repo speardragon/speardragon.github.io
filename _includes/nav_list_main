@@ -67,7 +67,7 @@
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
-                {% if category[0] == "StockPredict" %}<li><a href="/categories/datalgorithm" class="">{{"Data structure and algorithms(Java)"}} ({{category[1].size}})</a></li>
+                {% if category[0] == "StockPredict" %}<li><a href="/categories/stockpredict" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>   
