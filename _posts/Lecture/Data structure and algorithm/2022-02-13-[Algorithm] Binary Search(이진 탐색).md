@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Binary Search(이진 탐색)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BinarySearch']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'BinarySearch']
 tag: ['Data structure', 'Algorithm', 'Binary Search', '이진 탐색']
 toc: true
 toc_sticky: true

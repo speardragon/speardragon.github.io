@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Dijkstra Algorithm(다익스트라 알고리즘)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Dijkstra']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'Dijkstra']
 tag: ['Data structure', 'Algorithm', 'Dijkstra', '다익스트라']
 toc: false
 cover: '/assets/images/datalgoritm.png'

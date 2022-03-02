@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Sorting(정렬)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Sorting']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'Sorting']
 tag: ['Data structure', 'Algorithm', 'Sorting', '정렬']
 toc: true
 toc_sticky: true

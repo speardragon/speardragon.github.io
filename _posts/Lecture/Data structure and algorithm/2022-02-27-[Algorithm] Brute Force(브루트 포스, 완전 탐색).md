@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Brute Force(브루트 포스, 완전 탐색)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BruteForce']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'BruteForce']
 tag: ['Data structure', 'Algorithm', 'BruteForce', '브루트 포스', '완전 탐색']
 toc: false
 toc_sticky: true

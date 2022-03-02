@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[자료구조] LinkedList(연결 리스트)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'LinkedList']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'LinkedList']
 tag: ['Data structure', 'Algorithm', '연결리스트', 'LinkedList']
 toc: true
 toc_sticky: true

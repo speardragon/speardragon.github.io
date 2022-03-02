@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] BackTracking(백트래킹)"
-categories: ['Lecture', 'Data structure and algorithms with Java', 'Algorithm', 'BackTracking']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'BackTracking']
 tag: ['Data structure', 'Algorithm', 'BackTracking', '백트래킹']
 toc: false
 toc_sticky: true

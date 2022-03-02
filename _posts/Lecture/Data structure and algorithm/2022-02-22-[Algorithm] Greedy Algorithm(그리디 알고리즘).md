@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Greedy Algorithm(그리디 알고리즘)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Greedy']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'Greedy']
 tag: ['Data structure', 'Algorithm', 'Greedy', '그리디 알고리즘']
 toc: false
 cover: '/assets/images/datalgoritm.png'

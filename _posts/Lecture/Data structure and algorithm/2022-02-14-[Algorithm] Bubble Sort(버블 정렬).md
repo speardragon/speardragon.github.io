@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Bubble Sort(버블 정렬)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Sorting']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'Sorting']
 tag: ['Data structure', 'Algorithm', 'Sorting', 'Bubble Sort', '버블 정렬']
 toc: true
 toc_sticky: true

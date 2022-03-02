@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Jump Search(점프 탐색)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BinarySearch']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'BinarySearch']
 tag: ['Data structure', 'Algorithm', 'Jump Search', '점프 탐색']
 toc: true
 toc_sticky: true

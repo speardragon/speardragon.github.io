@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[자료구조] Tree, Binary Tree(트리, 이진 트리)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Tree']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'Tree']
 tag: ['Data structure', 'Algorithm', 'Tree', '트리', 'Binary Tree', '이진 트리']
 toc: false
 toc_sticky: true

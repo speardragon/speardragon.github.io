@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Topological Sorting(위상 정렬)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Graph']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'Graph']
 tag: ['Data structure', 'Algorithm', 'Graph', 'Topological Sorting']
 toc: false
 cover: '/assets/images/datalgoritm.png'

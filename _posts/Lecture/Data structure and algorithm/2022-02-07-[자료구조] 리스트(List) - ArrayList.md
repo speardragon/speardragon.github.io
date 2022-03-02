@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[자료구조] 리스트(List) - ArrayList"
-categories: ['Lecture', 'Data structure and algorithms']
+categories: ['Lecture', 'Data structures and algorithms with Java']
 tag: ['Data structure', 'Algorithm', '리스트', 'ArrayList', '배열', 'LinkedList']
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] 깊이 우선 탐색(DFS)(그래프 탐색)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Graph']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'Graph']
 tag: ['Data structure', 'Algorithm', 'DFS', '깊이 우선 탐색']
 toc: false
 cover: '/assets/images/datalgoritm.png'

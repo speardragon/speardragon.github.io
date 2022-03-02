@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] 보간 탐색, 삼진 탐색, 지수 탐색(Interpolation, Terenary, Exponential Search)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'BinarySearch']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'BinarySearch']
 tag: ['Data structure', 'Algorithm', 'Interpolation Search', '보간탐색']
 toc_sticky: true
 ---

@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Dynamic Programming(다이나믹 프로그래밍)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'DynamicProgramming']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'DynamicProgramming']
 tag: ['Data structure', 'Algorithm', 'DynamicProgramming', '다이나믹 프로그래밍', '동적 계획법']
 toc: false
 cover: '/assets/images/datalgoritm.png'

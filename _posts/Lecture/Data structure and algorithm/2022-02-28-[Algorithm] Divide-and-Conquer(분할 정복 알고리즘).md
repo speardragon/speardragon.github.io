@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Algorithm] Divide-and-Conquer(분할 정복 알고리즘)"
-categories: ['Lecture', 'Data structure and algorithms']
+categories: ['Lecture', 'Data structures and algorithms with Java']
 tag: ['Data structure', 'Algorithm', 'DivideandConquer', '분할 정복']
 toc: false
 toc_sticky: trues

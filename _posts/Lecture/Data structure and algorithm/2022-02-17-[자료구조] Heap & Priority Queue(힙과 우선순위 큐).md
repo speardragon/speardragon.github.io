@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[자료구조] Heap & Priority Queue(힙과 우선순위 큐)"
-categories: ['Lecture', 'Data structure and algorithms', 'Algorithm', 'Heap']
+categories: ['Lecture', 'Data structures and algorithms with Java', 'Algorithm', 'Heap']
 tag: ['Data structure', 'Algorithm', 'Heap', '힙', 'Priority Queue']
 toc: false
 toc_sticky: true
