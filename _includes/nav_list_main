@@ -56,8 +56,8 @@
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
-                {% if category[0] == "Data structures and algorithms with Java" %}<li><a href="/categories/datalgorithmwithJava" class="">{{"Data structure and algorithms(Java)"}} ({{category[1].size}})</a></li>
-                {% if category[0] == "Data structure and algorithms with Python" %}<li><a href="/categories/datalgorithmwithPython" class="">{{"Data structure and algorithms(Python)"}} ({{category[1].size}})</a></li>
+                {% if category[0] == "Data structures and algorithms with Java" %}<li><a href="/categories/datalgorithmwithJava" class="">{{"Data structures and algorithms(Java)"}} ({{category[1].size}})</a></li>
+                {% if category[0] == "Data structures and algorithms with Python" %}<li><a href="/categories/datalgorithmwithPython" class="">{{"Data structures and algorithms(Python)"}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>         
