@@ -59,6 +59,7 @@
                 {% if category[0] == "Data structures and algorithms with Java" %}<li><a href="/categories/datalgorithmwithJava" class="">{{"Data structures and algorithms(Java)"}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "Data structures and algorithms with Python" %}<li><a href="/categories/datalgorithmwithPython" class="">{{"Data structures and algorithms(Python)"}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "Computer Architecture" %}<li><a href="/categories/computerarchitecture" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "System Programming" %}<li><a href="/categories/systemprogramming" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>         
