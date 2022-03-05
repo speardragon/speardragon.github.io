@@ -22,47 +22,42 @@
                 <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
                 {% for category in site.categories %}
                 {% if category[0] == "Python" %}<li><a href="/categories/python" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Kotiln" %}<li><a href="/categories/kotlin" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
-            </ul>
+            </ul>    
 
-      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
-        <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          {% for category in site.categories %}
+          {% if category[0] == "System Programming" %}<li><a href="/categories/systemprogramming" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% endif %}
+          {% endfor %}
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
-                {% if category[0] == "Implementation" %}<li><a href="/categories/implementation" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "LinkedList" %}<li><a href="/categories/linkedList" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Stack" %}<li><a href="/categories/stack" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Queue" %}<li><a href="/categories/queue" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Hash" %}<li><a href="/categories/hash" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Sorting" %}<li><a href="/categories/sorting" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "BinarySearch" %}<li><a href="/categories/binarysearch" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Tree" %}<li><a href="/categories/tree" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Heap" %}<li><a href="/categories/heap" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Graph" %}<li><a href="/categories/graph" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Dijkstra" %}<li><a href="/categories/dijkstra" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Greedy" %}<li><a href="/categories/greedy" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "DynamicProgramming" %}<li><a href="/categories/dynamicprogramming" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "BruteForce" %}<li><a href="/categories/bruteforce" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "BackTracking" %}<li><a href="/categories/backtracking" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-                   
-
-      <!-------------------------------------- 상위 카테고리: Lecture-------------------------------------->
-        <span class="nav__sub-title">📗 Lecture: 이론 강의</span>
-            <ul>
-                <!-- 하위 카테고리 -->
-                {% for category in site.categories %}
-                {% if category[0] == "Data structures and algorithms with Java" %}<li><a href="/categories/datalgorithmwithJava" class="">{{"Data structures and algorithms(Java)"}} ({{category[1].size}})</a></li>
+                {% if category[0] == "Computer Architecture" %}<li><a href="/categories/computerarchitecture" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "Data structures and algorithms with Python" %}<li><a href="/categories/datalgorithmwithPython" class="">{{"Data structures and algorithms(Python)"}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Computer Architecture" %}<li><a href="/categories/computerarchitecture" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "System Programming" %}<li><a href="/categories/systemprogramming" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Data structures and algorithms with Java" %}<li><a href="/categories/datalgorithmwithJava" class="">{{"Data structures and algorithms(Java)"}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
-            </ul>         
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                {% for category in site.categories %}
+                {% if category[0] == "Android" %}<li><a href="/categories/stockpredict" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>               
             
      <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
      <span class="nav__sub-title">🧪 Project: 프로젝트</span>
@@ -70,12 +65,36 @@
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
                 {% if category[0] == "StockPredict" %}<li><a href="/categories/stockpredict" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Scheduler" %}<li><a href="/categories/scheduler" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>   
 
-      <!-------------------------------------- 상위 카테고리: Record-------------------------------------->
-        <span class="nav__sub-title">🎬 Record: 기록</span>
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          {% for category in site.categories %}
+          {% if category[0] == "Implementation" %}<li><a href="/categories/implementation" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "LinkedList" %}<li><a href="/categories/linkedList" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Stack" %}<li><a href="/categories/stack" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Queue" %}<li><a href="/categories/queue" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Hash" %}<li><a href="/categories/hash" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Sorting" %}<li><a href="/categories/sorting" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "BinarySearch" %}<li><a href="/categories/binarysearch" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Tree" %}<li><a href="/categories/tree" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Heap" %}<li><a href="/categories/heap" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Graph" %}<li><a href="/categories/graph" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Dijkstra" %}<li><a href="/categories/dijkstra" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Greedy" %}<li><a href="/categories/greedy" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "DynamicProgramming" %}<li><a href="/categories/dynamicprogramming" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "BruteForce" %}<li><a href="/categories/bruteforce" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "BackTracking" %}<li><a href="/categories/backtracking" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% endif %}
+          {% endfor %}
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
             <ul>
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
