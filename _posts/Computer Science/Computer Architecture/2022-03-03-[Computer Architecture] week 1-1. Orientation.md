@@ -3,8 +3,7 @@ layout: single
 title: "[Computer Architecture] week 1-1. Orientation"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['Computer Architecture', 'Intro']
-toc: true
-toc_sticky: tru
+
 ---
 
  miPs vs. ARM vs. RISC-V
