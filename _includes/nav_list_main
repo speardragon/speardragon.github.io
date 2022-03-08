@@ -76,6 +76,7 @@
           <!-- 하위 카테고리 -->
           {% for category in site.categories %}
           {% if category[0] == "Implementation" %}<li><a href="/categories/implementation" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Math" %}<li><a href="/categories/math" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% elsif category[0] == "LinkedList" %}<li><a href="/categories/linkedList" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% elsif category[0] == "Stack" %}<li><a href="/categories/stack" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% elsif category[0] == "Queue" %}<li><a href="/categories/queue" class="">{{category[0]}} ({{category[1].size}})</a></li>
@@ -100,6 +101,7 @@
                 {% for category in site.categories %}
                 {% if category[0] == "Review" %}<li><a href="/categories/review" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% elsif category[0] == "History" %}<li><a href="/categories/history" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Tip" %}<li><a href="/categories/tip" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>
