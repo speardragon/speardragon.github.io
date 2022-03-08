@@ -4,12 +4,16 @@ title: "[Android] Kotlin 문법 총 정리"
 categories: ['Android', 'Language', 'Kotlin']
 tag: ['Android', 'Intro']
 toc: true
-toc_sticky: ture
+toc_sticky: true
 ---
 
 <br>
 
 이 카테고리는 안드로이드에 관한 프로젝트를 구현해 보는 카테고리로써 여러 프로젝트를 해 보기 전에 안드로이드 문법인 코틀린 언어에 대해서 먼저 알아보도록 할 것이다.
+
+안드로이트 스튜디오 사용방법에 대해 익히는 것보다 프로젝트를 하나씩 해 보면서 여러가지를 배우는 것이 재미적인 측면에서나 효율적인 측면에서 더 좋을 것이다.
+
+그럼 이 프로젝트를 해 보기에 앞서 사용할 언어인 코틀린 언어에 대해서 알아보도록 하겠다. 참고로 코틀린 문법을 최대한 많이 정리를 해 놓으려고 하고 있고 계속 해서 추가할 예정이므로 이 포스팅의 길이는 매우 길 것이므로 유의하면서 읽기 바란다. 
 
 ![image](https://user-images.githubusercontent.com/79521972/156873100-79d876aa-91ca-4d3e-a43d-2251ec53edfb.png)
 
