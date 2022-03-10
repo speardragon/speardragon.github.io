@@ -83,8 +83,7 @@ a=b+c;
 - CPU를 통해 +, -, *, / 등의 연산을 하고 싶음 -> ALU에서 연산
 - 폰노이만 구조는 data와 프로그램이 한 구조에 있음
 
-- 메모리는 세 부분으로 나뉘어짐
-
+- ==**메모리는 세 부분으로 나뉘어짐**==
   - 맨 아래: 0 번지, program memory
     - 프로그램이 들어있음
     - instruction set이 들어있는 것
@@ -92,7 +91,7 @@ a=b+c;
   - 중간: data memory
     - 데이터가 들어간다.
     - a, b, c, 방을 잡아준다.(선언 부분, 어디에 잡아줄 지는 compiler가 결정)
-
+  
   - 맨 위 : fff...f 번지, stack memory
     - 스택 = temporary
       - 즉, 임시로 잠깐 저장할 때 사용하는 공간
@@ -213,9 +212,55 @@ Compiler에 의해 language를 machine이 알아듣도록 계속 변환 시킴
 <br>
 
 - High-level language
-- 
 
-쿼터스는 무슨 language에 속하나요?
+  - Level of abstraction closer to problem domain
+
+  - Provides for productivity and psrtabiltiy
+
+  - ```c
+    swap(int v[], int k)
+    {
+        int temp;
+        temp = v[k];
+        v[k] = v[k+1];
+        v[k+1] = temp;
+    }
+    ```
+
+- Assembly lanuage
+
+  - Textual representation of instrcutions
+
+  - ```assembly
+    swap:
+    	muli $2, $5.4
+    	add $2, $4.$2
+    	lw $15, 0($2)
+    	lw $16, 4($2)
+    	sw $16, 0($2)
+    	sw $15, 4($2)
+    	jr $31
+    ```
+
+- Hardware representation
+
+  - Binary digits(bits)
+
+  - Encoded instructions and data
+
+  - ```
+    00000000000000000000011010100000100000000000100110
+    101000000000000001111111000000000001111111000001
+    010100000000000111111101010010
+    ```
+
+    
+
+
+<br>
+쿼터스는 
+
+
 
 
 
