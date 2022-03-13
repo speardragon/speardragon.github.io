@@ -9,29 +9,46 @@ tag: ['Computer Architecture', 'Intro']
 
 ## Review)
 
-instruction: 기계가 알아듣도록 기계에게 내리는 명령, 기계가 알아듣도록 하는 기본 function
+instruction: 컴퓨터가 알아듣도록 컴퓨터에게 내리는 명령, 기계가 알아듣도록 하는 기본 function
 
-- turn left, turn right, ...
+- turn left, turn right, ...(기본적인 동작부터 복잡한 동작까지 있음)
+- 이것이 명령어
 
-instruction set : 하드웨어가 어떻게 만들어져 있는지
+
+
+hareware: processor가 어떻게 만들어져있는지
+
+
+
+instruction set (spec,스펙): 하드웨어가 어떻게 만들어져 있는지
 
 Instruction Set Architecture(ISA): Hardware와 Software의 bridge 역할
 
+
+
+microarchitecture
+
 <br>
 
-RISC-V 새로 나옴, Open source
+RISC-V 새로 나옴, Open source로 공개 되어 있다.
+
+- 원하는만큼 processor를 만들 수 있다.
+
+
+
+
 
 우리 수업에서는 MIPS를 사용할 것임
 
 <br>
 
-**이번 시간에 배울 대충의 목차**
+**목차**
 
-0. Performance
+0. Performance(중요)
    - 하드웨어가 얼마나 잘 만들어져 있는지, 잘 만든다는 게 무엇일까?
 
 1. Instruction Set
-2. 1에 대한 Micro Architecture
+2. 1에 대한 Micro Architecture(Hardware, )
 3. Memory
 4. I/O
 5. Parallel-computer
@@ -40,30 +57,33 @@ RISC-V 새로 나옴, Open source
 
 ## Computer Architecture
 
-- What is
-
-  - 
-
-  - 
-
-  - spec이라고도 함,
-
+- What is Computer Architeture?
+  - <span style="color:blue">a set of rules</span> starting how software and hardware join together and interact to make them work
+  - <span style="color:blue">Structure and behavior</span> of the computer as seen by the user(programmer)
+  - <span style="color:blue">specification</span> describing how hardware and software technologies interact to create a computer platform of system.(spec이라고도 함.)
 - Three categories of computer architecture 
-  - lSA (instrsuction set architecture)
-  - l
-  - l
-
+  - **lSA** (instrsuction set architecture)
+  - **Microarchitecture** (computer organization): tells how ISA are implemeted(하드웨어)
+  - **System design**: includes all of the other hareware components(DMA, virtualization, multiprocessing, GPU, memory controller, etc.)
 - CISC and RISC
   복잡하고 간단한 명령들이 나열되어 있음
   - CISC (complex instruction set architecture)
+    - many complex instructions(fewer lines of code, less memory, but take longer to complete instructions)
     - 자주 쓰이는 것이 있고 자주 쓰이지 않는 것이 공존하여 굉장히 복잡한 것
     - ex) x86 
   - RISC (reduced  instruction set architecture)
+    - keep hardware as simple and fast as possible(complex instrcutions can be performed with simpler instruction)
     - 자주 쓰이지 않는 것은 만들지 않고 자주 쓰이는 것들로만 구성한 것
     - 그럼 자주 쓰이지 않는 것은 어떻게 만들까?
     - 이미 있는 간단한 instruction들을 합쳐서 복잡한 것을 만드는 개념
     - ex) ARM, MIPS, RISC -V
     - 명령어들이 x86에 비해 set이 훨씬 작음 
+
+- Von Neumann architecture and Harvard architecture
+  - Von Neumann : instructions and data are both loaded into the same memory unit
+  - Harvard : keeps intructions and data in seperate memories (separated buses)
+
+<br>
 
 
 
