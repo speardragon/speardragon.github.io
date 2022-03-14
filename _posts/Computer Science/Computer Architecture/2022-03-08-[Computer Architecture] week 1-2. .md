@@ -73,7 +73,7 @@ RISC-V 새로 나옴, Open source로 공개 되어 있다.
     - ex) x86 
   - RISC (reduced  instruction set architecture)
     - keep hardware as simple and fast as possible(complex instrcutions can be performed with simpler instruction)
-    - 자주 쓰이지 않는 것은 만들지 않고 자주 쓰이는 것들로만 구성한 것
+    - 자주 쓰이지 않는 것은 만들지 않고 자주(많이) 쓰이는 것들로만 구성한 것
     - 그럼 자주 쓰이지 않는 것은 어떻게 만들까?
     - 이미 있는 간단한 instruction들을 합쳐서 복잡한 것을 만드는 개념
     - ex) ARM, MIPS, RISC -V
@@ -81,14 +81,13 @@ RISC-V 새로 나옴, Open source로 공개 되어 있다.
 
 - Von Neumann architecture and Harvard architecture
   - Von Neumann : instructions and data are both loaded into the same memory unit
+    - 
   - Harvard : keeps intructions and data in seperate memories (separated buses)
 
 <br>
 
-
-
 ```c
-// data 부분(선언 부분)
+// data 부분(선언(declare) 부분)
 int a,b,c
 
 //program 부분(text, code)
@@ -99,30 +98,29 @@ a=b+c;
 ```
 
 - 위 코드가 컴퓨터에서는 어떻게 실행될까?
-
-- CPU를 통해 +, -, *, / 등의 연산을 하고 싶음 -> ALU에서 연산
+- CPU를 통해 +, -, *, /, and, or 등의 연산을 하고 싶음 -> ALU에서 연산
 - 폰노이만 구조는 data와 프로그램이 한 구조에 있음
-
-- ==**메모리는 세 부분으로 나뉘어짐**==
+- ==**메모리는 세 부분으로 나뉘어짐**==(데이터가 선언될때 메모리가 필요함)
   - 맨 아래: 0 번지, program memory
     - 프로그램이 들어있음
     - instruction set이 들어있는 것
     - instruction에 따라서 수행할 연산을 program counter가 decode하여 전달해줌
   - 중간: data memory
-    - 데이터가 들어간다.
-    - a, b, c, 방을 잡아준다.(선언 부분, 어디에 잡아줄 지는 compiler가 결정)
-  
+    - 데이터가 들어가는 자리.
+    - 컴파일이 되면, a, b, c, 방을 잡아준다.(선언 부분, 어디에 잡아줄 지는 compiler가 결정)
   - 맨 위 : fff...f 번지, stack memory
     - 스택 = temporary
       - 즉, 임시로 잠깐 저장할 때 사용하는 공간
 
+
+
 <br>
 
-b와 c를 연산하고 싶기 때문에 이를 ALU에 연결하고 싶으나 RISC는 이를 직접 바로 연결하지 못하고, register file(여러개의 register를 모아둔 곳) 을 거쳐서 ALU로 넘겨준다. 또한 이 결과를 다시 register file로 가는 연결이 존재한다.
+b와 c를 연산하고 싶기 때문에 이를 ALU에 연결하고 싶으나 RISC는 이를 직접 바로 연결하지 못하고, register file(여러개의 register를 모아둔 곳) 을 거쳐서 ALU로 넘겨준다. 또한 이 결과는 다시 register file을 거쳐서 memory로 들어간다.
 
-load: memory의 데이터를 register로 가져옴
+- load: memory의 데이터를 register로 가져옴
 
-store: register에서 ALU로 보내 연산을 마친 결과 데이터를 다시 memory로 보낸다.
+- store: register에서 ALU로 보내 연산을 마친 결과 데이터를 다시 memory로 보낸다.
 
 > load-store architecture라고도 함.
 
