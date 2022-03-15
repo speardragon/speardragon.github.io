@@ -62,7 +62,7 @@ store r10 -> [a]
 
 <br>
 
-우리는 이러한 것을 설계하는 것이 목적이다.
+이러한 것을 설계하는 것이 목적이다.
 
 CPU가 어떤 동작을 수행해야 하는가? -> ISA
 
@@ -70,13 +70,94 @@ CPU가 어떤 동작을 수행해야 하는가? -> ISA
 
 그런데 이를 설계할 때 고려해야 하는 중요한 세 가지가 존재한다.
 
-- performance(speed)
+- ==performance(speed)==
 - area(cost) (area는 작아지면 빨라지기 때문에 perfomance와도 관련이 있다.)
-- power(energy)
+- power(energy): power를 줄이려 해야함
+  - power ∝ V<sub>dd</sub><sup>2</sup> * f * C<sub>L</sub>
 
 
 
-perf. = 1 / exec_Time
+
+#### performance
+
+perf = $\frac{1}{exec time}$
+
+
+
+#### Execution time
+
+- ① Latency(response time) 
+- ② Throughput
+
+<br>
+
+![image](https://user-images.githubusercontent.com/79521972/158405696-94b7a679-93de-44bc-9ed5-0c1a33ac5813.png)
+
+case A: 사람이 위와 같은 통로를 지나는데 걸리는 시간을 10sec라고 하자.
+
+![image](https://user-images.githubusercontent.com/79521972/158405925-f8cc4e92-5cdf-409d-9177-6dceb1c0937e.png)
+
+case B: 또한 위와 같은 통로를 지나는데 중간 중간에 칸막이가 쳐져있고 이 칸막이 하나당 지나가는데 2sec가 걸린다고 하자.
+
+<br>
+이 때 두 경우의 latency는 모두 10sec이다. 한 사람이기 때문에 둘 간의 차이가 존재하지 않는 것처럼 보이나 한 번 100명의 사람이 위 두 통로를 지난다고 해 보자.
+
+A의 경우 한 명당 10초가 걸려 1000초가 걸릴 것이다.
+
+B의 경우 첫 사람은 10초가 걸리나 이 사람이 칸막이를 하나씩 지나면서 다른 사람들도 빈 곳에 계속해서 줄을 서있을 수 있게 된다. 그러므로 한 명이 빠져나가기 시작하면 2초 간격으로 한 명씩 빠져나갈 수 있게 된다.
+
+
+
+#### case A: 10초에 사람 한 명(clock 하나 당 실행)
+
+latency = 10 sec
+
+total exec_time = 10 x 100 = 1000 (sec)
+
+throughput = 0.1 (task/sec)
+
+<br>
+
+#### case B: 10초에 사람 5 명(clock의 주기가 위 보다 짧음)
+
+어느 순간(10초 이후)에는 동시에 작업이 일어남
+
+latency = 10 sec
+
+total exec_time = 10 + (99 x 2) = 208 (sec) ≒ 200 (sec)
+
+throughput = 0.5 (task / sec)
+
+<br>
+
+위 두 경우는 약 두 배 가량의 total exec_time 차이가 난다.
+
+B의 경우를 pipelining이라고도 하며 해당 칸막이는 그냥 나오지 않고 이를 만드는 시간이 조금 걸리긴 하지만 명령어가 길때는 훨씬 더 효율적일 것이다.
+
+caseB보다 caseA이 5배 만큼 높은 throughput(성능, performance)을 가짐 
+
+<br>
+
+**Throughput**(bandwidth) =  # of task / time unit(hour, sec)
+
+<br>
+
+
+
+
+
+<br>
+
+---
+
+## Inside the Processor (CPU) (from COD)
+
+- Datapath: performs operations on data
+- Control: sequences datapath, memory, ...
+- Cache memory
+  - Small fast SRAM memory for immediate accecss to data
+
+
 
 
 
@@ -87,38 +168,6 @@ perf. = 1 / exec_Time
    - throughput(bandwidth) = # of task / time unit(hour, sec)
 
 
-
-
-
-### case 1: 10초에 사람 한 명(clock 하나 당 실행)
-
-latency = 10 sec
-
-total exec_time = 10 x 100 = 1000 (sec)
-
-throughput = 0.1 (task/sec)
-
-
-
-### case 2: 10초에 사람 5 명(clock의 주기가 위 보다 짧음)
-
-어느 순간(10초 이후)에는 동시에 작업이 일어남
-
-latency = 10 sec
-
-total exec time = 10 + (99 x 2) ≒ 208 (sec) ≒ 200 (sec)
-
-throughput = 0.5 (task / sec)
-
-
-
-칸막이는 그냥 나오지 않고 이를 만드는 시간이 조금 걸리긴 하나 명령어가 길때는 훨씬 더 효율적일 것이다.
-
-case2보다 case1이 5배 만큼 높은 throughput(성능, performance)을 가짐 
-
-
-
-<br>
 
 
 
