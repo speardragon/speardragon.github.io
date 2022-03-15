@@ -11,23 +11,68 @@ tag: ['Computer Architecture']
 
 ![image](https://user-images.githubusercontent.com/79521972/157591408-f57299f3-b57e-459f-b18c-eb17239509b9.png)
 
+- ```
+  int a, b, c
+  ```
 
+  ```
+  main
+  ...
+  a = b + c
+  ```
 
-data cache
+- memory가 있고 선언한 데이터들이 data memory에 저장된다.
 
-b,c,a: data cache에 저장됨
+- RISC의 경우 memory에서 ALU에 ==바로 전달하지 않고== 중간에 register file(bank)에 저장하는 과정이 있다.
+- 연산을 하기 위해 compiler에 의해 만약 data b와 data c를 각각 빈 register 공간에 저장한다.
+- register에 있던 b, c 는 ALU에 들어가 연산을 하게 되고 그 결과가 다시 register 의 빈 공간에 저장된다.
+- 이 결과가 register 에서 다시 data memory로 전달되어 마무리 된다.
 
-program들(명령어들): instuction cache에 저장되어 있음
+이러한 과정처럼 단순한 instruction들을 모아서 복잡한 기능을 하는데 이러한 기능을 모은 것을 Instruction Set Architecture라고 한다.
 
-control decoder
+**ISA**
 
+```assembly
+ld [b] -> r2
+ld [c] -> r3
+r2 + r3 -> r10
+store r10 -> [a]
+```
 
+위는 assembly 언어이지만 실제로 컴퓨터 메모리에는(특히 program memory) 이 IS들이 0과 1로만 구성된 것들이 저장되어 있다.
 
-교려해야할 중요한 세 가지
+<br>
 
-- power
-- area(cost)
-- opofb
+그런데 CPU 안에는 register로 바로 가기 전에 cache를 거쳐서 가게 된다. 이 cache는 받는 object에 따라 두 개로 나뉘어 존재하는데 하나는 data memory에서 받아오는 **Data Cache(DC)**, 또 하나는 program memory에서 받아오는 **Instruction Cache(IC)**가 있다.
+
+그러면 IC에 존재하는 instruction을 하나씩 받아오기 위해서 memory의 주소를 알아야 하는데 이를 알려주기 위한 Program Counter(PC)가 존재한다.
+
+정리하면 다음과 같이 되는 것이다.
+
+- 맨 처음에 PC값을 setting한다.
+  - 명령어 시작점은 항상 PC이다.
+
+- 해당 값에 상응하는 instruction들을 IC에서 Instruction Register(IR)로 하나씩 가져온다. (<span style="color:red">fetch</span>)
+- 그러고 나서 (Combinational)control logic 에서 이 값을 분석한다.(decoder 역할)
+- 봤을 때 `데이터 b를 load` 이기 때문에 이에 대한 control 신호들이 막 날라간다. 
+- 이 신호에 의해 DC(data cache)에 있던 b가 register 전달되어 저장된다.(<span style="color:red">load</span>)
+- c도 마찬가지로 register에 전달되고
+- b와 c가 ALU에 들어가 연산을 진행 후 나온 결과가 register로 전달되고
+- 이 결과 data가 다시 DC의 a로 전달된다.(<span style="color:red">store</span>)
+
+<br>
+
+우리는 이러한 것을 설계하는 것이 목적이다.
+
+CPU가 어떤 동작을 수행해야 하는가? -> ISA
+
+<br>
+
+그런데 이를 설계할 때 고려해야 하는 중요한 세 가지가 존재한다.
+
+- performance(speed)
+- area(cost) (area는 작아지면 빨라지기 때문에 perfomance와도 관련이 있다.)
+- power(energy)
 
 
 
