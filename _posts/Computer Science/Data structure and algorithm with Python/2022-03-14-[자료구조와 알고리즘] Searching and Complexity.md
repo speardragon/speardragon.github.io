@@ -15,7 +15,7 @@ the searching operation은 정렬된 데이터로부터 주어진 item을 찾아
 
 리스트 안의 item을 search하는 가장 쉬운 방식은 linear search 방법이며, 이는 전체 리스트의 item을 하나씩(one-by-one) 찾는 방식이다.
 
-<주의 사항>
+\<주의 사항>
 리스트의 item's type을 개념 이해를 위해서 이 chapter에서는 interger 변수로 할 것이다. (정수가 비교적 제일 이해가 쉽기 때문에). 하지만 리스트 item's type은 어떠한 data type도 가능 하다는 것을 잊지마라.
 
 
