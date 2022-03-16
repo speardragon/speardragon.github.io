@@ -194,7 +194,275 @@ else:
 
 <br>
 
-## Time Complexity of an Algorithm
+## Time Complexity of an Algorithm(알고리즘의 시간복잡도)
+
+### Time Complexity of an Algorithm
+
+무엇이 좋은 알고리즘인지를 판단하는 데 사용되는 지표
+
+- time complexity(efficiency)
+
+- space complexity
+  - space complexity는 요즘 메모리 성능이 좋아지면서 중요도가 낮아지고 있음
+
+<br>
+
+### Running time *f(n)* of an algorithm
+
+중첩된 loop내에 연속된 구문들에 대하여, 각 구문의 시간복잡도들을 더하고(add) 구문이 실행되는 횟수들의 갯수에 의해 곱해진다. 예를 들어:
+
+```python
+n = 500 #c0
+
+#executes n times
+for i in range(0, n):
+    print(i) #c1
+    
+for i in range(0,n):
+    #executes n times
+    for j in range(0,n):
+        print(j) #c2
+```
+
+이는 다음과 같이 표현될 수 있다. 
+
+- c~0~ + c~1~ n + cn^2^
+
+<br>
+
+다음과 같이 logarithmic complexity도 정의할 수 있다.
+
+- 일정한 시간동안 1/2만큼 문제의 크기가 줄어드는 알고리즘의 시간 복잡도
+- 예를 들어, 다음과 같은 경우를 고려해 보자.
+
+```python
+i=1
+while i<n:
+    i=i*2
+    print(i)
+```
+
+f(n) = 2logn + 1
+
+
+
+<br>
+
+### f(n) = 15n^2^ + 45n + 2000
+
+이중 for-loop 안에 15줄
+
+단일 for-loop 안에 45줄
+
+for-loop에 들어가있지 않은 2000줄이 있다고 가정해 보자.
+
+
+
+![image](https://user-images.githubusercontent.com/79521972/158539694-e4acbef2-2b2b-493d-9839-0163fd69bbf7.png)
+
+\<comparison of terms in running time function>
+
+- n이 커질 수록 n을 많이 포함한 항일수록 더 지배적이게 된다.
+  - n=1일 때는 3번째 텀(상수항)이 지배적이지만
+
+
+
+<br>
+
+### order vs. constant factor
+
+- **C~1~n** vs. **C~2~n^2^** (c~1~ > c~2~ 는 일정하다)
+  - Regardless of C~1~ and C~2~ , there exists a break even point.
+  - C~1~, C~2~와 관계없이 분기점이 존재한다.
+
+![image](https://user-images.githubusercontent.com/79521972/158543160-d48615a6-3eef-44b0-9072-fb9261da6569.png)
+
+- 매우 큰 n에 대해서는
+  - f(n)의 차수가 중요하다.
+  - 상수항은 무시될 수 있다.
+    - n이 매우 크기 때문에 n과 관련된  term만 살아남는다.
+  - `1000n`은`2n^2`^보다 효율적이다.
+
+
+
+<br>
+
+### the rate of growth
+
+- 만약 *n*이 충분히 크다면 **order(rate) of growth**만이 중요하게 고려된다.
+- 상수 계수는 n이 작지 않으면 중요하지 않다.
+
+![image](https://user-images.githubusercontent.com/79521972/158543404-5393fabc-3c3b-45ee-a8ff-f6b74eb45a93.png)
+
+아무 생각없이 짜다 2^n^과 같은 코드를 짜게 되면 굉장히 난감한 시간이 걸리는 것이다.
+
+<br>
+
+### ==Big O natation==
+
+- The big-O notation represents ***order of*** f(n)
+
+- **최고차항의 order**만 표시한 표기법(낮은 차수 무시)
+- 상수항, 낮은 차수들 무시
+- 즉, 단일 for loop이냐 이중 for-loop냐 인지를 나타낼 수 있음
+
+![image](https://user-images.githubusercontent.com/79521972/158543797-bc30f63d-ac30-45dd-a8b2-aa298b69ecf8.png)
+
+<br>
+
+
+
+growth율이 function의 order로 정의되는 인식에서, big O notation에서 O라는 문자는 order를 대표하여 붙여졌다. 
+
+또한 이는 가장 최악의 경우 runnig time complexity를 측정한다. 즉, 알고리즘에 의해 수행될 maximum time을 고려하는 것이다. 
+
+쉽게 말해서 f(n)이라는 함수는 g(n)이라는 또다른 함수의 big O이고 우리는 이를 다음과 같이 정의한다.
+
+f(n) = O(g(n)) if there exist constants n~0~ and c such that f(n) <= cg(n) for all n >= n~0~
+
+
+
+<br>
+
+### complexity classes
+
+- Time complexity of an algorithm
+
+O(1) < O(log n) < O(n) < O(n log n) < O(n^2^) < O(n^3^) < O(2^n^) < O(n!)
+
+-  Efficiency of an algorithm
+
+O(1) > O(log n) > O(n) > O(n log n) > O(n^2^) > O(n^3^) > O(2^n^) > O(n!)
+
+<br>
+이진 탐색 알고리즘의 running time complexity 최악의 경우는 O(log n)이고 반면, 선형 탐색의 경우 O(n)이다.
+
+- 선형 탐색은 for-loop를 사용하지만 이진 탐색은 data range가 1/2 씩 감소하기 때문에
+
+참고로 binary search의 f(n) = O(log n) + 1
+
+
+
+<br>
+
+---
+
+Q.
+
+시간 복잡도를 고려할 때 언어의 종류와 CPU는 고려하지 않아도 되는가?
+
+A.
+
+언어와 CPU에 따른 time complexity를 생각하지 않는 이유는 물론 runnin time이 짧아지고 길어지긴 하겠지만  비율은 여전히 똑같을 것이기 때문에 이 과목에서는 무의미한 비교이기 때문이다.
+
+---
+
+big O가 점진적인 분석과 관련되어 가장 많이 사용되긴 하지만, 이와 관련된 두 개의 다른 notation들이 존재한다. 이에 대해 짧게 알아보도록 하겠다. 
+
+#### Big Omega notation(Ω)
+
+Big Omega notation은 tight한 upper bound를 묘사하는 big O notation과 유사한 tight한 algorithm에서 lower bound를 묘사하는 것이다.
+
+이는 즉, ==best-case running time== complexity를 계산하는 것이다.
+
+<br>
+
+#### Big Theta notation(Θ)
+
+이는 주어진 function의 upper bound와 lower bound 둘 다 모두 같은 경우 고려하는 것이며 이의 목적은 만약 이 경우인지 아닌지를 판단하기 위함에 있다.
+
+<br>
+
+백준 수 찾기(1920) 과제
+
+
+
+### Map
+
+과제에 유용하게 사용할 수 있는 함수를 배워보겠다.
+
+- map()은 iterable객체(list, tuple, etc.)의 각 item에 대한 주어진 function에 적용한다.
+
+```python
+a = '1 2 3 4'
+b = map(int, a.split())
+
+print(list(b))
+#[1,2,3,4]
+
+# read numbers from the key board
+a = list(map(int, input().split()))
+>>> 1 2 3
+print(a)
+#[1,2,3]
+
+a, b, c = map(int, input().split())
+>>>1 2 3
+print(a, b, c)
+#(1, 2, 3)
+```
+
+
+
+### Input from stdin
+
+```python
+# use a file as the standard input (keyboard)
+
+import sys
+sys.stdin = open('input.txt', 'r')
+
+a = list(map(int, input().split()))
+
+print(a)
+#[4, 1, 5, 2, 3]
+
+a = list(map(int, input().split()))
+print(a)
+#[1, 3, 7, 9, 5]
+
+sys.stdin = open('input.txt', 'r')
+a = list(map(int, sys.stdin.readline().split()))
+print(a)
+#[4, 1, 5, 2, 3]
+```
+
+
+
+### 과제
+
+1. linear search를 하는 코드
+2. binary search를 하는 코드
+3. bisect를 사용한 코드
+
+
+
+이 코드를 바탕으로 위 세 가지 방법을 구현하여 어떻게 나오는지 봐보기
+
+```python
+import sys
+import bisect
+
+sys.stdin = open("bj1920_in.txt", "r") # 이 코드는 제출할 때는 제거하고 제출
+
+N = int(input())
+card = list(map(int, input().split()))
+card.sort()
+M = int(input())
+target = list(map(int, input().split()))
+```
+
+
+
+이 때 중요한 점은 binary search의 경우 sort를 해야만 하기 때문에 이 과정을 추가하는데 이는 시간 복잡도에 영향을 미치지 않는다. 이에 대해서는 다음 시간에 계속 알아보도록 하겠다.
+
+
+
+
+
+
+
+
 
 
 
