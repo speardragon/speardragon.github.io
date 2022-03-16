@@ -150,31 +150,6 @@ caseB보다 caseA이 5배 만큼 높은 throughput(성능, performance)을 가�
 
 ---
 
-## Inside the Processor (CPU) (from COD)
-
-- Datapath: performs operations on data
-- Control: sequences datapath, memory, ...
-- Cache memory
-  - Small fast SRAM memory for immediate accecss to data
-
-
-
-
-
-**Execution Time**
-
-1) Latency (response time)
-2) Throughput
-   - throughput(bandwidth) = # of task / time unit(hour, sec)
-
-
-
-
-
-
-
-
-
 <br>
 
 ## Levels of Program Code (from COD)
@@ -226,31 +201,32 @@ Compiler에 의해 language를 machine이 알아듣도록 계속 변환 시킴
     010100000000000111111101010010
     ```
 
-    
+
+<br>
 
 ## Inside the Processor(CPU) (from COD)
 
 - Datapath: performs operations on data
 - Control: sequences data path, memory
 - Cache memory
-  - small fast SRAM memory, for immediate access to data
+  - small fast SRAM memory for immediate access to data
 
-
+<br>
 
 - Appl A12 Bionic Processor
 
-
+<br>
 
 ## A safe Place for Data (from COD)
 
-- Volatile main **memory**
+- Volatile **main memory**
   - Loses instructions and data when power off
 - Non-volatile **secondary memory(storage)**
   - Magnetic disk
   - Flash memory
-  - Optical disk(CDROM, DVD)
+  - Optical disk (CDROM, DVD)
 
-
+<br>
 
 ## Semiconductor Technology
 
@@ -268,11 +244,72 @@ Compiler에 의해 language를 machine이 알아듣도록 계속 변환 시킴
 
 ![image](https://user-images.githubusercontent.com/79521972/157595430-1c2f2c1a-03b2-488d-b029-2f55f1f6efc5.png)
 
-반도체 공정
+- silicon ingot을 자른다 -> wafer
+- wafer를 design
+- test를 통해 wafer상의 detect를 잘라서 버림
+- custom에게 전달 전 최종 test
+- custom에게 전달
+
+
+
+<br>
+
+반도체 공정의 중요 3요소
 
 - fab
 - design
 - test
+
+<br>
+
+## Integrated Circuit Cost
+
+![image](https://user-images.githubusercontent.com/79521972/158492340-bc2a7b04-2b0d-4b27-982d-9488018d9e90.png)
+
+- Cost per die
+- Dies per wafer
+  - approximation
+- Yield
+  - empirical
+  - $n$ related to number of critical processing steps(제곱으로 되어는 있지만 사실상 매우 중요하기 때문에 n제곱으로 생각할 수 있다. 공정에 따라서 5제곱이 되기도 함)
+  - yield에 따라 안정되었냐 안 되었냐를 알 수 있음
+
+칩의 크기에 따라 detected를 받아들이는 정도가 매우 다를 수 있다.(detect가 4개인데 칩의 크기가 매우 커서 wafer에 칩이 8개가 있다면 그 중에서 4개는 매우 결함이 있는 것이다.)
+
+<br>
+
+## Defining Performance
+
+- Which airplane has the best performance?
+
+![image](https://user-images.githubusercontent.com/79521972/158492868-0ca0d45d-8ad3-4f80-a66f-ea7699d76791.png)
+
+
+
+## Response Time and Throughput
+
+computer architecture 관점에서는 performance를 throughput으로 볼 것이다.
+
+
+
+- Response time(latency)
+  - How long it takes to do a task
+- Throughput
+  - Total work done per unit time
+    - e.g., tasks/ transactions/ ... per hour
+- How are response time and throughput affected by
+  - Replacing the processor with a faster version?
+  - Adding more processors?
+- We'll focus on response time for now...
+  - Throughput은 나중에 또 고려를 해 볼 것이다.
+
+
+
+
+
+
+
+
 
 
 
