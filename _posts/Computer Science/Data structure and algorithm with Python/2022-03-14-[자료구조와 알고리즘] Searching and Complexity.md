@@ -163,6 +163,10 @@ li = [1, 3, 4, 4, 4, 6, 7]
 print(bisect.bisect_left(li, 4))
 ```
 
+```
+2
+```
+
 <br>
 
 **예제코드**
@@ -190,6 +194,11 @@ if result is None:
     print('%s is not found.' % _target)
 else:
     print('%s is at index %s' % (_target, result))
+```
+
+```
+[4, 6, 6, 8, 8, 9, 10, 11, 12, 12]
+11 is at index 7
 ```
 
 <br>
@@ -226,7 +235,7 @@ for i in range(0,n):
 
 이는 다음과 같이 표현될 수 있다. 
 
-- c<sub>0</sub>~ + c<sub>1</sub> n + cn<sup>2</sup>
+- c<sub>0</sub> + c<sub>1</sub> n + cn<sup>2</sup>
 
 <br>
 
@@ -248,7 +257,7 @@ f(n) = 2logn + 1
 
 <br>
 
-### f(n) = 15n^2^ + 45n + 2000
+### f(n) = 15n<sup>2</sup> + 45n + 2000
 
 이중 for-loop 안에 15줄
 
