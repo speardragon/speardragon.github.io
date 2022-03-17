@@ -172,7 +172,7 @@ import random
 import bisect
 
 def binary_search(ordered_list, target):
-    index = bisect,bisect_left(ordered_list, target)
+    index = bisect.bisect_left(ordered_list, target)
     
     # 주어진 리스트 안의 범위만 확인하도록(out of index 방식)
     if index < len(ordered_list) and ordered_list[index] == target:
