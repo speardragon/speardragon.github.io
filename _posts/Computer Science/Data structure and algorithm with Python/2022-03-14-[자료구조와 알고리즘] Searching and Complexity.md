@@ -52,7 +52,7 @@ The linear search의 접근 방식은 item이 어떻게 정렬되어 있는 지�
      print("%s is at index %s" %(_target, result))
  ```
 
-==항상 변수 name을 짓는 것은 알아보기 쉽게 직관적으로 지을 것==
+<mark>항상 변수 name을 짓는 것은 알아보기 쉽게 직관적으로 지을 것</mark>
 
 
 
@@ -226,7 +226,7 @@ for i in range(0,n):
 
 이는 다음과 같이 표현될 수 있다. 
 
-- c~0~ + c~1~ n + cn^2^
+- c<sub>0</sub>~ + c<sub>1</sub> n + cn<sup>2</sup>
 
 <br>
 
@@ -271,9 +271,9 @@ for-loop에 들어가있지 않은 2000줄이 있다고 가정해 보자.
 
 ### order vs. constant factor
 
-- **C~1~n** vs. **C~2~n^2^** (c~1~ > c~2~ 는 일정하다)
-  - Regardless of C~1~ and C~2~ , there exists a break even point.
-  - C~1~, C~2~와 관계없이 분기점이 존재한다.
+- **C<sub>1</sub>n** vs. **C<sub>2</sub>n<sup>2</sup>** (C<sub>1</sub>> C<sub>2</sub>는 항상 일정하게 유지된다.)
+  - Regardless of C<sub>1</sub> and *C<sub>2</sub> , there exists a break even point.
+  - C<sub>1</sub>, C<sub>2</sub>와 관계없이 분기점이 존재한다.
 
 ![image](https://user-images.githubusercontent.com/79521972/158543160-d48615a6-3eef-44b0-9072-fb9261da6569.png)
 
@@ -281,7 +281,7 @@ for-loop에 들어가있지 않은 2000줄이 있다고 가정해 보자.
   - f(n)의 차수가 중요하다.
   - 상수항은 무시될 수 있다.
     - n이 매우 크기 때문에 n과 관련된  term만 살아남는다.
-  - `1000n`은`2n^2`^보다 효율적이다.
+  - `1000n`은`2n^2`보다 효율적이다.
 
 
 
@@ -328,11 +328,11 @@ f(n) = O(g(n)) if there exist constants n~0~ and c such that f(n) <= cg(n) for a
 
 - Time complexity of an algorithm
 
-O(1) < O(log n) < O(n) < O(n log n) < O(n^2^) < O(n^3^) < O(2^n^) < O(n!)
+O(1) < O(log n) < O(n) < O(n log n) < O(n<sup>2</sup>) < O(n<sup>3</sup>) < O(2<sup>n</sup>) < O(n!)
 
 -  Efficiency of an algorithm
 
-O(1) > O(log n) > O(n) > O(n log n) > O(n^2^) > O(n^3^) > O(2^n^) > O(n!)
+O(1) > O(log n) > O(n) > O(n log n) > O(n<sup>2</sup>) > O(n<sup>3</sup>) > O(2<sup>n</sup>) > O(n!)
 
 <br>
 이진 탐색 알고리즘의 running time complexity 최악의 경우는 O(log n)이고 반면, 선형 탐색의 경우 O(n)이다.

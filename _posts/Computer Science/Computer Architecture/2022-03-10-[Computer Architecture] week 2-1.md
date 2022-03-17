@@ -23,7 +23,7 @@ tag: ['Computer Architecture']
 
 - memory가 있고 선언한 데이터들이 data memory에 저장된다.
 
-- RISC의 경우 memory에서 ALU에 ==바로 전달하지 않고== 중간에 register file(bank)에 저장하는 과정이 있다.
+- RISC의 경우 memory에서 ALU에 <mark>바로 전달하지 않고</mark> 중간에 register file(bank)에 저장하는 과정이 있다.
 - 연산을 하기 위해 compiler에 의해 만약 data b와 data c를 각각 빈 register 공간에 저장한다.
 - register에 있던 b, c 는 ALU에 들어가 연산을 하게 되고 그 결과가 다시 register 의 빈 공간에 저장된다.
 - 이 결과가 register 에서 다시 data memory로 전달되어 마무리 된다.
@@ -70,7 +70,7 @@ CPU가 어떤 동작을 수행해야 하는가? -> ISA
 
 그런데 이를 설계할 때 고려해야 하는 중요한 세 가지가 존재한다.
 
-- ==performance(speed)==
+- <mark>performance(speed)</mark>
 - area(cost) (area는 작아지면 빨라지기 때문에 perfomance와도 관련이 있다.)
 - power(energy): power를 줄이려 해야함
   - power ∝ V<sub>dd</sub><sup>2</sup> * f * C<sub>L</sub>

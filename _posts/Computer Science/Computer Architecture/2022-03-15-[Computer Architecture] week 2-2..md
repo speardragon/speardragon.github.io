@@ -177,7 +177,7 @@ CPU를 설계할 것이기 때문에 이 CPU만 사용하는 데 걸리는 시�
 
 <br>
 
-==이 부분 작년 시험에 나왔음.==
+<mark>이 부분 작년 시험에 나왔음.</mark>
 
 - CPU Time 의 각 term(3 가지) 에 대해 설명을 하고 각 term이 무엇에 dependant한지
 
@@ -191,15 +191,15 @@ cf) perf = 1/CPU_Time
 
 ![image](https://user-images.githubusercontent.com/79521972/158715771-4d21ac98-ef24-447e-90c6-543b6807d1a4.png)
 
-CPU Time = Instructions term x CPI x clock cycle time(T~C~)
+CPU Time = Instructions term x CPI x clock cycle time(T<sub>c</sub>)
 
 - Performance depends on 
   - **Algorithm**: affects IC(Instruction Count), possibly CPI
   - **Programming language**: affects IC, CPI
   - **Compiler**: affects IC, CPI
-  - **instruction set architecture**: affects IC, CPI, T~c~, 세가지 전부에 영향을 준다.(그 만큼 중요)
+  - **instruction set architecture**: affects IC, CPI, T<sub>c</sub>, 세가지 전부에 영향을 준다.(그 만큼 중요)
   - **Semiconductor**
-    - 반도체 기술도 T~c~에 영향을 주고 CPI에도 영향을 줄 수 있다.
+    - 반도체 기술도 T<sub>c</sub>에 영향을 주고 CPI에도 영향을 줄 수 있다.
 
 <br>
 
@@ -228,7 +228,7 @@ CPU Time = Instructions term x CPI x clock cycle time(T~C~)
 - clock rate이 더 이상 오르지 않는 이유는 이를 올릴 수는 있는데 계속 올리다 보면 f는 power에 비례하기 때문에 power가 너무 커져 감당할 수 없느 열이 발생할 수 있기 때문이다.
 - How could clock rate grow by a factor of 1000 while power grew by only a factor of 30?
 - In CMOS IC technology(Dynamic power)
-- ==Power = Capacitive load x Voltage^2^ x Frequency==
+- ==Power = Capacitive load x Voltage<sup>2</sup> x Frequency==
   - power는 30배 증가하고 frequency는 1000배가 늘었지만 제곱하여 비례하는 voltage의 경우 5V에서 1V로 줄었기 때문에 clock rate에 비해 power가 크게 늘어나지 않은 것이다.
 
 - clock frequency(f)를 늘리고 싶은데 power때문에 못늘리고 있는 상황
@@ -291,13 +291,13 @@ CPU Time = Instructions term x CPI x clock cycle time(T~C~)
 
 ![image](https://user-images.githubusercontent.com/79521972/158305000-51d5727e-9885-4290-acdc-2b7f123c8e40.png)
 
-T~affected~ : parallelize 가능한 것(parallelizable)   -> 1-f
+T<sub>affected</sub> : parallelize 가능한 것(parallelizable)   -> 1-f
 
-T~unaffected~ : parallelize 불가능한 것(unparallelizable)  -> f
+T<sub>unaffected</sub> : parallelize 불가능한 것(unparallelizable)  -> f
 
 n: 프로세서 개수
 
-- T~n~ = 1-f/n + f
+- T<sub>n</sub> = 1-f/n + f
 
 - Example: multiply accounts for 80s/100s
   - How much improvement in multiply performance to get 5x overall?
@@ -308,9 +308,9 @@ n: 프로세서 개수
 
 <br>
 
-그래서 T~unaffected~가 굉장히 중요한 factor라는 것을 나타낸 것이 Amdahl's Law이다.
+그래서 T<sub>unaffected</sub>가 굉장히 중요한 factor라는 것을 나타낸 것이 Amdahl's Law이다.
 
-- T~unaffected~가 bottleneck
+- T<sub>unaffected</sub>가 bottleneck
 
 
 
