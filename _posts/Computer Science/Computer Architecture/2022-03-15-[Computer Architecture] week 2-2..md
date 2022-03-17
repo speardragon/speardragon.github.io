@@ -19,7 +19,7 @@ tag: ['Computer Architecture', 'Intro']
 
 - power(energy) = vdd^2에 비례, f와 비례, C(cost)와도 비례
 
-
+위 3가지의 tradeoff를 잘 고려하여야 함
 
 <br>
 
