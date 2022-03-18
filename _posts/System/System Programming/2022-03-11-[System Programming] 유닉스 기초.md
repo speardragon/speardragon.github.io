@@ -15,7 +15,7 @@ toc_sticky: true
 
 
 
-# 2 유닉스 사용
+# 2. 유닉스 사용
 
 ## 2.0 유닉스 기초
 
@@ -29,80 +29,114 @@ toc_sticky: true
 
 ![image](https://user-images.githubusercontent.com/79521972/157785790-a22cfb94-2443-4252-971d-2a1901e0b850.png)
 
-### Shell
+### Shell(prompt)
 
-- Unix는 기본적으로 command line interface를 사용
+- Unix는 기본적으로 **command line interface**를 사용
+  - command line interpreter라고도 함.
+
 - 사용자의 명령을 읽어들여 실행하는 명령어 해석기가 필요.(terminal or shell script)
+- 로그인 시 아래와 같은 창이 뜸
 
 ![image](https://user-images.githubusercontent.com/79521972/157786221-f0b63cb2-dad1-44b0-9b8d-416b07abefcc.png)
 
 - Shell의 종류
   - Bourne shell, C shell, Korn shell, Tenex shell, Born Again shell
 
+- Linux 계열(window도 마찬가지)의 파일 계층는 트리 구조를 갖는다.
 
+
+
+<br>
 
 ### File system
 
 - File system의 구성
   - File : 실제 정보(data)를 담고 있는 문서
+  - Special file: IO장치와 같은 것 or network connection 등등
   - Directory: 여러개의 파일들에 대한 정보를 담고 있는 것
     - Directory entry(file name + attribute pointer)들의 집합
     - Hard link
-
 - Hierarchical structure
+  - / : root directory
+  - 동그라미: 일반 file
+  - 네모: directory
   - ![image](https://user-images.githubusercontent.com/79521972/157786440-7dd4baf8-b69d-44cd-9781-30e343a5b357.png)
 
 
 
+
 - Attribute
+  - 모든 directory entry는 모든 파일의 속정 정보를 전부 갖고 있음
   - Per file data sturcture
-  - `Type, size, owner, permission, access time` 등
+  - `Type`, `size`, `owner`, `permission`, `access time` 등
+  - d로 시작하는 것은 directory를 의미
+  - -a: all이라는 의미로 hidden file까지 전부 보여준다.
+  - -l: long이라는 의미로 file의 자세하게 나오게 해 준다.
+  - x: navigate할 수 있다.
+  - rw: read/write
+  - obama는 users 그룹의 멤버다.
+  - 4096: 해당 entry의 size
+  - 가장 최근에 수정된 날싸와 시간
+  
 
 ![image](https://user-images.githubusercontent.com/79521972/157786589-8f1e4308-fd8c-4706-93b6-f2103ccd3f04.png)
 
 - ls: directory에 들어있는 모든 파일의 속성을 보여주는 명령어
   - 맨 앞이 d로 시작하면 디렉토리라는 의미이고 맨앞이 '-'로 시작하면 파일이라는 의미이다.
 
-
+<br>
 
 - Filename
 
   - NULL과 '/'를 <span style="color:red">제외한</span> 문자열로 구성.
     - '/'는 경로이름을 구성하는데 있어서 각 경로를 구분하는데 사용되는 문자이기 때문이다.
     - Null 문자는 경로 이름을 종료한다
-
+      - 즉 Null은 path name의 마지막을 의미하기 때문에 사용하면 안된다.
   - Some Unix FS 14자로 제한, BSD의 경우 255자 이내
-  - Special filenames
-    - 2개의 파일 이름은 새로운 디렉토리가 만들어질때 항상 자동적으로 생성된다.
+  - Special filenames (얘도 파일로 간주)
+    - 2개의 파일 이름은 새로운 디렉토리가 만들어질때 항상 <span style="color:red">자동적으로 생성</span>된다.
       - . (current directory)
       - .. (parent directory)
+    - current directory와 parent directory의 속정 정보(commition, size,read/write 등)를 갖게 하기 위해(쉽게 찾기 위해)
 
+<br>
 
-
-- pathname
+- Pathname (경로 이름)
   - /home/obama   -> home directory (login시 위치)
   - /home/obama/test -> working directory (작업 위치)
 
 ![image](https://user-images.githubusercontent.com/79521972/157787269-b93fab90-ef77-47ad-81d4-d42644ddae4a.png)
 
-- Absolute path name(절대 경로)
-  - A path name that begins with a slash
+- pwd: print working directory
 
+- Absolute path name(절대 경로)
+  - root directory를 기점으로 원하는 경로를 전부 작성하여 들어가는 방법
+  - A path name that begins with a slash
+  
 - Relative path name(상대 경로)
+  - current working directory를 기점으로 다음 경로로 들어가는 방법
   - A path name that begins with CWD
 
-| % cd ~     | is equivalent to 'cd'          |
+
+| $ cd ~     | is equivalent to 'cd'          |
 | ---------- | ------------------------------ |
-| **% cd -** | **is equivalent to '$OLDPWD'** |
+| **$ cd -** | **is equivalent to '$OLDPWD'** |
 
+<br>
 
+c프로그램으로 폰노이만 아키텍처를 구현해 보기
 
 ### Input and output
 
 외부 디바이스도 파일로 간주
 
 - File descriptor
-  - Non-negative integers that the kernel used to identify the files being accessed by a process
+  - In C, fopen() 안에 있는 인자는 file 경로를 받는데 이 함수가 이 파일의 file descriptor를 return 한다.
+  - **Non-negative integers** that the kernel used to identify the files being accessed by a process
+  - special file도 file이기 때문에 descriptor를 리턴한다.
+  - file descriptor는 고정된 숫자가 아니라 매 실행마다 바뀔 수 있는 것이다.
+    - 하지만 0, 1, 2는 고정된 숫자이다.
+  
 
 ![image](https://user-images.githubusercontent.com/79521972/157791307-f4dda25f-30da-4892-92d7-4754d384beae.png)
 
@@ -113,24 +147,107 @@ process가 어떤 program에서 생성이 될 때, 기본적으로 3 개의 file
 ### Programs and processes
 
 - Program
+  - instruction의 나열
   - An executable file residing on disk
-- Process
+  - program의 성능을 결정하는 것은 algorithm+data structure
+  
+- Programming
+  - source file -> 실행 파일
+    - compile / assemble
+    - default로 실행 파일이 만들어지면 a.out 이라는 이름을 갖게된다.
+      - a.out : **program definition**
+      - program definition은 지시(direction)만 내리고 실제 공간을 확보하지는 않는다.
+
+
+
+
+- loader를 통해 위 a.out을 main memory에 탑재
+- **Process**(task)
+  - program definition에 따라서 공간까지 실제로 확보하는 것은 **program instance process**
   - An executing instance of a program (also calles task)
   - Process id: a unique numeric identifier for process
+    - non-fixed numeric identifier
+
 
 ![image](https://user-images.githubusercontent.com/79521972/157791647-47465c41-8f27-4cf7-9f8c-2f90675eb69c.png)
 
 <br>
 
+#### Main memory
+
+- text
+  - instruction set
+- data
+  - global data, static 변수 
+  - 함수 호출과 관계없이 프로그램 종료 때까지 살아있어야 하기 때문에 stack 공간에 저장되면 안됨
+- heap
+  - malloc(동적 할당)을 위해 남겨둔 공간
+- 완충지역
+  - 너무 많은 함수 호출로 인해 stack frame이 너무 많이 쌓여 위 메모리 공간을 침범하는 것을 막기 위한 공간
+  - stackoverflow 발생
+- stack
+  - 함수 호출에 의해 변수 등이 저장되는 공간
+  - 함수마다 stack frame이라는 것이 만들어진다.
+  - **stack frame**
+    - os가 main함수를 호출하면 stack 아래에 main function에 대한 stack frame이 생김
+    - 이곳에는 해당 함수에서 사용하는 local 변수들이 저장됨
+      - parameter 변수, return address(함수 종료 후 다시 돌아가야 할 주소) 등도 포함 
+  - 그래서 다른 함수에서 같은 변수 이름을 사용해도 둘은 다른 stack frame안에 존재하기 때문에 서로 달리 사용할 수 있는 것이다.
+
+<br>
+
+#### Process Life Cycle
+
+- program definition이 실행되는 것이 아니라 그것을 바탕으로 process life cycle이 실행되는 것이다.
+  - 프로그램 실행요구
+
+- new : process를 만드는 과정
+  - process control block(PCB) 생성
+  - pid 생성
+- ready
+  - 줄 서는 과정(실행을 기다림)
+- running
+  - 누가 먼저 실행할지를 결정하는 과정
+  - 우선순위 scheduling, FIFO
+
+- wait
+  - I/O를 기다리는
+- terminated
+  - new에서 address 할당했던 것들과 같은 것들을 회수하여 흔적을 지우는 과정
+
+
+
+이와 같이 program definition은 하드디스크에 계속 머물고 있는 것과 달리 위 과정은 메모리를 동적으로 실행을 했다가 회수까지 전부 한다.
+
+<br>
+
+---
+
+교과서 밖 내용
+
+과거의 os는 multi programming을 지원하지 않았음. 즉, 한 program이 실행 중이면 다른 program을 실행하지 못했음.
+
+multi-programming이란 cpu가 쉬는 타임에 다른 프로그램을 실행시키는 것이다.
+
+- pre-emptive(강제로 뺏는) 스케쥴링: 실행중인 program이 우선순위가 떨어진다 판단되면 cpu 점유를 뺏어서 ready로 보내고 ready에서 차례를 기다리던 높은 우선순위를 갖는 program이 그 자리를 차지한다.
+
+- non-pre-emptive 스케쥴링
+- 라운드 로빈 스케쥴링: 번갈아 가면서 우선순위 할당, 공정성(fairness)
+
+---
+
+
+
 ### Error handling
 
 - When an error occurs,
   - A negative value is often returned
-  - errno(errornumber) is set to a value that gives additional informaion(error가 발생하면 발생한 이유가 환경 변수 errno에 저장이 된다.)
+  - <span style="color:red">errno</span>(errornumber) is set to a value that gives additional informaion(error가 발생하면 발생한 이유가 환경 변수 errno에 저장이 된다.)
     - e.g. When open, returns -1 if an error occurs 
     - error from open has 15 possible errno values
       - file doesn't exit, permission problem, ...
   - <errno.h>
+    - 어떤 number가 어떤 error인지 정보가 담겨있는
     - Defines errno symbols and constants for each error.
     - Each constant begins with the character E.
     - E.g. ENOENT, EACCESS,...
@@ -181,9 +298,9 @@ EACCES: Permission denied
   - is used to collect users together into projects.
 - If the full ASCII user/group name is used instead?
   - additional disk space will be required.
-  - the cost of string comparison for permission check is high.
+  - **the cost of string** comparison for permission check is high.
 
-
+- userID와 userName은 의미는 같다.
 
 - userID와 groupID의 출력 에제
 
@@ -192,13 +309,14 @@ EACCES: Permission denied
     
     int main(void) 
     {
-        printf("uid = %d.grid = %d\n", getui();getgid()));
+        //userId, groupId 를 알려주는 함수
+        printf("uid = %d.grid = %d\n", getuid();getgid()));
         exit(0);
     }
     ```
-
+    
   - 실행 예
-
+  
   - ```shell
     $ ./a.out
     uid = 205, gid = 105
@@ -210,9 +328,12 @@ EACCES: Permission denied
 
 #### Signals
 
+- 통보(notofication) 수단
+
 - Signal 
   - is used to notify a process that some condition has occurred.
   - e.g. i f divide by zero, SIGFPE(floating point exception) is sent to the process
+  
 - Action of process received the signal
   - ignore the signal.
   - let the default action occur.
@@ -220,12 +341,12 @@ EACCES: Permission denied
 
 - Signal의 예제
   - kill
-
-![image](https://user-images.githubusercontent.com/79521972/157793357-0d8855f1-879c-4195-9343-6d3270b3b1ea.png)
-
-
+  
+  - ![image](https://user-images.githubusercontent.com/79521972/157793357-0d8855f1-879c-4195-9343-6d3270b3b1ea.png)
 
 
+
+<br>
 
 ### Time values
 
@@ -307,8 +428,6 @@ $ passwd
 
 
 
-
-
 <br>
 
 ### 디렉터리 관련 명령
@@ -334,7 +453,7 @@ $ passwd
   - 새 디렉터리를 만듬
 
   - ```shell
-    $ mkidr 디렉터리
+    $ mkdir 디렉터리
     ```
 
 - ls(list)
@@ -569,12 +688,16 @@ $ ls -sl cs1.txt
 
 ### chmod(change mode)
 
+- 커미션 정보를 변경할 때 사용하는 명령어
+
 - 파일 혹은 디렉터리의 사용권한을 변경하는 명령어
   - $ chmod [-R] 사용권한 파일
   - -R 옵션은 디렉터리 내의 모든 파일, 하위 디렉터리에 대해서도 적용
 - ![image](https://user-images.githubusercontent.com/79521972/157796858-c138ffc0-bdfb-4b3e-ab99-8b711087dae2.png)
+  - 3 digit으로 사용
+    - owner, group, others
 
-
+<br>
 
 ### chown(change owner)/ chgrp(change group)
 
@@ -728,7 +851,7 @@ $ who | sort
 
   - 명령어를 입력하면 명령어가 전면에서 실행되며 명령어 실행이 끝날 때까지 쉘이 기다려 준다.
   - 명령어는 키보드와 모니터로 입출력
-  - 한 명령어만 실행 가능, 실행중인 명령어는 Ctrl-C 입력 시 강제 공료, Ctrl-Z 입력 시 실행 중단
+  - **한 명령어만 실행 가능**, 실행중인 명령어는 Ctrl-C 입력 시 강제 공료, Ctrl-Z 입력 시 실행 중단
 
   - 중단 된 명령어는 prompt에서 fg 명령어 입력 시 실행이 계속 됨
 
@@ -780,7 +903,7 @@ $ wc < inputfile & // 키보드 입력 불가능, 파일로부터 받아야 함
 
 - 각 프로세스는 유일한 프로세스 번호 PID를 갖는다.
 
-- ps 명령어를 사용하여 나의 프로세스들을 볼 수 있다.
+- ps 명령어를 사용하여 나의 프로세스들을 볼 수 있다.(내가 실행시킨 프로세스)
 
   - ```shell
     PID TTY TIME CMD

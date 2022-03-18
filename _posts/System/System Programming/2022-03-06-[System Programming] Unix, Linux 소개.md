@@ -47,7 +47,7 @@ toc_sticky: true
 
 <br>
 
-## von Neumann Architecture
+## von Neumann Architecture(매우 중요)
 
 - Stored Program concept
   - program과 data를 저장하는 main memory
@@ -327,7 +327,7 @@ hardware 자원에 access 하는 application software를 제공하는 special la
 
 - 멀티 태스킹
 -  다중 사용자 접근
--  POSIX 1003.1 standard 지원
+- POSIX 1003.1 standard 지원
 - 다양한 파일 시스템 지원
 - 다양한 네트워크 프로토콜 지원
 - 다양한 아키텍처 지원
