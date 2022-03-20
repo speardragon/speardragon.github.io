@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Computer Architecture] week 1-1. Orientation"
+title: "[Computer Architecture] 03.03 Orientation"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['Computer Architecture', 'Intro']
 
