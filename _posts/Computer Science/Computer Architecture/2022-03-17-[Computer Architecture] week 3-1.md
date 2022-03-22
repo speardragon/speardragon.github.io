@@ -169,7 +169,7 @@ Jal Function # jump and link; function으로 갔다가 다시 돌아와라(call)
     lw $5, 10($4) # 10:offset, $4:base register
     ```
 
-  - 
+
 
 
 
