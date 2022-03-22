@@ -47,7 +47,7 @@ store r10 -> [a]
 
 그러면 IC에 존재하는 instruction을 하나씩 받아오기 위해서 memory의 주소를 알아야 하는데 이를 알려주기 위한 **Program Counter(PC)**가 존재한다.
 
-
+<br>
 
 정리하면 다음과 같이 되는 것이다.
 
@@ -64,7 +64,7 @@ store r10 -> [a]
 
 <br>
 
-이러한 것을 설계하는 것이 목적이다.
+이러한 것(microarchitecture)을 설계하는 것이 목적이다.
 
 CPU가 어떤 동작을 수행해야 하는가? -> ISA
 
@@ -77,14 +77,14 @@ CPU가 어떤 동작을 수행해야 하는가? -> ISA
 - power(energy): power를 줄이려 해야함
   - power ∝ V<sub>dd</sub><sup>2</sup> * f * C<sub>L</sub>
 
-
+<br>
 
 
 #### performance
 
 perf = $\frac{1}{exec time}$
 
-
+<br>
 
 #### Execution time
 
@@ -142,17 +142,11 @@ caseB보다 caseA이 5배 만큼 높은 throughput(성능, performance)을 가�
 
 **Throughput**(bandwidth) =  # of task / time unit(hour, sec)
 
-<br>
-
-
-
-
+위 예제에서 task는 사람이므로 100이다.
 
 <br>
 
 ---
-
-<br>
 
 ## Levels of Program Code (from COD)
 
@@ -215,7 +209,7 @@ Compiler에 의해 language를 machine이 알아듣도록 계속 변환 시킴
 
 <br>
 
-- Appl A12 Bionic Processor
+- Apple A12 Bionic Processor
 
 <br>
 
@@ -301,7 +295,7 @@ computer architecture 관점에서는 performance를 throughput으로 볼 것이
     - e.g., tasks/ transactions/ ... per hour
 - How are response time and throughput affected by
   - Replacing the processor with a faster version?
-  - Adding more processors?
+  - Adding more processors?(multi-processor)
 - We'll focus on response time for now...
   - Throughput은 나중에 또 고려를 해 볼 것이다.
 
