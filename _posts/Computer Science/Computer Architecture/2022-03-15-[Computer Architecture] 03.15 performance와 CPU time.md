@@ -41,12 +41,12 @@ tag: ['Computer Architecture', 'Performance', 'CPU time', 'Latency']
        	- (avg) CPI
     3. 한 클락당 몇 초인가?
   - 따라서
-    - Exec_time = 1번 * 2번 * 3번
+    - Exec_time = 1번 x 2번 x 3번
 
 <br>
 
-- avg.CPI?(Clock per insturction)
-  - instruction이 add를 수행하는데는 1clk이 소모되고 multiply를 수행하는데는 10clk이 사용된다하면 이 CPU의 CPI는 무엇인가? 라고 했을 때 대답하기 애매하기 떄문에 이를 평규내서 말하는 것이다.
+- avg.CPI?(Clock per instruction)
+  - instruction이 add를 수행하는데는 1clk이 소모되고 multiply를 수행하는데는 10clk이 사용된다하면 이 CPU의 CPI는 무엇인가? 라고 했을 때 대답하기 애매하기 때문에 이를 평균내서 말하는 것이다.
   - IPC = 1/CPI
   - 요즘은 한 클락안에  parallel로 여러 instuction을 수행하기 때문에 IPC를 고려하는 경우도 많아지지만 우리 수업에서는 CPI를 고려하도록 할 것이다.
 
@@ -92,25 +92,22 @@ clock frequency를 결정하는 것은 중간의 combinational logic인데 이�
 ## Relative Performance
 
 - define Performance = 1/Execution Time
-
 - "X is *n* time faster than Y"
 
-  - Performance~X~/Performance~Y~ = Execution time~Y~/Execution time~X~ = *n*
-
+  - Performance<sub>X</sub>/Performance<sub>Y</sub> = Execution time<sub>Y</sub>/Execution time<sub>X</sub> = *n*
 - Example: time taken to run a program
 
   - 10s on A, 15s on B
   - Execution Time~B~/Execution Time~A~= 15s / 10s = 1.5
-
-  - So A is 1.5 times faster than B
-
+- So A is 1.5 times faster than B(B가 1.5배 더 빠르다.)
 
 
 
+<br>
 
 ## Measuring Execution Time
 
-- Elapsed time
+- Elapsed time(경과 시간)
   - Total response time, including **all aspects**
     - Processing, I/O, OS overhead, idle time
   - Determines system performance
@@ -119,9 +116,9 @@ clock frequency를 결정하는 것은 중간의 combinational logic인데 이�
   - Time spent processing a given job
     - Discounts I/O time, other job's shares
   - Comprises <span style="color:red">user CPU time</span> and system CPU time
-  - Different programs are affected differently by CPU and system system perfromance
+  - Different programs are affected differently by CPU and system performance
 
-
+<br>
 
 ## CPU Clocking
 
@@ -145,7 +142,7 @@ CPU를 설계할 것이기 때문에 이 CPU만 사용하는 데 걸리는 시�
 ![image](https://user-images.githubusercontent.com/79521972/158300858-290102a8-594b-430c-b085-21b77fd908fb.png)
 
 - Performance improved by(성능 향상을 위해선)
-  - Reducing number of clock cycles
+  - Reducing number of clock cycles(얘는 조절하기 힘듦)
   - Increasing clock rate (combinational logic으로 조절)
   - Hardware designer must often trade off clock rate against cycle count
 
@@ -153,7 +150,7 @@ CPU를 설계할 것이기 때문에 이 CPU만 사용하는 데 걸리는 시�
 
 <br>
 
-## Instruction Count and CPI
+## <mark>Instruction Count and CPI</mark>
 
 ![image](https://user-images.githubusercontent.com/79521972/158301278-236494f8-8c3e-4c6b-852a-c9e39c60114a.png)
 
@@ -164,10 +161,13 @@ CPU를 설계할 것이기 때문에 이 CPU만 사용하는 데 걸리는 시�
   - Determined by CPU hardware
   - If different instructions have different CPI
     - **Average CPI** affected by instruction mix
+- 한 프로그램당 몇 초가 걸리는 지가 나옴
 
 #### CPI in More Detail
 
 - If different instruction classes take different numbers of cycles
+  - 여러 instruction이 제각기의 cycle수를 갖는다면? -> 평균으로 구함
+
 
 ![image](https://user-images.githubusercontent.com/79521972/158716885-7be5a851-9b13-476e-b047-7566c2df738f.png)
 
@@ -179,7 +179,7 @@ CPU를 설계할 것이기 때문에 이 CPU만 사용하는 데 걸리는 시�
 
 <mark>이 부분 작년 시험에 나왔음.</mark>
 
-- CPU Time 의 각 term(3 가지) 에 대해 설명을 하고 각 term이 무엇에 dependant한지
+- CPU Time 의 각 term(3 가지) 에 대해 설명을 하고 각 term이 무엇에 dependent한지
 
 <br>
 
@@ -205,10 +205,10 @@ CPU Time = Instructions term x CPI x clock cycle time(T<sub>c</sub>)
 
 ## Pitfall(함정): MIPS as a Performance Metric
 
-- MIPS: Milion of instructions per Second
-- Doesn't accout for 
+- MIPS: Million of instructions per Second
+- Doesn't account for 
   - Differences in ISA between computers
-  - Differences in complexty between instructions
+  - Differences in complexity between instructions
 
 ![image](https://user-images.githubusercontent.com/79521972/158718908-c5f905b4-7977-45ae-abe5-346aee1aca4e.png)
 
@@ -249,7 +249,7 @@ CPU Time = Instructions term x CPI x clock cycle time(T<sub>c</sub>)
   - We can't reduce voltage further
   - We can't remove more that
 - ==How else can we improve performance?==
-  - Multicore로 해결할 수 있다!
+  - Multi-core로 해결할 수 있다!
 
 
 
@@ -261,7 +261,7 @@ CPU Time = Instructions term x CPI x clock cycle time(T<sub>c</sub>)
   - power 때문에 많이 늘어나지 못함
 
 - 하지만 게임, 프로그램 등으로 성능 향상은 반드시 이루어 져야 한다.
-  - 그래서 multicore가 나타나기 시작
+  - 그래서 multi-core가 나타나기 시작
 
 <br>
 
@@ -269,9 +269,9 @@ CPU Time = Instructions term x CPI x clock cycle time(T<sub>c</sub>)
 
 - 프로세서가 여러개
 
-- Multicore microprocessors
+- Multi-core microprocessors
   - More than one processor per chip
-- multicore라고 해도 한 processor가 실행될 때 나머지 processors는 놀고 있다. 그래서,
+- multi-core라고 해도 한 processor가 실행될 때 나머지 processors는 놀고 있다. 그래서,
 - Requires explicitly <span style="color:red">parallel programming</span>
   - Compare with instruction level parallelism
     - Hardware executes multiple instructions at once
@@ -297,14 +297,14 @@ T<sub>unaffected</sub> : parallelize 불가능한 것(unparallelizable)  -> f
 
 n: 프로세서 개수
 
-- T<sub>n</sub> = 1-f/n + f
+- T<sub>n</sub> = (1-f)/n + f
 
 - Example: multiply accounts for 80s/100s
   - How much improvement in multiply performance to get 5x overall?
 
 ![image](https://user-images.githubusercontent.com/79521972/158721884-27213f48-a119-4e9d-b088-ee578cb7ca2c.png)
 
-- Corollary: make the common case fast!
+- Corollary(추론): make the common case fast!
 
 <br>
 
