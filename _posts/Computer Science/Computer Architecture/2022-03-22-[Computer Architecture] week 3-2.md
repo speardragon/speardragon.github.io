@@ -359,11 +359,15 @@ ALU연산을 할 때는 opcode를 0으로 두어서 funct을 보게끔 하였다
 
 
 
+Q) address가 8bit인데 word address는 4비트씩 커지나요?
+
+A) address가 8bit라는 게 아니라 한 주소가 8bit라는 것이다. w
 
 
 
+Q) asdf
 
-
+A)어떤 프로그램은 잘 돌아가다가 MIPS에 가서 돌리면 안되는 경우가 있는데 이를 고려를 잘 해 주어야 한다. 거의 그런일 없을 것이다. memory가 충분하여. 대부분 little endian을 사용한다.
 
 
 
