@@ -89,8 +89,8 @@ RISC-V 새로 나옴, Open source로 공개 되어 있다.
   
 - #### Von Neumann architecture and Harvard architecture
   
-  - Von Neumann : instructions and data are both loaded into the same memory unit
-  - Harvard : keeps intructions and data in seperate memories (separated buses)
+  - **Von Neumann** : `instructions` and `data` are both loaded into the same memory unit
+  - **Harvard** : keeps intructions and data in seperate memories (separated buses)
 
 ---
 
@@ -111,17 +111,21 @@ a=b+c;
 - CPU를 통해 +, -, *, /, and, or 등의 연산을 하고 싶음 -> ALU에서 연산
 - 폰노이만 구조는 data와 프로그램이 한 구조에 있음
 - ==**메모리는 세 부분으로 나뉘어짐**==(데이터가 선언될때 메모리가 필요함)
+  - 맨 위 : fff...f 번지, stack memory
+    - 스택 = temporary
+      - 즉, 임시로 잠깐 저장할 때 사용하는 공간
+  - 중간: data memory
+    - 데이터가 들어가는 자리.
+    - 컴파일이 되면, a, b, c, 방을 잡아준다.(선언 부분, 어디에 잡아줄 지는 compiler가 결정)
   - 맨 아래: 0 번지, program memory
     - 프로그램이 들어있음
     - instruction set이 들어있는 곳
     - instruction에 따라서 수행할 연산을 program counter가 decode하여 전달해줌
     - 컴파일러에 의해 high level language에서 컴퓨터가 알아듣는 assembly language로 변환된 후 이곳(program memory)으로 들어온다.
-  - 중간: data memory
-    - 데이터가 들어가는 자리.
-    - 컴파일이 되면, a, b, c, 방을 잡아준다.(선언 부분, 어디에 잡아줄 지는 compiler가 결정)
-  - 맨 위 : fff...f 번지, stack memory
-    - 스택 = temporary
-      - 즉, 임시로 잠깐 저장할 때 사용하는 공간
+
+
+
+
 
 
 
@@ -200,12 +204,14 @@ store rf5 -> a
 - How programs are translated into the **machine language**
   - And how the hardware executes them
 - The hardware/software interface
-
-- What determines program **performance**
+- <span style="color:red">What determines program **performance**</span>
   - And how it can be improved
 - How hardware designers **improve** performance
 - What is **parallel processing** (from COD)
-- power는 굉장히 중요하지만 hardware적 측면이 강한 부분으로 이곳에서는 다루지 않을 것이다. 
+
+
+
+power는 굉장히 중요하지만 hardware적 측면이 강한 부분으로 이곳에서는 다루지 않을 것이다. 
 
 <br>
 
@@ -213,13 +219,13 @@ store rf5 -> a
 
 <mark>컴퓨터 구조에서 제일 중요하게 다뤄질 부분</mark>
 
-- 다른 것들과는 다르게 architecture 적인 부분이기 때문에
+
 
 <br>
 
 아래는 performance를 결정하는 중요한 요인들이다.
 
-- performance is defined `1/실행시간(executed time)`
+- performance is defined `1/실행시간(execution time)`
   - 즉, speed와 관련된 것
 
 - **Algorithm**
@@ -239,7 +245,9 @@ store rf5 -> a
 high speed CPU를 이룰 수 있던 motivation은 무엇일까?
 
 - Use **abstraction** to simplify design
-  - 
+
+
+
 - Make the **common case fast**
   - 많이 사용되는 것들을 가장 빠르게 하는 것이 key idea
 - Performance via **parallelism**
@@ -253,7 +261,7 @@ high speed CPU를 이룰 수 있던 motivation은 무엇일까?
 - **Dependability** via redundancy(중복성, 여분)
   - 데이터의 speed도 중요하지만 서버가 날라가면 큰일 나기 때문에 서버에 있는 컴퓨터들은 보통 하드디스크를 하나만 쓰지 않고 여러개 나눠 사용한다.
 
-
+<br>
 
 ## Levels of Program Code (from COD)
 
@@ -265,7 +273,7 @@ Compiler에 의해 language를 machine이 알아듣도록 계속 변환 시킴
 
   - Level of abstraction closer to problem domain
 
-  - Provides for productivity and psrtabiltiy
+  - Provides for productivity and portabiltiy
 
   - compiler에 의해 assembly language로 변환해 줌
 
