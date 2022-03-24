@@ -2,7 +2,7 @@
 layout: single
 title: "[Computer Architecture] week 3-2."
 categories: ['Computer Science', 'Computer Architecture']
-tag: ['Computer Architecture', 'Intro']
+tag: ['big-endian', 'little-endian', 'base addressing']
 ---
 
 
@@ -110,7 +110,7 @@ Underlying design principles, as articulated by Hennessy and Patterson:
 
 ## Instructions
 
-
+> \# indicates a single-line comment
 
 ### Addition
 
@@ -198,6 +198,7 @@ ALU의 input을 여러개로 할 수도 있지만 simple하게 구성해야 perf
 
 **Make the common case fast**
 
+<<<<<<< Updated upstream
 흔히 나오는 명령어들을 빠르게 만들자.
 
 - MIPS includes only simple, commonly used instructions
@@ -241,6 +242,8 @@ Data memory에 있는 data가 register file에 들어가야 하는 상황에 reg
 **Smaller is Faster**
 
 - MIPS includes only a small number of registers.
+
+<br>
 
 
 
