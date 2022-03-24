@@ -104,6 +104,8 @@ Underlying design principles, as articulated by Hennessy and Patterson:
 
 ![image](https://user-images.githubusercontent.com/79521972/159403302-78ce4001-ad4b-4917-8ee8-fbdc755a7f12.png)
 
+# Chapter 6. Architecture
+
 
 
 ## Instructions
@@ -114,53 +116,98 @@ Underlying design principles, as articulated by Hennessy and Patterson:
 
 - Addition
 
-- C code
+  - C code
 
-  - ```c
-    a = b + c;
-    ```
+    - ```c
+      a = b + c;
+      ```
 
-- MIPS assembly code
+  - MIPS assembly code
 
-  - ```assembly
-    add a, b, c
-    ```
+    - ```assembly
+      add a, b, c
+      ```
 
 
+- add: mnemonic indicates <mark>operation</mark> to perform
+- b, c: source <mark>operands</mark> (on which the operation is pperformed)
+- a: destination <mark>operand</mark> (to which the result is written)
 
-### sub
+ 
+
+### Subtraction
+
+- Similar to addition - only mnemonic changes
+
+  - C Code
+
+    - ```c
+      a = b - c;
+      ```
+
+  - MIPS assembly code
+
+    - ```assembly
+      sub a, b, c
+      ```
+
+- sub: mnmonic
+- b,c : source operands
+- a: destination operand
+
+
 
 
 
 ### Design Principle 1
 
-Simplicity favors regularity
+**Simplicity favors regularity**
 
+- Consistent instruction format
+- Same number of operands (two sources and one destination) 
+- easier to encode and handle in hardware
 
-
-
-
-
+<br>
 
 #### Multiple Instructions
 
 - More complex code is handled by multiple MIPS instructions.
 
+  - C Code
+
+    - ```c
+      a = b + c - d;
+      ```
+
+  - MIPS assembly code
+
+    - ```assembly
+      add t, b, c # t = b + c
+      sub a, t, d # a = t - d
+      ```
 
 
-ALU의 input은 두 개로만 받는 형태로 취하겠다.(for simplicity)
+
+
+
+ALU의 input을 여러개로 할 수도 있지만 simple하게 구성해야 performance가 좋기 때문에 두 개로만 받는 형태로 취하겠다.
 
 
 
 ### Design Principle 2
 
-Make the common case fast
+**Make the common case fast**
 
+흔히 나오는 명령어들을 빠르게 만들자.
 
+- MIPS includes only simple, commonly used instructions
 
-CISC는 명령어가 매우 많은데 어떤 명령어는 가뭄에 콩나듯 사용하여 비효율 적인데
+- Hardware to decode and execute instructions can be simple, small, and fast
+- More complex instructions (that are less common) performed using multiple simple instructions
+- MIPS is a reduced instruction set computer (RISC), with a small number of simple instructions
+- Other architectures, such as Intel’s x86, are complex instruction set computers (CISC)
 
-자주 사용하는 것만 사용하게끔 만든 것이 RISC
+CISC는 명령어가 매우 많은데 어떤 명령어는 가뭄에 콩나듯 사용하여 비효율 적인데 자주 사용하는 것만 사용하게끔 하고 이것들의 속도를 빠르게 만들어서 복잡한 명령어는 단순한 명령어 여러개를 사용하여 만든 것이 RISC.
 
 
 
@@ -176,14 +223,14 @@ CISC는 명령어가 매우 많은데 어떤 명령어는 가뭄에 콩나듯 �
 ### Registers
 
 - MIPS has 32 32-bit registers
-- Registers are faster than memory(CPU안에 있기 때문에)
+- Registers are faster than (main)memory(CPU안에 있기 때문에)
 - MIPS called "32-bit architecture" because it operates on 32-bit data
 
 
 
 **Why 32 bits?**
 
-Data memory에 있는 data가 register file에 들어가야 하는 상황에 register file의 bit수가 커지면 커질 수록 안 좋기 때문에 적당한 수인 32로 정한 것이다.
+Data memory에 있는 data가 register file에 들어가야 하는 상황에 register file의 bit수가 커지면 커질 수록 CPU가 느려져서 안 좋기 때문에 적당한 수인 '32'로 정한 것이다.
 
 
 
@@ -191,46 +238,99 @@ Data memory에 있는 data가 register file에 들어가야 하는 상황에 reg
 
 ### Design Principle 3
 
+**Smaller is Faster**
+
+- MIPS includes only a small number of registers.
 
 
 
+<br>
 
 ### MIPS Register Set
 
 ![image](https://user-images.githubusercontent.com/79521972/159404503-407c2aaa-c693-4704-90f7-6826b5397d92.png)
 
-- \$0 : $zero 라고 쓰기도 함
+- \$0 
+  - $zero 라고 쓰기도 함
+  - Constant value인 0이 들어있음
 
-- $at: reservation
+- $at
+  - assembler가 임시로 우리가 짠 코드를 그대로 바꿔주는 것이 아니라 pesdo 코드를 사용하기도 하는데 이를 위한 임시 공간을 말한다.(reservation)
 
 
+- $t0
+  - 아무나 쓸 수 있는 데이터(temporaries)
 
-- $t0 :아무나 쓸 수 있는?
-- $s : 아주 중요한 데이터( 함부로  버리면 안되는)
+- $s
+  -  아주 중요한 데이터( 함부로 버리면 안되는)
 
 - $t8-\$t9
-- $k0-\$k1 : OS만 사용가능하도록 reserve 해 놓은 곳
+  -  more temporaries
+
+- $k0-\$k1
+  -  OS만 사용가능하도록 reserve 해 놓은 곳
+
+
+- $ra
+  -  return address
+  - 함수가 호출된 후에 할 일을 다 마치고 함수를 호출한 곳으로 다시 돌아와야 하는데  이 때 그 address를 반환해 주는데 사용되는 공간이다.
+  
 
 
 
-- $ra: return address
-  - 함수가 호출된 후에 할 일을 다 마치고 다시 돌아와야 하는데 함수를 호출한 곳의 address를 반환해 주는데 이때 사용되는 공간이다.
+우리가 많이 쓰는 곳은 0, 8-25 이다. 나머지는 함부로 쓰기 위험한 것들이 많다.
 
+<br>
 
-
-그래서 우리가 많이 쓰는 곳은 0, 8-25 이다. 나머지는 함부로 쓰기 위험한 것들이 많다.
-
-
+### Registers
 
 - Registers:
   - $ before name 
   - Example: $0, "register zero", "dollar zero"
 
+- Register used for specific purposes:
+  - $0 always holds the constant value 0.
+  - the saved register, $s0-$s7, used to hold variables
+  - the temporary registers, $t0-$t9, used to hold intermediate values during a larger computation
+  - Discuss others later
 
 
 
+### Instructions with Registers
+
+- Revisit add instruction
+
+  - C Code
+
+    - ```c
+      a = b + c
+      ```
+
+  - MIPS assembly code
+
+    - ```assembly
+      # $s0 = a, $s1 = b, $s2 = c
+      add $s0, $s1, $s2
+      ```
+
+- addi instruction
+
+  - C Code
+
+    - ```c
+      a = b + 6
+      ```
+
+  - MIPS assembly code
+
+    - ```assembly
+      # $s0 = a, $s1 = b
+      addi $s0, $s1, 6
+      ```
 
 
+
+<br>
 
 ## Memory Operands
 
@@ -250,23 +350,32 @@ Data memory에 있는 data가 register file에 들어가야 하는 상황에 reg
 
 
 
->  MIPS and RISC_V are byte-addresable
+>  MIPS and RISC_V are byte-addressable
 
-little or big endian (강의 참조)
+**byte-addressable?**
+
+- little endian 
+- big endian
 
 MIPS는 big endian을 사용한다.
 
-
+<br>
 
 ### Word-Addressable Memory
 
-다루지 않을 것임; 우리가 사용하는 것은 모두byte-addressable 이기 때문
+다루지 않을 것임.
+
+ 우리가 사용하는 것은 모두byte-addressable 이기 때문
 
 
 
-
+<br>
 
 ### Byte-Addressable Memory
+
+register 정보는 32bit인데 byte 단위로 전달하기 때문에 4byte가 전달 된다.
+
+즉, 하나의 address는 8bit이다.
 
 - Each data byte has unique address
 - Load/store words or single bytes: load byte(1b) and store byte(sb)
@@ -278,72 +387,136 @@ MIPS는 big endian을 사용한다.
 
 
 
-
+<br>
 
 ### Reading Byte-Addressable Memory
 
 - The address of a memory word must now be multiplied by 4. 
 - For example,
-  - the 
+  - the address of memory word 2 is `2 x 4 = 8`
+  - the address of memory word 10 is `10 x 4 = 40`(0x28)
+- <span style="color:blue">MIPS is byte-addressed</span>, not word-addressed
 
-
+<br>
 
 #### Example: Load a word of data at memory address 8 into $s3.
 
 - $s3 holds the value 0x01EE2842 after load
 - ![image](https://user-images.githubusercontent.com/79521972/159405835-822b48fd-e59f-43d4-8f79-4dbaf0d34c66.png)
-
+- 8번지에 있던 데이터는 register의 $3로 전달된다.
 - 01EE2842는 $s3로 간다.
 
-
+<br>
 
 #### Example: store the value held in $t7 into memory address 0x10(16)
 
-- if t7
+- if t7 holds the value 0xAABBCCDD, then after the swcompletes, word 4 (at address 0x10) in memory will contain that value.
+
+![image](https://user-images.githubusercontent.com/79521972/159829374-33913eb0-3120-473a-a855-aa054bc24a6d.png)
 
 
 
-
+<br>
 
 ### Big-Endian & Little-Endian Memory
 
+32 bit를 꺼낼 때는 앞뒤 구분이 상관없는데 한 바이트만 꺼낸다 했을 때는 문제가 생긴다. 
+
 - How to number bytes within a word?
 - Little-endian: byte numbers start at the little (least significant) end
+  - low address가 lsb position
+
 - Big-endian: byte numbers start at the big (most  significant) end
+  - 
+
 - Word address is the same for big- or little-endian
 
 ![image](https://user-images.githubusercontent.com/79521972/159406143-d69ac8c2-7439-4bd2-b70b-b2a8b886d438.png)
 
 - Jonathan Swift’s Gulliver’s Travels: the Little-Endians broke their eggs on the little end of the egg and the BigEndians broke their eggs on the big end
-
 - It doesn’t really matter which addressing type used – except when the two systems need to share data!
+
+<br>
+
+### Big-Endian & Little-Endian Example
+
+word단위로 데이터를 처리하면 문제가 없는데 바이트 단위로 처리하는 경우(lb와 같이) 앞과 뒤의 구분이 명확해야 오해의 여지가 없기 때문에 이는 중요하다.
 
 - Suppose $t0 initially contains 0x23456789
 - After following code runs on big-endian system, what  value is $s0?
-
 - In a little-endian system?
   - `sw $t0, 0($0)`
   - `lb $s0, 1($0)`
 
+- Big-endian: 0x00000045 (MSB에서 1 번째 바이트인 45, 0번째는 23 )
+- Little-endian: 0x00000067(LSB에서 1 번째 바이트인 67, 0번째는 89)
 
+![image](https://user-images.githubusercontent.com/79521972/159830179-f42409bd-9b85-487b-a276-3ba4a0902d9c.png)
+
+<br>
+
+> MIPS: Big-endian
+>
+> X86, ARM, RISC-V: Little-endian
+
+<br>
 
 
 
 #### Design Principle 4
 
-Good desgin demands good compromises
+**Good desgin demands good compromises**
 
+- Multiple instruction formats allow flexibility
+  - add, sub: use 3 register operands
+  - lw, sw: use 2 register operands and a constant
+- Number of instruction formats kept small
+  - to adhere(준수하다) to design principles 1 and 3(simplicity favors rergularity and smaller is faster).
 
-
-
-
-
+<br>
 
 ### Constants/Immediates
 
-subi 필요없음
+- • lw and sw use constants or immediates
 
+-  immediately available from instruction
 
+- 16-bit two’s complement number
+
+- addi: add immediate
+
+- Subtract immediate (subi) necessary?
+
+- C Code
+
+  - ```c
+    a = b + 4;
+    b = a - 12;
+    ```
+
+- MIPS assmembly code
+
+  - ```assembly
+    # $s0 = a, $1 = b
+    addi $s0, $s0, 4
+    addi $s1, $s0, -12
+    ```
+
+<br>
+
+### Machine Language
+
+- Binary represientation of instructions
+- Computers only understand 1's and 0's
+- 32-bit instructions
+  - Simplicity favors regularity: 32-bit data & instructions
+
+- 3 instruction formats:
+  - R-Type: register operands
+  - I-Type: immediate operand
+  - J-Type: for jumping (disciss later)
+
+<br>
 
 
 
@@ -360,31 +533,39 @@ add $rd, $rs, $rt
 
 - Other fields:
   -  op: the operation code or opcode(0 for R-type instructions)
-  - funct:
+  - funct: the function with opcode, <mark>tells computer what operation to perform</mark>
+  - shamt: the shift amount for shift instrucrtions, otherwise it's 0
 
 ![image](https://user-images.githubusercontent.com/79521972/159406787-6bc35546-f937-408d-8670-d8df352dc093.png)
 
-opcode와 funct를 모두 확인하여 무슨 연산인지 알게끔 만들어 놓은 구조이다.
+assembly 언어에서 작성한 순서와 machine code에서의 순서와 조금 다른 것에 유의한다.
 
+<br>
 
-
-
+opcode와 funct를 같이 확인하여 무슨 연산인지 알게끔 만들어 놓은 구조이다.
 
 
 
 #### R-type Examples
 
-ALU연산을 할 때는 opcode를 0으로 두어서 funct을 보게끔 하였다.
+![image](https://user-images.githubusercontent.com/79521972/159831080-c8a14166-ea06-402d-a12a-293a925f38cc.png)
 
+효율적으로 사용하기 위해 ALU를 사용하는 모든 명령은 opcode에 0을 주었다. 그래서 이 경우에는 funct code도 같이 보아야 구체적으로 어떤 ALU연산을 하는지를 알 수 있다.
 
+- add: 32
+- sub: 34
+
+![image](https://user-images.githubusercontent.com/79521972/159831096-d4e6bafb-25d0-47ee-999e-007dd0ddb1cb.png)
 
 
 
 Q) address가 8bit인데 word address는 4비트씩 커지나요?
 
-A) address가 8bit라는 게 아니라 한 주소가 8bit라는 것이다. w
+A) address가 8bit라는 게 아니라 한 address(한 칸)가 8bit라는 것이다. 그래서 한 byte address(총 32bit 짜리의)는 4개의 byte를 전달하고 나서 그 다음 byte address를 전달하는 word address는 4byte 뒤의 공간인 것이다.
 
+- byte = 8 bit
 
+<br>
 
 Q) asdf
 
