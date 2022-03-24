@@ -9,13 +9,25 @@ tag: ['Computer Architecture', 'Intro']
 
 # Review)
 
-Q)memory에서 가져오는데 왜 register 표시를 사용하는가?
+CPU가 CPU로써 기능을 가지려면 3 종류의 기능은 반드시 갖춰야 한다.
 
-A)
+- data processing(ALU)
+- data move(load, store)
+- flowcontrol(branch, jump)
+
+- extra...
+
+3 가지 instructions을 정의해 볼 것이다.
 
 
 
-base addressing
+<br>
+
+Q)memory에서 가져오는데 memory를 적는 부분에 왜 register 주소($)를 사용하는가?
+
+A)$2에 7000번지를 넣는다고 하고 아래와 같은 코드를 적으면 $2에 10을 더하는 것은 7000에 10을 더하여 7010번지 memory에 load하는 것과 같은 의미가 된다. 이 때의 $2를 base address라고 한다.
+
+**base addressing**
 
 ```assembly
 lw $5, 10($2)
@@ -23,46 +35,54 @@ lw $5, 10($2)
 
 $2에 7000이 담겨있다고 하면 해당 값에 10만큼의 offset을 적용하였으므로 7010번지에 찾아가는 것이다.
 
+base register를 찾은 다음에 offset을 적용하여 indirect(간접적으로) load한다.
 
+direct로 하는 방법은 아래와 같다.
 
-base register를 찾은 다음에 offset을 적용하여 indirect로 load한다.
+```assembly
+lw $5, 7010
+```
 
 <br>
 
-$0에는 0이 들어있다. 이를 이용하여 위의 표현을 다음과 같이 표현할 수 있다.
+이렇게 indirect방법으로 메모리 주소를 참조하는 이유는 direct 방법으로 하다보면 변수를 하나 넣거나 뺄 때 다른 메모리 주소들의 값들이 밀려서 매 번 달라질 것이기 때문이다. 
+
+즉, indirect로 하게 되면 $2라는 주소(base address라고 한다.)를 간접적으로 참조하여 해당 값이 바뀌어도 정확히 내가 원하는 값에 접근할 수 있기 때문이다.
+
+<br>
+
+<br>
+
+$0에는 항상 0이라는 값이 들어있다. 이를 이용하여 위의 표현을 다음과 같이 표현할 수 있다.
+
+0은 특정 연산을 할 때, 비교를 할 때 굉장히 중요한 지표(기준) 이기 때문에 따로 지정해 둔 것이다.
 
 ```assembly
 lw $5, 7010($0) #zero register가 base register
 ```
 
-
-
-
+그래서 이런식으로 사용할 수도 있겠지만 이렇게는 잘 사용하지 않는다.
 
 
 
 <br>
 
 - 모든 instruction은 32bit으로 정해져 있다.
-
 - datapath(register file + ALU)
 - Control(PC, IR, Control unit)
 - Fetch - (decode &) Execute
-
-- 구분하기 위해서
+- 명령어(instruction)를 IR에 가져와서 Decode해야 하는데 무슨 명령어 인지 구분하기 위해서, 즉 , 알아먹기 위해서 모든 명령어는 다음과 같이 표현된다.
+  - 총 32bit로 이루어져 있다.
   - 32bit의 초반 6bit는 op-code 부분으로 표현된다.
-  - 만약 add 의 경우 인자가 3 개가 필요하기 때문에 각각의 정보를 담는 5bit를 할당하여 이에 대한 15bit가 데이터 부분으로 표현된다.
-  - 만약 addi의 경우 data 두 개와 Constant(immediate) 정보를 포함하기 때문에 앞의 두 데이터에 대해서는 5bit씩 할당하고 Const에 대한 부분은 나머지 16bit가 들어간다.
+  - 만약 add 의 경우 인자가 3 개가 필요하기 때문에 각각의 정보를 담는 5bit를 할당하여 이에 대한 15bit가 데이터 부분으로 표현된다.(R-type)
+  - 만약 addi의 경우 한 개의 opcode 6bit, data 두 개와 Constant(immediate) 정보를 포함하기 때문에 앞의 두 데이터에 대해서는 5bit씩 할당하고 Const에 대한 부분은 나머지 16bit가 들어간다.(R-type)
+    - 그래서 Const는 16bit로 표현될 수 있기 때문에 -2<sup>15</sup> ~ 2<sup>15</sup>(+-32k) 범위 내의 constant 값만 사용할 수 있다.
+  
+  - lw 와 sw 의 경우 register 정보 2 개와 constant 정보 1 개가 필요하기 때문에 위의 addi와 똑같은 구조의 bit를 사용하면 된다.(I-type)
+  - J(Jump)의 경우 constant 1 개의 정보 만을 필요로 하기 때문에 6bit의 opcode와 나머지 26bit의 const. 정보가 차지하는 구조를 사용한다.(J-type)
+  
 
-
-
-- register 왜 32 bit?
-
-
-
-Q)
-
-A)
+![image](https://user-images.githubusercontent.com/79521972/159824475-918f28c9-0278-4d6c-a16c-db34ccf6f99f.png)
 
 
 
@@ -72,9 +92,10 @@ A)
 
 ## Architecture Design Principles
 
-Underlying design principles, as articulated by  Hennessy and Patterson:
+Underlying design principles, as articulated by Hennessy and Patterson:
 
 1. Simplicity favors regularity
+   - simple한 것은 regularity를 선호한다.
 2. Make the common cast that
 3. Smaller is a faster
 4. Good design demands good compromises
