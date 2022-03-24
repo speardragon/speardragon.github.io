@@ -13,13 +13,13 @@ tag: ['Computer Architecture', 'Intro']
 
 ![image](https://user-images.githubusercontent.com/79521972/159843857-8a39415e-5445-4956-9453-403f56029513.png)
 
-
+<br>
 
 **Machine instruction**
 
 ![image](https://user-images.githubusercontent.com/79521972/159824475-918f28c9-0278-4d6c-a16c-db34ccf6f99f.png)
 
-
+<br>
 
 **R-Type**
 
@@ -28,7 +28,7 @@ tag: ['Computer Architecture', 'Intro']
 - 남는 bit 공간 중 5bit는 shamt 명령어를 사용하기 위해 사용되는 공간이다.
 - 그래서 또 최종적으로 남는 6bit는 funct. code로 지정하여 R-type인 경우에 opcode와 더불어 사용되는 공간이다.
 
-
+<br>
 
 
 
@@ -54,7 +54,7 @@ tag: ['Computer Architecture', 'Intro']
 - Other fields:
   - op: the opcode
   - Simplicity favors regularity: all instructions have opcode
-  - Operation is completely determined by opcode
+  - Operation is completely determined by opcode(6 bit)
 
 ![image](https://user-images.githubusercontent.com/79521972/159845601-d31eb4ef-d48c-4b79-ab1e-ea4b3c78119b.png)
 
@@ -94,10 +94,10 @@ tag: ['Computer Architecture', 'Intro']
 
 ### Power of the Stored Program
 
-- 32-bit insturctions & data stored in memory
-- Sequence of instrucntions: only difference between two applications
+- 32-bit instructions & data stored in memory
+- Sequence of instructions: only difference between two applications
 - To run a new program:
-  - No wewiring required
+  - No rewiring required
   - Simply store new program in memory
 - Program Execution:
   - Processor fetches (reads) instructions from memory in sequence
@@ -119,7 +119,7 @@ tag: ['Computer Architecture', 'Intro']
 
 - Start with opcode: tells how to parse rest
 - If opcode all 0's 
-  - R-Type instruction
+  - <mark>R-Type instruction</mark>
   - Function bits tell operation
 - Otherwise
   - opcode tells operation (see the table appendix B.1 ~ B.3)
@@ -189,9 +189,9 @@ tag: ['Computer Architecture', 'Intro']
 
 
 
-shift right 할 때는 sign extension으로 앞 부분의 새로운 bit를 채운다.
+shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는 bit를 채운다.
 
-
+<br>
 
 ### Variable Shift Instructions
 
@@ -223,7 +223,7 @@ shift right 할 때는 sign extension으로 앞 부분의 새로운 bit를 채�
   - C Code
 
     - ```c
-      // int is a 32-bit sogned word int a - 0x 4d3c;
+      // int is a 32-bit signed word int a - 0x4f3c;
       ```
 
   - MIPS assembly code
@@ -274,7 +274,7 @@ shift right 할 때는 sign extension으로 앞 부분의 새로운 bit를 채�
 
 ### Branching
 
-- Execite insturcitons out of sequence
+- Execute instructions out of sequence(점프)
 
 - Types of branches:
 
@@ -315,15 +315,17 @@ shift right 할 때는 sign extension으로 앞 부분의 새로운 bit를 채�
 
 ### The Branch Not Taken (bne)
 
-
+![image](https://user-images.githubusercontent.com/79521972/159924349-0201c5de-d535-4876-b725-15fe22546514.png)
 
 ### Unconditional Branching(j)
 
-
+![image](https://user-images.githubusercontent.com/79521972/159924405-1cefcf8b-f22c-437a-8876-f2a694de37b6.png)
 
 ### Unconditional Branching(jr)
 
+![image](https://user-images.githubusercontent.com/79521972/159924430-c37afc03-366e-4d27-a74c-ef91be47e412.png)
 
+> jr is an R-type instruction
 
 <br>
 
@@ -340,7 +342,7 @@ shift right 할 때는 sign extension으로 앞 부분의 새로운 bit를 채�
 
 #### If Statement
 
-C Code
+- C Code
 
 ```c
 if (i == j)
@@ -349,48 +351,175 @@ if (i == j)
 f = f - i;
 ```
 
-
-
-MIPS assembly code
+- MIPS assembly code
 
 ```assembly
 # $s0 = f, $s1 = g, $s2 = h
 # $s3 = i, $s4 = j
 ```
 
+<br>
 
+- C Code
+
+```c
+if (i == j)
+    f = g + h;
+ 
+f = f - i;
+```
+
+- MIPS assembly code
+
+```assembly
+# $s0 = f, $s1 = g, $s2 = h
+# $s3 = i, $s4 = j
+    bne $s3, $s4, L1
+    add $s0, $s1, $s2
+
+L1: sub $s0, $s0, $s3
+```
+
+> Assembly test opposite case (i != j) of high-level code (i == j)
+
+
+
+#### If/Else Statement
+
+- C Code
+
+```c
+if (i == j)
+    f = g + h;
+else
+    f = f - i;
+```
+
+- MIPS assembly code
+
+```assembly
+# $s0 = f, $s1 = g, $s2 = h
+# $s3 = i, $s4 = j
+    bne $s3, $s4, L1
+    add $s0, $s1, $s2
+    j done
+L1: sub $s0, $s0, $s3
+done
+```
 
 <br>
 
 #### While Loops
 
+- C Code
 
+```c
+// determines the power
+// of x such that 2x = 128
+int pow = 1;
+int x = 0;
+while (pow != 128) {
+    pow = pow * 2;
+    x = x + 1;
+}
+```
 
+- MIPS assembly code
 
+```assembly
+# $s0 = pow, $s1 = x
+    addi $s0, $0, 1
+    add $s1, $0, $0
+    addi $t0, $0, 128
+while: beq $s0, $t0, done
+    sll $s0, $s0, 1
+    addi $s1, $s1, 1
+    j while
+done:
+```
 
+> Assembly tests for the opposite case (pow == 128) of the C code (pow != 128).
 
+<br>
 
 #### For Loops
 
+```c
+for (initialization; condition; loop operation)
+    statement
+```
 
+- initialization: executes before the loop begins
+- condition: is tested at the beginning of each iteration
+- loop operation: executes at the end of each iteration
+- statement: executes each time the condition is met
 
+<br>
 
+- High level code
+
+```c
+// add the numbers from 0 to 9
+int sum = 0;
+int i;
+for (i=0; i!=10; i = i+1) {
+	sum = sum + i;
+}
+
+```
+
+- MIPS assembly code
+
+```assembly
+# $s0 = i, $s1 = sum
+    addi $s1, $0, 0
+    add $s0, $0, $0
+    addi $t0, $0, 10
+for: beq $s0, $t0, done
+    add $s1, $s1, $s0
+    addi $s0, $s0, 1
+    j for
+done:
+```
 
 <br>
 
 ### Less Then Comparison
 
-s0가 t0보다 less than이면 1
+- C Code
 
+```c
+// add the powers of 2 from 1 
+// to 100
+int sum = 0;
+int i;
+for (i=1; i < 101; i = i*2) {
+	sum = sum + i;
+}
+```
 
+- MIPS assembly code
+
+```assembly
+# $s0 = i, $s1 = sum
+    addi $s1, $0, 0
+    addi $s0, $0, 1
+    addi $t0, $0, 101
+loop: slt $t1, $s0, $t0
+    beq $t1, $0, done
+    add $s1, $s1, $s0
+    sll $s0, $s0, 1
+    j loop
+done:
+```
+
+`$t1=1 if i<101`
 
 
 
 <br>
 
-Q)assembly code에서 
 
-A)
 
 
 
