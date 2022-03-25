@@ -477,6 +477,180 @@ Hello! LinuxBye! Linux
 
 
 
+<br>
+
+## sync(), fsync(), and fdatasync()
+
+- Delayed write
+  - When write data to a file, the data is copied into buffers.
+  - The data is physically written to disk at some later time.
+  - -> 동일한 데이터에 대한 연속적인 read/write시 성능 향상.
+- When the delayed-write blocks are written to disk?
+  - Buffer is filled with the delayed-write blocks or 
+  - Periodically by update daemon (usually every 30 seconds)
+
+```c
+#include <unistd.h>
+
+int fsync(int filedes);
+int fdatasync(int filedes);
+
+void sync(void);
+//Returns: 0 if OK, -1 on error
+```
+
+- sync
+  - Write all the modifies buffer blocks to disk.
+- fsync
+  - Write only the modified (data + attribue) buffer blocks of a single file.
+- fdatasync
+  - Write only the modifies data buffer blocks of a single file.
+
+<br>
+
+## fcntl()
+
+```c
+#include <fcntl.h>
+
+int fcntl(int filedes, int cmd, .../*int arg*/);
+//Return: depends on cmd if OK (see following), -1 on error
+```
+
+- Change the properties of a file that is already open
+  - Duplicate an existing desciptor (cmd = F_DUPFD)
+  - Get/set file descriptor flags (cmd = F_GETFD or F_SETFD)
+  - Get/set file status flags (cmd = F_GETFL or F_SETFL)
+  - Get/set asynchronous I/O ownership (cmd = F_GETOWN or F_SETOWN)
+  - Get/set record locks (cmd = F_GETLK, F_SETLK, or F_SETLKW)
+
+- example
+
+```c
+/* include header files 생략 */
+int main()
+{
+     int mode, fd, value;
+    
+     fd = open("test.sh", O_RDONLY|O_CREAT);
+     value = fcntl(fd, F_GETFL, 0);
+    
+     mode = value & O_ACCMODE;
+     if (mode == O_RDONLY)
+     	printf("O_RDONLY setting\n");
+     else if (mode == O_WRONLY)
+     	printf("O_WRONLY setting\n");
+     else if (mode == O_RDWR)
+     	printf("O_RDWR setting\n");
+}
+```
+
+
+
+- 실행
+
+```
+# ./fgetfl_test
+O_RDONLY setting
+$ 
+```
+
+
+
+- Macro: int O_ACCMODE
+  - This macro stands for a mask that can be bitwise-ANDed with the file status flag value to produce a value representing the file access mode. The mode will be O_RDONLY, O_WRONLY, or O_RDWR.
+
+
+
+<br>
+
+# 4.3 임의 접근 파일
+
+
+
+## 파일 위치 포인터(file position pointer)
+
+- 파일 위치 포인터는 파일 내에 읽거나 쓸 위치인 현재 파일 위치(currnet file position)를 가리킨다.
+
+![image](https://user-images.githubusercontent.com/79521972/160050554-ecab5614-966a-4c0b-958c-378b86764516.png)
+
+<br>
+
+## 파일 위치 포인터 이동: lseek()
+
+- lseek() 시스템 호출
+  - 임의의 위치로 파일 위치 포인터를 이동시킬 수 있다.
+  - The offset for regular files must be non-negative
+
+```c
+#include <unistd.h>
+off_t lseek (int fd, off_t offset, int whence );
+```
+
+- 이동에 성공하면 현재 위치(measured in bytes from the beginning of the file)를 리턴하고 실패하면 -1을 리턴한다.
+
+![image](https://user-images.githubusercontent.com/79521972/160050692-1709068a-0b5c-49c5-9e2b-d6b522c1c0d8.png)
+
+
+
+
+
+<br>
+
+lseek()
+
+- whence
+  - SEEK_SET
+    - THe offset is set to offset bytes from the beginning of the file.
+  - SEEK_CUR
+    - The offset is set to its current location plus offset bytes.
+  - SEEK_END
+    - The offset is set to the size of the file plus offset bytes.
+
+
+
+<br>
+
+## 파일 위치 포인터이동: 예
+
+- 파일 위치 이동
+  - lseek(fd, 0L, SEEK_SET);  // 파일 시작으로 이동(rewind)
+  - lseek(fd, 100L, SEEK_SET);
+  - lseek(fd, 0L, SEEK_END);
+  - lseek(fd, 100L, SEEK_CUR);
+
+
+
+- 레코드 단위로 이동
+  - lseek(fd, n * sizeof(record), SEEK_SET); n+1번째 레코드 시작위치로
+  - lseek(fd, sizeof(record), SEEK_CUR);
+  - lseek(fd, -sizeof(record), SEEK_CUR);
+
+
+
+- 파일 끝 이후로 이동
+  - lseek(fd, sizeof(record), SEEK_END); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
