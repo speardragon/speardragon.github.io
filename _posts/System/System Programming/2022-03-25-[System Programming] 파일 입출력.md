@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 - file descriptor
   - all open files are referred to by file descriptors.
   - how to obtain file descriptor
-    - return value of open(), create()
+    - return value of open(), creat()
   - when we want to read or write a file, 
     - we identify the file with the file descriptor
   - file descriptor is the <span style="color:blue">index of user file descriptor table</span>
@@ -222,11 +222,258 @@ int main(int argc, char *argv[])
 
 <br>
 
+## 파일 생성: creat()
+
+- creat() 시스템 호출
+  - path가 나타내는 파일을 생성하고 쓰기 전용으로 연다.
+  - 생성된 파일의 사용권한은 mode로 정한다.
+  - 기존 파일이 있는 경우에는 그 내용을 삭제하고 연다.
+  - 다음 시스템 호출과 동일
+    - open(path, WRONLY | O_CREAT | O_TRUNC, mode);
+  - Note that the file is opend only for writing.
+
+```c
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+int creat (const char *path, mode_t mode);
+```
+
+파일 생성에 성공하면 파일 디스크립터를, 실패하면 -1을 리턴
+
+
+
+- 다음과 같이 사용자 영역에서 구현 가능함에도 creat()는 시스템 콜로 존재 
+
+- 최근 glibc에서도 제공
+
+  - ```c
+    int creat (const char *path, mode_t mode){
+        return open(path, WRONLY | O_CREAT | O_TRUNC, mode);
+    }
+    ```
+
+- The GNU C Library is the GNU Project's implementation of the C standard library.
+
+
+
+<br>
+
+## 파일 닫기: close()
+
+- close() 시스템 호출은 fd가 나타내는 파일을 닫는다.
+- When a process termiantes, all of its open files are closed automatically by the kernel.
+  - Many program often do not explicily close open files.
+- On Unix-like systems, the interface defined by unistd.h is typically made up largely of system call wrapper functions such as fork, pipe and I/O primitives (read, write, close, etc.).
+- unistd.h is the header file that provides access to the POSIX OS API
+
+```c
+#include <unistd.h>
+int close(int fd);
+```
+
+- fd가 나타내는 파일을 닫는다.
+- 성공하면 0, 실패하면 -1을 리턴한다.
+
+<br>
+
+## 데이터 읽기: read()
+
+- read()  시스템 호출
+  - read up to nbytes from file (fd) into the buffer starting at *buf*
+    - read() starts at the file's current offset.
+    - Before a successful return, the offset is incremented by the number of bytes actually read.
+
+```c
+#include <unistd.h>
+ssize_t read (int fd, void *buf, size_t nbytes);
+```
+
+- 파일 읽기에 성공하면 읽은 바이트 수, 파일 끝을 만나면 0
+- 실패하면 -1을 리턴
+- (size_t: unsigned integer)
+
+
+
+<br>
+
+## fsize.c
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#define BUFSIZE 512
+
+/* 파일 크기를 계산 한다.*/
+int main (int argc, char *argc[])
+{
+    char buffer[BUFSIZE];
+    int fd;
+    ssize_t nread;
+    long total = 0;
+    if (fd = open(argc[1], O_RDONLY)) == -1)
+        perror(argc[1]);
+    
+     /* 파일의 끝에 도달할 때까지 반복해서 읽으면서 파일 크기 계산 */
+     while((nread = read(fd, buffer, BUFSIZE)) > 0)
+         total += nread;
+         close(fd);
+         printf ("%s 파일 크기 : %ld 바이트 \n", argv[1], total);
+         exit(0);
+    }
+
+}
+```
+
+
+
+<br>
+
+## read()
+
+- The number of bytes actually read may be less than the amount requested.
+  - If the end of regular file is reached before the requested number of bytes has been read.
+  - When reading from a terminal device, up to one line is read at a time.
+  - When reading from a network, buffering within the network may cause less than the requested amount to be returned.
+  - When reading from a pipe, if the pipe contains fewer bytes than requested, read will return only what is available.
+
+<br>
+
+## 데이터 쓰기: write()
+
+- write() 시스템 호출
+  - writes up to nbytes to the file referenced by filedes from the buffer starting at buf
+  - write start at the <span style="color:blue">file’s current offset.</span>
+  - if O_APPEND was specified when the file was opened
+    - The file's offset is set to the end of file before write
+
+```c
+#include <unistd.h>
+ssize_t write (int fd, void *buf, size_t nbytes);
+```
+
+- 파일에 쓰기를 성공하면 실제 쓰여진 바이트 수를 리턴하고, 실패하면 -1을 리턴
+
+
+
+<br>
+
+## copy.c
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+/* 파일 복사 프로그램 */
+main (int argc, char *argc[])
+{
+     int fd1, fd2, n;
+     char buf[BUFSIZ];
+     if (argc != 3) {
+     fprintf(stderr,"사용법: %s file1 file2\n",
+     argv[0]);
+     exit(1); 
+     if ((fd1 = open(argv[1], O_RDONLY)) == -1) {
+         perror(argv[1]);
+         exit(2);
+     }
+     if ((fd2 =open(argv[2], O_WRONLY | O_CREAT|O_TRUNC 0644)) == -1) {
+         perror(argv[2]);
+         exit(3);
+     }
+     while ((n = read(fd1, buf, BUFSIZ)) > 0)
+         write(fd2, buf, n); // 읽은 내용을 쓴다.
+         exit(0);
+    }
+}
+```
+
+
+
+<br>
+
+## 파일 디스크립터 복제
+
+- dup()/dup2() 호출은 기존의 파일 디스크립터를 복제한다.
+
+```c
+#include <unistd.h>
+int dup(int oldfd);
+oldfd에 대핚 복제본인 새로운 파일 디스크립터를 생성하여 반환핚다.
+실패하면 –1을 반환핚다.
+int dup2(int oldfd, int newfd);
+```
+
+- oldfd을 newfd에 복제하고 복제된 새로운 파일 디스크립터를 반환하고 실패하면 -1을 반환한다.
+
+![image](https://user-images.githubusercontent.com/79521972/160048835-3ebc0fba-5591-40f4-be32-2e5194e0f1b7.png)
+
+<br>
+
 ## dup() and dup()
 
+- Kernel data structures after "dup(1)"
+  - The next available descriptor is 3.
 
+![image](https://user-images.githubusercontent.com/79521972/160048908-a84b4359-ab19-4a2e-8cf5-ba7fbe7e80db.png)
 
-파일을 STDOUTput table에 복제를 하여 표준 출력을 사용할 수 없게 되고 코드의 결과인 printf가 실행되지 못할 것이다. 그래서 만약 출력을 하고 싶으면 cat 명령어를 사용해야 한다.
+- Example 
+
+  - ```c
+    #include <unistd.h>
+    #include <fcntl.h>
+    int main(void)
+    {
+    	int fd;
+        fd = creat("dup_result", 0644);
+        dup2(fd, STDOUT_FILENO);
+        close(fd);
+        printf("hello world\n");
+        return 0;
+    }
+    ```
+
+<br>
+
+- 실행
+
+  - ```assembly
+    $ cat dup_result
+    hello world
+    ```
+
+파일을 STDOUT table에 복제를 하여 표준 출력을 사용할 수 없게 되고 코드의 결과인 printf가 실행되지 못할 것이다. 그래서 만약 출력을 하고 싶으면 cat 명령어를 사용해야 한다.
+
+<br>
+
+## dup.c
+
+```c
+#include <unistd.h>
+ #include <fcntl.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+int main()
+{
+    int fd1, fd2;
+
+    if((fd1 = creat("myfile", 0600)) == -1)
+    	perror("myfile");
+
+    write(fd1, "Hello! Linux", 12);
+    fd2 = dup(fd1);
+    write(fd2, "Bye! Linux", 10);
+    exit(0);
+}
+```
+
+```
+$ dup
+$ cat myfile
+Hello! LinuxBye! Linux
+```
 
 
 
