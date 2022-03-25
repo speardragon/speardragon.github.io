@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[System Programming] C 프로그래밍 환경"
+title: "[System Programming] week 4"
 categories: ['System', 'System Programming']
 tag: ['System Programming', 'Unix']
 ---
@@ -9,8 +9,4 @@ tag: ['System Programming', 'Unix']
 
 
 
-# 유닉스 사용
-
-## Logging in 
-
-- Login
+# 유
