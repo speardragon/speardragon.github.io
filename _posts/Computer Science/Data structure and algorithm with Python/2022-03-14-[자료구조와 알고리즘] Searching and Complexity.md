@@ -444,7 +444,7 @@ print(a)
 2. binary search를 하는 코드
 3. bisect를 사용한 코드
 
-
+[https://www.acmicpc.net/problem/1920](https://www.acmicpc.net/problem/1920)
 
 이 코드를 바탕으로 위 세 가지 방법을 구현하여 어떻게 나오는지 봐보기
 
@@ -466,6 +466,109 @@ target = list(map(int, input().split()))
 이 때 중요한 점은 binary search의 경우 sort를 해야만 하기 때문에 이 과정을 추가하는데 이는 시간 복잡도에 영향을 미치지 않는다. 이에 대해서는 다음 시간에 계속 알아보도록 하겠다.
 
 
+
+#### 과제 1
+
+```python
+# 1. Linear Search
+import sys
+
+
+def search(card, target):
+    card_size = len(card)
+
+    for j in range(card_size):
+        if target == card[j]:
+            print(1)
+            return
+    print(0)
+    return
+
+
+
+N = int(input())
+_card = list(map(int, input().split()))
+
+M = int(input())
+_target = list(map(int, input().split()))
+
+for i in _target:
+    search(_card, i)
+
+```
+
+
+
+#### 과제 2
+
+```python
+# 2. Binary search
+import sys
+
+
+def binarysearch(card, target):
+    left, right = 0, len(card) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if target < card[mid]:
+            right = mid - 1
+        elif target > card[mid]:
+            left = mid + 1
+        else:
+            print(1)
+            return
+
+    print(0)
+    return
+
+
+
+N = int(input())
+_card = list(map(int, input().split()))
+_card.sort()
+
+M = int(input())
+_target = list(map(int, input().split()))
+
+for i in _target:
+    binarysearch(_card, i)
+
+```
+
+
+
+#### 과제 3
+
+```python
+# 3. Using bisect module
+import sys
+import bisect
+
+
+def bisectsearch(card, target):
+    index = bisect.bisect_left(card, target)
+    if index < len(card) and card[index] == target:
+        print(1)
+        return
+    else:
+        print(0)
+        return
+
+
+
+N = int(input())
+_card = list(map(int, input().split()))
+_card.sort()
+
+M = int(input())
+_target = list(map(int, input().split()))
+
+for i in _target:
+    bisectsearch(_card, i)
+
+```
 
 
 
