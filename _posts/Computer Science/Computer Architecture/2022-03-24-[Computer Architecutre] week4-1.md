@@ -13,11 +13,15 @@ tag: ['Computer Architecture', 'Intro']
 
 ![image](https://user-images.githubusercontent.com/79521972/159843857-8a39415e-5445-4956-9453-403f56029513.png)
 
+
+
 <br>
 
 **Machine instruction**
 
 ![image](https://user-images.githubusercontent.com/79521972/159824475-918f28c9-0278-4d6c-a16c-db34ccf6f99f.png)
+
+lw, sw, beq, bne는 I type을 써도 무방하다. 공간 할애하는 것이 유사하기 때문에
 
 <br>
 
@@ -36,7 +40,7 @@ tag: ['Computer Architecture', 'Intro']
 
 - opcode를 본다.
 - R -type의 opcode는 000000으로 설정되어있다.
-  - 그래서 R-type의 명령어를 알고싶으면 function code를 봐서 연산 종류를 알 수 있게 되는 것이다.(add, sub, xor, and,...)
+  - 그래서 구체적인 R-type의 명령어를 알고싶으면 function code를 봐서 연산 종류를 알 수 있게 되는 것이다.(add, sub, xor, and,...)
 
 
 
@@ -70,7 +74,7 @@ tag: ['Computer Architecture', 'Intro']
 
 
 
-
+code와 field value의 register 위치가 다름에 유의(destination의 위치가 code에서는 맨 처음이다.)
 
 <br>
 
@@ -100,8 +104,8 @@ tag: ['Computer Architecture', 'Intro']
   - No rewiring required
   - Simply store new program in memory
 - Program Execution:
-  - Processor fetches (reads) instructions from memory in sequence
-  - Processor performs the specified operation
+  - Processor **fetches** (reads) instructions from memory in sequence
+  - Processor **performs** the specified operation
 
 
 
@@ -156,14 +160,16 @@ tag: ['Computer Architecture', 'Intro']
 
 ### Logical Instructions
 
-- and, or, xor, nor
+- **and, or, xor, nor**
   - and: useful for **masking** bits
-    - Masking all but the least significant byte of a value:  0xF234012F AND 0x000000FF = 0x0000002F
+    - Masking all but the least significant byte of a value:  
+      - 0xF234012F AND 0x000000FF = 0x0000002F
   - or: useful for **combining** bit fields
-    - Combine 0xF2340000 with 0x000012BC:  0xF2340000 OR 0x000012BC = 0xF23412BC
+    - Combine 0xF2340000 with 0x000012BC:  
+      - 0xF2340000 OR 0x000012BC = 0xF23412BC
   - nor: useful for **inverting** bits:
     - A NOR $0 = NOT A
-- andi, ori, xori
+- **andi, ori, xori**
   - 16-bit immediate is zero-extended (not sign-extended)
   - nori not needed
 
@@ -179,11 +185,13 @@ tag: ['Computer Architecture', 'Intro']
 
 ### Shift Instructions
 
+5가 들어가는 위치는 shamt이기 때문에 register가 들어가는 자리가 하나가 남는데 그 자리는 그냥 쓰지 않는 자리이다.
+
 - sll: shift left logical
   - Example: `sll $t0, $t1, 5 # $t0 <= $t1 << 5`
 
 - srl: shift right logical
-  - Example: `srl $t0, $t1, 6 # $t0 <= $t1 >> 5`
+  - Example: `srl $t0, $t1, 5 # $t0 <= $t1 >> 5`
 - sra: shift right arithmetic
   - Example: `sra $t0, $t1, 5 # $t0 <= $t1 >>> 5`
 
@@ -197,6 +205,12 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
 
 - sllv: shift left logical variable
   - Example: `sllv $t0, $t1, $t2 # $t0 <= $t1 << $t2`
+- srlv: shift right logical variable
+  - Example: srlv $t0, $t1, $t2    # $t0 <= $t1 >> $t2
+
+- srav: shift right arithmetic variable
+  - Example: srav $t0, $t1, $t2  # $t0 <= $t1 >>> $t2
+
 
 
 
@@ -223,7 +237,8 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
   - C Code
 
     - ```c
-      // int is a 32-bit signed word int a - 0x4f3c;
+      // int is a 32-bit signed word 
+      int a - 0x4f3c;
       ```
 
   - MIPS assembly code
@@ -235,19 +250,24 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
 
 - 32-bit constants using load upper immediate(lui) and ori:
 
+  - 32 bit인 경우 16bit의 제약 조건에서 사용할 수 없기 때문에 두 개로 나눠서 사용한다.
+
+    - lui / ori
+  
   - C Code
 
     - ```c
-      int a = 0xFEDC8765;
+      int a = 0xFEDC8765; //32bit
       ```
-
+  
   - MIPS assembly code
-
+  
     - ```assembly
       # $s0 = a
       lui $s0, 0xFEDC
       ori $s0, $s0, 0x8765
       ```
+  
 
 
 
@@ -261,11 +281,11 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
   - Result in `{hi,lo}`
 - 32-bit division, 32-bit quotient, remainder
   - `div $s0, $s1`
-  - Quotient in `lo`
-  - Remainder in `hi`
-- **M**oves **f**rom **lo/hi** sepcial registers
+  - Quotient(몫) in `lo`
+  - Remainder(나머지) in `hi`
+- **M**oves **f**rom **lo/hi** special registers
   - `mflo $s2`
-    - $s1 <- $lo
+    - $s2 <- $lo : lo(몫, 32bit)으로부터 데이터를 가져와 $2에 저장한다.
   - `mfhi $s3`
 
 
@@ -278,16 +298,15 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
 
 - Types of branches:
 
-  - Conditional 
+  - **Conditional** 
     - branch if equal (bea)
     - branch if not equal (bne)
 
-  - Unconditional
-
-    - Jump (j)
-    - jump register (jr)
-
-    - jump and link (jal)
+  - **Unconditional**
+- Jump (j)
+    - jump register (jr) : register로 jump해라
+    
+- jump and link (jal)
 
 
 
@@ -297,7 +316,7 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
 
 ![image](https://user-images.githubusercontent.com/79521972/159848676-bc959799-1288-4f24-9c5e-1629d0a7c959.png)
 
-
+PC부터 시작
 
 <br>
 
@@ -309,6 +328,8 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
 
 > Labels indicate instruction location. They can't be reserved words and must be followed by colon (:)
 
+sll는 x2의 효과가 있기 때문에 2만큼 shift left를 하면 x2<sup>2</sup> 이기 때문에 $s1에는 4가 저장된다.
+
 
 
 <br>
@@ -317,9 +338,15 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
 
 ![image](https://user-images.githubusercontent.com/79521972/159924349-0201c5de-d535-4876-b725-15fe22546514.png)
 
+
+
+
+
 ### Unconditional Branching(j)
 
 ![image](https://user-images.githubusercontent.com/79521972/159924405-1cefcf8b-f22c-437a-8876-f2a694de37b6.png)
+
+
 
 ### Unconditional Branching(jr)
 
@@ -328,6 +355,8 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
 > jr is an R-type instruction
 
 <br>
+
+
 
 ### High-level Code Constructs
 
@@ -356,33 +385,17 @@ f = f - i;
 ```assembly
 # $s0 = f, $s1 = g, $s2 = h
 # $s3 = i, $s4 = j
+	bne $s3, $s4, L1
+	add $s0, $s1, $s2
+	
+L1 sub $s0, $s0, $s3
 ```
+
+> Assembly tests opposite case (i != j) of high-level code(i == j)
+
+high level 언어에서는 ==이면 안의 구문을 실행하는 것이니까 assembly 언어에서는 !=이면 그 다음을 생략 하고 L1으로 점프하게 한 것이다.
 
 <br>
-
-- C Code
-
-```c
-if (i == j)
-    f = g + h;
- 
-f = f - i;
-```
-
-- MIPS assembly code
-
-```assembly
-# $s0 = f, $s1 = g, $s2 = h
-# $s3 = i, $s4 = j
-    bne $s3, $s4, L1
-    add $s0, $s1, $s2
-
-L1: sub $s0, $s0, $s3
-```
-
-> Assembly test opposite case (i != j) of high-level code (i == j)
-
-
 
 #### If/Else Statement
 
@@ -404,7 +417,7 @@ else
     add $s0, $s1, $s2
     j done
 L1: sub $s0, $s0, $s3
-done
+done:
 ```
 
 <br>
@@ -486,6 +499,8 @@ done:
 
 ### Less Then Comparison
 
+
+
 - C Code
 
 ```c
@@ -498,6 +513,8 @@ for (i=1; i < 101; i = i*2) {
 }
 ```
 
+
+
 - MIPS assembly code
 
 ```assembly
@@ -506,14 +523,20 @@ for (i=1; i < 101; i = i*2) {
     addi $s0, $0, 1
     addi $t0, $0, 101
 loop: slt $t1, $s0, $t0
-    beq $t1, $0, done
-    add $s1, $s1, $s0
-    sll $s0, $s0, 1
-    j loop
+      beq $t1, $0, done
+      add $s1, $s1, $s0
+      sll $s0, $s0, 1
+      j loop
 done:
 ```
 
 `$t1=1 if i<101`
+
+`$t1=0 else if i > 101`
+
+그래서 slt와 beq를 합쳐서 bgt를 사용하면 이를 알아서 slt+beq로 컴파일 해 준다.
+
+- beq에서는 101보다 작은지 큰지에 대한 정보인 t1의 정보와 0을 비교하여 loop를 빠져나가는 것이다.
 
 
 
