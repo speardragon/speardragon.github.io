@@ -9,9 +9,9 @@ tag: ['Computer Architecture', 'Intro']
 
 # Review)
 
-![image-20220329120459036](C:\Users\c_dragon\AppData\Roaming\Typora\typora-user-images\image-20220329120459036.png)
+![image](https://user-images.githubusercontent.com/79521972/160535013-589fec78-5b74-42eb-9ff4-85c18839f01a.png)
 
-
+<br>
 
 
 
@@ -35,16 +35,15 @@ tag: ['Computer Architecture', 'Intro']
 
 ## Array
 
+- Access large amounts of similar data
+- Index: access each element
+- Size: number of elements
+
 - 5-element array
-- Base address
+- **Base address** = = 0x12348000 (address of first element, array[0])
+- First step in accessing an array: load base address into a register
 
 ![image](https://user-images.githubusercontent.com/79521972/160526538-f30c97be-8de8-46e8-9198-ed26594a4fc4.png)
-
-
-
-
-
-
 
 ## Accessing Arrays
 
@@ -114,16 +113,6 @@ done:
 
 
 
-
-
-<br>
-
-## Cast of Characters
-
-
-
-
-
 <br>
 
 ## Function Calls
@@ -146,10 +135,7 @@ int sum (int a, int b)
 }
 ```
 
-
-
 - $ra를 통해 다시 돌아오고 반환할 때는 $v0에 담아서 반환한다.
-- 
 
 
 
@@ -161,9 +147,10 @@ int sum (int a, int b)
   - passes arguments to callee
   - jumps to callee
 - Callee:
-  - performs the function
-  - returns result to caller
-  - returns to point of call
+  - **performs** the function
+  - **returns** result to caller
+  - **returns** to point of call
+  - must not overwrite registers or memory needed by caller
 
 
 
@@ -175,8 +162,6 @@ int sum (int a, int b)
 - Return from function: jump register (jr)
 - Arguments: $a0 - $a3 ($4-$7)
 - Return value: $v0 - $v1 ($2-$3)
-
-
 
 
 
@@ -225,8 +210,8 @@ jr $ra: jumps to address in $ra (0x00400204) (ret)
 
 MIPS Conventions
 
-- Argument values: $a0 - $a3 
-- Return value: $v0
+- `Argument values`: $a0 - $a3 
+- `Return value`: $v0
 
 
 
@@ -269,16 +254,11 @@ diffofsums:
     sub $s0, $t0, $t1 # result = (f + g) - (h + i)
     add $v0, $s0, $0 # put return value in $v0
     jr $ra # return to caller
-
 ```
-
-
 
 <br>
 
-만약 main에서 t0, t1, s0를 이미 사용했다면 즉 4개가 넘으면 stack을 이용한다.
-
-
+만약 main에서 t0, t1, s0를 이미 사용했다면 즉 4개가 넘으면 stack memory을 이용한다.
 
 ```assembly
 # MIPS assembly code
@@ -291,8 +271,8 @@ diffofsums:
     jr $ra 				# return to caller
 ```
 
-- diffofsums overworte 3 register: $t0, $t1, $s0
-- diffofsums can use stack to temporarily store registers
+- diffofsums **overworte** 3 register: $t0, $t1, $s0
+- diffofsums can use **stack** to temporarily store registers
 
 
 
@@ -304,34 +284,74 @@ diffofsums:
 
 - Memory used to temporarily save variables
 
+- Like stack of dishes, last-in-first-out(LIFO) queue
+- Expands: uses more memory when more space needed
+- Contracts: uses less memory when the space is no longer needed(pop)
 
-
-
+<br>
 
 - 스택은 위에서부터 내려오는 방식, 힙은 아래에서 위로 올라가는 방식
 
 - 스택을 사용하기 전에는 쓸 만큼 stack pointer를 증가 시켜서 다음 빈 스택을 가리켜야 하기 때문에 stack pointer를 이동시켜야 한다.
 - 즉, stack pointer 전까지의 공간은 누가 사용하고 있는 것
 
+<br>
 
+- Grows down (from higher to lower memory address)
+- Stack pointer: $sp points to top of the stack
+
+![image](https://user-images.githubusercontent.com/79521972/160535683-c7461610-e7b9-45bf-b6f8-ffcbf52e676e.png)
+
+<br>
+
+## How Functions use the Stack
+
+- Called functions must have no unintened side effects
+- But diffofsums overwrites 3 registers: $t0, $t1, $s0
+
+```assembly
+# MIPS assembly
+# $s0 = result
+diffofsums:
+	add $t0, $a0, $a1 	# $t0 = f + g
+	add $t1, $a2, $a4 	# $t1 = h + i
+	sub $s0, $t0, $t1 	# result = (f + g) - (h + i)
+	add $v0, $s0, $0 	#put return value in $v0
+	jr $ra 				#return to caller
+```
 
 
 
 ## Storing Register Values on the Stack
 
-push(sw) pop(lw)
+- push(sw), pop(lw)
 
+```assembly
+# $s0 = result
+diffofsums:
+addi $sp, $sp, -12 	# make space on stack
+					# to store 3 registers
+sw $s0, 8($sp) 		# save $s0 on stack
+sw $t0, 4($sp) 		# save $t0 on stack
+sw $t1, 0($sp) 		# save $t1 on stack
+add $t0, $a0, $a1 	# $t0 = f + g
+add $t1, $a2, $a3 	# $t1 = h + i
+sub $s0, $t0, $t1 	# result = (f + g) - (h + i)
+add $v0, $s0, $0 	# put return value in $v0
+lw $t1, 0($sp) 		# restore $t1 from stack
+lw $t0, 4($sp) 		# restore $t0 from stack
+lw $s0, 8($sp) 		# restore $s0 from stack
+addi $sp, $sp, 12 	# deallocate stack space
+jr $ra 				# return to caller
+```
 
-
-
+---
 
 subroutine에서 모든 걸 다 저장해야하는가?
 
 - 그래서 t와 s로 구분한 것
 
-
-
-
+---
 
 
 
@@ -354,6 +374,14 @@ diffofsums:
 
 
 
+### The stack during diffofsums Call
+
+![image](https://user-images.githubusercontent.com/79521972/160536148-de64e9b7-f0d9-49f6-9ec8-4249cadc2669.png)
+
+<br>
+
+
+
 ## Register
 
 
@@ -365,12 +393,6 @@ diffofsums:
 
 
 <br>
-
-## Multiple Function Calls
-
-
-
-
 
 
 
@@ -409,6 +431,27 @@ proc1:
 
 ## Recursive Function Call
 
+- Function that calls it self
+
+- When convertint to assembly code:
+
+  - In the first pass, treat recursive calls as if it's calling a different function and ignore overwritten registers.
+  - Then save/restore registers on stack as needed.
+
+- ex) Factorial function
+
+  - factorial(n) = n!
+
+    - =n*(n-1)\*(n-2)\*(n-3) ... \*1
+
+  - Example: factorial(6) = 6!
+
+    =6\*5\*4\*3\*2\*1
+
+    =720
+
+<br>
+
 ```c
 // High-level code
 int factorial (int n) {
@@ -444,20 +487,38 @@ else:
     jr $ra 				# return
 ```
 
+<img src="https://user-images.githubusercontent.com/79521972/160536462-7c002ba7-92f5-42c5-861e-406f608ed500.png" alt="image" style="zoom:67%;" />
 
+<br>
+
+## Stack During Recursive Call
+
+![image](https://user-images.githubusercontent.com/79521972/160536690-6a247284-83d2-412f-950c-53e5d81ee3fc.png)
+
+
+
+<br>
 
 ## Function Call Summary
 
 - Caller
-
-
+  - Put arguments in $a-$a3
+  - Save any needed registers ($ra, maybe $t0-t9)
+  - jal callee
+  - Restore registers
+  - Look for result in $v0
 
 - Callee
   - s register만 저장
+  - Save registers that might be distrubed ($s0-$s7)
+  - Perform function
+  - Put result in $v0
+  - Restore registers
+  - jr $ra
 
 
 
-
+<br>
 
 ## Addressing Modes
 
