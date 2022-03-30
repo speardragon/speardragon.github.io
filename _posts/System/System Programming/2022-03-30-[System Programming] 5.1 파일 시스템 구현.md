@@ -19,8 +19,8 @@ tag: ['System Programming', 'File System']
 - File systems provide effiecient and convenient access to the disk by allowing data to be stored, located, and retrieved easily.
 - File system 설계 이슈.
   - how the file system should look to the user.
-    - Provides user interface to storage, mapping logical to physical storage
-    - defines a file and its attributes, the operations allowed on a file, and the directory structure for organizing files. 
+    - Provides **user interface** to storage, mapping logical to physical storage(OS가 관리하고 있는)
+    - defines a **file** and its attributes, the **operations** allowed on a file, and the **directory structure** for organizing files. 
   - creating algorithms and data structures to map the logical file system onto the physical secondary-storage devices.
     - To improve I/O efficiency, I/O transfer is between MM and disks are performed in units of bock
 
@@ -32,6 +32,8 @@ tag: ['System Programming', 'File System']
 
 - 하드 디스크는 surface, track, sector로 구성되는 3D 구조(주소)
 - 파일 시스템은 디스크를 물리적인 구조로 보지 않고 논리적인 디스크 블록들의 집합으로 간주
+  - 1차원으로 간주
+
 - OS는 디스크와의 정보 전송을 블록 단위로 수행
   - 디스크의 블록에는 논리적인 주소가 할당됨 (1D 주소) 
   - 이러한 논리적인 주소를 이용하여 디스크와 정보 전송을 하기 위 해 디스크의 3D 구조를 크기가 일정한 논리 블록들의 집합인 1D 배열로 매핑하여 관리함. 
@@ -48,6 +50,10 @@ tag: ['System Programming', 'File System']
 
 ![image](https://user-images.githubusercontent.com/79521972/160800596-a4059662-5921-4062-b140-169468c25192.png)
 
+sector의 배열(1차원 구조)
+
+- 그래서 사실상 file system 내부에서는 1차원 구조인 것이다.
+
 
 
 <br>
@@ -61,11 +67,11 @@ tag: ['System Programming', 'File System']
 
 
 - 부트 블록(Boot control block)
-  - contains info needed by system to boot OS from that volume
+  - contains info needed by system to boot OS from that volume(OS 부팅)
   - 부트스트랩 코드가 저장되는 블록
   - 파일 시스템 시작부에 위치하고 보통 첫 번째 섹터 (block)를 차지
 - 슈퍼 블록(Volume control block, superblock, master file table)
-  - 전체 파일 시스템에 대한 정보를 저장
+  - **전체 파일 시스템**에 대한 정보를 저장
   - Total # of blocks, 사용 중인 블록 수, # of free blocks, block size, 사용 가능 한 블록 비트 맵 (free block pointers or array), 사용 가능한 i-노드 개수
 - i-리스트(i-list)
   - 각 파일을 나타내는 모든 i-노드들의 리스트
@@ -90,7 +96,7 @@ tag: ['System Programming', 'File System']
 
 ### Unix File system
 
-- inode 저장 영역과 data block 저장 영역의 분리
+- inode 저장 영역과 data block 저장 영역의 **분리**
 - inode 크기는 일정 (attribute 정보이므로)
   - i-number로 접근 가능 (아래 그림에서 0, 4, 6)
 
@@ -106,57 +112,64 @@ tag: ['System Programming', 'File System']
 
 ![image](https://user-images.githubusercontent.com/79521972/160801419-5792db82-3c0d-4cb7-9e6f-27fe76bb2dbe.png)
 
+file system도 계층 구조로 이루어져 있는 것이 일반적이다.
+
 
 
 <br>
 
 ### File System Layers
 
-- Logical file system manages metadata information
-
+- **Logical file system** manages metadata information
   - Metadata includes all of the FS structure except actual data
-
+  
   - Directory management(manages directory structure)
-
-  - Translates file name into file number, file handle, location by maintaining file control blocks (inodes in Unix)
-
+  
+  - **Translates file name into** file number, file handle, location by maintaining **file control blocks** (<span style="color:blue">inodes </span>in Unix)
+  
   - Protection
+  
+  - Logical block number 사용
 
 <br>
 
-- File organization module understands files, logical blocks as well as physical blocks
-
-  - Translates logical block # to physical block # for the basic file system
-
+- **File organization module** understands files, logical blocks as well as physical blocks
+  - Translates **logical block #** to **physical block #** for the basic file system
+  
   - Manages free space (unallocated blocks), disk allocation
+    - 파일이 저장 될 때 저장되는 공간을 할당
+  
 
-<br>
 
-- Basic file system given command like “retrieve block 123” translates to device driver (mapping 1D address to 3D address)
+
+- **Basic file system** given command like “retrieve block 123” translates to device driver (mapping 1D address to 3D address)
   - Also manages memory buffers and caches (allocation, freeing, replacement) 
-    - Buffers hold data in transit
+    - Buffers hold data in transit(하드디스크에 바로 write하는 것이 아니라 buffer에 담아놨다가 전달)
     - Caches hold frequently used meta data
+  - Pysical block number 사용
 
 
 
-- Device drivers manage I/O devices at the I/O contrl layer
+- **Device drivers** manage I/O devices at the **I/O control layer**
   - Given commands lile "read drive1, cylinder 72, track 2, sector 10, into memory location 1060” outputs low-level hardware specific commands to hardware controller 
 
-- Layering useful for reducing complexity and redundancy, but adds overhead and can decrease performance (minimize code duplication)
+- Layering useful for reducing complexity(복잡도) and redundancy(중복?), but adds overhead and can decrease performance (minimize code duplication)
   - Logical layers can be implemented by any coding method according to OS designer
 
 - Many file systems, sometimes many within an operating system
   - Each with its own format 
-  - CD-ROM is ISO 9660; Unix has UFS, FFS;
-  - Windows has FAT, FAT32, NTFS, Linux has more than 40 types, with extended file system ext2 and ext3 leading; 
-  - plus distributed file systems, etc
+    - CD-ROM is ISO 9660; 
+    - Unix has UFS, FFS;
+    - Windows has FAT, FAT32, NTFS, Linux has more than 40 types, with extended file system ext2 and ext3 leading; 
+    - plus distributed file systems(분산 파일 시스템), etc
 
-
+<br>
 
 ### i-node(i-node)
 
-- inod는 file마다 하나씩 존재.
+- inod는 각 file마다 하나씩 존재.
 - 아래의 block array가 하나의 paartition이라 가정.
+- inode의 사이즈는 파일 사이즈와 무관하게 일정
 
 ![image](https://user-images.githubusercontent.com/79521972/160802244-317064f7-a9a3-4ed1-bd94-fd6899e7cbff.png)
 
@@ -166,23 +179,23 @@ tag: ['System Programming', 'File System']
 
 ### File Control Block(i-node)
 
-- 파일 관리를 위해 커널이 관리해야 할 정보  파일 속성(파일 시스템 인터페이스)
-- 파일 속성들의 집합을 메타데이터라고 함
-- 메타데이터는 파일 내용 자체인 데이터를 제외한 모든 파일 시스템의 구 조를 뜻하는 말임.
-- 프로세스와 관련된 메타데이터는 PCB(Process Control Bloc)
-- 파일 구조와 관련된 메타데이터는 FCB(File Control Block)
+- 파일 관리를 위해 커널이 관리해야 할 정보
+- 파일 속성(파일 시스템 인터페이스)
+  - 파일 속성들의 집합을 **메타데이터**라고 함
+  - 메타데이터는 파일 내용 자체인 데이터를 제외한 모든 파일 시스템의 구조를 뜻하는 말임.
+
+- 프로세스와 관련된 메타데이터는 PCB(Process Control Block)
+- 파일 구조와 관련된 메타데이터는 <span style="color:red">FCB(File Control Block)</span>
 
 
 
 <br>
 
-- 파일을 관리하기 위하여 metadata를 kernel 공간에서 관리해야 함.ㄴ
+- 파일을 관리하기 위하여 metadata를 kernel 공간에서 관리해야 함.
 
 ![image](https://user-images.githubusercontent.com/79521972/160805581-a8eabc16-11ba-46d2-939c-4df880b913bd.png)
 
 
-
-<br>
 
 - 한 파일/디렉토리는 하나의 i-노드를 갖는다.
 - 파일에 대한 모든 정보를 가지고 있음
@@ -191,9 +204,9 @@ tag: ['System Programming', 'File System']
   - 사용 권한 (e.g. rwxr--r--) 
   - 파일 소유자 및 그룹 (e.g. obama) 
   - 마지막 접근 및 갱신 시간
-  - 일반 파일: 데이터 블록에 대한 포인터(주소) 
+  - <mark>일반 파일: 데이터 블록에 대한 포인터(주소, 위치정보) </mark>
   - 스페셜 파일: device number (e.g. /dev/hda0) 
-  - 접근 위치 (e.g. offset) 
+  - **접근 위치** (e.g. offset) 
   - …
 
 <br>
@@ -203,22 +216,24 @@ tag: ['System Programming', 'File System']
 ![image](https://user-images.githubusercontent.com/79521972/160805928-9667e2d4-68e5-4f0d-b7b2-1c598cb9f063.png)
 
 - 그렇다면 inode는 어떻게 찾을까?
-  - Directory file에 file name 및 inode number를 저장.
+  - **Directory file**에 file name 및 inode number를 저장.
 
 ![image](https://user-images.githubusercontent.com/79521972/160806036-dda9c96d-5b10-4a49-aed9-57481f30bb23.png)
 
-
+etc 디렉토리는 4번 inode...
 
 <br>
 
 ### Allocation of blocks for files
+
+파일을 디스크에 저장하는 방법
 
 - Techniques for Assigning blocks to directory / files 
   - An allocation method refers to how disk blocks are allocated for files:
   - Directory entry for each file indicates the address of the starting block and the length allcocated for this file
 - Should
   - Utilize disk space effectively 
-  - Provide fast access to file 
+  - Provide **fast** access to file 
 - Major technique 
   - Contiguous
   - Linked 
@@ -228,11 +243,15 @@ tag: ['System Programming', 'File System']
 
 <br>
 
-### Contiguous Allocation of Disk Space
+### Contiguous(접촉하는) Allocation of Disk Space
 
 ![image](https://user-images.githubusercontent.com/79521972/160806387-7227fd43-3427-4dae-850f-81ab16a6ecce.png)
 
 
+
+count라는 파일은 0번 블락이 시작 지점이고 길이는 2이기 때문에 0,1 블럭에 저장된다. 그런데 연속된 공간을 할당하려 하는데 해당 블럭이 이미 차지되어 있는 경우 할당하지 못하는 문제가 생긴다.
+
+대신 read가 빠름
 
 <br>
 
@@ -240,26 +259,32 @@ tag: ['System Programming', 'File System']
 
 <img src="https://user-images.githubusercontent.com/79521972/160806520-2c596a80-b113-450e-95a1-3133279dd003.png" alt="image" style="zoom:67%;" />
 
+- 연속된 블럭을 할당할 필요가 없기 때문에 위의 단점을 보완하였음.
+
+- linking정보가 존재
+- read 시간이 느림
+
 <br>
 
 ### Indexed Allocation of Disk Space
 
 <img src="https://user-images.githubusercontent.com/79521972/160806584-2f70b8b8-cfd4-4c53-85c6-b0a7a687be36.png" alt="image" style="zoom:67%;" />
 
-
+1, 2번 방식을 보완한 방법
 
 <br>
 
 ### 블록 포인터
 
 - 유닉스 파일 시스템에서 inode는 데이터 블록을 가리키는 블록 포인터 배열 을 포함
-- 파일의 크기는 가변적임. 또한, 커널은 디스크에 블록단위로 I/O를 하며 데이터 블록은 불연속적인 위치에 저장됨. 
+- 파일의 크기는 **가변적**임. 또한, 커널은 디스크에 블록단위로 I/O를 하며 데이터 블록은 불연속적인 위치에 저장됨. 
 - 가변적인 크기의 파일의 블록들을 블록 포인터 배열을 이용하여 찾아가는 방법은?
-- 다음 슬라이드의 경우 13개의 블록 포인터 배열 존재. 이 블록 포인터들 은 동작 방식에 따라 4가지 방식으로 구분. 
-- 직접(direct) : 파일의 데이터가 저장된 블록에 직접 접근 가능한 포인터 
-- 단일 간접(single indirect) : 파일의 데이터가 저장된 블록에 간접적으로 접근하는 단일 포인터
-- 이중 간접(double indirect) : 파일의 데이터가 저장된 블록에 간접적으로 접근하는 이중 포인터
-- 삼중 간접(triple indirect) : 파일의 데이터가 저장된 블록에 간접적으로 접근하는 삼중 포인터
+  - 다음 슬라이드의 경우 13개의 블록 포인터 배열 존재. 이 블록 포인터들 은 동작 방식에 따라 4가지 방식으로 구분. 
+  - 직접(direct) : 파일의 데이터가 저장된 블록에 직접 접근 가능한 포인터 (indexed allocation)
+  - 단일 간접(single indirect) : 파일의 데이터가 저장된 블록에 간접적으로 접근하는 단일 포인터
+  - 이중 간접(double indirect) : 파일의 데이터가 저장된 블록에 간접적으로 접근하는 이중 포인터
+  - 삼중 간접(triple indirect) : 파일의 데이터가 저장된 블록에 간접적으로 접근하는 삼중 포인터
+
 
 
 
@@ -273,23 +298,24 @@ tag: ['System Programming', 'File System']
 
 
 
-<br>
-
 ### 블록 포인터
 
 ![image](https://user-images.githubusercontent.com/79521972/160806934-03b35e01-2af2-4a98-9330-fec46b28b36e.png)
 
-
+삼중 간접 블록 포인터는 나와있지 않다.
 
 - 데이터 블록에 대한 포인터 
-- 파일의 내용을 저장하기 위해 할당된 데이터 블록의 주소
+  - 파일의 내용을 저장하기 위해 할당된 데이터 블록의 주소
+
 - 하나의 i-노드 내의 블록 포인터
-- 직접 블록 포인터 10개
-- 간접 블록 포인터 1개 (1,024 직접 블록) if 블록 포인터 크기 = 4B, 블록 크기 = 4,096B)
-- 이중 간접 블록 포인터 1개 (1,024의 간접 블록 포인터 )
--  최대 몇 개의 데이터 블록을 가리킬 수 있을까?
+  - 직접 블록 포인터 10개
+  - 간접 블록 포인터 1개 (1,024 직접 블록) 
+    - if 블록 포인터 크기 = 4B(32bit), 블록 크기 = 4,096B) -> 그래서 1024개의 블럭
 
+  - 이중 간접 블록 포인터 1개 (1,024의 간접 블록 포인터 )
 
+- 최대 몇 개의 데이터 블록을 가리킬 수 있을까?(이 파일 시스템의 최대 사이즈는?)
+  - 아래에 나와 있음
 
 <br>
 
@@ -305,12 +331,13 @@ tag: ['System Programming', 'File System']
     - 직접 포인터와 간접 포인터를 같이 이용함. 
     - 우선, 단일 간접 포인터가 가리키는 데이터 블록을 찾음.
     - 포인터 블록 크기가 4Kbyte이므로 1024개의 포인터(포인터는 4byte)를 간접적 으로 사용하여 데이터 블록을 가리킬 수 있음.
-    -  이 경우 1024*4KB의 크기 즉, 4MB의 크기까지의 파일을 가리킬 수 있음. 
-  - 만약, 파일의 크기가 4MB가 넘을 경우 이중 간접 포인터를 사용 
+    -  이 경우 1024*4KB의 크기 즉, 4MB의 크기까지의 파일을 (single 방식으로) 가리킬 수 있음. 
+  - 만약, 파일의 크기가 4MB가 넘을 경우 **이중 간접 포인터**를 사용 
     - 단일 간접 포인터보다 레벨을 하나 더 두어서 총 1024\*1024*4KB가 되어 총 4GB 크기를 가지는 파일을 가리킬 수 있음. 
-  - 4GB를 넘는 파일의 경우 삼중 간접 포인터를 사용
+  - 4GB를 넘는 파일의 경우 **삼중 간접 포인터**를 사용
     - *1024*1024*1024*4KB의 크기 즉, 4TB의 크기를 가지는 파일을 가리킬 수 있음.
-    -  따라서, 블록의 크기가 4Kbyte일 경우 지원되는 파일의 최대 크기는 4KB + 4MB + 4GB + 4TB가 됨. 블록의 크기가 바뀌면 파일의 최대 크기도 바뀌게 됨
+    - 따라서, 블록의 크기가 4Kbyte일 경우 지원되는 파일의 최대 크기는 4KB + 4MB + 4GB + 4TB가 됨. 블록의 크기가 바뀌면 **파일의 최대 크기**도 바뀌게 됨
+      - 지원되는 n중 간접 포인터의 최대 크기만큼을 더해 주는 것
 
 
 
@@ -371,7 +398,7 @@ tag: ['System Programming', 'File System']
 
 <img src="https://user-images.githubusercontent.com/79521972/160808528-5a2cd3fd-e6f6-497c-b4f7-d943036831aa.png" alt="image" style="zoom:67%;" />
 
-
+open -> 하드디스크 inode 정보(FCB)를 읽어옴
 
 <br>
 
@@ -384,7 +411,7 @@ tag: ['System Programming', 'File System']
 
 <br>
 
-- 두 process가 각각 metadata(FCB)를 수정한 후, 각각 디스크에 복사 한다면? 
+- <span style="color:red">두 process가 각각 metadata(FCB)를 수정한 후, 각각 디스크에 복사 한다면? </span>
   - 정보 불일치 (inconsistency) 발생 가능성
   - 비효율적(inefficient)
 - 가능하면 여러 프로세스가 metadata를 공유하는 것이 바람직함.
@@ -429,11 +456,11 @@ tag: ['System Programming', 'File System']
   -  Vnode 정보 
     - 파일 타입 등 
   -  Inode 정보 : 디스크의 inode에서 읽어 옴.
-    -  , 접근 권한(protection mode) 
+    -  접근 권한(protection mode) 
     -  소유자(owner) 
     - 크기(size) 
     - 시간(time)
-    - 디스크 상의 data block 위치
+    - **디스크 상의 data block 위치**
 
 
 
@@ -442,7 +469,7 @@ tag: ['System Programming', 'File System']
 #### vnode
 
 - The v-node was invented by Peter Weinberger (Bell Lab.) and Bill Joy (Sun Microsystems) to provide support for multiple file system types on a single computer system. 
-- Sun called this the Virtual File System and called the file system– independent portion of the i-node the v-node [Kleiman 1986]. 
+- Sun called this the **Virtual File System** and called the file system–independent portion of the i-node the **v-node** [Kleiman 1986]. 
 - Linux has no v-node. 
   - Instead, a generic i-node structure is used
 
