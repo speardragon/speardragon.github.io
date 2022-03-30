@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[System Programming] 파일 입출력"
+title: "[System Programming] 4장. 파일 입출력"
 categories: ['System', 'System Programming']
 tag: ['System Programming', 'Unix']
 ---
