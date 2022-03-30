@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[System Programming] 유닉스 기초"
+title: "[System Programming] 2장. Unix,Linux 기초"
 categories: ['System', 'System Programming']
 tag: ['System Programming', 'Unix']
 toc: true
@@ -10,10 +10,6 @@ toc_sticky: true
 
 
 # 제 2장 유닉스 사용
-
-
-
-
 
 # 2. 유닉스 사용
 
