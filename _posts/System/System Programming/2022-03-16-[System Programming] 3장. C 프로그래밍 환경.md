@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[System Programming] C 프로그래밍 환경"
+title: "[System Programming] 3장. C 프로그래밍 환경"
 categories: ['System', 'System Programming']
 tag: ['System Programming', 'Unix']
 ---
