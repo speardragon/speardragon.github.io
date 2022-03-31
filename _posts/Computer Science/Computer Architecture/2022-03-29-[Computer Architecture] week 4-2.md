@@ -371,25 +371,6 @@ Q)t의 내용이 중요하면 main에서 저장한다 했는데 그건 어디다
 
 
 
-```assembly
-# $s0 = result
-diffofsums:
-    addi $sp, $sp, -4 # make space on stack to 
-    			      # store one register
-    sw $s0, 0($sp)    # save $s0 on stack
-    				  # no need to save $t0 or $t1
-    add $t0, $a0, $a1 # $t0 = f + g
-    add $t1, $a2, $a3 # $t1 = h + i
-    sub $s0, $t0, $t1 # result = (f + g) - (h + i)
-    add $v0, $s0, $0  # put return value in $v0
-    lw $s0, 0($sp)    # restore $s0 from stack
-    addi $sp, $sp, 4  # deallocate stack space
-    jr $ra 			  # return to caller
-
-```
-
-
-
 ### The stack during diffofsums Call
 
 ![image](https://user-images.githubusercontent.com/79521972/160536148-de64e9b7-f0d9-49f6-9ec8-4249cadc2669.png)
@@ -406,28 +387,29 @@ diffofsums:
 
 s로 시작하는 데이터는 중요한 데이터이기 때문에 다른 function에서 사용후 값을 다시 되돌리는 callee-saved 방식이고 t로 시작하는 데이터는 temporary 데이터이기 때문에 다른 function에서 마음대로 값을 바꿀 수 있기 때문에 main 함수에서 저장해야 하는 caller-saved 방식이다.
 
+
+
 ```assembly
 # $s0 = result
 diffofsums:
-addi $sp, $sp, -4 	# make space on stack
-					# to store 3 registers
-sw $s0, 8($sp) 		# save $s0 on stack
-sw $t0, 4($sp) 		# save $t0 on stack
-sw $t1, 0($sp) 		# save $t1 on stack
-add $t0, $a0, $a1 	# $t0 = f + g
-add $t1, $a2, $a3 	# $t1 = h + i
-sub $s0, $t0, $t1 	# result = (f + g) - (h + i)
-add $v0, $s0, $0 	# put return value in $v0
-lw $t1, 0($sp) 		# restore $t1 from stack
-lw $t0, 4($sp) 		# restore $t0 from stack
-lw $s0, 8($sp) 		# restore $s0 from stack
-addi $sp, $sp, 4 	# deallocate stack space
-jr $ra 
+    addi $sp, $sp, -4 # make space on stack to 
+    			      # store one register
+    sw $s0, 0($sp)    # save $s0 on stack
+    				  # no need to save $t0 or $t1
+    add $t0, $a0, $a1 # $t0 = f + g
+    add $t1, $a2, $a3 # $t1 = h + i
+    sub $s0, $t0, $t1 # result = (f + g) - (h + i)
+    add $v0, $s0, $0  # put return value in $v0
+    lw $s0, 0($sp)    # restore $s0 from stack
+    addi $sp, $sp, 4  # deallocate stack space
+    jr $ra 			  # return to caller
 ```
 
 그래서 t의 내용은 function에서 저장하지 않아도 되기 때문에 `addi $sp, $sp, -12`가 아니라`addi $sp, $sp, -4` 이고 (s내용만 저장) 
 
 Q)어? 근데 t0가 이미 있어서 스택에 저장해야 되는 것 아닌가?
+
+A) 그게 아니라 t0 내용은 main함수가 아닌 다른 함수에서 마음대로 사용해도 되는 메커니즘이기 때문에 굳이 스택을 만들어 줄 필요없이 0부터 사용하고 싶은대로 사용하는 것이다.
 
 <br>
 
@@ -548,7 +530,7 @@ else:
   - Look for result in $v0
 
 - Callee
-  - s register만 저장
+  - **s register만 저장**
   - Save registers that might be distrubed ($s0-$s7)
   - Perform function
   - Put result in $v0
@@ -569,7 +551,7 @@ How do we address the operands?
 - Immediate
   - addi $5, $6, -3
 - Base Addressing
-  - lw $1, 4($2)
+  - lw $1, 4($2) `<- data memory`
 - PC-Relative
   - beq $1, $2, Label   `<- prog. mem.`
 - Pseudo Direct
