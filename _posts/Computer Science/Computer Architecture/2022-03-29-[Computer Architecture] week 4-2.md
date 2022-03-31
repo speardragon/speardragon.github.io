@@ -11,6 +11,8 @@ tag: ['Computer Architecture', 'Intro']
 
 ![image](https://user-images.githubusercontent.com/79521972/160535013-589fec78-5b74-42eb-9ff4-85c18839f01a.png)
 
+스택 사용 위치를 알려주는 stack pointer가 존재, stack pointer는 항상 스택 메모리에 제일 마지막 값을 가리킨다.
+
 <br>
 
 
@@ -23,7 +25,8 @@ tag: ['Computer Architecture', 'Intro']
 - s: saved
   - s의 내용은 중요한 변수 함부로 바꾸거나 할 수 없다.
 
-
+- at
+  - 
 
 
 
@@ -81,6 +84,7 @@ sw $t1, 4($s0) 			# array[1] = $t1
 // C Code
 int array[1000];
 int i;
+
 for (i=0; i < 1000; i = i + 1)
 	array[i] = array[i] * 8;
 ```
@@ -152,6 +156,8 @@ int sum (int a, int b)
   - **returns** to point of call
   - must not overwrite registers or memory needed by caller
 
+j vs. jal
+
 
 
 <br>
@@ -192,6 +198,8 @@ void simple() {
 0x00401020 simple: jr $ra
 ```
 
+jal : 다음 address(0x00400204), 즉 돌아올 자리를 $ra에 저장시키고 jump한다.
+
 > void means that simple doesn't return a value
 
 <br>
@@ -221,7 +229,7 @@ int main()
 {
     int y;
     ...
-    y = diffofsums(2, 3, 4, 5); // 4 arguments
+    y = diffofsums(2, 3, 4, 5); // 4 arguments ,$a0-$a3
     ...
 }
 int diffofsums(int f, int g, int h, int i)
@@ -256,7 +264,11 @@ diffofsums:
     jr $ra # return to caller
 ```
 
+s0에 담기는 내용은 $ra 이후에 사라지는가?
+
 <br>
+
+
 
 만약 main에서 t0, t1, s0를 이미 사용했다면 즉 4개가 넘으면 stack memory을 이용한다.
 
@@ -347,9 +359,13 @@ jr $ra 				# return to caller
 
 ---
 
-subroutine에서 모든 걸 다 저장해야하는가?
+Q)$t1,t0, s0에다가 스택 내용을 저장하고 스택 pointer만 옮기는 것이기 때문에 사실상 스택 안에는 그 내용이 유지되어 있는 것인데 스택 포인터 아래에 있는 내용은 그냥 빈 공간 취급하는 것인가?
+
+Q)subroutine에서 모든 걸 다 저장해야하는가?
 
 - 그래서 t와 s로 구분한 것
+
+Q)t의 내용이 중요하면 main에서 저장한다 했는데 그건 어디다 저장하는가?
 
 ---
 
@@ -388,9 +404,30 @@ diffofsums:
 
 ![image](https://user-images.githubusercontent.com/79521972/160529523-d2f1af63-f092-47f4-bf08-e89bbf71f03a.png)
 
+s로 시작하는 데이터는 중요한 데이터이기 때문에 다른 function에서 사용후 값을 다시 되돌리는 callee-saved 방식이고 t로 시작하는 데이터는 temporary 데이터이기 때문에 다른 function에서 마음대로 값을 바꿀 수 있기 때문에 main 함수에서 저장해야 하는 caller-saved 방식이다.
 
+```assembly
+# $s0 = result
+diffofsums:
+addi $sp, $sp, -4 	# make space on stack
+					# to store 3 registers
+sw $s0, 8($sp) 		# save $s0 on stack
+sw $t0, 4($sp) 		# save $t0 on stack
+sw $t1, 0($sp) 		# save $t1 on stack
+add $t0, $a0, $a1 	# $t0 = f + g
+add $t1, $a2, $a3 	# $t1 = h + i
+sub $s0, $t0, $t1 	# result = (f + g) - (h + i)
+add $v0, $s0, $0 	# put return value in $v0
+lw $t1, 0($sp) 		# restore $t1 from stack
+lw $t0, 4($sp) 		# restore $t0 from stack
+lw $s0, 8($sp) 		# restore $s0 from stack
+addi $sp, $sp, 4 	# deallocate stack space
+jr $ra 
+```
 
+그래서 t의 내용은 function에서 저장하지 않아도 되기 때문에 `addi $sp, $sp, -12`가 아니라`addi $sp, $sp, -4` 이고 (s내용만 저장) 
 
+Q)어? 근데 t0가 이미 있어서 스택에 저장해야 되는 것 아닌가?
 
 <br>
 
@@ -398,11 +435,13 @@ diffofsums:
 
 ---
 
-f1()으로 jump하기 전에 $ra에 *을 저장하고 jump하고 함수가 종료할 때 jr $ra로 다시 caller로 돌아가게 된다.
+f1()으로 jump하기 전에 $ra에 *을 저장하고 jump하고 f1()함수가 종료할 때 `jr $ra`을 통해 caller로 돌아가게 된다.
 
-그런데 만약 f1 안에 f2라는 함수가 호출되면 또 f2로 jump하기 전에 $ra에 f2의 return address가 담기게 되는데 f2가 종료시에 Jr $ra로 돌아가고 f1에서 함수 종료시 $ra로 가서 main으로 돌아가야 하는데 현재 $ra에는 f2의 주소가 담겨있는데 이는 stack을 사용하여 해결한다!
+그런데 만약 f1() 안에 f2()라는 함수를 호출하면 또 f2로 jump하기 전에 $ra에 f2의 return address가 담기게 되는데 f2가 종료시에 `jr $ra`(f1()함수의)로 돌아가고 f1에서 함수 종료시 $ra 명령어로 main으로 돌아가야 하는데 현재 $ra에는 f2의 주소가 담겨있기 때문에 이는 stack을 사용하여 해결한다!
 
-강의보고 다시 정리>
+
+
+즉, main에서 f1()으로 jal할 때 $ra 값이 stack에 push 되었다가 f2()가 호출될때는 $ra에 overriding되어도 f1()에 다시 돌아와서 return address를 할 때에는 stack의 내용을 pop하면 main의 return address값을 가져올 수 있는 것이다.
 
 
 
@@ -415,11 +454,11 @@ f1()으로 jump하기 전에 $ra에 *을 저장하고 jump하고 함수가 종�
 ```assembly
 proc1:
     addi $sp, $sp, -4 	# make space on stack
-    sw $ra, 0($sp) 		# save $ra on stack
-    jal proc2
+    sw $ra, 0($sp) 		# save $ra on stack(push)
+    jal proc2 			# override current return address to $ra
     ...
     lw $ra, 0($sp) 		# restore $s0 from stack
-    addi $sp, $sp, 4 	# deallocate stack space
+    addi $sp, $sp, 4 	# deallocate stack space(원상복귀)
     jr $ra 				# return to caller
 ```
 
