@@ -414,6 +414,12 @@ double precision
 - 64bit
 - double b;
 
+
+
+Q)unsigned에서는 overflow가 일어나지 않는데 이를 어떻게 처리하는 것인가?
+
+A)있을 수 있으나 무시하여 발생하지 않도록 설계하는 것이다.
+
 ---
 
 
