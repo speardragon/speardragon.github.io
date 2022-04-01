@@ -184,6 +184,8 @@ process가 어떤 program에서 생성이 될 때, 기본적으로 3 개의 file
 - stack
   - 함수 호출에 의해 변수 등이 저장되는 공간
   - 함수마다 stack frame이라는 것이 만들어진다.
+    - 함수의 지역변수는 해당 stack frame에 생기는 것이다.
+    - 함수가 리턴할 때 해당 데이터가 사라짐
   - **stack frame**
     - os가 main함수를 호출하면 stack 아래에 main function에 대한 stack frame이 생김
     - 이곳에는 해당 함수에서 사용하는 local 변수들이 저장됨

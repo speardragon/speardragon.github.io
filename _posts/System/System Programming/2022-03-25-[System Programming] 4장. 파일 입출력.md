@@ -11,12 +11,41 @@ tag: ['System Programming', 'Unix']
 
 # 4.1 시스템 호출
 
+---
+
+## 대면 수업
+
+하드디스크에 파일이 저장되는 것을 배움
+
+
+
+**시스템 호출**
+
+응용프로그램에서 뭔가 하드웨어와 관련된 일을 하고 싶은데 내가 할 수가 없으니까 OS한테 요구하는 인터페이스이다.
+
+a.out : program definition
+
+
+
+프로세스도 사실상 가상화
+
+
+
+OS
+
+1. Convinience: to user
+2. Efficiency: to itself 
+
+
+
+---
+
 ## 컴퓨터 시스템 구조
 
 - 유닉스 커널(kernel)
   - 하드웨어 위에 탑재된 소프트웨어(kernel)
   - **하드웨어를 운영 관리(efficiency)**하여 다음과 같은 **서비스를 응용 프로그램에게 제공(convinient)**
-  - 파일관리 (File management)
+  - 파일 관리 (File management)
   - 프로세스 관리(Memory mangement)
   - 통신 관리(Communication management)
   - 주변 장치 관리(Device management)
@@ -26,19 +55,30 @@ tag: ['System Programming', 'Unix']
 
 
 
+OS가 `CPU, 메모리, 디스크, 주변 장치`와 같은 하드웨어를 추상화 하여 응용프로그램한테 제공한다.
+
+
+
 <br>
 
 ## 저수준 파일 입출력과 고수준 파일 입출력
 
-- 저수준 파일 입출력
+OS에서는 두 가지의 파일 입출력을 제공한다.
+
+입출력 요구를 어디서 하냐에 따라 나뉘어 지는 것이지 효과는 똑같다.
+
+- **저수준 파일 입출력**
+  - 유닉스,리눅스가 제공하는 시스템 호출을 직접 사용하는 것 (OS 커널에 더 가깝게)
+  - 더 어려움
   - 유닉스 커널의 시스템 호출을 사용하여 파일 입출력을 실행하며, 특수 파일도 읽고 쓸 수 있다.
   - int fd = open (const char *path, int oflag, [ mode_t mode ]);
+    - 리턴값: file descriptor
   
-- 고수준 파일 입출력
-  - **표준 입출력 라이브러리**로 다양한 형태의 파일 입출력 함수를 제공한다. (유닉스 커널의 시스템 호출을 사용하지 않음)
+- **고수준 파일 입출력**
+  - 시스템 호출을 직접 사용하는 것이 부담스러운 사람을 위해
+  - **표준 입출력 라이브러리**로 다양한 형태의 파일 입출력 함수를 제공한다. (유닉스 커널의 시스템 호출을 직접 사용하지 않음)
   - FILE *fopen(const char *name, const char *mode)
-
-
+    - return: file 구조체
 
 
 <br>
@@ -50,7 +90,7 @@ tag: ['System Programming', 'Unix']
 
 ![image](https://user-images.githubusercontent.com/79521972/160031553-e2711aa0-15d5-42cc-995b-d8f66f1ab96a.png)
 
-응용 프로그램은 커널에게 서비스 요청을 직접적으로 할 수 있다. 라이브러리 함수를 호출하게 되면 시스템 호출을 이 라이브러리에서  대행을 해 준다. 결과적으로는 같지만 응용프로그램이 시스템 호출을 직접적으로 하냐 간접적으로 하냐에 따라 달라진다.
+응용 프로그램은 커널에게 서비스 요청을 직접적으로 할 수 있다. 라이브러리 함수를 호출하게 되면 시스템 호출을 이 라이브러리에서  대행을 해 준다. 결과적으로는 같지만 응용프로그램이 시스템 호출을 **직접적**으로 하냐 **간접적**으로 하냐에 따라 달라진다.
 
 <br>
 
@@ -66,7 +106,38 @@ tag: ['System Programming', 'Unix']
 - 반면 응용프로그램이 라이브러리를 호출하는 경우 main함수에서 특정 라이브러리 함수를 통해 시스템 호출 코드를 실행시키는 경우 해당 함수 안에 시스템 호출 코드가 있는 것이기 때문에 시스템 호출이 종료 되고 라이브러리 함수로 돌아와 라이브러리 함수가 종료되면 main함수로 돌아오는 것이 과정이라면
 - main함수에서 직접 시스템 호출 코드를 실행하는 경우 사용자 영역에서 커널영역으로 변환후 커널이 종료되면 다시 사용자 영역으로 돌아온다.
 
- 
+ <br>
+
+어떤 CPU든지 유저, 커널 모드를 제공함.(특권의 차이)
+
+유저 모드보다 커널 모드에서 더 허용되는 것이 많다. 즉, 유저 모드에서 돌아가지 않는 것이 커널 모드에서 도는 경우가 있다.
+
+멀티 프로그래밍이 될 수 있도록 커널이 도와주는 것
+
+
+
+함수 호출을 할 때 
+
+```c
+main() {
+	x = 0;
+	a(x);
+
+}
+
+a(int x) {
+    int y = x;
+}
+
+```
+
+
+
+시스템 콜은 커널 명령어이기 때문에 stack을 통해서 전달할 수 없고 CPU register에 의해서 전달한다.
+
+
+
+
 
 <br>
 
@@ -75,6 +146,10 @@ tag: ['System Programming', 'Unix']
 ![image](https://user-images.githubusercontent.com/79521972/160032207-fb3f91fe-d06c-489b-bf54-64497d052afa.png)
 
 fd: file descriptor의 약자
+
+CPU는 외부에서 누가 interrupt를 건 지 알기 위해서 
+
+
 
 <br>
 
@@ -90,6 +165,8 @@ fd: file descriptor의 약자
 
 ## 이 장의 기본 내용
 
+파일이 모여있는 것이 파일 시스템. 잘 찾기 위해서 잘 정리가 되어있어야 한다.
+
 - Process가 file을 사용하려면?
   - File system에서 file의 위치를 찾는다. -> open()
   - File의 data를 읽거나 쓴다. -> read()/write()
@@ -104,7 +181,7 @@ fd: file descriptor의 약자
 ## 유닉스에서 파일
 
 - 연속된 바이트의 나열
-- 특별한 다른 포맷을 정하지 않음
+- 특별한 다른 포맷을 정하지 않음(데이터의 종류가 무엇인지 구분하지 않는다.)
   - 어디서부터 어디까지는 integer만 들어갈 수 있고... 이런 것들이 존재하지 않는다는 것
 
 - 디스크 파일뿐만 아니라 외부 장치에 대한 인터페이스
@@ -140,6 +217,7 @@ fd: file descriptor의 약자
 
 - #### Oflag
 
+  - 파일을 오픈 할 때 무슨 목적으로 열 것인가
   - Access mode (<mark>One of three constants must be specified.</mark>)
     - O_RDONLY
       - 읽기 모드, read() 호출은 사용 가능
@@ -153,17 +231,17 @@ fd: file descriptor의 약자
     - O_CREAT
       - 해당 파일이 없는 경우에 새로 생성하며 mode는 생성할 파일의 사용권한을 나타낸다.
 
-- oflag
+    - O_TRUNC
+      - 파일이 이미 있는 경우 내용을 지운다.(새로운 파일을 여는 것과 같은 행위)
+    - O_EXCL
+      - O_CREAT와 함께 사용되며 해당 파일이 이미 있으면 오류를 반환
+    - O_NONBLOCK
+      - 넌블로킹 모드로 입출력 하도록 한다.
 
-  - O_TRUNC
-    - 파일이 이미 있는 경우 내용을 지운다.(새로운 파일을 여는 것과 같은 행위)
-  - O_EXCL
-    - O_CREAT와 함께 사용되며 해당 파일이 이미 있으면 오류를 반환
-  - O_NONBLOCK
-    - 넌블로킹 모드로 입출력 하도록 한다.
-  - O_SYNC
-    - write() 시스템을 호출을 하면 디스크에 물리적으로 쓴 후 반환된다.
-    - Any writes on the resulting file descriptor will block the calling process until the data has been physically written to the underlying hardware.
+    - O_SYNC
+      - write() 시스템을 호출을 하면 디스크에 물리적으로 쓴 후 반환된다.
+        - Any writes on the resulting file descriptor will block the calling process until the data has been physically written to the underlying hardware.
+
 
   - nonblock은 디스크에  물리적으로 다 쓰지 않아도 반환이 되지만 sync는 반드시 다 쓴 후에 반환된다.
 
@@ -174,7 +252,7 @@ fd: file descriptor의 약자
 ## 파일 열기: 예
 
 ```c
-fd = open("account",O_RDONLY);
+fd = open("account",O_RDONLY); //current directory에 존재하는 파일
 fd = open(argv[1], O_RDWR);
 fd = open(argv[1], O_RDWR | O_CREAT, 0600);
 fd = open("tmpfile", O_WRONLY|O_CREAT|O_TRUNC, 0600);
@@ -184,7 +262,7 @@ if ((fd = open("tmpfile", O_WRONLY|O_CREAT|O_EXCL, 0666))==-1)
 
 
 
-## fopen.c
+## fopen.c(몰라도됨)
 
 ```c
 #include <stdio.h>
@@ -210,11 +288,13 @@ int main(int argc, char *argv[])
 
 ## File Descriptor
 
-- 현재 열려있는 파일을 구분하는 정수값
+- 현재 열려있는 **파일을 구분**하는 정수값
 - 저수준 파일 입출력에서 열린 파일을 참조하는데 사용
+- file descriptor table
 
 ![image](https://user-images.githubusercontent.com/79521972/160038332-1cebe98f-bbb8-46b9-b0d1-482571f1fafc.png)
 
+- 프로세서가 실행되면 0,1,2 index들은 프로세스 주소공간(text, data,heap, stack)과 더불어 할당되어진다. (NEW state) 
 - 처음으로 부여 받는 file descriptor는 3번
 
 <br>
@@ -273,6 +353,7 @@ int creat (const char *path, mode_t mode);
 ## 파일 닫기: close()
 
 - close() 시스템 호출은 fd가 나타내는 파일을 닫는다.
+- 종료되면 알아서 OS가 종료 시켜 주지만 explicitly 종료 시켜 주는 것을 권장
 - When a process termiantes, all of its open files are closed automatically by the kernel.
   - Many program often do not explicily close open files.
 - On Unix-like systems, the interface defined by unistd.h is typically made up largely of system call wrapper functions such as fork, pipe and I/O primitives (read, write, close, etc.).
@@ -281,10 +362,9 @@ int creat (const char *path, mode_t mode);
 ```c
 #include <unistd.h>
 int close(int fd);
+//fd가 나타내는 파일을 닫는다.
+//성공하면 0, 실패하면 -1을 리턴한다.
 ```
-
-- fd가 나타내는 파일을 닫는다.
-- 성공하면 0, 실패하면 -1을 리턴한다.
 
 <br>
 
@@ -298,13 +378,16 @@ int close(int fd);
 ```c
 #include <unistd.h>
 ssize_t read (int fd, void *buf, size_t nbytes);
+// fd의 위치의 파일을 n바이트만큼 읽어서 buf위치부터 시작해서 저장하여 읽는다.
+//파일 읽기에 성공하면 읽은 바이트 수, 파일 끝을 만나면 0
+//실패하면 -1을 리턴
+//(size_t: unsigned integer)
+//(ssize_t: signed integer)
 ```
 
-- 파일 읽기에 성공하면 읽은 바이트 수, 파일 끝을 만나면 0
-- 실패하면 -1을 리턴
-- (size_t: unsigned integer)
+read 시스템콜을 또 찾아가서 read하는 것은 귀찮기 때문에 file descriptor로 하는 것.
 
-
+항상 n 바이트가 읽혀지는 게 보장되는 것이 아님
 
 <br>
 
@@ -326,8 +409,8 @@ int main (int argc, char *argc[])
     if (fd = open(argc[1], O_RDONLY)) == -1)
         perror(argc[1]);
     
-     /* 파일의 끝에 도달할 때까지 반복해서 읽으면서 파일 크기 계산 */
-     while((nread = read(fd, buffer, BUFSIZE)) > 0)
+    /* 파일의 끝에 도달할 때까지 반복해서 읽으면서 파일 크기 계산 */
+    while((nread = read(fd, buffer, BUFSIZE)) > 0)
          total += nread;
     close(fd);
     printf ("%s 파일 크기 : %ld 바이트 \n", argv[1], total);
@@ -426,7 +509,7 @@ int dup2(int oldfd, int newfd);
 
 <br>
 
-## dup() and dup()
+## dup() and dup2()  
 
 - 실제로는 dup()가 oldfd를 반환해 주는 것이 아니라 kernel 안에서 kernal data structure에 대한 수정이 일어난다.
 
@@ -435,7 +518,7 @@ int dup2(int oldfd, int newfd);
 
 ![image](https://user-images.githubusercontent.com/79521972/160048908-a84b4359-ab19-4a2e-8cf5-ba7fbe7e80db.png)
 
-- Example 
+- **Example** (중요)
 
   - ```c
     #include <unistd.h>
@@ -463,6 +546,8 @@ int dup2(int oldfd, int newfd);
     ```
 
 파일을 STDOUT table에 복제를 하여 표준 출력을 사용할 수 없게 되고 코드의 결과인 printf가 실행되지 못할 것이다. 그래서 만약 출력을 하고 싶으면 cat 명령어를 사용해야 한다.
+
+그래서 모니터에 출력 된 것이 아니라 파일에 출력된 것을 확인할 수 있다.
 
 <br>
 
@@ -499,14 +584,19 @@ fd1과 fd1을 duplicate한 fd2는 같은 파일을 가리키기 때문에 두 �
 
 ## sync(), fsync(), and fdatasync()
 
+data를 파일에 write할 때 하드디스크에 직접 쓰여지는 것이 아니라 (너무 오래걸리기 때문에) buffer cache에 써두었다가 나중에 사용된다.(daemon에 의해서 주기적으로 update된다.) 
+
+CPU-M.M 은 방식이 다르다 CPU와 M.M 사이에 있는 cache는 읽기 목적으로 사용되는 것이다. (write는 cache로 동작되지 않고 바로 memory에 쓰여진다.)
+
 - Delayed write
   - When write data to a file, the data is copied into buffers.
     - file에 데이터가 write 될 때 file에 쓰여지는 것이 아니라 buffer에 copy되는 것이다.
   - The data is physically written to disk at some later time.
   - 버퍼를 사용하는 이유 -> 동일한 데이터에 대한 연속적인 read/write시 성능 향상.
-- When the delayed-write blocks are written to disk?
+- When the **delayed-write** blocks are written to disk?
   - Buffer is filled with the delayed-write blocks or 
   - Periodically by update **daemon** (usually every 30 seconds)
+  - <mark>이 주기보다 빠른 주기로 반영하고 싶을 때 사용하는 것이 sync()</mark>
 
 ```c
 #include <unistd.h>
@@ -521,8 +611,11 @@ void sync(void);
 
 - sync
   - Write **all** the modified buffer blocks to disk.
+  - 파일에 관계없이 바로 써라, (buffer cache에 있는 수정된)모든 modified buffer blocks을 디스크에 써라.(너무 느려서 1바이트 단위가 아니라 한 번 데이터를 가져가러 갔을 때 그 근처의 모든 데이터를 다 가져온다는 것을 의미하는 block 단위로)
 - fsync
   - Write only the modified (**data + attribue**) buffer blocks of a single file.
+  - data block + attribute block
+  - 특정 파일에 대해서만 write
 - fdatasync
   - Write **only** the modifies **data** buffer blocks of a single file.
 
@@ -537,6 +630,8 @@ int fcntl(int filedes, int cmd, .../*int arg*/); // filedes:파일디스크립�
 //Return: depends on cmd if OK (see following), -1 on error
 ```
 
+- 파일 컨트롤 할 때 대상 파일에 대해서 커맨드대로 파일 특성을 변경해달라는 명령어
+  
 - Change the properties of a file that is already open
   - Duplicate an existing desciptor (cmd = F_DUPFD)
   - Get/set file descriptor flags (cmd = F_GETFD or F_SETFD)
@@ -574,6 +669,8 @@ int main()
 O_RDONLY setting
 $ 
 ```
+
+open 할 때 RDONLY로 열어서 위와 같은 결과가 나옴
 
 
 
@@ -733,7 +830,7 @@ lseek()
   - file.hole: with hole
     - 8 blocks are allocated.
     - so, 하드디스크의 공간을 차지하지 않는다.
-  - file.nohole: afile of the same size, but without holes.
+  - file.nohole: a file of the same size, but without holes.
     - 20 blocks are allocated.
 
 > ls utility
@@ -832,7 +929,7 @@ int main(int argc, char *argv[])
         if (scanf("%d", &id) == 1) {
             lseek(fd, (id-START_ID)*sizeof(record), SEEK_SET);
             if ((read(fd, (char *) &record, sizeof(record)) > 0) && (record.id != 0))
-                printf("이름:%s\t 학번:%d\t 점수:%d\n", record.name, record.id, 			 record.score);
+                printf("이름:%s\t 학번:%d\t 점수:%d\n", record.name, record.id, record.score);
             else printf("레코드 %d 없음\n", id);
         } else printf(“입력 오류”);
         printf("계속하겠습니까?(Y/N)");
@@ -858,6 +955,8 @@ int main(int argc, char *argv[])
 ## 레코드 수정
 
 ![image](https://user-images.githubusercontent.com/79521972/160265080-abf6cdea-96d0-4a5e-b4e1-61ef296269b9.png)
+
+수정된 걸 다시 돌려놓기 위해서 lseek를 2번 해야함
 
 <br>
 
