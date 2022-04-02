@@ -9,22 +9,22 @@ tag: ['Data structures and algorithms', 'Python']
 
 # Recursion
 
-우리는 목표를 성취하는 것을 돕기 위해 다른 메소드를 호출할 수 있는 함수 한 가지를 알고있다. 유사하게 메소드는 그 스스로 또한 호출할 수 있다.
+우리는 목표를 성취하는 것을 돕기 위해 어떠한 메소드가 다른 메소드를 호출할 수 있다는 사실을 알고있다. 유사하게 메소드는 그 스스로 또한 호출할 수 있다.
 
-Recursion(재귀) 방법은 programming technique으로 메소드의 목적을 달성하기 위해서 본인 스스로를 호출할 수 있는 메소드를 말한다.
+Recursion(재귀) 방식은 programming technique으로 메소드의 목적을 달성하기 위해서 본인 스스로를 호출할 수 있는 메소드를 말한다.
 
 <br>
 
 - 두 가지 접근 to repetitive algorithms
-  - iteration
+  - iteration(순회)
     - loops(for, while, do-while)
-  - recursion
+  - recursion(재귀)
     - Function calls itself
       - 함수가 자기 자신을 계속해서 반복하여 호출하는 방법
       - Suitable for problem breaking down
-        - <mark>break down</mark> : 주어진 문제를 더 작은 size로 줄이는 행위
+        - <mark>break down</mark> : 주어진 문제를 더 작은 크기의 문제로 줄이는 행위
       - <span style="color:red">Drastically simplifies an algorithm in many cases</span>
-        - 어떤 문제를 해결하려 할 때 그 문제에 recursion을 적용할 수 있는 경우가 있고 아닌 경우가 있는데 만약 적용할 수 있는 경우 엄청나게 간단하게 만들어 준다.
+        - 어떤 문제를 해결하려 할 때 그 문제에 recursion을 적용할 수 있는 경우가 있고 아닌 경우가 있는데 만약 적용할 수 있는 경우에 그 문제를 엄청나게 간단하게 만들어 준다.
 
 
 
@@ -33,8 +33,6 @@ Recursion(재귀) 방법은 programming technique으로 메소드의 목적을 �
 ### Iterative factorial algorithm
 
 ![image](https://user-images.githubusercontent.com/79521972/159200562-da6b6c42-a0cc-473b-93a9-177c9ead1834.png)
-
-
 
 
 
@@ -64,8 +62,6 @@ print("%d != %d" % (num, factorial(num)))
 
 
 
-
-
 ```python
 def factorial(n):
     # test for a base case
@@ -86,9 +82,9 @@ print("%d != %d" %(num, factorial(num)))
 
 
 <br>
-recursive 함수의 핵심은 두 가지 경우가 만족해야 한다.
+recursive 함수의 핵심은 두 가지 경우가 존재해야 한다.
 
-- Baes cases: 계산을 안 해도 답이 바로 나오는 경우(factorial 예에서 n = 0 일 때 1 인 상황)
+- Baes cases: 계산을 안 해도 한 번에 답이 바로 나오는 경우(위의 factorial 예시에서 n = 0 일 때 1 인 상황)
   - These tell the recursion when to terminate, meaning the recursion  will be stopped once the base condition is met
 - Recursive cases: 함수 호출을 종료 시킬 수 있는 조건이 있는 경우
   - The function calls itself and we progress towards achieving the base criteria
@@ -120,11 +116,11 @@ power function의 정의는 다음 공식에 기반한다.
 
 n = 0, 즉 stopping case의 경우, 만약 n = 0이면 power(x, n)은 단순히 1을 반환한다.(x<sup>0</sup> = 1 이기 때문.)
 
-- base case에 해당
+- base case 존재!
 
 <br>
 
-따라서 power도 recursive로 구현할 수 있는 조건을 만족한다.
+따라서 power()도 recursive로 구현할 수 있는 조건을 만족한다.
 
 ```python
 def power(base, exponent):
@@ -185,7 +181,7 @@ f(n) = c + f(n-1)
 
 ## Divide and Conquer
 
-- Divide and conquer
+- Divide and conquer (분할 및 정복)
   - algorithm design paradigm(방법)
   - based on <span style="color:red">multi-branched recursion</span>
 
@@ -205,17 +201,14 @@ f(n) = c + f(n-1)
 
 - 몇가지의 original problem과 유사하지만 size는 더 작은 subproblem들로 부순다(Divide).
 - 각각의 subproblem들을 recursively 해결한다.(Conquer)
-- original problem을 해결하기 위한 solution을 만들기 위해 위 결과로 나온 solution들을 결합한다.(Combine)
+- 그 후, original problem을 해결하기 위한 solution을 만들기 위해 위 결과로 나온 solution들을 결합한다.(Combine)
 
+The divide-and-conquer 패러다임은 다음과 같은 세 가지 단계(recursion의 각 레벨)를 수반한다.
 
+1.  같은 문제의 더 작은 instances인 수많은 sub-problem들로 **Divide** 한다.
 
-
-
-
-
-
-
-
+2. 그들을 재귀적으로 풀어냄으로써 작은 문제들을 **정복**한다.
+3.  작은 문제들에 대한 솔루션을 **결합**하여 original problem에 대한 솔루션을 만들어낸다.(만약 필요하다면)
 
 
 
@@ -353,9 +346,11 @@ def hanoi(disks, src, dst, extra):
         print(f'{hanoi.count}: move from {src} to {dst}') #formatted printing
         
     else:
-        hanoi(disks-1, src, extra, est)
+        hanoi(disks-1, src, extra, dest)
+        
         hanoi.count += 1
         print(f'{hanoi.count}: move from {src} to {dst}')
+        
         hanoi(disks-1, extra, dst, src)
         
 hanoi.count = 0   #static variable of hanoi()
@@ -378,11 +373,11 @@ f(n) = 2f(n-1) + 1
        = 2<sup>n-1</sup>f(1) + 2<sup>i</sup> - 1
        = 2<sup>n</sup> - 1
 
-만약 1초당 하나 씩 disk를 옮긴다면 n-40인 경우 적어도 다 끝내기 위해서 348 세기가 걸리는 것이다.
+만약 1초당 하나 씩 disk를 옮긴다면 n=40인 경우, 적어도 다 끝내기 위해서 348 세기가 걸리는 것이다.
 
 
 
-
+<br>
 
 ## Backtracking
 
@@ -391,18 +386,18 @@ f(n) = 2f(n-1) + 1
 - method
 - algorithm
 
-이라고 함.
+의 한 종류이다.
 
+<br>
 
-
-### Brute-force algorithm
+### Brute-force algorithm(완전 탐색 알고리즘)
 
 - `Brute-force search` or `exhaustive search`
   - A very general problem-solving technique(paradigm)
   - Systematically enumerating all possible candidates for the solution and checking whether each candidate satisfies the problem's statement
-  - 시스템적으로 solution에 대해 모든 가능성 있는 후보자들을 나열하고 각 후보자들이 problem의 상태를 만족하는지 아닌지 확인하는 것이다.
+  - solution에 대해 가능성 있는 모~든 후보자들을 시스템적으로 나열하고 각 후보자들이 problem의 상태를 만족하는지 아닌지 확인하는 알고리즘이다.
 
-
+<br>
 
 For **Sudoku**, there are 9<sup>n</sup> ways to fill the n blank squares.
 
@@ -412,7 +407,7 @@ For **Sudoku**, there are 9<sup>n</sup> ways to fill the n blank squares.
 
 <br>
 
-이 문제를 brute-force 기법으로 풀려면 9x9 size의 스도쿠 판의 각 칸마다 1~9까지의 수들을 전부 넣어 보면서 조건을 만족하는지 하나하나 확인하는 방법인 것이다. 이 경우 시간 복잡도가 9<sup>n</sup>이 나오게 된다.
+이 문제를 brute-force 기법으로 풀려면 9x9 size의 스도쿠 판의 각 칸마다 1~9까지의 수들을 전부 넣어 보면서 조건을 만족하는지 하나하나 확인하는 방법인 것이다. 이 경우 시간 복잡도가 O(9<sup>n</sup>)이 나오게 된다.
 
 때에 따라서 브루트포스가 쓰이는 경우가 있기는 하나 스도쿠와 같이 일일히 하나하나 따졌을 때 굉장히 피곤한 경우는 사용할 수가 없다.
 
@@ -420,7 +415,7 @@ For **Sudoku**, there are 9<sup>n</sup> ways to fill the n blank squares.
 
 <br>
 
-만약 첫 번째 칸에 1을 넣고 바로 다음 칸에 1을 넣으면 뒤는 볼 것도 없이 해당 경로는 스도쿠가 만족하지 않는 코드인 것이다. 이를 활용하여 다시 뒤로 돌아갈 수 있는 방법을 찾아야 할 것이다.
+만약 첫 번째 칸에 1을 넣고 바로 다음 칸에 1을 넣는 경우 그 뒤는 볼 것도 없이 해당 경로는 스도쿠가 만족하지 않는 코드인 것이다. 이를 활용하여 이 경우를 잘 판별해서 다시 뒤로 돌아갈 수 있는 방법을 찾아야 할 것이다.
 
 <br>
 
@@ -450,10 +445,10 @@ bit_str([])
   - 처음에 f([]) 가 호출되어 else문이 실행되고 'abc'라는 data 중에서 첫 번째인 a에 대해 for문이 진행한다.
   - 배열에 a를 추가하여 재귀호출을 진행하면 f(['a']) 가 호출되고 else문으로 넘어가 또 다시 a에 대해 for문이 진행한다.
   - 그럼 배열에 a가 또 추가되고 f(['a', 'a']) 가 호출되고 if를 아직까지도 만족하지 않기 때문에 또 else로 넘어가 또 a에 대해 for문이 진행되어 배열에 a가 추가되고 f(['a', 'a', 'a'])가 호출된다.
-  - 이 때는 if문을 만족하기 때문에 배열의 값들을 프린트 한다.
+  - 이 때는 if문을 만족하기 때문에 배열의 값을 프린트 한다.
   - <mark>여기서부터가 중요하다.</mark>
-  - 프린트를 하고 나서는 현재 함수가 종료되고 이 함수가 호출된 곳으로 돌아간다.
-  - 호출된 곳에 돌아가자마자 있는 코드는 pop()이므로 가장 마지막의 원소를 반환하면서 'a'에 대해 진행되던 for문은 그 다음 문자인 'b'로 넘어가서 해당 과정을 계속 진행하게 된다. 
+  - 프린트를 하고 나서는 현재 함수가 종료되고 이 함수가 호출된 곳(['a', 'a', 'a'])으로 돌아간다.
+  - 호출된 곳에 돌아가자마자 있는 코드는 pop()이므로 가장 마지막의 원소를 반환하면서 'a'에 대해 진행되던 for문은 그 다음 문자인 'b'로 넘어가서 b를 추가하고 aab에 대해서 해당 과정을 계속 진행하게 된다. 
   - 이를 도식화하면 다음과 같다.
   - ![image](https://user-images.githubusercontent.com/79521972/159657596-f0043349-228a-4716-8ab9-993c32865b0f.png)
 
@@ -469,7 +464,7 @@ for loop보다 recursion이 더 좋다.
 
 Backtracking은 traversing tree 구조와 같은 문제의 유형에 특히 유용한 recursion의 한 형태인데, 각 노드에 대한 수 많은 옵션들이 제시된 곳에서 유용한 것이다.
 
-또한 <mark>Backtracking은 exhaustive searching(완전 탐색)을 위한 divide-and-conquer 방식이다. 중요한 점은 백트래킹은 결과를 낼 수 없는 가지들은 쳐내는 것이다.</mark>
+또한 <mark>Backtracking은 exhaustive searching(완전 탐색)에 대한 divide-and-conquer 방식이다. 중요한 점은 백트래킹은 결과를 낼 수 없는 가지들은 쳐내는 것이다.</mark>
 
 ![image](https://user-images.githubusercontent.com/79521972/159659310-fbdb74ca-8420-4582-a585-fa836e7b3d90.png)
 
@@ -482,9 +477,8 @@ Backtracking은 traversing tree 구조와 같은 문제의 유형에 특히 유�
 ![image](https://user-images.githubusercontent.com/79521972/159659655-34fd57dc-fb20-421b-bd31-ce44e24463d9.png)
 
 <br>
+
 [백준 15649번 N과 M(1)]()
-
-
 
 ```python
 def permute(ans):
@@ -524,6 +518,8 @@ def combine(ans):
 n, m = map(int, input().split())
 combine([])           
 ```
+
+idea: n과m 1번 문제와 동일하게 돌긴 도는데 특정 부분에서만 넘어가게 짜야 하기 때문에 그 특정 부분을 지정하는 것이 제일 중요하다.
 
 <br>
 
