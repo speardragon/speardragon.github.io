@@ -17,7 +17,7 @@ Recursion(재귀) 방법은 programming technique으로 메소드의 목적을 �
 
 - 두 가지 접근 to repetitive algorithms
   - iteration
-    - loops(for ,wihle, do-while)
+    - loops(for, while, do-while)
   - recursion
     - Function calls itself
       - 함수가 자기 자신을 계속해서 반복하여 호출하는 방법
