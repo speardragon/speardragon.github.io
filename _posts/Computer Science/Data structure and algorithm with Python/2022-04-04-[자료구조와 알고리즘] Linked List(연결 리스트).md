@@ -62,19 +62,34 @@ singly linked list는 두 연속적인 node들 사이의 one pointer만을 가�
 >>> s = set()
 ```
 
-우리는 일반적으로 s가 `set type`의 변수라고 말할 것이다. 즉, s는 set이다. 그러나 이는 엄격히 맞지 않는 말이다.
+우리는 일반적으로 s가 `set type`의 변수라고 말할 것이다. 즉, s는 set이다. 그러나 이는 엄격히 따지면 맞지 않는 말이다. 
 
-- 변수 s는 set에 대한 reference(a safe pointer)인 것이다.
+변수 s는 오히려 set에 대한 reference(a safe pointer)라고 말할 수 있다. set contructor(생성자)는 메모리 안 어딘가에 set을 하나 만들고나서 그 set이 만들어진 memory location을 return한다. 이것은 s에 저장되는 것이다. python은 우리로부터 이러한 complexity를 숨긴다.
 
+우리는 s는 set이고 모든 것이 잘 수행된다고 안전하게 가정할 수 있다.
 
+<br>
 
+pointer structure들에 대한 몇가지 이점들이 존재한다. 
 
+- 우선적으로, 그 이점은 sequential storage space(순차적인 저장 공간)을 요구하지 않는다는 것에 있다.
+- 두 번째로는 작은 데서 시작할 수 있고 당신이 구조체에 더 많은 node를 추가하면서 임의로 확장할 수 있다.
+
+그러나 pointer가 가진 이러한 유연성은 cost로 다가온다. 우리는 주소를 저장하기 위한 추가적인 공간을 필요로한다. 
+
+예를 들어, 만약 integer 타입의 리스트를 가지고 있다면, 각 노드는 integer를 저장하면서 공간을 채울 것이다.
+
+- 물론 next node에 대한 pointer를 저장하기 위한 추가적인 integer로도 채울 것이다.
+
+<br>
 
 ## Node class
 
 node의 단순한 형태은 next node와의 연결 하나만을 가지는 node이다.
 
-아래의 그림을 살펴보자.
+우리가 pointer에 대해 알고있듯이, string은 사실 노드에 저장되는 것이 아니라 오히려 실제 string에 대한 pointer가 있는 것이다.
+
+다음 diagram에 두 개의 node를 가진 example 을 생각해 보자.
 
 
 
@@ -110,49 +125,16 @@ a = Node('eggs')
 
 list는 node와는 구별되는 컨셉이다. 우리는 list를 이해하기 위해 매우 단순한 class를 만드는 것으로부터 시작할 것이다.
 
-
+우리는 첫 번째 노드에서 첫 번째 노드에 대한 reference를 유지하는 contructor(생성자)부터 시작한다.(즉, 다음 코드에서 head)
 
 ```python
 class SinglyLinkedList:
     def __init__(self):
         self.head = None
         self.size = 0
-        ...
-    def insert(self, prev_node, data):
-        node = Node(data)
-        self.size += 1
         
-        # insert as a non-head node
-        if prev_node:
-            node.next = prev_node.next
-            prev_node.next = node
-        # insert as the head node (empty or not)
-    else:
-        node.next = self.head
-        self.head = node
-        
-    def traverse(self):
-        current = self.head
-        while current:
-            yield current.data
-            current = current.next
-            
-    def delete(self, prev_node):
-        self.size -= 1
-        
-        #delete a non-head node
-        if prev_node:
-            prev_node.next = prev_node.next.next
-            
-        # delete the head node
-    else:
-        else.head = self.head.next
         
 words = SinglyLinkedList() # words.head -> None
-words.insert(None, "eggs")
-words.insert(words.head, "ham")
-for word in words.traverse():
-    print(word)
 ```
 
 
@@ -207,20 +189,164 @@ words.insert(words.head, "ham")
 
 ### Traverse()
 
+```python
+ def traverse(self):
+        current = self.head
+        while current:
+            yield current.data
+            current = current.next
+            
+            
+words = SinglyLinkedList() # words.head -> None
+words.insert(None, "eggs")
+words.insert(words.head, "ham")
+for word in words.traverse():
+    print(word)
+```
+
+![image](https://user-images.githubusercontent.com/79521972/161563411-6f33c3dc-7dca-4be4-8a15-a55f13e3cec2.png)
 
 
 
+<br>
 
 ### Function returns: yield
 
-return은 반환하면 해당 함수가 종료하기 때문에 종료되지 않게 하고 싶을 때 사용하는 키워드이다.
+yield는 return은 반환하면 해당 함수가 종료하기 때문에 종료되지 않게 하고 싶을 때 사용하는 키워드이다.
 
-- **yield**는 요구에 의해 one by one으로 반환한다.
+- **yield**는 요구에 의해 one by one으로(하나씩) 반환한다.
   - Generator functions
   - goot for time and memory
 
-```def
+```python
+>>> def simple_generator():
+    	for n in range(4):
+            yield n + 1
+
+>>>
+>>> for i in simple_generator():
+    	print(i, end=' ')
+1 2 3 4        
 ```
+
+
+
+<br>
+
+### Delete(prev_node)
+
+```python
+def delete(self, prev_node):
+        self.size -= 1
+        
+        #delete a non-head node
+        if prev_node:
+            prev_node.next = prev_node.next.next
+            
+        # delete the head node
+    else:
+        else.head = self.head.next
+        
+        
+words.delete(words.head)
+```
+
+![image](https://user-images.githubusercontent.com/79521972/161564028-758021ec-7931-41a6-aaf9-69f13aca8fec.png)
+
+<br>
+
+
+
+### 전체 코드
+
+```python
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.size = 0
+        ...
+    def insert(self, prev_node, data):
+        node = Node(data)
+        self.size += 1
+        
+        # insert as a non-head node
+        if prev_node:
+            node.next = prev_node.next
+            prev_node.next = node
+        # insert as the head node (empty or not)
+    else:
+        node.next = self.head
+        self.head = node
+        
+    def traverse(self):
+        current = self.head
+        while current:
+            yield current.data
+            current = current.next
+            
+    def delete(self, prev_node):
+        self.size -= 1
+        
+        #delete a non-head node
+        if prev_node:
+            prev_node.next = prev_node.next.next
+            
+        # delete the head node
+    else:
+        else.head = self.head.next
+        
+words = SinglyLinkedList() # words.head -> None
+words.insert(None, "eggs")
+words.insert(words.head, "ham")
+for word in words.traverse():
+    print(word)
+```
+
+
+
+<br>
+
+## Doubly linked lists
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

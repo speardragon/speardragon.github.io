@@ -19,15 +19,15 @@ tag: ['Abstract Data Types', 'ADT']
 
 **Encapsulation**
 
-멤버 함수의 구현과 object의 data의 구현이 알려지지 않도록 하기 위해 혹은 덜 중요하게 class 정의하는 것은 수많은 다른 terms에 의해 알려진다.(class를 사용하는 프로그래머들에게)
+멤버 함수의 구현과 object의 data에 대한 구현이 class를 사용하는 programmer들에게 알려지지 않도록 혹은 적어도 무관하도록 class 정의하는 것은 여러 용어로 알려져 있다.
 
-사용되는 가장 흔한 term은 information hiding, data abstraction, and encapsulation으로 각각은 class의 세부적인 구현이 그 class를 사용하는 프로그래머에게 숨겨졌다는 것을 의미한다.
+사용되는 것 중에 가장 흔한 용어는 **information hiding**, **data abstraction**, and **encapsulation**이고 이들 각각은 어떠한 class의 구현의 세부사항이 그 class를 사용하는 programmer로부터 숨겨져 있다는 것을 의미한다.
 
 이러한 원칙은 OOP의 주요한 기조 중에 하나이다.
 
-1. 우리는 최소한 class 밖의 code가 class 안에서 선언된 변수의 값을 바꾸고 접근하는 것을 어렵게 해야한다.
-2. 구현의 세부사항으로부터 class를 어떻게 사용하는지의 설명을 분리해야 한다.
-   - 예컨데, class의 method가 어떻게 정의 되는지와 같은 것들 말이다.
+1. 우리는 적어도 **class 바깥**의 code가 **class 안**에서 선언된 변수의 값을 바꾸거나 접근하는 것을 어렵게 해야한다.
+2. 구현의 구체적인 내용으로부터 class를 어떻게 사용하는지의 설명을 분리해야 한다.
+   - 구체적인 내용이라 함은 예컨데, class의 method가 어떻게 정의 되었는지와 같은 것들을 말한다.
 
 <br>
 
@@ -58,11 +58,11 @@ information hiding이 되지 않아서 누구나 접근이 가능하기 때문�
 
 ## Objects interact only through the member functions.
 
-object는 member 함수를 통해서만 access 가능
+- object는 member 함수를 통해서만 access 가능
 
-어떠한 Object는 시스템의 나머지로부터 encapsulated 되어야 한다.
+Object는 시스템의 나머지로부터 encapsulated 되어야 하고 그 object가 제공하는 서비스를 정의하는 구체적인 여러 함수들을 통해서만 프로그램의 다른 부분과 상호작용 해야 한다. 
 
-
+<br>
 
 **이러한 과정을 통해 얻는 장점은?**
 
@@ -75,8 +75,6 @@ object는 member 함수를 통해서만 access 가능
 
 
 
-
-
 <br>
 
 ## ADT(Abstract Data Type)
@@ -85,15 +83,15 @@ object는 member 함수를 통해서만 access 가능
 
 또한 이는 그 type을 사용하는 프로그래머가 `value와 operation이 어떻게 구현되었는지의 세부사항`에 접근하지 않는다면 abstract data type이라고 불린다.
 
-The predefined types(ex. int)는 모두 ADT이다. 당신은 operation(such as +, *)이 int type에서 어떻게 구현 되었는지 알지 못한다.
+The predefined types(ex. int)는 모두 ADT이다. 우리는 operation(such as +, *)이 int type에서 어떻게 구현 되었는지 알지 못한다.
 
 <br>
 
 ADT를 만들기 위한 방법의 하나가 Class 인 것이다. (class가 encapsulation을 하기 때문에)
 
-즉, 프로그래머가 정의한 타입(programmer-defined types)인 <mark>Classes</mark>는 ADT또한 될 수 있다.
+즉, 프로그래머가 정의한 타입(programmer-defined types)인 <mark>Classes</mark>는 ADT 또한 될 수 있다.
 
-다시말해서, operation이 어떻게 구현 되는지의 세부사항을 이 class를 사용하는 아무 프로그래머로부터 숨겨야만하고 덜 관련없게 해야하는 것이다.
+다시말해서, operation이 어떻게 구현 되는지의 세부사항을 이 class를 사용하는 어떠한 프로그래머로부터 숨겨야만하고 그들과 덜 관련없게 해야하는 것이다.
 
 <br>
 
@@ -106,6 +104,8 @@ ADT를 만들기 위한 방법의 하나가 Class 인 것이다. (class가 encap
 ## model for an ADT
 
 - Application program should have no knowledge of the data (structure)
+  - application program은 데이터의 지식을 갖지 않아야 한다.
+
 
 ![image](https://user-images.githubusercontent.com/79521972/161468848-eabeff24-3184-462c-90e7-14f2e9f4de40.png)
 
@@ -117,9 +117,9 @@ ADT를 만들기 위한 방법의 하나가 Class 인 것이다. (class가 encap
 
 ## ADT examples
 
-So far, 우리는 string, lists, sets, and dictionaries의 built-in data type들을 봤었다.(추가적으로 decimal and fraction modules도 봤었다.)
+지금까지 우리는 string, lists, sets, and dictionaries의 built-in data type들을 봤었다.(추가적으로 decimal and fraction modules)
 
-이들은 종종 ADT 관점에 의해 묘사된다. ADTs는 data에 수행되어질 수 있는 operation들의 집합에 대한 수학적인 specifications으로 생각될 수 있다.
+이들은 종종 ADT 관점에 의해 묘사된다. ADTs는 data에게 수행되어질 수 있는 operation들의 집합에 대한 수학적인 specifications으로 생각될 수 있다.
 
 또한 이들은 their implementation이라기 보다는 their behavior에 의해 정의된다.
 
@@ -131,7 +131,9 @@ So far, 우리는 string, lists, sets, and dictionaries의 built-in data type들
 
 ## Data structure and ADT
 
-Data structure란 접근과 수정을 용이하게 하기 위해 data를 `store and organize`하는 방법이다.
+Data structure란 접근과 수정을 용이하게 하기 위해 data를 `store and organize`하는 방법이다. 
+
+어떠한 single data structure도 모든 목적을 잘 수행할 수는 없다. 그렇기 때문에 그것들의 몇가지 장점과 단점을 아는 것이 중요하다.
 
 <br>
 
