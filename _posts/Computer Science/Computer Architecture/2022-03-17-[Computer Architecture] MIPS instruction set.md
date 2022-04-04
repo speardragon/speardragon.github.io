@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Computer Architecture] week 3-1."
+title: "[Computer Architecture] MIPS instruction set"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['Computer Architecture', 'Intro']
 ---
