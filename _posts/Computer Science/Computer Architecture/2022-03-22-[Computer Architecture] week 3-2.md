@@ -251,7 +251,7 @@ Data memory에 있는 data가 register file에 들어가야 하는 상황에 reg
 
 ### MIPS Register Set
 
-![image](https://user-images.githubusercontent.com/79521972/159404503-407c2aaa-c693-4704-90f7-6826b5397d92.png)
+![image](https://user-images.githubusercontent.com/79521972/161664669-86bff572-4fde-4ddb-8d54-8076b44d0fe5.png)
 
 - \$0 
   - $zero 라고 쓰기도 함
