@@ -487,6 +487,10 @@ open -> 하드디스크 inode 정보(FCB)를 읽어옴
 
 
 
+# 5.2
+
+---
+
 <br>
 
 ### File Descriptor Table의 필요성
@@ -498,6 +502,8 @@ open -> 하드디스크 inode 정보(FCB)를 읽어옴
 
 
 
+
+
 <br>
 
 ### 파일 입출력 구현
@@ -505,7 +511,8 @@ open -> 하드디스크 inode 정보(FCB)를 읽어옴
 - 파일 입출력 구현을 위한 커널 내 자료구조
   - 파일 디스크립터 배열(Fd array, file descriptor table) 
   - 열린 파일 테이블(Open File Table) 
-  - 동적 i-노드 테이블(Active i-node table)
+  - 동적 i-노드 테이블(Active i-node table); 위 그림에서 vnode
+    - 리눅스에서는 i노드
 
 
 
@@ -519,6 +526,11 @@ fd = open(“file”, O_RDONLY); //디렉토리에서 파일의 inode 번호를 
 ```
 
 ![image](https://user-images.githubusercontent.com/79521972/160812684-841fdbb3-42f1-4ba5-981a-99b1a70f1c73.png)
+
+- 디렉토리에서 파일의 inode 번호를 찾음
+- 찾은 inode 번호를 파일 시스템(하드 디스크)으로부터 읽어서 동적 i-노드 테이블에 카피한다.
+- open file table에 entry를 하나 만듦, 이 entry에서 i-노드를 가리키는 포인터를 삽입하게 된다.
+- file descriptor table에서 위의 entry를 가리키는 entry를 하나 할당 받아야 하는데 3번부터 받게 된다.(0,1,2는 자동으로 오픈되는 파일) 이 index 값이 file descriptor
 
 
 
@@ -546,25 +558,25 @@ fd = open(“file”, O_RDONLY); //디렉토리에서 파일의 inode 번호를 
   - fd는 file을 접근하기 위한 파일 디스크립터 테이블의 index 
   - fd는 0부터 시작하는 정수(file descriptor) 
   - 0, 1, 2는 standard input/output/error로 예약됨. 
+    - 그래서 우리가 파일을 열면 3번부터 할당 받게 됨
   - 공유하고 있는 inode 에 대한 포인터 포함 
   - read와 write 시스템 콜을 호출하면
     - 커널은 파일 디스크립터를 사용하여 파일 디스크립터 테이블에 접근해 파일 테이블과 inode 의 해당 엔트리에 대한 포인터를 이용 
-    - 해당 inode 를 찾게 되고 이로부터 파일에 있는 실제 데이터를 찾아냄
-
-
+    - 해당 inode를 찾게 되고 이로부터 파일에 있는 실제 데이터를 찾아냄
+      - 하드디스크의 i 리스트를 찾을 필요가 없다.
 
 <br>
 
 ### 열린 파일 테이블 (Open File Table)
 
 - 파일 테이블 (file table) 
-  - 커널 자료구조 (시스템에 1개 생성) 
+  - 커널 자료구조 (**시스템에 1개** 생성) 
   - 파일 Open 때마다 엔트리 생성 
   - 열려진 모든 파일 목록 
   - 열려진 파일 -> 파일 테이블의 항목
 - 파일 테이블 항목 (file table entry)
-  - 파일 상태 플래그 (read, write, append, sync, nonblocking,…) 
-  - 파일의 현재 위치 (current file offset) – lseek 가 조정하는 값 
+  - **파일 상태 플래그** (read, write, append, sync, nonblocking,…) 
+  - **파일의 현재 위치** (current file offset) – lseek 가 조정하는 값 
   - i-node에 대한 포인터
 
 <br>
@@ -605,10 +617,13 @@ $ cat /home/obama/test.c
 #### how many disk access occurred?
 
 - 1. Pathname lookup (/home/obama/test.c)
+     - 데이터 블럭을 계속해서 읽고 가져오는 구조
 
 ![image](https://user-images.githubusercontent.com/79521972/160813803-c67f2e96-eb3b-450c-a3f5-46953e7d35f8.png)
 
+최종적인 test.c 의 inode를 가져오기 위해서 총 4개의 inode를 가져오게 됨.
 
+디렉토리/파일 접근까지 하여 총 7번의 disk I/O를 함으로써 가져오게 되었다.
 
 <br>
 
@@ -616,6 +631,7 @@ $ cat /home/obama/test.c
      - 메모리 내 inode 생성.
      - file table 생성. (offset을 0으로 설정)
      - File desciptor table에 entry 생성하고, file descriptor 리턴.
+     - inode를 찾기위해서 disk I/O를 할 필요가 없어짐
 
 ![image](https://user-images.githubusercontent.com/79521972/160814037-e56c8105-c72b-48c2-b6f9-560cd9c35e32.png)
 
@@ -626,15 +642,15 @@ $ cat /home/obama/test.c
 #### Pathname lookup 오버헤드
 
 - open(“/a/b”, …)는 open하고자 하는 파일의 경로를 찾기 위해 여러 차례의 I/O 연산을 요구하는 오버헤드가 발생 
-- 동일한 파일에 대해 반복해서 접근할 경우 매번 경로 검색을 해야 하므로 그 오버헤드는 더 커지게 됨. 
-- 따라서 경로 검색을 한번만 수행, 파일 디스크립터에 경로를 변환하여 저장 
-  - Pathname lookup은 한 번맊 수행! 
-  -  (pathname  file descriptor) 변홖 후 저장. 
-  -  fd = open(“/a/b”, …) 
+- 동일한 파일에 대해 반복해서 접근할 경우 매번 경로 검색을 해야 하므로 그 오버헤드는 감당할 수 없도록 더 커지게 됨. 
+- 따라서 **경로 검색을 한번만 수행**, 파일 디스크립터에 경로를 변환하여 저장 
+  - Pathname lookup은 한 번만 수행! 
+  -  (pathname  file descriptor) 변환 후 저장. 
+  -  **fd** = open(“/a/b”, …) 
 - 계속되는 시스템 콜 사용 시 path 대신 file descriptor 사용. 
   - read(fd, …), write(fd, …), …
 
-
+<br>
 
 ### On-Disk & In-Memory File System Structures
 
@@ -644,19 +660,21 @@ $ cat /home/obama/test.c
 
 <br>
 
-- An in-memory directory-structure cache holds the directory information of recently accessed directories. 
-  - Directory structure organizes the files Names and inode numbers 
+- An in-memory **directory-structure cache** holds the directory information of recently accessed directories. 
+  - directory-structure cache: 하드디스크에 있던 내용을 읽어서 main memory에 가져다 놓은 것
+  - Directory structure organizes the **files Names** and **inode numbers** 
+  
 - When a process opens the file 
   - First searches system-wide open file table (이미 사용되고 있는지 체크)
   - If yes, Per-process table entry 생성, 해당 system-wide open file table pointing 하게 함. 
   - If no, 주어진 파일 이름으로 directory structure 검색(cache or disk) 
-  - FCB를 system-wide open file table에 복사 후 Per-process table entry 생성 , 해당 system-wide open file table pointing하게 함 
-  - Open returns a file descriptor for subsequent use 
+    - FCB를 system-wide open file table에 복사 후 Per-process table entry 생성 , 해당 system-wide open file table pointing하게 함 
+  - Open returns a file descriptor for subsequent use (read/write을 위한)
   - Data from read eventually copied to specified user process memory address
 
 - When a process closes the file 
   - Per-process table entry is removed 
-  - System-wide table entry’s open count is decremented 
+  - System-wide table entry’s **open count** is **decremented** 
   - 모든 프로세스가 모두 파일을 close하면 (open count = 0) 
     - Updated meta data is copied back to disk directory structure
     - System-wide table entry is removed
@@ -667,13 +685,19 @@ $ cat /home/obama/test.c
 
 ### 파일을 위한 커널 자료 구조
 
+- 한 프로세스가 파일을 두 번 open 한 경우
+
 - `fd = open(“file”, O_RDONLY); //두 번 open`
 
 ![image](https://user-images.githubusercontent.com/79521972/160814597-2f33b11f-146d-4677-9aa5-2094d3629569.png)
 
+open file table의 entry가 하나 더 생김
 
 
-- `fd = dup(3); 혹은 fd = dup2(3,4);`
+
+<br>
+
+- `fd = dup(3); 혹은 fd = dup2(3,4);`//fd 복제
 
 ![image](https://user-images.githubusercontent.com/79521972/160814631-ed7b6b54-76bc-4a8c-a398-589d959b616b.png)
 
@@ -683,9 +707,11 @@ $ cat /home/obama/test.c
 
 ### File sharing
 
-- Two independent processes with the same file open
+- **Two independent processes** with the same file open
 
 ![image](https://user-images.githubusercontent.com/79521972/160814721-a543c510-23e9-41f4-9cdf-eab3584c0fa1.png)
+
+동일한 i-노드를 가리키게 됨(한 번만 생성되기 때문)
 
 <br>
 
@@ -698,12 +724,12 @@ $ cat /home/obama/test.c
 #include <fcntl.h>
 int main(void)
 {
-int fd;
-fd = creat("dup_result", 0644);
-dup2(fd, STDOUT_FILENO);
-close(fd);
-printf("hello world\n");
-return 0;
+    int fd;
+    fd = creat("dup_result", 0644);
+    dup2(fd, STDOUT_FILENO);
+    close(fd);
+    printf("hello world\n");
+    return 0;
 }
 ```
 
@@ -715,3 +741,24 @@ return 0;
 $ cat dup_result
 hello world
 ```
+
+standard 출력이 가리키는 것이 모니터가 아니라 file이기 때문에 printf를 해도 출력이 되지 않지만 cat명령어로 파일을 열면 해당 내용이 출력되는 모습이다.
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
