@@ -137,13 +137,9 @@ class SinglyLinkedList:
 words = SinglyLinkedList() # words.head -> None
 ```
 
-
-
-
-
 linked list에 접근하기 위해서는 그 리스트의 head node가 제일 중요하다. 모든 접근은 head node로 부터 시작한다.
 
-
+<br>
 
 ### Insert(prev_node, data)
 
@@ -244,8 +240,8 @@ def delete(self, prev_node):
             prev_node.next = prev_node.next.next
             
         # delete the head node
-    else:
-        else.head = self.head.next
+    	else:
+        	self.head = self.head.next
         
         
 words.delete(words.head)
@@ -255,7 +251,25 @@ words.delete(words.head)
 
 <br>
 
+```python
+def delete(self, prev_node):
+        self.size -= 1
+        
+        #delete a non-head node
+        if prev_node:
+            prev_node.next = prev_node.next.next
+            
+        # delete the head node
+    	else:
+        	self.head = self.head.next
+        
+        
+words.delete(None)
+```
 
+![image](https://user-images.githubusercontent.com/79521972/161927621-5c6e6365-0468-4b54-9cc0-9c6d6092d7ca.png)
+
+<br>
 
 ### 전체 코드
 
@@ -300,6 +314,7 @@ words.insert(None, "eggs")
 words.insert(words.head, "ham")
 for word in words.traverse():
     print(word)
+words.delete(words.head)
 ```
 
 
@@ -308,39 +323,292 @@ for word in words.traverse():
 
 ## Doubly linked lists
 
+Doubly linked list는 양방향으로 traverse 될 수 있다. Doubly linked list에서 한 노드는 쉽게 그것의 이전 노드를 해당 노드의 track을 유지하는 변수를 가지지 않고도 필요에 의해 언제들지 참조할 수 있다.
+
+![image](https://user-images.githubusercontent.com/79521972/161928656-3666f92c-31f7-4bd1-9326-93d636610a5a.png)
+
+
+
+```python
+class Node(object):
+    def __init__(self, data=None, next=None, prev=None):
+        self.data = data
+        self.next = next
+        self.prev = prev
+```
+
+
+
+<br>
+
+## Circular lists
+
+맨 마지막 노드가 NULL을 가리키는 것이 아니라 맨 처음 노드를 가리킴.
+
+- Circular singly linked list
+
+![image](https://user-images.githubusercontent.com/79521972/161928942-6610dd5c-35ed-4de4-8c00-0ea95af5e308.png)
+
+
+
+- Circular doubly linked list
+
+![image](https://user-images.githubusercontent.com/79521972/161928968-fe595dfe-60a5-4f99-b1af-16f6f43b2150.png)
 
 
 
 
 
+<br>
+
+### insert(prev_node, data)
+
+```python
+class CircularList: 	#Circular Singly Linked List
+    def __init__(self):
+        self.head = None
+		self.size = 0
+        
+    def insert(self, prev_node, data):
+        node = Node(data)
+        self.size += 1
+        
+        #list is not empty
+        if prev_node:
+            node.next = prev_node.next
+            prev_node.next = node
+        #list is empty
+    	else:
+            node.next = node
+            self.head = node
+            
+words = CircularList()
+words.insert(None, "eggs")
+words.insert(words.head, "ham")
+words.insert(words.head, "spam")
+```
 
 
 
+**SLL vs. CSLL**
+
+SLL: 새로운 노드를 head node 다음에 삽입하고 싶으면 prev_node로 None을 전달하면 된다. 
+
+CSLL: 노드가 원형 순환구조로 이어져 있기 때문에 head 다음에 삽입하는 것이나 중간에 삽입하는 것이나 똑같지만 prev_node 인자로 None을 넘긴다는 것은 해당 list 가 비어있음을 의미한다.
 
 
 
+<br>
+
+### Traverse()
+
+```python
+def traverse(self):
+    current = self.head
+    while True:
+        yield current.data
+        if current.next == self.data:
+            break
+        else:
+            current = current.next
+
+           
+words = CircularList()
+words.insert(None, "eggs")
+words.insert(words.head, "ham")
+words.insert(words.head, "spam")
+for word in words.traverse():
+    print(word)
+```
 
 
 
+<br>
+
+### Delete(prev_node)
+
+```python
+def delete(self, prev_node):
+    self.size -= 1
+    
+    # delete a non-head node
+    if prev_node.next != self.head
+    	prev_node.next = prev_node.next.next
+        
+    # delete the head node
+	else:
+    	# multiple nodes in list
+        if prev_node != self.head:
+            self.head = self.head.next
+            prev_node.next = self.head
+        # only one node in list
+    	else:
+            self.head = None
+        
+        
+words.delete(words.head)
+for word in words.traverse():
+    print(word)
+```
+
+head node를 delete하는 경우에도 리스트에 노드가 하나만 있는 경우와 여러개가 있는 경우로 나뉜다.
+
+![image](https://user-images.githubusercontent.com/79521972/161936211-aa54b9ac-ebd9-4b79-87c5-8ddb0c0a079f.png)
+
+![image](https://user-images.githubusercontent.com/79521972/161936294-e1e4337a-b7be-4fdb-8e71-78bf8941da70.png)
+
+<br>
+
+- 백준 1158번 요세푸스 문제
+  - [백준 1158번 요세푸스 문제](https://www.acmicpc.net/problem/1158)
+
+![image](https://user-images.githubusercontent.com/79521972/161932271-10fc618a-eeb0-4709-a8de-de8a1f0fc9a6.png)
+
+n,k 인 경우에 노드를 하나씩 삭제해 가기 때문에 k-1만큼씩 prev_node를 지정한다.
+
+<br>
+
+## Circular List using Python List
+
+### Python List Methods
+
+```python
+fruits = ['orange', 'apple', 'banana']
+print(len(fruits))
+# 3
+
+fruits.append('kiwi')
+print(fruits)
+# ['orange', 'apple', 'banana', 'kiwi']
+
+fruits.insert(2, 'pear')
+print(fruits)
+# ['orange', 'apple', 'pear', 'banana', 'kiwi']
+
+print(fruits.pop(1))
+# 'apple'
+print(fruits.pop())
+# 'kiwi'
+fruits.remove('banana')
+print(fruits)
+# ['orange', 'pear']
+```
 
 
 
+<br>
+
+### Circular list: Increasing the index
+
+```python
+fruits = ['orange', 'apple', 'pear', 'banana', 'kiwi']
+
+index = 3
+print(fruits[index])
+# 'banana'
+
+index += 2
+print(fruits[index])
+# IndexError: list index out of range
+```
+
+```python
+index = 3
+index += 2
+if index >= len(fruits):
+    index = index % len(fruits)
+    
+print(fruits[index])
+# 'orange'
+```
 
 
 
+<br>
+
+### Circular list: pop
+
+```python
+fruits = ['orange', 'apple', 'pear', 'banana', 'kiwi']
+
+index = 3
+fruits.pop(index)
+# 'banana'
+
+print(fruit[index])
+# 'kiwi'
+
+print(fruits.pop(index))
+# 'kiwi'
+
+print(fruits[index])
+# IndexError: list index out of range
+
+fruits = ['orange', 'apple', 'pear', 'kiwi']
+print(fruits.pop(index))
+# 'kiwi'
+
+if index == len(fruits):
+    index = 0
+    
+print(fruits[index])
+# 'orange'
+
+```
 
 
 
+<br>
+
+### Example
+
+```python
+words = []
+words.append('eggs')
+words.append('spam')
+words.append('ham')
+
+index = 0
+while len(words) > 0:
+    index += 2
+    if index >= len(words):
+        index += 2
+        if index >= len(words):
+            index %= len(words)
+            
+        print(words.pop(index))
+        if index == len(words): #can be skipped
+            index = 0			#            
+```
+
+```
+ham
+eggs
+spam
+```
 
 
 
+<br>
 
+## 요세푸스 문제
 
+```python
+n, k = map(int, input().split())
 
+jo = []
+for i in range(1, n+1):
+    jo.append(i)
+    
+print('<', end='')
 
+index = 2
 
-
-
+while len(jo) > 0:
+    index += 2
+    
+    print(jo.pop())
+```
 
 
 
