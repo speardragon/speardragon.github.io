@@ -69,7 +69,9 @@ synthesizable한 것에 대해서 simulation.
 
 
 
+## Testbenches
 
+- HDL that tests another module: device under test (dut)
 
 
 
