@@ -15,14 +15,6 @@ micro architecture의 대략적인 큰 틀을 먼저 잡아보자.
 
 <br>
 
-PC가 instruction을 가리키고
-
-해당 Instruction을 decode하여 레지스터를 이용하고
-
-해당 opcode와 같은 operation에 따라서 무엇을 할 지가 결정이 된다.
-
-<br>
-
 - PC -> instruction memory, fetch instruction
 - Register numbers -> register file, read registers
 - Depending on instruction class
@@ -37,9 +29,47 @@ PC가 instruction을 가리키고
 
 instruction이 instruction memory 상에서 4Byte 단위로 저장되어 있기 때문에 각 cycle마다 instruction을 PC에 의해 하나씩 가져오게 되는데 그래서 PC에 4를 더해야 그 다음 instruction memory address를 가리킬 수 있는 것이다.
 
+<br>
+
+## 구성
+
+### 1. Datapath
+
+:연산들을 수행하기 위한 여러 유닛들의 구조. MIPS연산에는 크기 5가지로 나누어진다.
+
+① **I**nsturction **F**etch:(Instruction Memory) 
+
+- 명령어를 메모리에서 CPU로 전달하는 과정
+- PC가 가리키는 메모리 주소에 저장된 데이터를 반환하여 CPU는 이를 copy해서 Instruction Register로 그 명령(data)을 가져온다. 
+- 현재 처리 중인 명령어는 IR에 저장된다.
+
+![image](https://user-images.githubusercontent.com/79521972/162255854-7e3aa9d0-4a68-45f2-9a34-669d5e1c23d1.png)
 
 
 
+② **I**nstruction **D**ecode & Read Register File:(Register File)
+
+- 명령을 해석하고 필요한 레지스터 값을 읽는다.
+
+![image](https://user-images.githubusercontent.com/79521972/162255895-9ee88682-6ffa-409a-9843-dc89da1e831a.png)
+
+③ **E**xecute operation: (Arithmetic Logic Unit)
+
+- 명령에 필요한 연산을 수행한다. 
+
+![image](https://user-images.githubusercontent.com/79521972/162256012-2b626ee9-fda7-4d99-ad98-5778d054c3ff.png)
+
+④ Read from **M**emory: 
+
+- lw와 같이 메모리를 읽는 연산의 경우 메모리의 정보를 가져온다. (Memory)
+
+![image](https://user-images.githubusercontent.com/79521972/162256364-866a7a94-626c-46de-9854-642a24b0d0ee.png)
+
+⑤ **W**rite **B**ack to register file
+
+- 명령의 결과를 필요로 할 경우 레지스터 파일에 쓴다. (Register file)
+
+![image](https://user-images.githubusercontent.com/79521972/162256489-85f8bf37-ddb5-4068-96f0-5d1c1f735633.png)
 
 
 
@@ -477,6 +507,14 @@ A) 다음 시간에
 Q) data memory에는 clock이 없는가?
 
 A) 메모리에도 종류가 여러가지이다. 이 챕터에서 다룬 메모리는 Aysnc data 방식이기 때문
+
+
+
+**Q) Register File에서 보면 lw인 경우에는 write을 하기 위해서 아래 RegDst에 결정되는 MUX 쪽으로 가고 add인 경우에는 read를 하기 위해서 register file의 A2쪽으로 가게되는데 이런 것은 Instruction Memory에서 Decoding 된 것으로 어느 노드로 갈지가 결정되는 건가요? 아니면 두 노드 모두로 이동하게 되나요?**
+
+
+
+Q) instruction register는 어디에...?
 
 ---
 
