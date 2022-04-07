@@ -37,7 +37,7 @@ MIPS와 거의 유사함
 
 flag register
 
-
+register 수가 MIPS에 비해서 현저히 적다.
 
 <br>
 
@@ -47,9 +47,9 @@ flag register
 
 
 
-RISC에서는 fetch할 때 32bit만 가져오면 됐는데 CISC는 32bit로 고정되어 있지 않다. 
+RISC에서는 fetch할 때 32bit만 가져오면 됐는데 CISC는 위와 같이 32bit로 고정되어 있지 않다. 
 
-그래서 CISC는 instruction buffer라는 것에 몽땅 다 넣어서 명령어가 몇 bit인지 decode하여 명령어를 가져온다.
+그래서 CISC는 고정된 bit를 fetch하는 것이 아니라. instruction buffer라는 곳에 몽땅 다 넣어서 명령어가 몇 bit인지 decode한 후에 명령어를 가져온다(fetch).
 
 
 
@@ -85,16 +85,14 @@ MIPS와 비교했을 때, RISC-V는 opcode가 뒤쪽으로 가 있다.
 - Types of brances:
   - Conditional
     - branch if equal (beq)
-    - branch if equal (beq)
-    - branch if equal (beq)
-    - branch if equal (beq)
+    - branch if not equal (bne)
+    - branch if less than (blt)
+    - branch if greater than or equal (bge)
   - Unconditional
     - jump(j)
     - jump register(jr)
-    - jump register(jr)
-    - jump register(jr)
-
-
+    - jump and link(jal)
+    - jump and link register(jalr)
 
 
 
