@@ -9,17 +9,7 @@ tag: ['Computer Architecture']
 
 # Micro architecture
 
-PC가 Instruction memory(IM)를 지정하면 거기에 있는 명령어가 fetch되어 IR로 읽어드림.
-
-
-
-
-
-**lw $4, 4($5)**
-
-4라는 constant는 IR에 들어있음
-
-(사진)
+![image](https://user-images.githubusercontent.com/79521972/162123262-b3e2bb08-8745-4277-9bb2-96ef88adacf0.png)
 
 
 
@@ -30,30 +20,30 @@ PC가 Instruction memory(IM)를 지정하면 거기에 있는 명령어가 fetch
 ## Introduction
 
 - Microarchitecture: how to  implement an architecture  in hardware
-- Processor: 
+- Processor는 다음 두 가지로 이루어져 있음.
   - Datapath: functional blocks 
   - Control: control signals
 
-![image](https://user-images.githubusercontent.com/79521972/162123262-b3e2bb08-8745-4277-9bb2-96ef88adacf0.png)
 
 
+꼭 processor만이 아니라 어떤 hardware를 설계하더라도 디지털 시스템은 위와 같이 구성해야 한다.
 
 <br>
 
 ## Microarchitecture
 
 - Multiple implementations for a single  architecture: 
-  - Single-cycle: Each instruction executes in a  single cycle 
+  - Single-cycle: Each instruction executes **in a single cycle** 
   - Multicycle: Each instruction is broken into series  of shorter steps 
   - Pipelined: Each instruction broken up into series  of steps & multiple instructions execute at once
 
 
 
+<br>
 
 
 
-
-## Processor Performance
+### Processor Performance
 
 - Program execution time
   - Execution Time = (#instructions)(cycles/instruction)(seconds/cycle)
@@ -68,65 +58,70 @@ PC가 Instruction memory(IM)를 지정하면 거기에 있는 명령어가 fetch
   - Power 
   - Performance
 
+<br>
 
-
-## MIPS Processor
+### MIPS Processor
 
 - Consider subset of MIPS instructions: – 
   - R-type instructions: *and, or, add, sub, slt* 
   - Memory instructions: *lw, sw* 
   - Branch instructions: *beq*
+  - Jump: j
+
+<br>
+
+위와 같은 9개의 기능에 대하여 MIPS microprocessor를 구현해 보도록 하겠다.
 
 
 
+### Single-Cycle implementation
+
+<br>
+
+Single cycle implementation이란 instruction 하나를 하나의 cycle에 수행하는 것을 말한다. 
+
+Cylce이 끝나면 새로운 instruction을 수행한다.
+
+<br>
+
+Clock이 올라가서부터 다음 clock이 올라가기 전까지 하나의 수행을 마친다.
+
+다음 clock이 올라가는 순간 instruction 수행 결과(state)를 update하고 , 새로운 instruction을 수행한다.
 
 
 
+<br>
 
-state logic vs. combinational logic
-
-
-
-
-
-## Architectural State
+### Architectural State
 
 - Determines everything about a processor:
-  - PC
-  - 32 registers
-  - Memory
+  - PC: 새로운 PC로 update한다.
+  - 32 registers: add, sub, lw 등
+  - Memory(data memory): sw 등
 
 
 
 ALU, Decode : Combinational logic
 
+<br>
 
-
-
-
-## MIPS State Elements
+### MIPS State Elements
 
 
 
 ![image](https://user-images.githubusercontent.com/79521972/162123912-b8dbf469-c43a-48df-88c3-0052082d1edd.png)
 
-register는 state element이기 때문에 d와 q, clk, EN, Reset이 있다. 
+register는 state element이기 때문에 d와 q, clk, EN, Reset PIN이 있다. 
+
+- clock edge에서 program counter가 바뀜
+
+- Instruction Memocy는 여러 memory 중에서도 Asynchronous ROM이다.(read만 가능)
+
+- data memory는 RAM(read/ write 모두 가능)
+
+- register file: read port가 두 개(ALU연산을 위하여)
 
 
-
-clock edge에서 program counter가 바뀜
-
-
-
-Instruction Memocy는 여러 memory 중에서도 Asynchronous ROM이다.(read만 가능)
-
-
-
-data memory는 RAM(read/ write 모두 가능)
-
-
-
-register file: read port가 두 개(ALU연산을 위하여)
 
 - 무엇을 read?: A1, A2
 - write port(WD3)
@@ -137,15 +132,22 @@ register file: read port가 두 개(ALU연산을 위하여)
 
 <br>
 
-## Single Cycle
+## Single Cycle MIPS Processor
+
+- Datapath
+- Control
 
 
 
 
 
-## Single-Cycle Datapath: ls fetch
+<br>
 
-STEP 1: Fetch instruction
+
+
+## Single-Cycle Datapath: lw fetch
+
+**STEP 1: Fetch instruction**
 
 `lw $3, 4($4)`
 
@@ -153,59 +155,102 @@ STEP 1: Fetch instruction
 
 
 
+<br>
+
 
 
 ## Single-Cycle Datapth: lw Register Read
 
-STEP 2: Read source opernads from RF
+**STEP 2: Read source opernads from RF**
+
+![image](https://user-images.githubusercontent.com/79521972/162152113-1c19ab56-51ea-4f5a-b65f-cc9af72f7526.png)
 
 
 
 
 
+<br>
+
+## Single-Cycle Datapth: lw Immediate
+
+**STEP 3: Sign-extend the immediate**
+
+![image](https://user-images.githubusercontent.com/79521972/162152239-6e1d92c7-8001-41f2-ab44-6245571e0d2e.png)
 
 
 
+<br>
 
-## Single lw Register Read
+## Single-Cycle Datapth: lw address
 
+**STEP4: Compute the memory address**
 
-
-
-
-## Single-Cycle Datapath: lw memory Read
-
-- STEP 5: Read data from memory and write it back to register file
+![image](https://user-images.githubusercontent.com/79521972/162152342-01c6f27b-8ba1-4a40-9391-848167e78cd1.png)
 
 
 
+<br>
 
+## Single-Cycle Datapth: lw Memory Read
 
-### sw
+**STEP 5: Read data from memory and write it back to register file**
 
-- Wr
-
-
-
-
-
-write을 할 거냐 말 거냐 등 -> control
+![image](https://user-images.githubusercontent.com/79521972/162152459-794c0d55-d335-4f99-b44e-d235734ee63b.png)
 
 
 
-## R-Type
+<br>
 
-`add $3, $4, $5`
+## Single-Cycle Datapth: lw PC Increment
 
+**STEP 6: Determine address of next instruction**
 
-
-
-
-### beq
-
-`beq $3, $4, Imm`
+![image](https://user-images.githubusercontent.com/79521972/162152574-22ad8304-8a85-4a42-befe-c7c355b43c55.png)
 
 
+
+<br>
+
+
+
+## Single-Cycle Datapth: sw
+
+**Write data in rt to memory**
+
+![image](https://user-images.githubusercontent.com/79521972/162152657-f8ceeedd-3120-4f42-9c49-3c7b62680629.png)
+
+
+
+<br>
+
+## Single-Cycle Datapth: R-Type
+
+- Read from rs and rt
+- Write ALUResult to register file
+
+- Write to rd (instead of rt)
+- `add $3, $4, $5`
+
+![image](https://user-images.githubusercontent.com/79521972/162152809-5e9f85f4-c430-4a1e-a240-e0174c13aba9.png)
+
+
+
+<br>
+
+## Single-Cycle Datapth: beq
+
+- Determine whether values in rs and rt are equal
+- Calculate branch target address:
+  - BTA = (sign-extended immediate << 2) + (PC + 4)
+- `beq $3, $4, Imm`
+
+
+
+![image](https://user-images.githubusercontent.com/79521972/162152990-2c3d35cb-4084-4704-bd4e-42feb8ba5841.png)
+
+
+
+<br>
 
 
 
@@ -223,15 +268,11 @@ write을 할 거냐 말 거냐 등 -> control
 
 
 
-![image-20220407143612159](C:\Users\c_dragon\AppData\Roaming\Typora\typora-user-images\image-20220407143612159.png)
-
-그림 수정
-
 <br>
 
 `lw $3, 8($4)`
 
-![image](https://user-images.githubusercontent.com/79521972/162128281-b2ac954c-aba6-479f-901a-77738165b4f2.png)
+
 
 
 
@@ -241,9 +282,9 @@ write을 할 거냐 말 거냐 등 -> control
 
 `beq $3, $4, 5`
 
-![image](https://user-images.githubusercontent.com/79521972/162128852-4b9a6599-7bc6-438e-9fea-18e2fdf50542.png)
 
 
+![image](https://user-images.githubusercontent.com/79521972/162155339-23cfcec3-c01d-47a8-b5a5-caad09895935.png)
 
 ---
 
@@ -254,6 +295,8 @@ A)
 
 
 Q) data memory에는 clock이 없는가?
+
+A) Aysnc data 방식이기 때문
 
 ---
 
