@@ -31,7 +31,7 @@ synthesizable한 것에 대해서 simulation.
 
 
 
-우리가 관심을 가질 내용은 processor를 설계하는 것.(modeling simulation)
+우리가 관심을 가질 내용은 synthesis보다는 processor를 설계하는 것.(modeling simulation)
 
 
 
