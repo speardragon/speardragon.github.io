@@ -210,7 +210,7 @@ system software가 아닌 것의 예:
 
 RTE의 종류:
 
-- OS: Unix/Linux, Window OS
+- **OS**: <mark>Unix/Linux</mark>, Window OS
 - Java Virtual Machine(JVM)
   - JVM은 OS는 아니지만 다른 소프트웨어에게 플랫폼을 제공하기 때문에 RTE의 종류 중 하나인 것이다.
 - Cloud OS
@@ -223,16 +223,22 @@ RTE의 종류:
 
 application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 된다면 너무 힘들 것이기 때문에 application과 hardware 중간 다리 역할을 하는 매개체가 있어야 하는데 이 매개체를 바로 OS(operation syste), 우리 말로 운영체제라고 한다.
 
-hardware 자원에 access 하는 application software를 제공하는 special layer of software
+- hardware 자원에 access 하는 application software를 제공하는 special layer of software
 
-- Convenient abstraction of complex hardware devices 
-- Protected access to shared resources 
-- Security and authentication 
-- Communication amongst logical entities
+  - **Convenient abstraction** of complex hardware devices 
+
+  - **Protected access** to shared resources 
+
+  - **Security and authentication** 
+
+  - **Communication** amongst logical entities
+
 
 위 네 가지가 OS에서 중요한 부분이다.
 
 <br>
+
+## Block diagram of Operating System modules
 
 ![image](https://user-images.githubusercontent.com/79521972/156927317-a1487246-be7a-4e05-b86a-4e58964b2db3.png)
 
@@ -241,27 +247,27 @@ hardware 자원에 access 하는 application software를 제공하는 special la
 이때 이 둘(하드웨어, 유저 프로그램) 간의 interface가 정의되는데
 
 - User interface: 사용자 관점에서 정의된 interface
-- System call: 하드웨어 관점에서 정의된 interface
+- System call: 하드웨어(OS) 관점에서 정의된 interface
 
-가 있다.
-
-보라색으로 되어 있는 것들: system call에 의해서 사용자에게 제공되는 서비스들을 구현하는 알고리즘의 집합(OS kernal)이다.
+- 보라색으로 되어 있는 것들: system call에 의해서 사용자에게 제공되는 서비스들을 구현하는 알고리즘의 집합(OS kernal)이다.
 
 <br>
 
 ## What does an OS do?
 
-- Provide abstractions to apps
+- Provide abstractions to apps(convinience)
 
   -  file system
     - 각각의 파일을 저장할 하드 디스크에 대한 access가 필요한데 파일을 사용하는 입장에서 하드디스크를 어떻게 access를 해야하는지 알 필요까지는 없다.(OS에서 파일에 대한 추상화를 지원하기 때문에)
 
-  - process, theads
+  - process, theads(프로그램 실행단위)
     - Process, Thread: Ms word 아이콘을 두 번 누르면 창이 두 개가뜸 -> 프로세스가 두개가 실행 된 것즉, instance두 개가 만들어진 것이라고도 한다.
 
-  - VM, containers
+  -  VM, containers
 
-- Manage resources
+  - Naming system
+
+- Manage resources(efficiency)
   - Memory, CPU, storage...
 
 - Achieves the above by implementing specific algorithms
@@ -277,24 +283,26 @@ hardware 자원에 access 하는 application software를 제공하는 special la
 - Software emulation(한 컴퓨터가 다른 컴퓨터처럼 똑같이 작동하도록 하는 기법, 즉 복제) of an abstract machine
   - 프로그램들에게 마치 그들이 machine을 소유한 것과 같은 환상(illusion)을 준다.
   - Make it look like 하드웨어가 내가 원하는 feature들을 가지고 있다고 
-
 - Two types of "VMs"
 
   - Process VM: **a single program**의 실행을 지원(support)
     - 주로 OS에 의해 제공되는 기능
-
   - System VM: **전제 운영체제와 그것의 applications**의 실행을 지원(support)
     - Hypervisor에 의해 제공됨
+    - VMWare Fusion, Virtual box, Parallels Desktop, Xen
+
+<br>
 
 ### Porcess VMs
 
-특징:
+목적: 응용프로그램을 간단하게 만드는 것 
 
 - Programming simplicity
   - 각 process는 모든 memory/CPU time을 소유한다고 생각한다.
   - 모든 devices를 소유한다고 생각함
   - 다른 device는 same high level interface를 가진 것처럼 보임
   - 다른 interface는 raw hardware보다 더 강력
+    - Ethernet card -> reliable, ordered, networking (TCP/IP)
 - Fault Isolation(결함 고립)
   - 다른 precess들에게 직접적으로 영향을 줄 수 없다.
   - 버그가 전체 머신을 망칠 수 없다.
@@ -302,13 +310,16 @@ hardware 자원에 access 하는 application software를 제공하는 special la
 - Protection and Portability
   - Java interface 는 안전하고 안정되어 있다 (많은 플랫폼들을 걸쳐서)
 
+<br>
+
 ### System VMs: Layers of OSs
 
 ![image](https://user-images.githubusercontent.com/79521972/156927771-79adade9-7026-4d36-8994-51d1f1e8e321.png)
 
 - Useful of OS development
-  - OS가 충돌이 날때, 한 VM에게 제약을 가한다.
+  - OS가 충돌이 날때, 한 VM에게만 제약을 가한다.
   - 다른 OS들 위의 프로그램들을 테스트 하는 것을 돕는다.
+- 가상화 되어진 CPU, memory, devices를 가진다.  
 
 <br>
 
@@ -316,11 +327,11 @@ hardware 자원에 access 하는 application software를 제공하는 special la
 
 - OS가 process의 life cycle을 관리/감독한다.
   - 3 main steps: <mark>**Creating the process, managing the process and terminating the process.** </mark>
-- The OS identifies which program (= executable file) is to be executed to create the process.
+- The OS **identifies** which program (= executable file) is to be executed to create the process.
   - Executable files are generated with a compiler given the text of the program in a language such as C or C++
-  - This is a file that contains instructions to be executed on the CPU to activate the process. The format of executable files is specified by the OS. 
-- OS는 prcess를 만들라고 user에게 요청받는다.
-  - 이는 예를 들어 shell(명령 프롬포트)을 통해 가능하다.
+  - This is a file that contains **instructions** to be executed on the CPU to activate the process. The format of executable files is specified by the OS. 
+- OS는 process를 만들라고 user에게 요청받는다.
+  - 이는 shell(명령 프롬포트)을 통해 가능하다.
   - Shell: 소프트웨어 중 하나로 user를 위한 interface를 제공한다.
     - Command Line Interface(CLU) or a Graphical User Interface(GUI).
 
@@ -329,40 +340,82 @@ hardware 자원에 access 하는 application software를 제공하는 special la
 ### Creating the process
 
 - OS가 process instance를 executable로 부터 생성한다.
-  - This instance is identified by its process ID, which is unique among all running processes.
-  - All information about running processes is maintained by the OS in a process table.
-- OS는 또한 computer의 main memory에 새로운 process에 대한 메모리도 할당함.
-- The OS loads the instructions from the program executable file into main memory
+  - This instance is identified by **its process ID**, which is **unique** among all running processes.
+  - All information about running processes is maintained by the OS in a **process table**.
+- OS는 computer의 main memory에 새로운 process가 사용하기 위한 메모리도 할당한다.
+- The OS **loads** the instructions from the program executable file **into main memory**.
+
+<br>
 
 ### Managing the process
 
 - The OS identifies the starting function in the program (e.g., "main" in C and C++) and invokes it (calls the function). 
-  - The main function receives arguments passed from the OS. These are called the command line arguments. 
-- From that point on, the instructions of the main function are executed as specified in the program.
+  - The main function **receives arguments** passed from the OS. These are called the command line arguments. 
+- From that point on, **the instructions of the main function are executed** as specified in the program.
+- 실행이 중지될 수도 있음.
+
+<br>
 
 ### Terminating the process
 
 - process가 special system call인 `exit`을 실행시 process가 종료됨
-- Memory and all other resources allocated to the resource are freed, the process ID is freed and the process entry is removed from the OS process table.(freed: 해방)
+- Memory and all other resources allocated to the resource **are freed**, the process ID is freed and the process entry is removed from the OS process table.(freed: 해방)
 
+<br>
 
+# 1.1 왜 리눅스인가?
+
+실행환경 플랫폼(RTE platform)에는 다양한 종류가 있다.
 
 ## Why Linux?
 
-1991년 : 핀란드 대학원생 Linus Tovalds가 만듬
-
-리눅스 기능상 장점:
-
-- 멀티 태스킹
--  다중 사용자 접근
-- POSIX 1003.1 standard 지원
-- 다양한 파일 시스템 지원
-- 다양한 네트워크 프로토콜 지원
-- 다양한 아키텍처 지원
-- 멀티 프로세서 지원
+- 1991년 : 핀란드 대학원생 Linus Tovalds가 만듬
+  - MInix를 기반으로 version 0.01 개발
+  - Paging, timer interrupt, device driver, file system,...
+  - 1992년: 리눅스 배포판 등장
+    - 리눅스 배포한 = 리눅스 커널 + 응용 프로그램
 
 <br>
-유닉스/리눅스 기반 운영체제:
+
+- Linux
+  - PC 등 다양한 컴퓨터 환경에서 동작하는 UNIX-like OS
+  - 어느 상용 OS와도 견줄 수 있는 막강한 성능과 안정성
+    - 인터넷 상의 많은 해커들의 참여로 커널이 개발됨.
+    - 전세계의 수많은 사람들에 의해 테스트되고 개선, 발전됨.
+  - COPYLEFT(open source)
+    - GNU General Public License(GPL)에 따라 공개
+    - 프로그램의 실행 파일 외에 소스코드 또한 공개. 
+    - 워하는 사람은 소스코드를 변경할 수 있음
+    - 단, 변경된 프로그램을 공개하고자 할 때는 반드시 소스코드도 함께 공개해야 함.
+
+- 리눅스 기능상 장점:
+
+  - 멀티 태스킹(Multi- Tasking)
+
+  -  다중 사용자 접근(Multi-User access)
+
+  - POSIX 1003.1 standard 지원
+
+  - 다양한 파일 시스템 지원
+
+  - 다양한 네트워크 프로토콜 지원
+
+  - 다양한 아키텍처 지원
+
+  - 멀티 프로세서 지원
+
+
+<br>
+
+## 동기
+
+- 유닉스/리눅스 운영체제
+  - 스마트폰, PC, 서버 시스템, 슈퍼컴퓨터에까지 사용되고 있음
+  - 소프트웨어 경쟁력의 핵심이 되고 있다.
+
+<br>
+
+- 유닉스/리눅스 기반 운영체제:
 
 1. 안드로이드OS
 2. iOS
@@ -376,13 +429,38 @@ hardware 자원에 access 하는 application software를 제공하는 special la
 
 <br>
 
+## 유닉스의 설계 철학
+
+- 단순성 
+  - MIT MULTICS에 반대해서 최소한의 기능만을 제공
+  - 자원에 대한 일관된 관점 제공(everything is file 관점)'
+- 이식성
+  - 이식성을 위해 C 언어로 작성
+  - 다양한 플랫폼에 이식 가능
+  - 스마트폰, PC, 서버, 슈퍼컴퓨터 등
+- 개방성
+  - 소스 코드 공개와 같은 개방성
+
+<br>
+
 ##  유닉스의 특징
 
 - 다중 사용자, 다중 프로세스 운영체제(OS)
+  - 여러 사용자가 동시에 사용 가능
+  - 여러 프로그램이 동시에 실행
+  - 관리자 슈퍼유저(Super User)가 있음.
+
 - 쉘 프로그래밍(Shell Programming)
+  - 명령어나 유틸리티 등을 사용하여 작성한 프로그램
+
 - 훌륭한 네트워킹
+  - 유닉스에서부터 네트워킹이 시작
+  - ftp, telnet, WWW, X-window 등
+
 
 <br>
+
+# 1.2 유닉스 시스템 구조
 
 ## Unix/Linux의 구성
 
