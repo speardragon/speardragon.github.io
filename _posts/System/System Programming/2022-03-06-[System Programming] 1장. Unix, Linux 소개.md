@@ -18,7 +18,7 @@ toc_sticky: true
   - 시스템 프로그래밍 능력 향상
 - 학습 내용
   - 리눅스 시스템 프로그래밍
-    - 시스템 호출을 이용한 `C 프로그래밍`
+    - **시스템 호출**을 이용한 `C 프로그래밍`
 - 주요 프로그래밍 주제
   - 파일
   - 프로세스
@@ -27,19 +27,21 @@ toc_sticky: true
 
 <br>
 
+# System Programming
+
 ## 컴퓨터의 정의
 
 - **프로그램**(명령어들의 리스트)에 따라 데이터를 처리하는 기계
 
-계산기: 특수 목적 컴퓨터(정해진 기능만을 수행, 기능 변경 불가능)
+  - 계산기: 특수 목적 컴퓨터(정해진 기능만을 수행, 기능 변경 불가능)
 
-노트북, 데스크 탑: 범용 컴퓨터(프로그램이라는 개념 도입, 수행 기능 변경 가능)
+  - 노트북, 데스크 탑: 범용 컴퓨터(프로그램이라는 개념 도입, 수행 기능 변경 가능)
 
 <br>
 
 ## 프로그램
 
-- 작업 지시서(instructions이 나열된 것)
+- **작업 지시서**(instructions이 나열된 것)
 - 컴퓨터에게 해야 할 작업의 내용을 알려주는 문서
 - A sequence of steps(instructions)
 
@@ -49,15 +51,21 @@ toc_sticky: true
 
 ## von Neumann Architecture(매우 중요)
 
-- Stored Program concept
+대부분의 컴퓨터는 폰노이만 구조를 따르고 있음.
+
+- **Stored Program concept**
   - program과 data를 저장하는 main memory
-    - Instructions and data are stored in a single read-write memory.
-  - 메모리의 내용은 location에 의해 <mark>addresable</mark> 하다 without regard to the type of data contained there.
+    - Instructions and data are stored in a **single read-write memory.**
+    - program과 data는 main memory에 탑재되어야 실행 가능.
+  - 메모리의 내용은 location(주소)에 의해 <mark>addresable</mark> 하다 **without regard to the type** of data contained there.
   - Execution occurs in **sequential fashion** unless **explicitly** modified 
     - Sequence, Loop, Selection
     - 위 세가지로 어떤 프로그램이든 설명 가능하다.
+    - Sequence: 첫 번째 instruction을 실행하고 두 번째 instruction을 실행하고 순차적으로 실행
     - Loop와 selection이 아닌 경우 sequencetial하게 실행됨
     - Loop와 selection이 explicitly modified 된 것임
+
+<br>
 
 - Structure of von Nuemann machine
 
@@ -65,7 +73,7 @@ toc_sticky: true
 
 - main memory는data와 instructions을 모두 저장한다.
 - ALU operating on binary data.
-- Control unit interpreting instructions from memory and executing
+- **Control unit** interpreting instructions from memory and executing
   - decode 과정
 - control unit에 의해 작동되는 Input/output equipment
 
@@ -79,15 +87,17 @@ ALU와 control unit이 합쳐진 것이 CPU이다.
 
 - Two steps이 존재:
   - Fetch: 다음에 실행할 instruction을 메인 메모리에 가져오는 과정.
-  - Execute:메인 메모리에 가져온 instruction의 실제 실행을 하는 과정.
+  - Execute: 메인 메모리에 가져온 instruction의 실제 실행을 하는 과정.
 
 첫 번째 instruction cycle이 실행 되면 fetch와 execute 과정이 이루어 지는 것.
 
 <br>
 
-CPU의 핀 중 하나는 Interrupt 를 걸 수 있는데 이 핀이 cycle 중간에 active high가 되더라도 그 즉시 check하는 것이 아니라 한 사이클이 끝나고 다음 사이클을 다시 시작하기 직전에 잠깐 확인한다.
+CPU의 핀 중 하나는 Interrupt 를 걸 수 있는데 이 핀이 cycle 중간에 active high가 되더라도 그 즉시 check하는 것이 아니라 한 instruction 사이클이 끝나고 다음 사이클을 다시 시작하기 직전에 잠깐 확인한다.
 
-이렇게 똑같은 Instruction Cycle 구조를 갖고 있음에도 불구하고 여러 프로그램의 각자behavior가 다 다른 이유는 프로그램 각자의 instruction 순서가 다르기 배치 되어있기 때문.
+이렇게 똑같은 Instruction Cycle 구조를 갖고 있음에도 불구하고 여러 프로그램의 behavior가 각각 다른 이유는 프로그램 각자의 instruction 순서가 다르기 배치 되어있기 때문.
+
+<br>
 
 ### Fetch&Execution Cycle
 
@@ -106,13 +116,27 @@ CPU의 핀 중 하나는 Interrupt 를 걸 수 있는데 이 핀이 cycle 중간
 
 
 
+
+
 <br>
 
 Instruction Cycle의 좀 더 자세한 그림은 다음과 같다.
 
-![image-20220306181937439](C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20220306181937439.png)
+fetch - execution - interrupt check - fecth - ...
 
-왼쪽 3개의 과정까지가 fetch이고 나머지가 execution 과정이다.
+![image](https://user-images.githubusercontent.com/79521972/162394366-4434a825-fa83-4aab-93c3-7a6dd6cfa8a3.png)
+
+PC가 가리키고 있는 주소의 instruction을 읽어 온다.(fetch)
+
+어떤 종류의 instruction인지 해석한다. (decode)
+
+instruction의 종류에 따라 operand의 갯수가 결정되고 이 operand들을 갯수만큼 가져온다.
+
+ALU에 의해 연산이 진행되고 나온 결과값이 전달되어 이 값이 저장될 공간을 또 다시 계산을 하게 되고 해당 위치에 저장을 한다.
+
+마무리로 Interrupt check를 하여 interrupt를 걸지 말지를 결정하고 다시 맨 처음으로 돌아가 반복을 한다.
+
+
 
 <br>
 
@@ -120,18 +144,20 @@ Instruction Cycle의 좀 더 자세한 그림은 다음과 같다.
 
 시스템 소프트웨어를 작성하는 것이 시스템 프로그래밍(우리가 배우는 것)이기에 시스템 소프트웨어가 무엇인지 알아보자.
 
-software designed to provide <mark>a platform</mark> to other software. 
+- software designed to provide <mark>a platform</mark> to **other software(application)**. 
 
-- 소프트웨어 중 다른 소프트웨어에 영향을 주지 않고 uninstalled 할 수 있는 소프트 웨어는 시스템 소프트웨어가 아니다.(wikipedia)
+  - 소프트웨어 중 다른 소프트웨어에 영향을 주지 않고 uninstalled 될 수 있는 소프트 웨어는 시스템 소프트웨어가 아니다.(wikipedia)
 
-즉, 시스템 소프트웨어는 다른 소프트웨어에게 플랫폼을 제공하기 위해 디자인 되었기 때문에 다른 소프트웨어와 종속 관계인 것이다.
+  - 즉, 시스템 소프트웨어는 다른 소프트웨어에게 플랫폼을 제공하기 위해 디자인 되었기 때문에 다른 소프트웨어와 종속 관계인 것이다.
 
-system application에 사용되는 OS 프로그램들과 서비스들로 구성된 플랫폼
+- system application에 사용되는 OS 프로그램들과 OS가 제공하는 서비스들로 구성된 플랫폼
 
-refers to the files and programs that make up your computer’s operating system. 
 
--  System files include libraries of functions, system services, drivers for printers and other hardware, system preferences, and other configuration files. 
-  - The programs that are part of the system software include assemblers, compilers, file management tools, system utilities, and debuggers (techterms.com)
+
+- refers to the **files and programs** that make up your computer’s operating system. 
+  -  System files include libraries of functions, system services, drivers for printers and other hardware, system preferences, and other configuration files(setting). 
+  -  The programs that are part of the system software include **assemblers, compilers, file management tools, system utilities, and debuggers** (techterms.com)
+
 
 <br>
 
@@ -143,7 +169,7 @@ system software의 예:
 - Drivers
 - Bare Metal Hypervisors
   - bare metal hypervisor : 범용 하드웨어
-- Compilers(that produce native binaries) and Debuggers
+- Compilers(that produce native binaries) and Debuggers, linker, loader
 
 
 
@@ -158,27 +184,29 @@ system software가 아닌 것의 예:
 
 ## System programming
 
-- programming computer system software의 acticity
+- programming(writing) computer system software의 acticity
 
 - system programming의 구별되는 특징 
 
-  - application program가 유저에게 직접적으로 서비스를 제공하는 소프트웨어를 생산하는 것을 목표를 하는데
+  - application program가 **유저에게 직접적으로** 서비스를 제공하는 소프트웨어를 생산하는 것을 목표를 하고
     - 예를 들어, ms word는 사용자가 다른 소프트웨어가 아닌 사람(Human)이기 때문에 시스템 소프트웨어가 아니다.
 
   - 반면에 system programming은 <mark>다른 소프트웨어에게</mark> 서비스를 제공하는 플랫폼을 생산하는 것을 목표로 한다.
 
-- 또한 system programming은 프로그래머가 반드시 hardware와 os에 대해서 매우 잘 알아야 한다는 점에서 구분된다.
-  - System software lives at a low level, interfacing directly with the kernel and core system libraries
-- system programming의 가장 중요한 핵심 파트는 매우 빠른 속도가 요구된다는 것이다.
-  - 이는 성능, 즉 performance와 직결된 문제로 다른 소프트웨어에 플랫폼 역할을하기 때문에 만약 당신의 application의 중심부(즉, system software platform)가 느리다면, 전체 application의 performance도 매우 느려질 것이다. 
+- 또한 system programming은 프로그래머는 반드시 hardware와 os에 대해서 매우 잘 알아야 한다는 점에서 구분된다.
+  - System software **lives at a low level**, interfacing directly with the kernel and core system libraries.
+- system programming의 가장 중요한 핵심 파트는 **매우 빠른 속도가 요구**된다는 것이다.
+  - 이는 성능, 즉 **performance**와 직결된 문제로 다른 소프트웨어에 플랫폼 역할을하기 때문에 만약 당신의 application의 중심부(즉, system software platform)가 느리다면, 전체 application의 performance도 매우 느려질 것이다. 
 
-- 따라서 목표가 available resources의 효율적인 사용인 것이다.
+- 따라서 목표가 **available resources의 효율적인 사용**인데 이는 software 그 자체로 성능이 중요하기 때문이기도 하고 매우 작은 성능의 개선이 servie provider에게 중요한 금전적인 saving과 직접적으로 영향을 미칠 수 있기 때문이기도 하다.
+
+- System software includes shell, text editor, compiler, debugger, core utilities and system daemons.
 
 <br>
 
 ## Run-Time Environments(RTE)
 
-프로그램은 항상 RTE와 같은 또다른 프로그램과 연관되어 만들어진다.
+- 프로그램은 항상 RTE와 같은 또다른 프로그램과 연관되어 만들어진다.
 
 RTE의 종류:
 
