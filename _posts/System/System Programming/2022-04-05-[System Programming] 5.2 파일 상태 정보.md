@@ -395,6 +395,7 @@ struct utimbuf {
 #include <utime.h> 
 #include <stdio.h> 
 #include <stdlib.h>
+
 int main(int argc, char *argv[])
 {
      struct stat buf; // 파일 상태 저장을 위한 변수
@@ -425,6 +426,8 @@ int main(int argc, char *argv[])
 4 _rwxr-xr-x 2 chang faculty 0 2014-04-16 13:37 a.c
 4 -rwxr-xr-x 2 chang faculty 5 2014-04-16 13:37 b.c
 ```
+
+a.c 의 시간을 b.c의 시간으로 수정했기 때문에 프로그램 실행 후에 두 파일의 시간이 같아졌다.
 
 <br>
 
