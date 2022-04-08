@@ -112,7 +112,7 @@ instruction에 의해서 프로그램이 실행되는데 그거는 우리가 짜
 
 
 
-![image](https://user-images.githubusercontent.com/79521972/156679532-567e5009-37cf-438d-907c-1cf3d1620fed.png)
+![image](https://user-images.githubusercontent.com/79521972/162385213-5d62cd49-1f08-42a7-943d-b284e7e1fed0.png)
 
 word단위로 읽어올 수도 있음.
 
