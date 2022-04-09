@@ -16,9 +16,9 @@ tag: ['System Programming', 'Unix']
 ### gcc 컴파일러
 
 - gcc(GNU cc) 컴파일러 / 상업용 C 컴파일러(cc)
-  - $gcc [-옵션] 파일	\$cc [-옵션] 파일
+  - `$ gcc [-옵션] 파일`  / `\$cc [-옵션] 파일`
 
-- GNU(GNU is Not Unix) 프로젝트의 freeware 컴파일러. 본래 C 언어용 컴파일러로 시작하였으므로 GNU C Compiler의 약자였으나 2.9 버전에 이르러 C뿐만이 아니라  Objective C, Pascal, Ada와 같은 언어도 지원. GNU Compiler Collection으로 개명
+- GNU(GNU is Not Unix) 프로젝트의 freeware 컴파일러. 본래 C 언어용 컴파일러로 시작하였으므로 GNU C Compiler의 약자였으나 2.9 버전에 이르러 C뿐만이 아니라  Objective C, Pascal, Ada와 같은 언어도 지원. **G**NU **C**ompiler **C**ollection으로 개명
 - 컴파일
   - $ gcc long.c
   - $ a.out             //실행 파일 생성
@@ -32,8 +32,9 @@ tag: ['System Programming', 'Unix']
 
 - -O 옵션
   - $ gcc -O -o long long.c       //optimized compile
+  - compiler가 판단하여 기계어로 번역할 때 최적화 된 실행을 제공
 - -S 옵션
-- $ gcc -S long.c      //assembly 파일 long.s 생성
+- $ gcc -S long.c      //**assembly 파일**의 long.s 생성
 
 
 
@@ -44,10 +45,12 @@ tag: ['System Programming', 'Unix']
 ```c
 #include <stdio.h>
 #define MAXLINE 100
+
 void copy(char from[], char to[]);
 char line[MAXLINE]; // 입력 줄
 char longest[MAXLINE]; // 가장 긴 줄
-/*입력 줄 가운데 가장 긴 줄 프릮트 */
+/*입력 줄 가운데 가장 긴 줄 프린트 */
+
 main()
 {
      int len;
@@ -74,12 +77,18 @@ void copy(char from[], char to[])
      int i;
      i = 0;
      while ((to[i] = from[i]) != '\0')
-     ++i;
+     	++i;
 }
 
 ```
 
-- 한 코드안에 전부 작성하는 프로그램
+
+
+<br>
+
+### 단일 모듈 프로그램
+
+- 한 코드안에 전부 작성하는 프로그램(단일 모듈 프로그램)
 - 코드의 재사용(reuse)이 어렵다.
 - 여러 사람이 참여하는 프로그래밍이 어렵다.
 - 예를 들어, 다른 프로그램에서 copy 함수를 재사용하기 힘들다.
@@ -106,6 +115,7 @@ void copy(char from[], char to[])
   - $ gcc -o main main.o copy.o
   - 혹은
   - $ gcc -o main main.c copy.c
+  - 헤더 파일은 안 넣어도 되는 구나?!
 
 <br>
 
@@ -113,10 +123,12 @@ void copy(char from[], char to[])
 
 ```c
 #include <stdio.h>
-#include "copy.h"
+#include "copy.h" //copy 함수의 원형(프로토타입 선언)
+
 char line[MAXLINE]; // 입력 줄
 char longest[MAXLINE]; // 가장 긴 줄
-/*입력 줄 가운데 가장 긴 줄 프릮트 */
+/*입력 줄 가운데 가장 긴 줄 프린트 */
+
 main()
 {
      int len;
@@ -165,13 +177,13 @@ void copy(char from[], char to[]);
 ### make 시스템
 
 - make 시스템
-  - 대규모 프로그램의 경우에는 헤더, 소스 파일, 목적 파일, 실행 파 일의 모든 관계를 기억하고 체계적으로 관리하는 것이 필요
+  - 대규모 프로그램의 경우에는 헤더, 소스 파일, 목적 파일, 실행 파 일의 모든 관계를 기억하고 **체계적으로 관리**하는 것이 필요
   - make 시스템을 이용하여 효과적으로 작업
 - Makefile
   - 실행 파일을 만들기 위해 필요한 파일들과 만드는 방법을 기술
   - make 시스템은 파일의 상호 의존 관계를 파악하여 실행 파일을 쉽게 다시 만듦.
 - $ make [-f 메이크파일]
-  - 옵션이 없으면 Makefile 혹은 makefile을 사용
+  - 옵션이 없으면 Makefile(default) 혹은 makefile을 사용
 
 <br>
 
@@ -183,22 +195,35 @@ void copy(char from[], char to[]);
     - 명령 리스트
 
 - 예: Makefile
-  - main:main.o copy.o 
-    - gcc -o main main.o copy.o 
-  - main.o: main.c copy.h 
-    - gcc -c main.c 
-  - copy.o: copy.c 
-    - gcc -c copy.c
-
+  
+  ```
+  main:main.o copy.o
+  	gcc -o main main.o copy.o
+  main.o: main.c copy.h
+  	gcc -c main.c
+  copy.o: copy.c
+  	gcc -c copy.c
+  ```
+  
+  
+  
 - make 실행
-  - $ make 혹은 \$ make main
-  - gcc -c main.c
-  - gcc -c copy.c
-  - gcc -o main main.o copy.o
+  
+  $ make 혹은 \$ make main
+  
+  gcc -c main.c
+  
+  gcc -c copy.c
+  
+  gcc -o main main.o copy.o
+  
 - copy.c 파일이 변경된 후
-  - $ make
-  - gcc -c copy.c
-  - gcc -o main main.o copy.o
+  
+  $ make
+  
+  gcc -c copy.c
+  
+  gcc -o main main.o copy.o
 
 ![image](https://user-images.githubusercontent.com/79521972/158593750-3e6d9c44-4c01-4319-88de-ee17aa4e20ee.png)
 
@@ -211,13 +236,13 @@ void copy(char from[], char to[]);
 - 가장 대표적인 디버거
   - GNU debugger(gdb)
 - gdb 주요 기능
-  - 정지점(breakpoint) 설정
+  - **정지점**(breakpoint) 설정
   - 한 줄씩 실행
   - 변수 접근 및 수정
   - 함수 탐색
   - 추적(tracing)
 - gdb 사용을 위한 컴파일
-  - -g 옵션을 이용하여 컴파일
+  - **-g 옵션을 이용하여 컴파일**
     - $ gcc - g -o longest longest.c
   - 다중 모듈 프로그램
     - $ gcc -g -o main main.c copy.c
@@ -234,9 +259,10 @@ void copy(char from[], char to[]);
   - l [파일명]:[함수명] : 지정된 함수를 프린트
   - set listsize n : 출력되는 줄의 수를 n으로 변경
 
-**(gdb) l copy**
+<br>
 
-```c
+```
+(gdb) l copy
 #include <stdio.h>
 
 /* copy: copy 'from' into 'to'; assume to is big enough */
@@ -255,22 +281,34 @@ void copy(char from[], char to[])
 ### gdb 기능
 
 - 정지점 : b(reak), clear, d(elete)
-  - b [파일:]함수 파일의 함수 시작부분에 정지점 설정
-  - b n n번 줄에 정지점을 설정
-  - b +n 현재 줄에서 n개 줄 이후에 정지점 설정
-  - b -n 현재 줄에서 n개 줄 이젂에 정지점 설정
-  - info b 현재 설정된 정지점을 출력
-  - clear 줄번호 해당 정지점을 삭제
-  -  d 모든 정지점을 삭제
+  
+  b [파일:]함수 				  파일의 함수 시작부분에 정지점 설정
+  
+  b n 								   n번 줄에 정지점을 설정
+  
+  b +n 								현재 줄에서 n개 줄 이후에 정지점 설정
+  
+  b -n 								 현재 줄에서 n개 줄 이젂에 정지점 설정
+  
+  info b 							  현재 설정된 정지점을 출력
+  
+  clear 줄번호 				   해당 정지점을 삭제
+  
+  d 									  모든 정지점을 삭제
+
+<br>
 
 **(gdb) b copy**
 
-- Breakpoint 1 at 0x804842a: file copy.c, line 9.
+Breakpoint 1 at 0x804842a: file copy.c, line 9.
+
+<br>
 
 **(gdb) info b**
 
-- Num Type Disp Enb Address What
-- 1 breakpoint keep y 0x0804842a in copy at copy.c:9
+Num Type Disp Enb Address What
+
+1 breakpoint keep y 0x0804842a in copy at copy.c:9
 
 
 
@@ -279,19 +317,20 @@ void copy(char from[], char to[])
 ### gdb 기능
 
 - 프로그램 수행
-  - r(un) 인수 명령줄 인수를 받아 프로그램 수행
-  - k(ill) 프로그램 수행 강제 종료
-  - n(ext) 멈춘 지점에서 다음 줄을 수행하고 멈춤
-  - s(tep) n과 같은 기능 함수호출 시 함수내부로 진입
-  - c(ontinue) 정지점을 만날 때 까지 계속 수행
-  - u 반복문에서 빠져나옴
-  - finish 현재 수행하는 함수의 끝으로 이동
-  - return 현재 수행중인 함수를 빠져나옴
-  - quit 종료
+  - r(un)                   인수 명령줄 인수를 받아 프로그램 수행
+  - k(ill)                     프로그램 수행 강제 종료
+  - n(ext)                  멈춘 지점에서 다음 줄을 수행하고 멈춤
+  - s(tep)                  n과 같은 기능 함수 호출 시 함수내부로 진입
+  - c(ontinue)          정지점을 만날 때 까지 계속 수행
+  - u                          반복문에서 빠져나옴
+  - finish                   현재 수행하는 함수의 끝으로 이동
+  - return                 현재 수행중인 함수를 빠져나옴
+  - quit                     종료
 
-**(gdb) r**
+
 
 ```
+$ (gdb) r
 Starting program: /home/chang/바탕화면/src/main
 Merry X-mas !
 Breakpoint 1, copy (from=0x8049b60 "Merry X-mas !", to=0x8049760 "")
@@ -299,10 +338,10 @@ at copy.c:9
 8 i = 0;
 ```
 
-
+<br>
 
 - 변수 값 프린트: p(rint)
-  - p [변수명] 해당 변수 값 프릮트
+  - p [변수명] 해당 변수 값 프린트
   - p 파일명::[변수명] 특정 파일의 전역변수 프린트
   - p [함수명]::[변수명] 특정 함수의 정적 변수 프린트.
   - info locals 현재 상태의 지역변수 리스트
@@ -343,7 +382,7 @@ $4 = 0x8049760 "Herry X-mas !"   // Happy....에서 첫 번째 자리에서 brea
 **(gdb) c**
 Continuing
 Ctrl-D 입력
-Happy New Year !  // 가장 긴 줄 프린트
+Happy New Year !  // 더 긴 줄 프린트
 Program exited normally.
 
 <br>
