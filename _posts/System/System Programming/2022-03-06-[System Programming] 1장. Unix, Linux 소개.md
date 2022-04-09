@@ -457,8 +457,11 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
   - 유닉스에서부터 네트워킹이 시작
   - ftp, telnet, WWW, X-window 등
 
-
 <br>
+
+
+
+
 
 # 1.2 유닉스 시스템 구조
 
@@ -466,18 +469,28 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 ![image](https://user-images.githubusercontent.com/79521972/156928254-1d38b3ad-4fd7-4e86-a9fd-7991640879d6.png)
 
+
+
 - Application program
+  - ls, mkdir, chmod, vi, sh
+
 - Library
+  - 많은 library function은 결국 system call을 호출
+  - e.g. printf() -> write()
+
 - System call
   - Application과 operating system과의 interface
   - System call이 호출되면 kernal code가 수행됨
+  -  kernal의 기능을 추상화 한 것
 - Kernal
   - system resource를 효율적으로 사용하도록 관리
-  - process/memory/file/IO management
+  - process/memory/fil   e/IO management
 
 <br>
 
 ## 유닉스 운영체제 구조
+
+![image](https://user-images.githubusercontent.com/79521972/162551256-395d5d4e-1d62-4420-b4a0-4f332f52df25.png)
 
 - 운영체제
   - 컴퓨터의 하드웨어 자원을 운영 관리하고 프로그램을 실행할 수 있는 환경을 제공.
@@ -533,40 +546,66 @@ OS 시스템과 사용자 프로세스 간의 inteface
 
 ![image](https://user-images.githubusercontent.com/79521972/156928543-a9926ca2-7961-4b06-93ff-31b75a0551aa.png)
 
+호출하는 함수는 user space에 있지만 호출 되는 함수는 kernal 영역에 존재한다.
+
 <br>
 
-## Kernal mode & User mode
+## 사용자 모드/커널
 
 ![image](https://user-images.githubusercontent.com/79521972/156928553-66b7c6d2-f40e-4763-b981-34e23495331b.png)
 
+sytem call은 stack을 통해서 전달되지 못하기 때문에 register 에 copy하여 trap instruction을 실행한다.
+
+사용자 모드에서 커널 모드 간의 모드 change가 중요하다.(호출을 할 때나 값을 리턴할 때마다의 모드 변환)
+
+<br>
 
 
 
+## Library vs. system call
 
-## 시스템 호출과 라이브러리 함수
+- Library와 system call의 예
 
-![image](https://user-images.githubusercontent.com/79521972/156928564-2fc2dc73-f084-4403-a7c2-d8ae5cca3663.png)
+![image](https://user-images.githubusercontent.com/79521972/162551849-8864a84d-b13e-469f-9630-21ff76b5a5d6.png)
+
+
+
+<br>
+
+input()은 user space 안에서의 함수 호출
+
+scanf()는 c 라이브러리 함수인데 해당 함수에는 read라는 system call인 커널 함수 read()를 호출한다.
 
 ![image](https://user-images.githubusercontent.com/79521972/156928579-056d35a8-4656-4287-924c-0d1b16803287.png)
 
+
+
+
+
 ![image](https://user-images.githubusercontent.com/79521972/156928595-1a0cb0b6-11ee-4fda-84c3-8fcf14b1abf8.png)
+
+<br>
+
+
 
 ### Kernal mode
 
 - privileged mode
   - 무엇이 privileged인가?(특권을 가진)
-  - no restriction is imposed on the kernal of the system
+  - **no restriction** is imposed on the kernal of the system
 - may use all the instructions of the processor
 - 메모리의 전체를 조작
 - 주변기기(peripheral) 컨트롤러와 직접적으로 소통
 
 
 
+<br>
+
 ### User mode
 
 - normal execution mode for a process
   - has no privileges
-  - certain instructions are forbidden
+  - certain instructions **are forbidden**
   - only allowed to zones allocated to it
   - cannot interact with the physical machine
 - process carries out operations in its own environment, without interfering with other processes
@@ -576,17 +615,19 @@ OS 시스템과 사용자 프로세스 간의 inteface
 
 ## Calling a regular function & Invoking a system call
 
-- 우리가 프로그램을 작성할때 반드시 regular function을 호출하는 것과 system call을 invoke하는 것의 차이를 이해해야 한다.
-  -  둘이 비슷해 보이지만(같은 일을 하기때문에) system call 호출은 완전히 다르다.
+- 우리가 프로그램을 작성할때 반드시 **regular function**을 호출하는 것과 system call을 invoke하는 것의 차이를 이해해야 한다.
+  -  둘이 비슷해 보이지만(같은 일을 하는 것처럼 보이기 때문에) system call 호출과 function call은 서로가 완전히 다르다.
 
-- 만약 process가 system call을 부르면 프로세스는 OS가 그 service를 완수할 때까지 interrupted 상태를 유지한다.
-  - 즉, system call이 불리게 되는 매 순간마다 process는 context switch가 착수되는 것이다.
+- process가 system call을 부르면 프로세스는 OS가 요청된 service를 실행할 때까지 interrupted 상태를 유지한다.
+  - 즉, system call이 불리게 되는 매 순간마다 process는 context switch를 착수한다는 것이다.
 
-- 프로그램과 OS간의 interface는 `system call의 집합`으로 정의된다
+- 프로그램과 OS간의 interface는 `system call의 집합`으로 정의된다.(with its own parameters)
+  - 현대 OS(Linux와 Windows와 같은)들은 수백개 내지 수천개의 정의된 system call이 존재한다.
 
 
 
-What is context switch??
+
+
 
 <br>
 
@@ -612,11 +653,12 @@ What is context switch??
 - 시스템 호출(System Calls)
   - Unix kernal에게 서비스를 요청하는 호출
   - Unix man의 Section 2에 설명되어 있음
-  - C 함수 처럼 호출될 수 있음
-    - C 함수 처럼 호출될 수 있으나 context switch 일어난 다는 것이 C 라이브러리 함수와의 차이점이다.
+  - C 함수처럼 호출될 수 있음
+    - C 함수 처럼 호출될 수 있으나 context switch 일어난다는 것이 C 라이브러리 함수와의 차이점이다.
 - C 라이브러리 함수(Libraray Functions)
   - C 라이브러리 함수는 보통 system call을 포장해 놓은 함수이다.
   - 보통 내부에서 system call을 함.
+  - 이것이 사용자 입장에서는 더 직관적이고 쉽게 접근이 가능하다.
 
 <br>
 
@@ -631,17 +673,75 @@ What is context switch??
 
 
 
+<br>
+
+# 1.3 유닉스 역사
+
+어셈블리어로 개발하여 C언어로 다시 작성됨.
+그렇기 때문에 C언어와 Unix를 작성하기 위한 언어로 밀접하게 관련되어 있다.
+
+이론적으로 C컴파일러만 있으면 이식이 가능하다.(potability)
 
 
 
+### What is good Unix
+
+- Open system
+- Small is beautiful phillosophy
+  - file: just stream of bytes
+  - Data, Device, Socket, Process, ...can be treated as a file.
+- Portability
+  - high-level language
+  - client-server model, clustering
+- True Parallelism
+  - Multitasking, Multiprocessor,...
 
 
 
+<br>
+
+## What is Wrong with Unix
+
+- Too many variants
+  - dumping groung
+- Not small and simple any one
+  - uncontrolled growth(버전의 무한한 add-on의 제어가 힘듬)
+- Lack of GUI
+  - not now(MIT's X)
 
 
 
+<br>
+
+## 리눅스 장점
+
+- 풍부하고 다양한 하드웨어를 효과적으로 지원
+  - 대부분의 하드웨어를 지원하는 추세임
+  - PC, 워크스테이션, 서버 등
+- 놀라운 성능 및 안정성
+  - Pentium으로도 충분히 빠르며 안전하게 수행
+- 인터넷에 맞는 강력한 네트워크 구축
+- 다양한 응용 프로그램 개발됨
 
 
 
+- 무료 배포판
+  - 레드햇(Red Hat): 상업용
+  - 우분투
+  - 페도라
+  - CentOS
 
+<b r>
+
+## UNIX의 표준화
+
+- ANSI C
+  - American National Standards Institute
+  - C 언어의 문법, 라이브러리와 헤더 파일의 표준을 제정
+  - 다양한 운영체제환경에서 C프로그램의 호환성을 높이기 위함
+- POSIX
+  - Portable Operating System Interface for Computer Environments
+  - 운영체제가 제공해야 하는 서비스를 정의
+  - 1003.1: 운영체제의 인터페이스 표준 (POSIX.1 이라고도 함)
+  - 1003.2, 1003.7 등
 
