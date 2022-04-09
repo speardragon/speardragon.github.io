@@ -10,7 +10,7 @@ tag: ['System Programming', 'File System']
 ## Contents
 
 - File system = file data + <u>**file attribute**</u>
-  - File attributes
+  - File attributes(파일의 상태 정보)
     - Type, permission, size, time, user/group ID
   - File attributes modification
     - chown, chmod, ...
@@ -25,17 +25,17 @@ tag: ['System Programming', 'File System']
 
 - 파일 상태
   - 파일에 대한 모든 정보
-  - 블록수, 파일 타입, 사용 권한(Permission), 링크수, 파일 소유자의 사용 자 ID 및 그룹 ID (user/group ID), 파일 크기, 최종 수정 시간 등
+  - 블록수, 파일 타입, 사용 권한(Permission), **링크수**, 파일 소유자의 사용 자 ID 및 그룹 ID (user/group ID), 파일 크기, 최종 수정 시간 등
   - File attributes(file status) 수정
     - chown, chmod, ...
 - 예
 
-```assembly
+```shell
 $ ls -l hello.c
-2	-rw-r--r-- 	 1		chang     cs     617		11월 17일 15:53  hello.c
+2 -rw-r--r-- 1 chang cs 617 11월 17일 15:53 hello.c
 ```
 
-블록수  사용권한 	링크수	사용자ID    그룹ID    파일 크기             최종 수정 시간 	파일이름
+블록수/ 사용권한/ 링크수/ 사용자ID/ 그룹ID/ 파일 크기/ 최종 수정 시간/ 파일이름
 
 
 
@@ -51,11 +51,14 @@ $ ls -l hello.c
 #include <sys/types.h>
 #include <sys/stat.h>
 int stat (const char *filename, struct stat *buf);//filename에 해당하는 관리정보를 stat에 받음
-int fstat (int fd, struct stat *buf);
+int fstat (int fd, struct stat *buf); //file descriptor를 매개 변수로 전달
 int lstat (const char *filename, struct stat *buf);
 //파일의 상태 정보를 가져와서 stat 구조체 buf에
 //저장한다. 성공하면 0, 실패하면 -1을 리턴한다.
 ```
+
+- stat()이라는 시스템 콜을 호출하면 filename에 해당하는 관리정보를 stat 구조체에 깔아주게 된다.
+  - stat이라는 모양으로 저장하겠다는 뜻
 
 <br>
 
@@ -83,15 +86,13 @@ struct stat {
      uid_t st_uid; // 소유자의 사용자 ID
      gid_t st_gid; // 소유자의 그룹 ID
      off_t st_size; // 파일 크기 (bytes)
-     time_t st_atime; // 최종 접근 시갂
-     time_t st_mtime; // 최종 수정 시갂
-     time_t st_ctime; // 최종 상태 변경 시갂
+     time_t st_atime; // 최종 접근 시간
+     time_t st_mtime; // 최종 수정 시간
+     time_t st_ctime; // 최종 상태 변경 시간
      long st_blksize; // 최적 블록 크기
      long st_blocks; // 파일의 블록 수
 };
 ```
-
-
 
 <br>
 
@@ -100,23 +101,21 @@ struct stat {
 - About file type
 
   - `Regular file`
-
-    - Contains data of some form
+  - Contains **data** of some form
+      - 실질적인 내용을 담는 파일
 
     - No distinction to UNIX kernel whether the data is **text or binary**. (Applications interpret the file contents.)
 
   - `Directory`
     - Contains **the names of other files** and **pointers to information on these files**
-
+    - 다른 파일의 이름과 다른 파일을 가리키는 포인터를 담는 파일인 것이다.
+    
   - `Block special file`
-
+  
     - Provides buffered I/O access in fixed-size units to devices 
-
+  
     - E.g. disk(하드 디스크)
-
-<br>
-
-- About file type(cont.) 
+  
   - Character special file 
     - Provides unbuffered I/O access in variable-sized units to devices 
     - Keyboard, mouse, … 
@@ -124,11 +123,10 @@ struct stat {
     - Is used for communication between processes. 
     - Also called named pipe
   - Socket 
-    - Is used for network communication between processes.
+    - is used for network communication between processes.
+  
   - Symbolic link
     - **Points** to another file.
-
-
 
 <br>
 
@@ -139,6 +137,8 @@ struct stat {
 <br>
 
 ## st_mode
+
+stat을 통해 파일 타입을 가져올 수 있는데 파일 타입의 형식은 다음과 같은 기호 상수로 선언되어 있음
 
 - file type
 
@@ -155,19 +155,21 @@ struct stat {
   #define S_IFIFO 0010000 /* FIFO */
   ```
 
+Q) 이게 4비트???
 
+A) 7비트인데 앞의 4bit가 파일 타입을 나타내는 것이고 뒤의 3bit가 특수용도를 나타내는 것이다.
 
 <br>
 
 ## 파일 타입 검사 함수
 
-- 파일 타입을 검사하기 위한 매크로 함수(Linux 제공)
+- 파일 타입을 검사하기 위한 **매크로 함수**(Linux 제공)
 - Argument of macros is the **st_mode** from the stat structure
+  - st_mode : 관리정보를 담고 있는 그릇(자료구조)
+
 - #include <sys/stat.h>
 
 ![image](https://user-images.githubusercontent.com/79521972/161682116-83020a03-3113-417d-9007-fcda803d1d5a.png)
-
-
 
 
 
@@ -181,12 +183,13 @@ struct stat {
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
 /* 파일 타입을 검사한다. */
 int main(int argc, char *argv[])
 {
     int i;
     struct stat buf;
-    for (i = 1; i < argc; i++) { //argv[0]는 실행 파일 이름
+    for (i = 1; i < argc; i++) { //argv[0]는 실행 파일 이름이기 때문에 1부터 시작
     	printf("%s: ", argv[i]);
     	if (lstat(argv[i], &buf) < 0) { //argv[i]의 관리정보를 buf에 저장
     		perror("lstat()");
@@ -229,9 +232,9 @@ a.out: regular
   - 각 파일마다 사용권한이 있다. 
   - 소유자(owner)/그룹(group)/기타(others)로 구분해서 관리한다. 
 - 파일에 대한 권한
-  - 읽기 r 
-  - 쓰기 w
-  - 실행 x
+  - 읽기 : r 
+  - 쓰기 : w
+  - 실행 : x
 
 - 파일 사용권한(file access permission)
 - stat 구조체의 <span style="color:red">st_mode</span> 의 값
@@ -241,28 +244,31 @@ a.out: regular
 //mode_t는 unsigned int
 ```
 
+- mode_t 라는 타입은 리눅스에서 사용하는 데이터 타입으로 의미를 specific하게 나타내기 위한 용도로 사용하는 데이터 타입으로 실질적인 타입은 unsigned int 타입이다.
+
 ![image](https://user-images.githubusercontent.com/79521972/161682701-49178a10-6fe1-4c9d-a9d3-2e012f404ae6.png)
 
 ![image](https://user-images.githubusercontent.com/79521972/161682721-568b5699-5653-4eea-86c7-9179819368a2.png)
-
-mode 타입이 정확히 무슨 타입?
 
 <br>
 
 ## File access permisisons
 
 - user, group, others에 대해 R/W/X의 권한 부여 
+  - file과 direcotory에 적용되는 의미가 다름
   - Read
-    - file: file data를 읽을 수 있는가?(copy 가능) 
+    - file: **file data**를 읽을 수 있는가?(copy 가능) 
       - O_RDONLY O_RDWR 을 사용하여 파일을 열 수 있다
-    - Directory: file list를 read할 수 있는가?(즉 ls가 가능한가?) 
+    - Directory: **file list**를 read할 수 있는가?(즉 ls가 가능한가?) 
   - write 
-    - File: file data를 수정할 수 있는가? 
+    - File: file data를 **수정**할 수 있는가? 
       - O_WRONLY O_RDWR O_TRUNC 을 사용하여 파일을 열 수 있다.
-    - Directory: file을 생성, 삭제할 수 있는 권한이 있는가? 
+    - Directory: **file을 생성, 삭제**할 수 있는 권한이 있는가? 
   - execute 
-    - File: file을 실행할 수 있는가?
-    - Directory: 이동할 수 있는가?(즉 cd가 가능한가?) 
+    - File: file을 **실행**할 수 있는가?
+    - Directory:  **이동**할 수 있는가?(즉 cd가 가능한가?) 
+      - 즉, 그 directory를 열어볼 수 있는 권한이 있는가?
+
 
 <br>
 
@@ -322,7 +328,7 @@ int fchmod (int fd, mode_t mode);  //파일 디스크립터
 main(int argc, char *argv[]){
          long strtol( ); //string관련 library
          int newmode;
-         newmode = (int) strtol(argv[1], (char **) NULL, 8); //8진수 int로 변환(664)
+         newmode = (int) strtol(argv[1], (char **) NULL, 8); //8진수 int로 변환:664 입력
          /* long strtol( const char *nptr, char **endptr, int base);*/
          if (chmod(argv[2], newmode) == -1) {
              perror(argv[2]);
@@ -332,7 +338,7 @@ main(int argc, char *argv[]){
 }
 ```
 
-
+접근 권한이 664로 변경 되어있는 것을 확인할 수 있을 것이다.
 
 <br>
 
@@ -349,8 +355,8 @@ int lchown (const char *path, uid_t owner, gid_t group );
 - 파일의 user ID와 group ID를 변경한다. (오너를 변경)
 - 리턴
   - 성공하면 0, 실패하면 -1
-- lchown()은 **심볼릭 링크 자체를 변경**한다
-- **super-user만 변환 가능**
+- lchown()은 **심볼릭 링크 자체를 변경**한다.
+- **super-user만 변환 가능**하다.
 
 <br>
 
@@ -363,13 +369,13 @@ int utime (const char *filename, const struct utimbuf *times );
 ```
 
 - 파일의 최종 접근 시간과 최종 변경 시간을 조정한다. 
-  - 이 시스템 콜을 호출하면 시간 정보(times)를 file의 i노드가 갖고 있는 정보에 반영 요구
-- times가 NULL 이면, 현재시간으로 설정된다
+  - 이 시스템 콜을 호출하면 시간 정보(times)를 file의 i노드가 갖고 있는 시간 정보에 반영 요구를 목적으로 하는 시스템 콜이다.
+- times가 NULL 이면, **현재시간으로 설정**된다
 - 리턴 값
   - 성공하면 0, 실패하면 -1
 -  UNIX 명령어 touch 참고 
   - used to **update** the **access date** and or **modification date** of a file or directory. 
-  - In its default usage, it is the equivalent of creating or opening a file and saving it without any change to the file contents
+  - In its default usage, **it is the equivalent** of creating or opening a file and saving it **without any change** to the file contents
 
 <br>
 
@@ -380,6 +386,7 @@ struct utimbuf {
 }
 ```
 
+- access time와 modification time에 대한 정보가 존재한다.
 - 각 필드는 1970-1-1 00:00 부터 현재까지의 경과 시간을 초로 환산한 값
 
 
@@ -398,19 +405,19 @@ struct utimbuf {
 
 int main(int argc, char *argv[])
 {
-     struct stat buf; // 파일 상태 저장을 위한 변수
+     struct stat buf; // 파일 상태 저장을 위한 구조체 변수
      struct utimbuf time;
      if (argc < 3) {
          fprintf(stderr, "사용법: cptime file1 file2\n");
          exit(1);
      }
-     if (stat(argv[1], &buf) <0) { // 상태 가져오기
+     if (stat(argv[1], &buf) <0) { // 상태(파일 정보) 가져오기
          perror("stat()");
          exit(-1);
      }
-     time.actime = buf.st_atime;
-     time.modtime = buf.st_mtime;
-     if (utime(argv[2], &time)) // 접근, 수정 시간 복사
+     time.actime = buf.st_atime; //최종 접근 시간(access)
+     time.modtime = buf.st_mtime; // 최종 수정 시간(modification)
+     if (utime(argv[2], &time)) // utime() 시스템 콜 호출 ; 접근, 수정 시간 구조체에 복사
     	 perror("utime");
      else exit(0);
 }
