@@ -170,6 +170,8 @@ Clock이 올라가서부터 다음 clock이 올라가기 전까지 하나의 수
 
 다음 clock이 올라가는 순간 instruction 수행 결과(state)를 update하고 , 새로운 instruction을 수행한다.
 
+single cycle의 CPI는 무조건 1이다.
+
 
 
 <br>
@@ -310,7 +312,7 @@ target register(데이터를 쓸 공간)인 rt는 Write input(A3)으로 들어�
 
 그런 후에 data memory에서 앞서 구한 memory 주소를 바탕으로  해당 값을 찾은 후에 target register인 rt에 해당하는 값을 저장하게 된다.
 
-lw는 RF에 write을 하는 것이기 때문에 RegWrite이 enable이 될 때 저장이 되고 memory로부터 data를 읽어서 RF의 WD3에 들어오고 rt에 해당하는 A3에 읽어온 데이터가 쓰인다.
+lw는 RF(register file)에 write을 하는 것이기 때문에 RegWrite이 enable이 될 때 저장이 되고 memory로부터 data를 읽어서 RF의 WD3에 들어오고 rt에 해당하는 A3에 읽어온 데이터가 쓰인다.
 
 <br>
 
@@ -426,7 +428,7 @@ jump할 immediate 값을 sign extention하고 word offset에서 byte offset으�
 
 전체적인 Single-Cycle Processor의 datapath는 위와 같다.
 
-**Q) Register File에서 보면 lw인 경우에는 write을 하기 위해서 아래 RegDst에 결정되는 MUX 쪽으로 가고 add인 경우에는 read를 하기 위해서 register file의 A2쪽으로 가게되는데 이런 것은 Instruction Memory에서 Decoding 된 것으로 어느 노드로 갈지가 결정되는 건가요? 아니면 두 노드 모두로 이동하게 되나요?**
+**Q) Register File에서 보면 lw인 경우에는 write을 하기 위해서 아래 RegDst에 결정되는 MUX 쪽으로 가고 add 명령인 경우에는 read를 하기 위해서 register file의 A2쪽으로 가게되는데 이런 것은 Instruction Memory에서 Decoding 된 것으로 어느 노드로 갈지가 결정되는 건가요? 아니면 두 노드 모두로 이동하게 되나요?**
 
 <br>
 
@@ -514,7 +516,15 @@ A) 메모리에도 종류가 여러가지이다. 이 챕터에서 다룬 메모�
 
 
 
-Q) instruction register는 어디에...?
+Q) instruction register는 instruction memory랑 다른 건가?
+
+A)
+
+- 실행할 명령이들이 machine code로 바뀌어서 들어가는 공간
+- 그 중에 한 명령어(PC가 가리키고 있는)가 fetch된다.
+- 이 때 가져온 instruction을 instruction register에 저장하여 해석하는 공간인 것이다.
+- 그런데 single instruction에서는 어차피 한 명령어만 실행하기 때문에 IR 공간이 없어도 되는 것이다.
+- Multi에서 나올 것이다.
 
 ---
 
