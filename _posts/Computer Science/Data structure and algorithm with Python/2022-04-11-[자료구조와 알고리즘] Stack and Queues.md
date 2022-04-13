@@ -316,15 +316,331 @@ int main()
 
 <br>
 
+### Linked-list implementation
+
+![image](https://user-images.githubusercontent.com/79521972/163073108-d8f65cf0-d06a-4a45-b915-20627196b13a.png)
+
+#### push
+
+![image](https://user-images.githubusercontent.com/79521972/163073142-30557ae0-ac14-4cd6-917d-3e4bd4d748c1.png)
+
+#### pop
+
+![image](https://user-images.githubusercontent.com/79521972/163073164-009e34fd-cb05-42bc-a589-d515101a3200.png)
 
 
 
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct _Node {
+    char data;
+    struct _Node *next;
+} Node;
+
+Node *top = NULL; //stack top
+
+int is_empty()
+{
+    return top == NULL;
+}
+
+void push(char item)
+{
+    Node *ins;
+    
+    ins = (Node *) malloc(sizeof(Node));
+    ins -> data = item;
+    ins -> next = NULL;
+    
+    if(!is_empty())
+        ins -> next = top;
+    top = ins;
+}
+
+char pop()
+{
+    Node *del;
+    char item;
+    
+    if (is_empty()) {
+        printf("stack underflow!\n");
+        exit(1);
+    }
+    
+    item = top->data;
+    del = top;
+    top = del->next;
+    free(del);
+    
+    return item;
+}
+```
 
 
 
+<br>
+
+# Queue ADT
+
+## Queues
+
+queue는 다음과 같이 동작한다.
+
+- queue에 참석한 첫 번째 사람은 대게 첫 번째로 음식을 받는다.
+- 그리고 모든사람은 그들 각자가 queue에 어떻게 참가했는지의 순서에 따라 음식을 받을 것이다.
+- FIFO가 queue의 개념을 가장 잘 설명한다.
+  - FIFO: first in, first out(선입 선출)
+
+![image](https://user-images.githubusercontent.com/79521972/163073865-4fa1d14d-d147-4e1d-bc53-74a7e5a83608.png)
 
 
 
+<br>
+
+## Basic operation
+
+![image](https://user-images.githubusercontent.com/79521972/163073912-c211f0c6-a9ec-4cb4-a404-cc6ebda042b3.png)
+
+
+
+<br>
+
+## Queue implementation using Linked list
+
+![image](https://user-images.githubusercontent.com/79521972/163073961-74ada31b-c247-482a-9f44-d87de8a6b2bb.png)
+
+```python
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+        
+        
+class Queue:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self.size = 0
+```
+
+
+
+<br>
+
+### The enqueue operation
+
+```python
+def enqueue(self, data):
+    node = Node(data)
+    
+    if self.size == 0: # 큐가 비어있는 경우
+        self.head = node
+        self.tail = node
+    else:
+        self.tail.next = node
+        self.tail = node
+    self.size += 1
+```
+
+![image](https://user-images.githubusercontent.com/79521972/163076245-98c0a647-ed28-42d4-a5fd-26fb1cf1172c.png)
+
+초기에 
+
+<br>
+
+### The dequeue operation
+
+```python
+def dequeue(self):
+    if self.size == 0:
+        return None
+    self.size -= 1
+    
+    data = self.head.data
+    self.head = self.head.next
+    
+    return data
+```
+
+![image](https://user-images.githubusercontent.com/79521972/163076251-96c9332c-2aa5-4f64-8e7b-0c01798b8a81.png)
+
+<br>
+
+## Python Deque
+
+```python
+from collections import deque
+
+deq = deque([1, 2, 3])
+
+deq.append(4)
+deq.appendleft(5)
+print(deq)
+
+print(deq.pop())
+print(deq.popleft())
+```
+
+```
+deque([5, 1, 2, 3, 4])
+4
+5
+```
+
+
+
+![image](https://user-images.githubusercontent.com/79521972/163074579-b8bca512-bd6d-4f60-ac53-fe023de6f8f1.png)
+
+list의 경우 삽입과 삭제의 경우 리스트의 값들을 한 칸씩 밀어야 되기 때문에 O(n)의 시간 복잡도를 갖고
+
+deque의 경우 linked list로 구현이 되어 있기 때문에 노드들 간의 연결만 바꾸어 주면 되므로 O(1)의 시간 복잡도를 갖는다.
+
+<br>
+
+## Queue implementation using Python deque
+
+```python
+from collections import deque
+
+data = "ea*sy **q*ue***st*i*on****"
+
+queue = deque()
+for ch in data:
+    if ch == '*':
+        print(queue.popleft(), end='')
+        
+    else:
+        queue.append(ch)
+```
+
+```
+easy question
+```
+
+<br>
+
+### 백준 문제
+
+[백준 2164번 카드 2](https://www.acmicpc.net/problem/2164)
+
+![image](https://user-images.githubusercontent.com/79521972/163074901-4ba2c014-af21-47fd-91f5-6d18ddd6d3e4.png)
+
+```python
+n = int(input())
+q = deque()
+```
+
+
+
+<br>
+
+## Queue implementation in C
+
+### Array implementation
+
+![image](https://user-images.githubusercontent.com/79521972/163074951-a95240be-2446-4cda-a183-9456d7028517.png)
+
+<br>
+
+queue안의 element들은 head, head+1, ..... tail - 1 과같은 주소에 위치하고 있고 그러한 구조에서 우리는 location 1이 location n을 바로 뒤따라 가고 있는 circular order 라는 것을 이해하면 된다.
+
+head=tail 일 때, queue는 비어있다. 처음에 우리는 head = tail = 1로 설정한다. 만약 빈 queue로부터 element를 dequeue하려고 한다면, queue underflows가 발생한다.
+
+head = tail + 1일 때, queue는 가득 차 있고 만약 element를 enqueue하려고 한다면 queue는 overflows가 발생한다.
+
+<br>
+
+우리는 array1의 size가 client가 queue에서 보기 원하는 element의 최대값보다 더 크도록 만든다.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+#define N 10
+int queue[N + 1];
+int head, tail;
+
+int is_empty()
+{
+    return (head == tail);
+}
+
+int is_full()
+{
+    //queue에서 한 공간만 남았을 때를 꽉찼다고 하는데 이는 배열이 실제로 꽉차게 되면 head와 tail이 같아져 빈 queue와 구분할 방법이 없기 때문이다.
+    //modulo 대신에 tail == N인 경우에 1로 되도록 하는 ternary operator를 사용하였다.
+    //head == tail + 1
+    return (head == ((tail) == N) ? 1: (tail + 1)));
+
+}
+
+int q_size()
+{
+    int count = 0;
+    int temp = head;
+    
+    while (temp != tail) {
+        count++;
+        temp = (temp == N) ? 1 : (temp + 1); //circular 구조를 고려
+    }
+    return count;
+}
+
+void enqueue(int item)
+{
+    if (is_full()) {
+        printf("queue overflow\n");
+        exit(1);
+    }
+    
+    queue[tail] = item;
+    tail = (tail == N) ? 1 : (tail + 1);
+}
+
+int dequeue()
+{
+    int item;
+    
+    if (is_empty()) {
+        printf("queue underflow\n");
+        exit(1);
+    }
+    
+    item = queue[head];
+    head = (head == N) ? 1 : (head + 1);
+    return item;
+}
+```
+
+
+
+<br>
+
+### 백준 문제(요세푸스 문제)
+
+[백준 1158번 요세푸스 문제](https://www.acmicpc.net/problem/1158)
+
+입력: 첫째 줄에 N과 K가 빈 칸을 사이에 두고 순서대로 주어진다. 
+
+```c
+int main()
+{
+    int M, K, item, i, j;
+    
+    scanf("%d %d", &M, &K);
+    head = tail = 1;
+    for (i = 1; i<=M; i++)
+        enqueue(i);
+    
+    printf("<");
+    while (q_size() > 1)
+    {
+        ...
+    }
+}
+```
 
 
 
