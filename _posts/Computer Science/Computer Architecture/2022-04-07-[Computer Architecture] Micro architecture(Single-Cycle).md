@@ -520,10 +520,10 @@ Q) instruction register는 instruction memory랑 다른 건가?
 
 A)
 
-- 실행할 명령이들이 machine code로 바뀌어서 들어가는 공간
+- IM은 실행할 명령이들이 machine code로 바뀌어서 들어가는 공간
 - 그 중에 한 명령어(PC가 가리키고 있는)가 fetch된다.
 - 이 때 가져온 instruction을 instruction register에 저장하여 해석하는 공간인 것이다.
-- 그런데 single instruction에서는 어차피 한 명령어만 실행하기 때문에 IR 공간이 없어도 되는 것이다.
+- 그런데 single cylce에서는 어차피 한 clock에 다 실행되니까 IR 공간이 없어도 되는 것이다.
 - Multi에서 나올 것이다.
 
 ---

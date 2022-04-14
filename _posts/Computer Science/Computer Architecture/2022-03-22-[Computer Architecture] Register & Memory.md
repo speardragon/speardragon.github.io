@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Computer Architecture] week 3-2."
+title: "[Computer Architecture] Register & Memory"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['big-endian', 'little-endian', 'base addressing']
 ---

@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Computer Architecture] week 5-2"
+title: "[Computer Architecture] MIPS, ARM, RISC-V, System verilog"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['Computer Architecture']
 ---
