@@ -47,7 +47,15 @@ int unlink(char *path); //directory entry가 없어짐
 
 ![image](https://user-images.githubusercontent.com/79521972/162354828-a81e4a6c-c784-40ce-9acd-b94a062526f2.png)
 
+얘네는 harddisk에 있는 애들임. 그래서 open을 했을 때는 자료구조가 바뀌지 않음
+
+
+
 copy의 경우 directory entry부터 별도의 i-노드, data block을 모두 하나씩 **추가하여 복사**하게 된다.
+
+- 파일을 하나 더 만드는 것이기 때문에
+
+하드링크는 걔를 지칭할 수 있는 링크를 하나 더 만드는 것이다.
 
 <br>
 
@@ -68,7 +76,7 @@ int unlink(const char *pathname);
 
 <br>
 
-## stat 구조체?
+## stat 구조체
 
 - <sys/stat.h> 에 정의
 
@@ -97,6 +105,8 @@ struct stat {
 <br>
 
 ## Link count
+
+<span style="color:red">시험</span>
 
 - i-node 의 link count 
   - stat 구조체의 st_nlink 

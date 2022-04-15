@@ -30,6 +30,8 @@ tag: ['System Programming', 'File System']
 
 ## File/Directory access permissions
 
+<span style="color:red">시험 내용</span>
+
 - Read
   - file: file data를 읽을 수 있는가?(copy 가능?)
   - Directory: file list를 read할 수 있는가?(ls 가능?) 
@@ -52,6 +54,8 @@ tag: ['System Programming', 'File System']
 
 ## Inode와 directory 관계
 
+<span style="color:red">시험</span>
+
 - /home/obama/test.c
 
 ![image](https://user-images.githubusercontent.com/79521972/162352105-cbff72f0-2678-4835-95e1-008fcec01e5e.png)
@@ -61,6 +65,7 @@ tag: ['System Programming', 'File System']
 - root directory의 i-노드를 찾아간다. -> 2 (In Linux)
 
 - 2번 노드를 찾아가면 그것이 루트 디렉토리의 i-노드 이다.
+  - 파일에서는 0번이었는데 디렉토리에서는 2번 노드
 
 - i-노드에는 UID, GID, Type, 권한, **블록 포인터** 등이 들어있고 그 중에서 블록 포인터를 들어가 보면 그곳에 directory entry (file name + i-node)가 존재한다.
 - directory data block에는 접근을 원하는 파일의 i-노드 정보가 담겨 있고 그 i-노드를 찾아 들어가 그 안의 블록포인터 정보를 보고 이러한 일련의 과정을 반복하여 원하는 위치의 data block에 접근하는 것이다.
@@ -375,6 +380,8 @@ while ((d = readdir(dp)) != NULL) { 		//디렉터리 내의 각 파일
 
 ### <mark>list2.c</mark>
 
+중요함
+
 ```c
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -447,6 +454,7 @@ char type(mode_t mode) {
     if (S_ISSOCK(mode))
         return('s');
 }
+
 /* 파일 사용권한을 리턴 */
 char* perm(mode_t mode) {
     int i;
@@ -498,7 +506,7 @@ char* perm(mode_t mode) {
 #define S_IXOTH 00001 /* execute permission: other */
 ```
 
-```
+```shell
 $list2
 8 drw-r--r-- 2 chang faculty 4096 4월 16일 13:37 .
 8 drw-r--r-- 2 chang faculty 4096 3월 26일 10:37 ..

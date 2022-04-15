@@ -9,26 +9,38 @@ tag: ['System Programming', 'File System']
 
 # 5장 파일 시스템
 
-
+이번 장이 시험에 가장 많이 나오는 부분일 듯
 
 ## 5.1 파일 시스템 구현
 
 ### File System
 
-- File system을 사용하는 이유은 disk에 데이터를 저장을 해 두었다가 나중에 편리하게 access해서 사용할 수 있도록 하는 것이다.
+- 배열과 같은 것으로 파일을 저장하기에는 무리가 있어 대용량 저장소의 필요성이 대두됨.
+
+- File system을 사용하는 이유는 disk에 데이터를 저장을 해 두었다가 나중에 **편리하게** access해서 사용할 수 있도록 하는 것이다.
 
 - File system resides on secondary storage (disks)
-- File systems provide effiecient and convenient access to the disk by allowing data to be stored, located, and retrieved easily.
+- File systems provide **effiecient** and **convenient** access to the disk by allowing data to be stored, located, and retrieved easily.
 
 <br>
 
-- File system 설계 이슈.
-  - **how** the file system should **look** to the user.
+- File system 설계에 있어서 중요한 이슈.
+  - **How** the file system should **look** to the user.
+  
     - Provides **user interface** to storage, mapping logical to physical storage(OS가 관리하고 있는)
-      - 즉, logicla storage 에서 physical storage로 mapping 하는 것을 제공하는 것이다.
+      - 즉, logical storage 에서 physical storage로 mapping 하는 것을 제공하는 것이다.
     - defines a **file** and its attributes, the **operations** allowed on a file, and the **directory structure** for organizing files. 
+  
   - creating **algorithms and data structures** to map the logical file system onto the physical secondary-storage devices.
-    - To improve I/O efficiency, **I/O transfer** is between MM and disks are performed **in units of bock**.
+    - To improve I/O efficiency, **I/O transfer** is between MM and disks are performed **in units of block**.
+      - 하드디스크는 너무 느려서 하드디스크에서 데이터를 읽거나 쓸 때는 block 단위로 (512바이트) 가져오게 된다.
+    - 하드디스크 조각이 많아지면 파일을 찾을 때 저장 공간을 찾기 위해 막 찾아다녀야 하기 때문에 이럴 때 효율성이 많이 떨어진다.
+  
+  - fragment: 사용하지 않지만 사용하기엔 size가 작은 공간 -> 이러한 공간을 낭비하지 않도록 해야함.
+  
+    - 가상 공간으로 해결?
+  
+    - fragmentation이 발생하지 않도록 해야함
 
 
 
@@ -36,7 +48,13 @@ tag: ['System Programming', 'File System']
 
 ### Disk의 물리적 구조
 
-- 하드 디스크는 **surface, track, sector**로 구성되는 3D 구조(주소)
+- 하드 디스크는 **surface, track, sector**로 구성되는 3D 구조(주소) 가 파일을 찾을 때 사용된다.
+  - 3차원 구조에서 cylinder number = track number
+  - **surface**는 위 아래로 있으므로 아래 그림에는 6개가 있음
+  - surface 중에서 바깥 **track**과 안쪽 **track**이 나누어짐.
+  - **sector**는 한 surface에 조밀 조밀하게 나누어져 있는데 그러한 구간을 sector라고 한다.
+    - 한 block이 한 sector에 저장
+
 - 파일 시스템은 디스크를 물리적인 구조로 보지 않고 **논리적인 디스크 블록들의 집합**으로 간주
   - 논리적이라는 말은 즉, 1차원으로 간주 한다는 의미
 
@@ -51,12 +69,13 @@ tag: ['System Programming', 'File System']
 - 한 sector에 한 block이 저장된다.
 - 데이터를 읽어오고 싶다면 해당 주소에 접근해야 하는데 
 - 그러기 위해서는 어떤 surface, 어떤 track, 어떤 sector에 속해 있는지를 가지고 나서 특정 sector에 접근할 수 있다.
+- disk arm이 데이터를 읽어옴.
 
 <br>
 
 ### File system 에서의 주소변환
 
-- 디스크 내 3D 구조에서 1D 구조로의 매핑
+- 디스크 내 3D 구조에서 1D 구조로의 매핑 (생각(이해)하기 편하게 하기 위함)
 
 ![image](https://user-images.githubusercontent.com/79521972/160800596-a4059662-5921-4062-b140-169468c25192.png)
 
@@ -72,6 +91,8 @@ tag: ['System Programming', 'File System']
 
 ### 파일 시스템 구조(중요)
 
+파일이 많아짐에 따라 디렉터리 structure가 필요해졌는데 이보다 더 큰 개념을 파일 시스템이라고 한다.
+
 ![image](https://user-images.githubusercontent.com/79521972/160800695-5a8e6aa3-1927-4dec-bdae-6912f4f0d1dd.png)
 
 
@@ -80,9 +101,9 @@ tag: ['System Programming', 'File System']
   - contains info needed by system to boot OS from that volume(OS 부팅을 위한 블럭)
   - 부트스트랩 코드가 저장되는 블록
   - 파일 시스템 시작부에 위치하고 보통 첫 번째 섹터 (block)를 차지
-  - 부트 블록은 사실 하나만 있으면 되기 때문에 모든 file system이 갖고 있되 하나의 file system에서만 부팅을 하게 된다.
+  - 부트 블록은 사실 하나만 있으면 되기 때문에 모든 file system이 갖고 있되 하나의 file system에서만 부팅을 하게 된다.(실제로 사용하는 것은 하나)
 - 슈퍼 블록(Volume control block, superblock, master file table)
-  - **전체 파일 시스템**에 대한 정보를 저장
+  - **전체 파일 시스템**에 대한 정보를 저장 (관리 정보)
   - Total # of blocks, 사용 중인 블록 수, # of free blocks, block size, 사용 가능 한 블록 비트 맵 (free block pointers or array), 사용 가능한 i-노드 개수
 - i-리스트(i-list)
   - 각 파일을 나타내는 모든 i-노드들의 리스트
@@ -94,7 +115,7 @@ tag: ['System Programming', 'File System']
 
 
 
-하나의 파일이 저장되기 위해서 한 개의 i-노드가 할당을 받고, 그 파일의 content를 저장하기 위해서 한 개이상의 데이터 블록을 할당 받아서 저장된다.
+하나의 파일이 저장되기 위해서 한 개의 i-노드가 할당을 받고, 그 파일의 content를 저장하기 위해서 한 개 이상의 데이터 블록을 할당 받아서 저장된다.
 
 <br>
 
@@ -103,7 +124,7 @@ tag: ['System Programming', 'File System']
 - File
   - **Logical storage unit**
   - Collection of related information
-- **File data**와 File의 **inode**(관리 정보, attribute)로 구성됨
+- **File data**와 File의 **inode**(관리 정보, attribute)로 구성됨(리눅스에서 inode는 다른 곳에서는 file control block이라고 하기도 함.)
 
 ![image](https://user-images.githubusercontent.com/79521972/160801175-85ee8b77-fedf-49e5-8294-2c438debc8c4.png)
 
@@ -129,9 +150,29 @@ tag: ['System Programming', 'File System']
 
 ![image](https://user-images.githubusercontent.com/79521972/160801419-5792db82-3c0d-4cb7-9e6f-27fe76bb2dbe.png)
 
+- abstraction과 hierarchy를 이용하여 구현하는 것이 complex 시스템을 공략하기 효율적인 방법이다.
+
+- application programs: 우리가 짜는 코드
+- devices: 하드 디스크
+- logical block number에서 3D로 바꾸는 과정
+
 구현과 관리 용이로 file system도 계층 구조로 이루어져 있는 것이 일반적이다.
 
 logical file system 부터 devices까지가 file system이다.
+
+- <span style="color:red">왜 logical block에서 바로 physical block unmber를 거쳐서 3D로 변환하였는가?(시험에 나옴)</span>
+  - 용량 때문에?
+  - https://rootfriend.tistory.com/entry/%ED%95%98%EB%93%9C%EB%94%94%EC%8A%A4%ED%81%AC%EC%9D%98-CHS%EC%99%80-LBA-%EA%B7%B8%EB%A6%AC%EA%B3%A0-CHS-LBA-Translator
+
+
+
+---
+
+이러한 장벽을 넘기 위해서 만들어진 것이 LBA 인터페이스입니다. LBA 인터페이스가 적용되면 바이오스는 기존의 CHS 방식 대신 LBA 방식을 사용해서 하드디스크 드라이브에 접근합니다. LBA는 그 이름 그대로, 물리적, 혹은 논리적(변수전환된) CHS 수치를 무시하고 하드디스크 전체를 하나의 영역으로 보면서 이 안에서 일련의 주소를 가지는 블록을 만듭니다. 그리고 이러한 블록의 주소를 지정하기 위한 정보로써 28bit를 사용합니다.
+
+출처: https://rootfriend.tistory.com/entry/하드디스크의-CHS와-LBA-그리고-CHS-LBA-Translator [A Kind of Magic]
+
+
 
 <br>
 
@@ -139,10 +180,11 @@ logical file system 부터 devices까지가 file system이다.
 
 - **Logical file system** manages metadata information
   - Metadata includes all of the FS structure except actual data
+    - actual data는 I/O device에서만 의미있는 것이기 때문에 4개 layer는 metadata만 가지고 있는 것.
   
   - Directory management (manages directory structure)
   
-  - **Translates file name into** file number, file handle, location by maintaining **file control blocks** (<span style="color:blue">inodes </span>in Unix)
+  - **Translates file name into** file number, file handle(파일 디스크립터), location by maintaining **file control blocks** (<span style="color:blue">inodes </span>in Unix)
   
   - Protection
   
@@ -154,27 +196,35 @@ logical file system 부터 devices까지가 file system이다.
 
 - **File organization module** understands files, logical blocks as well as physical blocks
   - Translates **logical block #** to **physical block #** for the basic file system
+    - 그래서 basic file system에게 physical block number를 넘겨줌
   
-  - Manages **free space** (unallocated blocks), disk allocation
+  - Manages free space (unallocated blocks), disk allocation
     - 사용되지 않는 공간을 관리하여, 파일이 저장 될 때 저장되는 공간을 할당해 주는 역할을 한다.
   - Logical block(1D)과 Physical block(3D)을 모두 이해하고 있는 계층
     - Logical to Physical convert
+  - device layer에서는 3D, sector들을 주어진 원칙(계산식)에 의해서 3차원 주소를 일련번호를 붙여서 1D로 mapping
+    - 배열 index가 physical block number
+  
+  
   
 
 <br>
 
 - **Basic file system** given command like “retrieve block 123” translates to device driver (mapping 1D address to 3D address)
+  - 여기서 123은 physical block number
   - Also manages memory **buffers** and **caches** (allocation, freeing, replacement) 
     - Buffers hold data in transit(하드디스크에 바로 write하는 것이 아니라 buffer에 담아놨다가 전달)
       - 속도 문제로.
     - Caches hold frequently used meta data(최근 data를 버리지 않고 cache에 저장)
       - disk I/O 의 횟수를 줄일 수 있음.
   - Pysical block number 사용
+  
 
 <br>
 
 - **Device drivers** manage I/O devices at the **I/O control layer**
   - Given commands lilk "read drive1, cylinder 72, track 2, sector 10, into memory location 1060” outputs low-level hardware specific commands to hardware controller 
+    - harddisk controller를 구동 시켜서 disk arm이 데이터를 읽어오도록 control
   - main memort 1060번지 부터 copy를 요청 
   - device driver layer에서는 실제 hard disk에 hardware specific한 command를 전달하여 하드디스크가 동작하게 된다.
 
@@ -194,7 +244,7 @@ logical file system 부터 devices까지가 file system이다.
 
 ### i-node(i-node)
 
-- inod는 각 file마다 하나씩 존재.
+- inode는 각 file마다 하나씩 존재.
 - 아래의 block array가 하나의 partition이라 가정.
 - inode의 사이즈는 파일 사이즈와 무관하게 일정(file 하나당 i-노드 하나)
 
@@ -221,6 +271,7 @@ logical file system 부터 devices까지가 file system이다.
 <br>
 
 - 파일을 관리하기 위하여 metadata를 kernel 공간에서 관리해야 함.
+- 예를 들어, msword file을 open 하면 msword 실행 파일은 하드 디스크에 있는데 이를 읽어 메모리에 탑재 되는 것이고, 더불어 process control block이 생겨야 life cycle management가 가능하다.
 
 ![image](https://user-images.githubusercontent.com/79521972/160805581-a8eabc16-11ba-46d2-939c-4df880b913bd.png)
 
@@ -229,7 +280,7 @@ logical file system 부터 devices까지가 file system이다.
 
 <br>
 
-- 한 **파일/디렉토리**는 하나의 i-노드를 갖는다.
+- 한 **파일/디렉토리**는 반드시 하나의 i-노드를 갖는다.
   - 디렉토리도 사실상 파일의 한 종류
 
 - 파일에 대한 모든 정보를 가지고 있음
@@ -251,11 +302,12 @@ logical file system 부터 devices까지가 file system이다.
 ![image](https://user-images.githubusercontent.com/79521972/160805928-9667e2d4-68e5-4f0d-b7b2-1c598cb9f063.png)
 
 - 먼저 inode는 어떻게 찾을까?
-  - 일반적으로 **Directory file**에 file name 및 inode number가 저장되어 있다.
+  - 일반적으로 **Directory file** 안에 file name 및 inode number가 저장되어 있다.
 
 ![image](https://user-images.githubusercontent.com/79521972/160806036-dda9c96d-5b10-4a49-aed9-57481f30bb23.png)
 
 - ex) etc 디렉토리: 4번 inode
+- physical block number를 갖고 있는 것임(? 1:08:00 녹음 확인)
 
 <br>
 
@@ -266,7 +318,7 @@ logical file system 부터 devices까지가 file system이다.
 - Techniques for Assigning blocks to directory / files (파일을 저장할 block을 할당 받아야 함)
   - An allocation method refers to how disk blocks are allocated for files:
   - Directory entry for each file indicates the address of the starting block and the length allcocated for this file.
-- Should
+- **Should**
   - Utilize **disk space effectively** 
   - Provide **fast** **access** to file 
 - Major technique 
@@ -286,10 +338,15 @@ logical file system 부터 devices까지가 file system이다.
 
 - 파일은 continuous하게 그 공간이 할당되어 있다. 예를 들어, count라는 파일은 0번 블락이 시작 지점이고 길이는 2이기 때문에 0,1 블럭에 저장되어 있다.
 
+
 - 이렇게 시작 지점은 상관이 없지만 파일이 연속적인 공간에 block으로 할당 되는 방법이 `Contiguous` 이다.
-  <br>
+- 위의 number는 시작 지점의 physical block number이다.
+
+<br>
 
 그런데 이와 같은 방법으로 할당을 하다보면 연속된 공간을 할당하려 하는데 해당 블럭이 이미 차지되어 있는 경우 할당하지 못하는 문제가 생긴다.
+
+- 즉, external fragmenation이 많이 발생한다.(돌고 있는 공간이 많은데 사용하지 못하는 문제)
 
 - 대신 read가 빠르다는 장점이 있긴 함 
 
@@ -300,10 +357,17 @@ logical file system 부터 devices까지가 file system이다.
 <img src="https://user-images.githubusercontent.com/79521972/160806520-2c596a80-b113-450e-95a1-3133279dd003.png" alt="image" style="zoom:67%;" />
 
 - 연속된 블럭을 할당할 필요가 없기 때문에 위의 단점을 보완하였음.
+  - external framentation이 발생하지 않는다.
 
 - 연속적으로 block이 할당 되어 있지 않은 대신에 다음 block이 어디인지 정보가 들어있는 linking 정보가 따로 존재
 - linking 정보를 계속 따라 들어가야 하기 때문에 read 시간이 느림
 - disk 조각이 Contiguous 방식보다 덜 생긴다는 장점이 있다.
+
+첫 번째 찾아간 것이 logical block number가 0인 것이고 두 번째 찾아간 것이 logical block number가 1인 것이다...
+
+따라서 배열의 원소가 physical block number 인 것이고 배열의 index를 logical block number인 것이다.
+
+- 그래서 왜 physical number를 거치는 것이지 ?? -> 
 
 <br>
 
@@ -311,9 +375,11 @@ logical file system 부터 devices까지가 file system이다.
 
 <img src="https://user-images.githubusercontent.com/79521972/160806584-2f70b8b8-cfd4-4c53-85c6-b0a7a687be36.png" alt="image" style="zoom:67%;" />
 
-- file에 접근하기 위해서 index block 에 쓰여진 number를 보게 되는데 해당 번호의 block으로 가보면 여러 숫자가 적혀있는 것을 볼 수 있다.
+- file에 접근하기 위해서 **index block** 에 쓰여진 **number**를 보게 되는데 해당 번호의 block으로 가보면 여러 숫자가 적혀있는 table을 볼 수 있다.
   - 이 숫자들은 Linked allocation에서 사용한 sequence of block pointer를 의미
-
+  - <span style="color:red">physical block number가 들어있는 배열</span>
+  - <span style="color:red">배열의 index가 logical block 번호</span>
+  
 - 1번의 단점인 disk 조각 측면에서도 disk 조각을 덜 사용하고,
 
 - 2번의 단점인 access가 느리다는 점에 대해서도 더 빨리 access 할 수 있는 방식이기 때문에
@@ -360,6 +426,14 @@ logical file system 부터 devices까지가 file system이다.
 
 
 
+#### single indirect
+
+index block을 하나 둔 것
+
+
+
+
+
 ### 블록 포인터
 
 ![image](https://user-images.githubusercontent.com/79521972/160806934-03b35e01-2af2-4a98-9330-fec46b28b36e.png)
@@ -372,12 +446,12 @@ logical file system 부터 devices까지가 file system이다.
 - 하나의 i-노드 내의 블록 포인터
   - 직접 블록 포인터 10개
   - 간접 블록 포인터 1개 (1,024 직접 블록) 
-    - if 블록 포인터 크기 = 4B(32bit), 블록 크기 = 4,096B -> 그래서 1024개의 블럭
+    - if 블록 포인터 크기 = 4B(32bit), 블록 크기 = 4,096B -> 그래서 1024개의 블럭 포인터 정보를 가질 수 있다.
 
   - 이중 간접 블록 포인터 1개 (1,024의 간접 블록 포인터 )
-
-- 최대 몇 개의 데이터 블록을 가리킬 수 있을까?(즉, 이 파일 시스템이 지원하는 파일의 최대 사이즈는?)
-  - 아래에 나와 있음
+    - 최대 몇 개의 데이터 블록을 가리킬 수 있을까?(즉, 이 파일 시스템이 지원하는 파일의 최대 사이즈는?)
+    - 아래에 나와 있음
+  
 
 <br>
 
@@ -414,7 +488,7 @@ logical file system 부터 devices까지가 file system이다.
 
 ### Unix file system의 inode
 
-- attribute외에 data block을 찾을 수 있는 pointer정보를 포함.
+- metadata에서 attribute외에 data block을 찾을 수 있는 pointer정보를 포함.
 
 ![image](https://user-images.githubusercontent.com/79521972/160807556-f9bab1ee-d167-45d5-b252-9b85f96afab7.png)
 
@@ -467,10 +541,10 @@ logical file system 부터 devices까지가 file system이다.
 
 <img src="https://user-images.githubusercontent.com/79521972/160808528-5a2cd3fd-e6f6-497c-b4f7-d943036831aa.png" alt="image" style="zoom:67%;" />
 
-- X라는 파일을 open 하게 되면 하드디스크에 있는 i-노드를 가장먼저 읽어온다.
+- X라는 파일을 open 하게 되면 하드디스크에 있는 i-노드를 가장 먼저 읽어온다.
 
-- 그런데 하드디스크에서부터 i-노드 blcok 정보를 읽기 위해서는 어마어마한 I/O 를 거쳐야 하는데, 이를 피하기 위해서 하드디스크의 i-노드를 main memory로 읽어오게 된다.
-  - 그래야 block pointer 정보를 쉽게 사용할 수 있기 때문에
+- 그런데 하드디스크에서부터 i-노드 blcok 정보를 읽기 위해서는 어마어마한 I/O 를 거쳐야 하는데, <span style="color:red">이를 피하기 위해서 하드디스크의 i-노드를 main memory로 읽어오게 된다.</span>
+  - 그래야 block pointer 정보를 쉽게 사용할 수 있고 디스크의 어마어마한 I/O를 하지 않기 위해
 
 - 위 과정으로 m.m안에 **FCB**이 생기게 되는 것이고, 
 
@@ -523,10 +597,7 @@ open -> 하드디스크 inode 정보(FCB)를 메인 메모리로 읽어옴
   - vnode는 프로세스끼리 공유가 가능한 부분의 정보를 모아둔 곳이고
   - vnode는 열린 file당 하나씩 생긴다.
 
-
-<img src="C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20220330192457645.png" alt="image-20220330192457645" style="zoom:67%;" />
-
-
+![image](https://user-images.githubusercontent.com/79521972/163504544-10639ec8-e248-457d-925d-1a151071d866.png)
 
 <br>
 
@@ -578,6 +649,7 @@ open -> 하드디스크 inode 정보(FCB)를 메인 메모리로 읽어옴
 - **file descriptor table**의 추가
   - disk에서 inode 내용을 메모리에 가져오는데 이 때 파일의 경로명을 통해서 가져오게 되는데 이 때 소모 되는 시간은 매우 크다.
   - open() 후에 자료 구조를 용이하게 접근하기 위해 (특히 read, write)
+  - 그래서 file descriptor를 가지고 파일에 접근할 수 있도록 하는 것이다.
 
 ![image](https://user-images.githubusercontent.com/79521972/160811335-2816b897-c843-4036-9a94-9e73106164dc.png)
 
@@ -607,8 +679,12 @@ fd = open(“file”, O_RDONLY); //디렉토리에서 파일의 inode 번호를 
 ![image](https://user-images.githubusercontent.com/79521972/160812684-841fdbb3-42f1-4ba5-981a-99b1a70f1c73.png)
 
 - 디렉토리에서 파일의 inode 번호를 찾음 (디렉토리는 파일의 i-노드 정보를 포함한다.)
-- 찾은 inode 번호를 파일 시스템(하드 디스크)으로부터 읽어서 동적 i-노드 테이블에 카피한다.
-- open file table에 entry를 하나 만듦, 이 entry에서 동적 i-노드를 가리키는 포인터를 삽입하게 된다.
+- 찾은 inode 번호를 파일 시스템(하드 디스크)으로부터 읽어서 **동적 i-노드 테이블**에 카피한다.
+  - 얘가 file control block에 해당하는 것 (내용을 공유하여 변경할 수 있기 때문에) ??
+
+- **open file table**에 entry를 하나 만듦, 이 entry에서 동적 i-노드를 가리키는 포인터를 삽입하게 된다.
+  - 얘가 vnode로 변경이 일어나지 않는 곳이다. ??
+
 - file descriptor table에서 file table의 entry를 가리키는 fd값를 하나 할당 받아야 하는데 파일을 처음 열었을 때 받는 번호는 3번부터 받게 된다.(0, 1, 2는 프로세스 실행 시 이미 자동으로 오픈된 파일) 
   - 여기서 부여 받는 index 값이 file descriptor가 된다.
 
@@ -694,6 +770,8 @@ $ cat /home/obama/test.c
 
 #### how many disk access occurred?
 
+<span style="color:red"> 시험 문제 나옴</span>
+
 - 1. Pathname lookup (/home/obama/test.c)
      - i-노드에 저장되어 있는 데이터 블럭 포인터로 데이터 블럭을 계속해서 읽고 원하는 파일 혹은 디렉토리의 i-노드를 다시 가져와서 읽고 데이터 블록 포인터고 가고를 반복하는 구조
      - open 할 때는 file descriptor가 없기 때문에 i-노드에 무조건 접근해야 함.
@@ -743,14 +821,14 @@ $ cat /home/obama/test.c
 
 <br>
 
-- An in-memory **directory-structure cache** holds the directory information of r**ecently accessed directories.** 
+- An in-memory **directory-structure cache** holds the directory information of **recently accessed directories.** 
   - directory-structure cache: 하드디스크에 있던 내용을 읽어서 main memory에 가져다 놓은 것
   - Directory structure organizes the **files Names** and **inode numbers** 
   
 - When a process opens the file 
-  - First searches system-wide open file table (이미 사용되고 있는지 체크)
+  - First searches system-wide open file table (이미 사용되고 있는지 체크, 이미 열렸는지를 보는 것임)
     - If yes, Per-process table entry 생성, 해당 system-wide open file table pointing 하게 함. 
-    - If no, 주어진 파일 이름으로 directory structure 검색(cache or disk) 
+    - If no, 그 때서야 주어진 파일 이름으로 directory structure 검색(cache or disk) 
       - FCB를 system-wide open file table에 복사 후 Per-process table entry 생성 , 해당 system-wide open file table pointing하게 함 
   - Open returns a file descriptor for subsequent use (추가적인 사용 : read/write을 위한)
   - Data from read eventually copied to specified user process memory address

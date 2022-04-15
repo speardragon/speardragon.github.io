@@ -228,6 +228,8 @@ a.out: regular
 
 ## 파일 사용권한(File Permissions)
 
+i node 안에 있는 st_mode
+
 - 각 파일에 대한 권한 관리
   - 각 파일마다 사용권한이 있다. 
   - 소유자(owner)/그룹(group)/기타(others)로 구분해서 관리한다. 
@@ -253,6 +255,8 @@ a.out: regular
 <br>
 
 ## File access permisisons
+
+<span style="color:red"> 시험에 나올수도</span>
 
 - user, group, others에 대해 R/W/X의 권한 부여 
   - file과 direcotory에 적용되는 의미가 다름
@@ -328,7 +332,9 @@ int fchmod (int fd, mode_t mode);  //파일 디스크립터
 main(int argc, char *argv[]){
          long strtol( ); //string관련 library
          int newmode;
+    
          newmode = (int) strtol(argv[1], (char **) NULL, 8); //8진수 int로 변환:664 입력
+    
          /* long strtol( const char *nptr, char **endptr, int base);*/
          if (chmod(argv[2], newmode) == -1) {
              perror(argv[2]);
@@ -368,7 +374,7 @@ int lchown (const char *path, uid_t owner, gid_t group );
 int utime (const char *filename, const struct utimbuf *times );
 ```
 
-- 파일의 최종 접근 시간과 최종 변경 시간을 조정한다. 
+- 파일의 **최종 접근 시간**과 **최종 변경 시간**을 조정한다. 
   - 이 시스템 콜을 호출하면 시간 정보(times)를 file의 i노드가 갖고 있는 시간 정보에 반영 요구를 목적으로 하는 시스템 콜이다.
 - times가 NULL 이면, **현재시간으로 설정**된다
 - 리턴 값
@@ -424,7 +430,7 @@ int main(int argc, char *argv[])
 
 ```
 
-```
+```shell
 % ls –asl a.c b.c
 4 _rwxr-xr-x 2 chang faculty 0 2014-04-16 13:37 a.c
 4 -rwxr-xr-x 2 chang faculty 5 2014-04-16 14:37 b.c
