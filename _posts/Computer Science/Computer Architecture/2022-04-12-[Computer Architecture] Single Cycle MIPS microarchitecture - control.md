@@ -191,6 +191,8 @@ endmodule
 
 ## Control Unit Main Decoder
 
+![image](https://user-images.githubusercontent.com/79521972/163663142-62fff2c2-cd42-417e-a900-65c55c021cb4.png)
+
 <span style="color:red"> 시험 문제</span>
 
 ![image](https://user-images.githubusercontent.com/79521972/162877284-5154e99a-14d4-4106-a2d6-a3ecd45efa5e.png)
