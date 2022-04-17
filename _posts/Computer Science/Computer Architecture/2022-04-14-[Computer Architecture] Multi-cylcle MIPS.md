@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Computer Architecture] Microarchitecture (Single Cycle)"
+title: "[Computer Architecture] Multi-cylcle MIPS"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['Computer Architecture']
 ---
