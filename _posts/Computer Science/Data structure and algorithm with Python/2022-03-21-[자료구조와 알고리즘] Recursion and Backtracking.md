@@ -9,9 +9,9 @@ tag: ['Data structures and algorithms', 'Python']
 
 # Recursion
 
-우리는 목표를 성취하는 것을 돕기 위해 어떠한 메소드가 다른 메소드를 호출할 수 있다는 사실을 알고있다. 유사하게 메소드는 그 스스로 또한 호출할 수 있다.
+우리는 목표를 성취하는 것을 돕기 위해 어떠한 메소드가 다른 메소드를 호출할 수 있다는 사실을 알고있다. 이와 유사하게 메소드는 자기 스스로 또한 호출할 수 있다.
 
-Recursion(재귀) 방식은 programming technique으로 메소드의 목적을 달성하기 위해서 본인 스스로를 호출할 수 있는 메소드를 말한다.
+Recursion(재귀) 방식은 programming technique 중 하나로 메소드가 목적을 달성하기 위해서 본인 스스로를 호출할 수 있는 메소드를 말한다.
 
 <br>
 
@@ -21,7 +21,7 @@ Recursion(재귀) 방식은 programming technique으로 메소드의 목적을 �
   - recursion(재귀)
     - Function calls itself
       - 함수가 자기 자신을 계속해서 반복하여 호출하는 방법
-      - Suitable for problem breaking down
+      - Suitable for problem **breaking down**
         - <mark>break down</mark> : 주어진 문제를 더 작은 크기의 문제로 줄이는 행위
       - <span style="color:red">Drastically simplifies an algorithm in many cases</span>
         - 어떤 문제를 해결하려 할 때 그 문제에 recursion을 적용할 수 있는 경우가 있고 아닌 경우가 있는데 만약 적용할 수 있는 경우에 그 문제를 엄청나게 간단하게 만들어 준다.
@@ -47,11 +47,11 @@ def factorial(n):
         return ans
         
 num = 7
-print("%d != %d" % (num, factorial(num)))
+print("%d! = %d" % (num, factorial(num)))
 ```
 
 ```
-7 != 5040
+7! = 5040
 ```
 
 <br>
@@ -72,11 +72,11 @@ def factorial(n):
         return n * factorial(n-1) # 함수가 자기 자신을 다시 호출
     
 num = 7
-print("%d != %d" %(num, factorial(num)))
+print("%d! = %d" % (num, factorial(num)))
 ```
 
 ```
-7 != 5040
+7! = 5040
 ```
 
 
@@ -84,10 +84,11 @@ print("%d != %d" %(num, factorial(num)))
 <br>
 recursive 함수의 핵심은 두 가지 경우가 존재해야 한다.
 
-- Baes cases: 계산을 안 해도 한 번에 답이 바로 나오는 경우(위의 factorial 예시에서 n = 0 일 때 1 인 상황)
+- **Baes cases**: 계산을 안 해도 한 번에 답이 바로 나오는 경우(위의 factorial 예시에서 n = 0 일 때 1 인 상황)
   - These tell the recursion when to terminate, meaning the recursion  will be stopped once the base condition is met
-- Recursive cases: 함수 호출을 종료 시킬 수 있는 조건이 있는 경우
+- **Recursive cases**: 함수 호출을 종료 시킬 수 있는 조건이 있는 경우
   - The function calls itself and we progress towards achieving the base criteria
+  - 함수가 자기자신을 호출하여 base criteria를 성취하는 방향으로 진행하는 것.
 
 ![image](https://user-images.githubusercontent.com/79521972/159201014-d9b70d0e-f5a2-47e1-8285-ada37d04f32d.png)
 
@@ -134,13 +135,21 @@ a, b = 5, 3
 print("%d**%d = %d" %(a, b, power(a, b)))
 ```
 
+```
+5**3 = 125
+```
+
+
+
 <br>
 
 ## Complexity of recursive algorithms
 
-recursive algorithm의 order를 정의하는 것은 recursion의 order를 결정하는 것과 recursive method의 body의 order에 의해 곱하는 것에 대한 문제이다.
+recursive algorithm의 order(차수)를 정의하는 것은 recursion의 order를 결정하는 문제와 그것과 recursive method body의 order를 곱하는 것에 대한 문제이다.
 
+- 즉 재귀 호출 횟수 x 재귀 문의 line 갯수
 
+<br>
 
 power 함수를 실행했을 때 running time f(n)은 어떻게 되는 지 보자.
 
@@ -161,7 +170,7 @@ print("%d**%d = %d" %(a, b, power(a, b)))
 
 ```
 
-f(n) = c + f(n-1)
+f(n) = c + f(n-1)    //  n = n - 1을 계속 대입한다.
 
 = 2c + f(n-2)
 
@@ -169,7 +178,7 @@ f(n) = c + f(n-1)
 
 = n*c + f(0)  
 
-따라서 O(n)을 갖는다.
+따라서 O(n)을 갖는다. (이 예제의 경우, for loop와 동일한 O(n))
 
 ![image](https://user-images.githubusercontent.com/79521972/159201643-c299fc43-c604-430f-9392-d974a519b579.png)
 
@@ -237,11 +246,36 @@ a = list("TINYEXAMPLE") # a = ['T', 'I', 'N' ,..., 'E']
 print(find_max(a, 0, len(a)-1))
 ```
 
+```
+Y
+```
+
 
 
 ![image](https://user-images.githubusercontent.com/79521972/159203233-35147d0f-b630-4252-b466-ba0bd3d2603c.png)
 
+그니까 크기가 1인 거는 그냥 아무거나 리턴해도 되니까 (base case니까) 1인거에 대해서는 가장 먼저 처리를 한 거고 만약에 리스트가 나눠 졌는데 (2,1) 로 나눠지면 2부분은 (1,1) 로 나눠져서 각각 x,y에 들어가서 비교를 한 뒤에 더 큰 걸 반환하고 (2,1)로 올라가서 1부분과 도 비교하여 거기서 큰 걸 반환해서 또 그 위로 올라가고 하는 식.
 
+그니까 x,y는 계속해서 재귀 호출이 진행되면서 left branch와 right branch로 분기되는데 <mark>그 때마다의</mark> left-list의 max값과, right-list의 max값을 의미하게 된다.
+
+- 그래서 현재 돌고있는 left-list의 max값이 정해지면 y을 알아내야 하기 때문에 mid+1, right으로 지정하여 재귀호출을 하는 것이다.
+
+<br>
+
+### 분할정복의 큰 틀
+
+```python
+function F(x):
+    if F(x)의 문제가 간단 then :
+        return F(x)를 직접 계산한 값
+    else:
+        x를 y1, y2로 분할
+        F(y1);
+        F(y2);
+        return F(y1), F(y2)로부터 F(x)를 구한 값
+```
+
+큰 문제를 2개 이상의 작은 문제로, 즉 y1과 y2로 나누고 만약 y1 또는 y2가 바로 계산할 수 있다면 (base case) 계산한 값을 반환함으로써 작은 문제를 하나씩 해결해 나가면서 큰 문제를 해결할 수 있다.
 
 
 
@@ -252,6 +286,10 @@ Q) size에 따라 iterative 방법과 recursive 방법이 더 좋은 것이 있�
 A) 각각의 장단점이 존재하고 무엇을 쓸지에 대한 명확한 기준은 없으나 프로그래머가 판단했을 때 몇 줄만에 코드가 끝나고 size가 적당하다면 recursive를 사용하지만 data의 size가 너무 크면 iterative를 사용한다.
 
 ---
+
+
+
+
 
 <br>
 
@@ -346,11 +384,14 @@ def hanoi(disks, src, dst, extra):
         print(f'{hanoi.count}: move from {src} to {dst}') #formatted printing
         
     else:
+        # f(n-1)
         hanoi(disks-1, src, extra, dest)
         
+        # 1
         hanoi.count += 1
         print(f'{hanoi.count}: move from {src} to {dst}')
         
+        # f(n-1)
         hanoi(disks-1, extra, dst, src)
         
 hanoi.count = 0   #static variable of hanoi()
@@ -386,7 +427,7 @@ f(n) = 2f(n-1) + 1
 - method
 - algorithm
 
-의 한 종류이다.
+라고 한다.
 
 <br>
 
@@ -409,9 +450,9 @@ For **Sudoku**, there are 9<sup>n</sup> ways to fill the n blank squares.
 
 이 문제를 brute-force 기법으로 풀려면 9x9 size의 스도쿠 판의 각 칸마다 1~9까지의 수들을 전부 넣어 보면서 조건을 만족하는지 하나하나 확인하는 방법인 것이다. 이 경우 시간 복잡도가 O(9<sup>n</sup>)이 나오게 된다.
 
-때에 따라서 브루트포스가 쓰이는 경우가 있기는 하나 스도쿠와 같이 일일히 하나하나 따졌을 때 굉장히 피곤한 경우는 사용할 수가 없다.
+때에 따라서 브루트포스가 쓰이는 경우가 있기는 하나 스도쿠와 같이 일일히 하나하나 따졌을 때 굉장히 피곤한 경우에는 사용할 수가 없다.
 
-그렇다면 어떤식으로 스도쿠 문제를 풀어나가야 할까?
+**그렇다면 어떤식으로 스도쿠 문제를 풀어나가야 할까?**
 
 <br>
 
@@ -464,7 +505,7 @@ for loop보다 recursion이 더 좋다.
 
 Backtracking은 traversing tree 구조와 같은 문제의 유형에 특히 유용한 recursion의 한 형태인데, 각 노드에 대한 수 많은 옵션들이 제시된 곳에서 유용한 것이다.
 
-또한 <mark>Backtracking은 exhaustive searching(완전 탐색)에 대한 divide-and-conquer 방식이다. 중요한 점은 백트래킹은 결과를 낼 수 없는 가지들은 쳐내는 것이다.</mark>
+또한 <mark>Backtracking은 exhaustive searching(완전 탐색)을 위한 divide-and-conquer 방식이다. 중요한 점은 백트래킹은 결과를 낼 수 없는 가지들은 쳐내는 것이다.</mark>
 
 ![image](https://user-images.githubusercontent.com/79521972/159659310-fbdb74ca-8420-4582-a585-fa836e7b3d90.png)
 
@@ -496,6 +537,18 @@ n, m = map(int, input().split())
 permute([])
 ```
 
+```
+3 2 #input
+1 2
+1 3
+2 1
+2 3
+3 1
+3 2
+```
+
+
+
 <br>
 
 [백준 15650번 N과 M(2)]()
@@ -520,6 +573,16 @@ combine([])
 ```
 
 idea: n과m 1번 문제와 동일하게 돌긴 도는데 특정 부분에서만 넘어가게 짜야 하기 때문에 그 특정 부분을 지정하는 것이 제일 중요하다.
+
+```
+4 2 # input
+1 2
+1 3
+1 4
+2 3
+2 4
+3 4
+```
 
 <br>
 
