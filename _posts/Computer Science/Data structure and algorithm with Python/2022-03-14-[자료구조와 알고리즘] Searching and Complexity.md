@@ -11,25 +11,25 @@ tag: ['Data structures and algorithms', 'Python']
 
 ### linear search 
 
-the searching operation은 정렬된 데이터로부터 주어진 item을 찾아내는 것이다. 만약 발견한 item이 정렬된 리스트에서 가져올 수 있다면 그것이 위치한 index 위치를 반환하거나 발견하지 못했다는 것을 반환한다.
+the searching operation은 정렬된 데이터로부터 주어진 item을 찾아내는 것이다. 만약 발견한 item이 정렬된 리스트에서 가져올 수 있다면 그것이 위치한 **index 위치**를 반환하거나 발견하지 못했다는 것(**None)**을 반환한다.
 
 리스트 안의 item을 search하는 가장 쉬운 방식은 linear search 방법이며, 이는 전체 리스트의 item을 하나씩(one-by-one) 찾는 방식이다.
 
 \<주의 사항>
 리스트의 item's type을 개념 이해를 위해서 이 chapter에서는 interger 변수로 할 것이다. (정수가 비교적 제일 이해가 쉽기 때문에). 하지만 리스트 item's type은 어떠한 data type도 가능 하다는 것을 잊지마라.
 
-
+<br>
 
 ### Unordered linear search
 
-item이 정렬된 순서가 없기 때문에 끝까지 다 찾아봐야 함
+item이 정렬된 순서가 없기 때문에 끝까지 다 찾아봐야 한다.
 
 The linear search의 접근 방식은 item이 어떻게 정렬되어 있는 지에 달려있다. 즉, item들이 정렬되어 있는지 혹은 어떠한 순서도 없이 정렬되어 있지 아닌지에 따라 다른 것이다.
 
 
 
  ```python
- import random#실습 데이터 만들기 위한 모듈
+ import random # 실습 데이터 만들기 위한 모듈
  
  def search(unordered_list, target):
      for i in range(len(unordered_list)):
@@ -52,22 +52,31 @@ The linear search의 접근 방식은 item이 어떻게 정렬되어 있는 지�
      print("%s is at index %s" %(_target, result))
  ```
 
-<mark>항상 변수 name을 짓는 것은 알아보기 쉽게 직관적으로 지을 것</mark>
+```
+[7, 9, 10, 14, 15, 11, 4, 12, 4, 15]
+11 is at index 5
+```
+
+<br>
+
+<mark>항상 변수 이름은 알아보기 쉽게 직관적으로 지을 것</mark>
 
 
 
-
+<br>
 
 ### Ordered linear search
 
 알고리즘이 다음과 같은 단계로 감소한다.
 
 1. list를 순차적으로 이동한다.
-2. 만약 찾는 item(target)이 현재 loop에서 inspection하고 있는 object 혹은 item보다 작으면  종료하고 None을 반환한다.
+2. 만약 현재 loop에서 inspection하고 있는 object(item)가 찾는 target item 보다 커지면 종료하고 None을 반환한다.
 
 
 
 ```python
+import random
+
 def search(ordered_list, target):
     ordered_list_size = len(ordered_list)
     for i in range(ordered_list_size):
@@ -84,7 +93,7 @@ test.sort()
 print(test)
 
 _target = 11
-result = result(test, _target)
+result = search(test, _target)
 if result is None:
     print('%s is not found.' % _target)
 else:
@@ -92,7 +101,14 @@ else:
 #if-if 문으로 해도 똑같지만 반드시 두 if를 거치게 되지만 if-elif 문으로 하면 if가 맞으면 elif문은 보지 않기 때문에 시간이 더 빠르다.
 ```
 
+```
+[1, 2, 3, 4, 5, 6, 8, 9, 11, 12]
+11 is at index 8
+[1, 2, 3, 5, 6, 8, 9, 10, 11, 12]
+11 is at index 8
+```
 
+- random 변수의 범위를 1~ 14로 주었고 이는 중복이 없기 때문에 만약 저 범위 내에서 숫자를 15개 이상을 뽑으라고 하면 오류가 발생할 것이다.
 
 문제는 이론보다 코딩 위주(강의 자료에 있는 코드를 이해하고 있는가, 공부를 했는가)
 
@@ -120,7 +136,6 @@ def binary_search(ordered_list, target):
     
     while left <= right: #left와 right가 교차하기 전까지
         mid = (left + right) // 2
-        ...
         
         if target < ordered_list[mid]:
             right = mid - 1
@@ -141,7 +156,7 @@ print(test)
 
 시험문제는 100% 강의 자료에 나옴
 
-
+<br>
 
 ### bisect - Array bisection algorithm
 
@@ -201,6 +216,8 @@ else:
 11 is at index 7
 ```
 
+bisect로 해당 target이 그 리스트에 들어갔을 때의 index를 지정한 후, 실제 리스트에서 그 index에 해당하는 원소가 target이랑 같은지 같지 않은지를 판단한다.
+
 <br>
 
 ## Time Complexity of an Algorithm(알고리즘의 시간복잡도)
@@ -221,58 +238,88 @@ else:
 중첩된 loop내에 연속된 구문들에 대하여, 각 구문의 시간복잡도들을 더하고(add) 구문이 실행되는 횟수들의 갯수에 의해 곱해진다. 예를 들어:
 
 ```python
-n = 500 #c0
+n = 500 # c0
 
-#executes n times
+# executes n times
 for i in range(0, n):
-    print(i) #c1
+    print(i) # c1
     
 for i in range(0,n):
-    #executes n times
+    # executes n times
     for j in range(0,n):
-        print(j) #c2
+        print(j) # c2
 ```
 
 이는 다음과 같이 표현될 수 있다. 
 
-- c<sub>0</sub> + c<sub>1</sub> n + cn<sup>2</sup>
+- f(n) = c<sub>0</sub> + c<sub>1</sub> n + cn<sup>2</sup>
 
 <br>
 
-다음과 같이 logarithmic complexity도 정의할 수 있다.
+다음과 같이 logarithmic complexity(base 2)도 정의할 수 있다.
 
 - 일정한 시간동안 1/2만큼 문제의 크기가 줄어드는 알고리즘의 시간 복잡도
 - 예를 들어, 다음과 같은 경우를 고려해 보자.
 
 ```python
-i=1
-while i<n:
-    i=i*2
+i = 1
+while i < n:
+    i = i * 2
     print(i)
 ```
 
-f(n) = 2logn + 1
+n = 4; 2번
+
+n= 8; 3번
+
+...
+
+이므로 loop를 log<sub>2</sub>n 번 돌게 된다.
+
+- f(n) = loop 안의 라인 수 x 반복 횟수
+
+- f(n) = 2  x logn + 1
+  - 1은 loop문 바깥에 있는 구문의 수(상수)
+
+-> O(logn)
 
 
 
 <br>
 
-### f(n) = 15n<sup>2</sup> + 45n + 2000
+그런데 다음과 같은 경우는 어떻게 될까?
 
-이중 for-loop 안에 15줄
+```python
+i = 1
+while i < n:
+    i = i + 1
+    print(i)
+```
 
-단일 for-loop 안에 45줄
+- f(n) = 2 x (n - 1) + 1
+  - n-1번 loop
 
-for-loop에 들어가있지 않은 2000줄이 있다고 가정해 보자.
+<br>
 
+### Example)
 
+**f(n) = 15n<sup>2</sup> + 45n + 2000**
+
+- 이중 for-loop 안에 15줄
+
+- 단일 for-loop 안에 45줄
+
+- for-loop에 들어가있지 않은 2000줄
+
+이 있다고 가정해 보자.
 
 ![image](https://user-images.githubusercontent.com/79521972/158539694-e4acbef2-2b2b-493d-9839-0163fd69bbf7.png)
 
 \<comparison of terms in running time function>
 
-- n이 커질 수록 n을 많이 포함한 항일수록 더 지배적이게 된다.
-  - n=1일 때는 3번째 텀(상수항)이 지배적이지만
+- n이 커질 수록(loop를 많이 돌릴 수록) n을 많이 포함한 항일수록 더 지배적이게 된다.
+  - n=1일 때는 3번째 텀(상수항)이 지배적이지만 (2000),
+  - n=1000일 때는 상수항은 여전히 2000이지만 n<sup>2</sup> term은 1500만이 되어버린다. (ㄷㄷ)
 
 
 
@@ -281,8 +328,9 @@ for-loop에 들어가있지 않은 2000줄이 있다고 가정해 보자.
 ### order vs. constant factor
 
 - **C<sub>1</sub>n** vs. **C<sub>2</sub>n<sup>2</sup>** (C<sub>1</sub>> C<sub>2</sub>는 항상 일정하게 유지된다.)
-  - Regardless of C<sub>1</sub> and *C<sub>2</sub> , there exists a break even point.
+  - Regardless of C<sub>1</sub> and C<sub>2</sub> , there exists a break even point.
   - C<sub>1</sub>, C<sub>2</sub>와 관계없이 분기점이 존재한다.
+    - 2중 for loop이 커져서 단일 for loop가 ignorable 되어지는 것
 
 ![image](https://user-images.githubusercontent.com/79521972/158543160-d48615a6-3eef-44b0-9072-fb9261da6569.png)
 
@@ -296,18 +344,18 @@ for-loop에 들어가있지 않은 2000줄이 있다고 가정해 보자.
 
 <br>
 
-### the rate of growth
+### The rate of growth
 
 - 만약 *n*이 충분히 크다면 **order(rate) of growth**만이 중요하게 고려된다.
 - 상수 계수는 n이 작지 않으면 중요하지 않다.
 
 ![image](https://user-images.githubusercontent.com/79521972/158543404-5393fabc-3c3b-45ee-a8ff-f6b74eb45a93.png)
 
-아무 생각없이 짜다 2^n^과 같은 코드를 짜게 되면 굉장히 난감한 시간이 걸리는 것이다.
+아무 생각없이 짜다 2<sup>n</sup>과 같은 코드를 짜게 되면 감당하지 못할 만큼의 시간이 걸릴 수도 있다.
 
 <br>
 
-### ==Big O natation==
+### Big O natation
 
 - The big-O notation represents ***order of*** f(n)
 
@@ -321,25 +369,25 @@ for-loop에 들어가있지 않은 2000줄이 있다고 가정해 보자.
 
 
 
-growth율이 function의 order로 정의되는 인식에서, big O notation에서 O라는 문자는 order를 대표하여 붙여졌다. 
+growth율이 어떤 function의 order로 정의 되기 때문에 big O notation에서 O라는 문자는 order를 대표한다.
 
-또한 이는 가장 최악의 경우 runnig time complexity를 측정한다. 즉, 알고리즘에 의해 수행될 maximum time을 고려하는 것이다. 
+<mark>또한 이는 가장 최악의 경우 runnig time complexity를 측정한다.</mark> 즉, 알고리즘에 의해 수행될 maximum time을 고려하는 것이다. 
 
 쉽게 말해서 f(n)이라는 함수는 g(n)이라는 또다른 함수의 big O이고 우리는 이를 다음과 같이 정의한다.
 
-f(n) = O(g(n)) if there exist constants n~0~ and c such that f(n) <= cg(n) for all n >= n~0~
+f(n) = O(g(n)) if there exist constants **n<sub>0</sub>** and **c** such that **f(n) <= cg(n)** for all n >= n<sub>0</sub>
 
-
+![image](https://user-images.githubusercontent.com/79521972/163696506-8e54623f-bb07-4f8a-b20b-aa1bff2e6775.png)
 
 <br>
 
 ### complexity classes
 
-- Time complexity of an algorithm
+- **Time complexity** of an algorithm
 
 O(1) < O(log n) < O(n) < O(n log n) < O(n<sup>2</sup>) < O(n<sup>3</sup>) < O(2<sup>n</sup>) < O(n!)
 
--  Efficiency of an algorithm
+-  **Efficiency** of an algorithm
 
 O(1) > O(log n) > O(n) > O(n log n) > O(n<sup>2</sup>) > O(n<sup>3</sup>) > O(2<sup>n</sup>) > O(n!)
 
@@ -348,7 +396,7 @@ O(1) > O(log n) > O(n) > O(n log n) > O(n<sup>2</sup>) > O(n<sup>3</sup>) > O(2<
 
 - 선형 탐색은 for-loop를 사용하지만 이진 탐색은 data range가 1/2 씩 감소하기 때문에
 
-참고로 binary search의 f(n) = O(log n) + 1
+참고로 binary search(이진 탐색)의 f(n) = O(log n) + 1
 
 
 
@@ -372,7 +420,7 @@ big O가 점진적인 분석과 관련되어 가장 많이 사용되긴 하지�
 
 Big Omega notation은 tight한 upper bound를 묘사하는 big O notation과 유사한 tight한 algorithm에서 lower bound를 묘사하는 것이다.
 
-이는 즉, ==best-case running time== complexity를 계산하는 것이다.
+이는 즉, **best-case running time** complexity를 계산하는 것이다.
 
 <br>
 
@@ -382,7 +430,7 @@ Big Omega notation은 tight한 upper bound를 묘사하는 big O notation과 유
 
 <br>
 
-백준 수 찾기(1920) 과제
+[백준 1920번 수 찾기](https://www.acmicpc.net/problem/1920) 
 
 
 
@@ -390,7 +438,7 @@ Big Omega notation은 tight한 upper bound를 묘사하는 big O notation과 유
 
 과제에 유용하게 사용할 수 있는 함수를 배워보겠다.
 
-- map()은 iterable객체(list, tuple, etc.)의 각 item에 대한 주어진 function에 적용한다.
+- map()은 iterable객체(list, tuple, etc.)의 각 item에 대한 **주어진 function를 적용**한다.
 
 ```python
 a = '1 2 3 4'
@@ -411,32 +459,55 @@ print(a, b, c)
 #(1, 2, 3)
 ```
 
+<br>
 
+### Input from a file
+
+```python
+f = open('input.txt', 'r')
+a = f.readline()
+print(a)
+
+b = list(map(int, f.readline().split()))
+print(b)
+```
+
+```
+4 1 5 2 3\n
+[1, 3, 7, 9, 5]
+```
+
+![image](https://user-images.githubusercontent.com/79521972/163696597-d3cee8a8-36a7-4380-a443-0a8d8fa8d761.png)
+
+<br>
 
 ### Input from stdin
 
 ```python
 # use a file as the standard input (keyboard)
-
 import sys
-sys.stdin = open('input.txt', 'r')
+sys.stdin = open('input.txt', 'r') # 바뀐 standard input
 
 a = list(map(int, input().split()))
 
 print(a)
-#[4, 1, 5, 2, 3]
+# [4, 1, 5, 2, 3]
 
 a = list(map(int, input().split()))
 print(a)
-#[1, 3, 7, 9, 5]
+# [1, 3, 7, 9, 5]
 
 sys.stdin = open('input.txt', 'r')
 a = list(map(int, sys.stdin.readline().split()))
 print(a)
-#[4, 1, 5, 2, 3]
+# [4, 1, 5, 2, 3]
 ```
 
 
+
+<br>
+
+---
 
 ### 과제
 
@@ -444,7 +515,7 @@ print(a)
 2. binary search를 하는 코드
 3. bisect를 사용한 코드
 
-[https://www.acmicpc.net/problem/1920](https://www.acmicpc.net/problem/1920)
+[백준 1920번 카드2][https://www.acmicpc.net/problem/1920](https://www.acmicpc.net/problem/1920)
 
 이 코드를 바탕으로 위 세 가지 방법을 구현하여 어떻게 나오는지 봐보기
 
@@ -461,11 +532,9 @@ M = int(input())
 target = list(map(int, input().split()))
 ```
 
-
-
 이 때 중요한 점은 binary search의 경우 sort를 해야만 하기 때문에 이 과정을 추가하는데 이는 시간 복잡도에 영향을 미치지 않는다. 이에 대해서는 다음 시간에 계속 알아보도록 하겠다.
 
-
+<br>
 
 #### 과제 1
 
@@ -537,7 +606,7 @@ for i in _target:
 
 ```
 
-
+<br>
 
 #### 과제 3
 
@@ -567,7 +636,6 @@ _target = list(map(int, input().split()))
 
 for i in _target:
     bisectsearch(_card, i)
-
 ```
 
 
