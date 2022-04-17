@@ -285,7 +285,7 @@ private void merge(int[] arr, int low, int mid, int high) {
 - 만약 둘 중에서 하나의 리스트가 먼저 끝나게 되면 나머지 리스트의 값들을 전부 보조 배열로 복사한다.
 - 보조 배열을 원래의 리스트(arr)로 옮긴다.
 
-
+<br>
 
 ## 합병 정렬의 시간 복잡도
 
