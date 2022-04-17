@@ -11,9 +11,14 @@ tag: ['Data structures', 'Linked List']
 
 Linked List를 ADT로 만들어 볼 것이다.
 
-
+<br>
 
 ## Singly linked lists
+
+<mark>중요한 컨셉</mark>
+
+- head node란 리스트에서 가장 앞에 있는 노드를 말하고 그 노드를 가리키는 포인터로 head라는 것이 존재하는 것이다.
+  - head가 가리키고 있는 노드가 head!
 
 singly linked list는 두 연속적인 node들 사이의 one pointer만을 가진 리스트를 말한다. 단방향으로만 이동될 수 있다.
 
@@ -64,9 +69,9 @@ singly linked list는 두 연속적인 node들 사이의 one pointer만을 가�
 
 우리는 일반적으로 s가 `set type`의 변수라고 말할 것이다. 즉, s는 set이다. 그러나 이는 엄격히 따지면 맞지 않는 말이다. 
 
-변수 s는 오히려 set에 대한 reference(a safe pointer)라고 말할 수 있다. set contructor(생성자)는 메모리 안 어딘가에 set을 하나 만들고나서 그 set이 만들어진 memory location을 return한다. 이것은 s에 저장되는 것이다. python은 우리로부터 이러한 complexity를 숨긴다.
+변수 s는 오히려 set에 대한 reference(a safe pointer)라고 말할 수 있다. set contructor(생성자)는 메모리 안 어딘가에 set을 하나 만들고나서 그 set이 만들어진 memory location을 return한다. 이것은 s에 저장되는 것이다. python은 우리로부터 이러한 complexity(복잡한 내부사정)를 숨긴다.
 
-우리는 s는 set이고 모든 것이 잘 수행된다고 안전하게 가정할 수 있다.
+우리는 이로부터 s는 set이고 모든 것이 잘 수행된다고 안전하게 가정할 수 있는 것이다.
 
 <br>
 
@@ -75,11 +80,11 @@ pointer structure들에 대한 몇가지 이점들이 존재한다.
 - 우선적으로, 그 이점은 sequential storage space(순차적인 저장 공간)을 요구하지 않는다는 것에 있다.
 - 두 번째로는 작은 데서 시작할 수 있고 당신이 구조체에 더 많은 node를 추가하면서 임의로 확장할 수 있다.
 
-그러나 pointer가 가진 이러한 유연성은 cost로 다가온다. 우리는 주소를 저장하기 위한 추가적인 공간을 필요로한다. 
+그러나 pointer가 가진 이러한 유연성은 cost로 다가온다. 우리는 주소를 저장하기 위한 추가적인 공간을 필요로하기 때문이다. 
 
 예를 들어, 만약 integer 타입의 리스트를 가지고 있다면, 각 노드는 integer를 저장하면서 공간을 채울 것이다.
 
-- 물론 next node에 대한 pointer를 저장하기 위한 추가적인 integer로도 채울 것이다.
+- 물론 next node에 대한 pointer를 저장하기 위한 추가적인 integer도 저장된다.
 
 <br>
 
@@ -91,18 +96,12 @@ node의 단순한 형태은 next node와의 연결 하나만을 가지는 node�
 
 다음 diagram에 두 개의 node를 가진 example 을 생각해 보자.
 
-
-
 ```python
 class Node:
 	def __init__(self, data=None):
         self.data = data
         self.next = None
 ```
-
-
-
-
 
 ![image](https://user-images.githubusercontent.com/79521972/161470940-7e5d3193-b2ce-4fa6-8c1b-77eb7ea3979d.png)
 
@@ -123,7 +122,7 @@ a = Node('eggs')
 
 ## Singly linked list class
 
-list는 node와는 구별되는 컨셉이다. 우리는 list를 이해하기 위해 매우 단순한 class를 만드는 것으로부터 시작할 것이다.
+list는 node와는 구별되는 컨셉이다. 우리는 우리의 list를 이해하기 위해 매우 단순한 class를 만드는 것으로부터 시작할 것이다.
 
 우리는 첫 번째 노드에서 첫 번째 노드에 대한 reference를 유지하는 contructor(생성자)부터 시작한다.(즉, 다음 코드에서 head)
 
@@ -137,7 +136,7 @@ class SinglyLinkedList:
 words = SinglyLinkedList() # words.head -> None
 ```
 
-linked list에 접근하기 위해서는 그 리스트의 head node가 제일 중요하다. 모든 접근은 head node로 부터 시작한다.
+어떤 linked list에 접근하기 위해서는 그 리스트의 head node가 제일 중요하다. 모든 접근은 head node로 부터 시작한다.
 
 <br>
 
@@ -153,17 +152,15 @@ def insert(self, prev_node, data):
             node.next = prev_node.next
             prev_node.next = node
         # insert as the head node (empty or not)
-    else:
-        node.next = self.head
-        self.head = node
+    	else:
+        	node.next = self.head
+        	self.head = node
         
        
 words = SinglyLinkedList() # words.head -> None
 words.insert(None, "eggs")
 words.insert(words.head, "ham")
 ```
-
-
 
 - 노드 instance 생성
 - 크기를 1 증가
@@ -172,8 +169,8 @@ words.insert(words.head, "ham")
   -  prev_node의 next pointer가 생성한 node를 가리키게 한다.
 - 리스트의 맨 앞에 삽입하는 경우(빈 리스트이거나 맨 앞에 삽입)
   - prev_node가 None인 경우
-  - head 노드를 node의 next pointer가 가리키게 하고
-  - node를 head
+  - node의 next pointer가 head(None)를 가리키게 하고
+  - head가 node를 가리키게 한다.
 
 ![image](https://user-images.githubusercontent.com/79521972/161471913-3e5c39a1-a7a5-4ea6-bd2d-c081d1952d6b.png)
 
@@ -212,7 +209,7 @@ yield는 return은 반환하면 해당 함수가 종료하기 때문에 종료�
 
 - **yield**는 요구에 의해 one by one으로(하나씩) 반환한다.
   - Generator functions
-  - goot for time and memory
+  - good for time and memory
 
 ```python
 >>> def simple_generator():
@@ -306,8 +303,8 @@ class SinglyLinkedList:
             prev_node.next = prev_node.next.next
             
         # delete the head node
-    else:
-        else.head = self.head.next
+    	else:
+        	self.head = self.head.next
         
 words = SinglyLinkedList() # words.head -> None
 words.insert(None, "eggs")
@@ -379,7 +376,7 @@ class CircularList: 	#Circular Singly Linked List
             prev_node.next = node
         #list is empty
     	else:
-            node.next = node
+            node.next = node # 자기 자신을 가리킴
             self.head = node
             
 words = CircularList()
@@ -388,7 +385,7 @@ words.insert(words.head, "ham")
 words.insert(words.head, "spam")
 ```
 
-
+<br>
 
 **SLL vs. CSLL**
 
@@ -466,6 +463,30 @@ head node를 delete하는 경우에도 리스트에 노드가 하나만 있는 �
 
 n,k 인 경우에 노드를 하나씩 삭제해 가기 때문에 k-1만큼씩 prev_node를 지정한다.
 
+```python
+n, k = map(int, input().split())
+
+jo = []
+for i in range(1, n+1):
+    jo.append(i)
+    
+print('<', end='')
+
+index = 0
+
+while len(jo) > 0:
+    index += k - 1
+    if len(jo) <= index:
+        index %= len(jo)
+
+    if len(jo) > 1:
+        print(jo.pop(index), end=', ')
+    else:
+        print(jo.pop(index), end='')
+
+print('>', end='') 
+```
+
 <br>
 
 ## Circular List using Python List
@@ -493,8 +514,6 @@ fruits.remove('banana')
 print(fruits)
 # ['orange', 'pear']
 ```
-
-
 
 <br>
 
@@ -553,7 +572,6 @@ if index == len(fruits):
     
 print(fruits[index])
 # 'orange'
-
 ```
 
 
@@ -572,13 +590,11 @@ index = 0
 while len(words) > 0:
     index += 2
     if index >= len(words):
-        index += 2
-        if index >= len(words):
-            index %= len(words)
+        index %= len(words)
             
-        print(words.pop(index))
-        if index == len(words): #can be skipped
-            index = 0			#            
+    print(words.pop(index))
+    if index == len(words): #can be skipped
+            index = 0		#            
 ```
 
 ```
@@ -595,6 +611,26 @@ spam
 
 ```python
 n, k = map(int, input().split())
+
+jo = []
+for i in range(1, n+1):
+    jo.append(i)
+    
+print('<', end='')
+
+index = 0
+
+while len(jo) > 0:
+    index += k - 1
+    if len(jo) <= index:
+        index %= len(jo)
+
+    if len(jo) > 1:
+        print(jo.pop(index), end=', ')
+    else:
+        print(jo.pop(index), end='')
+
+print('>', end='') n, k = map(int, input().split())
 
 jo = []
 for i in range(1, n+1):
