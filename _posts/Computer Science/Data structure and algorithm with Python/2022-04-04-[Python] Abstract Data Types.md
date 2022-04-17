@@ -26,8 +26,9 @@ tag: ['Abstract Data Types', 'ADT']
 이러한 원칙은 OOP의 주요한 기조 중에 하나이다.
 
 1. 우리는 적어도 **class 바깥**의 code가 **class 안**에서 선언된 변수의 값을 바꾸거나 접근하는 것을 어렵게 해야한다.
-2. 구현의 구체적인 내용으로부터 class를 어떻게 사용하는지의 설명을 분리해야 한다.
+2. 구현의 구체적인 내용으로부터 class를 어떻게 사용하는지와 같은 설명을 분리해야 한다.
    - 구체적인 내용이라 함은 예컨데, class의 method가 어떻게 정의 되었는지와 같은 것들을 말한다.
+   - you separate the description of how to use a class from the implementation details, such as how the class methods are defined.
 
 <br>
 
@@ -69,7 +70,8 @@ Object는 시스템의 나머지로부터 encapsulated 되어야 하고 그 obje
 1. 시스템을 설계한 사람의 의도대로 동작을 하게 할 수 있다.
    - 오작동을 방지한다.
 
-2. interface (함수)를 이용하여 거대한 규모의 응용 프로그램을 만들었는데 클래스가 개선되기를 원할 때 아무리 수정을 해도 client 입장에서는 코드 사용법이 바뀌지 않는 다는 것이다.
+2. interface (함수)를 이용하여 거대한 규모의 응용 프로그램을 만들었는데 클래스가 개선되기를 원할 때 아무리 수정을 해도 **client 입장에서는 코드 사용법이 바뀌지 않는 다는 것이다.**
+
 
 ![image](https://user-images.githubusercontent.com/79521972/161468148-4b0ec812-a219-43df-bb7a-5e33d5e89c2b.png)
 
@@ -87,7 +89,7 @@ The predefined types(ex. int)는 모두 ADT이다. 우리는 operation(such as +
 
 <br>
 
-ADT를 만들기 위한 방법의 하나가 Class 인 것이다. (class가 encapsulation을 하기 때문에)
+ADT를 만들기 위한 방법의 하나가 Class 인 것이다. (class가 encapsulation을 제공하기 때문에)
 
 즉, 프로그래머가 정의한 타입(programmer-defined types)인 <mark>Classes</mark>는 ADT 또한 될 수 있다.
 
@@ -117,7 +119,7 @@ ADT를 만들기 위한 방법의 하나가 Class 인 것이다. (class가 encap
 
 ## ADT examples
 
-지금까지 우리는 string, lists, sets, and dictionaries의 built-in data type들을 봤었다.(추가적으로 decimal and fraction modules)
+지금까지 우리는 string, lists, sets, and dictionaries의 built-in data type들을 봤었다. (추가적으로 decimal and fraction modules)
 
 이들은 종종 ADT 관점에 의해 묘사된다. ADTs는 data에게 수행되어질 수 있는 operation들의 집합에 대한 수학적인 specifications으로 생각될 수 있다.
 
@@ -126,6 +128,10 @@ ADT를 만들기 위한 방법의 하나가 Class 인 것이다. (class가 encap
 우리가 봤던 ADT에 덧붙여서, built-in data type들에대한 extension을 제공하는 몇가지 python library들이 있다.
 
 ![image](https://user-images.githubusercontent.com/79521972/161469272-eecfad61-a546-4d04-8606-775191f9d482.png)
+
+다양한 application에서 유용하다고 판명된 몇 가지 흔한 ADTs의 리스트가 위에 있다.
+
+이러한 ADT 각각은 다양한 방식과, 다른 종류로 정의 될 수 있다. (다 똑같이 필수적인 건 아니지만)
 
 <br>
 
@@ -145,9 +151,9 @@ Data structure란 접근과 수정을 용이하게 하기 위해 data를 `store 
 
   - ADT로 만들 수 있다. or
 
-  - data type가 아닌 것으로 만들 수 있다.
+  - data type이 아닌 것으로 만들 수 있다.
 
-- 어떤 ADT는 수많은 data structure를 포함될 수 있다.
+- 어떤 ADT는 수많은 data structure가 포함될 수 있다.
 
 <br>
 
