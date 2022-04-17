@@ -393,7 +393,7 @@ nsea qyseyutoi
 
 ![image](https://user-images.githubusercontent.com/79521972/163073164-009e34fd-cb05-42bc-a589-d515101a3200.png)
 
-삭제할 노드를 del이라는 변수로 지칭하여 해당 노드 다음 노드를 top으로 잇는다.
+삭제할 노드를 del이라는 변수로 지칭하여 해당 노드 next 노드를 top이 가리킨다.
 
 ```c
 #include <stdio.h>
@@ -474,6 +474,8 @@ queue는 다음과 같이 동작한다.
 
 ## Queue implementation using Linked list
 
+Linked list로 구현하는 Queue는 tail을 이용하여 데이터를 집어넣고(enqueue) head를 통해 데이터를 제거한다.(dequeue)
+
 ![image](https://user-images.githubusercontent.com/79521972/163073961-74ada31b-c247-482a-9f44-d87de8a6b2bb.png)
 
 ```python
@@ -511,7 +513,13 @@ def enqueue(self, data):
 
 ![image](https://user-images.githubusercontent.com/79521972/163076245-98c0a647-ed28-42d4-a5fd-26fb1cf1172c.png)
 
-초기에 
+- node 변수가 data를 가진 노드 instance를 가리킨다.
+- 큐가 비어있는 경우
+  - head 노드와 tail노드 모두 생성한 노드를 가리킨다.
+- 그렇지 않은 경우
+  - tail 노드의 next pointer가 노드를 새 노드를 가리킨다.
+  - tail 노드를 새 노드로 바꾼다.
+- size 1 증가
 
 <br>
 
@@ -530,6 +538,13 @@ def dequeue(self):
 ```
 
 ![image](https://user-images.githubusercontent.com/79521972/163076251-96c9332c-2aa5-4f64-8e7b-0c01798b8a81.png)
+
+- 큐가 빈 경우 당연하게 None 리턴
+- 그렇지 않은 경우
+  - size 1 감소
+  - data 변수에 head 노드의 data 대입
+  - head 노드의 next 노드를 head 노드로 변경
+-  data 반환
 
 <br>
 
@@ -573,7 +588,7 @@ data = "ea*sy **q*ue***st*i*on****"
 
 queue = deque()
 for ch in data:
-    if ch == '*':
+    if ch == '*' and len(queue) > 0:
         print(queue.popleft(), end='')
         
     else:
@@ -593,8 +608,23 @@ easy question
 ![image](https://user-images.githubusercontent.com/79521972/163074901-4ba2c014-af21-47fd-91f5-6d18ddd6d3e4.png)
 
 ```python
+from collections import deque
+
+
 n = int(input())
-q = deque()
+
+a = [i for i in range(1, n + 1)]
+q = deque(a)
+
+
+while len(q) != 1:
+
+    q.popleft()
+    num = q.popleft()
+
+    q.append(num)
+
+print(a[0])
 ```
 
 
@@ -617,7 +647,7 @@ head = tail + 1일 때, queue는 가득 차 있고 만약 element를 enqueue하�
 
 <br>
 
-우리는 array1의 size가 client가 queue에서 보기 원하는 element의 최대값보다 더 크도록 만든다.
+우리는 array1의 size를 client가 queue에서 보기 원하는 element의 최대값보다 더 크도록 만든다.
 
 ```c
 #include <stdio.h>
@@ -637,7 +667,7 @@ int is_full()
     //queue에서 한 공간만 남았을 때를 꽉찼다고 하는데 이는 배열이 실제로 꽉차게 되면 head와 tail이 같아져 빈 queue와 구분할 방법이 없기 때문이다.
     //modulo 대신에 tail == N인 경우에 1로 되도록 하는 ternary operator를 사용하였다.
     //head == tail + 1
-    return (head == ((tail) == N) ? 1: (tail + 1)));
+    return (head == ((tail == N) ? 1: (tail + 1)));
 
 }
 
@@ -661,7 +691,7 @@ void enqueue(int item)
     }
     
     queue[tail] = item;
-    tail = (tail == N) ? 1 : (tail + 1);
+    tail = (tail == N) ? 1 : (tail + 1); //circular 고려한 tail += 1
 }
 
 int dequeue()
@@ -674,7 +704,7 @@ int dequeue()
     }
     
     item = queue[head];
-    head = (head == N) ? 1 : (head + 1);
+    head = (head == N) ? 1 : (head + 1); //head 노드를 이제 그 다음 노드로 바꿔야 한다.
     return item;
 }
 ```
@@ -690,21 +720,113 @@ int dequeue()
 입력: 첫째 줄에 N과 K가 빈 칸을 사이에 두고 순서대로 주어진다. 
 
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+
+#define N 10
+int queue[N + 1];
+int head, tail;
+
+int is_empty()
+{
+    return (head == tail);
+}
+
+int is_full()
+{
+    //queue에서 한 공간만 남았을 때를 꽉찼다고 하는데 이는 배열이 실제로 꽉차게 되면 head와 tail이 같아져 빈 queue와 구분할 방법이 없기 때문이다.
+    //modulo 대신에 tail == N인 경우에 1로 되도록 하는 ternary operator를 사용하였다.
+    //head == tail + 1
+    return (head == ((tail == N) ? 1: (tail + 1)));
+
+}
+
+int q_size()
+{
+    int count = 0;
+    int temp = head;
+    
+    while (temp != tail) {
+        count++;
+        temp = (temp == N) ? 1 : (temp + 1); //circular 구조를 고려
+    }
+    return count;
+}
+
+void enqueue(int item)
+{
+    if (is_full()) {
+        printf("queue overflow\n");
+        exit(0);
+    }
+    
+    queue[tail] = item;
+    tail = (tail == N) ? 1 : (tail + 1); //circular 고려한 tail += 1
+}
+
+int dequeue()
+{
+    int item;
+    
+    if (is_empty()) {
+        printf("queue underflow\n");
+        exit(0);
+    }
+    
+    item = queue[head];
+    head = (head == N) ? 1 : (head + 1); //head 노드를 이제 그 다음 노드로 바꿔야 한다.
+    return item;
+}
+
 int main()
 {
-    int M, K, item, i, j;
+    int M, K, item, i, j, index;
     
     scanf("%d %d", &M, &K);
     head = tail = 1;
     for (i = 1; i<=M; i++)
         enqueue(i);
     
+    index = 0;
     printf("<");
     while (q_size() > 1)
-    {
-        ...
+    {	
+        index += K - 1;
+        if (q_size() <= index)
+            index %= q_size();
+        
+        if (q_size() > 1)
+            printf("%d, ",dequeue());
+        else
+            printf("%d",dequeue());
     }
+    printf(">");
+    return 0;
 }
+```
+
+```python
+n, k = map(int, input().split())
+
+jo = []
+for i in range(1, n+1):
+    jo.append(i)
+    
+print('<', end='')
+
+index = 0
+
+while len(jo) > 0:
+    index += k - 1
+    if len(jo) <= index:
+        index %= len(jo)
+
+    if len(jo) > 1:
+        print(jo.pop(index), end=', ')
+    else:
+        print(jo.pop(index), end='')
+
+print('>', end='') 
 ```
 
 
