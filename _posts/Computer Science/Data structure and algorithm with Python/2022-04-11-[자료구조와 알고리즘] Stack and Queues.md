@@ -19,15 +19,15 @@ tag: ['Data structures', 'Stack', 'Queue']
 
 ![image](https://user-images.githubusercontent.com/79521972/162659075-854b0c3b-305d-4e02-bd65-8f7b52a14f73.png)
 
-stack은 부엌에서 접시를 쌓는 것과 유사한 data를 저장하는 자료구조이다.
+stack은 부엌에서 접시를 쌓는 것과 유사한 방식으로 data를 저장하는 자료구조이다.
 
-스택의 제일 윗 부분(top)에 접시를 둘 수 있고, 접시가 필요할 때 이 스택의 제일 윗 부분(top)에서 가져올 수 있다. 스텍에 추가되는 마지막 접시는 그 스택으로부터 제일 먼저 집어 들어지는 것이다.
+스택의 제일 윗 부분(top)에 접시를 둘 수 있고, 접시가 필요할 때 이 스택의 제일 윗 부분(top)에서 가져올 수 있다. 스택에 추가되는 마지막 접시는 그 스택으로부터 제일 먼저 집어 들어지는 것이다.
 
 이와 유사하게 stack data structure는 우리로 하여금 one end로부터 data를 읽고 저장할 수 있도록 하고 마지막에 추가되는 element가 첫 번째로 집어진다.
 
 따라서, stack은 `last in, first out`(즉, LIFO) 구조라고 한다.
 
-
+<br>
 
 ## Basic operations
 
@@ -54,7 +54,6 @@ class Stack:
     def __init__(self):
         self.top = None
         self.size = 0
- 
 ```
 
 Stack을 사용하기 위해서는 Stack object(instacne)를 만들고 해당 object로 stack class의 변수 및 함수에 접근한다.
@@ -79,10 +78,11 @@ def push(self, data):
         sefl.size += 1
 ```
 
-- 가장 먼저 저장할 data를 가지로 있는 Node object를 하나 만든다.
+- 가장 먼저 저장할 data를 가지고 있는 Node object를 하나 만든다.
 - 이제 이 node를 stack 구조에 넣어야 할 차례이다.
 - `if self.top`이 의미하는 것은 스택이 현재 비어 있지 않는지를 물어보는 것이다.
   - 만약 비어있지 않다면 top을 새로 생성한 node의 next pointer가 가리키도록 한다.
+  - 만약 비어있다면 top이 새로 만든 node를 가리키게 한다.
 
 
 
@@ -181,7 +181,7 @@ def check_brackets(statement):
                 continue
             elif last == '[' and ch == ']':
 				continue
-            elif lst == '(' and ch == ')':
+            elif last == '(' and ch == ')':
                 continue
             else:
                 return False
@@ -200,9 +200,13 @@ for s in sl:
     print("{}: {}".format(s, m))
 ```
 
+```
+{(foo)(bar)}[hello](((this)is)a)test: True
+{(foo)(bar)}[hello](((this)is)a test): True
+{(foo)(bar)}[hello](((this)is)a)test((: False
+```
 
-
-
+<br>
 
 ### Stack implementation using Python list
 
@@ -219,13 +223,70 @@ for ch in data:
 
 python의 list와 관련된 method를 적절히 사용하여 stack구조를 충분히 구현해 낼 수 있다.
 
-
+<br>
 
 **관련된 문제**
 
 [백준 9012 괄호](https://www.acmicpc.net/problem/9012)
 
+```python
+def solution():
+    stack = []
+    string = input()
+
+    for i in string:
+        if len(stack) == 0 and i == ')':
+            print("NO")
+            return
+
+        if i == '(':
+            
+            stack.append(i)
+
+        elif i == ')' and len(stack) != 0:
+            stack.pop()
+
+    if len(stack) == 0:
+        print("YES")
+        return
+
+    else:
+        print("NO")
+        return
+
+test_case = int(input())
+
+for _ in range(test_case):
+    solution()
+```
+
+```python
+tc = int(input())
+
+for _ in range(tc):
+    s = Stack()
+    test = input()
+    
+    for ch in test:
+        if ch == '(':
+            s.push(ch)
+        elif ch == ')' and s.size != 0:
+            s.pop()
+        
+    if s.size == 0:
+        print("YES")
+    else:
+        print("NO")
+```
+
+
+
+---
+
+- 스택을 계속해서 만들기 때문에 메모리 낭비일 것 같다고 스택을 새로 만들지 않고 쓰던 걸 계속 사용하면 스택 안에 값이 남아있게 되는 문제가 발생할 수 있다.
 - 한 test case를 진행 할 때마다 Stack()를 만들어주는 이유는 한 스택을 계속해서 사용하게 되면 스택이 비어있지 않은 경우가 발생할 수 있기 때문이다.
+
+---
 
 <br>
 
@@ -251,15 +312,15 @@ python의 list와 관련된 method를 적절히 사용하여 stack구조를 충�
   - Pop(S)을 호출한 후 Stack S는 가장 최근에 pushed 된 요소 3을 반환하였다.
   - 비록 배열에 3이라는 요소가 여전히 보이겠지만, 얘는 더 이상 stack 안에 있는 것이 아니다.
   - top element는 17
-- 즉, pop이라는 method는 배열 안의 값을 실제로 삭제할 필요없이 top의 위치만으로 기능을 구현할 수 있는 것이다.(top 이후의 index에는 값이 있더라도 없는 것처럼 생각하는 것이다.)
+- 즉, pop이라는 method는 배열 안의 값을 실제로 삭제할 필요없이 top의 위치만으로 기능을 구현할 수 있는 것이다. (top 이후의 index에는 값이 있더라도 없는 것처럼 생각하는 것이다.)
 
 <br>
 
 top = 0 일 때, stack은 어떠한 element도 포함하지 않고 비어있는 것이다.
 
-query operation 인 STACK-EMPTY에 의해 stack이 비어 있는지 테스트해 볼 수 있다. 만약, 빈 stack을 pop하려고 시도하면 stack이 underflow 되었다고 하고 이는 보통 error로 다루어진다.
+query operation 인 STACK-EMPTY에 의해 stack이 비어 있는지 테스트해 볼 수 있다. 만약, 빈 stack을 pop하려고 시도하면 stack이 underflow 되었다고 하고 이는 보통 error로 다루어 진다.
 
-또한 만약 top이 n을 초과하였다면 stack은 overflows 되었다고 한다.
+또한 만약 top이 n을 초과하였다면 stack은 overflows 되었다고 하고 이 역시도 error로 다루어 진다.
 
 <br>
 
@@ -312,6 +373,10 @@ int main()
 }
 ```
 
+```
+nsea qyseyutoi
+```
+
 
 
 <br>
@@ -328,7 +393,7 @@ int main()
 
 ![image](https://user-images.githubusercontent.com/79521972/163073164-009e34fd-cb05-42bc-a589-d515101a3200.png)
 
-
+삭제할 노드를 del이라는 변수로 지칭하여 해당 노드 다음 노드를 top으로 잇는다.
 
 ```c
 #include <stdio.h>
