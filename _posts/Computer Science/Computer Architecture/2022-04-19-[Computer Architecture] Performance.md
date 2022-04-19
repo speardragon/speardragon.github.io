@@ -56,7 +56,7 @@ Multicycle critical path: **Tc** = t<sub>pcq_ALUout</sub> + t<sub>mux </sub>+ ma
 
 <br>
 
-## 중요한 의제
+## 중요한 의제(시험에 나옴)
 
 For a program with 100 billion instructions executing on a multicycle  MIPS processor
 
