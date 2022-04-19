@@ -7,6 +7,14 @@ tag: ['Data structures and algorithms', 'Python']
 
  
 
+프로그램 실행 위주
+
+이론 위주
+
+어떻게 돌아가는 건지 + 코드를 바꾸면 어떻게 돌아갈지
+
+
+
 # Python Flow Control
 
 프로그램은 통상적으로 순서에 따라 실행되지만 프로그램 실행의 흐름(flow)를 제어하기 위한 주된 두 가지 방식이 존재한다.
