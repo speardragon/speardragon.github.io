@@ -2,7 +2,7 @@
 layout: single
 title: "[Computer Architecture] Multi-cylcle MIPS"
 categories: ['Computer Science', 'Computer Architecture']
-tag: ['Computer Architecture']
+tag: ['Multi Architecture']
 ---
 
 <br>
@@ -121,16 +121,32 @@ Execution Time = # instructions x CPI x T<sub>C</sub>
   - cycle time limited by longest instruction(lw)
   - 2 adders/ALUs & 2 memories
 - Multicycle
+  - single에서는 모든 명령어의 시간이 같았다면 multi는 clock을 나누어서 빨리 끝나는 명령어와 늦게 끝나는 명령어가 있게 되었다.
   - higher clock speed 
   - simpler instructions run faster 
   - **reuse** expensive hardware on multiple cycles (IM, DM, ALU 등)
   - sequencing overhead paid many times
+  - 5단계로 쪼개서 진행할 거임
+    - 나눴다는 얘기는 중간에 register file을 꼈다는 얘기
+  - (10분 6초 얘기(0419))
+  - 현재 어떤 cycle에 해당하냐에 따라 control signal이 다름
+    - 그래서 state마다 값들이 달라야 하므로 FSM 사용->state transition diagram
 
 - Same design steps: datapath & control
+- faster clock이 관건
+- overhead: setup time, t<sub>pcq</sub>
+
+
+
+---
+
+Q) 그럼 multi-cycle은 CPI가 5인 것인가?
+
+A) 평균으로 구함
 
 <br>
 
-## Multicycle State Elements
+## Multi-cycle State Elements
 
 - Replace Instruction and Data memories with a **single unified memory** - more realistic
 
@@ -140,7 +156,7 @@ Execution Time = # instructions x CPI x T<sub>C</sub>
 
 <br>
 
-## Multicycle Datapath
+## Multi-cycle Datapath
 
 <img src="https://user-images.githubusercontent.com/79521972/163664613-fdb2c99d-de65-49f9-98dc-3995fd39767d.png" alt="image" style="zoom: 67%;" />
 
@@ -164,7 +180,7 @@ Execution Time = # instructions x CPI x T<sub>C</sub>
 
 <br>
 
-### lw Register Read
+### lw Register Read(or instruction decode)
 
 **STEP 2a**: Read source operands from RF
 
@@ -182,9 +198,9 @@ Execution Time = # instructions x CPI x T<sub>C</sub>
 
 <br>
 
-### lw Address
+### lw Address(or execute operation)
 
-STEP 3: Compute the memory address
+**STEP 3**: Compute the memory address
 
 ![image](https://user-images.githubusercontent.com/79521972/163318760-c989c8e5-da19-472a-b497-468eb22d3fe6.png)
 
@@ -196,7 +212,7 @@ STEP 3: Compute the memory address
 
 ### lw Memory Read
 
-STEP 4: Read Data from memory
+**STEP 4**: Read Data from memory
 
 ![image](https://user-images.githubusercontent.com/79521972/163318817-65fc381f-74b8-4396-bd74-080fa6167986.png)
 
@@ -210,7 +226,7 @@ data memory에 있는 것을 읽어서 asych하게 **data register**에 넣어�
 
 ### lw Write Register
 
-**STEP 5**: Write data block to register file
+**STEP 5**: Write back data block to register file
 
 ![image](https://user-images.githubusercontent.com/79521972/163318898-592f5575-5710-4d3c-85f0-a06d0b94580a.png)
 
@@ -220,7 +236,7 @@ data memory에 있는 것을 읽어서 asych하게 **data register**에 넣어�
 
 ### Increment PC
 
-**STEP 6**: Increment PC -> 사실상 step 1에서도 가능하다 (step1(fetch)에서 ALU는 놀고있기 떄문에)
+ Increment PC -> 사실상 step 1에서도 가능하다 (step1(fetch)에서 ALU는 놀고있기 떄문에)
 
 ![image](https://user-images.githubusercontent.com/79521972/163318941-75401a83-a096-46c1-9ecf-54e7a8c70606.png)
 
@@ -234,13 +250,13 @@ Write data in `rt` to memory
 
 ![image](https://user-images.githubusercontent.com/79521972/163319230-0b43383e-4633-4a92-83d2-1dc064600bc8.png)
 
-RF에 저장할 필요가 없기 때문에 4cycle이면 된다.
+RF에 저장할 필요가 없기 때문에 4 cycle이면 된다.
 
 
 
 <br>
 
-## Multicycle Datapath: R-Type
+## Multi-cycle Datapath: R-Type
 
 - Read from rs and rt
 - Write ALUResult to register file
@@ -277,13 +293,13 @@ Finite State Machine이 사용됨
 
 
 
-![image](https://user-images.githubusercontent.com/79521972/163319943-0a3c6e37-1aed-4115-bd87-43eb7917b054.png)
-
-
+![image](https://user-images.githubusercontent.com/79521972/163319943-0a3c6e37-1aed-4115-bd87-43eb7917b054.png)5 단계로 쪼갰기 떄문에 4개의 register가 추가됨
 
 <br>
 
 ### Multicycle control
+
+Control unit을 main controller와 ALU decoder 로 나누었음.
 
 Control에는 **Mux control**과 **Write enable 신호**가 있다.
 
@@ -295,10 +311,12 @@ Control에는 **Mux control**과 **Write enable 신호**가 있다.
 
 ## Main Controller FSM: 
 
+FSM: moore machine
+
 ### Fetch
 
-- **MUX select signals** are listed only when their value matters; otherwise, they are  don't cares.
-- Enable signals are listed only when they are asserted; otherwise, they are 0.
+- **MUX select signals** are listed only when their value matters; otherwise, they are  <span style="color:red">don't cares.</span>
+- **Enable signals** are listed only when they are asserted; otherwise, they are <span style="color:red">0</span>.
 
 ![image](https://user-images.githubusercontent.com/79521972/163320341-b9098d78-663d-4ca7-ab21-2d58dee31868.png)
 
@@ -314,19 +332,13 @@ PC <- PC + 4     //AluSrcA, ......
 
 ___
 
-Q) PC + 4는 첫번째 cycle에서 진행
-
-
-
----
-
 
 
 <br>
 
 ### Decode
 
-A <- RD[A1]
+A <- RF[A1]
 
 B <- RF[A2]
 
@@ -342,6 +354,8 @@ control 신호가 필요없어서 안 씀
 
 ### Address
 
+lw or sw
+
 ![image](https://user-images.githubusercontent.com/79521972/163320826-761c5989-975c-4c5e-a42d-0fc48a41098d.png)
 
 
@@ -351,6 +365,8 @@ control 신호가 필요없어서 안 씀
 <br>
 
 ALUResult <- A + Imm
+
+ALU register에 저장
 
 ![image](https://user-images.githubusercontent.com/79521972/163320906-af47a9a6-bbaf-4376-81aa-73a52853b231.png)
 
@@ -364,9 +380,9 @@ ALUResult <- A + Imm
 
 - 5 clock 걸림
 
-Data <- Mem[ALUout]         :4번째
+Data <- Mem[ALUout]         :4번째 ; data register에 저장하는 과정
 
-RF[A3] <- Data						: 5번째
+RF[A3] <- Data						: 5번째 ; data에 저장된 내용을 register file에 저장하는 과정
 
 
 
@@ -376,7 +392,7 @@ RF[A3] <- Data						: 5번째
 
 ![image](https://user-images.githubusercontent.com/79521972/163321169-eb29fbb9-da87-40bc-aa3a-9ada7138e4d2.png)
 
-
+memory에 write하고 다시 Fetch 과정을 ㅗ돌아감
 
 <br>
 
@@ -384,15 +400,17 @@ RF[A3] <- Data						: 5번째
 
 ![image](https://user-images.githubusercontent.com/79521972/163321190-12038b72-9d49-450a-9c3a-154a22f8aeb9.png)
 
+register write
+
 state에 따라 각각의 control signal이 다르기 때문에 FSM 사용하는 것.
 
 <br>
 
 ### beq
 
-ALUout <- PC + 4 + Imm << 2        //BTA 계산
+ALUout <- PC + 4 + Imm << 2        // 두 번째 cycle에서 BTA 계산
 
-if (A == B) PC <- ALUout
+if (A == B) PC <- ALUout        //세 번째 cycle
 
 
 
@@ -412,7 +430,8 @@ if (A == B) PC <- ALUout
 
 ![image](https://user-images.githubusercontent.com/79521972/163321595-b80cc480-a235-4b79-b38e-88e8785c25e5.png)
 
-
+- 하나는 A에서 하나는 immediate에서 
+- 사실상 S2, S9은 같기 때문에 위처럼 해도 되고 연결을 공유해도 됨
 
 
 
@@ -422,19 +441,24 @@ if (A == B) PC <- ALUout
 
 ![image](https://user-images.githubusercontent.com/79521972/163321678-9b4b3426-b3bd-402b-8626-938b4a040ed7.png)
 
+<br>
 
-
-<span style="color:red">시험문제에는 multi cycle이 안 나온다.</span>
-
-
-
+## Extended Functionality: j
 
 
 
+![image](https://user-images.githubusercontent.com/79521972/163914564-1282beef-aae3-4f07-a30c-098ee80559d1.png)
 
 
 
+## Main Controller FSM: j
+
+![image](https://user-images.githubusercontent.com/79521972/163914641-21d48144-40c4-42a7-84df-49edc7716a49.png)
 
 
+
+## Multicycle Processor
+
+![image](https://user-images.githubusercontent.com/79521972/163914998-fe973c5c-584a-4984-95a7-19ec8ace90b7.png)
 
 

@@ -2,7 +2,7 @@
 layout: single
 title: "[Computer Architecture] Single Cycle MIPS microarchitecture - control"
 categories: ['Computer Science', 'Computer Architecture']
-tag: ['Computer Architecture']
+tag: ['Single Cycle MIPS']
 ---
 
 

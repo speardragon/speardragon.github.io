@@ -129,7 +129,9 @@ instruction이 instruction memory 상에서 4Byte 단위로 저장되어 있기 
 
 - Program execution time
   - Execution Time = (#instructions)(cycles/instruction)(seconds/cycle)
-
+  - Tc = seconds/cycle
+  - CPI = cycles/instruction
+  
 - Definitions:
   - CPI: Cycles/instruction 
   - clock period: seconds/cycle
