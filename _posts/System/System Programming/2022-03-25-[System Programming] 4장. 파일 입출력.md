@@ -539,6 +539,8 @@ Q) 왜 fd2 = fd1 으로 하면 안 되지?
 
 A) 바로 아래에 나옴
 
+- 저렇게 하면 file descriptor를 하나 더 만드는 것이 아니다. 물론 접근은 할 수 있겠다만은...
+
 ![image](https://user-images.githubusercontent.com/79521972/160048835-3ebc0fba-5591-40f4-be32-2e5194e0f1b7.png)
 
 <br>
@@ -606,9 +608,9 @@ A) 바로 아래에 나옴
 
 ```c
 #include <unistd.h>
- #include <fcntl.h>
- #include <stdlib.h>
- #include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
 int main()
 {
     int fd1, fd2;
@@ -645,7 +647,7 @@ CPU-M.M 은 방식이 다르다 CPU와 M.M 사이에 있는 cache는 읽기 목�
   - When write data to a file, the data is copied into buffers.
     - file에 데이터가 write 될 때 file에 쓰여지는 것이 아니라 buffer에 쓰여지는 것이다.
   - The data is physically written to disk at some later time.(디스크에는 나중에 쓰여짐)
-  - 이를를 사용하는 이유 -> 동일한 데이터에 대한 연속적인 read/write시 성능 향상.(I/O 성능 향상)
+  - 이를 사용하는 이유 -> 동일한 데이터에 대한 연속적인 read/write시 **성능 향상**.(I/O 성능 향상)
 - When the **delayed-write** blocks are written to disk?
   - Buffer is filled with the delayed-write blocks or 
   - Periodically by update **daemon** (usually every 30 seconds)
@@ -668,14 +670,14 @@ void sync(void);
   - Write **all** the modified buffer blocks to disk.
   - 파일에 관계없이 바로 디스크에 써라, (buffer cache에 있는 수정된)모든 modified buffer blocks을 디스크에 쓰여짐.
     - 근데 이거는 **모든** modifies block을 write해야 하기 때문에 굉장히 오래 걸릴 수가 있는데
-    - 1바이트 단위가 아니라 한 번 데이터를 가져가러 갔을 때 그 근처의 모든 데이터를 다 가져온다는 것을 의미하는 block 단위로)
+    - 1바이트 단위가 아니라 한 번 데이터를 가져가러 갔을 때 그 근처의 모든 데이터를 다 가져온다는 것을 의미하는 block 단위로 가져옴
   
 - fsync()
-  - Write only the modified (**data + attribue**) buffer blocks of a single file.
+  - Write only the modified (**data + attribute**) buffer blocks of a single file.
   - data block + attribute block
   - 특정 파일에 대해서만 write (**특히 file descriptor와 관련된 것들**)
 - fdatasync()
-  - Write **only** the modifies **data** buffer blocks of a single file.
+  - Write **only** the modified **data** buffer blocks of a single file.
 
 <br>
 
@@ -1057,8 +1059,7 @@ int main(int argc, char *argv[])
         if (scanf("%d", &id) == 1) {
             lseek(fd, (long) (id-START_ID)*sizeof(record), SEEK_SET);
             if ((read(fd, (char *) &record, sizeof(record)) > 0) && (record.id != 0)) {
-                printf("학번:%8d\t 이름:%4s\t 점수:%4d\n",
-                       record.id, record.name, record.score);
+                printf("학번:%8d\t 이름:%4s\t 점수:%4d\n", record.id, record.name, record.score);
                 printf("새로운 점수: ");
                 scanf("%d", &record.score);
                 lseek(fd, (long) -sizeof(record), SEEK_CUR); //학생 레코드의 처음 위치로 돌아감
