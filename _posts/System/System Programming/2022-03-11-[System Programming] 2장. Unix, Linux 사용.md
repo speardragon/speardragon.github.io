@@ -96,7 +96,7 @@ toc_sticky: true
       - 즉 Null은 path name의 마지막을 의미하기 때문에 사용하면 안된다.
   - Some Unix FS 14자로 제한, BSD의 경우 255자 이내
   - Special filenames (얘도 파일로 간주)
-    - 2개의 파일 이름은 새로운 디렉토리가 만들어질때 항상 <span style="color:red">자동적으로 생성</span>된다.
+    - 2개의 파일 이름은 새로운 디렉토리가 만들어질 때 항상 <span style="color:red">자동적으로 생성</span>된다.
       - . (current directory)
       - .. (parent directory)
     - current directory와 parent directory의 속정 정보(commition, size,read/write 등)를 갖게 하기 위해(쉽게 찾기 위해)
@@ -122,9 +122,9 @@ toc_sticky: true
   - A path name that begins with CWD
 
 
-| $ cd ~     | is equivalent to 'cd'          |
-| ---------- | ------------------------------ |
-| **$ cd -** | **is equivalent to '$OLDPWD'** |
+| $ cd ~     | is equivalent to 'cd'          | go to home directory |
+| ---------- | ------------------------------ | -------------------- |
+| **$ cd -** | **is equivalent to '$OLDPWD'** |                      |
 
 <br>
 
@@ -156,7 +156,7 @@ process가 어떤 program에서 생성이 될 때, 기본적으로 3 개의 file
   - program의 성능을 결정하는 것은 algorithm+data structure
   
 - Process
-  - An executing  instance of a program (also called task)
+  - An executing instance of a program (also called task)
   - source file -> 실행 파일
     - compile / assemble
     - default로 실행 파일이 만들어지면 a.out 이라는 이름을 갖게 된다.
@@ -221,7 +221,7 @@ process가 어떤 program에서 생성이 될 때, 기본적으로 3 개의 file
 
 
 
-이와 같이 program definition은 하드디스크에 계속 머물고 있는 것과 달리 위 과정은 메모리를 동적으로 실행을 했다가 회수까지 전부 한다.
+이와 같이 program definition은 하드디스크에 계속 머물고 있는 것과 달리 process life cycles는 메모리를 동적으로 실행을 했다가 회수까지 전부 한다.
 
 <br>
 
@@ -317,7 +317,7 @@ EACCES: Permission denied
     int main(void) 
     {
         //userId, groupId 를 알려주는 함수
-        printf("uid = %d.grid = %d\n", getuid();getgid()));
+        printf("uid = %d, grid = %d\n", getuid(), getgid());
         exit(0);
     }
     ```
@@ -326,7 +326,7 @@ EACCES: Permission denied
   
   - ```shell
     $ ./a.out
-    uid = 205, gid = 105
+    uid = 205, grid = 105
     ```
 
 
@@ -374,9 +374,9 @@ EACCES: Permission denied
     - depends on **\# of other processes** being run on the system
     - 그래서 하나의 프로세스를 가지고서만 clock time을 구하는 것이 의미가 있다.
   - **user CPU time**
-    - CPU time attributed to user instruction.(user code)
+    - CPU time attributed to **user instruction**.(user code)
   - **system CPU time**
-    - CPU time attributed to the kernel.(kernal code)
+    - CPU time attributed to **the kernel**.(kernal code)
 
 ![image](https://user-images.githubusercontent.com/79521972/157793722-84111232-36b7-4da6-9788-07aad10bbe3f.png)
 
@@ -387,13 +387,13 @@ EACCES: Permission denied
 간단한 명령어 사용
 
 ```shell
-$ date
+$ date // 날짜를 출력하거나 설정
 $ hostname
-$ uname
-$ who
-$ ls
-$ clear
-$ passwd
+$ uname //시스템 정보를 출력
+$ who //시스템에 로그인되어 있는 사용자들을 로그인 정보와 같이 출력해주는 명령어
+$ ls //list
+$ clear //터미널의 내용을 모두 지우는 명령어
+$ passwd //사용자 계정의 비밀번호를 입력 또는 변경하는 명령어
 ```
 
 
@@ -537,9 +537,9 @@ $ passwd
 - 파일 내용 출력과 관련된 다음 명령어들
   - cat(catalog), more, head, tail, wc, 등
 
-- $ [명령어 파일]
-- $ [명령어 파일*]  : 파일 이름을 줄 수도 있고 안 줄 수도 있다.
-- $ [more 파일+] : 파일을 한 개 이상을 줄 수 있다.
+- $ [명령어] [파일]
+- $ [명령어] [파일*]  : 파일 이름을 줄 수도 있고 안 줄 수도 있다.
+- $ [more] [파일+] : 파일을 한 개 이상을 줄 수 있다.
 
 <br>
 
@@ -567,14 +567,15 @@ $ cat > cs1.txt       -> redirection: 키보드로 입력한 내용은 txt파일
 
   - 하나 이상의 파일 이름을 받을 수 있으며(한 페이지에 해당하는) 
   - 각 파일의 내용을 페이지 단위로 출력
+  - 텍스트 파일의 내용을 한 번에 한 화면씩 보여주기 위한 명령어
 
 - head 명령어
 
-  - 파일의 앞부분(10줄)을 출력한다.
+  - 파일의 앞부분 (10줄)을 출력한다.
 
 - tail 명령어
 
-  - 파일의 뒷부분(10줄)을 출력한다.
+  - 파일의 뒷부분 (10줄)을 출력한다.
 
 - wc(word count)
 
@@ -596,12 +597,12 @@ $ cat > cs1.txt       -> redirection: 키보드로 입력한 내용은 txt파일
 $ cp cs1.txt cs2.txt
 $ ls -l cs1.txt cs2.txt
 -rw-r--r-- 1 chang faculty 2088 4월 16일 13:37 cs1.txt
--rw-r--r-- 1 chang faculty 2088 4월 16일 13:45 cs2.txt  #더 나중에 수정됨
+-rw-r--r-- 1 chang faculty 2088 4월 16일 13:45 cs2.txt  # 더 나중에 수정된 것을 볼 수 있음
 ```
 
 -  cp [파일] [디렉터리]
 
-  - ""파일 1의 복사본을 디렉터리 내에 만들어라."
+  - "파일 1의 복사본을 디렉터리 내에 만들어라."
 
   - ```shell
     $ cp cs1.txt /tmp
@@ -609,9 +610,9 @@ $ ls -l cs1.txt cs2.txt
 
 - mv(move)
 
-  - 파일 1의 **이름**을 파일 2로 변경한다.
+  - 파일 1의 **이름**을 파일 2로 **변경**한다.
 
-  - `$ mv  파일1 파일2`
+  - `$ mv 파일1 파일2`
 
   - ```shell
     $ mv cs2.txt cs3.txt
@@ -640,7 +641,7 @@ $ ls -l cs1.txt cs2.txt
 
 - $ rm -r 디렉터리
 
-  - 디렉터리 내의 모든 파일 및 하위 디렉터리들을 단번에 지운다.
+  - 디렉터리 내의 모든 파일 및 하위 디렉터리들을 **단번에** 지운다.
 
 - rmdir(remove dircectory) 명령어
 
@@ -700,7 +701,7 @@ $ ls -sl cs1.txt
   - 소유자 그룹 기타
   -    rw-r--r--
 
-
+<br>
 
 ### chmod(change mode)
 
@@ -773,7 +774,7 @@ $ ls -sl cs1.txt
     This is the second list.
     ```
 
-말 그대로 출력 재지정이다!(화면 -> 파일)
+말 그대로 출력 재지정이다! (화면 -> 파일)
 
 <br>
 
@@ -819,9 +820,11 @@ $ ls -sl cs1.txt
 
 <br>
 
-- 명령어의 표준 입력을 << 다음의 단어가 다시 나타날 때까지의 내용으로 사용
+- 명령어의 표준 입력을 << 다음의 단어가 다시 나타날 때 까지의 내용으로 사용
 
 - 명령어를 실행할 때 문서(script) 내에서 입력을 줄 때 사용
+
+- 단어가 나올 때까지의 명령어를 실행 중인 프로그램에 **입력**해 줄 수 있다.
 
   - ```shell
     $ 명령어 << 단어            #(delimeter 단어)
@@ -836,6 +839,14 @@ $ ls -sl cs1.txt
     end
     2 420
     ```
+  
+  - list1.txt 파일의 워드 카운트 결과를 result 파일에 기록한다.
+  
+    ```shell
+    $ wc < list1.txt > result
+    ```
+  
+  - 
 
 <br>
 
@@ -851,13 +862,14 @@ $ sort < names.txt
 
 
 - $ 명령어1 | 명령어2
-  - 명령어1의 표준 출력을 명령어2의 표준입 력으로 바로 받는다.
+  - 명령어1의 표준 출력을 명령어2의 표준입력으로 바로 받는다.
+  -  기호 | 는 좌측의 출력을 우측의 입력으로 인가한다. 
 
 ```shell
 $ who | sort
 ```
 
--  첫 번째 방식과의 차이점은 위와 같이 작성하면 names.txt와 같은 임시파일을 생성하지 않아도 된다는 점이다.
+-  첫 번째 방식과의 차이점은 위와 같이 작성하면 names.txt와 같은 임시 파일을 생성하지 않아도 된다는 점이다.
 
 
 
@@ -873,9 +885,9 @@ $ who | sort
 
   - 명령어를 입력하면 명령어가 전면에서 실행되며 명령어 실행이 끝날 때까지 쉘이 기다려 준다.
   - 명령어는 키보드와 모니터로 입출력
-  - **한 명령어만 실행 가능**, 실행중 인 명령어는 Ctrl-C 입력 시 강제 종료, Ctrl-Z 입력 시 실행 중단
+  - **한 명령어만 실행 가능**, 실행 중인 명령어는 Ctrl-C 입력 시 강제 종료, Ctrl-Z 입력 시 실행 중단
 
-  - 중단 된 명령어는 prompt에서 fg 명령어 입력 시 실행이 계속 됨
+  - 중단 된 명령어는 prompt에서 **fg** 명령어 입력 시 실행이 계속 됨
 
 - **후면 처리**
   - 명령어들을 후면에서 처리하고 전면에서는 다른 작업을 할 수 있으면 **동시에 여러 작업**을 수행할 수 있다.
@@ -889,10 +901,12 @@ $ who | sort
 
 fg(foreground)
 
+- 현재 디렉토리에서 test.c라는 이름을 가진 파일을 찾아라
+
 ```shell
 $ (sleep 100; echo done) &      #두 명령어를 background로 실행
 [1] 8320
-$ find . -name test.c -print &        #test.c 라는 파일ㅇ르 찾아서 print(bg 실행)
+$ find . -name test.c -print &        #test.c 라는 파일을 찾아서 print(bg 실행)
 [2] 8325
 $ jobs # 후면(bg)에서 실행되고 있는 작업들을 리스트
 [1] + Running ( sleep 100; echo done )
@@ -910,7 +924,7 @@ $ fg %1   #fg실행으로 바뀜
 
 ```shell
 $ find . -name test.c -print > find.txt & # 출력 뒤섞임 방지(fg가 표준 출력이기 때문)
-$ find . -name test.c -print | mail chang &
+$ find . -name test.c -print | mail chang & # test.c 내용을 mail의 입력으로
 $ wc < inputfile & # 후면처리는 키보드 입력 불가능, 파일로부터 받아야 함
 ```
 
@@ -920,7 +934,7 @@ $ wc < inputfile & # 후면처리는 키보드 입력 불가능, 파일로부터
 
 ### 프로세스(process)
 
-- 실행중인 프로그램을 프로세스(process)라고 부른다.
+- 실행 중인 프로그램을 프로세스(process)라고 부른다.
 
 - 각 프로세스는 유일한 프로세스 번호 PID를 갖는다.
 
@@ -934,7 +948,7 @@ $ wc < inputfile & # 후면처리는 키보드 입력 불가능, 파일로부터
     ```
     
   - ```shell
-    $ ps u #자세한 정보 출력
+    $ ps u # 자세한 정보 출력
     USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
     chang 8695 0.0 0.0 5252 1728 pts/3 Ss 11:12 0:00 -csh
     chang 8793 0.0 0.0 4252 940 pts/3 R+ 11:15 0:00 ps u
@@ -943,7 +957,7 @@ $ wc < inputfile & # 후면처리는 키보드 입력 불가능, 파일로부터
 - ps aux
 
   - ```shell
-    $ ps aux #시스템 내의 모든 프로세스 정보 출력
+    $ ps aux # 시스템 내의 모든 프로세스 정보 출력
     USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
     root 1 0.0 0.0 2064 652 ? Ss 2011 0:27 init [5]
     root 2 0.0 0.0 0 0 ? S< 2011 0:01 [migration/0]
@@ -958,7 +972,7 @@ $ wc < inputfile & # 후면처리는 키보드 입력 불가능, 파일로부터
 
 #### kill 명령어
 
-- 프로세서를 강제적으로 종료시키는 명령어
+- 프로세서를 강제적으로 종료 시키는 명령어
 
   - $ kill 프로세스 번호
   - $ kill %작업번호

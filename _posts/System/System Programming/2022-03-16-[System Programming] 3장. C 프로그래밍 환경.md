@@ -34,7 +34,8 @@ tag: ['System Programming', 'Unix']
   - $ gcc -O -o long long.c       //optimized compile
   - compiler가 판단하여 기계어로 번역할 때 최적화 된 실행을 제공
 - -S 옵션
-- $ gcc -S long.c      //**assembly 파일**의 long.s 생성
+  - $ gcc -S long.c      //**assembly 파일**의 long.s 생성
+
 
 
 
@@ -91,7 +92,7 @@ void copy(char from[], char to[])
 - 한 코드안에 전부 작성하는 프로그램(단일 모듈 프로그램)
 - 코드의 재사용(reuse)이 어렵다.
 - 여러 사람이 참여하는 프로그래밍이 어렵다.
-- 예를 들어, 다른 프로그램에서 copy 함수를 재사용하기 힘들다.
+- 예를 들어, 다른 프로그램에서 copy 함수를 재사용 하기 힘들다.
 
 <br>
 
@@ -108,7 +109,7 @@ void copy(char from[], char to[])
 - main 프로그램과 copy 함수를 분리하여 별도 파일로 작성
   - main.c
   - copy.c
-  - copy.h //함수의 프로토타입을 포함하는 헤더 파일
+  - copy.h  //함수의 프로토타입을 포함하는 헤더 파일
 - 컴파일
   - $ gcc -c main.c
   - $ gcc -c copy.c
@@ -159,7 +160,7 @@ void copy(char from[], char to[])
      int i;
      i = 0;
      while ((to[i] = from[i]) != '\0')
-     ++i;
+     	++i;
 }
 ```
 
@@ -177,13 +178,13 @@ void copy(char from[], char to[]);
 ### make 시스템
 
 - make 시스템
-  - 대규모 프로그램의 경우에는 헤더, 소스 파일, 목적 파일, 실행 파 일의 모든 관계를 기억하고 **체계적으로 관리**하는 것이 필요
+  - 대규모 프로그램의 경우에는 헤더, 소스 파일, 목적 파일, 실행 파일의 모든 관계를 기억하고 **체계적으로 관리**하는 것이 필요
   - make 시스템을 이용하여 효과적으로 작업
 - Makefile
   - 실행 파일을 만들기 위해 필요한 파일들과 만드는 방법을 기술
   - make 시스템은 파일의 상호 의존 관계를 파악하여 실행 파일을 쉽게 다시 만듦.
 - $ make [-f 메이크파일]
-  - 옵션이 없으면 Makefile(default) 혹은 makefile을 사용
+  - 옵션이 없으면 그냥 Makefile(default) 혹은 makefile을 사용
 
 <br>
 
@@ -192,7 +193,7 @@ void copy(char from[], char to[]);
 - Makefile의 구성 형식
   - 대상리스트
     - 의존 리스트: 뭐가 컴파일 되기 위해선 뭐가 있어야 하고 (이런 것들)
-    - 명령 리스트
+    - 명령 리스트: 명령어 리스트
 
 - 예: Makefile
   
@@ -204,8 +205,6 @@ void copy(char from[], char to[]);
   copy.o: copy.c
   	gcc -c copy.c
   ```
-  
-  
   
 - make 실행
   
@@ -282,13 +281,13 @@ void copy(char from[], char to[])
 
 - 정지점 : b(reak), clear, d(elete)
   
-  b [파일:]함수 				  파일의 함수 시작부분에 정지점 설정
+  b [파일:]함수 				  파일의 함수 시작 부분에 정지점 설정
   
   b n 								   n번 줄에 정지점을 설정
   
   b +n 								현재 줄에서 n개 줄 이후에 정지점 설정
   
-  b -n 								 현재 줄에서 n개 줄 이젂에 정지점 설정
+  b -n 								 현재 줄에서 n개 줄 이전에 정지점 설정
   
   info b 							  현재 설정된 정지점을 출력
   
@@ -317,14 +316,14 @@ Num Type Disp Enb Address What
 ### gdb 기능
 
 - 프로그램 수행
-  - r(un)                   인수 명령줄 인수를 받아 프로그램 수행
+  - r(un)                   인수 명령 줄 인수를 받아 프로그램 수행
   - k(ill)                     프로그램 수행 강제 종료
   - n(ext)                  멈춘 지점에서 다음 줄을 수행하고 멈춤
-  - s(tep)                  n과 같은 기능 함수 호출 시 함수내부로 진입
+  - s(tep)                  n과 같은 기능 함수 호출 시 함수 내부로 진입
   - c(ontinue)          정지점을 만날 때 까지 계속 수행
   - u                          반복문에서 빠져나옴
   - finish                   현재 수행하는 함수의 끝으로 이동
-  - return                 현재 수행중인 함수를 빠져나옴
+  - return                 현재 수행 중인 함수를 빠져나옴
   - quit                     종료
 
 
@@ -333,9 +332,7 @@ Num Type Disp Enb Address What
 $ (gdb) r
 Starting program: /home/chang/바탕화면/src/main
 Merry X-mas !
-Breakpoint 1, copy (from=0x8049b60 "Merry X-mas !", to=0x8049760 "")
-at copy.c:9
-8 i = 0;
+Breakpoint 1, copy (from=0x8049b60 "Merry X-mas !", to=0x8049760 "") at copy.c:98 i = 0;
 ```
 
 <br>

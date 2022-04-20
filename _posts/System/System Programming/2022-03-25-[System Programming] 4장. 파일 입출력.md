@@ -56,7 +56,7 @@ OS
 
 
 
-OS가 `CPU, 메모리, 디스크, 주변 장치`와 같은 하드웨어를 추상화 하여 응용프로그램한테 제공한다.
+OS가 `CPU, 메모리, 디스크, 주변 장치`와 같은 하드웨어를 추상화(abstraction) 하여 응용프로그램한테 제공한다.
 
 
 
@@ -78,6 +78,7 @@ OS에서는 두 가지의 파일 입출력을 제공한다.
   
 - **고수준 파일 입출력**
   - 시스템 호출을 직접 사용하는 것이 부담스러운 사람을 위해
+    - 커널 함수를 사용하면 커널 컴파일까지 해야하기 때문에 부담스러울 수 있다.
   - **표준 입출력 라이브러리**로 다양한 형태의 파일 입출력 함수를 제공한다. (유닉스 커널의 시스템 호출을 직접 사용하지 않음)
   - FILE *fopen(const char *name, const char *mode)
     - return: file 구조체
@@ -87,14 +88,14 @@ OS에서는 두 가지의 파일 입출력을 제공한다.
 
 ## 시스템 호출
 
-- 시스템 호출은 커널에 서비스 요청을 위한 프로그래밍 인터페이스
+- 시스템 호출은 커널에 서비스 요청을 위한 프로그래밍 **인터페이스**.
 - 응용 프로그램은 시스템 호출을 통해서 커널에 서비스를 요청한다.
 
 ![image](https://user-images.githubusercontent.com/79521972/160031553-e2711aa0-15d5-42cc-995b-d8f66f1ab96a.png)
 
 - 응용 프로그램은 커널에게 서비스 요청을 직접적으로 할 수도 있다. 
 
-- 라이브러리 함수를 호출하게 되면 시스템 호출을 이 라이브러리에서  대행을 해 준다. 
+- 라이브러리 함수를 호출하게 되면 시스템 호출을 이 라이브러리에서 대행을 해 준다. 
 - 결과적으로는 같지만 응용프로그램이 시스템 호출을 **직접적**으로 하냐 **간접적**으로 하느냐가 다른 것이다.
 
 <br>
@@ -102,20 +103,20 @@ OS에서는 두 가지의 파일 입출력을 제공한다.
 ## 시스템 호출과 라이브러리 함수의 비교
 
 - 시스템 호출: 커널의 해당 서비스 모듈을 직접 호출하여 작업하고 결과를 리턴
-- 라이브러리 함수: 일반적으로 커널 모듈을 직접 호출안함 
+- 라이브러리 함수: 일반적으로 커널 모듈을 직접 호출 안 함 
 
 ![image](https://user-images.githubusercontent.com/79521972/160031821-9eef6823-45fd-4fce-9a1a-9aa2200bff20.png)
 
-- 응용프로그램이 직접 시스템호출을 하는 경우 영역변환에 필요한 준비를 시스템 호출 코드가 실행하는 것이다.
+- 응용프로그램이 직접 시스템 호출을 하는 경우, 영역 변환에 필요한 준비를 시스템 호출 코드가 실행하는 것이다.
 
 - 반면 응용프로그램이 라이브러리를 호출하는 경우 main함수에서 특정 라이브러리 함수를 통해 시스템 호출 코드를 실행시키는 경우 해당 함수 안에 시스템 호출 코드가 있는 것이기 때문에 시스템 호출이 종료 되고 라이브러리 함수로 돌아와 라이브러리 함수가 종료되면 main함수로 돌아오는 것이 과정이라면
-- main함수에서 직접 시스템 호출 코드를 실행하는 경우 사용자 영역에서 커널영역으로 변환후 커널이 종료되면 다시 사용자 영역으로 돌아온다.
+- main함수에서 직접 시스템 호출 코드를 실행하는 경우 사용자 영역에서 커널 영역으로 변환 후 커널이 종료되면 다시 사용자 영역으로 돌아온다.
 
  <br>
 
 어떤 CPU든지 유저/커널 모드를 제공함.(특권의 차이)
 
-유저 모드보다 커널 모드에서 더 허용되는 것이 많다. 즉, 유저 모드에서 돌아가지 않는 것이 커널 모드에서 도는 경우가 있다.
+유저 모드보다 커널 모드에서 더 허용되는 것이 많다. 즉, 유저 모드에서 돌아가지 않는 것이 커널 모드에서 돌아가는 경우가 있다.
 
 멀티 프로그래밍이 될 수 있도록 커널이 도와주는 것
 
@@ -136,11 +137,7 @@ a(int x) {
 
 ```
 
-
-
 시스템 콜은 커널 명령어이기 때문에 stack을 통해서 전달할 수 없고 CPU register에 의해서 전달한다
-
-
 
 <br>
 
@@ -216,7 +213,7 @@ a(int x) {
 - return: 파일 디스크립터는 **열린 파일**을 나타내는 번호이다.
 
 - path: 파일의 경로명
-- oflag: 파일을 열어서 어떤 목적으로 사용할 것인지를 명시하는 변수
+- oflag: 파일을 열어서 어떤 목적으로 사용할 것 인지를 명시하는 변수
 - mode: 파일의 access permission 값, 새로운 파일을 만드는 경우에만 사용됨.
   - 기존 파일을 여는 경우에는 이 parameter가 의미가 없다. 
 
@@ -233,12 +230,12 @@ a(int x) {
   - O_RDWR
     - 읽기/쓰기 모드, read(), write() 호출 사용 가능
     
-    
+  
 - The followings are **optional**.
   - O_APPEND
     - 데이터를 쓰면 파일 끝에 이어서 첨부된다.
   - O_CREAT
-    - 해당 파일이 없는 경우에 새로 생성하며 mode는 생성할 파일의 사용권한을 나타낸다.
+    - 해당 파일이 없는 경우에 새로 생성하며 mode는 생성할 파일의 사용 권한을 나타낸다.
     - 이걸 안 쓰면 -1을 리턴하고 파일을 생성 하지도 않는다.
     
   - O_TRUNC
@@ -256,7 +253,6 @@ a(int x) {
 
   - nonblock은 디스크에  물리적으로 다 쓰지 않아도 반환이 되지만 sync는 반드시 다 쓴 후에 반환된다.
 
-    
 
 <br>
 
@@ -314,7 +310,7 @@ int main(int argc, char *argv[])
 
 Q) close(fd)를 하면 file descriptor가 없어지는 것인가?(pop?)
 
-A) ㅇㅇ 3번으로 열렸다가 close하고 또 오픈하면 3번에 생김.
+A) ㅇㅇ 3번으로 열렸다가 close하고 또 오픈 하면 3번에 생김.
 
 ---
 
@@ -337,12 +333,12 @@ A) ㅇㅇ 3번으로 열렸다가 close하고 또 오픈하면 3번에 생김.
 ## 파일 생성: creat()
 
 - creat() 시스템 호출
-  - path가 나타내는 파일을 생성하고 쓰기 전용으로 연다.
+  - path가 나타내는 **파일을 생성**하고 **쓰기 전용**으로 연다.
   - 생성된 파일의 **사용권한**은 **mode**로 정한다.
   - 기존 파일이 있는 경우에는 그 내용을 삭제하고 연다.(O_TRUNC)
   - 다음 시스템 호출과 동일
     - open(path, WRONLY | O_CREAT | O_TRUNC, mode);
-  - Note that the file is opend **only for writing.**
+  - Note that the file is opened **only for writing.**
 
 ```c
 #include <sys/types.h>
@@ -378,8 +374,8 @@ int creat (const char *path, mode_t mode);
 - 종료되면 알아서 OS가 종료 시켜 주지만 explicitly 종료 시켜 주는 것을 **권장**
 - When a process termiantes, all of its open files are closed **automatically** by the kernel.
   - -> Many program often do not explicily close open files.
-- On Unix-like systems, the interface defined by unistd.h is typically made up largely of **system call wrapper functions** such as **fork, pipe** and **I/O** primitives (read, write, close, etc.).
-- <unistd.h is the **header file** that provides access to the POSIX OS API
+- On Unix-like systems, the interface defined by **unistd.h** is typically made up largely of **system call wrapper functions** such as **fork, pipe** and **I/O** primitives (read, write, close, etc.).
+- \<unistd.h> is the **header file** that provides access to the POSIX OS API
 
 ```c
 #include <unistd.h>

@@ -198,7 +198,7 @@ system software가 아닌 것의 예:
 - system programming의 가장 중요한 핵심 파트는 **매우 빠른 속도가 요구**된다는 것이다.
   - 이는 성능, 즉 **performance**와 직결된 문제로 다른 소프트웨어에 플랫폼 역할을하기 때문에 만약 당신의 application의 중심부(즉, system software platform)가 느리다면, 전체 application의 performance도 매우 느려질 것이다. 
 
-- 따라서 목표가 **available resources의 효율적인 사용**인데 이는 software 그 자체로 성능이 중요하기 때문이기도 하고 매우 작은 성능의 개선이 servie provider에게 중요한 금전적인 saving과 직접적으로 영향을 미칠 수 있기 때문이기도 하다.
+- 따라서 목표가 **available resources의 효율적인 사용**인데 이는 software 그 자체로 성능이 중요하기 때문이기도 하고 매우 작은 성능의 개선이 service provider에게 중요한 금전적인 saving에 직접적으로 영향을 미칠 수 있기 때문이기도 하다.
 
 - System software includes shell, text editor, compiler, debugger, core utilities and system daemons.
 
@@ -255,7 +255,7 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 ## What does an OS do?
 
-- Provide abstractions to apps(convinience)
+- Provide abstractions to apps(convenience)
 
   -  file system
     - 각각의 파일을 저장할 하드 디스크에 대한 access가 필요한데 파일을 사용하는 입장에서 하드디스크를 어떻게 access를 해야하는지 알 필요까지는 없다.(OS에서 파일에 대한 추상화를 지원하기 때문에)
@@ -293,7 +293,7 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 <br>
 
-### Porcess VMs
+### Process VMs
 
 목적: 응용프로그램을 간단하게 만드는 것 
 
@@ -339,17 +339,17 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 ### Creating the process
 
-- OS가 process instance를 executable로 부터 생성한다.
+- OS가 **process instance**를 executable로 부터 생성한다.
   - This instance is identified by **its process ID**, which is **unique** among all running processes.
   - All information about running processes is maintained by the OS in a **process table**.
-- OS는 computer의 main memory에 새로운 process가 사용하기 위한 메모리도 할당한다.
+- OS는 computer의 main memory에 새로운 process가 사용하기 위한 **메모리도 할당**한다.
 - The OS **loads** the instructions from the program executable file **into main memory**.
 
 <br>
 
 ### Managing the process
 
-- The OS identifies the starting function in the program (e.g., "main" in C and C++) and invokes it (calls the function). 
+- The OS identifies the **starting function** in the program (e.g., "main" in C and C++) and **invokes** it (calls the function). 
   - The main function **receives arguments** passed from the OS. These are called the command line arguments. 
 - From that point on, **the instructions of the main function are executed** as specified in the program.
 - 실행이 중지될 수도 있음.
@@ -379,13 +379,13 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 - Linux
   - PC 등 다양한 컴퓨터 환경에서 동작하는 UNIX-like OS
-  - 어느 상용 OS와도 견줄 수 있는 막강한 성능과 안정성
+  - 어느 상용 OS와도 견줄 수 있는 막강한 **성능과 안정성**
     - 인터넷 상의 많은 해커들의 참여로 커널이 개발됨.
     - 전세계의 수많은 사람들에 의해 테스트되고 개선, 발전됨.
   - COPYLEFT(open source)
     - GNU General Public License(GPL)에 따라 공개
     - 프로그램의 실행 파일 외에 소스코드 또한 공개. 
-    - 워하는 사람은 소스코드를 변경할 수 있음
+    - 원하는 사람은 소스코드를 변경할 수 있음
     - 단, 변경된 프로그램을 공개하고자 할 때는 반드시 소스코드도 함께 공개해야 함.
 
 - 리눅스 기능상 장점:
@@ -431,14 +431,14 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 ## 유닉스의 설계 철학
 
-- 단순성 
+- **단순성** 
   - MIT MULTICS에 반대해서 최소한의 기능만을 제공
   - 자원에 대한 일관된 관점 제공(everything is file 관점)'
-- 이식성
+- **이식성**
   - 이식성을 위해 C 언어로 작성
   - 다양한 플랫폼에 이식 가능
   - 스마트폰, PC, 서버, 슈퍼컴퓨터 등
-- 개방성
+- **개방성**
   - 소스 코드 공개와 같은 개방성
 
 <br>
@@ -480,7 +480,7 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 - System call
   - Application과 operating system과의 interface
-  - System call이 호출되면 kernal code가 수행됨
+  - System call이 호출되면 **kernal code**가 수행됨
   -  kernal의 기능을 추상화 한 것
 - Kernal
   - system resource를 효율적으로 사용하도록 관리
@@ -512,11 +512,11 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 **프로세스 관리(Process management)**
 
-- 여러 프로그램이 실행될 수 있도록 프로세스들을 CPU 스케줄링하여 동시에
+- 여러 프로그램이 동시에 실행될 수 있도록 프로세스들을 CPU 스케줄링한다.
 
 **파일 관리(File management)**
 
-- 디스크와 같은 저장장치 상에 파일 시스템을 구성하여 파일을 관리한다. 
+- **디스크**와 같은 저장장치 상에 파일 시스템을 구성하여 파일을 관리한다. 
 
 **메모리 관리(Memory management)**
 
@@ -532,7 +532,7 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 <br>
 
-## 시스템 호출
+## 시스템 호출(system call)
 
 ![image](https://user-images.githubusercontent.com/79521972/156928484-5305d3c1-1387-4f42-9c3e-1a6527282c19.png)
 
@@ -554,9 +554,9 @@ OS 시스템과 사용자 프로세스 간의 inteface
 
 ![image](https://user-images.githubusercontent.com/79521972/156928553-66b7c6d2-f40e-4763-b981-34e23495331b.png)
 
-sytem call은 stack을 통해서 전달되지 못하기 때문에 register 에 copy하여 trap instruction을 실행한다.
+sytem call은 stack을 통해서 전달되지 못하기 때문에 register에 copy하여 trap instruction을 실행한다.
 
-사용자 모드에서 커널 모드 간의 모드 change가 중요하다.(호출을 할 때나 값을 리턴할 때마다의 모드 변환)
+사용자 모드에서 커널 모드 간의 모드 change가 중요하다.(호출을 할 때나 값을 리턴할 때마다의 모드 변환이 이루어짐)
 
 <br>
 
@@ -613,7 +613,7 @@ scanf()는 c 라이브러리 함수인데 해당 함수에는 read라는 system 
 
 <br>
 
-## Calling a regular function & Invoking a system call
+## <mark>Calling a regular function & Invoking a system call</mark>
 
 - 우리가 프로그램을 작성할때 반드시 **regular function**을 호출하는 것과 system call을 invoke하는 것의 차이를 이해해야 한다.
   -  둘이 비슷해 보이지만(같은 일을 하는 것처럼 보이기 때문에) system call 호출과 function call은 서로가 완전히 다르다.
@@ -664,7 +664,7 @@ scanf()는 c 라이브러리 함수인데 해당 함수에는 read라는 system 
 
 ## Linux 장점
 
-- 풍부하고 다양한 하드웨어를 효과적으로 지원
+- 풍부하고 다양한 **하드웨어**를 효과적으로 지원
   - 대부분의 하드웨어를 지원하는 추세(PC, Work station, server...)
 - 놀라운 성능 및 안정성
 - 인터넷에 맞는 강력한 network 구축
@@ -703,7 +703,7 @@ scanf()는 c 라이브러리 함수인데 해당 함수에는 read라는 system 
 ## What is Wrong with Unix
 
 - Too many variants
-  - dumping groung
+  - dumping ground
 - Not small and simple any one
   - uncontrolled growth(버전의 무한한 add-on의 제어가 힘듬)
 - Lack of GUI
