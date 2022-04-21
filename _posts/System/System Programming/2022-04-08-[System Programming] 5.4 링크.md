@@ -37,7 +37,7 @@ int unlink(char *path); //directory entry가 없어짐
 
 - It is **impossible** to **tell** which name was the **original**. 
 - **Hard links**, as created by link, cannot span file systems
-  - 하나의 file system에서만 사용할 수 있는 것 즉, 서로 다른 file system을 갖는 것들 끼리의 hard link는 불가능하다.
+  - **하나의 file system에서만 사용할 수 있는 것** 즉, 서로 다른 file system을 갖는 것들끼리의 hard link는 불가능하다.
 
 - 하나의 directory entry를 추가하여 동일한 i-노드를 가리키게 하는 하드 링크 방식
 
@@ -118,7 +118,7 @@ struct stat {
   - UNIX 명령어 mv 
   - 파일의 data block 이나 i-node 의 변화는 없이 directory entry만 변경됨
   - i-node를 가리키던 directory entry만 변화한 것이다.(file1 -> file2)
-    - 기존의 entry는 삭제되고 새로운 entry가 만들어져 이것이 기존 entry가 가리키던 i-node를 가리키게 되는 것
+    - 기존의 entry는 **삭제**되고 새로운 entry가 만들어져 이것이 기존 entry가 가리키던 i-node를 가리키게 되는 것
 
 
 
@@ -131,7 +131,7 @@ struct stat {
 - hard link가 만들어짐 
   - 같은 i-node를 가리키는 directory entry가 하나 생김 
     - 이 entry들은 각각 다른 디렉토리에 속함
-    - pathname이 absolyte pathname도 가능 하기 때문에 같은 file system내에 있기만 한다면 같은 i-node를 가리키는 것이 가능한 것이다.
+    - pathname이 absolute pathname도 가능 하기 때문에 같은 file system내에 있기만 한다면 같은 i-node를 가리키는 것이 가능한 것이다.
   - 그 i-node의 link count 가 하나 증가
 
 ![image](https://user-images.githubusercontent.com/79521972/162378780-afcf90ac-4e32-4a5b-bd39-ce53d5f1a669.png)
@@ -188,14 +188,19 @@ unlink한 파일은 가리키고 있는 i-노드가 없기 때문에 파일이 �
   - hard link points directly to the inode of the file. 
     - The link and the file should **reside** **in the same file system.** 
     - Only the superuser can create a hard link to a directory. 
+  - 하드 링크로 만들어진 파일의 용량은 같지만 실제로 늘어난 용량은 없음 (용량도 늘어나는 cp 명령어와의 차이점)
 - **심볼릭 링크**(symbolic link) 
   - 소프트 링크(soft link) 
+  - 원본 파일을 가리키는 파일을 만든다.
   - 실제 파일의 경로명을 저장하고 있는 링크 
   - symbolic link is an **indirect pointer** to a file 
     - There are **no file system limitations** on a symbolic link. 
     - Anyone can create a symbolic link to a directory 
   - 다른 파일 시스템에 있는 파일도 링크할 수 있다. 
     - 하드 링크의 단점 보완
+  - 원본 파일이 사라지면 심볼릭 링크 파일의 역할을 할 수 없다.
+    - 하지만 원본 파일을 같은 이름으로 생성해준다면 다시 역할을 하게 된다.
+  - 주로 복잡한 경로의 디렉토리를 쉽게 접근할 때 사용하고 확장자를 하나로 통일할 때 사용할 수 있다.
 
 
 
@@ -208,9 +213,9 @@ int symlink (const char *actualpath, const char *sympath );
 //심볼릭 링크를 만드는데 성공하면 0, 실패하면 -1을 리턴한다.
 ```
 
-- Create a new directory entry, sympath that points to actualpath. 
-  - Not require that actualpath exist when the symbolic link is created. 
-  - Actualpath and sympath need not reside in the same file system.
+- Create a new directory entry, sympath that points to actual path. 
+  - Not require that actual path exist when the symbolic link is created. 
+  - Actual path and sympath need not reside in the same file system.
 
 ```c
 #include <unistd.h>
@@ -260,13 +265,12 @@ $ ln –s file1 file2
 
 - symbolic(soft) link
 - directory entry 추가
-- 별도 inode를 통해 <mark>기존 file1의 경로명을 갖는 데이터 블록</mark> 생성
+- 별도 inode를 통해 <mark>기존 file1의 **경로명**을 갖는 데이터 블록</mark> 생성
 - 헷갈리지 말아야 하는 부분
   - copy는 data block까지 copy하여 해당 i-노드가 별도의 data block을 갖는데 link는 file1을 찾아가기 위한 경로명이 저장되어 있다는 것을 유의해야 한다.
     - 즉, data block에 content가 있는 것이 아니라 soft linked file path가 들어있는 것이다.
 
   - 그래서 symbolic이라는 이름이 붙은 것 같다.
-
 
 <br>
 
@@ -286,7 +290,7 @@ lrwxrwxrwx 1 sar 	13 Jan 22 00:26 myfile -> /no/such/file
 $
 ```
 
-cat 명령어는 data block의 내용을 print하는 것인데 myfile이라는 파일은 존재하지 않는 파일을 가리키고 있기 대문에 이를 print 하려고 하면 오류가 발생한다.
+cat 명령어는 data block의 내용을 print하는 것인데 myfile이라는 파일은 존재하지 않는 파일을 가리키고 있기 때문에 이를 print 하려고 올바르지 않은 경로명의 파일에 접근하는 것이기 때문에 오류가 발생한다.
 
 <br>
 
@@ -326,7 +330,7 @@ ssize_t readlink(const char *pathname, char *buf, size_t bufsize);
 <br>
 
 - read value of a symbolic link 
-  - places the contents of the symbolic link path in the buffer buf, which has size bufsiz. 
+  - places the contents of the symbolic link path in the buffer buf, which has size bufsize. 
 - Return value 
   - the count of characters placed in the buffer if it succeeds 
   - -1 if an error occurs
@@ -435,7 +439,7 @@ struct utimbuf {
 }
 ```
 
-- If `times` is NULL, the access and modification times of the file are set to the **current time**. 
+- If times is NULL, the access and modification times of the file are set to the **current time**. 
 - ctime field는 시스템 콜을 사용해도 변경이 되지만 utime()을 호출해서 시간적으로 변경이 되면 ctime 정보가 자동적으로 수정이 된다.
 - st_ctime is automatically updated **when the utime is called**.
   - ctime field는 i-노드의 상태가 변한 시간인데 모든 시간 정보는 i-노드에 저장되어 무슨 시간이든지 바뀌기만 하면 i-노드의 상태 정보는 update 되기 때문이다.
