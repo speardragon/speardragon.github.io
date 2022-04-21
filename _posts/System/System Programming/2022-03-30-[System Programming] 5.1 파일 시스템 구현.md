@@ -7,7 +7,7 @@ tag: ['System Programming', 'File System']
 
 
 
-# 5장 파일 시스템
+# 5장. 파일 시스템
 
 이번 장이 시험에 가장 많이 나오는 부분일 듯
 
@@ -26,11 +26,10 @@ tag: ['System Programming', 'File System']
 
 - File system 설계에 있어서 중요한 이슈.
   - **How** the file system should **look** to the user.
-  
     - Provides **user interface** to storage, mapping logical to physical storage(OS가 관리하고 있는)
       - 즉, logical storage 에서 physical storage로 mapping 하는 것을 제공하는 것이다.
     - defines a **file** and its attributes, the **operations** allowed on a file, and the **directory structure** for organizing files. 
-  
+    
   - creating **algorithms and data structures** to map the logical file system onto the physical secondary-storage devices.
     - To improve I/O efficiency, **I/O transfer** is between MM and disks are performed **in units of block**.
       - 하드디스크는 너무 느려서 하드디스크에서 데이터를 읽거나 쓸 때는 block 단위로 (512바이트) 가져오게 된다.
@@ -98,7 +97,7 @@ tag: ['System Programming', 'File System']
 
 
 - **부트 블록**(Boot control block)
-  - contains info needed by system to boot OS from that volume(OS 부팅을 위한 블럭)
+  - contains info needed by system to boot OS from that volume(OS 부팅을 위한 정보를 담는 블럭)
   - 부트스트랩 코드가 저장되는 블록
   - 파일 시스템 시작부에 위치하고 보통 첫 번째 섹터 (block)를 차지
   - 부트 블록은 사실 하나만 있으면 되기 때문에 모든 file system이 갖고 있되 하나의 file system에서만 부팅을 하게 된다.(실제로 사용하는 것은 하나)
@@ -124,7 +123,7 @@ tag: ['System Programming', 'File System']
 - File
   - **Logical storage unit**
   - Collection of related information
-- **File data**와 File의 **inode**(관리 정보, attribute)로 구성됨(리눅스에서 inode는 다른 곳에서는 file control block이라고 하기도 함.)
+- **File data**와 File의 **i-node**(관리 정보, attribute)로 구성됨(리눅스에서 inode는 다른 곳에서는 file control block이라고 하기도 함.)
 
 ![image](https://user-images.githubusercontent.com/79521972/160801175-85ee8b77-fedf-49e5-8294-2c438debc8c4.png)
 
@@ -162,6 +161,8 @@ logical file system 부터 devices까지가 file system이다.
 
 - <span style="color:red">왜 logical block에서 바로 physical block unmber를 거쳐서 3D로 변환하였는가?(시험에 나옴)</span>
   - 용량 때문에?
+  - LBA는 하드디스크의 물리적인 구조를 생각하지 않고 각각의 sector가 일렬로 연결되어 있다고 논리적으로 생각하는 주소 접근 방식이다.
+  - CHS(cylinder head sector) 를 사용하다 보니 주소 지정의 한계가 와서 최대로 사용할 수 있는 기억 장치의 용량의 제한이 생겨 대체된 방식이 LBA
   - https://rootfriend.tistory.com/entry/%ED%95%98%EB%93%9C%EB%94%94%EC%8A%A4%ED%81%AC%EC%9D%98-CHS%EC%99%80-LBA-%EA%B7%B8%EB%A6%AC%EA%B3%A0-CHS-LBA-Translator
 
 
@@ -179,7 +180,7 @@ logical file system 부터 devices까지가 file system이다.
 ### File System Layers
 
 - **Logical file system** manages metadata information
-  - Metadata includes all of the FS structure except actual data
+  - Metadata includes all of the File System structure except actual data
     - actual data는 I/O device에서만 의미있는 것이기 때문에 4개 layer는 metadata만 가지고 있는 것.
   
   - Directory management (manages directory structure)
@@ -195,6 +196,7 @@ logical file system 부터 devices까지가 file system이다.
 <br>
 
 - **File organization module** understands files, logical blocks as well as physical blocks
+  
   - Translates **logical block #** to **physical block #** for the basic file system
     - 그래서 basic file system에게 physical block number를 넘겨줌
   
@@ -215,7 +217,7 @@ logical file system 부터 devices까지가 file system이다.
   - Also manages memory **buffers** and **caches** (allocation, freeing, replacement) 
     - Buffers hold data in transit(하드디스크에 바로 write하는 것이 아니라 buffer에 담아놨다가 전달)
       - 속도 문제로.
-    - Caches hold frequently used meta data(최근 data를 버리지 않고 cache에 저장)
+    - Caches hold frequently used meta data (최근 data를 버리지 않고 cache에 저장)
       - disk I/O 의 횟수를 줄일 수 있음.
   - Pysical block number 사용
   
@@ -225,7 +227,7 @@ logical file system 부터 devices까지가 file system이다.
 - **Device drivers** manage I/O devices at the **I/O control layer**
   - Given commands lilk "read drive1, cylinder 72, track 2, sector 10, into memory location 1060” outputs low-level hardware specific commands to hardware controller 
     - harddisk controller를 구동 시켜서 disk arm이 데이터를 읽어오도록 control
-  - main memort 1060번지 부터 copy를 요청 
+  - main memory 1060번지 부터 copy를 요청 
   - device driver layer에서는 실제 hard disk에 hardware specific한 command를 전달하여 하드디스크가 동작하게 된다.
 
 <br>
@@ -307,7 +309,7 @@ logical file system 부터 devices까지가 file system이다.
 ![image](https://user-images.githubusercontent.com/79521972/160806036-dda9c96d-5b10-4a49-aed9-57481f30bb23.png)
 
 - ex) etc 디렉토리: 4번 inode
-- physical block number를 갖고 있는 것임(? 1:08:00 녹음 확인)
+- physical block number를 갖고 있는 것임(4, 11, 86)
 
 <br>
 
@@ -360,7 +362,7 @@ logical file system 부터 devices까지가 file system이다.
   - external framentation이 발생하지 않는다.
 
 - 연속적으로 block이 할당 되어 있지 않은 대신에 다음 block이 어디인지 정보가 들어있는 linking 정보가 따로 존재
-- linking 정보를 계속 따라 들어가야 하기 때문에 read 시간이 느림
+- linking 정보를 계속 따라 들어가야 하기 때문에 **read 시간이 느림**
 - disk 조각이 Contiguous 방식보다 덜 생긴다는 장점이 있다.
 
 첫 번째 찾아간 것이 logical block number가 0인 것이고 두 번째 찾아간 것이 logical block number가 1인 것이다...
@@ -413,7 +415,7 @@ logical file system 부터 devices까지가 file system이다.
 ### Unix file system의 indexing
 
 - direct indexing method
-  - 여러 개의 direct indexing 정보(block pointer)가 들어있음
+  - 여러 개(10개)의 direct indexing 정보(block pointer)가 들어있음
 - 
 
 ![image](https://user-images.githubusercontent.com/79521972/160806881-6212e68f-cc6e-4ade-bb39-8826d7498b49.png)
@@ -501,7 +503,7 @@ index block을 하나 둔 것
 - “/etc/inittab” 파일을 접근하려면?
 
   - ``'\' inode ``-> i-노드가 포함하고 있는 데이터 블락을 읽어온다.
-  - ``'\' data block` -> root directort의 data block에는 현재 포함하고 있는 directort 들의 대한 정보들이 들어있는데 그것들 중에서 내가 접근을 원하는 디렉토리(etc)의 i-node 정보를 또 다시 읽는다.
+  - ``'\' data block` -> root directory의 data block에는 현재 포함하고 있는 directorty 들의 대한 정보들이 들어있는데 그것들 중에서 내가 접근을 원하는 디렉토리(etc)의 i-node 정보를 또 다시 읽는다.
   - ``'etc\' inode` -> etc data block 포인터를 읽어 해당 data block에 접근
   - ``'etc\' data block`->
   - ``'inittab' inode` ->
@@ -568,9 +570,9 @@ open -> 하드디스크 inode 정보(FCB)를 메인 메모리로 읽어옴
 - <span style="color:red">두 process가 각각 metadata(FCB)를 수정한 후, 각각 디스크에 복사(override) 한다면? </span>
   - 정보 불일치 (inconsistency) 발생 가능성
   - 비효율적(inefficient)
-- 가능하면 여러 프로세스가 metadata를 공유하는 것이 바람직함.
+- 가능하면 여러 프로세스일 때는 metadata를 공유하는 것이 바람직함.
   - 대부분의 i-노드 정보 (접근 권한, 파일의 크기, 유형)는 process 간 공유가 가능하다.
-  - 하지만, offset은 공유 불가 
+  - 하지만, offset은 공유 불가 (공유를 하면 당연히 안되겠지?)
     - 모든 process가 다른 위치에서 read/write 중이기 때문에. 
     - 이 정보는 process마다 별도로 관리해야 함.
 
@@ -680,10 +682,10 @@ fd = open(“file”, O_RDONLY); //디렉토리에서 파일의 inode 번호를 
 
 - 디렉토리에서 파일의 inode 번호를 찾음 (디렉토리는 파일의 i-노드 정보를 포함한다.)
 - 찾은 inode 번호를 파일 시스템(하드 디스크)으로부터 읽어서 **동적 i-노드 테이블**에 카피한다.
-  - 얘가 file control block에 해당하는 것 (내용을 공유하여 변경할 수 있기 때문에) ??
+  - 얘가 vnode에 해당하는 것(공유가 가능한)
 
 - **open file table**에 entry를 하나 만듦, 이 entry에서 동적 i-노드를 가리키는 포인터를 삽입하게 된다.
-  - 얘가 vnode로 변경이 일어나지 않는 곳이다. ??
+  - 얘가 file table로 변경이 일어나지 않는 곳이다. (공유가 불가능한, 프로세스당 하나)
 
 - file descriptor table에서 file table의 entry를 가리키는 fd값를 하나 할당 받아야 하는데 파일을 처음 열었을 때 받는 번호는 3번부터 받게 된다.(0, 1, 2는 프로세스 실행 시 이미 자동으로 오픈된 파일) 
   - 여기서 부여 받는 index 값이 file descriptor가 된다.
@@ -696,7 +698,7 @@ fd = open(“file”, O_RDONLY); //디렉토리에서 파일의 inode 번호를 
 - 프로세스 당 하나씩 갖는다.
   - 파일 Open 때마다 엔트리 생성
   
-  - 프로세스가 파일을 하나 오픈할 때마다 entrt가 생성된다는 뜻인가?
+  - 프로세스가 파일을 하나 오픈할 때마다 entry가 생성된다는 뜻인가?
 
 - 파일 디스크립터 배열
   - 열린 파일 테이블의 엔트리를 가리킨다.
@@ -719,7 +721,7 @@ fd = open(“file”, O_RDONLY); //디렉토리에서 파일의 inode 번호를 
     - 이제는 경로명을 사용하여 접근하는 것이 아니라 커널은 파일 디스크립터를 사용하여 파일 디스크립터 테이블에 접근해 파일 테이블과 inode 의 해당 엔트리에 대한 포인터를 이용하여 접근한다.
     - 해당 inode를 찾게 되고 이로부터 파일에 있는 실제 데이터를 찾아냄
       - 동적 i-노드 테이블에는 데이터 블럭 포인터가 저장되어 있어서 그것으로 데이터 블럭에 접근하여 데이터를 가져온다.
-      - 하드디스크의 i 리스트를 찾을 필요가 없다.
+      - 하드디스크의 i 리스트를 찾을 필요가 없다.(이게 오래 걸리는 건데 이거를 할 필요가 없어진다는 것이다.)
 
 <br>
 
@@ -734,6 +736,7 @@ fd = open(“file”, O_RDONLY); //디렉토리에서 파일의 inode 번호를 
   - **파일 상태 플래그** (read, write, append, sync, nonblocking,…) 
   - **파일의 현재 위치** (<mark>current file offset</mark>) – lseek 가 조정하는 값 
   - <mark>(active) i-node에 대한 포인터</mark>
+    - active i node table을 가리키는 포인터
 
 <br>
 
@@ -803,7 +806,7 @@ $ cat /home/obama/test.c
 #### open()정리 - Pathname lookup 오버헤드
 
 - open(“/a/b”, …)는 open하고자 하는 파일의 경로를 찾기 위해 여러 차례의 I/O 연산을 요구하는 오버헤드가 발생 
-- 동일한 파일에 대해 반복해서 접근할 경우 매번 경로 검색을 해야 하므로 그 오버헤드는 감당할 수 없도록 더 커지게 됨. 
+- 동일한 파일에 대해 반복해서 접근할 경우 **매번 경로 검색을 해야 하므로** 그 오버헤드는 감당할 수 없도록 더 커지게 됨. 
 - 따라서 **경로 검색을 한번만 수행**(open 할 때 한 번), 파일 디스크립터에 경로를 변환하여 저장 
   - Pathname lookup은 한 번만 수행! 
   -  (pathname -> file descriptor) 변환 후 저장. 
@@ -860,7 +863,7 @@ open file table의 entry가 하나 더 생기는데 이곳에는 현재 파일 �
 
 ![image](https://user-images.githubusercontent.com/79521972/160814631-ed7b6b54-76bc-4a8c-a398-589d959b616b.png)
 
-dup()은 파일을 open하는 것이 아니기 때문에 open file table에 entry가 추가적으로 생기는 것이 아니라 새로운 file descriptor가 기존의 entry를 가리키는 행위를 한다.
+<mark>dup()은 파일을 open하는 것이 아니기 때문에 open file table에 entry가 추가적으로 생기는 것이 아니라</mark> 새로운 file descriptor가 기존의 entry를 가리키는 행위를 한다.
 
 <br>
 
@@ -905,22 +908,13 @@ int main(void)
 
 - 실행
 
-```
+```shell
 $ cat dup_result
 hello world
 ```
 
-standard 출력이 가리키는 것이 모니터가 아니라 file이기 때문에 printf를 해도 출력이 되지 않지만 cat명령어로 파일을 열면 해당 내용이 출력되는 모습이다.
-
-
-
-<br>
-
-Q) cat 명령어로 파일 내용을 보여주는 것도 결국에는 printf()를 실행하는 것이 아닌가?
-
-
-
-
+standard 출력이 가리키는 것이 모니터가 아니라 file이기 때문에 실행 파일을 실행해도(`./a.out`)를 해도 printf의 결과가 STDOUT이기 때문에 출력이 되지 않지만 
+cat명령어로 해당 파일을 열어보면 해당 내용은 잘 출력된다.
 
 
 
