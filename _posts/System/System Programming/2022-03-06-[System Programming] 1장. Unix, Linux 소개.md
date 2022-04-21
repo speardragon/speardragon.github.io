@@ -31,11 +31,10 @@ toc_sticky: true
 
 ## 컴퓨터의 정의
 
-- **프로그램**(명령어들의 리스트)에 따라 데이터를 처리하는 기계
-
-  - 계산기: 특수 목적 컴퓨터(정해진 기능만을 수행, 기능 변경 불가능)
-
-  - 노트북, 데스크 탑: 범용 컴퓨터(프로그램이라는 개념 도입, 수행 기능 변경 가능)
+- **프로그램** (명령어들의 리스트)에 따라 데이터를 처리하는 기계
+- 계산기: 특수 목적 컴퓨터(정해진 기능만을 수행, 기능 변경 불가능)
+  
+- 노트북, 데스크 탑: 범용 컴퓨터(프로그램이라는 개념 도입, 수행 기능 변경 가능)
 
 <br>
 
@@ -71,7 +70,7 @@ toc_sticky: true
 
 ![image](https://user-images.githubusercontent.com/79521972/156915056-0fb8ff72-1f55-47bf-ae60-3f384f5bfc77.png)
 
-- main memory는data와 instructions을 모두 저장한다.
+- main memory는 data와 instructions을 모두 저장한다.
 - ALU operating on binary data.
 - **Control unit** interpreting instructions from memory and executing
   - decode 과정
