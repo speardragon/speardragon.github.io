@@ -48,7 +48,6 @@ tag: ['System Programming', 'File System']
   - 그 디렉토리에 파일을 생성할 수 있고 
   - 그 디렉토리의 파일을 삭제할 수 있다 
 - **삭제할 때는 그 파일에 대한 read권한은 없어도 됨**
-  - Q) write은??
 
 <br>
 
@@ -135,7 +134,7 @@ struct dirent *readdir(DIR *dp);
 
 parameter: directory stream의 주소
 
-return: 특정 diretory entry의 주소
+return: 특정 directory entry의 주소
 
 <br>
 
@@ -210,12 +209,12 @@ main (int argc, char ** argv)
     	strcpy(pathname, argv[1]); //인자를 pathname 변수에 저장
     }
     if (my_double_ls(pathname) == -1 )
-    	printf(“Could not open the directory\n”);
+    	printf("Could not open the directory\n");
 }
 
 int my_double_ls (const char *name) {
     struct dirent *d;
-    DIR *dp;
+    DIR *dp; //디렉토리 스트림 포인터
     
     if ((dp = opendir(name)) == NULL) //opendir() 시스템콜 호출
     	return (-1);
@@ -225,34 +224,13 @@ int my_double_ls (const char *name) {
         	printf ("%s\n", d->d_name);
     }
     
-    rewinddir(dp);
-    
-    while (d = readdir(dp)) {
-        if (d->d_ino != 0)
-        	printf ("%s\n", d->d_name);
-    }
-    
-    closedir(dp);
-    return (0);
-}
-
-int my_double_ls (const char *name) {
-    struct dirent *d;
-    DIR *dp;
-    
-    if ((dp = opendir(name)) == NULL)
-    	return (-1);
-    
-    while (d = readdir(dp)) {
-        if (d->d_ino !=0)
-        	printf ("%s\n", d->d_name);
-    }
     rewinddir(dp); //첫 directory entry로 이동
     
     while (d = readdir(dp)) {
         if (d->d_ino != 0)
         	printf ("%s\n", d->d_name);
     }
+    
     closedir(dp);
     return (0);
 }
@@ -316,7 +294,7 @@ int main(int argc, char **argv)
 } 
 ```
 
-```
+```shell
 $ list1
  .
  ..
@@ -378,7 +356,7 @@ while ((d = readdir(dp)) != NULL) { 		//디렉터리 내의 각 파일
 
 <br>
 
-### <mark>list2.c</mark>
+### list2.c - 시험 x
 
 중요함
 
@@ -649,7 +627,7 @@ int main(void)
 
 - <mark>**실행**</mark>(<span style="color:red">이거 중요</span>)
 
-```
+```shell
 $ pwd
 /usr/lib
 $ mycd
@@ -663,6 +641,7 @@ $
 - Each program is run in a separate process 
   - -> current working directory of shell is **unaffected** by chdir in mycd.
   - <span style="color:blue">mycd를 실행시키면 별도의 mycd의 프로세스로 실행되기 때문에 shell command의 process에는 영향을 끼치지 않는 것이다!!!</span>
+  - 실행 파일을 실행시키면 shell command와는 별도의 프로세스가 실행되어 그 안에서 디렉토리를 바꾸는 것이기 때문에 실제 shell command 상에서는 바뀌지 않는다.
 - Note that “cd” is a <span style="color:red">built-in shell command!</span>
 
 어찌 보면 당연한 건데 헷갈릴 수 있는 부분이다.
@@ -710,7 +689,7 @@ void my_pwd (void) {
 
 - **실행**
 
-```
+```shell
 $ ./a.out
 /home/obama/test
 $
