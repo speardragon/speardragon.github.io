@@ -111,11 +111,10 @@ struct stat {
     - 다른 파일의 이름과 다른 파일을 가리키는 포인터를 담는 파일인 것이다.
     
   - `Block special file`
-  
     - Provides buffered I/O access in fixed-size units to devices 
-  
+    
     - E.g. disk(하드 디스크)
-  
+    
   - Character special file 
     - Provides unbuffered I/O access in variable-sized units to devices 
     - Keyboard, mouse, … 
@@ -145,7 +144,7 @@ stat을 통해 파일 타입을 가져올 수 있는데 파일 타입의 형식�
 - 기호 상수를 사용
 
 - ```c
-  //type.h
+  //<type.h>
   #define S_IFSOCK 0140000 /* socket */
   #define S_IFLNK 0120000 /* symbolic link */
   #define S_IFREG 0100000 /* regular */
@@ -214,12 +213,12 @@ int main(int argc, char *argv[])
 }     
 ```
 
-```
+```shell
 % a.out /etc /dev/ttya /bin a.out  //4개의 관리정보 출력
-/etc: directory
-/dev/ttya: symbolic link
-/bin: symbolic link
-a.out: regular
+/etc: 디렉터리
+/dev/ttya: 심볼릭 링크
+/bin: 심볼릭 링크
+a.out: 일반 파일
 ```
 
 
@@ -271,7 +270,7 @@ i node 안에 있는 st_mode
   - execute 
     - File: file을 **실행**할 수 있는가?
     - Directory:  **이동**할 수 있는가?(즉 cd가 가능한가?) 
-      - 즉, 그 directory를 열어볼 수 있는 권한이 있는가?
+      - 즉, 그 directory를 열어볼 수 있는 권한이 있는가? 혹은 해당 디렉토리를 들어갈 수 없는가?
 
 
 <br>
@@ -279,7 +278,7 @@ i node 안에 있는 st_mode
 - 디렉토리에 write 권한과 execute 권한이 있어야 
   - 그 디렉토리에 파일을 생성할 수 있고
   - 그 디렉토리의 파일을 삭제할 수 있다 
-  - 삭제할 때 그 파일에 대한 read write 권한은 없어도 됨
+  - 삭제할 때 그 파일에 대한 read 권한은 없어도 됨
 
 
 
@@ -290,6 +289,8 @@ i node 안에 있는 st_mode
 - File permission의 예
 
 ![image](https://user-images.githubusercontent.com/79521972/161682893-56844b87-5aa0-4ce8-a528-b3fd4e1107a1.png)
+
+read를 못하는데 write이나 execute를 할 수 있지 않다.
 
 <br>
 
@@ -330,17 +331,17 @@ int fchmod (int fd, mode_t mode);  //파일 디스크립터
 #include <stdlib.h>
 /* 파일 사용권한을 변경한다. */
 main(int argc, char *argv[]){
-         long strtol( ); //string관련 library
-         int newmode;
+    long strtol( ); //string관련 library
+    int newmode;
+
+    newmode = (int) strtol(argv[1], (char **) NULL, 8); //8진수 int로 변환:664 입력
+    /* long strtol( const char *nptr, char **endptr, int base);*/
     
-         newmode = (int) strtol(argv[1], (char **) NULL, 8); //8진수 int로 변환:664 입력
-    
-         /* long strtol( const char *nptr, char **endptr, int base);*/
-         if (chmod(argv[2], newmode) == -1) {
-             perror(argv[2]);
-             exit(1);
-     	 }
-     exit(0);
+    if (chmod(argv[2], newmode) == -1) {
+        perror(argv[2]);
+        exit(1);
+    }
+    exit(0);
 }
 ```
 
@@ -414,7 +415,7 @@ int main(int argc, char *argv[])
      struct stat buf; // 파일 상태 저장을 위한 구조체 변수
      struct utimbuf time;
      if (argc < 3) {
-         fprintf(stderr, "사용법: cptime file1 file2\n");
+         fprintf(stderr, "사용법: ./cptime file1 file2\n");
          exit(1);
      }
      if (stat(argv[1], &buf) <0) { // 상태(파일 정보) 가져오기
