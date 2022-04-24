@@ -72,7 +72,7 @@ tag: ['System Programming', 'File System']
 
 <br>
 
-### File system 에서의 주소변환
+### File system 에서의 주소변환**(시험)**
 
 - 디스크 내 3D 구조에서 1D 구조로의 매핑 (생각(이해)하기 편하게 하기 위함)
 
@@ -101,7 +101,7 @@ tag: ['System Programming', 'File System']
   - 부트스트랩 코드가 저장되는 블록
   - 파일 시스템 시작부에 위치하고 보통 첫 번째 섹터 (block)를 차지
   - 부트 블록은 사실 하나만 있으면 되기 때문에 모든 file system이 갖고 있되 하나의 file system에서만 부팅을 하게 된다.(실제로 사용하는 것은 하나)
-- 슈퍼 블록(Volume control block, superblock, master file table)
+- 슈퍼 블록(Volume control block, superblock, master file table)**(시험)**
   - **전체 파일 시스템**에 대한 정보를 저장 (관리 정보)
   - Total # of blocks, 사용 중인 블록 수, # of free blocks, block size, 사용 가능 한 블록 비트 맵 (free block pointers or array), 사용 가능한 i-노드 개수
 - i-리스트(i-list)
@@ -332,7 +332,7 @@ logical file system 부터 devices까지가 file system이다.
 
 <br>
 
-### Contiguous(접촉하는) Allocation of Disk Space
+### Contiguous(접촉하는) Allocation of Disk Space**(시험)**
 
 ![image](https://user-images.githubusercontent.com/79521972/160806387-7227fd43-3427-4dae-850f-81ab16a6ecce.png)
 
@@ -348,7 +348,7 @@ logical file system 부터 devices까지가 file system이다.
 
 그런데 이와 같은 방법으로 할당을 하다보면 연속된 공간을 할당하려 하는데 해당 블럭이 이미 차지되어 있는 경우 할당하지 못하는 문제가 생긴다.
 
-- 즉, external fragmenation이 많이 발생한다.(돌고 있는 공간이 많은데 사용하지 못하는 문제)
+- 즉, external fragmenation이 많이 발생한다.(돌고 있는 공간이 많은데 사용하지 못하는 문제)**(시험)**
 
 - 대신 read가 빠르다는 장점이 있긴 함 
 
@@ -373,7 +373,7 @@ logical file system 부터 devices까지가 file system이다.
 
 <br>
 
-### Indexed Allocation of Disk Space
+### Indexed Allocation of Disk Space**(시험)**
 
 <img src="https://user-images.githubusercontent.com/79521972/160806584-2f70b8b8-cfd4-4c53-85c6-b0a7a687be36.png" alt="image" style="zoom:67%;" />
 
@@ -395,7 +395,7 @@ logical file system 부터 devices까지가 file system이다.
 
 <br>
 
-### 블록 포인터
+### 블록 포인터**(시험)**
 
 - 유닉스 파일 시스템에서 inode는 데이터 블록을 가리키는 블록 포인터 배열 을 포함
 - 파일의 크기는 **가변적**임. 또한, 커널은 디스크에 블록단위로 I/O를 하며 데이터 블록은 불연속적인 위치에 저장됨. (disk 조각을 줄이기 위한 목적 때문에 연속은 사용 잘 안함)
@@ -467,7 +467,7 @@ index block을 하나 둔 것
 
 <br>
 
-### Block Pointers for Big File
+### Block Pointers for Big File**(시험)**
 
 - 각 블록의 크기를 4Kbyte라 가정한다면, 
   - 데이터 블록을 직접 가리킬 수 있는 직접 포인터는 10개 이므로 총 40Kbyte 크기 의 파일을 가리킬 수 있게 됨. 
@@ -773,7 +773,7 @@ $ cat /home/obama/test.c
 
 #### how many disk access occurred?
 
-<span style="color:red"> 시험 문제 나옴</span>
+<span style="color:red"> 시험 문제 나옴</span>**(시험)**
 
 - 1. Pathname lookup (/home/obama/test.c)
      - i-노드에 저장되어 있는 데이터 블럭 포인터로 데이터 블럭을 계속해서 읽고 원하는 파일 혹은 디렉토리의 i-노드를 다시 가져와서 읽고 데이터 블록 포인터고 가고를 반복하는 구조
@@ -790,7 +790,7 @@ $ cat /home/obama/test.c
 
 <br>
 
-- 2. “test.c”를 위한 커널 내 자료 구조 완성
+- 2. “test.c”를 위한 커널 내 자료 구조 완성**(시험)**
      - 메모리 내 i-node 생성(copy).
      - file table 생성. (offset은 0으로 설정)
      - File desciptor table에 entry 생성하고, file descriptor(3) 리턴
@@ -845,7 +845,7 @@ $ cat /home/obama/test.c
 
 <br>
 
-### 파일을 위한 커널 자료 구조
+### 파일을 위한 커널 자료 구조**(시험)**
 
 - 한 프로세스가 파일을 두 번 open 한 경우
 

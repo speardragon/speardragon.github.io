@@ -19,7 +19,6 @@ control 신호들이 명령어에 해당하는 값들로 세팅됨.
 - write assert 방식
   - memory 혹은 register에서 write을 할 건지 말 건지를 경정하는 control
 
-
 <br>
 
 두 개(memory, register) 빼고는 다 mux control
@@ -154,9 +153,9 @@ endmodule
 
 ![image](https://user-images.githubusercontent.com/79521972/162876110-1830bfac-3815-467c-a2b4-8168a08ae6c2.png)
 
-- asych read
+- 읽을 때는 asych read
 
-- clk에 동기되어 write되는 synch
+- 데이터를 쓸 때는, clk에 동기되어 write되는 synch
 - 실행 중에 data가 계속 바뀜(RAM)
 
 
@@ -205,10 +204,6 @@ RegWrite 0이면 register write port에 무슨 값이 들어와도 어차피 wri
 
 
 
-Q) j도 000100???
-
-
-
 <br>
 
 ## Extended Functionality: j
@@ -227,7 +222,7 @@ Q) j도 000100???
 
 따라서 우리는 저 x의 부분만 안다면 전체 명령어를 PC 값으로 만들어 낼 수 있는 것이다. 
 
-저 x부분이 우리가 
+
 
 <br>
 

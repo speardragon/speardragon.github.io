@@ -96,7 +96,7 @@ store Mem(a) <- $4
 
 <br>
 
-[<u>MIPS Instruction Set 링크 참</u>조](https://uweb.engr.arizona.edu/~ece369/Resources/spim/MIPSReference.pdf)
+[<u>MIPS Instruction Set (링크 참조)</u>](https://uweb.engr.arizona.edu/~ece369/Resources/spim/MIPSReference.pdf)
 
 instruction set의 종류(기본,핵심,필수가 되는 세 가지 기능)
 

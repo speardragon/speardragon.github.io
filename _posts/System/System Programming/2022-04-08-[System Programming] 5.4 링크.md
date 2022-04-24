@@ -26,7 +26,7 @@ int unlink(char *path); //directory entry가 없어짐
 
 <br>
 
-## link()
+## link()**(시험)**
 
 - `link(“file1”, “file2”);`
 - 하드 링크
@@ -43,7 +43,7 @@ int unlink(char *path); //directory entry가 없어짐
 
 <br>
 
-- "In" vs. "cp"
+- "In" vs. "cp" **(시험)**
 
 ![image](https://user-images.githubusercontent.com/79521972/162354828-a81e4a6c-c784-40ce-9acd-b94a062526f2.png)
 

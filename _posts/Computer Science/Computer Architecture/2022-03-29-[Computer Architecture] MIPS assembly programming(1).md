@@ -26,7 +26,6 @@ tag: ['Computer Architecture', 'Intro']
   - s의 내용은 중요한 변수 함부로 바꾸거나 할 수 없다.
 
 - at
-  - 
 
 
 
@@ -357,6 +356,8 @@ addi $sp, $sp, 12 	# deallocate stack space
 jr $ra 				# return to caller
 ```
 
+s0, t0, t1을 쓰고 싶어서 잠깐 stack에 저장해 두었다가 사용 후에 다시 변수에 가져오는(restore)
+
 ---
 
 Q)$t1,t0, s0에다가 스택 내용을 저장하고 스택 pointer만 옮기는 것이기 때문에 사실상 스택 안에는 그 내용이 유지되어 있는 것인데 스택 포인터 아래에 있는 내용은 그냥 빈 공간 취급하는 것인가?
@@ -533,7 +534,7 @@ else:
 
 - Callee
   - **s register만 저장**
-  - Save registers that might be distrubed ($s0-$s7)
+  - Save registers that might be disturbed ($s0-$s7)
   - Perform function
   - Put result in $v0
   - Restore registers

@@ -28,7 +28,7 @@ tag: ['System Programming', 'File System']
   - 블록수, 파일 타입, 사용 권한(Permission), **링크수**, 파일 소유자의 사용 자 ID 및 그룹 ID (user/group ID), 파일 크기, 최종 수정 시간 등
   - File attributes(file status) 수정
     - chown, chmod, ...
-- 예
+- 예**(시험)**
 
 ```shell
 $ ls -l hello.c
@@ -275,7 +275,7 @@ i node 안에 있는 st_mode
 
 <br>
 
-- 디렉토리에 write 권한과 execute 권한이 있어야 
+- 디렉토리에 write 권한과 execute 권한이 있어야 **(시험)**
   - 그 디렉토리에 파일을 생성할 수 있고
   - 그 디렉토리의 파일을 삭제할 수 있다 
   - 삭제할 때 그 파일에 대한 read 권한은 없어도 됨

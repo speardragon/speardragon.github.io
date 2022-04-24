@@ -51,8 +51,6 @@ lw $5, 7010
 
 <br>
 
-<br>
-
 $0에는 항상 0이라는 값이 들어있다. 이를 이용하여 위의 표현을 다음과 같이 표현할 수 있다.
 
 0은 특정 연산을 할 때, 비교를 할 때 굉장히 중요한 지표(기준) 이기 때문에 따로 지정해 둔 것이다.
@@ -105,8 +103,6 @@ Underlying design principles, as articulated by Hennessy and Patterson:
 ![image](https://user-images.githubusercontent.com/79521972/159403302-78ce4001-ad4b-4917-8ee8-fbdc755a7f12.png)
 
 # Chapter 6. Architecture
-
-
 
 ## Instructions
 
@@ -197,8 +193,6 @@ ALU의 input을 여러개로 할 수도 있지만 simple하게 구성해야 perf
 ### Design Principle 2
 
 **Make the common case fast**
-
-<<<<<<< Updated upstream
 흔히 나오는 명령어들을 빠르게 만들자.
 
 - MIPS includes only simple, commonly used instructions
@@ -243,7 +237,7 @@ Data memory에 있는 data가 register file에 들어가야 하는 상황에 reg
 
 - MIPS includes only a small number of registers.
 
-<br>
+
 
 
 
@@ -480,7 +474,7 @@ word단위로 데이터를 처리하면 문제가 없는데 바이트 단위로 
 
 ### Constants/Immediates
 
-- • lw and sw use constants or immediates
+- lw and sw use constants or immediates
 
 -  immediately available from instruction
 
@@ -517,7 +511,7 @@ word단위로 데이터를 처리하면 문제가 없는데 바이트 단위로 
 - 3 instruction formats:
   - R-Type: register operands
   - I-Type: immediate operand
-  - J-Type: for jumping (disciss later)
+  - J-Type: for jumping (discuss later)
 
 <br>
 

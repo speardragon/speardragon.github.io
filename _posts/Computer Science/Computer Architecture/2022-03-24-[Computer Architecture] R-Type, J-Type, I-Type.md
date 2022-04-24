@@ -299,7 +299,7 @@ shift right 할 때는 sign extension으로 앞 부분의 새로 만들어지는
 - Types of branches:
 
   - **Conditional** 
-    - branch if equal (bea)
+    - branch if equal (beq)
     - branch if not equal (bne)
 
   - **Unconditional**

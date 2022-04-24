@@ -57,7 +57,7 @@ toc_sticky: true
     - Instructions and data are stored in a **single read-write memory.**
     - program과 data는 main memory에 탑재되어야 실행 가능.
   - 메모리의 내용은 location(주소)에 의해 <mark>addresable</mark> 하다 **without regard to the type** of data contained there.
-  - Execution occurs in **sequential fashion** unless **explicitly** modified 
+  - Execution occurs in **sequential fashion** unless **explicitly** modified (시험)
     - Sequence, Loop, Selection
     - 위 세가지로 어떤 프로그램이든 설명 가능하다.
     - Sequence: 첫 번째 instruction을 실행하고 두 번째 instruction을 실행하고 순차적으로 실행
@@ -326,7 +326,7 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 - OS가 process의 life cycle을 관리/감독한다.
   - 3 main steps: <mark>**Creating the process, managing the process and terminating the process.** </mark>
-- The OS **identifies** which program (= executable file) is to be executed to create the process.
+- The OS **identifies** which program (= executable file) is to be executed to create the process.(**시험**)
   - Executable files are generated with a compiler given the text of the program in a language such as C or C++
   - This is a file that contains **instructions** to be executed on the CPU to activate the process. The format of executable files is specified by the OS. 
 - OS는 process를 만들라고 user에게 요청받는다.
@@ -346,7 +346,7 @@ application 짜는 사람들이 하드웨어를 직접 제어하도록 짜야 �
 
 <br>
 
-### Managing the process
+### Managing the process(시험)
 
 - The OS identifies the **starting function** in the program (e.g., "main" in C and C++) and **invokes** it (calls the function). 
   - The main function **receives arguments** passed from the OS. These are called the command line arguments. 
@@ -561,7 +561,7 @@ sytem call은 stack을 통해서 전달되지 못하기 때문에 register에 co
 
 
 
-## Library vs. system call
+## Library vs. system call (**시험**)
 
 - Library와 system call의 예
 
@@ -586,6 +586,8 @@ scanf()는 c 라이브러리 함수인데 해당 함수에는 read라는 system 
 <br>
 
 
+
+**시험**
 
 ### Kernal mode
 
@@ -623,7 +625,7 @@ scanf()는 c 라이브러리 함수인데 해당 함수에는 read라는 system 
 - 프로그램과 OS간의 interface는 `system call의 집합`으로 정의된다.(with its own parameters)
   - 현대 OS(Linux와 Windows와 같은)들은 수백개 내지 수천개의 정의된 system call이 존재한다.
 
-
+**시험**
 
 
 

@@ -81,7 +81,7 @@ instruction이 instruction memory 상에서 4Byte 단위로 저장되어 있기 
 
 
 
-위 과정을 1clock에 수행하는 것을 single cycle이라고 한다.
+위 과정을 1 clock에 수행하는 것을 single cycle이라고 한다.
 
 <br>
 
@@ -89,7 +89,7 @@ instruction이 instruction memory 상에서 4Byte 단위로 저장되어 있기 
 
 1. PC(Program Counter)를 전달하고 PC는 PC + 4연산이 진행된다.
 2. 해당 PC + 4 된 값은 또 가산기에 들어가서 업데이트 된다. (branch target address)
-3. 2 개의 출력이 ALU에 각각 들어간다.
+3. 2개의 출력이 ALU에 각각 들어간다.
 4. ALU의 출력이 다시 Data memory에 들어간다.
 5. Data memory에서도 다시 출력이 레지스터로 들어간다.
 
@@ -146,7 +146,7 @@ instruction이 instruction memory 상에서 4Byte 단위로 저장되어 있기 
 
 ### MIPS Processor
 
-- Consider subset of MIPS instructions: – 
+- Consider subset of MIPS instructions: 
   - R-type instructions: *and, or, add, sub, slt* 
   - Memory instructions: *lw, sw* 
   - Branch instructions: *beq*
@@ -160,8 +160,6 @@ instruction이 instruction memory 상에서 4Byte 단위로 저장되어 있기 
 
 ### Single-Cycle implementation
 
-<br>
-
 Single cycle implementation이란 **instruction 하나**를 **하나의 cycle**에 수행하는 것을 말한다. 
 
 Cycle이 끝나면 새로운 instruction을 수행한다.
@@ -172,7 +170,7 @@ Clock이 올라가서부터 다음 clock이 올라가기 전까지 하나의 수
 
 다음 clock이 올라가는 순간 instruction 수행 결과(state)를 update하고 , 새로운 instruction을 수행한다.
 
-single cycle의 CPI는 무조건 1이다.
+single cycle의 <mark>CPI는 무조건 1이다.</mark>
 
 
 
@@ -223,10 +221,6 @@ ALU, Decode : Combinational logic
 
 - Datapath
 - Control
-
-
-
-
 
 <br>
 
@@ -377,8 +371,6 @@ rs에 해당하는 I[25:21]과 rt에 해당하는 I[20:16]을 Read Register에 �
 
 A) opcode와 funct에 의해 control signal이 결정됨
 
-Q) funct이 없는 경우도 있는데 이 경우를 어떻게 판별??
-
 
 
 ![image](https://user-images.githubusercontent.com/79521972/162253385-7f5586b4-4c44-433e-a31f-80c915d431d8.png)
@@ -431,6 +423,8 @@ jump할 immediate 값을 sign extention하고 word offset에서 byte offset으�
 전체적인 Single-Cycle Processor의 datapath는 위와 같다.
 
 **Q) Register File에서 보면 lw인 경우에는 write을 하기 위해서 아래 RegDst에 결정되는 MUX 쪽으로 가고 add 명령인 경우에는 read를 하기 위해서 register file의 A2쪽으로 가게되는데 이런 것은 Instruction Memory에서 Decoding 된 것으로 어느 노드로 갈지가 결정되는 건가요? 아니면 두 노드 모두로 이동하게 되나요?**
+
+A) 물론 두 노드 모두 이동하여 해당 라인에는 그 데이터의 값이 들어있는 것 그래서 flip flop에도 그 데이터가 들어가는데 이 값을 쓸지 말지는 enable 신호와 mux가 결정하는 것
 
 <br>
 

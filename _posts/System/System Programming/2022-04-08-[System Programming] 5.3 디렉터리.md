@@ -47,7 +47,7 @@ tag: ['System Programming', 'File System']
 - 디렉토리에 **write** 권한과 **execute** 권한이 동시에 있어야 한다. 
   - 그 디렉토리에 파일을 생성할 수 있고 
   - 그 디렉토리의 파일을 삭제할 수 있다 
-- **삭제할 때는 그 파일에 대한 read권한은 없어도 됨**
+- **삭제할 때는 그 파일에 대한 read권한은 없어도 됨** **(시험)**
 
 <br>
 
@@ -356,9 +356,7 @@ while ((d = readdir(dp)) != NULL) { 		//디렉터리 내의 각 파일
 
 <br>
 
-### list2.c - 시험 x
-
-중요함
+### list2.c
 
 ```c
 #include <sys/types.h>

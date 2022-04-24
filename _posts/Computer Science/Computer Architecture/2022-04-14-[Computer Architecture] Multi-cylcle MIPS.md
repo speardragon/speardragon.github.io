@@ -51,6 +51,8 @@ tag: ['Multi Architecture']
 
 combinational logic에서 어떤 거는 빠르게 오고 어떤 거는 느리게 올텐데 이 중 가장 느린 경로가 critical path라고 한다.
 
+clk cylce time을 결정하는 경로
+
 ![image](https://user-images.githubusercontent.com/79521972/163316568-c5716494-8f5a-4759-8c45-c3de1fb67105.png)
 
 > T<sub>C</sub> limited by critical path (lw)
@@ -103,7 +105,7 @@ Execution Time = # instructions x CPI x T<sub>C</sub>
 
 ## Single cycle의 문제점
 
-명령어 별로 걸리는 시간차이가 다르기 때문에(lw는 엄청 느리고, J 나 beq는 굉장히 빠르다) 가장 긴 instruction 시간에 맞춰서 clock time을 정해야 하기 때문에 짧은 instruction은 클락이 끝나지 않았는데도 이미 벌써 끝나서 다음 클락을 기다리기 떄문에 비효율적인 상황이 발생한다.
+명령어 별로 걸리는 시간차이가 다르기 때문에(lw는 엄청 느리고, J 나 beq는 굉장히 빠르다) 가장 긴 instruction 시간에 맞춰서 clock time을 정해야 하기 때문에 짧은 instruction은 클락이 끝나지 않았는데도 이미 벌써 끝나서 다음 클락을 기다리기 때문에 비효율적인 상황이 발생한다.
 
 그래서 이를 해결하기 위한 방법 두 가지를 앞으로 소개해 보도록 하겠다.
 
@@ -128,10 +130,8 @@ Execution Time = # instructions x CPI x T<sub>C</sub>
   - sequencing overhead paid many times
   - 5단계로 쪼개서 진행할 거임
     - 나눴다는 얘기는 중간에 register file을 꼈다는 얘기
-  - (10분 6초 얘기(0419))
   - 현재 어떤 cycle에 해당하냐에 따라 control signal이 다름
     - 그래서 state마다 값들이 달라야 하므로 FSM 사용->state transition diagram
-
 - Same design steps: datapath & control
 - faster clock이 관건
 - overhead: setup time, t<sub>pcq</sub>
@@ -293,7 +293,9 @@ Finite State Machine이 사용됨
 
 
 
-![image](https://user-images.githubusercontent.com/79521972/163319943-0a3c6e37-1aed-4115-bd87-43eb7917b054.png)5 단계로 쪼갰기 떄문에 4개의 register가 추가됨
+![image](https://user-images.githubusercontent.com/79521972/163319943-0a3c6e37-1aed-4115-bd87-43eb7917b054.png)
+
+5단계로 쪼갰기 떄문에 4개의 register가 추가됨
 
 <br>
 
@@ -356,12 +358,6 @@ control 신호가 필요없어서 안 씀
 
 lw or sw
 
-![image](https://user-images.githubusercontent.com/79521972/163320826-761c5989-975c-4c5e-a42d-0fc48a41098d.png)
-
-
-
-
-
 <br>
 
 ALUResult <- A + Imm
@@ -392,7 +388,7 @@ RF[A3] <- Data						: 5번째 ; data에 저장된 내용을 register file에 저
 
 ![image](https://user-images.githubusercontent.com/79521972/163321169-eb29fbb9-da87-40bc-aa3a-9ada7138e4d2.png)
 
-memory에 write하고 다시 Fetch 과정을 ㅗ돌아감
+memory에 write하고 다시 Fetch 과정으로 돌아감
 
 <br>
 

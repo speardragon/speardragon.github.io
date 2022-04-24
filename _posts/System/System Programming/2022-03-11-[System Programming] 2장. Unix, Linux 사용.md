@@ -333,7 +333,7 @@ EACCES: Permission denied
 
 <br>
 
-#### Signals
+#### Signals(시험)
 
 통보(notofication) 수단
 
@@ -342,7 +342,7 @@ EACCES: Permission denied
   - is used to notify a process that some condition has occurred.(by kernal)
   - e.g. if divide by zero, SIGFPE(floating point exception) is sent to the process
 
-- **Action of process received the signal**(받은 시그널에 대한 대응 방법)
+- **Action of process received the signal**(받은 시그널에 대한 대응 방법) (시험에 나온 부분)
 
   - ignore the signal.
   - let the **default action** occur.
@@ -446,7 +446,7 @@ $ passwd //사용자 계정의 비밀번호를 입력 또는 변경하는 명령
 
 ### 디렉터리 관련 명령
 
-- pwd(print working directory)
+- pwd(print working directory) (시험)
 
   - **현재** 작업 디렉터리를 출력
 
@@ -501,6 +501,8 @@ $ passwd //사용자 계정의 비밀번호를 입력 또는 변경하는 명령
   2 drwxr-xr-x 2 chang faculty 512 4월 16일 13:37 .
   2 drwxr-xr-x 3 chang faculty 512 4월 16일 13:37 ..
   6 -rw-r--r-- 1 chang faculty 2088 4월 16일 13:37 cs1.txt
+
+(시험)
 
 <br>
 
@@ -850,7 +852,7 @@ $ ls -sl cs1.txt
 
 <br>
 
-### 파이프
+### 파이프(시험)
 
 - 로그인 된 사용자들을 정렬해서 보여주기
 

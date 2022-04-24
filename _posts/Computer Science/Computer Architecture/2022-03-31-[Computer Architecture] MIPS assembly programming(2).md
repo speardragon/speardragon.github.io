@@ -283,7 +283,7 @@ MIPS을 해보는 것처럼 실행할 수 있는 runtime simulator인 MARS로 �
 
 ### Exception Registers
 
-- Not part of register flk
+- Not part of register clk
 
   - Cause: **Records** **cause** of exception
 

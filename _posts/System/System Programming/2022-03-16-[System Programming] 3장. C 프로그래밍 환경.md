@@ -19,7 +19,7 @@ tag: ['System Programming', 'Unix']
   - `$ gcc [-옵션] 파일`  / `\$cc [-옵션] 파일`
 
 - GNU(GNU is Not Unix) 프로젝트의 freeware 컴파일러. 본래 C 언어용 컴파일러로 시작하였으므로 GNU C Compiler의 약자였으나 2.9 버전에 이르러 C뿐만이 아니라  Objective C, Pascal, Ada와 같은 언어도 지원. **G**NU **C**ompiler **C**ollection으로 개명
-- 컴파일
+- 컴파일**(시험)**
   - $ gcc long.c
   - $ a.out             //실행 파일 생성
 - -c 옵션
@@ -206,7 +206,7 @@ void copy(char from[], char to[]);
   	gcc -c copy.c
   ```
   
-- make 실행
+- make 실행**(시험)**
   
   $ make 혹은 \$ make main
   
