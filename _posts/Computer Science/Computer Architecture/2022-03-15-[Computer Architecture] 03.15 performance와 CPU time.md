@@ -37,9 +37,9 @@ tag: ['Computer Architecture', 'Performance', 'CPU time', 'Latency']
   - sec/clock = 1 / clock frequency(얼마나 빠른 clock을 쓸 수 있는가)
   - 1. 프로그램당 얼마나 많은 instruction을 포함하는가?
     2. instruction 당 몇 개의 clocks을 지나는가?(CPI, Clocks Per Instruction)
-       	- average 개념?
+       	-multi-cylce에서는 average 개념 도입
        	- (avg) CPI
-    3. 한 클락당 몇 초인가?
+    3. 한 클락당 몇 초인가? = Tc
   - 따라서
     - Exec_time = 1번 x 2번 x 3번
 
@@ -98,7 +98,7 @@ clock frequency를 결정하는 것은 중간의 combinational logic인데 이�
 - Example: time taken to run a program
 
   - 10s on A, 15s on B
-  - Execution Time~B~/Execution Time~A~= 15s / 10s = 1.5
+  - Execution TimeB/Execution TimeA= 15s / 10s = 1.5
 - So A is 1.5 times faster than B(B가 1.5배 더 빠르다.)
 
 
@@ -127,9 +127,9 @@ clock frequency를 결정하는 것은 중간의 combinational logic인데 이�
 ![image](https://user-images.githubusercontent.com/79521972/158715602-0fd0f678-0377-4cd1-a38d-ddcf88239488.png)
 
 - **Clock period(clock cycle time)**: duration of a cycle 
-  - e.g., 250ps = 0.25ns = 250x10^-12^s
+  - e.g., 250ps = 0.25ns = 250x10<sup>-12</sup>s
 - **Clock frequency (rate)** : cycles per second
-  - e.g, 4.00GHz = 4000MHz = 4.0 x 10^9^Hz
+  - e.g, 4.00GHz = 4000MHz = 4.0 x 10<sup>9</sup>Hz
 
 
 
@@ -154,7 +154,7 @@ CPU를 설계할 것이기 때문에 이 CPU만 사용하는 데 걸리는 시�
 
 ![image](https://user-images.githubusercontent.com/79521972/158301278-236494f8-8c3e-4c6b-852a-c9e39c60114a.png)
 
-- instruction Count for a program
+- Instruction Count for a program
   - Determined by`program(programming language)`, `ISA(CISC or RISC)` and `compiler`
 - Clock Rate = 1/Clock Cycle Time
 - Average cycles per instruction (CPI)

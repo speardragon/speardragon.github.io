@@ -110,7 +110,7 @@ a=b+c;
 - 위 코드가 컴퓨터에서는 어떻게 실행될까?
 - CPU를 통해 +, -, *, /, and, or 등의 연산을 하고 싶음 -> ALU에서 연산
 - 폰노이만 구조는 data와 프로그램이 한 구조에 있음
-- ==**메모리는 세 부분으로 나뉘어짐**==(데이터가 선언될때 메모리가 필요함)
+- **메모리는 세 부분으로 나뉘어짐**(데이터가 선언될때 메모리가 필요함)
   - 맨 위 : fff...f 번지, stack memory
     - 스택 = temporary
       - 즉, 임시로 잠깐 저장할 때 사용하는 공간
@@ -122,10 +122,6 @@ a=b+c;
     - instruction set이 들어있는 곳
     - instruction에 따라서 수행할 연산을 program counter가 decode하여 전달해줌
     - 컴파일러에 의해 high level language에서 컴퓨터가 알아듣는 assembly language로 변환된 후 이곳(program memory)으로 들어온다.
-
-
-
-
 
 
 
@@ -245,8 +241,6 @@ power는 굉장히 중요하지만 hardware적 측면이 강한 부분으로 이
 high speed CPU를 이룰 수 있던 motivation은 무엇일까?
 
 - Use **abstraction** to simplify design
-
-
 
 - Make the **common case fast**
   - 많이 사용되는 것들을 가장 빠르게 하는 것이 key idea

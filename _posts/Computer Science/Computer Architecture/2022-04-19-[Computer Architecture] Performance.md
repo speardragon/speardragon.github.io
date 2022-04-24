@@ -23,7 +23,7 @@ tag: ['Peroformance']
   - 2% jumps 
   - 52% R-type
 
-**Average CPI** = (0.11 + 0.02)(3) + (0.52 + 0.10)(4) + (0.25)(5) = 4.12 (?)
+**Average CPI** = (0.11 + 0.02)(3) + (0.52 + 0.10)(4) + (0.25)(5) = 4.12
 
 
 
@@ -62,6 +62,9 @@ For a program with 100 billion instructions executing on a multicycle  MIPS proc
 
 - CPI = 4.12
 - Tc = 325 ps
+  - single에서는 925ps 였는데 clock cycle을 1/5 한 것 치고는 너무 길다.
+  - 그 이유는?
+
 
 
 
@@ -78,7 +81,7 @@ Execution Time
 This is slower than the single-cycle processor (92.5 seconds). Why?
 
 1. 제일 많이 걸리는 게 clock cycle을 정하는데 clock을 정확히 이분하게 나누지 않았다.
-   - Not even valenced
+   - Not even balenced
    - Not all steps same length
 
 2. 자르다보면 다음 cycle에 계산하기 위해 저장하기 위한 register(f/f)가 중간중간에 들어가는데 register에서는 t<sub>pcq</sub>, t<sub>setup</sub> 이라는 overhead로 인해 clock이 정확하게 5배 빨라지지 못하는 것이다.
@@ -91,13 +94,13 @@ This is slower than the single-cycle processor (92.5 seconds). Why?
 
 Q) 어떻게 이분하게 쪼개는가
 
-A) mips는 data memory 떄문에 unbalence가 발생
+A) mips는 data memory 때문에 unbalence가 발생
 
 <br>
 
 ## Review: Single-Cycle Processor
 
-![image-20220419125734382](C:\Users\c_dragon\AppData\Roaming\Typora\typora-user-images\image-20220419125734382.png)
+![image](https://user-images.githubusercontent.com/79521972/164953152-b0c467aa-821c-4e85-8013-0a2a29ae2a88.png)
 
 
 
@@ -109,7 +112,10 @@ A) mips는 data memory 떄문에 unbalence가 발생
 
 ![image](https://user-images.githubusercontent.com/79521972/163917275-c1874daa-15e7-4cf3-ba73-958731324b8c.png)
 
-- 장점 resource sharing(memory, ALU)
+- 장점 
+  - resource sharing(memory, ALU)
+  - faster clock
+
 
 
 

@@ -428,18 +428,12 @@ if (A == B) PC <- ALUout        //세 번째 cycle
 
 ### Extended Functionality: addi
 
-![image](https://user-images.githubusercontent.com/79521972/163321595-b80cc480-a235-4b79-b38e-88e8785c25e5.png)
+![image](https://user-images.githubusercontent.com/79521972/163321678-9b4b3426-b3bd-402b-8626-938b4a040ed7.png)
 
 - 하나는 A에서 하나는 immediate에서 
 - 사실상 S2, S9은 같기 때문에 위처럼 해도 되고 연결을 공유해도 됨
 
 
-
-<br>
-
-## Main Controller FSM: addi
-
-![image](https://user-images.githubusercontent.com/79521972/163321678-9b4b3426-b3bd-402b-8626-938b4a040ed7.png)
 
 <br>
 
@@ -460,5 +454,4 @@ if (A == B) PC <- ALUout        //세 번째 cycle
 ## Multicycle Processor
 
 ![image](https://user-images.githubusercontent.com/79521972/163914998-fe973c5c-584a-4984-95a7-19ec8ace90b7.png)
-
 

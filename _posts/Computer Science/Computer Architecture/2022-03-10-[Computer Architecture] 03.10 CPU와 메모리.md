@@ -57,7 +57,7 @@ store r10 -> [a]
 - 해당 값에 상응하는 instruction들을 IC에서 Instruction Register(IR)로 하나씩 가져온다. (<span style="color:red">fetch</span>)
 - 그러고 나서 (Combinational) control logic 에서 이 값을 분석한다.(decoder 역할)
 - 위와 같은 경우 `데이터 b를 load` 과정이기 때문에 이에 대한 control 신호들이 막 날라간다. 
-- 이 신호에 의해 DC(data cache)에 있던 b가 register 전달되어 저장된다.(<span style="color:red">load</span>)
+- 이 신호에 의해 DC(data cache)에 있던 b가 register에 전달되어 저장된다.(<span style="color:red">load</span>)
 - c도 마찬가지로 register에 전달되고
 - b와 c가 ALU에 들어가 연산을 진행 후 나온 결과가 register로 전달되고
 - 이 결과 data가 다시 DC의 a로 전달된다.(<span style="color:red">store</span>)
@@ -82,7 +82,7 @@ CPU가 어떤 동작을 수행해야 하는가? -> ISA
 
 #### performance
 
-perf = $\frac{1}{exec time}$
+perf = 1/exec time
 
 <br>
 
@@ -176,8 +176,8 @@ Compiler에 의해 language를 machine이 알아듣도록 계속 변환 시킴
 
   - ```assembly
     swap:
-    	muli $2, $5.4
-    	add $2, $4.$2
+    	muli $2, $5, $4
+    	add $2, $4, $2
     	lw $15, 0($2)
     	lw $16, 4($2)
     	sw $16, 0($2)
