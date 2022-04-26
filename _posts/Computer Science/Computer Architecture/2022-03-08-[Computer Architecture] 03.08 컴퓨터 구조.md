@@ -50,7 +50,7 @@ RISC-V 새로 나옴, Open source로 공개 되어 있다.
    - 하드웨어가 얼마나 잘 만들어져 있는지, 잘 만든다는 게 무엇일까?
 
 1. Instruction Set
-2. 1에 대한 Micro Architecture(Hardware, )
+2. 1에 대한 Micro Architecture(Hardware)
 3. Memory
 4. I/O
 5. Parallel-computer
