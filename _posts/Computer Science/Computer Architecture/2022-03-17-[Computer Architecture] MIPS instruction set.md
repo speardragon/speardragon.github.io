@@ -112,8 +112,8 @@ instruction set의 종류(기본,핵심,필수가 되는 세 가지 기능)
 add rd, rs, rt # rs + rt -> rd
 addi rd, rs, Const # rd:register destination, rs:register source, Const:constanct number
 
-lw, rd, Mem_adr #register 내용을 memory로 옮겨라
-sw, rs, Mem_adr 
+lw, rd, Mem_adr 
+sw, rs, Mem_adr#register 내용을 memory로 옮겨라
 
 beq, $1, $2, Label # if $1 == $2, Label로 jump (branch equal)
 bne, $1, $2, Label # if $1 != $2, Label로 jump
