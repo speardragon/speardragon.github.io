@@ -375,7 +375,7 @@ register 정보는 32bit인데 byte 단위로 전달하기 때문에 4byte가 �
 즉, 하나의 address는 8bit이다.
 
 - Each data byte has unique address
-- Load/store words or single bytes: load byte(1b) and store byte(sb)
+- Load/store words or single bytes: load byte(lb) and store byte(sb)
 - 32-bit word = 4 bytes, so word address increments by 4
 
 
@@ -407,7 +407,7 @@ register 정보는 32bit인데 byte 단위로 전달하기 때문에 4byte가 �
 
 #### Example: store the value held in $t7 into memory address 0x10(16)
 
-- if t7 holds the value 0xAABBCCDD, then after the swcompletes, word 4 (at address 0x10) in memory will contain that value.
+- if $t7 holds the value 0xAABBCCDD, then after the sw completes, word 4 (at address 0x10) in memory will contain that value.
 
 ![image](https://user-images.githubusercontent.com/79521972/159829374-33913eb0-3120-473a-a855-aa054bc24a6d.png)
 
@@ -424,8 +424,7 @@ register 정보는 32bit인데 byte 단위로 전달하기 때문에 4byte가 �
   - low address가 lsb position
 
 - Big-endian: byte numbers start at the big (most  significant) end
-  - 
-
+  
 - Word address is the same for big- or little-endian
 
 ![image](https://user-images.githubusercontent.com/79521972/159406143-d69ac8c2-7439-4bd2-b70b-b2a8b886d438.png)
@@ -503,7 +502,7 @@ word단위로 데이터를 처리하면 문제가 없는데 바이트 단위로 
 
 ### Machine Language
 
-- Binary represientation of instructions
+- Binary representation of instructions
 - Computers only understand 1's and 0's
 - 32-bit instructions
   - Simplicity favors regularity: 32-bit data & instructions
