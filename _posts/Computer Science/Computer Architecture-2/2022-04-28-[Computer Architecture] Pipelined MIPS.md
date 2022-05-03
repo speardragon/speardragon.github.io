@@ -2,7 +2,7 @@
 layout: single
 title: "[Computer Architecture] Pipelined MIPS"
 categories: ['Computer Science', 'Computer Architecture']
-tag: ['Peroformance']
+tag: ['Pipeline']
 ---
 
 <br>
@@ -106,7 +106,7 @@ A) multi cylce은 5개로 나눠서 이 전체를 clock으로 사용하여 한 �
 - Temporal parallelism
 - Divide single-cycle processor into 5 stages:
   - Fetch (IM)
-  - Decode (& Reg. read)
+  - Decode (& RF. read)
   - Execute (ALU)
   - Memory (DM)
   - Writeback (Reg.Write)
@@ -138,9 +138,13 @@ A) multi cylce은 5개로 나눠서 이 전체를 clock으로 사용하여 한 �
 
 clock에 inverter가 달려 있음 -> falling edge 에서 trigger(writing)
 
+![image](https://user-images.githubusercontent.com/79521972/166400863-df72dd21-8139-432d-ba96-1b3324d347fa.png)
 
 
 
+
+
+0503 22분경 무슨 말 했는지?
 
 <br>
 
@@ -179,12 +183,14 @@ clock에 inverter가 달려 있음 -> falling edge 에서 trigger(writing)
     - falling edge에서 write
   - Control hazard: next instruction not decided yet  (caused by branches)
     - beq
-
-
+  
+  - How to solve? or avoid?
 
 <br>
 
 ## Data Hazard
+
+그림에 rising edge와 falling edge가 표현되어 있음?
 
 ![image](https://user-images.githubusercontent.com/79521972/166344936-fe91d292-4fb0-4dc6-b559-31e2bdf3c4df.png)
 
@@ -222,6 +228,9 @@ clock에 inverter가 달려 있음 -> falling edge 에서 trigger(writing)
 ![image](https://user-images.githubusercontent.com/79521972/166345365-cf3e5a2a-0fe6-4dcd-8170-cbacc16dbbb0.png)
 
 이처럼 nop(no operation) 을 끼워도 되고 전혀 상관 없는 두 명령어를 갖다가 끼워도 된다.
+
+하지만 두 clock cycle의 낭비가 있음
+
 <br>
 
 ## Data Fowarding(Bypassing)
