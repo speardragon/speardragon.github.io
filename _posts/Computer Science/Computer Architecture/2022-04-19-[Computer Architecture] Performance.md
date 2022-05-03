@@ -2,7 +2,7 @@
 layout: single
 title: "[Computer Architecture] Multi-cycle Performance"
 categories: ['Computer Science', 'Computer Architecture']
-tag: ['Peroformance']
+tag: ['Performance']
 ---
 
 
@@ -115,7 +115,6 @@ A) mips는 data memory 때문에 unbalence가 발생
 - 장점 
   - resource sharing(memory, ALU)
   - faster clock
-
 
 
 
