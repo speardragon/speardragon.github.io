@@ -545,7 +545,7 @@ int main(int argc, char **argv) {
 
 ```shell
 $ file_lock mandatory.txt  #강제 잠금 설정이 되어 있기 때문에 블락 되어 있음
- - 		
+ - 	
 ```
 
 ```shell
