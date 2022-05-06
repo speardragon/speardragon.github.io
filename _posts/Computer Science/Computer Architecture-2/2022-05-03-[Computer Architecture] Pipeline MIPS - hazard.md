@@ -171,7 +171,7 @@ Introduced another data hazard in **Decode stage**
 
 <br>
 
-## Control Forwarding & Stalling Logic
+## Control Forwarding &amp; Stalling Logic
 
 - **Forwarding logic:** 
 
