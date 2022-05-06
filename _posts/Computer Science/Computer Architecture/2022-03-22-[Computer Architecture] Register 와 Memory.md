@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Computer Architecture] Register & Memory"
+title: "[Computer Architecture] Register 와 Memory"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['big-endian', 'little-endian', 'base addressing']
 ---

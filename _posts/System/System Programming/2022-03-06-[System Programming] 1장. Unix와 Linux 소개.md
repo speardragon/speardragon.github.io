@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[System Programming] 1장. Unix/Linux 소개"
+title: "[System Programming] 1장. Unix와 Linux 소개"
 categories: ['System', 'System Programming']
 tag: ['System Programming', 'Unix']
 toc: true
