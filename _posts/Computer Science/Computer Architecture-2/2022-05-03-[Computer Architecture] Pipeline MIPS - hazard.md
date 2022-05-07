@@ -2,7 +2,7 @@
 layout: single
 title: "[Computer Architecture] Pipelined MIPS - hazard"
 categories: ['Computer Science', 'Computer Architecture']
-tag: ['Pipeline']
+tag: ['Pipeline', 'hazard']
 ---
 
 <br>
@@ -226,11 +226,14 @@ jump는 condition을 따지지 않고 바로 실행하기 때문에 control 신�
 
 
 
+---
 
+## Branch Prediction
 
-
-
-
+- Guess whether branch will be taken 
+  - Backward branches are usually taken (loops) 
+  - Consider history to improve guess 
+  - Good prediction reduces fraction of branches  requiring a flush
 
 
 
