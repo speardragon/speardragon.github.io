@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Computer Architecture] Pipelined MIPS - hazard"
+title: "[Computer Architecture] Pipelined MIPS Performance"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['Pipeline']
 ---
