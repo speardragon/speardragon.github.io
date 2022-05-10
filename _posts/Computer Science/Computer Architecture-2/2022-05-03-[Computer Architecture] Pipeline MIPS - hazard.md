@@ -49,7 +49,7 @@ Data에 대한 Read/Write Sequence가 엇갈리면서 발생하는 문제이다.
 
 ![image](https://user-images.githubusercontent.com/79521972/166400646-cb957cc9-dd55-432d-9ae7-987ee29b9e71.png)
 
-lw의 계산 결과는 DM의 뒤에 나오기 때문에 이전의 ALU에서 나오던 hazard를 해결한 방식으로 해결할 수 없다.
+lw의 계산 결과는 DM의 뒤에 나오기 때문에 이전의 hazard와 같이 forwading 방식으로 ALU에서 가져와도 그 연산 결과는 주소값일 뿐 실질적으로 원하는 register 값이 아니기 때문에 그 방식으로는 해결할 수 없다.
 
 <br>
 
@@ -81,7 +81,7 @@ StallF와 StallD 신호를 통해 IF와 ID의 register를 disabled 시키는 것
 
 <br>
 
-## Staing Logic
+## Stalling Logic
 
 ![image](https://user-images.githubusercontent.com/79521972/166853299-b9bc0ba8-d6e0-40ab-83b6-32aa5deaa556.png)
 
@@ -137,6 +137,9 @@ beq 명령어로 인해 jump하고자 하는 label과 beq 명령 사이에 있�
 
 Introduced another data hazard in **Decode stage**
 
+- BTA 계산 하는 모듈
+- 같은 지를 비교하기 위한 comparator 
+
 그런데 이렇게 하자니 새로운 hazard가 다시 발생한다.
 
 <br>
@@ -145,13 +148,13 @@ Introduced another data hazard in **Decode stage**
 
 ![image](https://user-images.githubusercontent.com/79521972/166402838-44d57870-0a73-4436-b912-059bcd50f1fd.png)
 
-왼쪽의 code는 두 개 앞에 가고있는 clock이 add이기 때문에 forwarding으로 해결 가능한 문제이다.
-
-- 다음 다음 clock에서는 이미 계산이 완료 되었기 때문에
-
-그러나 오른쪽의 code에서는 두 clock 앞에 가는 명령이 lw 이기 때문에 그 때는 ALU 계산을 하기도 전이라서 새로운 data hazard를 발생한다.
+- 왼쪽의 code는 두 개 앞에 가고있는 clock이 add이기 때문에 forwarding으로 해결 가능한 문제이다.
+  - 다음 다음 clock에서는 ALU에서 이미 계산이 완료 되었기 때문에
 
 
+- 그런데 만약 오른쪽의 code처럼 두 clock 앞에 가는 명령이 lw 이거나 바로 앞에 가는 clock에서 add와 같은 register write이 일어난다면 그 때는 ALU 계산을 하기도 전이라서 새로운 data hazard를 발생하기 때문에 이 경우에는 stall이 필요하다.
+
+Q) 만약에 lw 명령어에서 rt에 load 하는 명령 바로 다음 beq에서 그 레지스터를 사용하면 stalling을 두 클락동안 해야 하나요?
 
 
 
@@ -177,7 +180,7 @@ Introduced another data hazard in **Decode stage**
 
 ![image](https://user-images.githubusercontent.com/79521972/166403016-d513e2c6-1196-41bb-ae55-f34ec0263efb.png)
 
-
+두 개 앞에 가는 명령이 reg write
 
 
 
@@ -188,6 +191,10 @@ Introduced another data hazard in **Decode stage**
 
 
 ![image](https://user-images.githubusercontent.com/79521972/166403082-2cfb57ba-bf2d-4576-81e2-7d3cfc90b628.png)
+
+한 개 앞에 가는 명령이 reg write || 두 개 앞에 가는 명령이 lw (lwstall 인 듯 위에는 표시가 안 되어 있음)
+
+
 
 MemtoReg: lw명령어만 갖고 있는 control signal
 
