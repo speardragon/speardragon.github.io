@@ -140,7 +140,7 @@ A) multi cylce은 5개로 나눠서 이 전체를 clock으로 사용하여 한 �
 
 ![image](https://user-images.githubusercontent.com/79521972/166343820-09862ccb-aee4-4fe4-9d30-1dfe570c25af.png)
 
-rising edge에서 write back 하여 register file에 write을 하려고 할 때 register file의 clk이 rising edge에서 동작하면 충돌이 일어나기 때문에 rising edge에서 writeback 하면 negative edge에서 register file에 data가 실제로 저장되게 되는 것이다.
+W방에 들어가면서 rising edge에서 write back 하여 register file에 write을 하려고 할 때 register file의 clk이 rising edge에서 동작하면 충돌이 일어나기 때문에 rising edge에서 writeback 하면 negative edge에서 register file에 data가 실제로 저장되게 되는 것이다.
 
 
 
@@ -262,6 +262,8 @@ sw 명령의 경우 메모리에서 write과 read가 동시에 일어나는데 �
 그래서 i2를 보면 $s0는 바뀌기 전의 $s0인데 얘를 register에 저장만 해 두고 실제로 ALU에 들어가는 $s0는  i2에서 만들어진 값을 넣어주게 되는 것이다.
 
 - 그래서 사실상 $s0 값이 들어가는 게 아니라 i1에서 ALU의 결과 값이 들어가는 것.
+
+<br>
 
 ## Data Forwarding to solve hazard
 
