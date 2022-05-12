@@ -309,6 +309,8 @@ address가 10bit
 
 2번 그림: burst timing
 
+- 연속적인 데이터를 계속 가져오기 위해서는(spatial locality) RAS를 계속 두고 CAS의 신호만 계속 바꾸게 하고
+
 - CAS에서만 계속 access
 
 3번 그림: write access time
