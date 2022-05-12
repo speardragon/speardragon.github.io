@@ -15,10 +15,11 @@ tag: ['C', 'File I/O']
 
 - 저수준 파일 입출력: 유닉스 커널의 시스템 호출을 사용하여 파일 입출력을 실행하며, 특수 파일도 읽고 쓸 수 있다.
   - int fd = open (const char *path, int oflag, [ mode_t mode ]);
-
+    - file descriptor 리턴
+  
 - 고수준 파일 입출력: 표준 입출력 라이브러리로 다양한 형태의 파일 입출력 함수를 제공한다.
   - FILE *fopen(const char *name, const char *mode)
-    - 파일 구조체의 시작 주소
+    - 파일 구조체의 시작 주소 리턴
 
 
 
@@ -49,13 +50,13 @@ tag: ['C', 'File I/O']
 ```
 Section # Topic
 1 Commands available to users
-	실행 가능핚 프로그램이나 쉘 명령어
+	실행 가능한 프로그램이나 쉘 명령어
 2 Unix and C system calls
 	시스템 콜(커널에서 제공하는 기능)
 3 C library routines for C programs
 	라이브러리 콜(프로그램 라이브러리 기능)
 4 Special file names
-	특별핚 파일들(일반적 /dev 디렉토리에 있는 파일 )
+	특별한 파일들(일반적 /dev 디렉토리에 있는 파일 )
 5 File formats and conventions for files used by Unix
 	파일 포맷과 /etc/passwd와 같은 파일 명명 규칙
 6 Games
@@ -63,14 +64,13 @@ Section # Topic
 7 Word processing packages
 	그 외의 여러가지 것들(매크로 패키지와 명명규칙 등을 포함
 8 System administration commands and procedures
-	시스템 관리 명령어(일반적으로 root 유저를 위핚 명령어)
+	시스템 관리 명령어(일반적으로 root 유저를 위한 명령어)
 9 커널 루틴[ 비 표준 ]
-
 ```
 
+모르는 명령어 -> Unix man page
 
-
-
+<br>
 
 ## 시스템 호출
 
@@ -79,17 +79,21 @@ Section # Topic
 
 ![image](https://user-images.githubusercontent.com/79521972/167294737-699deec6-dc38-4ace-9dde-c2a3d1ec893f.png)
 
+<br>
+
 ## 파일
 
 - C 프로그램에서 파일은 왜 필요할까? 
-  - 변수에 저장된 정보들은 실행이 끝나면 모두 사라진다. 
+  - 변수에 저장된 정보들은 **실행이 끝나면** 모두 **사라진다**. 
   - 정보를 영속적으로 저장하기 위해서는 파일에 저장해야 한다.
 - 유닉스 파일 
-  - 모든 데이터를 연속된 바이트 형태로 저장한다. 
+  - 모든 데이터를 **연속된 바이트 형태**로 저장한다. 
   - 바이트들을 어떻게 해석하느냐는 전적으로 프로그래머의 책임
   - 파일에 4개의 바이트가 들어 있을 때 이것을 int형의 정수 데이터로도 해석할 수 있고 아니면 float형 실수 데이터로도 해석할 수 있다.
 
 ![image](https://user-images.githubusercontent.com/79521972/167294748-dcea6079-04a8-4795-97c5-3f4783b37de8.png)
+
+<br>
 
 ## C 언어의 파일 종류
 
@@ -99,14 +103,15 @@ Section # Topic
 
   - 여러 줄로 구성, 매 줄마다 줄의 끝을 나타내는 개행문자('\\n') 포함 
 
-  - 텍스트 파일에서 “핚 줄의 끝”을 나타내는 표현은 파일이 읽어 들여질 때, C 내부의 방식으로 변환된다. 
+  - 텍스트 파일에서 “한 줄의 끝”을 나타내는 표현은 파일이 읽어 들여질 때, C 내부의 방식으로 변환된다. 
 
 - 이진 파일(binary file) 
 
-  - 모든 데이터를 컴퓨터 메모리에 저장된 변수 값의 2진수 표현을 그대로 저장할 파일 
+  - 모든 데이터를 컴퓨터 메모리에 저장된 변수 값의 **2진수** 표현을 그대로 저장할 파일 
   - 이진 파일을 이용하여 메모리에 저장된 변수 값 형태 그대로 파일에 저장할 수 있다. 
   - 여전히 연속된 바이트의 저장물 
-  - 이진 파일은 텍스트 파일과는 달리 라인들로 분리되지 않는다.
+  - 이진 파일은 텍스트 파일과는 달리 **라인들로 분리되지 않는다**.
+    - 라인의 구분이 없다.
   - 모든 데이터들은 문자열로 변환되지 않고 입출력
 
 <br>
@@ -115,9 +120,11 @@ Section # Topic
 
 ![image](https://user-images.githubusercontent.com/79521972/167294828-af3b76d9-53db-482b-a3ec-213b1a4333e1.png)
 
-- 텍스트 방식에서는 데이터를 파일에 저장하거나 파일로부터 읽을 때 ASCII 코드에 대응되는 byte 단위로 처리 
-- 이진 방식에서는 파일에 저장하거나 파일로부터 읽을 때 데이터 형(type)에 기준 하여 처리. 
-  - 이진 방식으로 저장된 내용을 텍스트 방식의 메모장 프로그램으로 읽으면 1 byte 단위로 읽은 데이터를 ASCII 코드의 문자로 해석하기 때문에 이상한 문자들로 출력됨
+- **텍스트 방식**에서는 데이터를 파일에 저장하거나 **파일로부터 읽을 때 ASCII 코드에 대응**되는 byte 단위로 처리 
+  - 그래서 사람이 읽을 수 있음
+
+- **이진 방식**에서는 파일에 저장하거나 파일로부터 읽을 때 데이터 형(type)에 기준 하여 처리. 
+  - 이진 방식으로 저장된 내용을 텍스트 방식의 메모장 프로그램으로 읽으면 **1 byte 단위로 읽은 데이터를 ASCII 코드의 문자로 해석하기 때문에** 이상한 문자들로 출력 됨
 
 <br>
 
@@ -125,7 +132,7 @@ Section # Topic
 
 - C 언어의 파일 입출력 과정
   1. 파일 열기: fopen( ) 함수 사용 
-  2. 파일 입출력 : 다양핚 파일 입출력 함수 사용 
+  2. 파일 입출력 : 다양한 파일 입출력 함수 사용 
   3. 파일 닫기: fclose( ) 함수 사용
 
 <br>
@@ -133,9 +140,9 @@ Section # Topic
 ## 파일 열기
 
 - 파일을 사용하기 위해서는 
-  - 반드시 먼저 파일 열기(fopen)를 해야 핚다. 
-  - 파일 열기를 하면 FILE 구조체에 대한 포인터가 리턴되며 
-  - FILE 포인터는 열린 파일을 나타낸다. 
+  - 반드시 먼저 파일 열기(fopen)를 해야 한다. 
+  - 파일 열기를 하면 **FILE 구조체에 대한 포인터**(주소)가 리턴되며 
+  - FILE 포인터는 **열린 파일**을 나타낸다. 
 
 - 함수 fopen()
 
@@ -152,12 +159,15 @@ Section # Topic
     fp = fopen(“~/sp/text.txt", "r");
     if (fp == NULL) {
     	printf("파일 열기 오류\n");
-    }
-    fp = fopen("outdata.txt", "w");
-    fp = fopen("outdata.txt", "a");            
+    }       
     ```
-
-
+    
+    ```c
+    fp = fopen("outdata.txt", "w");
+    fp = fopen("outdata.txt", "a");  
+    ```
+    
+    
 
 <br>
 
@@ -172,12 +182,12 @@ Section # Topic
 ## FILE 구조체
 
 - 파일 관련 시스템 호출 
-  - 파일 디스크립터 (file descriptor) 
+  - 파일 디스크립터 (file descriptor)  : file table의 index
 - C 표준 입출력 함수 
-  - fopen( ) 함수로 파일을 열면 FILE 포인터(FILE *)가 리턴됨 
-  - 열린 파일을 가리키는 FILE 구조체에 대한 포인터 
-  - FILE 포인터를 표준 입출력 함수들의 인수로 젂달해야 함 
-  - #include <stdio.h>
+  - fopen( ) 함수로 파일을 열면 **FILE 포인터**(FILE *)가 리턴됨 
+  - **열린 파일**을 가리키는 FILE 구조체에 대한 포인터 
+  - FILE 포인터를 표준 입출력 함수들의 인수로 전달해야 함 
+  - ``#include <stdio.h>``
 - FILE 구조체 
   - 하나의 스트림에 대한 정보를 포함하는 구조체 
   - 버퍼에 대한 포인터, 버퍼 크기 … 
@@ -205,7 +215,7 @@ typedef struct {
 2. 버퍼가 line 단위로 
 
 - _IOFBF 
-  - An abbreviation for "input/output fully buffered“ 
+  - An abbreviation(약어) for "input/output fully buffered“ 
 - _IOLBF 
   - An abbreviation for "input/output line buffered" 
 - _IONBUF 
@@ -217,7 +227,7 @@ typedef struct {
 
 ## File Open 성공 여부 체크
 
-- File Open 성공 여부 체크 필요
+- File Open 성공 여부 체크 필요(read 모드의 경우 반드시 해야 함)
 
 ```c
 FILE* fp = fopen("myfile", "r");
@@ -238,11 +248,11 @@ if (fp == NULL) {
 
 - fopen()에 의해 파일이 열리면 이를 스트림이라고 함.
   - 파일 열기를 하면 스트림이 생성됨 
-  - 스트림에 대핚 정보는 FILE 구조체에 저장되고 
-  - FILE 구조체에 대핚 포인터 (파일 포인터)가 리턴됨 
+  - 스트림에 대한 정보는 FILE 구조체에 저장되고 
+  - FILE 구조체에 대한 포인터 (파일 포인터)가 리턴 됨 
   - 파일 포인터가 열린 파일(스트림)을 나타내게 됨 
-- 스트림은 버퍼형 파일 입출력을 위핚 논리적 인터페이스 
-- C 언어는 키보드나 모니터를 포함핚 모든 주변 장치들을 파일처럼 취급. 
+- 스트림은 버퍼형 파일 입출력을 위한 논리적 인터페이스 
+- C 언어는 키보드나 모니터를 포함한 모든 주변 장치들을 파일처럼 취급. 
 - 모든 입력과 출력은 스트림(stream)이라고 하는 공통된 인터페이스를 사용하여 파일로 취급되는 주변장치들과 연결되어 이루어짐 
 - 입력과 출력을 바이트(byte)들의 흐름으로 간주
 
@@ -275,7 +285,7 @@ File pointer를 통해 파일에 접근할 때도 결국은 file descriptor를 �
 - 파일을 열어서 사용핚 후에는 파일을 닫아야 핚다. 
   - int fclose(FILE *fp ); 
   - fp는 fopen 함수에서 받았던 포인터 
-  - 닫기에 성공하면 0, 오류일 때는 EOF( -1)를 리턴핚다.
+  - 닫기에 성공하면 0, 오류일 때는 EOF( -1)를 리턴한다.
 - 예
   - fclose(fp);
 
@@ -291,8 +301,8 @@ File pointer를 통해 파일에 접근할 때도 결국은 file descriptor를 �
 
 - 텍스트 파일은 사람이 읽을 수 있는 텍스트가 들어 있는 파일 
   - (예) C 프로그램 소스 파일이나 메모장 파일 
-- 텍스트 파일은 연속된 문자를 아스키 코드를 이용하여 저장 
-- 텍스트 파일은 연속적인 라인들로 구성
+- 텍스트 파일은 연속된 문자를 ASCII 코드를 이용하여 저장 
+- 텍스트 파일은 연속적인 **라인**들로 구성
 
 
 
@@ -309,16 +319,16 @@ File pointer를 통해 파일에 접근할 때도 결국은 file descriptor를 �
 ## 문자 단위 입출력
 
 - fgetc() 함수와 fputc() 함수 
-  - 파일에 문자 단위 입출력을 핛 수 있다. 
-- int fgetc(FILE *fp); //getc() 
-  - getc 함수는 fp가 지정핚 파일에서 핚 문자를 읽어서 리턴핚다. 
-  - 파일 끝에 도달했을 경우에는 EOF(-1)를 리턴핚다. 
+  - 파일에 문자 단위 입출력을 할 수 있다. 
+- `int fgetc(FILE *fp); //getc() `
+  - getc 함수는 fp가 지정한 파일에서 한 문자를 읽어서 리턴한다. 
+  - 파일 끝에 도달했을 경우에는 EOF(-1)를 리턴한다. 
 - int fputc(int c, FILE *fp); //put(c) 
-  - putc 함수는 파일에 핚 문자씩 출력하는 함수 
+  - putc 함수는 파일에 한 문자씩 출력하는 함수 
   - 리턴값으로 출력하는 문자 리턴 
   - 출력시 오류가 발생하면 EOF(-1) 리턴 
 - #define getchar () getc(stdin) 
-- #define putchar (x) getc(x, stdout)
+- #define putchar (x) putc(x, stdout)
 
 <br>
 
@@ -332,12 +342,12 @@ int main(int argc, char *argv[])
     FILE *fp;
     int c;
     if (argc < 2)
-        fp = stdin; // 명령줄 인수가 없으면 표준입력 사용
-    else fp = fopen(argv[1],"r"); // 읽기 젂용으로 파일 열기
-    c = getc(fp); // 파일로부터 문자 읽기
-    while (c != EOF) { // 파일끝이 아니면
-        putc(c, stdout); // 읽은 문자를 표준출력에 출력
-        c = getc(fp); // 파일로부터 문자 읽기
+        fp = stdin; 				// 명령줄 인수가 없으면 표준입력 사용
+    else fp = fopen(argv[1],"r"); 	// 읽기 전용으로 파일 열기
+    c = getc(fp); 					// 파일로부터 문자 읽기
+    while (c != EOF) { 				// 파일끝이 아니면
+        putc(c, stdout); 			// 읽은 문자를 표준출력에 출력
+        c = getc(fp);				// 파일로부터 문자 읽기
     }
     fclose(fp);
     return 0;
@@ -386,13 +396,13 @@ int main(int argc, char *argv[])
 ## 기타 파일 관련 함수
 
 - int feof(FILE *fp) 
-  - 파일 포인터 fp가 파일의 끝을 탐지하면 0이 아닊 값을 리턴하고 
-  - 파일 끝이면 0을 리턴 핚다. 
+  - 파일 포인터 fp가 파일의 끝을 탐지하면 0이 아닌 값을 리턴하고 
+  - 파일 끝이면 0을 리턴 한다. 
 - int ungetc(int c, FILE *p) 
-  - c에 저장된 문자를 입력 스트림에 반납핚다. 
+  - c에 저장된 문자를 입력 스트림에 반납한다. 
   - 마치 문자를 읽지 않은 것처럼 파일 위치 지정자를 1 감소시킨다.
 - int fflush(FILE *fp) 
-  - 아직 기록되지 않고 버퍼에 남아 있는 데이터를 fp가 가리키는 출력 파일 에 보낸다. 
+  - 아직 기록되지 않고 버퍼에 남아 있는 데이터를 fp가 가리키는 출력 파일 에 보낸다. (하드디스크에 있는 파일에다가)
   - 버퍼 비우기 기능을 수행하는 함수이다. 
 
 <br>
@@ -400,13 +410,13 @@ int main(int argc, char *argv[])
 ## 줄 단위 입출력
 
 - fgets() 함수와 fputs() 함수 // gets() 함수와 puts() 함수 참조 
-  - 텍스트 파일에서 핚 줄씩 읽거나 쓸 수 있다. 
+  - 텍스트 파일에서 한 줄씩 읽거나 쓸 수 있다. 
 - char* fgets(char *s, int n, FILE *fp); 
-  - 파일로부터 핚 줄을 읽어서 문자열 포인터 s에 저장하고 s를 리턴 
-  - 개행문자('\n')나 EOF를 맊날 때까지 파일로부터 최대 n-1 개의 문자를 읽고 읽어온 데이터의 끝에는 NULL 문자를 붙여준다. (개행문자 포함) 
+  - **파일로부터 한 줄을 읽어서 문자열 포인터 s에 저장하고 s를 리턴** 
+  - 개행문자('\n')나 EOF를 만날 때까지 파일로부터 최대 n-1 개의 문자를 읽고 읽어온 데이터의 끝에는 **NULL 문자를 붙여준다**. (개행문자 포함) 
   - 파일을 읽는 중 파일 끝 혹은 오류가 발생하면 NULL 포인터 리턴. 
 - int fputs(const char *s, FILE *fp); 
-  - 문자열 s를 파일 포인터 fp가 가리키는 파일에 출력 
+  - **문자열 s를 파일 포인터 fp가 가리키는 파일에 출력** 
     - NULL 문자는 출력하지 않음. 
   - 성공적으로 출력핚 경우에는 출력핚 바이트 수를 리턴 
   - 출력핛 때 오류가 발생하면 EOF 값을 리턴
@@ -419,7 +429,7 @@ int main(int argc, char *argv[])
 #include <stdio.h>
 #define MAXLINE 80
 
-/* 텍스트 파일에 줄 번호 붙여 프린트핚다. */
+/* 텍스트 파일에 줄 번호 붙여 프린트한다. */
 int main(int argc, char *argv[])
 {
     FILE *fp;
@@ -452,14 +462,14 @@ int main(int argc, char *argv[])
 ## 포맷 입출력
 
 - fprintf() 함수 
-  - printf() 함수와 같은 방법으로 파일에 데이터를 출력핛 수 있다. 
+  - printf() 함수와 같은 방법으로 파일에 데이터를 출력할 수 있다. 
 - fscanf() 함수 
   - scanf() 함수와 같은 방법으로 파일로부터 데이터를 읽어 들일 수 있다. 
 - int fprintf(FILE *fp, const char *format, ...); 
-  - fprintf 함수의 첫 번째 인수 fp는 츨력핛 파일에 대핚 FILE 포인터 
+  - fprintf 함수의 첫 번째 인수 fp는 츨력한 파일에 대한 FILE 포인터 
   - 두 번째부터의 인수는 printf 함수와 동일 
 - int fscanf(FILE *fp, const char *format, ...); 
-  - fscanf 함수의 첫 번째 인수 fp는 입력받을 파일에 대핚 FILE 포인터 
+  - fscanf 함수의 첫 번째 인수 fp는 입력받을 파일에 대한 FILE 포인터 
   - 두 번째부터의 인수는 scanf 함수와 동일
 
 <br>
@@ -487,12 +497,12 @@ int main(int argc, char *argv[])
 ## scanf()를 이용한 입력
 
 - 문자열 형태의 입력을 형식 지정자에 의해 변환핚다. 
-  - %d : 10짂수로 입력 받음 
-  - %o : 8짂수로 입력 받음 
-  - %x : 16짂수로 입력 받음 
+  - %d : 10진수로 입력 받음 
+  - %o : 8진수로 입력 받음 
+  - %x : 16진수로 입력 받음 
   - %c : char형으로 입력받음 
-  - %s : 공백 문자가 아닌 문자부터 공백 문자가 나올 때까지를 
-  - 문자열로 변환하여 입력받음
+  - %s : 공백 문자가 아닌 문자부터 공백 문자가 나올 때 까지를 
+  - 문자열로 변환하여 입력 받음 
 
 <br>
 
@@ -507,16 +517,20 @@ int main(int argc, char *argv[])
 int main(int argc, char* argv[]) {
     struct student rec;
     FILE *fp;
+    
     if (argc != 2) {
         fprintf(stderr, "사용법: %s 파일이름\n", argv[0]);
         return 1;
     }
+    
     fp = fopen(argv[1], "w");
     printf("%-9s %-7s %-4s\n", "학번", "이름", "점수");
-    /* -9s  (-): 필드폭은 9자리, 출력값을 왼쪽 정렬 */
+    
+    /* -9s -> (-): 필드폭은 9자리, 출력값을 왼쪽 정렬 */
     while (scanf("%d %s %d", &rec.id, rec.name, &rec.score)==3)
         fprintf(fp, "%d %s %d ", rec.id, rec.name, rec.score);
     fclose(fp);
+    
     return 0;
 }
 ```
@@ -526,20 +540,14 @@ $ fprint stud.txt
 학번 이름 점수
 14010001 박연아 96
 14010002 김연아 86
-```
-
-```shell
-$ fscanf stud.txt
-학번 이름 점수
-14010001 박연아 96
-14010002 김연아 86
+----
 ```
 
 
 
 <br>
 
-## fscan.c(텍스트 파일에서 읽기)
+## fscanf.c(텍스트 파일에서 읽기)
 
 ```c
 #include <stdio.h>
@@ -548,17 +556,29 @@ $ fscanf stud.txt
 int main(int argc, char* argv[]) {
     struct student rec;
     FILE *fp;
+    
     if (argc != 2) {
         fprintf(stderr, "사용법: %s 파일이름\n", argv[0]);
         return 1;
     }
+    
     fp = fopen(argv[1], "r");
     printf("%-9s %-7s %-4s\n", "학번", "이름", "점수");
+    
     while (fscanf(fp,"%d %s %d", &rec.id, rec.name, &rec.score)==3)
-        printf("%10d %6s %6d\n", rec.id, rec.name, rec.score);
+        printf("%10d %6s %6d\n", rec.id, rec.name, rec.score); // 모니터에 프린트
+    
     fclose(fp);
     return 0;
 }
+```
+
+```shell
+$ fscanf stud.txt
+학번 이름 점수
+14010001 박연아 96
+14010002 김연아 86
+----
 ```
 
 
@@ -573,11 +593,11 @@ int main(int argc, char* argv[]) {
 
 - 컴퓨터에서 데이터를 표현하는 방식 그대로 저장 
 
-- 이짂 파일은 텍스트 파일과는 달리 라인들로 분리되지 않는다. 
+- 이진 파일은 텍스트 파일과는 달리 라인들로 분리되지 않는다. 
 
 - 모든 데이터들은 문자열로 변환되지 않고 입출력 
 
-- 이진 파일은 특정 프로그램에 의해서만 판독이 가능 
+- 이진 파일은 특정 프로그램에 의해서만 판독이 가능
 
   - (예) C 프로그램 실행 파일, 사운드 파일, 이미지 파일
 
@@ -600,13 +620,13 @@ int main(int argc, char* argv[]) {
 ## 블록 단위 입출력
 
 - fread()와 fwrite() 
-  - 핚번에 일정핚 크기의 데이터를 이짂 파일에 읽거나 쓰기 위핚 입출력 함수 
+  - 한 번에 일정한 크기의 데이터를 이진 파일에 읽거나 쓰기 위한 입출력 함수 
 - int fread(void *buf, int size, int n, FILE *fp); 
-  - fp가 가리키는 파일에서 size 크기의 블록(연속된 바이트)을 n개 읽어서 버퍼 포인터 buf가 가리키는 곳에 저장 
-  - 읽어온 블록의 개수를 리턴 
+  - fp가 가리키는 파일에서 **size 크기의 블록**(연속된 바이트)을 **n개** 읽어서 버퍼 포인터 buf가 가리키는 곳에 저장 
+  - 읽어온 **블록의 개수를 리턴** 
 - int fwrite(const void *buf, int size, int n, FILE *fp); 
-  - 파일 포인터 fp가 지정핚 파일에 버퍼 buf에 저장되어 있는 size 크기의 블 록(연속된 바이트)을 n개 기록 
-  - 성공적으로 출력핚 블록 개수를 리턴
+  - 파일 포인터 fp가 지정한 파일에 버퍼 buf에 저장되어 있는 size 크기의 블록(연속된 바이트)을 n개 기록 
+  - 성공적으로 출력한 **블록 개수를 리턴**
 
 
 
@@ -616,19 +636,21 @@ int main(int argc, char* argv[]) {
 
 ![image](https://user-images.githubusercontent.com/79521972/167298746-f071762d-84ba-4498-b7eb-1920f3ffaafc.png)
 
+줄이 바뀌는 것이 입출력의 단위
+
 <br>
 
 ## 블록 입출력
 
 - 기본 아이디어 
-  - 어떤 자료형의 데이터이던지 그 데이터를 연속된 바이트로 해석해서 파일에 저장 
+  - 어떤 자료형의 데이터이던지 그 데이터를 **연속된 바이트**로 해석해서 파일에 저장 
   - 파일에 저장된 데이터를 연속된 바이트 형태로 읽어서 원래 변수에 순서대로 저장하여 원래 데이터를 그대로 복원
 
 - 예: rec 저장
 
 ```c
 struct student rec;
-FILE *fp = fopen(“stfile", "wb");
+FILE *fp = fopen("stfile", "wb");
 …
 fwrite(&rec, sizeof(rec), 1, fp);
 ```
@@ -651,7 +673,7 @@ struct student {
 
 <br>
 
-## stcreate1.c
+## stcreate1.c (이진 파일에 쓰기)
 
 ```c
 #include <stdio.h>
@@ -666,8 +688,10 @@ int main(int argc, char* argv[])
     }
     fp = fopen(argv[1], "wb");
     printf("%-9s %-7s %-4s\n", "학번", "이름", "점수");
+    
     while (scanf("%d %s %d", &rec.id, rec.name, &rec.score) == 3)
         fwrite(&rec, sizeof(rec), 1, fp);
+    
     fclose(fp);
     exit(0);
 } 
@@ -678,9 +702,10 @@ $ stcreate1 stdb1
 학번 이름 점수
 14010001 박연아 96
 14010002 김연아 86
+----
 ```
 
-
+stdb1 -> 이진 파일
 
 <br>
 
@@ -699,9 +724,11 @@ int main(int argc, char* argv[]) {
     }
     fp = fopen(argv[1], "w");
     printf("%-9s %-7s %-4s\n", "학번", "이름", "점수");
+    
     /* -9s  (-): 필드폭은 9자리, 출력값을 왼쪽 정렬 */
     while (scanf("%d %s %d", &rec.id, rec.name, &rec.score)==3)
         fprintf(fp, "%d %s %d ", rec.id, rec.name, rec.score);
+    
     fclose(fp);
     return 0;
 }
@@ -751,7 +778,7 @@ int main(int argc, char* argv[])
     
     fclose(fp);
     return 0;
-} 
+}
 ```
 
 ```shell
@@ -759,6 +786,7 @@ $ stprint stdb1
 학번 이름 점수
 14010001 박연아 96
 14010002 김연아 86
+----
 ```
 
 
