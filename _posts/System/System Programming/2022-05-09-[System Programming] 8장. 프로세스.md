@@ -584,7 +584,7 @@ While (true) {
      }
     else
         execve(command, parmas) // 자식 프로세스
-} 
+} 								// 입력된 명령어 프로그램 실행
 ```
 
 ```shell
@@ -596,21 +596,127 @@ $
 
 <br>
 
+## 프로그램 실행 시작 (revisit)
+
+![image](https://user-images.githubusercontent.com/79521972/167991038-8b396c8a-c0f7-4120-902e-298a5e466ea2.png)
 
 
 
+<br>
+
+## atexit()
+
+```c
+#include <stdlib.h>
+void atexit(void (*func)(void));
+	returns: 0 if OK, nonzero on error
+```
+
+- exit 처리기를 등록한다.
+  - 프로세스당 32개까지
+- func
+  - exit 처리기
+  - 함수 포인터(이름)
+- exit()는 exit handler 들을 등록된 역순으로 호출한다.
 
 
 
+<br>
+
+## exit 처리기 예
+
+```c
+#include <stdio.h>
+static void my_exit1(void),
+my_exit2(void);
+int main(void) {
+    if (atexit(exit_handler1) != 0)
+        perror("exit_handler1 등록할 수 없음");
+    if (atexit(exit_handler2) != 0)
+        perror("exit_handler2 등록할 수 없음");
+    printf("main 끝 \n");
+    exit(0);
+}
+static void exit_handler1(void) {
+    printf("첫 번째 exit 처리기\n");
+    }
+
+    static void exit_handler2(void) {
+    printf("두 번째 exit 처리기\n");
+}
+```
+
+```shell
+$ atexit
+main 끝
+두 번째 exit 처리기
+첫 번째 exit 처리기
+```
 
 
 
+<br>
+
+## Termination status  (Exit status)
+
+- Terminating process notify its parent how it terminated. 
+- normal termination 
+  - pass an exit status as argument to exit() or _exit(). 
+  - return value from main() 
+    - exit( main( argc, argv) ); 
+    - void exit(int status); void _exit(int status); 
+  - exit status is converted into a termination status. 
+- abnormal termination 
+  - Kernel generates a termination status to indicate the reason for the abnormal termination. 
+- The parent of the terminated process can obtain the termination status from **wait()** or **waitpid()**.
 
 
 
+<br>
+
+## Termination status (Exit status)
+
+- Exit status: 
+  - argument of exit( ), _exit( ) 
+  - the return value from main( ): exit(main( )) 
+  - UNIX shell 에 의해서 사용됨 
+- Termination status: 
+  - Normal termination: 
+    - Exit status : Termination status 
+  - Abnormal termination: 
+    - kernel indicates reason : Termination status
 
 
 
+<br>
+
+## exit() - Termination status
+
+- Child terminates 
+  - Kernel sends SIGCHLD signal to parent 
+- Parent wait() or waitpid() 
+  - parent can obtain the termination status of the child 
+  - wait() fetch the termination status of child when receiving SIGCHLD signal
+
+
+
+<br>
+
+## exit() - Termination status
+
+- zombie state 
+  - Kernel has to keep some information 
+    - PID, termination status, and CPU usage time 
+    - This information is available when parent calls wait(). 
+  - the process that has terminated, but whose parent has not yet waited for it, is called a **zombie**. 
+    - If no parent waiting (did not invoke **wait()**) process is a **zombie** 
+  - If parent terminated without invoking **wait** , process is an **orphan** 
+- If the parent terminates before the child? 
+  - init process becomes the parent of the child (orphaned) process. 
+- If an orphaned process is terminated? 
+  - init calls wait() to fetch the termination status.
+
+<br>
 
 
 
