@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[System Programming] 8장. 프로세스"
+title: "[System Programming] 8-1장. 프로세스"
 categories: ['System', 'System Programming']
 tag: ['process']
 ---
@@ -75,7 +75,13 @@ $ a.out
 $
 ```
 
+child의 fork의 return 값은 0
 
+쉘 명령어를 실행하기 위해서 shell process 자체가 실행하는 것이 아니라 child process를 만들어 child process가 실행하는 것이다.
+
+초기에 fork를 하면 parent와 완전히 똑같은 프로세스가 실행되는데
+
+자식 프로세스는 execve() 시스템 콜을 통해 자식 프로세스의 이미지가 그 전 이미지는 지워버리고 새로운 프로세스 이미지를 갖게 된다.
 
 <br>
 
@@ -278,6 +284,14 @@ shell 명령어에서의 (sleep, wait, kill) vs. 시스템 콜에서의 sleep, w
 
 - `$ (echo 시작; sleep 5; echo 끝)`
 
+sleep 명령을 하면 WAITING 상태가 되어 CPU 사용을 잡아먹지 않는다.
+
+- 그래서 이 때 다른 프로그램 실행을 할 수 있게 된다.
+
+멀티 프로그래밍이 지원되지 않았으면 프로세스라는 개념이 없었을 것이다.
+
+
+
 <br>
 
 ## kill
@@ -391,9 +405,13 @@ $
 
 <br>
 
-## 프로그램 실행 시작
+## 프로그램 실행 시작(중요**)
+
+<span style="color:red"> 그림 그릴 줄 알아야 함.</span>
 
 ![image](https://user-images.githubusercontent.com/79521972/167347783-f0c19d8f-502e-4071-8dec-7172ef1560c2.png)
+
+main 함수의 종료 코드는 parent process의 wait()으로 전달됨
 
 <br>
 
@@ -441,7 +459,7 @@ argv[2]:world
 ## 환경 변수
 
 - 프로세스가 실행되는 기본 환경을 설정하는 변수 
-- 로그인명, 로그인 쉘, 터미널에 설정된 언어, 경로명 등 
+- 로그인 명, 로그인 쉘, 터미널에 설정된 언어, 경로명 등 
 - 환경변수는 “환경변수=값”의 형태로 구성되며 관례적으로 대문자로 사용 
 - 현재 쉘의 환경 설정을 보려면 env 명령을 사용 
 - **부모 프로세스에서 자식 프로세스로 전달된다** 
@@ -596,11 +614,13 @@ void _exit(int status);
 
 <br>
 
-## C 프로그램 시작 및 종료
+## C 프로그램 시작 및 종료(중요)
 
 ![image](https://user-images.githubusercontent.com/79521972/167348475-2c718100-13af-4221-b31c-bce4cf0284d8.png)
 
-- main 함수가 리턴할 때도 exit()이 실행되지만 user function이나 main function 내에서도 exit() 을 호출할 수 있다.
+- 내가 짠 main 함수, 사용자 정의 함수와 더불어 C start-up routine이 더해서 실행 파일이 만들어 진다.
+- main 함수가 리턴할 때도 C start-up routine을 거쳐서 exit()이 실행되어 종료 될 수 있고,
+- user function이나 main function 내에서도 exit() 을 호출하여 종료될 수도 있다.
 - 'does not return' means 
   - exit(main())은 리턴하는 것이 아니라 그냥 kernel로 넘어가는 것이다.
   - 왜냐하면 execve() 시스템 호출을 통해서 process image를 완전히 바꿔버렸기 때문에 return 할 곳(원래자기를 불렀던 프로세스) 이 없어졌기 때문이다.
@@ -715,6 +735,9 @@ main 끝
 - **abnormal termination** 
   - Kernel generates a **termination status**(종료 이유) to indicate the reason for the abnormal termination. 
 - The parent of the terminated process can obtain the termination status from **wait()** or **waitpid()**.
+  - wait(): 자식 프로세스 종료
+  - waitpid(): 특정 프로세스 종료
+
 
 
 
@@ -765,5 +788,4 @@ main 끝
   - init calls wait() to fetch the termination status.
 
 <br>
-
 

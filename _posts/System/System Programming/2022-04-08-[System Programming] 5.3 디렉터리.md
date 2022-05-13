@@ -24,7 +24,7 @@ tag: ['System Programming', 'File System']
 
 ![image](https://user-images.githubusercontent.com/79521972/162351770-e763fafc-47a9-4f1e-aa28-b6274963c47f.png)
 
-
+directory entry -> DIR 구조체
 
 <br>
 
@@ -456,13 +456,15 @@ char* perm(mode_t mode) {
   0000 000 100 000 000   -> 4+3+9
 - S_IRUSR 00400 
   
-  0000 0000 0100 0000 0000 
+  0000 000 100 000 000
 - mode & (S_IRUSR >> i*3) 
   - 0000 000 100 000 000 -> mode 
-  - 0000 0000 1000 0000 0000 -> S_IRUSR 
-  - 0000 0000 0001 0000 0000 -> S_IRUSR >> i*3
+  - 0000 000 100 000 000 -> S_IRUSR 
+  - 0000 000 001 000 000 -> S_IRUSR >> i*3
 
 그래서  서로 해당하는 mode끼리 and 연산을 통하면 해당 자리에는 1이 나오기 때문에 이를 이용한 것이다.
+
+![image](https://user-images.githubusercontent.com/79521972/162353174-26f3ab1e-278d-4b11-9954-825cf99763b6.png)
 
 <br>
 
@@ -474,9 +476,11 @@ char* perm(mode_t mode) {
 #define S_IRUSR 00400 /* read permission: owner */
 #define S_IWUSR 00200 /* write permission: owner */
 #define S_IXUSR 00100 /* execute permission: owner */
+
 #define S_IRGRP 00040 /* read permission: group */
 #define S_IWGRP 00020 /* write permission: group */
 #define S_IXGRP 00010 /* execute permission: group */
+
 #define S_IROTH 00004 /* read permission: other */
 #define S_IWOTH 00002 /* write permission: other */
 #define S_IXOTH 00001 /* execute permission: other */

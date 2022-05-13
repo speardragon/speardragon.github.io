@@ -71,10 +71,14 @@ int chdir(const char *pathname); // return: 0 if OK, -1 on error
 
 ## Process identifiers
 
+process id는 고정적인 번호가 아닌데 0,1,2 번은 고정되어 있다.
+
 - Process 0 (idle process : scheduler process or swapper) 
+  - READY에서 RUNNING으로 넘어갈 process를 결정해 주는 process
   - The process that the kernel “runs” **when there are no other runnable processes** 
   - Part of the kernel. 
   - System process. 
+  
 - Process 1 (**init process**) 
   - Normally, the init process on Linux is the init program 
   - **The first process** that the kernel executes **after booting the system** 
@@ -126,7 +130,10 @@ int chdir(const char *pathname); // return: 0 if OK, -1 on error
   - 현재 유효한 사용자 ID로 새로 파일을 만들 때나 파일에 대한 접근 권한을 검사할 때 주로 사용된다. 
   - 보통 유효 사용자 ID와 실제 사용자 ID는 **특별한 실행파일을 실행 할 때를 제외하고는** 동일하다. 
 
+사용자 ID vs. 프로세스 ID
 
+- 사용자 ID: 로그인 이름
+- 프로세스 ID: 프로세스마다 생성되는 ID(권한에 대한 것)
 
 <br>
 
@@ -449,7 +456,7 @@ $ uid
 
 ![image](https://user-images.githubusercontent.com/79521972/168039330-78c5ac79-3fe4-47f1-a6f3-dfc977368c6e.png)
 
-command-line arguments and environment variables
+
 
 <br>
 
@@ -472,9 +479,11 @@ command-line arguments and environment variables
   - 함수가 종료되면 없어지는 이유는 함수가 호출될 때 만들어진 stack frame이 함수가 return 될 때 없어지게 된다. 그래서 local variable은 함수가 실행되는 도중에만 존재하고 그 함수가 return 하면 없어지게 되는 특징을 갖는 것이다.
 - U-영역(user-area) 
   - 열린 파일 디스크립터, 현재 작업 디렉터리 등과 같은 **프로세스의 정보를 저장**하는 영역이다.
-  - command line argument
+  - command-line arguments and environment variables are stored.
 
+프로세스가 공유 가능한 부분은 code 부분
 
+ tread는 데이터도 공유 가능
 
 <br>
 

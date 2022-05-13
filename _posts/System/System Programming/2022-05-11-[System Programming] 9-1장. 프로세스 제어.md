@@ -179,16 +179,19 @@ int main()
 
 <br>
 
-## fork()
+## fork() 
+
+13페이지
 
 - Example
 
 ```c
 #include "apue.h"
+
 int glob = 6; /* external variable in initialized data */
 char buf[] = "a write to stdout\n";
-int
-main(void)
+
+int main(void)
 {
     int var; /* automatic variable on the stack */
     pid_t pid;
@@ -296,9 +299,9 @@ $
 
 - When a process terminates, the kernel sends the signal SIGCHLD to the parent. By default, this signal is ignored, and no action is taken by the parent. 
 - Processes can elect to handle this signal, however, via the signal( ) or sigaction( ) system calls 
-- The SIGCHLD signal may be generated and dispatched at any time, as a child‘s termination is asynchronous with respect to its parent. 
+- The SIGCHLD signal may be generated and dispatched at any time, as a child‘s termination is **asynchronous** with respect to its parent. 
 - But often, the parent wants to learn more about its child‘s termination, or even explicitly wait for the event‘s occurrence. 
-- This is possible with the wait system calls
+- This is possible with the **wait** system calls
 
 
 
@@ -310,6 +313,7 @@ $
   - Block, if all of its children are still running. 
   - Return immediately if a child has terminated. 
   - Return immediately with an error, if it doesn't have any child processes.
+    - fork를 하지 않고 wait -> 즉시 return
 
 ![image](https://user-images.githubusercontent.com/79521972/168042761-9c5f5129-89a4-41d8-9aa4-eca3704d3c21.png)
 
@@ -574,36 +578,286 @@ pid_t waitpid (pid_t pid, int *status, int options);
 - The waitpid( ) call is a more powerful version of wait( ). Its additional parameters allow for fine-tuning 
   - Provides some controls with options argument
 
+<br>
 
-,br>
+## pid_t waitpid(pid_t pid, int *statloc, int options);
+
+- The pid parameter specifies exactly which process or processes to wait for. 
+- pid == -1 
+  - Wait for any child process. This is the same behavior as wait( ). 
+- pid > 0
+  - Wait for any child process whose pid is exactly the value provided. For example, passing 500 waits for the child process with pid 500 
+- pid == 0 
+  - Wait for any child process that belongs to the same process group as the calling process. 
+- pid < -1 
+  - Wait for any child process whose process group ID is equal to the absolute value of this value. For example, passing -500 waits for any process in process group 500.
+
+<br>
+
+## waitpid option parameter
+
+- The status parameter works identically to the sole parameter to wait( ) 
+
+- **부모 프로세스의 대기 방법** 
+- **WNOHANG** 
+  - Do not block, but return immediately if no matching child process has already terminated (or stopped or continued) 
+    - if a child specified by pid is not terminated. 
+- **WUNTRACED** 
+  - Do not block if a child specified by pid has stopped. 
+  - If set, WIFSTOPPED is set, even if the calling process is not tracing the child process. 
+  - 실행을 중단한 자식 프로세스의 상태값을 리턴 
+  - This flag allows for the implementation of more general job control, as in a shell.
+
+- WCONTINUED 
+  - If set, WIFCONTINUED is set even if the calling process is not tracing the child process. 
+  - 수행중인 자식 프로세스의 상태값 리턴 
+  - As with WUNTRACED, this flag is useful for implementing a shell 
+- wait (&status); is identical to waitpid (-1, &status, 0);
+
+<br>
+
+## wait() and waitpid()
+
+- Example
+
+```c
+#include "apue.h"
+#include <sys/wait.h>
+int main(void)
+{
+    pid_t pid;
+    if ((pid = fork()) < 0) {
+        err_sys("fork error");
+    } else if (pid == 0) { /* first child */
+        if ((pid = fork()) < 0)
+            err_sys("fork error");
+        else if (pid > 0)
+            exit(0); /* parent from second fork == first child */
+        /* We're the second child; our parent becomes init. */
+        sleep(2);
+        printf("second child, parent pid = %d\n", getppid());
+        exit(0);
+    }
+    if (waitpid(pid, NULL, 0) != pid) /* wait for first child */
+        err_sys("waitpid error");
+    /*
+ * We're the parent (the original process); we continue executing,
+ * knowing that we're not the parent of the second child.
+ */
+    exit(0);
+}
+```
+
+```shell
+$ ./a.out
+$ second child, parent pid = 1
+```
 
 
 
+<br>
+
+## PID 1742인 자식프로세스를 wait (waitpid) 자식이 종료 안된 경우 즉시 리턴
+
+```c
+int status;
+pid_t pid;
+pid = waitpid (1742, &status, WNOHANG);
+if (pid == -1)
+    perror ("waitpid");
+else {
+    printf ("pid=%d\n", pid);
+    if (WIFEXITED (status))
+        printf ("Normal termination with exit status=%d\n",
+                WEXITSTATUS (status));
+    if (WIFSIGNALED (status))
+        printf ("Killed by signal=%d%s\n",WTERMSIG (status),
+                WCOREDUMP (status) ? " (dumped core)" : "");
+}
+```
 
 
 
+<br>
+
+## Zombies
+
+- a process that has terminated, but that has not yet been waited upon by its parent is called a ―zombie.‖ 
+  - 좀비 프로세스는 프로세스 테이블에만 존재 
+- Zombie processes continue to consume system resources 
+- wait() returns immediately with that child‘s status 
+- These resources remain so that parent processes that want to check up on the status of their children can obtain information relating to the life and termination of those processes. 
+- Once the parent does so, the kernel cleans up the process for good and the zombie ceases to exist.
+
+<br>
+
+## waitpid.c
+
+```c
+#include <sys/types.h>
+…
+/* 부모 프로세스가 자식 프로세스를 생성하고 끝나기를 기다린다. */
+int main()
+{
+    int pid1, pid2, child, status;
+
+    printf("[%d] 부모 프로세스 시작 \n", getpid( ));
+    pid1 = fork();
+    if (pid1 == 0) {
+        printf("[%d] 자식 프로세스[1] 시작 \n", getpid( ));
+        sleep(1);
+        printf("[%d] 자식 프로세스[1] 종료 \n", getpid( ));
+        exit(1);
+    }
+
+    pid2 = fork();
+    if (pid2 == 0) {
+        printf("[%d] 자식 프로세스 #2 시작 \n", getpid( ));
+        sleep(2);
+        printf("[%d] 자식 프로세스 #2 종료 \n", getpid( ));
+        exit(2);
+    }
+    // 자식 프로세스 #1의 종료를 기다린다.
+    child = waitpid(pid1, &status, 0); //option 0: 자식프로세스가 종료할때까지 wait
+    printf("[%d] 자식 프로세스 #1 %d 종료 \n", getpid( ), child);
+    printf("\t종료 코드 %d\n", status>>8);
+}
+```
 
 
 
+```shell
+$ waitpid
+[16840] 부모 프로세스 시작
+[16841] 자식 프로세스[1] 시작
+[16842] 자식 프로세스[2] 시작
+[16841] 자식 프로세스[1] 종료
+[16840] 자식 프로세스[1] 16841 종료
+종료코드 1
+[16842] 자식 프로세스[2] 종료
+```
 
 
 
+<br>
+
+## fork() 후에 파일 공유
+
+- 자식은 부모의 fd 테이블을 복사한다. 
+  - 부모와 자식이 같은 파일 디스크립터를 공유 (FD table, U area 복사) 
+  - 같은 파일 오프셋을 공유 
+  - 부모와 자식으로부터 출력이 서로 섞이게 됨 
+- 자식에게 상속되지 않는 성질 
+  - fork()의 반환값 
+  - 프로세스 ID
+  -  부모 프로세스가 설정한 프로세스잠금, 파일 잠금 
+  - 설정된 알람과 시그널
 
 
 
+<br>
+
+## fork()
+
+![image](https://user-images.githubusercontent.com/79521972/168189002-751ff4cb-edf9-4626-861f-da0f4cf94b17.png)
 
 
 
+<br>
+
+## Copy-on-write
+
+- Copy-on-write is a lazy optimization strategy designed to mitigate the overhead of duplicating resources. 
+- The premise is simple: if multiple consumers request read access to their own copies of a resource, duplicate copies of the resource need not be made. Instead, each consumer can be handed a pointer to the same resource. 
+- So long as no consumer attempts to modify its ―"copy" of the resource, the illusion of exclusive access to the resource remains, and the overhead of a copy is avoided. 
+- If a consumer does attempt to modify its copy of the resource, at that point, the resource is transparently duplicated, and the copy is given to the modifying consumer
+
+<br>
+
+## fork()
+
+- Copy on write
+
+![image](https://user-images.githubusercontent.com/79521972/168189249-70076eb1-83c5-40e6-83d2-c388cdc87bfd.png)
+
+- After parent process write a page C.
+
+![image](https://user-images.githubusercontent.com/79521972/168189298-84a8013c-2960-49dd-879d-d50f0b87ef3e.png)
 
 
 
+<br>
 
+## Vfork()
 
+- Creates a new process only to exec a new program 
 
+  - No copy of parent's address space for child (not needed!) 
+  - Before exec, child runs in "address space of parent" 
+  - Efficient in paged virtual memory 
 
+- Child runs first 
 
+  - Parent waits until child exec or exit 
 
+  - Then the parent resume 
 
+  - The deadlock possibility if the child wait for something from the parent
 
+<br>
 
+## vfork()
+
+```c
+#include <unistd.h>
+
+pid_t vfork(void);
+ Returns: 0 in child, process ID of child in parent, -1 on error 
+```
+
+- same calling sequence and same return values as fork(). 
+- intended to create a new process when the purpose of the new process is to exec() a new program. 
+  - Does not copy the address space of parent into the child. 
+  - The child calls exec() or exit() right after the vfork(). 
+  - The child runs in the address space of the parent. 
+  - Provides an efficiency. 
+- vfork() guarantees that the child runs first.
+
+<br>
+
+- Example
+
+```c
+#include "apue.h“
+int glob = 6; /* external variable in initialized data */
+int
+main(void)
+{
+    int var; /* automatic variable on the stack */
+    pid_t pid;
+    var = 88;
+    printf("before vfork\n"); /* we don't flush stdio */
+    if ((pid = vfork()) < 0) {
+        err_sys("vfork error");
+    } else if (pid == 0) { /* child */
+        glob++; /* modify parent's variables */
+        var++;
+        exit(0); /* child terminates */
+    }
+    /*
+ * Parent continues here.
+ */
+    printf("pid = %d, glob = %d, var = %d\n", getpid(), glob, var);
+    exit(0);
+}
+```
+
+- 실행 (13 페이지 fork 경우와의 차이점)
+
+```shell
+$ ./a.out
+before vfork
+pid = 29039, glob = 7, var = 89
+$
+```
 
