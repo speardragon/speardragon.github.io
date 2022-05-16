@@ -376,11 +376,182 @@ i=2: p1+ r1
 
 
 
+---
+
+11-18
+
+## 15.3 Elements of dynamic programming
+
+- We typically apply dynamic programming to optimization problems
+
+![image](https://user-images.githubusercontent.com/79521972/168519662-d5fd7824-3d7e-4639-8367-7948afbede0c.png)
+
+
+
+- Two key ingredients that an optimization problem must have to apply dynamic programming:
+
+1. Optimal substructure
+   - An optimal solution contains optimal solutions to subproblems
+2. Overlapping subproblems
+   - Finding the solution involves solving the same subproblem multiple times
+   - A divide-and-conquer approach always generating new subproblems
+
+
+---
+
+11-19
+
+We typically apply dynamic programming to optimization problems. Such problems can have many possible solutions. Each solution has a value, and we wish to find a solution with the optimal (minumum or maximum) value. We call such a solution an optimal solution to the problem, as opposed to the optimal solution, since there may be several solutions that achieve the optimal value.
+
+When developing a dynamic-programming algorithm, we fllow a sequence of four steps:
+
+1. Characterize the structure of an optimal solution.
+2. Recursively define the value of an optimal solution.
+3. Compute the value of and optimal solution
+4. Construct an optimal solution from computed information.
+
+Steps 1-3 form the basis of a dynamic-programming solution to a problem. If we need only the value of an optimal solution, and not the solution itself, then we can omit step 4.
+
+
+
+---
+
+11-20
+
+## Reconstructing a solution
+
+Here is and extended version of BOTTOM-UP-CUT-ROD that computes, for each rod size j, not only the maximum revenue r<sub>j</sub>, but also s<sub>j</sub>, the optimal size of the first piece to cut off:
+
+```python
+			if max_revenue < revenue: # 10
+        		max_revenue = revenue
+            	_first[i] = j
+```
+
+```python
+_memo = [0] * 11 # 20
+_first = [0] * 11
+_length = 8
+print(cut_rod_bu(_length)) # 23
+while _length:
+    print(_first[_length], end=' ')
+    _length -= _first[_length]
+```
+
+
+
+---
+
+11-21
+
+![image](https://user-images.githubusercontent.com/79521972/168520429-c4b15bc3-4476-4503-b976-eccf6a971072.png)
+
+[https://www.acmicpc.net/problem/1932](https://www.acmicpc.net/problem/1932)
+
+
+
+---
+
+11-22
+
+![image](https://user-images.githubusercontent.com/79521972/168520466-1525764a-6524-4ef3-ba3e-33aa3ee4af3b.png)
+
+
+
+---
+
+11-23
+
+```python
+
+def max_path(row, col):
+    if row == _size - 1:
+        return _triangle[row][col]
+    
+    path_left = _triangle[row][col] + max_path(row+1, col)
+    path_right = _triangle[row][col] + max_path(row+1, col+1)
+    
+    return max(path_left, path_right)
+
+
+_triangle = []
+_size = int(input())
+for _ in range(_size):
+    _triangle.append(list(map(int, input().split())))
+    
+print(max_path(0, 0))
+```
+
+![image](https://user-images.githubusercontent.com/79521972/168520638-9dc137d7-4607-4c73-b3ce-9abd6fe35493.png)
+
+
+
+---
+
+11-24
+
+## 0-1 Knapsack problem
+
+The **0-1 knapsack problem** is the following. A thief robbing a store finds n items. THe *i*-th item is worth v<sub>i</sub> dollars and weighs w<sub>i</sub> pounds, where v<sub>i</sub>and w<sub>i</sub> are integers. The thief wants to take as valuable a load as possible, but he can carry at most W pounds in his knapsack, for some integer W. Which items should he take?
+
+![image](https://user-images.githubusercontent.com/79521972/168520845-99c2122c-af74-467f-8aee-f6524079ac88.png)
+
+
+
+---
+
+11-25
+
+![image](https://user-images.githubusercontent.com/79521972/168520896-ba378f1f-0178-438b-8e5d-1aa97f5e4d9c.png)
 
 
 
 
 
+---
+
+11-26
+
+![image](https://user-images.githubusercontent.com/79521972/168520917-cfa3fa1d-b85d-47b7-b79f-83bbc32da83a.png)
+
+[https://www.acmicpc.net/problem/12865](https://www.acmicpc.net/problem/12865)
+
+
+
+---
+
+11-27
+
+![image](https://user-images.githubusercontent.com/79521972/168521024-e60e76d4-63a6-4a73-a16d-b8e67444b91a.png)
+
+
+
+---
+
+11-28
+
+```python
+def knapsasck(capacity, item):
+    # capacity: current capacity of the knapsack, [0.._capacity]
+    # item: index of the item to be considered, [0..number-1]
+    # _number: number of items
+    # _capacity: capacity of the knapsack
+    # _weight: weight list of the items
+    # _value: value list of the items
+    
+    if capacity == 0 or item >= _number:
+        return 0
+    
+    if_weight[item] > capacity:
+        return knapsack(capacity, item+1)
+    
+    with_the_item = _value[item] + knapsack(capacity - _weight[item], item+1)
+    without_the_item = knapsack(capacity, item+1)
+    
+    return max(with_the_item, without_the_item)
+```
+
+![image](https://user-images.githubusercontent.com/79521972/168521280-1c569835-402d-4e3b-a4ff-7111ba655705.png)
 
 
 
