@@ -9,7 +9,7 @@ tag: ['Dynamic Programming']
 
 # Dynamic Programming
 
-
+greedy algorithm과 dynamic programming은 굉장히 많이 쓰이는 알고리즘이다.
 
 ---
 
@@ -27,6 +27,8 @@ that are defined  by the formula
 ![image](https://user-images.githubusercontent.com/79521972/168503427-c3af3aa6-15bf-4c8d-9ba3-88f5c36158f2.png)
 
 are known as the fibonacci numbers
+
+- 0 번째와 1 번쨰는 0과 1로 항상 정해져 있는 값이다.
 
 ---
 
@@ -66,7 +68,9 @@ print(time.time() - start_time)
 
 
 
+똑같은 계산 과정이 반복이 돼서(중복적으로) 일어나게 된다.
 
+위 그림은 7에 대한 fibonacci 결과를 tree로 나타낸 것인데 36에 대한 fibonacci 결과를 tree로 그린다면 굉장히 크고 중복이 수도 없이 많은 구조를 확인할 수 있을 것이고 이는 확실히 좋지 않은 성능을 야기한다는 것을 알 수 있을 것이다.
 
 ---
 
@@ -74,10 +78,22 @@ print(time.time() - start_time)
 
 ## Dynamic Programming
 
-Dynamic programming, like the divide-and-conquer method, solves problems by combining the solutions to subproblems. ("Programming" in this context refers to a tabular method, not to writing compter code.)
+Dynamic programming, like the divide-and-conquer method, <mark>solves problems by combining the solutions to subproblems.</mark> ("Programming" in this context refers to a tabular method, not to writing compter code.)
 
-Divide-and-conquer algorithms partition the problem into disjoint subproblems, solve the subproblems recursively, and teh combine their solutions to solve the original problem.
-In contrast, dynamic programming applies when the subproblems overlap-that is, when subproblems share subsubproblems. In this context, a divide-and-conquer algorithm does more work than necessary, repeatedly solving the common subsubproblems. A dynamic-programming algorithm solves each subsubproblem just once and then saves its answer in a table, thereby avoiding the work of recomputing the answer every time it solves each subsubproblem.
+- tabular method: 테이블에 기록하는 방식
+
+**Divide-and-conquer algorithms** partition the problem into disjoint subproblems, solve the subproblems recursively, and then combine their solutions to solve the original problem.
+In contrast, **dynamic programming** applies <span style="color:red">when the subproblems overlap</span>-that is, when subproblems share subsubproblems. In this context, a divide-and-conquer algorithm does more work than necessary, repeatedly solving the common subsubproblems. <mark>A dynamic-programming algorithm solves each subsubproblem just once and then saves its answer in a table</mark>, thereby avoiding the work of recomputing the answer every time it solves each subsubproblem.
+
+- 작은 size의 문제를 딱 한 번만 풀고 그 푼 결과를 table에 저장해 두는 것이다.
+  - 나중에 그 문제가 또 중복되어 나왔을 때 사용하기 위해서
+
+<br>
+
+하노이 문제의 경우 divide-and-conquer 로 풀었었는데 그 문제에서 나눠졌던 subproblem 들에 대해서 중복된 문제가 하나도 없었다.
+
+즉, 주어진 문제를 subproblem으로 나누었을 때 중복이 없다면 divide-and-conquer라면
+중복이 굉장히 많이 나온다면 dynamic programming 이다.
 
 
 
@@ -85,12 +101,23 @@ In contrast, dynamic programming applies when the subproblems overlap-that is, w
 
 11-6
 
-Dynamic programming thus uses additional memory to save computation time; it serves an example of a time-memory trade-off. The savings may be dramatic: an exponential-time solution may be transformed into a polynomial-time solution.
+Dynamic programming thus **uses additional memory to save computation time**; 
+
+- it serves an example of a **time-memory trade-off**. 
+
+The savings may be dramatic: an exponential-time solution may be transformed into a polynomial-time solution.
 
 There are usually two equivalent ways to implement a dynamic-programming approach.
 
-The first approach is top-down with memorization. In this approach, we write the procedure recursively in a natural manner, but modified to save the result to each subproblem (usually in an array or hash table). The procedure now first checks to see whether it has previously solved this subproblem. If so, it returns the saved value, saving further computation at this level; if not, the procedure computes the value in the usual manner. We say that the recursive procedure has been memoized; 
-it "remembers" what results it has cimputed previously.
+<mark>The first approach is top-down with memoization.</mark> In this approach, we write the procedure recursively in a natural manner, but modified to save the result to each subproblem (usually in an array or hash table). The procedure now first checks to see whether it has previously solved this subproblem. If so, it returns the saved value, saving further computation at this level; if not, the procedure computes the value in the usual manner. We say that the recursive procedure has been memoized; 
+
+- it "remembers" what results it has cimputed previously.
+
+<br>
+한 size의 문제를 조금씩 줄여나간다.
+
+- f(n) - > f(n-1) -> f(n-2) -> ... 
+  - recursion
 
 
 
@@ -116,15 +143,23 @@ _memo = [None] * 50 # 15
 print(fibonacci_td(36))
 ```
 
-The numbers grow exponentially, so the array is smal - for example, F46 = 1836311903 is the largest Fibonacci number that can be represented as a 32-bit integer
+The numbers grow exponentially, so the array is smal - for example, F<sub>46</sub> = 1836311903 is the largest Fibonacci number that can be represented as a 32-bit integer
 
+- 32-bit integer로 저장할 수 있는 최대 fibonacci 수는 46이다.
+- 그 이상은 long long 데이터 타입을 사용해야 한다.
 
+list에 저장되어 있는지를 확인하여 
+
+- 만약 저장되어 있지 않다면: 더 작은 size의 문제를 subproblem을 나눠서 memo에 저장하고
+- 만약 저장되어 있다면 
 
 ---
 
 11-8
 
-The second approach is the bottom-up method. This approach typically depends on some natural notion of the "size" of a subproblem, such that solving any paricular subproblem depends only on solving "smaller" subproblems. We sort the subproblems by size and solve them in size order, smallest first. When solving a particular subproblem, we ahve already solved all of the smaller subproblems its solution depends upon, and we have saved their solutions.
+<mark>The second approach is the bottom-up method.</mark> This approach typically depends on some natural notion of the "size" of a subproblem, such that solving any paricular subproblem depends only on solving "smaller" subproblems. We sort the subproblems by size and solve them in size order, smallest first. When solving a particular subproblem, we ahve already solved all of the smaller subproblems its solution depends upon, and we have saved their solutions.
+
+- 제일 작은 size인 f(1)부터 시작하여 f(2), f(3), ... 이런 식으로 차근차근 올라가면서 푸는 방법이다.
 
 ```python
 
@@ -140,7 +175,7 @@ def fibonacci_bu(n): # 5
 print(fibonacci_bu(36)) # 14
 ```
 
-
+리스트의 마지막에 담긴 값이 최종 결과임
 
 ---
 
@@ -148,15 +183,27 @@ print(fibonacci_bu(36)) # 14
 
 ## top-down vs. bottom-up
 
+뭐가 더 좋은 방법일까? -> 결론부터 얘기 하자면 문제에 따라 다르다.(case by case)
+
+그러나 일반적으로 특징을 비교해 보자면 아래 글과 같다.
+
 Indeed, we can use the bottom-up approach any time that we use the top-down approach, although we need to take care to ensure that we compute the function values in an appropriate order, so that each value that we need has been computed when we need it.
 
-In top-down dynamic programming, we save known values; in bottom-up dynamic programming, we precompute them. We generally prefer top-down to bottom-up dynamic programming, because
+In top-down dynamic programming, we save known values; in bottom-up dynamic programming, we precompute them. **We generally prefer top-down to bottom-up dynamic programming, because**
 
 - It is a mechanical transformation of a natural problem solution.
+  - 좀 더 자연스러운 문제 해결 가능
+
 - The order of computing the subproblems takes care of itself.
+  - 계산 순서를 스스로 알아서 해결
+
 - We may not need to compute answer to all the subproblems.
+  - 모든 subproblem에 대한 답을 계산할 필요가 없다.
 
 
+
+
+주어진 size의 문제를 더 작은 size의 문제로 나누는 것 -> recurrence equation
 
 ---
 
@@ -176,14 +223,14 @@ In top-down dynamic programming, we save known values; in bottom-up dynamic prog
 
 ## 15.1 Rod cutting
 
-Serling Enterprises buys long steel rods and cuts them into shorter rods, which it then sells. Each cut is free. The management of Serling Enterprises want to know the best way to cut up the rods.
+Serling Enterprises(철강 회사) buys long steel rods and cuts them into shorter rods, which it then sells. Each cut is free. The management of Serling Enterprises want to know the best way to cut up the rods.
 
 The rod-cutting problem is the following. Given a rod of length n inches 
-and a table of prices pi for i = 1, 2, ...., n, determine the maximum revenue r<sub>n</sub> obtainable by cutting up the rod and selling hte pieces.
+and a table of prices pi for i = 1, 2, ...., n, determine the <mark>maximum revenue r<sub>n</sub></mark> obtainable by cutting up the rod and selling hte pieces.
 
 ![image](https://user-images.githubusercontent.com/79521972/168504861-a767d9d3-a0f1-4695-9403-6afa5829d3a4.png)
 
-
+철봉의 길이에 따라 시장 가격이 정해져 있다. 그렇다면 철강회사에서 철봉을 어떻게 잘라야 돈을 많이 벌까?
 
 
 ---
@@ -192,7 +239,13 @@ and a table of prices pi for i = 1, 2, ...., n, determine the maximum revenue r<
 
 ![image](https://user-images.githubusercontent.com/79521972/168504887-6619a606-b0f4-4659-b32d-fa1e51b0b112.png)
 
+위 그림과 같이 어떻게 나눠서 파느냐에 따라 받을 수 있는 가격이 다 다르다.
 
+그렇다면 n인치의 철봉이 주어졌을 때 어떻게 나눠서 팔아야 할지를 알아보자.
+
+이러한 문제 구조를 Optimization Problem이라고 한다.
+
+- 그리고 optimization 문제는 대부분 DP로 해결한다.
 
 ---
 
@@ -201,15 +254,125 @@ and a table of prices pi for i = 1, 2, ...., n, determine the maximum revenue r<
 More generally, we can frame the values rn for n >= 1 in terms of optimal revenues from shorter rods:
 
 ![image](https://user-images.githubusercontent.com/79521972/168504950-864d8a40-dbe7-4f7f-8184-b61bb55994e8.png)
+
+- r<sub>n</sub>: n인치에서 얻을 수 있는 최대 수익
+- p<sub>n</sub>: 시장 가격
+- 총 n가지 경우에 대해 조사를 해서 최대값을 구한다.
+- r<sub>1</sub>+r<sub>n-1</sub> 은 사실상 p<sub>1</sub>+r<sub>n-1</sub> 과 같다.
+  - 그래서 앞에 더해지는 rn을 모두 pn으로 대치하여 하는 것이 더 편하다. 
+
 In a related, but slightly simpler, way to arrange a recursive structure for the rod-cutting problem, we view a decomposition as consisting of a first piece of length i cut off the left-hand end, and then a right-hand remainder of length n - i. Only the remainder, and not the first piece, may be further divided. We thus obtain the sollowing simpler version of equation (15.1):
 
 ![image](https://user-images.githubusercontent.com/79521972/168505091-16374575-d984-43aa-ba39-7ec3cfedd609.png)
 
 
 
+---
+
+11-14
+
+```python
+import math # 1
+
+
+def cut_rod(length): # 4 
+    if length == 0: # r_0
+        return 0
+    
+    max_revenue = -math.inf # -infinity
+    for i in range(1, length+1): # 9
+        revenue = _price[i] + cut_rod(length-i) 
+        if revenue > max_revuenue:
+            max_revenue = revenue # 가장 큰 값을 저장하는 logic
+            
+    return max_revenue
+
+
+_price = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30] # 17
+_length = 8
+print(cut_rod(_length))
+
+```
 
 
 
+---
+
+11-15
+
+**Why is CUT-ROD so inefficient?** The problem is that CUT-ROD calls itself recursively over and over again with the same parameter values; 
+
+- it solves the same subproblems repeatedly. -> 굉장히 비효율적인 계산이 된다.
+
+![image](https://user-images.githubusercontent.com/79521972/168517940-278d7008-2267-4aa8-afe2-4a4da2e58256.png)
+
+그렇기 때문에 이를 top-down 방식의 DP와 bottom-up 방식의 DP로 바꾸어보자.
+
+
+
+---
+
+11-16
+
+## top-down with memoization
+
+```python
+def cut_rod_td(length): # 4
+    if length == 0:
+        return 0
+    
+    if _memo[length] is None: # 8
+        max_revenue = -math.inf
+        for i in range(1, length+1):
+            revenue = _price[i] + cut_rod_td(length-i) # 11
+            if revenue > max_revenue:
+                max_revenue - revenue
+        # save r_i
+        _memo[length] = max_revenue
+        
+    return _memo[length] # 17
+
+
+_price = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30] # 20
+_memo = [None] * 11
+_length = 8
+print(cut_rod_td(_length))
+```
+
+
+
+---
+
+11-17
+
+## bottom-up method
+
+```python
+def cut_rod_bu(length):# 4 
+    
+    for i in range(1, length+1):
+        max_revenue = -math.inf
+        for j in range(1, i+1):
+            revenue = _price[j] + _memo[i-j] # 9
+            if max_revenue < revenue:
+                max_revenue = revenue
+        # save r_i
+        _memo[i] = max_revenue # 13 
+        
+    return _memo[length]
+
+
+_price = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30] # 18
+_memo = [0] * 11
+_length = 8
+print(cut_rod_bu(_length))
+```
+
+i=1: p1
+
+i=2: p1+ r1
+
+​		p2+r0
 
 
 
