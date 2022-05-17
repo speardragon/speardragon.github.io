@@ -172,6 +172,7 @@ Line = Block
   - With on-demand fetching, first access to any  item is a miss. 
   - Some “compulsory” misses can be avoided by  prefetching. 
   - 시스템을 처음 켰을 때는 cache에 아무것도 없을 것이기 때문에 처음에 무조건 한 번은 갖다 놔야 한다.
+  - invalid bit이기 때문에 생기는 misses
   
 - **Capacity misses**: 
   - We have to oust some items to make room for  others. This leads to misses that are not incurred with an infinitely  large cache.  
