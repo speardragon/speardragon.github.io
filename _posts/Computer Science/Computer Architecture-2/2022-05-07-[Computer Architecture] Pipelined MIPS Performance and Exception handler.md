@@ -328,7 +328,7 @@ datapath가 두 개로 늘긴 했지만 그만큼의 효과를 보지 못했다.
 
 Q) RAR는 dependency에 속하지 않는 이유
 
-
+A) Wirte이 문제를 만들어 내기 때문에
 
 <br>
 
@@ -459,7 +459,6 @@ thread를 여러개로 동시에 할 수 있는 hardware
 - [www.cs.wisc.edu/~arch/www/](www.cs.wisc.edu/~arch/www/ )
 - ISCA (International Symposium on Computer  Architecture) 
 - HPCA (International Symposium on High Performance  Computer Architecture)
-
 
 
 
