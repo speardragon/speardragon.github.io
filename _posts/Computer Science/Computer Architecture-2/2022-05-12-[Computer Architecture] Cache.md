@@ -119,22 +119,26 @@ Line = Block
   - A larger cache can hold more of the  program’s useful data but is more costly and likely to be slower. 
 
 - **Block or cache-line size** (unit of data transfer between cache and  main). 
+  - 어디다 둘 거냐
   - With a larger cache line, more data is brought in cache with  each miss. 
   - This can improve the hit rate but also may bring low-utility  data in.  
-
+  
 - **Placement policy**. 
   - Determining where an incoming cache line is stored.  
   - More flexible policies imply higher hardware cost and may or may not  have performance benefits (due to more complex data location).
 
 - **Replacement policy**. 
+  - 어떤 걸 쫓아낼지
   - Determining which of several existing cache  blocks (into which a new cache line can be mapped) should be  overwritten.
   - Typical policies: choosing a random or the **least recently  used** (LRU) block. 
 
 - **Write policy**.
+  - 사실상 memory에 write을 해야 하는데 시간이 매우 많이 걸리기 때문에 cache를 잘 사용하여 write하도록 하자.
   - Determining if updates to cache words are immediately  forwarded to main (**write-through**) or 
     - 그때 그때 write 하는 것 -> 엄청난 시간 소요
   - modified blocks are copied back  to main if and when they must be replaced (**write-back** or copy-back).
     - 모아놨다가 몽땅 write 하는 것 -> 효율적임
+
 
 
 
@@ -158,7 +162,7 @@ Line = Block
 
 
 
-한 번 access 된 것은 계속해서 많이 사용되더라 + 한 번 access 되면 그 근처에 있는 것도 같이 access 되더라라는 것을 경험적으로 알 수 있는 그래프
+한 번 access 된 것은 계속해서 많이 사용되더라 + 한 번 access 되면 그 근처에 있는 것도 같이 access 되더라는 것을 경험적으로 알 수 있는 그래프
 
 <br>
 
@@ -179,12 +183,11 @@ Line = Block
   - cache size는 큰데, 들어올 자리는 한정되어 들어오는 data에 대해서 충돌이 일어나서 생기는 miss
     - 위 비유에서 188번과 208번 자리는 들어오는 곳이 똑같은 것과 같은 이유.
 
+- main memory와 hard disk 간의 miss는 굉장히 큰 영향을 주기 때문에 이를 줄이기 위해선 무조건 fully associative를 사용해야 함
 
-miss를 줄이기 위해선 무조건 fully associative를 사용해야 함
+- 그런데 fully associative를 위해선 다 뒤져봐야 하기 때문에 이를 OS가 관리하도록 되어있다.(page table)
 
-그런데 fully associative를 위해선 다 뒤져봐야 하기 때문에 이를 OS가 관리하도록 되어있다.(page table)
-
-virtaul memory에서는 miss rate을 줄여야 함.
+- virtual memory에서는 miss rate을 줄여야 함.
 
 
 
@@ -232,9 +235,9 @@ We focus on data loads, but stores flow same principles.
 ## Cache Terminology
 
 - **Capacity (C):**  
-  - nuqmber of data bytes in cache 
+  - number of data bytes in cache (전체 cache size)
 - **Block size (b):**   
-  - bytes of data brought into cache at once 
+  - bytes of data brought into cache at once (연속되어 있는 data를 한 번에 가져오는 크기)
 - **Number of blocks (B = C/b):**  
   - number of blocks in cache: B = C/b 
 - **Degree of associativity (N):**  
@@ -242,7 +245,7 @@ We focus on data loads, but stores flow same principles.
   - 메모리에 있는 data를 cache에 가져오는데 몇 자리에 넣을 수 있는지
 - **Number of sets (S = B/N):**  
   - each memory address maps to exactly one cache set 
-  - 들어갈 수 있는 자리 -> set
+  - 
 
 
 
@@ -288,7 +291,9 @@ Ridiculously small, but will illustrate organizations
 - word address의 맨 마지막 3 bit를 보고 들어갈지 말 지를 결정한다.
   - 뒤의 00(Byte offset)을 제외하고 마지막 3 bit
 
-- 메모리가 들어갈 곳이 하나하나 다 정해져 있는 (associative) direct mapped and 1-way
+- 메모리가 들어갈 곳(번지)이 하나하나 다 정해져 있는 (associative) direct mapped and 1-way
+
+- 그렇기 때문에 다른 메모리여도 같은 번지수를 가질 수 있기 때문에 같은 번지에 계속 접근하면 그 때마다 miss가 발생할 수 밖에 없다.
 
 <br>
 
@@ -307,13 +312,18 @@ Ridiculously small, but will illustrate organizations
 
 ![image](https://user-images.githubusercontent.com/79521972/167998009-3c872bcb-83e8-4724-9f8c-7281487561de.png)
 
-set을 토대로 cache 에 access하여 그곳의 data를 바로 가져가는 것이 아니라 tag를 확인 비교해서 맞는 지를 확인하고 데이터 read를 하고 있는 중임을 나타내는 Validation bit와 AND 연산을 통해 Hit이 결정된다.
+- set을 토대로 cache 에 access하여 그곳의 data를 바로 가져가는 것이 아니라 tag를 확인 비교해서 맞는 지를 확인하고 데이터 read를 하고 있는 중임을 나타내는 Validation bit와 AND 연산을 통해 Hit이 결정된다.
+  - 만약 tag가 다르면 miss가 난 것.
+- 초기에는 0이고 데이터가 load가 되었다라는 것을 알려주기 위한 validation bit
 
-Hit이면 data를 쫙 가져가서 사용한다.
+- Hit이면 data 부분을 쫙 가져가서 사용한다.
 
-cache memory의 size = 1+27+32 =60 bit
+- cache memory의 size 
 
-- 60 x 8 = 480 
+  - 1+27+32 =60 bit
+
+  - total size = 60 x 8 = 480 
+
 
 <br>
 
@@ -356,20 +366,22 @@ MIPS Rate = 3/15 =20 % =0.2
 
 
 
-4번지와 24번지에 access하는 상황 -> 계속해서 싸운다.
+- 4번지와 24번지에 access하는 상황 -> 계속해서 싸운다.
 
-- 0x04: 00**001**00
-- 0x24: 01**001**00
-  - 001(1)에 access 하려고 하기 때문에 miss 발생.
-  - 4번지를 넣고 tag를 확인하려 하는데 tag가 다름 -> tag 변경
-  - 24번지를 넣고 tag를 확인하려 하는데 tag가 다름 -> tag 변경
-  - 위 과정이 무한 반복되어 계속해서 miss가 발생
+  - 0x04: 00**001**00
 
-Miss Rate = 10/10 =100%
+  - 0x24: 01**001**00
+    - 001(1)에 access 하려고 하기 때문에 miss 발생.
+    - 4번지를 넣고 tag를 확인하려 하는데 tag가 다름
+    - 24번지를 넣고 tag를 확인하려 하는데 tag가 다름
+    - 위 과정이 무한 반복되어 계속해서 miss가 발생
 
-- **Conflict Misses**
 
-그럼 들어갈 수 있는 곳은 한 군데 말고 두 군데로 만들어보자 -> 2-way set associative 
+- Miss Rate = 10/10 =100%
+  - **Conflict Misses**
+
+
+그럼 들어갈 수 있는 곳을 한 군데 말고 두 군데로 만들어보자라는 idea 도입 -> 2-way set associative 
 
 <br>
 
@@ -379,11 +391,10 @@ Miss Rate = 10/10 =100%
 
 
 
-set이 지정하는 2 bit으로 줄었다. set의 갯수가 4개로 줄었기 때문에.(way가 두 개가 되면서)
+- set이 지정하는 2 bit으로 줄었다. set의 갯수가 4개로 줄었기 때문에.(way가 두 개가 되면서)
 
-전체 set의 갯수는 줄어들지만 
-
-
+- 전체 set의 갯수는 줄어들지만 어떤 set에서 들어갈 수 있는 자리가 2개가 마련되어 있는 것이다.
+  - 두 경우를 모두 check하여 hit인 경우의 data를 뽑아온다.
 
 <br>
 ![image](https://user-images.githubusercontent.com/79521972/167999135-f8bf0e11-24ec-411a-8a97-c9a267cd2877.png)
@@ -415,13 +426,13 @@ Miss Rate = 2/10 = 20%
 
 ![image](https://user-images.githubusercontent.com/79521972/167999847-be66138b-0f05-4a43-9ce5-284b29e2732c.png)
 
-아무데나 다 들어갈 수 있게 하면 몇 개가 중복이 되더라도 위처럼 계속 넣을 수 있지만 tag를 일일히 다 보면서 비교해야 하기 때문에 오히려 시간이 더 많이 걸리 수도 있기 때문에 너무 늘릴 수는 없다.
-
-8-way(?)
+- 8-way
+- 들어갈 수 있는 자리(set)을 쫙 일렬로 풀어서 아무데나 다 들어갈 수 있게 하면 몇 개가 중복이 되더라도 위처럼 계속 넣을 수 있지만 tag를 일일히 다 보면서 비교해야 하기 때문에 오히려 시간이 더 많이 걸리 수도 있기 때문에 너무 늘릴 수는 없다.
+  - 그렇기 때문에 conflict miss는 확실히 줄인다. (2-way에서는 한계가 있었기 때문에)
 
 - Reduces conflict misses 
 
-- 가져올 때, Expensive to build (so many tag 비교)
+- 가져올 때(read), Expensive to build (tag 비교하는 횟수가 너무 많아 그 만큼의 시간이 소모 된다.)
 
 
 
