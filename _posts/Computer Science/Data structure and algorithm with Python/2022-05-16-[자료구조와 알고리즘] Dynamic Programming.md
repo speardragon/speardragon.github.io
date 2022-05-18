@@ -398,18 +398,21 @@ i=2: p1+ r1
 - We typically **apply** dynamic programming to **optimization problems**
   - n size 문제를 더 작은 size의 문제로 나눈다.
 
-
 ![image](https://user-images.githubusercontent.com/79521972/168519662-d5fd7824-3d7e-4639-8367-7948afbede0c.png)
+
+- n인치 짜리 철봉이 주어졌을 때 가질 수 있는 최대 가격 -> rn
+- pi: i인치로 나누어서 팔았을 때의 가격
+- rn-i: (남은 부분)n-i인치에서 가질 수 있는 최대 가격(recursion)
 
 
 
 - Two key ingredients that an optimization problem must have to apply dynamic programming:
 
 1. **Optimal substructure**
-   - divide-and-conquer
+   - divide-and-conquer에서와의 똑같은 특성
    - An optimal solution contains optimal solutions to subproblems
 2. **Overlapping subproblems**
-   - divide-and-conquer와는 다른 점
+   - divide-and-conquer와 구분을 짓는 차이점
    - Finding the solution involves solving the same subproblem multiple times
    - A divide-and-conquer approach always generating new subproblems
 
@@ -418,9 +421,11 @@ i=2: p1+ r1
 
 11-19
 
-We typically apply dynamic programming to **optimization problems**. <mark>Such problems can have many possible solutions.</mark> Each solution has a value, and we wish to find a solution with the optimal (minumum or maximum) value. We call such a solution an optimal solution to the problem, as opposed to the optimal solution, since there may be several solutions that achieve the optimal value.
+We typically apply dynamic programming to **optimization problems**. <mark>Such problems can have many possible solutions.</mark> Each solution has a value, and we wish to find a solution with the optimal (minumum or maximum) value. We call such a solution an optimal solution to the problem, as opposed to the **optimal solution**, since there may be several solutions that achieve **the optimal value**.
 
-When developing a dynamic-programming algorithm, we fllow a sequence of four steps:
+- optimal value로 부터 optimal solution을 만들어나간다.
+
+When developing a dynamic-programming algorithm, we flow a sequence of four steps:
 
 1. Characterize the structure of an optimal solution.
 2. Recursively define the value of an optimal solution.
@@ -437,12 +442,14 @@ Steps 1-3 form the basis of a dynamic-programming solution to a problem. If we n
 
 ## Reconstructing a solution
 
+11-17page를 수정한 코드
+
 Here is an **extended version** of BOTTOM-UP-CUT-ROD that computes, for each rod size j, not only the maximum revenue r<sub>j</sub>, but also s<sub>j</sub>, the optimal size of the first piece to cut off:
 
 ```python
 			if max_revenue < revenue: # 10
         		max_revenue = revenue
-            	_first[i] = j # 앞에거(j)를 얼마만큼 잘라야지 revenue를 얻을 수 있는지
+            	_first[i] = j # 앞에거(j)를 얼마만큼 잘라야지 revenue를 얻을 수 있는지를 저장
 ```
 
 ```python
@@ -455,11 +462,11 @@ while _length:
     _length -= _first[_length]
 ```
 
-12, 21번 line이 새로 추가됨
+- 12, 21번 line이 새로 추가됨
 
-_first: 앞에거(j)를 얼마만큼 잘라야지 revenue를 얻을 수 있는지를 기록하는 용도 (r4의 경우 2)
+- _first: 10인치 짜리 optimal value를 달성하기 위해서 앞에거(j)를 얼마만큼(몇 인치로) 잘라야지 revenue를 얻을 수 있는지에 대해 앞에 값을 기록하는 용도 (r4의 경우 p2니까 2를 기록)
 
-코드 돌려볼 것!!!!!!!!!
+- 코드 돌려볼 것!!!!!!!!!
 
 ---
 
@@ -512,9 +519,9 @@ print(max_path(0, 0))
 
 ![image](https://user-images.githubusercontent.com/79521972/168520638-9dc137d7-4607-4c73-b3ce-9abd6fe35493.png)
 
-- 중복 많아서 시간초과 발생
+- 한 줄 내려갈 때마다 중복 많아서 백준에 제출하면 시간초과 발생
   - so, DP로 변경해야 함.
-- Top down의 경우 triangle과 크기가 완전히 똑같은 list 하나를 만들고 max_path 함수를 호출했을 때 memo에 저장되어 있는지를 확인 후 저장이 안되어 있다면 함수를 실행하도록 하고 저장이 되어 있다면 그냥 그 값을 리턴하도록 한다.
+- Top down의 경우 triangle과 크기가 완전히 똑같은 memo list 하나를 만들고 max_path 함수를 호출했을 때 memo에 저장되어 있는지를 확인 후 저장이 안되어 있다면 함수를 실행하도록 하고 저장이 되어 있다면 그냥 그 값을 리턴하도록 한다.
 - Bottom up의 경우 loop를 사용하여 밑에서부터 위로 계산하면서 올라가면 된다.
 
 ---
@@ -523,13 +530,14 @@ print(max_path(0, 0))
 
 ## 0-1 Knapsack problem
 
-The **0-1 knapsack problem** is the following. A thief robbing a store finds n items. THe *i*-th item is worth v<sub>i</sub> dollars and weighs w<sub>i</sub> pounds, where v<sub>i</sub>and w<sub>i</sub> are integers. The thief wants to take as valuable a load as possible, but he can carry at most W pounds in his knapsack, for some integer W. Which items should he take?
+The **0-1 knapsack problem** is the following. A thief robbing a store finds n items. The *i*-th item is worth v<sub>i</sub> dollars and weighs w<sub>i</sub> pounds, where v<sub>i</sub>and w<sub>i</sub> are integers. The thief wants to take as valuable a load as possible, but he can carry at most W pounds in his knapsack, for some integer W. Which items should he take?
 
 ![image](https://user-images.githubusercontent.com/79521972/168520845-99c2122c-af74-467f-8aee-f6524079ac88.png)
 
-- objective function
-- constraint
-- 물건을 담으면 1 안 담으면 0
+- objective function: 무언가를 최대화(maximize) 해야하는 함수
+- constraint: 최대화 할 때의 조건
+  - 물건을 담으면 1 / 안 담으면 0
+
 
 ---
 
@@ -549,9 +557,7 @@ The **0-1 knapsack problem** is the following. A thief robbing a store finds n i
 
 [https://www.acmicpc.net/problem/12865](https://www.acmicpc.net/problem/12865)
 
-V(7,0)
 
-0번 물건을 넘기면 얻을 수 있는 최대 수익
 
 
 
@@ -561,40 +567,44 @@ V(7,0)
 
 ![image](https://user-images.githubusercontent.com/79521972/168521024-e60e76d4-63a6-4a73-a16d-b8e67444b91a.png)
 
-
+- maxV(7,0) - 여유공간 7, 고려하는 물건 0 번째 = V0 + maxV(1, 1)
+- max(7,1)
+- 위 둘 중에 max가 정답
 
 ---
 
 11-28
 
 ```python
-def knapsasck(capacity, item):
+def knapsack(capacity, item): # 5
     # capacity: current capacity of the knapsack, [0.._capacity]
     # item: index of the item to be considered, [0..number-1]
-    # _number: number of items
-    # _capacity: capacity of the knapsack
-    # _weight: weight list of the items
-    # _value: value list of the items
+    # _number: number of items -> W
+    # _capacity: capacity of the knapsack -> W
+    # _weight: weight list of the items -> Wi
+    # _value: value list of the items -> Vi
     
-    if capacity == 0 or item >= _number:
+    if capacity == 0 or item >= _number: # 13
         return 0
     
-    if_weight[item] > capacity:
+    if _weight[item] > capacity: # 16
         return knapsack(capacity, item+1)
     
-    with_the_item = _value[item] + knapsack(capacity - _weight[item], item+1)
+    with_the_item = _value[item] + knapsack(capacity - _weight[item], item+1) # 19
     without_the_item = knapsack(capacity, item+1)
     
     return max(with_the_item, without_the_item)
 ```
 
+- knapsack(-capacity, 0)
+- ![image](https://user-images.githubusercontent.com/79521972/169052588-9662382e-3fa3-435f-8aee-1af68fc02c58.png)
+
 ![image](https://user-images.githubusercontent.com/79521972/168521280-1c569835-402d-4e3b-a4ff-7111ba655705.png)
 
-Top down으로 바꾼다. - memo를 딕셔너리로 만들어서 한 노드(튜플)을 key로 해서 값을 계속 저장해서
+- Top down으로 바꾼다. -> memo를 딕셔너리로 만들어서 한 노드(튜플)을 key로 해서 값을 계속 저장해서 재귀 호출을 하는데 memo안에 존재하는 지를 먼저 파악해서 그걸 토대로 다음 행동을 결정하면서 진행한다.
+  - 저장해야 하는 key 수가 그렇게 많지 않음
 
-
-
-bottom up으로 하면 저장해야 하는 key 수가 그렇게 만지 않은데 이차원 리스트의 사이즈가 WxN 만큼으로 만들어서 메모리 비효율?
+- bottom up으로 하면 어디서 부터 올라가야 될 지를 알 수가 없기 때문에 이차원 리스트의 사이즈가 WxN 만큼으로 다 채워져야 하기 때문에 불필요한 계산을 많이하여 실행 속도가 굉장히 오래 걸린다.
 
 
 
