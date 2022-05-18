@@ -267,6 +267,19 @@ In a related, but slightly simpler, way to arrange a recursive structure for the
 
 
 
+예를 들어, 4인치 나무인 경우
+
+r4 -> 
+
+- p1 + r3
+- p2 + r2
+- p3 + r1
+- p4
+
+중에서 가장 큰 값을 구하는 것이다.
+
+
+
 ---
 
 11-14
@@ -382,7 +395,9 @@ i=2: p1+ r1
 
 ## 15.3 Elements of dynamic programming
 
-- We typically apply dynamic programming to optimization problems
+- We typically **apply** dynamic programming to **optimization problems**
+  - n size 문제를 더 작은 size의 문제로 나눈다.
+
 
 ![image](https://user-images.githubusercontent.com/79521972/168519662-d5fd7824-3d7e-4639-8367-7948afbede0c.png)
 
@@ -390,9 +405,11 @@ i=2: p1+ r1
 
 - Two key ingredients that an optimization problem must have to apply dynamic programming:
 
-1. Optimal substructure
+1. **Optimal substructure**
+   - divide-and-conquer
    - An optimal solution contains optimal solutions to subproblems
-2. Overlapping subproblems
+2. **Overlapping subproblems**
+   - divide-and-conquer와는 다른 점
    - Finding the solution involves solving the same subproblem multiple times
    - A divide-and-conquer approach always generating new subproblems
 
@@ -401,7 +418,7 @@ i=2: p1+ r1
 
 11-19
 
-We typically apply dynamic programming to optimization problems. Such problems can have many possible solutions. Each solution has a value, and we wish to find a solution with the optimal (minumum or maximum) value. We call such a solution an optimal solution to the problem, as opposed to the optimal solution, since there may be several solutions that achieve the optimal value.
+We typically apply dynamic programming to **optimization problems**. <mark>Such problems can have many possible solutions.</mark> Each solution has a value, and we wish to find a solution with the optimal (minumum or maximum) value. We call such a solution an optimal solution to the problem, as opposed to the optimal solution, since there may be several solutions that achieve the optimal value.
 
 When developing a dynamic-programming algorithm, we fllow a sequence of four steps:
 
@@ -420,12 +437,12 @@ Steps 1-3 form the basis of a dynamic-programming solution to a problem. If we n
 
 ## Reconstructing a solution
 
-Here is and extended version of BOTTOM-UP-CUT-ROD that computes, for each rod size j, not only the maximum revenue r<sub>j</sub>, but also s<sub>j</sub>, the optimal size of the first piece to cut off:
+Here is an **extended version** of BOTTOM-UP-CUT-ROD that computes, for each rod size j, not only the maximum revenue r<sub>j</sub>, but also s<sub>j</sub>, the optimal size of the first piece to cut off:
 
 ```python
 			if max_revenue < revenue: # 10
         		max_revenue = revenue
-            	_first[i] = j
+            	_first[i] = j # 앞에거(j)를 얼마만큼 잘라야지 revenue를 얻을 수 있는지
 ```
 
 ```python
@@ -438,7 +455,11 @@ while _length:
     _length -= _first[_length]
 ```
 
+12, 21번 line이 새로 추가됨
 
+_first: 앞에거(j)를 얼마만큼 잘라야지 revenue를 얻을 수 있는지를 기록하는 용도 (r4의 경우 2)
+
+코드 돌려볼 것!!!!!!!!!
 
 ---
 
@@ -456,6 +477,12 @@ while _length:
 
 ![image](https://user-images.githubusercontent.com/79521972/168520466-1525764a-6524-4ef3-ba3e-33aa3ee4af3b.png)
 
+![image](https://user-images.githubusercontent.com/79521972/168976111-49a8837a-9c3c-4740-8659-4b8d367e05e1.png)
+
+optimal structure
+
+maxV(0, 0)에서 얻을 수 있는 최대값
+
 
 
 ---
@@ -464,27 +491,31 @@ while _length:
 
 ```python
 
-def max_path(row, col):
-    if row == _size - 1:
+def max_path(row, col): # 5
+    if row == _size - 1: # 제일 밑에 줄인 경우는 그냥 그 자리의 값이 결과값임
         return _triangle[row][col]
     
-    path_left = _triangle[row][col] + max_path(row+1, col)
+    path_left = _triangle[row][col] + max_path(row+1, col) # 9
     path_right = _triangle[row][col] + max_path(row+1, col+1)
     
     return max(path_left, path_right)
 
 
-_triangle = []
+_triangle = [] # 15
 _size = int(input())
 for _ in range(_size):
-    _triangle.append(list(map(int, input().split())))
+    _triangle.append(list(map(int, input().split()))) # 18
     
 print(max_path(0, 0))
+
 ```
 
 ![image](https://user-images.githubusercontent.com/79521972/168520638-9dc137d7-4607-4c73-b3ce-9abd6fe35493.png)
 
-
+- 중복 많아서 시간초과 발생
+  - so, DP로 변경해야 함.
+- Top down의 경우 triangle과 크기가 완전히 똑같은 list 하나를 만들고 max_path 함수를 호출했을 때 memo에 저장되어 있는지를 확인 후 저장이 안되어 있다면 함수를 실행하도록 하고 저장이 되어 있다면 그냥 그 값을 리턴하도록 한다.
+- Bottom up의 경우 loop를 사용하여 밑에서부터 위로 계산하면서 올라가면 된다.
 
 ---
 
@@ -496,7 +527,9 @@ The **0-1 knapsack problem** is the following. A thief robbing a store finds n i
 
 ![image](https://user-images.githubusercontent.com/79521972/168520845-99c2122c-af74-467f-8aee-f6524079ac88.png)
 
-
+- objective function
+- constraint
+- 물건을 담으면 1 안 담으면 0
 
 ---
 
@@ -515,6 +548,10 @@ The **0-1 knapsack problem** is the following. A thief robbing a store finds n i
 ![image](https://user-images.githubusercontent.com/79521972/168520917-cfa3fa1d-b85d-47b7-b79f-83bbc32da83a.png)
 
 [https://www.acmicpc.net/problem/12865](https://www.acmicpc.net/problem/12865)
+
+V(7,0)
+
+0번 물건을 넘기면 얻을 수 있는 최대 수익
 
 
 
@@ -553,7 +590,7 @@ def knapsasck(capacity, item):
 
 ![image](https://user-images.githubusercontent.com/79521972/168521280-1c569835-402d-4e3b-a4ff-7111ba655705.png)
 
-
+Top down으로 바꾼다. - memo를 딕셔너리로 만들어서 한 노드(튜플)을 key로 해서 값을 계속 저장해서
 
 
 
