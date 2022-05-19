@@ -7,11 +7,11 @@ tag: ['Cache Design']
 
 <br>
 
-way는 한 cache address에 들어갈 수 있는 장소가 몇 개가 있느냐?를 나타내는 숫자
+way는 한 cache(set) address에 들어갈 수 있는 장소가 몇 개가 있느냐?를 나타내는 숫자
 
 
 
-fully associative 같은 경우 Tag를 모두 비교하는 것은 매우 비효율적이기 때문에 parallel 하게 비교하자니 hardware 를 너무 무겁게 사용하게 된다.
+애초에 tag를 비교하는 것은 시간이 오래걸려서 fully associative 같은 경우 Tag를 모두 비교하는 것은 매우 비효율적이기 때문에 이를 parallel 하게 모두 비교하자니 hardware 를 너무 무겁게 사용하게 된다.
 
 그래서 이를 위한 특별한 메모리를 사용하는데 그것이 바로 Content addressable Memory(CAM) 이라고 한다.
 
@@ -19,7 +19,7 @@ fully associative 같은 경우 Tag를 모두 비교하는 것은 매우 비효�
 direct mapped (b=2)
 
 - block size가 2인 direct mapped
-- 인접한 address를 하나 더 가져오는데 이 둘의 인접해 있을 것이기 때문에 **같은 tag**를 가지고 있을 것이다.
+- 한 address를 가져올 때 그것과 인접한 address도 하나 같이 가져오는데 이 둘의 인접해 있을 것이기 때문에 **같은 tag**를 가지고 있을 것이다.
 
 - 그렇기 때문에 별도의 tag 두 개가 필요한 것이 아니라 같은 tag에 두 개의 address가 들어가게 되는 것이다.
 
