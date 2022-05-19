@@ -344,7 +344,7 @@ done:
 
 0x4: 0100  -> ...00**001**00
 
-0x8: 1000  -> ...00**010**00
+0x8: 1000  -> . ..00**010**00
 
 0xC: 1100  -> ...00**011**00
 
@@ -413,7 +413,7 @@ MIPS Rate = 3/15 =20 % =0.2
 
 
 
-Miss Rate = 2/10 = 20%
+**Miss Rate** = 2/10 = 20%
 
 - (2-way) Associativity reduces conflict misses
 
@@ -447,13 +447,14 @@ A)
 
 ![image](https://user-images.githubusercontent.com/79521972/167999041-54a0ce91-1b66-43de-b2e8-a9f61d478107.png)
 
-몇 번지를 나타내는 것이 set
+- 몇 번지를 나타내는 것이 set
 
-set 안에 저장할 수 있는 공간이 몇 개 있는지를 나타내는 것이 n-Way
+- set 안에 저장할 수 있는 공간이 몇 개 있는지를 나타내는 것이 n-Way
 
-set = cache의 address라고 생각하면 된다.
+- set = cache의 address라고 생각하면 된다.
 
-
+- hardware가 굉장히 커져서 delay가 길어지기 때문에 cache에서는 잘 사용하지 않는다.
+- 하지만 VM에서는 한 번 갔다오는 시간이 엄청 걸리기 때문에 miss rate을 줄이는 것이 관건이기 때문에 VM에서는 fully associative를 사용한다.
 
 
 
