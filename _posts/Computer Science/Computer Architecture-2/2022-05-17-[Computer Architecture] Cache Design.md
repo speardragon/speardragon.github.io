@@ -41,7 +41,7 @@ A) b
 
 ---
 
-fully associative는 cache에서는 사용못하지만 virtual memory에서는 사용한다.
+fully associative는 delay가 길어서 cache에서는 사용못하지만 virtual memory에서는 사용한다.
 
 <br>
 
@@ -63,7 +63,7 @@ fully associative는 cache에서는 사용못하지만 virtual memory에서는 �
 
 ![image](https://user-images.githubusercontent.com/79521972/168722037-425c9329-baa6-4af5-af77-5c9e59f0b5e7.png)
 
-hit일 때만 data를 가져올 수 있는 것이다.
+hit인 경우를 판단하여 Hit일 때 memory address의 값을 읽어 data로 가져온다.
 
 <br>
 
@@ -71,13 +71,22 @@ hit일 때만 data를 가져올 수 있는 것이다.
 
 ![image](https://user-images.githubusercontent.com/79521972/168724373-ecab6642-edac-4fa4-8a4c-60f5a0206e28.png)
 
-0x4: 0000**01**00 
+0x4: 000<span style="color:red">0</span>**01**00 
 
-0xC: 0000**11**00
+0xC: 000<span style="color:red">0</span>**11**00
 
-0x8: 0000**10**00
+0x8: 000<span style="color:red">0</span>**10**00
 
-한 번 가져올 때 miss가 나는데 (compulsory miss) 그걸 가져올 때 근처에 있는 것을 가져오기 때문에 그 이후의 주소를 가져오는 것은 miss가 발생하지 않는다.
+- 빨간색 ->  set number (위 그림에서 set이 두 개이기 때문에 1 bit가 필요하다.)
+- bold 체 -> block offset  (위 그림에서 block의 갯수가 4개이기 때문에 2bit가 필요하다.)
+
+한 번 가져올 때 miss가 나는데 (compulsory miss) 그걸 가져올 때 근처에 있는 것을 가져오기 때문에 그 이후에 그 주소를 가져올 때는 compulsory miss가 발생하지 않는다.
+
+
+
+Q) 근처에 address를 가져오는데 근처의 기준이 뭐지? tag? 아니면 그 이후꺼를 쭉?
+
+A)
 
 <br>
 
@@ -103,7 +112,7 @@ hit일 때만 data를 가져올 수 있는 것이다.
 - **Capacity**: cache too small to hold all data of  interest 
   - 전제적으로 cache size가 작아서 할 수 없이 생기는 miss
 - **Conflict**: data of interest maps to same  location in cache
-  - n-way를 조금 늘리면 괜찮아지는 miss 
+  - n-way를 조금 늘리면 괜찮아지는 miss (용량을 늘리고 tag로 확인)
 
 **Miss penalty**: time it takes to retrieve a block from  lower level of hierarchy
 
@@ -115,7 +124,7 @@ hit일 때만 data를 가져올 수 있는 것이다.
 
 - Capacity: C  
 - Block size: b 
-- Number of blocks in cache: B = C/b 
+- Number of blocks in cache: **B = C/b** 
 - Number of blocks in a set: N 
 - Number of sets: S = B/N
 
@@ -142,7 +151,7 @@ hit일 때만 data를 가져올 수 있는 것이다.
 - cache에 데이터가 다시 들어오게 되는 경우 기존에 있던 것을 버려야 할텐데 무슨 기준으로 버려야 되는가?
   - LRU(Least recently used) replacement
 
-
+<br>
 
 - Direct mapped: no choice 
 - Set associative: 
@@ -150,7 +159,8 @@ hit일 때만 data를 가져올 수 있는 것이다.
   - Otherwise, choose among entries in the set Conflict: data of  interest maps to same location in cache 
 - Least-recently used (LRU) 
   - Choose the one unused for the longest time 
-    - Simple for 2-way, manageable for 4-way, too hard beyond that 
+    - Simple for 2-way, manageable for 4-way, **too hard beyond that** 
+    - 2-way나 4-way는 managable 한데 엄청 큰 건 힘듦
 - Random 
   - Gives approximately the same performance as LRU for  high associativity
   - 생각보다 성능이 높음(n이 클 때 거의 LRU와 비슷한 성능)
@@ -164,7 +174,8 @@ hit일 때만 data를 가져올 수 있는 것이다.
 
 
 
-둘 중에 어떤게 더 최근에 쓰였는지 항상 tracking을 해야 함.
+- 0x04가 들어오고 0x24가 들어왔기 때문에 더 먼저 쓰인 04번지를 밀어내고 새로 54 번지가 들어오도록 한다.
+- 둘 중에 어떤게 더 최근에 쓰였는지 항상 tracking을 해야 함.
 
 
 
@@ -176,7 +187,8 @@ hit일 때만 data를 가져올 수 있는 것이다.
 - On cache hit, CPU proceeds normally 
 - **On cache miss** 
   - Stall the CPU pipeline 
-  - Fetch block from next level of hierarchy 
+    - access를 할 수 없기 때문에 
+  - Fetch block from **next level** of hierarchy 
   - Instruction cache miss 
     - Restart instruction fetch 
   - Data cache miss 
@@ -186,10 +198,14 @@ hit일 때만 data를 가져올 수 있는 것이다.
 
 ## Write-Through
 
-- On data-write hit, could just update the block in  cache 
-  - But then cache and memory would be  inconsistent 
+- On data-write hit, could just update the block in cache 
+  - cache에는 write이 바로 될지라도 실질적은 memory에 써지지는 않는다.
+  - But then cache and memory would be inconsistent 
+  
 - **Write through**: also update memory 
-  - cache가 update 될 때마다 memory도 update 하는!
+  - cache가 update 될 때마다 memory도 update 하도록 한다!
+    - 시간이 엄청 걸릴 것이다 -> buffer로 해결
+  - 대신 cache와 memory의 내용이 같게 유지할 수 있다.
 - But, makes writes take longer 
   - e.g., if base CPI = 1, 10% of instructions are stores, write  to memory takes 100 cycles 
     - Effective CPI = 1 + 0.1×100 = 11 
@@ -204,11 +220,13 @@ hit일 때만 data를 가져올 수 있는 것이다.
 
 ## Write-Back
 
-- Alternative: On data-write hit, just update the  block in cache 
+- Alternative: On data-write hit, just update the block in cache 
   - Keep track of whether each block is dirty 
 - When a dirty block is replaced 
   - Write it back to memory 
-  - Can use a write buffer to allow replacing block to be  read first
+  - Can use a write buffer to allow replacing block to be read first
+
+또 다른 방식은 Write-back 방식이다. 이 방식은 블록이 교체될 때만 메모리의 데이터를 업데이트한다. 데이터가 변경됐는지 확인하기 위해 캐시 블록마다 `dirty` 비트를 추가해야 하며, 데이터가 변경되었다면 `1`로 바꿔준다. 이후 해당 블록이 교체될 때 `dirty` 비트가 `1`이라면 메모리의 데이터를 변경하는 것이다.
 
 
 <br>
@@ -223,6 +241,9 @@ hit일 때만 data를 가져올 수 있는 것이다.
 - For, Write-back 
   - Usually fetch the block
 
+
+
+데이터를 변경할 주소가 캐싱된 상태가 아니라면(Write miss) Write-allocate 방식을 사용한다. 당연한 얘기지만, 미스가 발생하면 해당 데이터를 캐싱하는 것이다. write-allocate를 하지 않는다면 당장은 리소스를 아낄 수 있겠지만 캐시의 목적을 달성하지는 못할 것이다.
 
 <br>
 
@@ -257,9 +278,9 @@ Virtual memory와 합쳐진 processor 구조가 중요함 (추후에 배울 것)
   - Connected by fixed-width clocked bus 
     - **Bus clock** is typically slower than CPU clock 
 - Example cache block read 
-  - Assume, 1 bus cycle for address transfer 
-  - 15 bus cycles per DRAM access 
-  - 1 bus cycle per data transfer 
+  - Assume, 1 bus cycle for **address transfer** 
+  - 15 bus cycles per **DRAM access** 
+  - 1 bus cycle per **data transfer** 
 - For 4-word block, 1-word-wide DRAM 
   - Miss penalty = 1 + 4×15 + 4×1 = 65 bus cycles 
   - Bandwidth = 16 bytes / 65 cycles = 0.25 B/cycle
@@ -284,25 +305,30 @@ Virtual memory와 합쳐진 processor 구조가 중요함 (추후에 배울 것)
 
 ![image](https://user-images.githubusercontent.com/79521972/168727464-fac87e10-1db3-4726-bd1e-4002576a8a2b.png)
 
-a->b : bus가 32에서 128로 변화했다하면
+- a->b : bus가 32에서 128로 변화했다하면
 
-- 4-word wide memory 
-  - Miss penalty = 1 + 15 + 1 = 17 bus cycles 
-  - Bandwidth = 16 bytes / 17 cycles = 0.94 B/cycle 
+  - 4-word wide memory 
+    
+    - Miss penalty = 1 + 15 + 1 = 17 bus cycles 
+    - Bandwidth = 16 bytes / 17 cycles = 0.94 B/cycle 
+    
+    - address가 bus를 통해 오면, 상위 address는 똑같기 때문에 memory bank에 동시에 찾아간다. 
+    
+    - 찾아 가는데는 15clock, 하나씩 보내는데 4clock
 
-address가 bus를 통해 오면, 상위 address는 똑같기 때문에 memory bank에 동시에 찾아간다. 이때 찾는데 15clock, 보내는데 4clock,  ????????
+  - 4-bank interleaved memory 
+    - Miss penalty = 1 + 15 + 4×1 = 20 bus cycles 
+    - Bandwidth = 16 bytes / 20 cycles = 0.8 B/cycle
 
-- 4-bank interleaved memory 
-  - Miss penalty = 1 + 15 + 4×1 = 20 bus cycles 
-  - Bandwidth = 16 bytes / 20 cycles = 0.8 B/cycle
-
-
+- b의 bus는 128 bit, c의 bus는 32bit
 
 
 
+사실 이해 잘 안 됨
 
 
 
+https://parksb.github.io/article/29.html
 
 
 

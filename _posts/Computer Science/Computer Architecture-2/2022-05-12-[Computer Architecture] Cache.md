@@ -454,7 +454,7 @@ A)
 - set = cache의 address라고 생각하면 된다.
 
 - hardware가 굉장히 커져서 delay가 길어지기 때문에 cache에서는 잘 사용하지 않는다.
-- 하지만 VM에서는 한 번 갔다오는 시간이 엄청 걸리기 때문에 miss rate을 줄이는 것이 관건이기 때문에 VM에서는 fully associative를 사용한다.
+- 하지만 VM에서는 한 번 갔다오는 시간이 엄청 걸리기 때문에 comflict miss을 줄이는 것이 관건이기 때문에 VM에서는 fully associative를 사용한단.
 
 
 
