@@ -15,7 +15,7 @@ tag: ['memory', 'variable']
 - 프로그램 실행을 위해서는 
   - 프로그램의 코드, 데이터, 스택, 힙, U-영역 등이 필요하다. 
 - 프로세스 이미지(구조)는 메모리 내의 프로세스 레이아웃 
-- 프로그램 자체가 프로세스는 아니다 !
+- 프로그램(program definition) 자체가 프로세스(program instance)는 아니다 !
 
 <br>
 
@@ -24,6 +24,8 @@ tag: ['memory', 'variable']
 - Linux virtualizes its physical resource of memory 
 - Processes do not directly address physical memory. 
 - Instead, the kernel associates each process with a unique **virtual** **address space**. 
+  - 프로세스 마다
+
 - This address space is **linear**, with addresses starting at zero, and increasing to some maximum value 
 - Pages and Paging 
   - The virtual address space is composed of **pages**. 
@@ -35,6 +37,8 @@ tag: ['memory', 'variable']
 
 ![image](https://user-images.githubusercontent.com/79521972/168198658-5f67ba47-8f05-46c7-b542-197692732d02.png)
 
+logical memory를 physical memory에 mapping 하기 위한 page table이 존재함.
+
 <br>
 
 ## 프로세스 이미지 구조 (주소공간)
@@ -44,12 +48,12 @@ tag: ['memory', 'variable']
 ![image](https://user-images.githubusercontent.com/79521972/168198905-d71739aa-fccf-4f5d-8986-aae32c569db3.png)
 
 - 코드 세그먼트(code segment) 
-  - 기계어 명령어 
+  - 코드를 번역한 기계어 명령어 
 - 데이터 세그먼트(data segment) 
   - e.g. int maxcount = 99; (initialized) 
   - e.g. long sum[1000]; (uninitialized) 
 - 스택(stack) 
-  - 지역 변수, 매개 변수, 반환주소, 반환값, 등 
+  - 지역 변수, 매개 변수, 반환 주소, 반환 값, 등 
 - 힙(heap) 
   - 동적 메모리 핛당 
   - malloc() in C, 
@@ -66,11 +70,11 @@ tag: ['memory', 'variable']
   - In Linux, this segment is marked read-only 
 
 - Data segment contains 
-  - initialized global variables. (함수 밖 선얶) 
-  - Static variables (함수 안, 밖 선얶) 
+  - initialized global variables. (함수 밖 선언) 
+  - Static variables (함수 안, 밖 선언) 
 - bss segment contains 
   - uninitialized global variables. 
-  - These variables contain special values (essentially, all zeros)
+  - These variables contain special values (essentially, all **zeros**)
 
 - Stack contains 
   - the process’ execution stack (stack frame), which grows and shrinks dynamically as the stack depth increases and decreases. 
@@ -93,6 +97,7 @@ int main() {
     int c = 3;
     static int d = 4;
     char *p;
+    
     p = (char *) malloc(40);
     fun(5);
 }
@@ -119,7 +124,7 @@ void fun(int n)
 
 ![image](https://user-images.githubusercontent.com/79521972/168521575-a311dc3c-3ddc-40ae-8942-ea9fe148c828.png)
 
-
+local 변수 -> stack에 저장
 
 <br>
 
@@ -143,7 +148,11 @@ void fun(int n)
 
 ![image](https://user-images.githubusercontent.com/79521972/168521688-93e2ca93-7336-4dcb-9d7b-95ffbd345308.png)
 
+정적 변수: 함수 밖에서 선언된 변수
 
+자동 변수: 자동으로 사라지고 생기는 변수
+
+동적 변수: 동적 할당 되어 heap에 생성되는 변수
 
 <br>
 
@@ -153,12 +162,16 @@ void fun(int n)
 
 - We need to understand how calling procedures/functions/methods effects the memory model. 
 
+<br>
+
 ## Procedures 
 
-- High level languages usually employ the concept of procedures (or functions, methods, routines, etc). 
+- High level languages usually **employ the concept of procedures** (or functions, methods, routines, etc). 
 - A program is composed of several procedures. Each procedure is a small piece of code, which can receive arguments, define variables, perform a simple and defined operation and optionally return a value. 
-- Procedures may call other procedures or themselves (recursion). Note that even object oriented programs are procedural. 
+- Procedures may call other procedures(nested function) or themselves (recursion). Note that even object oriented programs are procedural. 
 - When you call a member method of some object, you basically call the method with the object as one of the arguments. 
+
+<br>
 
 ## The Call Stack 
 
@@ -171,6 +184,8 @@ void fun(int n)
     - The return address - Where to return to when the procedure ends 
 - When an activation frame is created, the binding between local variables and their location on the stack is made. When a procedure terminates, its associated activation frame is popped from the stack, and discarded.
 -  In Java, only the variables located on the top-most activation frame may be accessed (parameters and local variables). However, this is not the case in C++. 
+
+<br>
 
 ## Stack Implementation 
 
