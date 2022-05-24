@@ -397,3 +397,10 @@ Page Table miss -> Page fault -> Hard disk에서 가져옴
 
 ![image](https://user-images.githubusercontent.com/79521972/169947717-8dcec477-7ce9-4ba6-b888-4f2c48b43de6.png)
 
+
+
+<br>
+Q) TLB 에서 virtual page number를 확인하는데 fully associative랑 n-way set이랑 다른가?
+
+A) 
+
