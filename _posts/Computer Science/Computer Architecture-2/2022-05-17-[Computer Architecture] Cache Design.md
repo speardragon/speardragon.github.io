@@ -209,7 +209,7 @@ A)
 - But, makes writes take longer 
   - e.g., if base CPI = 1, 10% of instructions are stores, write  to memory takes 100 cycles 
     - Effective CPI = 1 + 0.1×100 = 11 
-- **Solution**: <mark>write buffer </mark>
+- **Solution**: <mark>write buffer</mark>
   - Holds data waiting to be written to memory 
   - CPU continues immediately 
     - Only stalls on write if write buffer is already full
@@ -243,7 +243,7 @@ A)
 
 
 
-데이터를 변경할 주소가 캐싱된 상태가 아니라면(Write miss) Write-allocate 방식을 사용한다. 당연한 얘기지만, 미스가 발생하면 해당 데이터를 캐싱하는 것이다. write-allocate를 하지 않는다면 당장은 리소스를 아낄 수 있겠지만 캐시의 목적을 달성하지는 못할 것이다.
+데이터를 변경할 주소가 캐싱된 상태가 아니라면(Write miss) Write-allocate 방식을 사용한다. 당연한 얘기지만, 미스가 발생하면 해당 데이터를 캐싱하는 것이다. write-allocate를 하지 않는다면 당장은 resource를 아낄 수 있겠지만 캐시의 목적을 달성하지는 못할 것이다.
 
 <br>
 
@@ -308,21 +308,24 @@ Virtual memory와 합쳐진 processor 구조가 중요함 (추후에 배울 것)
 - a->b : bus가 32에서 128로 변화했다하면
 
   - 4-word wide memory 
-    
     - Miss penalty = 1 + 15 + 1 = 17 bus cycles 
     - Bandwidth = 16 bytes / 17 cycles = 0.94 B/cycle 
     
     - address가 bus를 통해 오면, 상위 address는 똑같기 때문에 memory bank에 동시에 찾아간다. 
     
     - 찾아 가는데는 15clock, 하나씩 보내는데 4clock
-
+    
   - 4-bank interleaved memory 
     - Miss penalty = 1 + 15 + 4×1 = 20 bus cycles 
     - Bandwidth = 16 bytes / 20 cycles = 0.8 B/cycle
-
+  
 - b의 bus는 128 bit, c의 bus는 32bit
 
+- c를 쓰는 것이 좋다.
 
+메모리에 접근하는것은
+캐시 하나 존재 > 메모리가 버스로 연결 > 메모리 구조이다.
+이때, bandwidth를 늘리면 한번에 이동가능한 메모리양이 늘어난다. bus를 늘리기 위해서는 구조비용이 많이 들게 된다. 따라서 비용없이 늘리기 위해서는 bank라고 하는 개념이 도입된다.
 
 사실 이해 잘 안 됨
 
@@ -330,19 +333,4 @@ Virtual memory와 합쳐진 processor 구조가 중요함 (추후에 배울 것)
 
 https://parksb.github.io/article/29.html
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+https://velog.io/@blacklandbird/%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B5%AC%EC%A1%B0-8
