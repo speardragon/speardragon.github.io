@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Computer Architecture] Cache"
+title: "[Computer Architecture] Cache Coherence"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['Cache Design']
 ---

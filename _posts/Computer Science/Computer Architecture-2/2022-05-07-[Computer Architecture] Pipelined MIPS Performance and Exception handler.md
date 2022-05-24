@@ -29,7 +29,7 @@ tag: ['Pipeline']
   - CPI<sub>beq</sub> = 1(0.75) + 2(0.25) = 1.25
   - Average CPI = (0.25)(1.4) + (0.1)(1) + (0.11)(1.25) + (0.02)(2) + (0.52)(1) = **1.15**
 
-jump는 CPI가 2이지만 비율상 2%이기 때문에 크게 영향을 미치지 않았다.
+jump는 CPI가 다른 것과 비교했을 때 매우 큰 값인 2이지만 비율로 따졌을 때 2%이기 때문에 크게 영향을 미치지 않았다.
 
 <br>
 
@@ -39,7 +39,7 @@ jump는 CPI가 2이지만 비율상 2%이기 때문에 크게 영향을 미치�
 
   t<sub>pcq</sub> + t<sub>mem</sub> + t<sub>setup</sub> 
 
-  2(t<sub>RFread </sub>+ t<sub>mux </sub>+ t<sub>eq </sub>+ t<sub>AND </sub>+ t<sub>mux </sub>+ t<sub>setup </sub>) 
+  2(t<sub>RFread </sub>+ t<sub>mux </sub>+ t<sub>eq </sub>+ t<sub>AND </sub>+ t<sub>mux </sub>+ t<sub>setup </sub>)  -> critical path
 
   t<sub>pcq </sub>+ t<sub>mux </sub>+ t<sub>mux </sub>+ t<sub>ALU </sub>+ t<sub>setup</sub> 
 
@@ -72,15 +72,13 @@ Program with 100 billion instructions
 
 ​							= **63 seconds**
 
-
-
 <br>
 
-## Processor Performance Comparson
+## Processor Performance Comparison
 
 ![image](https://user-images.githubusercontent.com/79521972/167231529-bcfd75e7-142b-4220-a724-f0f406f4fef8.png)
 
-1.47배 만큼 더 빨라진 것을 볼 수 있음
+single-cycle보다 1.47배 만큼 더 빨라진 것을 볼 수 있음
 
 <br>
 
@@ -90,13 +88,11 @@ Program with 100 billion instructions
 - Caused by: 
   - Hardware, also called an **interrupt**, e.g. keyboard 
   - Software, also called **traps**, e.g. undefined instruction 
-  - Divide-by-zero, overflow, debugger breakpoint,  hardware malfunction, attempt to read nonexistent  memory, accessing privileged instruction or memory 
+  - Divide-by-zero, overflow, debugger breakpoint,  hardware malfunction, attempt to read nonexistent memory, accessing privileged instruction or memory 
 - When exception occurs, the processor: 
-  - Records cause of exception (**Cause register**) 
+  - Records **cause** of exception (**Cause register**) 
   - **Jumps** to exception handler (0x80000180) 
   - Returns to program (**EPC register**를 보고 다시 리턴한다.)
-
-
 
 <br>
 
@@ -114,10 +110,10 @@ Program with 100 billion instructions
 
 - Not part of register file 
   - **Cause** 
-    - Records cause of exception 
-    - Coprocessor 0 register 13 
+    - Records cause of exception
+    - Coprocessor 0 register 13
   - **EPC** (Exception PC) 
-    - Records PC where exception occurred 
+    - Records PC where exception occurred (어디서 발생했는지 기록)
     - **Coprocessor 0** register 14 
       - Coprocessor: 별도의 process를 처리하는 processor
 - Move from Coprocessor 0 
@@ -159,7 +155,7 @@ mfc0 $3, Cause
 
 ![image](https://user-images.githubusercontent.com/79521972/167232552-63c549d0-73c0-4a47-b6d4-5f910d3aea34.png)
 
-writereg에 cause 정보를 저장하는 path
+WriteReg에 cause 정보를 저장하는 path
 
 - mux를 통해 cause 혹은 EPC 값을 전달한다.
 
@@ -182,9 +178,9 @@ writereg에 cause 정보를 저장하는 path
 - Superscalar Processors 
 - Out of Order Processors 
 - Register Renaming 
-- SIMD 
-- Multithreading 
-- Multiprocessors
+- SIMD (Single Instruction Multiple Data )
+- Multi-threading 
+- Multi-processors
 
 
 
@@ -196,12 +192,14 @@ writereg에 cause 정보를 저장하는 path
 - Number of stages limited by: 
   - Pipeline hazards 
   - Sequencing overhead 
-  - Power - frequency에 비례하기 때문에 
+  - Power - frequency에 비례하기 때문에 너무 빠른 클락을 사용하면 그만한 power를 요구
   - Cost
 
 ![image](https://user-images.githubusercontent.com/79521972/167232671-7a2387d6-8709-4ad9-897f-13b00fc8147f.png)![image](https://user-images.githubusercontent.com/79521972/167232676-041e4c70-3f62-4cbc-9325-e70d5187967a.png)
 
+Tc: clock cycle time이 pipeline stage가 늘어날 수록 짧아지지만 Instruction time 즉, 성능은 줄어들다가 어느 순간 늘어난다.
 
+- 따라서 너무 deep pipeline은 좋지 않다.
 
 <br>
 
@@ -210,18 +208,18 @@ writereg에 cause 정보를 저장하는 path
 - **Guess** whether branch will be taken 
   - Backward branches are usually taken (loops) 
   - Consider history to improve guess 
-- Good prediction **reduces fraction of branches  requiring a flush**
+- Good prediction **reduces fraction of branches requiring a flush**
 
 <br>
 
 - Ideal pipelined processor: CPI = 1 
 - Branch misprediction increases CPI  (CPI = 2)
-  - flush 하는 과정 때문에 CPI가 2
+  - flush 하는 과정 때문에 beq의 경우 CPI가 2
 
 - **Static branch prediction:** 
   - Check direction of branch (forward or backward) 
-  - If backward, predict taken 
-  - Else, predict not taken 
+    - If backward, predict taken 
+    - Else, predict not taken 
 - **Dynamic branch prediction:** 
   - Keep **history** of last (several hundred) branches in branch target buffer, record: 
     - Branch destination 
@@ -234,9 +232,9 @@ writereg에 cause 정보를 저장하는 path
 ![image](https://user-images.githubusercontent.com/79521972/167232731-263c42f3-e664-4934-bd5b-10e197b2b6fa.png)
 
 - loop를 10번 돌리는 과정
-- history 1 bit가 있는데 처음에는 T(aken) 으로 되어 있는데 실제로는 일어나지 않아야 하기 때문에 틀리게 되고 NT로 바뀌어서 loop를 10번 진행할 동안에는 모두 NT이기 때문에 계속 맞다가 마지막에는 beq명령어가 done으로 이동하기 때문에 T인데 NT로 되어있기 때문에 틀리고 다시 NT로 바뀌게 된다.
+- history 1 bit가 있고 처음에는 T(aken) 으로 되어 있는데 실제로는 일어나지 않아야 하기 때문에 여기서 한 번 틀리게 되고 그 이후 NT로 바뀌어서 loop를 10번 진행할 동안에는 모두 NT가 맞기 때문에 계속 맞다가 마지막에는 beq명령어가 done으로 이동해야 하기 때문에 T인데 history는 NT로 되어있기 때문에 여기서 또 한 번 틀리고 다시 NT로 바뀌게 된다.
 
-- 따라서 맨 처음과 맨 끝은 틀리게 된다.
+- 따라서 맨 처음과 맨 끝에서만 틀리게 된다.
 
 <br>
 
@@ -246,10 +244,12 @@ writereg에 cause 정보를 저장하는 path
 
 - **Remembers** whether branch was taken the last time and **does the same thing** 
 - **Mispredicts** **first** and **last** branch of loop
+  - state transition이 곧 mispredict를 의미한다.
+
 
 ![image](https://user-images.githubusercontent.com/79521972/167232747-dc0010a7-e241-4f75-8e96-8e7d06ee37b9.png)
 
-- 이 방법도 한계가 있는데, 가령 doubly nested loop를 들어보면 위와 같은 구조는 branch instruction에서 miss가 날 때마다 prediction state가 변경된다. 그런데 전체적으로 루프 한 개가 다른 loop 한 개를 포괄하고 있는 상태에서 전체 state를 예측하는 것이 확실하다고 보장하지 못할 것이다.
+- 이 방법도 한계가 있는데, 가령 doubly nested loop(이중 for문)를 들어보면 위와 같은 구조는 branch instruction에서 miss가 날 때마다 prediction state가 변경된다. 그런데 전체적으로 루프 한 개가 다른 loop 한 개를 포괄하고 있는 상태에서 전체 state를 예측하는 것이 확실하다고 보장하지 못할 것이다.
   다시 말해 내부 loop가 수행되면서 branch가 taken이 되더라고 마지막 반복구문에서는 그 branch에 대한 prediction이 일어나지 않으므로 그 상태가 not taken으로 변경된다. 그런데 이 상태에서 안쪽 loop를 다시 수행하면 처음 branch predict를 수행하면 다시 수행하기 위해 state가 taken으로 변경되면서 결론적으로 안쪽 루프의 처음 state와 나중 state가 맞지 않는 현상이 발생하는 것이다.
 
 <br>
@@ -260,11 +260,13 @@ writereg에 cause 정보를 저장하는 path
 
 ![image](https://user-images.githubusercontent.com/79521972/167232887-a148a4ce-1593-491f-b5b5-e0c6d932d340.png)
 
-연속적으로 계속 taken이 일어나고 있는지를 확인한다.
+**연속적으로** 계속 taken이 일어나고 있는지를 확인한다.
 
 > Only mispredicts last branch of loop
+>
+> > loop의 마지막에서만 mispredict가 일어난다.
 
-연속적으로 Not Taken이 일어났을 때야 Weakly Not Taken으로 예측한다.
+연속적으로 Not Taken이 일어났을 때서야 (Weakly) Not Taken으로 예측한다.
 
 <br>
 
@@ -276,14 +278,18 @@ writereg에 cause 정보를 저장하는 path
 
 ### Superscalar
 
-만약 CPU의 ALU를 통해서 덧셈과 곱셈의 연산결과를 뽑으라는 instruction을 줬다고 가정했을 때 앞에서 말한 IPC=1인 환경에서는 한 cylce이 지나면 곱셈의 결과를 얻을 수 있어야 한다. 그런데 만약 곱셈의 결과가 덧셈의 결과를 바탕으로 나오는 것이라면 한 cylce이 지나기 전에 곱셈의 결과를 얻기는 어려울 것이다. 왜냐면 덧셈의 instruction을 수행하는데도 1cylce이 소모되기 때문이다. 이렇게 컴퓨터 성능을 막는 요소 중 하나를 instruction 간의 dependency라고 한다.
+만약 CPU의 ALU를 통해서 덧셈과 곱셈의 연산결과를 뽑으라는 instruction을 줬다고 가정했을 때 앞에서 말한 IPC=1인 환경에서는 한 cylce이 지나면 곱셈의 결과를 얻을 수 있어야 한다. 그런데 만약 곱셈의 결과가 덧셈의 결과를 바탕으로 나오는 것이라면 한 cylce이 지나기 전에 곱셈의 결과를 얻기는 어려울 것이다. 왜냐면 덧셈의 instruction을 수행하는데도 1cylce이 소모되기 때문이다. 이렇게 컴퓨터 성능을 막는 요소 중 하나를 instruction 간의 **dependency**라고 한다.
 
-이걸 극복하기 위해선 instruction이 처리되는 path를 여러개 만들고 각각의 instruction을 해당 path를 통해 처리하게 하면 된다.(위 예제에서 덧셈과 곱셈) 물론 완전히 똑같으면 성능 측면에서 의미가 없으니까 하나는 data만 처리하게 하고, 다른 하나는 instruction만 처리할 수 있도록 구성하면 instruction을 읽어왔을 때 data pipeline을 통해 결과를 뽑을 수 있게 한다.
+이걸 극복하기 위해선 instruction이 처리되는 path를 여러개 만들고 각각의 instruction을 해당 path를 통해 처리하게 하면 된다. 
+
+- 그렇게 되면 
+
+(위 예제에서 덧셈과 곱셈) 물론 완전히 똑같으면 성능 측면에서 의미가 없으니까 하나는 data만 처리하게 하고, 다른 하나는 instruction만 처리할 수 있도록 구성하면 instruction을 읽어왔을 때 data pipeline을 통해 결과를 뽑을 수 있게 한다.
 
 이 구조를 바로 SuperScalar 구조라고 하고 앞에서 잠깐 언급한 path를 SuperScalar에서는 way로 표현한다.
 
-- Multiple copies of datapath execute multiple  instructions at once
-- Dependencies make it tricky to issue multiple  instructions at once CLK CL
+- Multiple copies of datapath execute multiple instructions at once
+- Dependencies make it tricky to issue multiple instructions at once CLK CL
 - 내부구조는 아래 그림과 같이 생겼다.
 
 
@@ -291,6 +297,8 @@ writereg에 cause 정보를 저장하는 path
 ![image](https://user-images.githubusercontent.com/79521972/167233034-0e35857a-ad52-44af-a866-5269771a1d5f.png)
 
 기존의 pipeline과 다른 점은 superscalar는 두 개의 instruction을 한 번에 처리할 수 있다는 점이다.
+
+그래서 이어진 명령어들 간에 같은 register 위치를 사용하는 것이 불가능 하다.
 
 <br>
 
@@ -320,22 +328,22 @@ datapath가 두 개로 늘긴 했지만 그만큼의 효과를 보지 못했다.
 
 - Looks ahead across multiple instructions 
 - Issues as many instructions as possible at once 
-- Issues instructions out of order (as long as no  dependencies) 
+- Issues instructions out of order (as long as no dependencies) 
 - **Dependencies:** 
-  - **RAW** (read after write): one instruction writes, later  instruction reads a register 
-  - **WAR** (write after read): one instruction reads, later  instruction writes a register 
-  - **WAW** (write after write): one instruction writes, later  instruction writes a register
+  - **RAW** (read after write): one instruction writes, later instruction reads a register 
+  - **WAR** (write after read): one instruction reads, later instruction writes a register 
+  - **WAW** (write after write): one instruction writes, later instruction writes a register
 
 Q) RAR는 dependency에 속하지 않는 이유
 
-A) Wirte이 문제를 만들어 내기 때문에
+A) dependency는 연속된 명령어들 간에 의존성을 말한다. 그래서 떨어질 수 없는 경우를 말하는데 read의 경우는 값이 달라질 문제가 없기 때문에 그냥 하면 된다. 
 
 <br>
 
 ## Out of Order Processor
 
 - **Instruction level parallelism (ILP):** 
-  - number  of instruction that can be issued  simultaneously (average < 3) 
+  - number of instruction that can be issued simultaneously (average < 3) 
 - **Scoreboard**: table that **keeps track of**(기록): 
   - Instructions waiting to issue 
   - Available functional units 
@@ -370,7 +378,7 @@ t0를 r0로 rename 함으로써 add명령을 아래로 내릴 수 있었고 이�
 - **Single Instruction Multiple Data** (SIMD) 
   - Single instruction acts on multiple pieces of data at once 
   - Common application: graphics
-  - Perform short arithmetic operations (also called packed  arithmetic) 
+  - Perform short arithmetic operations (also called packed arithmetic) 
 - For example, add four 8-bit elements
 
 ![image](https://user-images.githubusercontent.com/79521972/167233225-2da9ac57-e535-403e-a217-48dd967cd023.png)
@@ -402,7 +410,7 @@ t0를 r0로 rename 함으로써 add명령을 아래로 내릴 수 있었고 이�
   - Multiple processes can run at once: e.g., surfing  Web, playing music, writing a paper 
 - **Thread:** part of a program 
   - Each process has multiple threads: 
-  - e.g., a word  processor may have threads for typing, spell  checking, printing
+  - e.g., a word processor may have threads for typing, spell checking, printing
 
 
 
@@ -413,11 +421,11 @@ t0를 r0로 rename 함으로써 add명령을 아래로 내릴 수 있었고 이�
 **Single-Core system** 
 
 - One thread runs at once 
-- When one thread stalls (for example, waiting  for memory): 
+- When one thread stalls (for example, waiting for memory): 
   - Architectural state of that thread stored 
-  - Architectural state of waiting thread loaded into  processor and it runs 
+  - Architectural state of waiting thread loaded into processor and it runs 
   - Called **context switching** 
-- Appears to user like all threads running  simultaneously
+- Appears to user like all threads running simultaneously
   - 동시에 실행이 되는 것처럼 보이지만 실제로는 이거했다 저거했다 context switching이 이루어지는 것
 
 
@@ -430,9 +438,9 @@ thread를 여러개로 동시에 할 수 있는 hardware
 
 - Has multiple copies of **architectural state** (PC, reg)
 - Multiple threads can be **active** at a time: 
-  - When one thread stalls, another can run immediately  (without any delay) because PC and registers are  already available. 
+  - When one thread stalls, another can run immediately  (without any delay) because PC and registers are already available. 
   - If one thread can’t keep all execution units busy,  another thread can use idle units. 
-- Does not increase instruction-level parallelism  (ILP) of single thread, but increases  throughput  
+- Does not increase instruction-level parallelism  (ILP) of single thread, but increases throughput  
 
 > Intel calls this “hyperthreading”
 
@@ -442,10 +450,10 @@ thread를 여러개로 동시에 할 수 있는 hardware
 
 ## Multiprocessors
 
-- Multiple processors (cores) with a method of  communication between them 
+- Multiple processors (cores) with a method of communication between them 
 - Types: 
   - Homogeneous: multiple cores with shared memory 
-  - Heterogeneous: separate cores for different tasks (for  example, DSP and CPU in cell phone) 
+  - Heterogeneous: separate cores for different tasks (for example, DSP and CPU in cell phone) 
   - Clusters: each core has own memory system
 
 

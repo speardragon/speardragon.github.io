@@ -23,9 +23,9 @@ tag: ['Pipeline', 'hazard']
 
 ![image](https://user-images.githubusercontent.com/79521972/166847210-24d111d2-6958-43fb-8c97-1936d39a13f6.png)
 
-모든 instruction의 수행이 IF-ID-EX-MEM-WB으로 이루어진다고 가정했을 때 4번 째 Cycle에서는 첫 번째 instruction의 Memory Access와 네 번째 instruction의 IF가 동시에 Memory Access를 요구하는 것을 볼 수 있다. 메모리는 당연히 어디서 해당 signal을 받았는지 알 수 없기 때문에 결론적으로 Resource Conflict 현상이 발생하는 것이다.
+모든 instruction의 수행이 IF-ID-EX-MEM-WB으로 이루어진다고 가정했을 때 4번째 Cycle에서는 첫 번째 instruction의 Memory Access와 네 번째 instruction의 IF가 동시에 Memory Access를 요구하는 것을 볼 수 있다. 메모리는 당연히 어디서 해당 signal을 받았는지 알 수 없기 때문에 결론적으로 **Resource Conflict** 현상이 발생하는 것이다.
 
-- 이에 대한 해결책으로는 Stall로, 저렇게 중복해서 쓰는 부분에 대해서는 다른 instruction 처리 시 쉬어주게끔 고려하는 것이다. 즉, 기기적으로 이상이 없음에도 일부러 수행을 멈추게 하여 비용적인 측면에서는 더 효율적이겠지만 아무래도 성능이 좋을 순 없다.
+- 이에 대한 해결책으로는 Stalling으로, 저렇게 중복해서 쓰는 부분에 대해서는 다른 instruction을 처리 할 때는 쉬어주게끔 고려하는 것이다. 즉, 기기적으로 이상이 없음에도 일부러 수행을 멈추게 하여 비용적인 측면에서는 더 효율적이겠지만 아무래도 성능이 좋을 순 없다.
 
 <br>
 
@@ -49,7 +49,7 @@ Data에 대한 Read/Write Sequence가 엇갈리면서 발생하는 문제이다.
 
 ![image](https://user-images.githubusercontent.com/79521972/166400646-cb957cc9-dd55-432d-9ae7-987ee29b9e71.png)
 
-lw의 계산 결과는 DM의 뒤에 나오기 때문에 이전의 hazard와 같이 forwading 방식으로 ALU에서 가져와도 그 연산 결과는 주소값일 뿐 실질적으로 원하는 register 값이 아니기 때문에 그 방식으로는 해결할 수 없다.
+lw의 계산 결과는 memory의 값이기 때문에 DM과정의 뒤에서 가져올 수 있기 때문에 이전의 hazard와 같이 forwading 방식으로 ALU에서 가져와도 그 연산 결과는 메모리의 주소값일 뿐 실질적으로 원하는 값이 아니기 때문에 그 방식으로는 해결할 수 없다.
 
 <br>
 
@@ -77,7 +77,7 @@ lw의 계산 결과는 DM의 뒤에 나오기 때문에 이전의 hazard와 같�
 
 StallF와 StallD 신호를 통해 IF와 ID의 register를 disabled 시키는 것이다.
 
-그렇게 되면 E방에는 데이터가 한 clock 동안 비어있게 되는데 이 과정을 flush라고 하고 해당 동작을 FlushE signal이 관할하여 clear 시키는 역할을 한다.
+그렇게 되면 E방에는 데이터가 한 clock 동안 비워 주어야 하는데 이 과정을 flush라고 하고 해당 동작을 FlushE signal이 관할하여 clear 시키는 역할을 한다.
 
 <br>
 
@@ -85,9 +85,11 @@ StallF와 StallD 신호를 통해 IF와 ID의 register를 disabled 시키는 것
 
 ![image](https://user-images.githubusercontent.com/79521972/166853299-b9bc0ba8-d6e0-40ab-83b6-32aa5deaa556.png)
 
+lw 명령어에서 쓰이던 **rt**가 R type의 rs나 rt에 사용되면 lwstall이 enable된다. 
+
 lw 명령어인 경우를 판별하기 위해서 MemtoReg를 사용하였다.
 
-
+<img src="https://user-images.githubusercontent.com/79521972/169958300-c604c1bd-1c60-4cde-ac45-1478f30c4319.png" alt="image" style="zoom:150%;" />
 
 <br>
 
@@ -113,7 +115,7 @@ lw 명령어인 경우를 판별하기 위해서 MemtoReg를 사용하였다.
 
 ![image](https://user-images.githubusercontent.com/79521972/166402777-05c6df3b-b8a1-46bb-987d-ca55529f91e4.png)
 
-비교를 M방에서 하면 앞에서 만들어진 데이터가 모두 버려져야 하기 때문에 비효율적인 동작이 발생하게 된다.
+비교를 M방에서 하면 **앞에서 만들어진 데이터가 모두 버려져야 하기 때문에** 비효율적인 동작이 발생하게 된다.
 
 <br>
 
@@ -121,7 +123,7 @@ lw 명령어인 경우를 판별하기 위해서 MemtoReg를 사용하였다.
 
 ![image](https://user-images.githubusercontent.com/79521972/166402793-c2783595-e9a8-4e88-be13-d4b125344659.png)
 
-beq 명령어로 인해 jump하고자 하는 label과 beq 명령 사이에 있는 instruction 들은 쓸모가 없어지기 때문에 Flush 되어야 한다.
+beq 명령어로 인해 jump하고자 하는 label과 beq 명령어 사이에 들어왔던 instruction 들은 쓸모가 없어지기 때문에 Flush 되어야 한다.
 
 
 
@@ -129,9 +131,9 @@ beq 명령어로 인해 jump하고자 하는 label과 beq 명령 사이에 있�
 
 ## Early Branch Resolution
 
-그래서 조금이라도 이 penalty를 줄이기 위해서 M방에서 check하던 AND gate 대신에 D방의 comparator를 추가하여 해결할 것이다. 
+그래서 조금이라도 이 penalty를 줄이기 위해서 M방에서 zero를 check하던 AND gate 대신에 D방에 comparator를 추가하여 해결할 것이다. 
 
-또한 BTA를 계산하던 ALU 모듈 역시 D방으로 옮겨서 조금이라도 빨리 비교하고 jump를 할 수 있도록 한 것이다.
+또한 BTA를 계산하던 ALU 모듈 역시 D방으로 옮겨서 조금이라도 빨리 비교하여 뒤의 필요없는 instruction이 낭비 되지 않으면서 jump를 할 수 있도록 한 것이다.
 
 ![image](https://user-images.githubusercontent.com/79521972/166402814-b3770c05-d10f-4fe4-845a-c9beca9e223c.png)
 
@@ -152,7 +154,9 @@ Introduced another data hazard in **Decode stage**
   - 다음 다음 clock에서는 ALU에서 이미 계산이 완료 되었기 때문에
 
 
-- 그런데 만약 오른쪽의 code처럼 두 clock 앞에 가는 명령이 lw 이거나 바로 앞에 가는 clock에서 add와 같은 register write이 일어난다면 그 때는 ALU 계산을 하기도 전이라서 새로운 data hazard를 발생하기 때문에 이 경우에는 stall이 필요하다.
+- 그런데 만약 오른쪽의 code처럼 두 clock 앞에 가는 명령이 lw 이거나 
+- 바로 앞에 가는 clock에서 add와 같은 register write이 일어난다면 
+- 그 때는 ALU 계산을 하기도 전이라서 새로운 data hazard를 발생하기 때문에 이 경우에는 stall이 필요하다.
 
 Q) 만약에 lw 명령어에서 rt에 load 하는 명령 바로 다음 beq에서 그 레지스터를 사용하면 stalling을 두 클락동안 해야 하나요?
 
@@ -180,7 +184,7 @@ Q) 만약에 lw 명령어에서 rt에 load 하는 명령 바로 다음 beq에서
 
 ![image](https://user-images.githubusercontent.com/79521972/166403016-d513e2c6-1196-41bb-ae55-f34ec0263efb.png)
 
-두 개 앞에 가는 명령이 reg write
+두 개 앞에 가는 명령(M)의 WriteReg와 현재 rs가 같으면서 RegWriteM이 enable일 때
 
 
 
@@ -192,7 +196,9 @@ Q) 만약에 lw 명령어에서 rt에 load 하는 명령 바로 다음 beq에서
 
 ![image](https://user-images.githubusercontent.com/79521972/166403082-2cfb57ba-bf2d-4576-81e2-7d3cfc90b628.png)
 
-한 개 앞에 가는 명령이 reg write || 두 개 앞에 가는 명령이 lw (lwstall 인 듯 위에는 표시가 안 되어 있음)
+(현재(D) Branch라는 명령이고) AND (한 개 앞에 가는 명령(E)이 RegWrite || 두 개 앞에 가는 명령(M)이 lw )
+
+- (lwstall 인 듯 위에는 표시가 안 되어 있음)
 
 
 
@@ -222,7 +228,7 @@ beq을 check 하기 위해서 ALU를 사용하지 않고 comparator를 사용하
 
 
 
-jump는 condition을 따지지 않고 바로 실행하기 때문에 control 신호가 branch와 OR에 들어가서 fetch한 명령어를 clear시킨다.
+jump는 condition을 따지지 않고 바로 실행하기 때문에 control 신호가 branch pin과 OR에 들어가서 fetch한 명령어를 clear시킨다.
 
 - fetch stage should be flushed.
 
@@ -241,7 +247,6 @@ jump는 condition을 따지지 않고 바로 실행하기 때문에 control 신�
   - Backward branches are usually taken (loops) 
   - Consider history to improve guess 
   - Good prediction reduces fraction of branches  requiring a flush
-
 
 
 

@@ -43,7 +43,7 @@ I/O는 다른 강의자료에서 다루었음(중요하기 때문에)
 
 ## Processor - Memory Gap
 
-In prior chapters, assumed access memory in 1 clock  cycle – but hasn’t been true since the 1980’s
+In prior chapters, assumed access memory in 1 clock cycle – but hasn’t been true since the 1980’s
 
 ![image](https://user-images.githubusercontent.com/79521972/167535346-d1dcca59-3f75-4cf0-9cf2-fcd64c5aaaba.png)
 
@@ -53,7 +53,7 @@ In prior chapters, assumed access memory in 1 clock  cycle – but hasn’t been
 
 ## Memory System Challenge
 
-- Make memory system appear as fast as  processor 
+- Make memory system appear as fast as processor 
 - Use hierarchy of memories 
 - Ideal memory: 
   - Fast 
@@ -82,7 +82,6 @@ In prior chapters, assumed access memory in 1 clock  cycle – but hasn’t been
   - 그렇다면 hard disk에서 reg file까지 메모리가 어떻게 전달될까?
   - 필요한 것만 가져와서 용량을 맞춘다. (by locality)
 
-
 <br>
 
 
@@ -108,7 +107,7 @@ Exploit locality to make memory accesses fast
     - data가 최근에 사용됐으면 그 근처에 있는 데이터가 사용될 가능성이 높다.
   - **How to exploit**: when access data, bring nearby data  into higher levels of memory hierarchy too
 
-go to를 최대한 사용을 지양하는 이유가 이것이다.(근처에 있는 data를 건너 뛰기 때문에)
+goto를 최대한 사용을 지양하는 이유가 이것이다.(근처에 있는 data를 건너 뛰기 때문에)
 
 <br>
 
@@ -120,17 +119,20 @@ go to를 최대한 사용을 지양하는 이유가 이것이다.(근처에 있�
 
   - 만약 data가 miss이면 clock penalty를 감수하고서라도 다음 level에서 가져와야 함.(매우 손해)
 
-
   Hit Rate(HR) = # hits / # memory accesses 
                  = 1 – Miss Rate 
 
   Miss Rate(MR) = # misses / # memory accesses 
                      = 1 – Hit Rate 
 
-- **Average memory access time (AMAT)**: average time  for processor to access data 
+- **Average memory access time (AMAT)**: average time for processor to access data 
   AMAT = t<sub>cache </sub>+ MR<sub>cache</sub>[t<sub>MM </sub>+ MR<sub>MM</sub>(t<sub>VM</sub>)]
 
-
+- Cache hit일 경우 memory access가 불필요하므로 hit time을(tcache)
+- Cache miss일 경우 memory acess가 필요하므로 miss에 대한 계산(Miss rate)
+  - 이대로 이어져서 cache miss이면 main memory에 대해서 진행하고
+    - 또 main memory miss이면 VM에 대해서 진행한다.
+    - VM는 반드시 hit일 것이기 때문에 tVM만 곱해짐
 
 Cache에 data가 없으면 (miss) main memory에서 가져오는데 10 클락 정도가 소모 되기 때문에 이는 가져올 수 있지만 
 
@@ -187,7 +189,6 @@ s: fraction of the serial natured code (cannot be parallelized)
 
 - speedup에 대한 수식을 그래프로 나타내 봤더니 parallel이 불가능한 부분 즉, S term이 커질 수록 speedup이 굉장히 줄어들기 때문에 S term이 중요하다고 볼 수 있다.(bottle neck)
   - 즉, S가 무엇이냐에 따라(I/O냐 main memory냐 ...) 달라지는 것이다.
-
 
 
 
@@ -340,25 +341,27 @@ s: fraction of the serial natured code (cannot be parallelized)
 ![image](https://user-images.githubusercontent.com/79521972/167541291-88cc457d-9023-4e3f-b40a-0ee23f34e9dc.png)
 
 - 1번 그림: read access time
+  
   - RAS_L이 먼저 Low가 되었기 때문에 RAS가 먼저 왔고 CAS가 그 다음 왔음을 알 수 있음
   - RAS가 오면서 Row address를 읽고
   - CAS가 온 순간부터 데이터가 다 읽어질 때까지 걸린 시간을 read access time이라고 함.
-
+  
 - 2번 그림: burst timing
 
-  - 연속적인(인접한) 데이터를 계속 가져오기 위해서는(spatial locality) RAS는 계속 두고 CAS의 신호만 계속 바꾸게 하고
-
-
-  - CAS에서만 계속 access
-  - 그래서 DRAM에서도 연속적인 memory를 access 할 때 굉장히 빠르다 -> burst mode를 사용하기 때문
+  - 연속적인(인접한) 데이터를 계속 가져오기 위해서는(spatial locality) RAS는 계속 두고 CAS의 신호만 계속 바꾸게 하고(바둑판 배열의 메모리에 write하는 과정을 생각해 보면 됨)
+  
+  
+    - CAS에서만 계속 access
+  
+  
+    - 그래서 DRAM에서도 연속적인 memory를 access 할 때 굉장히 빠르다 -> burst mode를 사용하기 때문
+  
 
 
 - 3번 그림: write access time
-  - CAS가 되면서부터 데이터를 쓰기 까지 걸린 시간 -> write access time
+  - CAS가 되면서부터 데이터를 쓰기(WE_L)까지 걸린 시간 -> write access time
 
 - 4번 그림: Synchronous DRAM(SDRAM)
-
-
 
 
 
