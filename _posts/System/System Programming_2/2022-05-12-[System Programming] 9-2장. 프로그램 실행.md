@@ -248,8 +248,7 @@ $ execute3 wc you.txt
 #include "apue.h"
 #include <sys/wait.h>
 char *env_init[] = { "USER=unknown", "PATH=/tmp", NULL };
-int
-main(void)
+int main(void)
 {
     pid_t pid;
     if ((pid = fork()) < 0) {
@@ -505,16 +504,14 @@ int main(int argc, char* argv[])
 
     pid = fork( );
     if (pid == 0) {
-        fd = open(argv[1],O_CREAT|
-                  O_TRUNC| O_WRONLY, 0600);
+        fd = open(argv[1],O_CREAT | O_TRUNC| O_WRONLY, 0600);
         dup2(fd, 1); // 파일을 표준출력에 복제
         close(fd);
         execvp(argv[2], &argv[2]);
         fprintf(stderr, "%s:실행 불가\n",argv[1]);
     } else {
         child = wait(&status);
-        printf("[%d] 자식 프로세스 %d 종료 \n",
-               getpid(), child);
+        printf("[%d] 자식 프로세스 %d 종료 \n", getpid(), child);
     }
 }
 ```
