@@ -7,7 +7,7 @@ tag: ['Dynamic Programming']
 
 <br>
 
-# Dynamic Programming
+# 11. Dynamic Programming
 
 greedy algorithm과 dynamic programming은 굉장히 많이 쓰이는 알고리즘이다.
 
