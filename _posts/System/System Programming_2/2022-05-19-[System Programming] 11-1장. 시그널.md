@@ -17,7 +17,7 @@ tag: ['Signal']
     - 예기치 않은 사건이 발생할 때 이를 알리는 수단 
     - E.g. A user types the interrupt key to stop a program. 
 - Signal name 
-  - Begins with ‗SIG‘. 
+  - Begins with "SIG". 
     - E.g. SIGABRT, SIGTERM, SIGALRM, … 
   - Is defined by positive integer constants in   
     - E.g. #define SIGHUP 1 
@@ -26,9 +26,9 @@ tag: ['Signal']
 <br>
 
 - Examples of signal generation 
-  - When user press ‗Ctrl-C‘ on the terminal. (키보드로부터 종료 요청) 
+  - When user press "Ctrl-C" on the terminal. (키보드로부터 종료 요청) 
     - Generates SIGINT signal. 
-  - When user press ‗Ctrl-Z‘ on the terminal. (키보드로부터 정지 요청) 
+  - When user press "Ctrl-Z" on the terminal. (키보드로부터 정지 요청) 
     - Generates SIGSTP signal. 
   - When executes an invalid memory references. 
     - Generates SIGSEGV signal. (SEGmentation Violation) 
