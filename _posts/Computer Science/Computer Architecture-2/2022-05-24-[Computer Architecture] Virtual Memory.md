@@ -11,19 +11,30 @@ program마다 사용할 수 있는 address space가 있음
 
 <img src="https://user-images.githubusercontent.com/79521972/169217938-dd532ae6-0848-4179-aa81-fe2b4d1aec62.png" alt="image" style="zoom:67%;" />
 
-- program마다 사용할 수 있는 용량이 100GB라고 하면 실제(physical) 메모리에는 10GB만 있다고 해 보자
+- CPU에는 여러 프로그램들이 존재하고 각 프로그램 마다는 주소가 존재한다.
+
+- HDD에는 각 프로그램이 사용할 수 있는 virtual memory 공간이 할당되어 있고
+
+- program마다 사용할 수 있는 용량이 100GB라고 하고 실제(physical) 메모리에는 10GB만 있다고 해 보자
 
 - 프로그램은 100GB를 사용할 수 있지만 실제로 bus를 통해 가는 것는 PM(Physical memory)에서 간다.
   - 근데 어떻게 10GB에서 오는데 100GB를 사용?
 
 
 - VM에서 일부분은 PM에 존재하지만 VM의 나머지 부분은 hard disk에 있다. 그래서 PM에 없다면 100만배를 기다려서 harddisk에 갔다와야 하기 때문에 잠시 stop 해 놓고 갔다오는 도중에 다른 program을 실행시키도록 한다.
+- 이 때의 miss rate을 최소화하기 위해서 fully associativity 방식을 사용해야 한다.
+
+  - 이를 통해 프로그램 할당된 여러 address 들이 모두 같은 0번지를 가지겠지만 이것이 실제 PM에 mapping 될 때는 다른 곳에 위치하게 되는 것이다.
+  - 근데 fully associative는 어디에 위치했는지를 아는 것이 중요하다.
+
+    - 어디 들어있다고 기록을 하는 장치(table)가 PM에 따로 존재 -> Page Table
+
 
 <br>
 
-performance 즉, miss rate을 제일 신경써야 한다.
+- performance 즉, miss rate을 제일 신경써야 한다.
 
-가져오는 단위가 cache에서는 **block**이었는데 hard disk는 **page**이다.
+- 가져오는 단위가 cache에서는 **block**이었는데 hard disk는 **page**이다.
 
 
 
@@ -59,7 +70,7 @@ miss rate을 최소화하기 위해서 fully associative를 사용 -> 아무데�
 
 ![image](https://user-images.githubusercontent.com/79521972/169217291-052e2f4c-4d36-4a58-9819-185138d771de.png)
 
-cache <-> Main memory : hardware 적으로 이동
+cache <-> Main memory : hardware 적인 이동
 
 CPU에는 각 여러개의 프로그램이 있을텐데 각각 cache의 메모리를 사용하는 것이다.(virtual mermoy)
 
@@ -83,12 +94,14 @@ stall 하기에 너무 긴 시간이 걸리는 경우는 page fault
 
 - **Takes milliseconds to seek correct location on disk**
 
+sector가 하나의 데이터를 저장하는 단위
+
 <br>
 
 ## Disk Sectors and Access
 
-- Tens of thousands of tracks per surface, and each  track is divided into sectors 
-- Each sector records 
+- Tens of thousands of tracks per surface, and each track is divided into sectors 
+- **Each sector** records 
   - Sector ID 
   - Data (512 bytes, 4096 bytes proposed) 
   - Error correcting code (ECC) 
@@ -110,12 +123,11 @@ stall 하기에 너무 긴 시간이 걸리는 경우는 page fault
 - Average read time 
 
   - 4ms seek time 
-
     \+ ½ / (15,000/60) = 2ms rotational latency 
     \+ 512 / 100MB/s = 0.005ms transfer time 
     \+ 0.2ms controller delay 
     = 6.2ms 
-
+  
 - If actual average seek time is 1ms – Average read time = 3.2ms
 
 <br>
@@ -125,10 +137,11 @@ stall 하기에 너무 긴 시간이 걸리는 경우는 page fault
 - Manufacturers quote average seek time 
   - Based on all possible seeks 
   - **Locality** and **OS scheduling** lead to smaller actual  average seek times 
+    - 한 track의 sector에 access하면 다음에도 그 근처를 access할 확률이 높다.
 - Smart disk controller allocate physical sectors on  disk 
   - Present logical sector interface to host 
   - SCSI, ATA, SATA 
-- Disk drives include caches (RAM) 
+- Disk drives include **caches** (RAM) 
   - Prefetch sectors in anticipation of access 
   - Avoid seek and rotational delay
 
@@ -143,8 +156,9 @@ stall 하기에 너무 긴 시간이 걸리는 경우는 page fault
   - CPU **translates** virtual addresses into physical addresses  (DRAM addresses) 
     - translate by page table
   - Data not in DRAM fetched from hard drive 
+    - OS가 page fault 발생시킴(cache의 miss와 같은 것)
 - Memory Protection 
-  - Each program has own virtual to physical mapping(PT_) 
+  - Each program has own virtual to physical mapping(PT) 
   - Two programs can use **same virtual address** for **different data** 
   - Programs don’t need to be aware others are running 
   - One program (or virus) can’t corrupt memory used by  another
@@ -177,13 +191,11 @@ stall 하기에 너무 긴 시간이 걸리는 경우는 page fault
 
 ![image](https://user-images.githubusercontent.com/79521972/169943212-90371f0b-4842-4249-88e9-f9ecf22c2e13.png)
 
-
-
 **Most accesses hit** in physical memory 
 
 But programs have the large capacity of virtual memory
 
-- 모든 프로그램은 각각의 Virtual address를 모두 사용한다.
+- 모든 프로그램은 각자의 Virtual address 용량을 모두 사용한다.
 - 그런데 이 중에서 Physical address에 있는 것은 일부분 만이 들어와 있다.
 
 <br>
@@ -196,7 +208,8 @@ VPN: Virtual Page Number
 
 PPN: Physical Page Number
 
-
+- Virtual address에서나 physical address에서의 page 는 똑같을 것이기 때문에 동일한 page offset이 존재한다.
+- 따라서 VPN -> PPN 변환 과정이 translation의 전부이다.
 
 <br>
 
@@ -233,11 +246,17 @@ PPN: Physical Page Number
 
 ![image](https://user-images.githubusercontent.com/79521972/169943825-2b037ce7-c54b-469f-8e44-f2c3466fa774.png)
 
-247C 중에서 2는 Virtual page number이고 (777F) 
+- 위에서 봤듯이 page offset은 12 bit이기 때문에 3byte이므로 0x247C의 주소에서 뒤의 3 byte는 page offset을 나타낸다.
+  - 47C -> 0100 0111 1100
+- 그러므로 나머지 byte가 VPN을 나타낸다.
+  - 2 -> 00002
+  - 00002 (VPN) => 7FFF (PPN)
 
-47C 이 page offset(page에서 몇 번째냐)이다.
+- 따라서 최종적으로 Physical address는  0x7FFF47C 가 된다.
 
+<br>
 
+![image](https://user-images.githubusercontent.com/79521972/170392568-acb68b86-4e57-47a6-96ec-16a12c834a39.png)
 
 <br>
 
@@ -246,8 +265,8 @@ PPN: Physical Page Number
 - Page table 
   - Entry for each virtual page 
   - Entry fields: 
-    - Valid bit: 1 if page in physical memory 
-    - Physical page number: where the page is located
+    - **Valid bit**: 1 if page in physical memory 
+    - **Physical page number**: where the page is located
 
 
 
@@ -255,9 +274,9 @@ PPN: Physical Page Number
 
 ## Page Table Example
 
-![image](https://user-images.githubusercontent.com/79521972/169944554-efbc8755-9b7f-42e0-9237-5a41272cdd8d.png)
+![image-20220526094929561](C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20220526094929561.png)
 
-VPN is index into page table
+
 
 
 
@@ -269,9 +288,7 @@ VPN is index into page table
 
 What is the physical  address of virtual  address 0x5F20?
 
-- VPN = 5 
-- Entry 5 in page table  VPN 5 => **physical  page 1** 
-- Physical address:  0x1F20
+![image](https://user-images.githubusercontent.com/79521972/170392702-794230a3-b792-4f72-b790-e8830d6bd2e6.png)
 
 <br>
 
@@ -279,11 +296,12 @@ What is the physical  address of virtual  address 0x5F20?
 
 ![image](https://user-images.githubusercontent.com/79521972/169944848-e7326e4e-4f51-4129-9dc5-8ec95d542b1d.png)
 
-What is the physical  address of virtual  address 0x73E0?
+What is the physical  address of virtual address **0x73E0**?
 
-- VPN = 7 
-- Entry 7 is invalid 
-- Virtual page must be  paged into physical  memory from disk
+- VPN = **7** 
+- Entry 7 is invalid (V = 0) -> page fault
+  - Virtual page must be paged into physical memory from disk (page fault)
+
 
 
 
@@ -297,16 +315,20 @@ What is the physical  address of virtual  address 0x73E0?
 
 ## Replacement and Writes
 
-- To reduce page fault rate, prefer leastrecently used (LRU) replacement 
-  - **Reference bit** (aka **use bit**) in PTE set to 1 on access to  page 
-  - Periodically cleared to 0 by OS 
-  - A page with reference bit = 0 has not been used  recently 
+harddisk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하기 때문에 performance가 중요하다.
+
+- **To reduce page fault rate**, prefer least recently used (**LRU**) replacement 
+  - **Reference bit** (aka **use bit**) in PTE(page table entry) set to 1 on access to  page 
+  - Periodically cleared to 0 **by OS** 
+    - 주기적으로 0으로 바꿔주기 때문에 자주 쓰는 주소는 계속 1로 되어있을 텐데 쓴 지 오래 된 것은 0으로 바뀌는 것이다. 
+  - A page with reference bit = 0 has not been used recently 
 - Disk writes take millions of cycles 
-  - Write through is impractical 
+  - Write through is impractical - 매우 비효율적
   - Use write-back 
     - 계속 memory만 write하다가 memory page가 쫓겨 나야 할 때 memory에 써지는 방식
+    - 즉, 메모리의 한 부분이 새로운 내용으로 바뀌려고 할 때
   - Dirty bit in PTE set when page is written
-    - 메모리가 쓰여졌는지 확인하는 bit
+    - 메모리가 쓰여졌는지(내용이 바뀌었는지) 확인하는 bit
 
 
 
@@ -316,9 +338,14 @@ What is the physical  address of virtual  address 0x73E0?
 
 - **Page table is large** 
   - usually located in physical memory 
-- Load/store requires 2 main memory accesses:  
+- Load/store requires **2 main memory accesses**:  (중요한 부분)
   - one for translation (page table read) 
   - one to access data (after translation) 
+  
+  - 즉, 실제 메모리에 접근하기 전에 Page Table을 통해 어디에 있는지를 먼저 보는 것
+- 근데 page table도 결국은 DRAM이기 때문에 느리다.
+
+- 이 두 번 access 하는 것도 더 줄일 수 있을까? -> **locality 사용**
 - Cuts memory performance in half 
   - Unless we get clever…
 
@@ -328,10 +355,24 @@ What is the physical  address of virtual  address 0x73E0?
 
 ## Translation Lookaside Buffer (TLB)
 
+- 일종의 page table cache
+
 - **Small cache** of **most recent translations** 
 - Reduces # of memory accesses for most loads/stores from 2 to 1
 
-없으면 miss이기 때문에 PT가서 가져옴 
+- TLB에 없으면 miss이기 때문에 PT가서 가져옴 
+- TLB가 꽉차면 쫓겨낼 때 메모리에 write
+
+
+
+따라서 CPU에서 바로 Page table을 보고 물리적 주소로 변환하는 것이 아니라 중간에 있는 TLB를 먼저 봐서 최근에 access했던 virtual page가 physical page의 어디에 위치해 있는지 바로 변환하는 것이다.(있다면)
+
+
+
+
+
+- 정리하자면 원래는 CPU에서 접근하고자 하는 virtual address가 있는데 이는 Physical addess로 변환되어야 한다. 그런데 변환을 하려면 fully associative 구조에서 찾아야 하기 때문에 page table을 이용하여 가상 메모리 공간을 index로 지정한 곳을 보고 변환을 하는 것이다. 그런데 여기서 또 page table에서 변환을 했던 것을  TLB에 기록하여 page table을 들리지 않고 물리적 주소를 얻을 수 있게 된다.
+  - 즉, CPU가 어떤 virtual address를 사용하려고 하는데 TLB를 먼저 봐서 최근에 virtual page에서 physical page로 변환 된 것이 있나 보고 있다면 바로 변환 되고 없다면 page table에 가서 해당 가상 주소에 해당하는 physical address가 있나 보고 있다면 그 주소로 변환이 되고 만약 없다면 hard disk에 가서 가져와야 하는 것이다.
 
 <br>
 
@@ -342,11 +383,11 @@ What is the physical  address of virtual  address 0x73E0?
 - TLB 
   - Small: accessed in < 1 cycle 
   - Typically 16 ~ 512 entries 
-  - **Fully associative**
+  - **Fully associative**, N-way도 적은 비율로 사용하긴 함.
   -  -\> 99 % hit rates typical 
-  - Reduces # of memory accesses for most  loads/stores from 2 to 1
+  - Reduces # of memory accesses for most loads/stores from 2 to 1
 
-
+![image](https://user-images.githubusercontent.com/79521972/170393324-ea90b5bd-988a-49f5-bbf4-72cb83e7462b.png)
 
 <br>
 
@@ -354,27 +395,29 @@ What is the physical  address of virtual  address 0x73E0?
 
 ![image](https://user-images.githubusercontent.com/79521972/169945461-bd53c7d5-8ba8-4a64-86d5-f3f09db93bfc.png)
 
-
+TLB를 먼저 봐서 같은 것이 있다면 해당 Physical page number를 바로 가져와서 사용한다.
 
 <br>
 
 ## Fast Translation Using a TLB
 
-☞ The next few slides are excerpts from the book, COD, and Prof. Mary  Jane Irwin’s lecture notes (PSU). 
+☞ The next few slides are excerpts(발췌) from the book, COD, and Prof. Mary  Jane Irwin’s lecture notes (PSU). 
 
 ![image](https://user-images.githubusercontent.com/79521972/169945533-cdc01d8a-70ea-4705-aa0a-d1bb593a01cb.png)
 
-TLB miss -> Page Table에서 가져옴
+- TLB miss -> Page Table에서 가져옴
+  - valid로 판단
 
-Page Table miss -> Page fault -> Hard disk에서 가져옴
+- Page Table miss -> Page fault -> Hard disk에서 가져옴
 
 <br>
 
 ## Trasnlation Lookaside Buffers (TLBs)
 
 - Just like any other cache, the TLB can be organized as fully associative, set-associative, or direct-mapped 
-- TLB access time is typically smaller than cache access time  (because TLBs are much smaller than caches) 
-- TLBs are typically not more than 512 entries even on high end  machines
+- TLB access time is typically smaller than cache access time (because TLBs are much smaller than caches) 
+  - TLBs are typically not more than 512 entries even on high end machines
+
 
 ![image](https://user-images.githubusercontent.com/79521972/169945603-2f5379f9-f35c-4de4-88ca-88b360f2326b.png)
 
@@ -385,17 +428,11 @@ Page Table miss -> Page fault -> Hard disk에서 가져옴
 ![image](https://user-images.githubusercontent.com/79521972/169947452-5370d03e-2e15-428e-ae15-bad155a8640b.png)
 
 - A TLB miss is it a **page fault** or merely a **TLB miss**? 
-  - If the page is loaded into main memory, then the TLB miss can  be handled (in hardware or software) by loading the translation  information from the page table into the TLB 
+  - If the page is loaded into main memory, then the **TLB miss can be handled** (in hardware or software) by loading the translation information **from the page table** into the TLB .
     - Takes 10’s of cycles to find and load the translation info into the TLB 
-  - If the page is not in main memory, then it’s a true page fault 
+  - **If the page is not in main memory, then it’s a true page fault** 
     - Takes 1,000,000’s of cycles to service a page fault 
 - TLB misses are much more frequent than true page faults
-
-<br>
-
-## TLB Event combinations
-
-![image](https://user-images.githubusercontent.com/79521972/169947717-8dcec477-7ce9-4ba6-b888-4f2c48b43de6.png)
 
 
 
