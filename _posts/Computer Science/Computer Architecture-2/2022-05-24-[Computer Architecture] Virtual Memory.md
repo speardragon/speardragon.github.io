@@ -208,6 +208,8 @@ VPN: Virtual Page Number
 
 PPN: Physical Page Number
 
+- Virtual address = virtual page number + page offset
+- page size가 4k라고 하면 그 4k가 되는 page 중에서 어디인 지를 알아내는 것이 page offset이다.
 - Virtual address에서나 physical address에서의 page 는 똑같을 것이기 때문에 동일한 page offset이 존재한다.
 - 따라서 VPN -> PPN 변환 과정이 translation의 전부이다.
 
@@ -274,9 +276,7 @@ PPN: Physical Page Number
 
 ## Page Table Example
 
-![image-20220526094929561](C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20220526094929561.png)
-
-
+![image](https://user-images.githubusercontent.com/79521972/170418303-da1d5e5a-f72a-491e-bde4-8fa6e4c0b110.png)
 
 
 
@@ -363,13 +363,15 @@ harddisk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하�
 - TLB에 없으면 miss이기 때문에 PT가서 가져옴 
 - TLB가 꽉차면 쫓겨낼 때 메모리에 write
 
-
+<br>
 
 따라서 CPU에서 바로 Page table을 보고 물리적 주소로 변환하는 것이 아니라 중간에 있는 TLB를 먼저 봐서 최근에 access했던 virtual page가 physical page의 어디에 위치해 있는지 바로 변환하는 것이다.(있다면)
 
+- TLB가 hit면 바로 가져옴
+- TLB가 miss면 Page table에 가서 만약 valid 이면 최근에 access만 안 되었을 뿐이지 있다는 뜻이므로 TLB로 옮겨서 Physical memory로 찾아가고
+- page table에 가봤더니 valid가 0이면 physical memory에 데이터가 존재하지 않는다는 뜻이기 때문에 **page fault**이고 Hard disk로 가는데 이는 시간이 너무 많이 걸리기 때문에 그냥 이 프로그램은 stop 시키고 기다리고 있는 다른 프로그램을 실행시켜 준다.
 
-
-
+<br>
 
 - 정리하자면 원래는 CPU에서 접근하고자 하는 virtual address가 있는데 이는 Physical addess로 변환되어야 한다. 그런데 변환을 하려면 fully associative 구조에서 찾아야 하기 때문에 page table을 이용하여 가상 메모리 공간을 index로 지정한 곳을 보고 변환을 하는 것이다. 그런데 여기서 또 page table에서 변환을 했던 것을  TLB에 기록하여 page table을 들리지 않고 물리적 주소를 얻을 수 있게 된다.
   - 즉, CPU가 어떤 virtual address를 사용하려고 하는데 TLB를 먼저 봐서 최근에 virtual page에서 physical page로 변환 된 것이 있나 보고 있다면 바로 변환 되고 없다면 page table에 가서 해당 가상 주소에 해당하는 physical address가 있나 보고 있다면 그 주소로 변환이 되고 만약 없다면 hard disk에 가서 가져와야 하는 것이다.
@@ -385,7 +387,7 @@ harddisk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하�
   - Typically 16 ~ 512 entries 
   - **Fully associative**, N-way도 적은 비율로 사용하긴 함.
   -  -\> 99 % hit rates typical 
-  - Reduces # of memory accesses for most loads/stores from 2 to 1
+  - Reduces # of memory accesses for most loads/stores **from 2 to 1**
 
 ![image](https://user-images.githubusercontent.com/79521972/170393324-ea90b5bd-988a-49f5-bbf4-72cb83e7462b.png)
 
@@ -395,7 +397,11 @@ harddisk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하�
 
 ![image](https://user-images.githubusercontent.com/79521972/169945461-bd53c7d5-8ba8-4a64-86d5-f3f09db93bfc.png)
 
+2개 짜리 TLB
+
 TLB를 먼저 봐서 같은 것이 있다면 해당 Physical page number를 바로 가져와서 사용한다.
+
+캐시랑 다른 점은 상위비트?(46:40 다시 보기)
 
 <br>
 

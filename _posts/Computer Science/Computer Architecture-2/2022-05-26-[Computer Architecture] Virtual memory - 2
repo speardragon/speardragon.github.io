@@ -1,13 +1,259 @@
 ---
 layout: single
-title: "[Computer Architecture] Virtual Memory - 2"
+title: "[Computer Architecture] Virtual Memory -2"
 categories: ['Computer Science', 'Computer Architecture']
 tag: ['Virtual Memory']
 ---
 
 <br>
 
+Virtual memory가 없다면 여러개의 프로그램이 도는 multi task system인 경우에는 두 프로그램의 0번지는 한 곳에 mapping 될 것이기 때문에 충돌이 발생할 것이다.
+
+- 따라서 single task program이라면 VM이 없어도 되겠지만 multi program은 반드시 있어야 하는 것이다.
+
+<br>
+
+Virtual page에서 
+
+
+
+
+
+<br>
+
 ## TLB Event combinations
 
 ![image](https://user-images.githubusercontent.com/79521972/169947717-8dcec477-7ce9-4ba6-b888-4f2c48b43de6.png)
+
+cache가 size가 충분히 크지 못하면 tlb랑 page table은 hit인데 cach는 miss인 경우가 나타날 수 있다.
+
+
+
+<br>
+
+## TLB Misses
+
+- **If page is in memory** (i.e. Valid bit is set) 
+  - Load the PTE from memory and retry 
+  - Could be handled in hardware 
+    - Can get complex for more complicated page table  structures 
+  - Or, in software 
+    - Raise a special **exception**, with optimized handler 
+- **If page is not in memory** (page fault) 
+  - OS handles fetching the page and updating the  page table 
+  - Then restart the faulting instruction
+
+
+
+<br>
+
+## TLB Miss Handler
+
+- TLB miss indicates 
+  - Page present, but PTE not in TLB -> loading the  translation from PTE to TLB, and trying the  reference again (much more frequent) 
+  - Or, Page not present -> true page fault 
+- Must recognize TLB miss before destination  register overwritten 
+  - Raise exception 
+- Handler copies PTE from memory to TLB 
+  - Then restarts instruction 
+  - If page not present, page fault will occur
+
+
+
+<br>
+
+## Page Fault Handler
+
+- Use faulting virtual address to find PTE 
+- Locate page on disk 
+- Choose page to replace 
+  - If dirty, write to disk first
+- Read page into memory and update page  table 
+- Make process runnable again 
+  - Restart from faulting instruction
+
+
+
+<br>
+
+## Virtual Memory design parameters
+
+![image](https://user-images.githubusercontent.com/79521972/170422692-2333c0ef-3f02-415f-a3d3-b43e96d6e3e3.png)
+
+
+
+<br>
+
+## TLB and Cache Interaction
+
+![image](https://user-images.githubusercontent.com/79521972/170416793-cd2dc6c2-c5ae-4af3-a332-9428bb523a7f.png)
+
+- If cache tag uses  physical address 
+  - Need to translate before  cache lookup 
+- Alternative: use virtual  address tag 
+  - Complications due to  aliasing 
+    - Different virtual  addresses for shared  physical address
+
+- content addressable memory
+  - 보통은 address가 가면 data가 나오는데
+  - CAM은 ref가 들어가면 ref와 matching 된 곳의 값이 나온다.
+
+<br>
+
+## Why not Virtual addressable cache?
+
+- A virtually addressed cache would only require address  translation on cache misses 
+
+![image](https://user-images.githubusercontent.com/79521972/170417085-a518cbb5-8f3f-4f0e-a253-aa026703ef87.png)
+
+
+
+- But, Two programs which are sharing data will have two  different virtual addresses for the same physical address  (**aliasing**) so have two copies of the shared data in the cache  and two entries in the TBL which would lead to coherence  issues – Must update all cache entries with the same physical address or the  memory becomes inconsistent
+
+하나의 PA를 공유하는 두 프로그램이 있다고 하면 cache coherence 문제가 발생할 수 있다.
+
+
+
+<br>
+
+## Memory Protection
+
+프로그램마다 각각의 page table만 잘 관리하면 이 프로그램은 정해져있는 PA만 access 가능하다.
+
+- **Multiple processes** (programs) run at once 
+- Each process has its own page table 
+- Each process can use entire virtual address space 
+- A process can only access a **subset of physical pages**: those mapped in its own page table
+
+
+
+<br>
+
+## Reducing translation time
+
+- Can **overlap** the cache access with the TLB access 
+  - Works when the **high order bits** of the VA are used to access the TLB  while the **low order bits** are used as index into cache
+
+![image](https://user-images.githubusercontent.com/79521972/170417137-4203203c-805b-4f31-94b2-5b3c02ea7aa1.png)
+
+address를 잘 align 시키면 
+
+
+
+<br>
+
+## Virtual Memory Summary
+
+- Virtual memory increases **capacity** 
+- A subset of virtual pages in physical memory 
+  - virtual page의 일부분(필요한 부분)만이 physical memory에 와 있다.
+- **Page table** maps virtual pages to physical  pages 
+  - address translation 
+- A **TLB** speeds up address translation 
+- Different page tables **for** different programs provides **memory protection**
+
+
+
+<br>
+
+## 2-Level TLB Organization
+
+![image](https://user-images.githubusercontent.com/79521972/170417241-d6f7a2b9-dd89-47b5-82ce-238f312fba9d.png)
+
+32bit의 address는 -> 4G의 size
+
+48bit의 address는 -> 64T의 size :사실상 무제한의 크기
+
+<br>
+
+## Multi-level On-Chip Caches
+
+![image](https://user-images.githubusercontent.com/79521972/170417304-7427c57c-a44f-4fbc-9d64-0d38984a9682.png)
+
+write-allocate: write하려할 때 miss이면 memory까지 가서 cache에 올려 두고 write한다.
+
+<br>
+
+## Questions for the memory hierarchy
+
+- Q1: Where can a entry be placed in the upper level?  
+  (Entry placement) 
+- Q2: How is a entry found if it is in the upper level? 
+  (Entry identification) 
+- Q3: Which entry should be replaced on a miss?  
+  (Entry replacement) 
+- Q4: What happens on a write?  
+  (Write strategy)
+
+
+
+<br>
+
+## Q1 and Q2: where can an entry be placed/found?
+
+![image](https://user-images.githubusercontent.com/79521972/170417454-9dbfa14d-d6b5-412b-a959-4e43aa3b0d9d.png)
+
+
+
+<br>
+
+## Q3: which entry should be replaced on a miss?
+
+- Easy for direct mapped - only one choice 
+- Set associative or fully associative
+  - Random
+  - LRU (Least Recently Used) 
+- For a 2-way set associative, random replacement  has a miss rate about 1.1 times higher than LRU 
+- LRU is too costly to implement for high levels of  associativity (> 4-way) since tracking the usage  information is costly
+
+
+
+<br>
+
+## Q4: what happens on a write?
+
+- Write-through 
+  - The information is written to the entry in the  current memory level and to the entry in the next level of the  memory hierarchy 
+    - Always combined with a write buffer so write waits to next level  memory can be eliminated (as long as the write buffer doesn’t fill) 
+- Write-back : 
+  - The information is written only to the entry in the  current memory level. The modified entry is written to next level of  memory only when it is replaced. 
+    - Need a dirty bit to keep track of whether the entry is clean or dirty 
+    - Virtual memory systems always use write-back of dirty pages to disk 
+- Pros and cons of each? 
+  - Write-through: data consistency (so are simpler and cheaper), easier  to implement 
+  - Write-back: writes run at the speed of the cache; repeated writes  require only one write to lower level
+
+
+
+<br>
+
+## Memory summary
+
+- The Principle of Locality: 
+  - Program likely to access a relatively small portion of the  address space at any instant of time. 
+    - Temporal Locality: Locality in Time 
+    - Spatial Locality: Locality in Space 
+- Caches, TLBs, Virtual Memory all understood by  examining how they deal with the four questions 
+
+1. Where can entry be placed? 
+
+2. How is entry found
+
+3. What entry is replaced on miss? 
+
+4. How are writes handled? 
+
+- Page tables map virtual address to physical address 
+  - TLBs are important for fast translation
+
+
+
+<br>
+
+## Memory-Mapped I/O
+
+- Memory mapped IO
+  - See COD chapter 5.
+
+
 
