@@ -12,7 +12,7 @@ tag: ['Signal']
 ## Introduction
 
 - Signals 
-  - Software interrupts 
+  - **Software interrupts** : 소프트웨어 프로그래밍에서 굉장히 중요한 이벤트
   - provides a way of handling asynchronous events 
     - 예기치 않은 사건이 발생할 때 이를 알리는 수단 
     - E.g. A user types the interrupt key to stop a program. 
@@ -22,6 +22,10 @@ tag: ['Signal']
   - Is defined by positive integer constants in   
     - E.g. #define SIGHUP 1 
     - Depends on architecture and OS.
+
+<br>
+
+CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
 
 <br>
 
@@ -46,6 +50,8 @@ tag: ['Signal']
 ## 주요 시그널 /usr/include/signal.h
 
 ![image](https://user-images.githubusercontent.com/79521972/169321381-4b746527-f91f-4921-b740-d721b93bb23c.png)
+
+## 주요 시그널
 
 ![image](https://user-images.githubusercontent.com/79521972/169321457-34c73c6c-c715-4eb0-8460-2905d138bfd5.png)
 
@@ -75,13 +81,14 @@ tag: ['Signal']
 
 ## 시그널 종류
 
-- 소프트웨어 이벤트 발생 
+- 소프트웨어 이벤트 발생 (software interrupt)
   - 타이머 만료 
   - SIGALRM: 알람 시계 울림 
-  - SIGPIPE: 끊어짂 파이프 
-  - SIGCHLD: 자식 프로세스가 끝났을 때 부모에 젂달되는 시그널 
+  - SIGPIPE: 끊어진 파이프 
+  - SIGCHLD: 자식 프로세스가 끝났을 때 부모에 전달되는 시그널 
   -  SIGCHLD: 자식 프로세스 종료  
   - CPU time slice expire
+    - 어떤 프로세스가 CPU를 10초 동안 쓴다고 가정, (IO는 안하고) -> CPU 활용 측면에서 좋을 진 몰라도 멀티 유저 프로세스 측면에서는 좋지 않은 것이다. 이 때 CPU를 사용할 수 있는 최대 시간이 정해진 것이다.
 
 
 
@@ -91,11 +98,11 @@ tag: ['Signal']
 
 - Disposition of the signal(called action). 
   - Ignore the signal 
-    - SIGKILL and SIGSTOP cannot be ignored. 
+    - **SIGKILL** and **SIGSTOP** cannot be ignored. 
   - Catch the signal 
-    - We should tell the kernel to call a signal handler function whenever the signal occurs. 
+    - We should tell the kernel to call a **signal handler function** whenever the signal occurs. 
   - Execute the default action 
-    - The default action for most signals is to terminate.
+    - The default action for most signals is **to terminate**.
 
 
 
@@ -103,7 +110,7 @@ tag: ['Signal']
 
 ## 시그널 기본 처리
 
-- 시그널 무시(ignore) 
+- **시그널 무시(ignore)** 
 - 프로세스 종료 
   - 비정상 종료, exit()에 의한 정상종료와 다름 
 - 코어 덤프 파일 생성 및 프로세스 종료 
