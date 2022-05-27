@@ -69,7 +69,9 @@ pid_t fork(void);
 
 ![image](https://user-images.githubusercontent.com/79521972/168041237-acd87a67-ab92-40f4-839f-7fc8a6819b9f.png)
 
-부모 프로세스의 pid에는 자식 프로세스의 pid인 15066이 들어가고 자식 프로세스의 pid에는 0의 값이 들어가게 된다.
+- 부모 프로세스의 pid에는 자식 프로세스의 pid인 15066이 들어가고 자식 프로세스의 pid에는 0의 값이 들어가게 된다.
+
+- PC값도 부모 프로세스가 갖던 값과 동일한 값을 갖게 된다.
 
 <br>
 
@@ -77,7 +79,13 @@ pid_t fork(void);
 
 ![image](https://user-images.githubusercontent.com/79521972/168041327-27db91ef-096d-4a90-9973-1afe1776f776.png)
 
-bss: generally 0으로 초기화
+
+
+변수는 선언과 동시에 초기화를 보통 하는데 그렇지 않은 부분도 있다. -> bss: generally 0으로 초기화
+
+heap 구역은 동적 변수가 들어가는 곳
+
+정적 변수는 컴파일 될 때 생성된다.
 
 <br>
 
@@ -615,11 +623,13 @@ pid_t waitpid (pid_t pid, int *status, int options);
 
 - The pid parameter specifies exactly which process or processes to wait for. 
 - pid == -1 
-  - Wait for any child process. This is the same behavior as wait( ). 
+  - Wait for **any child process**. This is the same behavior as wait( ). 
 - pid > 0
   - Wait for any child process whose pid is exactly the value provided. For example, passing 500 waits for the child process with pid 500 
+  - pid가 500인 프로세스가 종료되었을 때만 깨워달라
 - pid == 0 
   - Wait for any child process that belongs to the same process group as the calling process. 
+  - 나하고 같은 process group인 경우이기만 하면 어떤 child process든지 종료되면 깨워달라
 - pid < -1 
   - Wait for any child process whose process group ID is equal to the **absolute value** of this value. 
     - For example, passing -500 waits for any process in process group 500.
@@ -631,7 +641,7 @@ pid_t waitpid (pid_t pid, int *status, int options);
 - The status parameter works identically to the sole parameter to wait( ) 
 - **부모 프로세스의 대기 방법** 
 - **WNOHANG** 
-  - Do not block, but return immediately if no matching child process has already terminated (or stopped or continued) 
+  - **Do not block**, but **return** immediately **if no matching child process has already terminated** (or stopped or continued) 
     - if a child specified by pid is not terminated. 
 - **WUNTRACED** 
   - Do not block if a child specified by pid has stopped. 
@@ -713,12 +723,13 @@ else {
 ## Zombies
 
 - 부모 프로세스가 wait()이나 waitpid()를 호출하기 이전에 자식 프로세스가 이미 종료가 돼버린 프로세스를 zombie process라고 한다.
+  - 사실상 가비지 개념으로 봐도 된다.
 
 - a process that has terminated, but that has not yet been waited upon by its parent is called a "zombie"
   - 좀비 프로세스는 프로세스 테이블에만 존재 
 - Zombie processes continue to consume system resources 
 - wait() returns immediately with that child‘s status 
-- These resources remain so that parent processes that want to check up on the status of their children can obtain information relating to the life and termination of those processes. 
+- These resources remain so that parent processes that want to check up on the status of their children can obtain **information** relating to the **life** and **termination of those processes**. 
 - Once the parent does so, the kernel cleans up the process for good and the zombie ceases(stop) to exist.
 
 <br>
@@ -795,7 +806,7 @@ sleep이 영향을 미친다.
 
 자식 프로세스가 생성되면 동일한 내용의 file descriptor를 그대로 복사하고 open file table 뒷단은 모두 공유하게 된다.(같은 곳을 가리킴)
 
-그래서 부모와 자식으로부터 출력이 서로 섞이게 됨 
+같은 open file entry를 공유하기 때문에 부모와 자식으로부터 출력이 서로 섞일 수 있음
 
 <br>
 
@@ -806,10 +817,13 @@ fork() 의 효율성을 높이기 위한 방법
 - Copy-on-write is a **lazy optimization strategy** designed to mitigate the overhead of duplicating resources. 
   - duplication을 가능한한 지연
 
-- The premise is simple: if multiple consumers request read access to their own copies of a resource, duplicate copies of the resource need not be made. Instead, each consumer can be handed a pointer to the same resource. 
-- So long as no consumer attempts to modify its "copy" of the resource, the illusion of exclusive access to the resource remains, and the overhead of a copy is avoided. 
-- If a consumer does attempt to modify its copy of the resource, at that point, the resource is transparently duplicated, and the copy is given to the modifying consumer
-  - modify가 일어나지 않은 경우에는 한 개의 copy만 공유하도록 하고 만약 두 프로세스 중에서 한 프로세스가 modify 하게 되면 그제서야 비로소 lazy하게 뒤늦게 copy를 만들어준다.
+- The premise is simple: 
+  - if multiple consumers request **read access** to their own copies of a resource, **duplicate** copies of the resource need not be made. Instead, each consumer can be handed a pointer to the same resource. 
+    - So long as no consumer attempts to modify its "copy" of the resource, the illusion of exclusive access to the resource remains, and the overhead of a copy is avoided. 
+
+  - If a consumer does attempt to **modify** its copy of the resource, at that point, the resource is transparently duplicated, and the copy is given to the modifying consumer
+
+- modify가 일어나지 않은 경우에는 한 개의 copy만 공유하도록 하고 만약 두 프로세스 중에서 한 프로세스가 modify 하게 되면 그제서야 비로소 lazy하게 뒤늦게 copy를 만들어준다.
 
 <br>
 
@@ -829,18 +843,20 @@ c만 modify를 하고자 하면 별도의 copy본을 만들어 각자 다른 것
 
 ## Vfork()
 
-- Creates a new process only to exec a new program 
+- Creates a new process **only to exec a new program** 
 
   - No copy of parent's address space for child (not needed!) 
   - Before exec, child runs in "address space of parent" 
   - Efficient in paged virtual memory 
 
 - **Child runs first** 
-- Parent waits until child exec or exit (block)
-  
-- Then the parent resume 
-  
-- The deadlock(block된 상태) possibility if the child wait for something from the parent
+  - Parent waits until child exec or exit (block)
+
+  - Then the parent resume 
+
+  - The deadlock(block된 상태) possibility if the child wait for something from the parent
+    - 부모의 자원을 필요로하는 경우 -> deadlock 발생 가능 -> 굉장히 복잡한 동기화 기술로 해결
+
 
 <br>
 
@@ -850,7 +866,7 @@ c만 modify를 하고자 하면 별도의 copy본을 만들어 각자 다른 것
 #include <unistd.h>
 
 pid_t vfork(void);
- 	Returns: 0 in child, process ID of child in parent, -1 on error 
+ 	//Returns: 0 in child, process ID of child in parent, -1 on error 
 ```
 
 - same calling sequence and same return values as fork(). 
