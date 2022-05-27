@@ -15,7 +15,7 @@ tag: ['booting']
 
 ![image](https://user-images.githubusercontent.com/79521972/168194104-4aa3d82d-2f61-4e80-9196-c577e1567260.png)
 
-
+login process의 역할은 로그인을 할 수 있도록 -> 로그인이 끝나면 shell 프로세스 실행
 
 <br>
 
@@ -129,6 +129,8 @@ Processes after everything is set.
 
 ## Network Logins
 
+기본적인 방법은 대동소이하다.
+
 - inetd 
   - waits for most network connections 
   - sometimes called the Internet superserver 
@@ -177,7 +179,7 @@ session part를 위한 remind
 
 ## Sessions
 
-- When a new user first logs into a machine, the login process creates a new session that consists of a single process, the user‘s **login shell**. 
+- When a new user first logs into a machine, the login process creates **a new session** that consists of a single process, the user‘s **login shell**. 
 - The login shell functions as the session leader. The pid of the session leader is used as the session ID. 
 - A session is a collection of one or more process groups. 
 - Sessions arrange a logged-in user‘s activities, and associate that user with a controlling terminal, which is a specific tty device that handles the user‘s terminal I/O. 
@@ -188,6 +190,8 @@ session part를 위한 remind
 ## Sessions and Process Groups
 
 - On a given system, there are many sessions: one for each user login session, and others for processes not tied to user login sessions, such as daemons. 
+  - 로그인을 위해서 만들어지는 것이 session
+
 - Daemons tend to create their own sessions to avoid the issues of association with other sessions that may exit. 
 - pid_t setsid(void);
 
@@ -202,7 +206,8 @@ session part를 위한 remind
   
   - A collection of one or more process groups. 
     - login shell process는 자동으로 생성 
-
+    - login shell은 session과 같이 만들어지고 계속해서 살아 있지만 다른 process group은 만들어졌다 사라졌다 한다.
+    
   - $ proc1 | proc2 & 
   
   - $ proc3 | proc4 | proc5
@@ -222,7 +227,11 @@ session part를 위한 remind
 
 ![image](https://user-images.githubusercontent.com/79521972/168196012-91b9d550-98db-40cc-9b4d-ff7ef680624e.png)
 
+session은 모두 같다.
 
+shell은 별도의 프로세스 그룹
+
+다른 프로세스 그룹의 parent는 shell.
 
 <br>
 
@@ -298,7 +307,7 @@ pid_t getsid(pid_t pid);
 
 ![image](https://user-images.githubusercontent.com/79521972/168196621-4d8dbf0b-7266-4a06-bd44-c26d2874c9c7.png)
 
-
+getty를 통해 login을 하면 shell이 fork/exec을 한다.
 
 <br>
 
