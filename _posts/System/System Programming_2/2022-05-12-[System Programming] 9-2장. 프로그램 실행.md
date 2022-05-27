@@ -71,6 +71,10 @@ int execlp(char* file, char* arg0, char* arg1, ... , char* argn, NULL)
 int execvp(char* file, char* argv[])
 ```
 
+path: absolute path
+
+file: current working directory 기준으로 한 파일
+
 호출한 프로세스의 코드, 데이터, 힙, 스택 등을 path가 나타내는 새로운 프로그램으로 대치한 후 새 프로그램을 실행한다. 성공한 exec( ) 호출은 리턴하지 않으며 실패하면 -1을 리턴한다.
 
 <br>
@@ -80,7 +84,7 @@ int execvp(char* file, char* argv[])
 - pathname(filename) argument 
   - pathname(filename) of a file to be executed. 
   - execl, execv, execle, execve take a pathname argument. 
-  - execlp, execvp take a filename argument. 
+  - execl**p**, execv**p** take a filename argument. 
     - If filename contains a '/', it is taken as a pathname. 
     - Otherwise, the executable file is searched for in the directories specified by PATH. E.g. PATH=/bin:/usr/bin:/usr/local/bin/:.
 
@@ -310,6 +314,7 @@ HOME=/home/sar
 
 ## system()
 
+- fork()와 wait()을 합친 시스템 콜
 - Both ANSI C and POSIX define an interface that couples spawning a new process and waiting for its termination —think of it as **synchronous process creation**. 
 - If a process is spawning a child only to immediately wait for its termination, it makes sense to use this interface 
 - It is common to use system( ) to run a simple utility or shell script, often with the explicit goal of simply obtaining its return value
@@ -532,8 +537,8 @@ $ cat out
 
 - A collection of one or more processes. 
   - 프로세스 그룹은 여러 프로세스들의 집합이다 
-- Usually associated with the same job. 
-  - when a shell starts up a pipeline (e.g., when a user enters ls | more), 
+- Usually associated with the **same job**. 
+  - when a shell starts up a **pipeline** (e.g., when a user enters ls | more), 
   - all the commands in the pipeline go into the same process group
 
 - ![image](https://user-images.githubusercontent.com/79521972/168475528-c116719c-4456-4bf3-8ee5-9969040a5c58.png)
@@ -541,8 +546,9 @@ $ cat out
 
 <br>
 
-- Each process is owned by a user and a group 
+- Each process is owned by a **user** and a group 
 - Each process is also part of a process group, which simply expresses its relationship to other processes, and must not be confused with the aforementioned user/group concept
+- "userid라는 유저 아이디를 가진 유저가 만든 프로세스 그룹"
 
 
 
@@ -554,6 +560,7 @@ $ cat out
 - 프로세스 그룹은 signal 전달 등을 위해 사용됨. 
   - The notion of a process group makes it easy 
     - to send signals to processes in the pipeline (e.g., $ ls | more)
+      - multicast로 효율적으로 보내기 위함
     - to receive signals from the same terminal
     - get information on an entire pipeline 
 - From the perspective of a user, a process group is closely related to a job
@@ -708,17 +715,6 @@ CHILD: PID = 17769 GID = 17769
   - pid > 0 : 자식 프로세스 pid가 종료하기를 기다린다. 
   - pid == 0 : 호출자와 같은 프로세스 그룹 내의 어떤(아무) 자식 프로세스가 종료하기를 기다린다. 
   - pid < -1 : pid의 절대값과 같은 프로세스 그룹 내의 어떤 자식 프로세스가 종료하기를 기다린다.
-
-
-
-
-
-
-
-
-
-
-
 
 
 
