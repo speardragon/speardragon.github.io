@@ -17,7 +17,7 @@ Virtual page에서
 
 
 
-
+https://ahnanne.tistory.com/15
 
 <br>
 
@@ -257,3 +257,6 @@ write-allocate: write하려할 때 miss이면 memory까지 가서 cache에 올�
 
 
 
+Q) page fault의 경우 Hard disk에서 Page table로 가져오고  이를 TBL로 가져온 후에 Physical memory에 가져오는 것인지 아니면 바로 Physical memory에 load 된 다음에 page table과 TLB에 update 되는 것인지?
+
+-> 그러면 Physical memory에 load 되는 data는 반드시 그 직전에 TLB를 거쳐서 온다고 이해했는데 이게 맞는지?
