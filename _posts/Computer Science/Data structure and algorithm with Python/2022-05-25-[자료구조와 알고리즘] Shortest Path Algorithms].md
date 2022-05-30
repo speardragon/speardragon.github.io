@@ -89,13 +89,14 @@ For each vertex v ∈ V, we maintain an attribute v.d, which is an upper bound o
 ![image](https://user-images.githubusercontent.com/79521972/170177498-b950d302-4aaa-4b16-b0bf-caaa18fb0505.png)
 
 - G는 내가가지고 있는 graph
+
 - V는 vertex의 집합
+
 - v.d 는 shortest-path estimate이다.
   - source에서 모든 vertex까지의 추정되는 shortest distance 값이므로 처음에는 모두 무한대로 초기화한다.
+  - 그 바로 앞에 있는 노드역시 처음이기 때문에 값을 아직 받은 것이 없어 None로 초기화 한다.
+  
   - s.d 즉, source에서 source까지의 distance는 당연히 0이다.(같은 노드이니까)
-- 그 바로 앞에 있는 노드역시 처음이기 때문에 값을 아직 받은 것이 없어 None로 초기화 한다.
-
-
 
 ---
 
@@ -151,10 +152,11 @@ The Bellman-Ford algorithm relaxes **each edge |V| ㅡ 1 times.**
 ![image](https://user-images.githubusercontent.com/79521972/170193534-6946bb44-ec0f-44eb-87de-622eabebd8e2.png)
 
 - Initialize
-- for문 - |G.V| - 1 번 
+- for문 - {|G.V| - 1 }번 
   - |G.V| -> vertex의 갯수
   - Edge의 집합에 속하는 각 edge마다 한 번씩 relax를 해 준다.
-- 이 결과 negative cycle이 있다면 이상한 결과가 들어가 있을 것이고 그렇지 않으면 shortest path가 구해졌을 것이다.
+    - 모든 edge를 update
+- 이 결과 negative (weight) cycle이 있다면 이상한 결과가 들어가 있을 것이고 그렇지 않으면 shortest path가 구해졌을 것이다.
 
 ![image](https://user-images.githubusercontent.com/79521972/170193554-ed2a7cd4-2c2a-4390-809e-f564bbaf4c79.png)
 
@@ -271,6 +273,42 @@ for문을 한 번씩 돌 때마다 distance가 어떻게 되는지 한 번 찍�
 
 ![image](https://user-images.githubusercontent.com/79521972/170179127-de736de3-dcbe-44fb-af71-0009208fda7a.png)
 
+- 처음에 초기화를 한다.
+  - source에서 c까지의 distance -> 무한대
+  - '' 에서 e, f까지의 distance -> 무한대
+- bellman-ford 알고리즘
+  - 노드 4개 -> for loop 3번
+    - 모든 edge들에 대해서 relax
+      - c = 5
+      - e 혹은 f로 오는 경로는 없기 때문에 여전히 무한대로 둔다.
+      - 현재 얻은 distance가 shortest distance인지를 판단한다.
+      - c.d = 5 -> shortest distance
+      - e.d, f.d 모두 더 짧은 경로가 존재하지 않기 때문에 negative cycle가 위 그림에는 없다.
+      - True 리턴 : 내가 가진 그래프에 negative cycle가 없다.
+      - 그러나 e와 f는 negative cycle이다.
+      - 이 경우에 negative cycle을 detect 하기 위해서 어떻게 해야 하는가?
+      - 각 vertex에서 distance를 100으로 초기화한다.
+
+
+
+<br>
+
+- vertex를 모두 100으로 초기화 하면
+- c를 먼저 relax 하면 5로 update된다. 
+- e를 relax하면 f를 통해 오는 경우 94만에 올 수 있기 때문에 update
+- f는 e를 통하면 97만에 올 수 있다.(e가 방금 94로 update 되었기 때문에)
+- c는 그대로고 e는 계속해서 내려갈 것이고 이에 따라 f도 계속해서 shortest가 update 될 것이다.
+- 그러면 결과적으로 c는 아무리 for문을 돌려도 그대로 일 것이지만
+- e는 더 작은 shortest distance가 존재하기 때문에 False가 리턴 될 것이고 negative cycle을 detect 할 ㅜㅅ 있게 되는 것이다.
+- 이를 통해 무조건 inf로 초기화하는 것 보다 충분히 큰 값으로 초기화 시키면 detect 할 수 있는 경우가 있다.
+  - <mark>edge의 갯수 x weight 의 최댓값</mark>
+
+
+
+![image](https://user-images.githubusercontent.com/79521972/170915293-f8b36403-a61b-4b66-b789-1778ea2ed6c3.png)
+
+
+
 ---
 
 13-16
@@ -297,6 +335,16 @@ for문을 한 번씩 돌 때마다 distance가 어떻게 되는지 한 번 찍�
 
 ![image](https://user-images.githubusercontent.com/79521972/170179271-f29f2c91-2c30-44f5-8476-8e97db1fe7ec.png)
 
+N: vertex의 갯수
+
+M: edge의 갯수
+
+W: negative edge의 갯수
+
+S와 E가 undirected 이어졌다.
+
+M+2 번쨰 줄 부터는 S가 시작, E가 도착이 된다. T는 negative edge
+
 
 
 ```python
@@ -309,7 +357,18 @@ for _ in range(tc):
         S, E, T = map(int, sys.stdin.readline().split())
         road[S].append([E, T])
         road[E].append([S, T])
+    #for 
 ```
+
+dictionary로 하면 안되는 이유? -> 강의 보고 적기
+
+이차원 리스트로 저장 - vertex 갯수 + 1
+
+초기화할 때 값을 무한대로 하면 안되고 
+
+- edge의 갯수 x weight 의 최댓값
+
+
 
 
 
@@ -321,9 +380,24 @@ for _ in range(tc):
 
 ![image](https://user-images.githubusercontent.com/79521972/170179459-b74b4a5b-9fb0-4064-ae55-b57ea87096d4.png)
 
+- Bellman-Ford 와 마찬가지로 single-source shortest-paths를 구하는 알고리즘이다.
 
+- 하지만 다른 점은 모든 edge의 weight가 non-negative이다.
+  - w(u, v) >= 0
 
+- 다익스트라 알고리즘은 벨만포드보다 running time 이 빠르다.
 
+<br>
+
+- 다익스트라 알고리즘은 set S를 유지한다.
+  - source 부터의 shortest path가 이미 결정된 vertex의 집합
+  - 알고리즘을 돌리다 보면 이 set S에 한놈씩 추가가 되고
+  - 알고리즘이 끝나면 모든 vertex가 set S에 들어가게 된다.
+- 알고리즘을 돌리면서 아래와 같은 두 가지 동작을 반복한다.
+  - 1. select: source부터의 distance가 현재까지 가장 작은 애를 선택한다. -> 얘가 set S에 추가
+  - 2. relax(update): u가 1번에서 고른 vertex인데 여기서 출발하는 모든 vertex를 다시 relax 한다.
+
+- 위 loop가 끝나면 모든 vertex에 대해서 relax가 끝나게 된다.
 
 ---
 
@@ -331,7 +405,32 @@ for _ in range(tc):
 
 ![image](https://user-images.githubusercontent.com/79521972/170179478-68e858a2-56ed-415a-a0a9-65f3b2251382.png)
 
+- vertex가 5개 있는데 모든 vertex의 s와의 distance는 무한대로 초기화한다.
+- loop
+  - select: 
+    - 가장 작은 distance는 s이기 때문에 s가 select에 들어간다.
+  - t와 y에 대해 relax 진행
+    - t: s를 통해서 가는 경우 10만에 갈 수 있으니 10으로 update
+    - y: s를 통해서 가는 경우 5만에 갈 수 ㅣㅇㅆ다.
+  - 이 과정이 끝나고 distance가 가장 작은 y가 set S에 들어간다.
+  - y와 가까운 t, x,z에 대해 relax
+    - t: y를 통해 8만에 가는 것으로 update
+    - x: y를 통해 14만에 가는 것으로 update
+    - z: y를 통해 7만에 가는 것으로 update
+  - 또 남은 애들(s, y제외; set S에 없는 애들 중에서) 중에서 제일 작은애 set S에 넣는다. -> z
+    - x -> 13으로 update
+  - set S에 t 대입
+    - x -> 9로 update
+  - set S에 x 대입 (남은 것이 x밖에 없음)
+    - update 사항 없음
 
+<br>
+
+- 이 경우 distance가 가장 작은 애를 update 했는데 만약에 distance가 같은 애들끼리 있으면 어떻게 함?
+  - 뭘 먼저 해도 상관 없지만 -> 되도록(무조건 이렇게 해라) 알파벳 순서대로 한다.
+- undirected로 되어있는 경우?
+  - 모든 방향을 다 고려하여서
+  - undirect라고 다를 것은 없다. 기본적인 algorithm은 그대로이다.(select, relax)
 
 ---
 
@@ -339,7 +438,22 @@ for _ in range(tc):
 
 ![image](https://user-images.githubusercontent.com/79521972/170179529-5d54aa9f-299c-42ba-800d-1f392bd27683.png)
 
+- (bellman-ford와 유사하게) 모든 vertex를 initialize
 
+- set S = 선언 및 초기화
+- 현재 까지 distance가 제일 작은 애를 알아내기 위해서 min heap을 사용한다.(key = v.d)
+  - Q : min heap
+- heap 구조에서 pop을 하면 제일 작은 애가 나온다.
+- Q에 남은 원소가 없을 때까지 loop를 돌린다.
+  - loop를 돌리면서 Q에서 하나씩 pop을 하고 이를 set S에 넣고 
+
+<br>
+
+- 위 pseudo code를 그대로 쓸 수 없는 이유
+  - 큐에 distance와 vertex name을 묶은 정보가 쭉 저장할 것인데
+  - 
+
+while loop안 for 문 안에서 relax를 진행하는데 relax는 vertex 당 한 번만 진행한다.
 
 ---
 
@@ -347,7 +461,17 @@ for _ in range(tc):
 
 ![image](https://user-images.githubusercontent.com/79521972/170179561-e858130c-3d9b-421b-bf6b-31dbb9615c50.png)
 
+- 다익스트라 알고리즘은 일종의 그리디 알고리즘에 해당 된다.
+  - 현재까지 알려진 것 중에 가장 작은 노드를 기준으로 진행되어 최선의 선택을 하기 때문에 그렇다.
+  - 이 경우 항상 global optimum이 구해지는가? -> 그렇다 하지만 증명이 굉장히 복잡하다.
 
+- time complexity
+  - 5번 줄: O(VlogV)
+  - 7,8번: O(ElogV)
+  - 따라서 O(VlogV + ElogV) 인데 V >= E이기 때문에 
+  - 최종적인 다익스트라 알고리즘의 time complexity는
+    - O(ElogV)
+  - (앞의 벨만포드는 O(EV))
 
 ---
 
@@ -368,7 +492,7 @@ def dijkstra(graph, source):
     distance[source] = 0
     
     selected = set()		# the set S
-    min_q = [(0, source)]	# (distance from source, predecessor)
+    min_q = [(0, source)]	# (distance from source, vertex name)
     
     while min_q: # 17
         # u is selected and added to the set S
@@ -378,11 +502,11 @@ def dijkstra(graph, source):
         # w is the weight of edge (u, v)
         # relax (u, v), if v is not selected
         for v, w in graph[u].items(): # 24
-            if v not in selected:
+            if v not in selected: # selected가 안 된 애들의 경우에만 relax
                 if distance[v] > distance[u] + w:
                     distance[v] = distance[u] + w
                     predecessor[v] = u
-                    heappush(min_q, (distance[v], v))
+                    heappush(min_q, (distance[v], v)) #update한 정보를 다시 q에 넣는다.
                     
 	return distance, predecessor
 
@@ -399,7 +523,14 @@ print(pre)
 print(dist)
 ```
 
+```
+{'s': None, 't': 's', 'x': None, 'y': 's', 'z': None}
+{'s': 0, 't': 10, 'x': inf, 'y': 5, 'z': inf}
+```
 
+node 이름이 string으로 되어있기 때문에 set으로 한 것
+
+integer이면 자동으로 index가 붙기 때문에 그냥 리스트로 하여 메모리를 절약 + 속도 증가
 
 ---
 
@@ -409,7 +540,7 @@ print(dist)
 
 [https://www.acmicpc.net/problem/1753](https://www.acmicpc.net/problem/1753)
 
-
+빨간줄의 의미는 딕셔너리보다 리스트로 하는 것이 더 유리하다는 것을 알려주는 정보이다.
 
 ---
 
@@ -428,7 +559,9 @@ def dijkstra(graph, source):
     
 ```
 
+set S에 들어가면 selected가 True 가 된다.
 
+0.0인 이유는 inf가 float이기 때문에 type을 맞춰주기 위함.
 
 ---
 
