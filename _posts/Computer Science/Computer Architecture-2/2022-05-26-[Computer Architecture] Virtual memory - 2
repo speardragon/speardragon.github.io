@@ -90,7 +90,7 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
 
 ![image](https://user-images.githubusercontent.com/79521972/170416793-cd2dc6c2-c5ae-4af3-a332-9428bb523a7f.png)
 
-- If cache tag uses  physical address 
+- If cache tag uses physical address 
   - Need to translate before  cache lookup 
 - Alternative: use virtual  address tag 
   - Complications due to  aliasing 
@@ -122,6 +122,8 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
 
 프로그램마다 각각의 page table만 잘 관리하면 이 프로그램은 정해져있는 PA만 access 가능하다.
 
+어떤 task가 다른 task의 page에 access 할 수 없다.
+
 - **Multiple processes** (programs) run at once 
 - Each process has its own page table 
 - Each process can use entire virtual address space 
@@ -131,14 +133,33 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
 
 <br>
 
+![image](https://user-images.githubusercontent.com/79521972/171085973-455e0a2c-d6af-40a0-b5ef-1a970304a4af.png)
+
+
+
+<br>
+
+![image](https://user-images.githubusercontent.com/79521972/171086174-2522b052-11ad-411b-b2e1-40f82ea173ee.png)
+
+- The user level code is stored in the text segment.
+- Static data (data know at compile time) use by the user program
+
+
+
+
+
+<br>
+
+![image](https://user-images.githubusercontent.com/79521972/171086359-85f77fa7-1953-4d90-a586-bac209bebe00.png)
+
+<br>
+
 ## Reducing translation time
 
 - Can **overlap** the cache access with the TLB access 
   - Works when the **high order bits** of the VA are used to access the TLB  while the **low order bits** are used as index into cache
 
 ![image](https://user-images.githubusercontent.com/79521972/170417137-4203203c-805b-4f31-94b2-5b3c02ea7aa1.png)
-
-
 
 
 
@@ -195,7 +216,7 @@ write-allocate: write하려할 때 miss이면 memory까지 가서 cache에 올�
 
 ![image](https://user-images.githubusercontent.com/79521972/170417454-9dbfa14d-d6b5-412b-a959-4e43aa3b0d9d.png)
 
-
+separate lookup table
 
 <br>
 
@@ -205,6 +226,7 @@ write-allocate: write하려할 때 miss이면 memory까지 가서 cache에 올�
 - Set associative or fully associative
   - Random
   - LRU (Least Recently Used) 
+    - handling 하기가 쉽지 않음.
 - For a 2-way set associative, random replacement  has a miss rate about 1.1 times higher than LRU 
 - LRU is too costly to implement for high levels of  associativity (> 4-way) since tracking the usage  information is costly
 
@@ -216,8 +238,8 @@ write-allocate: write하려할 때 miss이면 memory까지 가서 cache에 올�
 
 - Write-through 
   - The information is written to the entry in the  current memory level and to the entry in the next level of the  memory hierarchy 
-    - Always combined with a write buffer so write waits to next level  memory can be eliminated (as long as the write buffer doesn’t fill) 
-- Write-back : 
+    - Always combined with a **write buffer** so write waits to next level  memory can be eliminated (as long as the write buffer doesn’t fill) 
+- **Write-back** : 
   - The information is written only to the entry in the  current memory level. The modified entry is written to next level of  memory only when it is replaced. 
     - Need a dirty bit to keep track of whether the entry is clean or dirty 
     - Virtual memory systems always use write-back of dirty pages to disk 
@@ -266,3 +288,4 @@ Q) page fault의 경우 Hard disk에서 Page table로 가져오고  이를 TBL�
 A) No. page fault의 경우 hard disk에서 찾은 다음에 PM에 비어있는 곳을 찾고 공간이 있으면 load 한다.
 
 TLB miss의 경우 Page table을 확인하여 hit라면 tlb에 업데이트 하고 tlb를 통해 pm에 load
+
