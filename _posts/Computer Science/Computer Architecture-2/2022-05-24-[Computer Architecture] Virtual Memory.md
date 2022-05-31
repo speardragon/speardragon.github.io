@@ -57,7 +57,18 @@ miss rate을 최소화하기 위해서 fully associative를 사용 -> 아무데�
 
 프로그램마다 page table을 갖기 때문에 A 프로그램의 0번지와 B 프로그램의 0번지는 다른 곳에 위치해 있다.
 
+![image](https://user-images.githubusercontent.com/79521972/171068710-f392610d-7c7d-4091-858a-38ab11127c4e.png)
 
+
+
+![image](https://user-images.githubusercontent.com/79521972/171068801-d59a965d-d313-4adb-921e-ed7aa55ef556.png)
+
+1. CPU가 page table에 가서 해당 page에 접근한다.
+2. 이 때, Memory에 올라온 상태가 아니면(invaild), Interupt를 발생한다.
+3. OS 내부의 ISR에서 이 인터럽트를 처리하러 Disk에서 page를 찾는다.
+4. 찾은 Page를 Memory에 올려 Frame화 한다.
+5. page table을 업데이트 한다.
+6. CPU에게 다시 수행하라고 명령한다.
 
 <br>
 
@@ -240,7 +251,7 @@ PPN: Physical Page Number
 
 ![image](https://user-images.githubusercontent.com/79521972/169943773-16a658b8-214d-40ec-b178-8d25e07ee333.png)
 
-
+virtual page number 7FFFF -> 111 1111 1111 1111 1111 -> 19bit
 
 
 
@@ -248,17 +259,21 @@ PPN: Physical Page Number
 
 ![image](https://user-images.githubusercontent.com/79521972/169943825-2b037ce7-c54b-469f-8e44-f2c3466fa774.png)
 
-- 위에서 봤듯이 page offset은 12 bit이기 때문에 3byte이므로 0x247C의 주소에서 뒤의 3 byte는 page offset을 나타낸다.
-  - 47C -> 0100 0111 1100
-- 그러므로 나머지 byte가 VPN을 나타낸다.
-  - 2 -> 00002
-  - 00002 (VPN) => 7FFF (PPN)
-
-- 따라서 최종적으로 Physical address는  0x7FFF47C 가 된다.
-
 <br>
 
 ![image](https://user-images.githubusercontent.com/79521972/170392568-acb68b86-4e57-47a6-96ec-16a12c834a39.png)
+
+- 위에서 봤듯이 page offset은 12 bit이기 때문에 3byte이므로 0x247C의 주소에서 뒤의 47C는 page offset을 나타낸다.
+  - 47C -> 0100 0111 1100
+- 따라서 VPN는 0x2가 되고 이를 PPN으로 변환해야 한다.
+  - 0x2는 VPN에서 00002를 뜻하고 이는 Physical memory의 7FFF에 있다.
+  - 00002 (VPN) => 7FFF (PPN)
+  - 그래서 Virtual address의 2부분을 7FFF로 바꿔주면 된다.
+- 따라서 최종적으로 Physical address는  0x7FFF47C 가 된다.
+
+위 그림에서 VM과 PM이 이어진 것은 누구를 통해서 이루어 지는가?(Virtial memory를 Physical memory의 어디에 두어야 하는가)
+
+- fully associative 
 
 <br>
 
@@ -299,7 +314,7 @@ What is the physical  address of virtual  address 0x5F20?
 What is the physical  address of virtual address **0x73E0**?
 
 - VPN = **7** 
-- Entry 7 is invalid (V = 0) -> page fault
+- Entry 7 is invalid (V = 0) -> **page fault**
   - Virtual page must be paged into physical memory from disk (page fault)
 
 
@@ -315,7 +330,7 @@ What is the physical  address of virtual address **0x73E0**?
 
 ## Replacement and Writes
 
-harddisk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하기 때문에 performance가 중요하다.
+hard disk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하기 때문에 performance가 중요하다.
 
 - **To reduce page fault rate**, prefer least recently used (**LRU**) replacement 
   - **Reference bit** (aka **use bit**) in PTE(page table entry) set to 1 on access to  page 
@@ -324,6 +339,7 @@ harddisk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하�
   - A page with reference bit = 0 has not been used recently 
 - Disk writes take millions of cycles 
   - Write through is impractical - 매우 비효율적
+    - memory에 써질 때마다 disk에 올리는 것 -> 미친짓
   - Use write-back 
     - 계속 memory만 write하다가 memory page가 쫓겨 나야 할 때 memory에 써지는 방식
     - 즉, 메모리의 한 부분이 새로운 내용으로 바뀌려고 할 때
@@ -384,9 +400,11 @@ harddisk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하�
   - Large page size, so consecutive loads/stores likely  to access same page 
 - TLB 
   - Small: accessed in < 1 cycle 
+    - CPU와 거의 같은 cycle
   - Typically 16 ~ 512 entries 
   - **Fully associative**, N-way도 적은 비율로 사용하긴 함.
-  -  -\> 99 % hit rates typical 
+    - -\> 99 % hit rates typical
+      - it means 거의 memory access를 한 번만 한다.
   - Reduces # of memory accesses for most loads/stores **from 2 to 1**
 
 ![image](https://user-images.githubusercontent.com/79521972/170393324-ea90b5bd-988a-49f5-bbf4-72cb83e7462b.png)
@@ -397,11 +415,11 @@ harddisk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하�
 
 ![image](https://user-images.githubusercontent.com/79521972/169945461-bd53c7d5-8ba8-4a64-86d5-f3f09db93bfc.png)
 
-2개 짜리 TLB
+- 2개 짜리 TLB
 
-TLB를 먼저 봐서 같은 것이 있다면 해당 Physical page number를 바로 가져와서 사용한다.
+- TLB를 먼저 봐서 같은 것이 있다면 해당 Physical page number를 바로 가져와서 사용한다.
 
-캐시랑 다른 점은 상위비트?(46:40 다시 보기)
+- 캐시랑 다른 점은 상위비트?(46:40 다시 보기)
 
 <br>
 
@@ -440,7 +458,11 @@ TLB를 먼저 봐서 같은 것이 있다면 해당 Physical page number를 바�
     - Takes 1,000,000’s of cycles to service a page fault 
 - TLB misses are much more frequent than true page faults
 
+진행과정
 
+1. CPU에서 Virtual address가 나온다. 
+2. TLB에 찾아가서 PA가 있는지 확인하여 hit면 cache에 있으면 cache를 통해 없으면 main memory를 통해 CPU로 전달된다.
+3. 그러나 TLB miss이면 page table에 가서 hit면 TLB에 가져다 놓고 PA로 변환되어 cache or memory를 통해 CPU로 전달된다.
 
 <br>
 Q) TLB 에서 virtual page number를 확인하는데 fully associative랑 n-way set이랑 다른가?

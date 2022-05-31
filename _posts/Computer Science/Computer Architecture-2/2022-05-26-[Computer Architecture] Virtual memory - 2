@@ -7,9 +7,11 @@ tag: ['Virtual Memory']
 
 <br>
 
-Virtual memory가 없다면 여러개의 프로그램이 도는 multi task system인 경우에는 두 프로그램의 0번지는 한 곳에 mapping 될 것이기 때문에 충돌이 발생할 것이다.
+Virtual memory가 없다면 여러개의 프로그램이 도는 multi task system인 경우에는 각 프로그램의 0번지는 physical memory의 한 곳에 mapping 될 것이기 때문에 충돌이 발생할 것이다.
 
-- 따라서 single task program이라면 VM이 없어도 되겠지만 multi program은 반드시 있어야 하는 것이다.
+- 이말인 즉슨,  single task program이라면 VM이 없어도 되겠지만 multi program은 반드시 있어야 하는 것이다.
+
+![image](https://user-images.githubusercontent.com/79521972/171068710-f392610d-7c7d-4091-858a-38ab11127c4e.png)
 
 <br>
 
@@ -27,7 +29,7 @@ https://ahnanne.tistory.com/15
 
 cache가 size가 충분히 크지 못하면 tlb랑 page table은 hit인데 cach는 miss인 경우가 나타날 수 있다.
 
-
+page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit일 수가 없다.
 
 <br>
 
@@ -35,9 +37,9 @@ cache가 size가 충분히 크지 못하면 tlb랑 page table은 hit인데 cach�
 
 - **If page is in memory** (i.e. Valid bit is set) 
   - Load the PTE from memory and retry 
-  - Could be handled in hardware 
+  - Could be handled in **hardware** 
     - Can get complex for more complicated page table  structures 
-  - Or, in software 
+  - Or, in **software** 
     - Raise a special **exception**, with optimized handler 
 - **If page is not in memory** (page fault) 
   - OS handles fetching the page and updating the  page table 
@@ -54,7 +56,7 @@ cache가 size가 충분히 크지 못하면 tlb랑 page table은 hit인데 cach�
   - Or, Page not present -> true page fault 
 - Must recognize TLB miss before destination  register overwritten 
   - Raise exception 
-- Handler copies PTE from memory to TLB 
+- Handler **copies PTE from memory to TLB** 
   - Then restarts instruction 
   - If page not present, page fault will occur
 
@@ -66,9 +68,9 @@ cache가 size가 충분히 크지 못하면 tlb랑 page table은 hit인데 cach�
 
 - Use faulting virtual address to find PTE 
 - Locate page on disk 
-- Choose page to replace 
+- Choose page to replace (메모리의 위치 선택)
   - If dirty, write to disk first
-- Read page into memory and update page  table 
+- Read page into memory and update page table 
 - Make process runnable again 
   - Restart from faulting instruction
 
@@ -96,7 +98,7 @@ cache가 size가 충분히 크지 못하면 tlb랑 page table은 hit인데 cach�
 
 - content addressable memory
   - 보통은 address가 가면 data가 나오는데
-  - CAM은 ref가 들어가면 ref와 matching 된 곳의 값이 나온다.
+  - CAM은 ref가 들어가면 ref(content)와 matching 된 곳의 값이 나온다.
 
 <br>
 
@@ -136,7 +138,7 @@ cache가 size가 충분히 크지 못하면 tlb랑 page table은 hit인데 cach�
 
 ![image](https://user-images.githubusercontent.com/79521972/170417137-4203203c-805b-4f31-94b2-5b3c02ea7aa1.png)
 
-address를 잘 align 시키면 
+
 
 
 
@@ -260,3 +262,7 @@ write-allocate: write하려할 때 miss이면 memory까지 가서 cache에 올�
 Q) page fault의 경우 Hard disk에서 Page table로 가져오고  이를 TBL로 가져온 후에 Physical memory에 가져오는 것인지 아니면 바로 Physical memory에 load 된 다음에 page table과 TLB에 update 되는 것인지?
 
 -> 그러면 Physical memory에 load 되는 data는 반드시 그 직전에 TLB를 거쳐서 온다고 이해했는데 이게 맞는지?
+
+A) No. page fault의 경우 hard disk에서 찾은 다음에 PM에 비어있는 곳을 찾고 공간이 있으면 load 한다.
+
+TLB miss의 경우 Page table을 확인하여 hit라면 tlb에 업데이트 하고 tlb를 통해 pm에 load
