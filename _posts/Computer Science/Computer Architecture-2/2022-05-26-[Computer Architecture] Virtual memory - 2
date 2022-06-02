@@ -135,22 +135,23 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
 
 ![image](https://user-images.githubusercontent.com/79521972/171085973-455e0a2c-d6af-40a0-b5ef-1a970304a4af.png)
 
+<br>
 
+![image](https://user-images.githubusercontent.com/79521972/171526453-80909d3c-c9cf-4af2-b8ab-34953307e7a4.png)
 
 <br>
 
 ![image](https://user-images.githubusercontent.com/79521972/171086174-2522b052-11ad-411b-b2e1-40f82ea173ee.png)
 
-- The user level code is stored in the text segment.
-- Static data (data know at compile time) use by the user program
+- The **user level code** is stored in the **text segment**.
+- **Static data** (data know at compile time) use by the user program is stored in the heap.
+- Dynamic data (data allocated during runtime) by the user program is stored in the heap.
+- The stack is used by the user program to store temporary data during for example subroutine calls.
+- Kernel level code (exception and interrupt handlers) are stored in the kernel text segment.
+- Static data used by the kernel is stored in the kernel data segement.
+- Memory mapped registers for IO devices are stored in the memory mapped IO segement.
 
 
-
-
-
-<br>
-
-![image](https://user-images.githubusercontent.com/79521972/171086359-85f77fa7-1953-4d90-a586-bac209bebe00.png)
 
 <br>
 
@@ -174,6 +175,8 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
   - address translation 
 - A **TLB** speeds up address translation 
 - Different page tables **for** different programs provides **memory protection**
+  -  프로그램마다 자주 사용하는 페이지가 다르기 때문?
+
 
 
 
@@ -208,7 +211,7 @@ write-allocate: write하려할 때 miss이면 memory까지 가서 cache에 올�
 - Q4: What happens on a write?  
   (Write strategy)
 
-
+cache와 virtual memory 각각
 
 <br>
 
@@ -273,6 +276,12 @@ separate lookup table
 
 
 <br>
+
+![image](https://user-images.githubusercontent.com/79521972/171526044-95eef031-8793-4f80-a2b5-acd929f8b70d.png)
+
+<br>
+
+
 
 ## Memory-Mapped I/O
 
