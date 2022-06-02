@@ -167,7 +167,7 @@ sw 명령의 경우 메모리에서 write과 read가 동시에 일어나는데 �
 
 ![image](https://user-images.githubusercontent.com/79521972/166344254-9885a9f6-0e2b-4d99-a65b-6dd141277f46.png)
 
-> WrtieReg must arrive at same time as Result
+> WriteReg must arrive at same time as Result
 
 빨간색으로 표시된 path의 의미는 add와 같은 R-type 명령의 경우 register에 값을 저장하려면 해당 register를 언제 RF에 저장할 지가 관건인데 이를 저 빨간 path 처럼 저장할 register의 주소를 writeback 방까지 같이 끌고 가도록 한 것이다.
 
