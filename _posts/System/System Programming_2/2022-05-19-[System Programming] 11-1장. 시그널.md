@@ -14,7 +14,7 @@ tag: ['Signal']
 - Signals 
   - **Software interrupts** : 소프트웨어 프로그래밍에서 굉장히 중요한 이벤트
   - provides a way of handling asynchronous events 
-    - 예기치 않은 사건이 발생할 때 이를 알리는 수단 
+    - 프로세스가 실행 중간에 예기치 않은 사건이 발생할 때 이를 알리는 수단 
     - E.g. A user types the interrupt key to stop a program. 
 - Signal name 
   - Begins with "SIG". 
@@ -61,17 +61,17 @@ CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
 
 ## 시그널 생성 이유
 
-- 터미널에서 생성된 시그널 
+- **터미널에서 생성된 시그널** 
   - 키보드로부터 인터럽트 CTRL-C -> SIGINT 
   - 키보드로부터 정지 CTRL-Z -> SIGSTP 
-- 하드웨어 예외가 생성하는 시그널 
+- **하드웨어 예외가 생성하는 시그널** 
   - 0으로 나누기  -> SIGFPE 
   - 유효하지 않는 메모리 참조 -> SIGSEGV 
   - 부동소수점 오류 -> SIGFPE 
-  - 정젂 -> SIGPWR 
+  - 정전 -> SIGPWR 
   - Ilegal instruction 실행, 
   - 접근 불가 메모리 접근 -> SIGSEGV 
-- kill() 시스템 호출 
+- **kill() 시스템 호출** 
   - 프로세스(그룹)에 시그널 보내는 시스템 호출 
   - 프로세스의 소유자이거나 슈퍼유저이어야 한다.
 
@@ -97,11 +97,11 @@ CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
 ## Introduction
 
 - Disposition of the signal(called action). 
-  - Ignore the signal 
+  - **Ignore the signal** 
     - **SIGKILL** and **SIGSTOP** cannot be ignored. 
-  - Catch the signal 
+  - **Catch the signal** 
     - We should tell the kernel to call a **signal handler function** whenever the signal occurs. 
-  - Execute the default action 
+  - **Execute the default action** 
     - The default action for most signals is **to terminate**.
 
 
@@ -134,11 +134,11 @@ CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
     - This signal is sent to all processes in the foreground process group when the user enters the interrupt character (usually Ctrl-C). 
     - It is often used to terminate a runaway program. 
     - The default behavior is to terminate; however, processes can elect to catch and handle this signal, and generally do so to clean up before terminating
-
-- SIGQUIT 
-  - Is similar to SIGINT, but generates a core file. 
-  - The kernel raises this signal for all processes in the foreground process group when the user provides the terminal quit character (usually Ctrl-\). 
-  - The default action is to terminate the processes, and generate a core dump (termination with core)
+  - SIGQUIT 
+    - Is similar to SIGINT, but generates a core file. 
+    - The kernel raises this signal for all processes in the foreground process group when the user provides the terminal quit character (usually Ctrl-\). 
+    - The default action is to terminate the processes, and generate a core dump (termination with core)
+  
 
 ![image](https://user-images.githubusercontent.com/79521972/169322735-523461a6-b9ee-4bb3-b6b3-ec874c1f2146.png)
 
@@ -271,13 +271,15 @@ unsigned int alarm(unsigned int sec)
 ![image](https://user-images.githubusercontent.com/79521972/169324027-7b9bd600-086b-4078-83aa-f1b5401dd06f.png)
 
 - alarm(0) 
-  - 이젂에 설정된 알람은 취소된다. 
+  - 이전에 설정된 알람은 취소된다. 
 
 - Default action is to terminate the process, but most processes catch this signal. 
+  - default action은 프로세스를 종료하지만 대부분 프로세스는 user defined handler 실행
+
 - 한 프로세스 당 오직 하나의 알람만 설정할 수 있다. 
 - There is only one alarm clock per process. 
   - 이전에 설정된 알람이 있으면 취소되고 남은 시간(초)을 반환한다. 
-  - 이전에 설정된 알람이 없다면 0을 반홖한다. 
+  - 이전에 설정된 알람이 없다면 0을 반환한다. 
   - If, when we call alarm, a previously registered alarm clock for the process has not yet expired, the number of seconds left is returned. The previously registered alarm clock is replaced by the new one.
 
 
@@ -302,11 +304,11 @@ int main( )
 } 
 ```
 
-
+alarm(5)이 호출되고 5초가 지나면 아래 while loop를 돈 후에 자명종 시계를 호출하고 종료된다.
 
 ```shell
 $ alarm
- sleep(1); 무한 루프
+무한 루프
 1초 경과
 2초 경과
 3초 경과
@@ -326,6 +328,8 @@ $ alarm
   - "이 시그널이 발생하면 이렇게 처리하라"
 
 - signal() 시스템 호출
+  - 사용자가 정의한 시그널 함수 등록
+
 
 ```c
 #include <signal.h>
@@ -334,10 +338,10 @@ signal(int signo, void (*func)( )))
 ```
 
 - 시그널 처리 함수 func 
-  - SIG_IGN : 시그널 무시 
+  - **SIG_IGN** : 시그널 무시 
     - -> all signals can be ignored, except SIGKILL and SIGSTOP 
-  - SIG_DFL : 기본 처리 
-  - 사용자 정의 함수 이름 -> most are to terminate process
+  - **SIG_DFL** : 기본 처리 
+  - **사용자 정의 함수 이름** -> most are to terminate process
 
 <br>
 
@@ -349,15 +353,16 @@ signal(int signo, void (*func)( )))
 void alarmHandler();
 /* 알람 시그널을 처리한다. */
 int main( )
-{ int sec = 0;
- signal(SIGALRM,alarmHandler);
- alarm(5); /* 알람 시간 설정 */
- printf("무한 루프 \n");
- while (1) {
-     sleep(1);
-     printf(―%d초 경과 \n―, ++sec);
- }
- printf("실행되지 않음 \n");
+{ 
+    int sec = 0;
+    signal(SIGALRM,alarmHandler); //사용자 정의 핸들러 함수 등록
+    alarm(5); /* 알람 시간 설정 */
+    printf("무한 루프 \n");
+    while (1) {
+        sleep(1);
+        printf(―%d초 경과 \n―, ++sec);
+    }
+    printf("실행되지 않음 \n");
 }
 void alarmHandler()
 {
@@ -374,6 +379,7 @@ $ alarmhandler
 2초 경과
 3초 경과
 4초 경과
+5초 경과
 일어나세요
 ```
 
@@ -390,7 +396,7 @@ void intHandler();
 int main( )
 {
     if (signal(SIGINT,intHandler) == SIG_ERR) {
-        fprintf (stderr, "Cannot handle SIGINT!\n");
+        fprintf (stderr, "Cannot handle SIGINT!\n"); //redundant code (예외 처리)
         exit (EXIT_FAILURE);
     }
     while (1)
@@ -411,6 +417,8 @@ $ sigint1
 시그널 번호: 2
 ```
 
+사용자가 CTRL-C를 누르면 SIGINT signal 발생 -> user defined handler 함수 intHandler 호출
+
 <br>
 
 ```c
@@ -423,15 +431,18 @@ pause()
 
 ## 시그널 처리기
 
-- a process can catch neither SIGKILL nor SIGSTOP, so setting up a handler for either of these two signals makes no sense 
-- The handler function must return void, which makes sense because (unlike with normal functions) there is no standard place in the program for this function to return
+- a process can catch neither **SIGKILL nor SIGSTOP**, so setting up a handler for either of these two signals makes no sense 
+  - SIGKILL이나 SIGSTOP은 catch할 수 없는 signa이기 때문에 해당 signal에 대한 handler를 만드는 것은 의미가 없다.(make no sense)
+
+- The handler function **must return void**, which makes sense because (unlike with normal functions) <mark>there is no standard place in the program for this function to return</mark>
 
 <br>
 
 ## signal()
 
 - Example
-  - It possible to use one signal handler for several signals
+  - It possible to use **one signal handler for several signals**
+  - 한 signal handler에서 여러 signal 처리 ( signo을 통해서)
 
 ```c
 #include <signal.h>
@@ -448,7 +459,7 @@ void myhandler(int signo)
             break;
         default: printf("other signal\n");
     }
-    return;
+    return; //원래는 종료를 시키는 것이 일반적, not return
 }
 int main(void)
 {
@@ -470,21 +481,23 @@ int main(void)
 
 ```shell
 $ ./a.out
-^\ //SIGQUIT
+^\ 					//SIGQUIT; 프로세스 실행 중지
 SIGQUIT(3) is caught
-^Z //SIGSTP
+^Z 					//SIGSTP
 [1]+ Stopped ./a.out
 $ ps
  PID TTY TIME CMD
 15554 pts/2 00:00:00 bash
 15587 pts/2 00:00:00 a.out
 15588 pts/2 00:00:00 ps
-$ kill 15587 //signo를 명시하지 않으면 SIGTERM 시그널을 보내 해당 프로세스를 강제 종료시킴.
+$ kill 15587 		//signo를 명시하지 않으면 SIGTERM 시그널을 보내 해당 프로세스를 강제 종료시킴.
 SIGTERM(15) is caught
 $ kill -USR1 15587
 SIGUSR1(10) is caught
 $
 ```
+
+-USR: 사용자 정의 signal
 
 <br>
 
@@ -495,9 +508,9 @@ $
 int pause (void);
 ```
 
-- pause( ) system call puts a process to sleep until it receives a signal that either is handled or terminates the process 
+- pause( ) system call puts a process to sleep **until it receives a signal** that either is handled or terminates the process 
 - pause( ) returns only if a caught signal is received, in which case the signal is handled, and pause( ) returns -1, and sets errno to EINTR (invalid signo). 
-- If the kernel raises an ignored signal, the process does not wake up. 
+- If the kernel raises an **ignored** signal, the process **does not wake up** (never). 
 - It performs only two actions. 
   - First, it puts the process in the interruptible sleep state. 
   - Next, it calls schedule( ) to invoke the Linux process scheduler to find another process to run. 
@@ -549,12 +562,14 @@ int main (void) {
 }
 ```
 
+signal handler를 user defined handler로 지정하지 않은 경우(SIG_DFL, SIG_IGN)는 사용자 정의 handler가 실행되지 않고 각자 지정된 대로 처리된다.
+
 <br>
 
 ## Ex2
 
 ```c
-include < signal.h> /* sigusr.c */
+include <signal.h> /* sigusr.c */
     static void sig_usr(int signo) { /* argument is signal number */
     if (signo == SIGUSR1)
         printf("received SIGUSR1\n");
@@ -591,14 +606,13 @@ $ kill 4720 // send SIGTERM
 
 ## sigaction() 함수
 
-- signal()보다 정교하게 시그널 처리기를 등록하기 위한 함수 
+- signal()보다 **정교하게** 시그널 처리기를 등록하기 위한 함수 
   - sigaction 구조체를 사용하여 정교한 시그널 처리 액션을 등록
 
 ```c
 #include <signal.h>
 int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
-//signum 시그널(SIGKILL과 SIGSTOP 제외)이 수싞되었을 때, 프로세스가 취할 액션
-//을 변경하는 데 사용된다. 이 시그널에 대한 새로운 액션은 act가 되며, 기존의 액션은 oldact에 저장된다. 성공하면 0을 실패하면 –1를 반환한다.
+// signum 시그널(SIGKILL과 SIGSTOP 제외)이 수신되었을 때, 프로세스가 취할 액션을 변경하는 데 사용된다. // 이 시그널에 대한 새로운 액션은 act가 되며, 기존의 액션은 oldact에 저장된다. 성공하면 0을 실패하면 –1를 반환한다.
 ```
 
 ```c
@@ -617,15 +631,15 @@ struct sigaction {
   - 사용자 정의 함수 이름
 
 - `void (*sa_sigaction)(int, siginfo_t *, void *); `
-  - sa_flags의 SA_SIGINFO 일 때 sa_handler() 대싞에 호출되는 처리기
+  - sa_flags의 SA_SIGINFO 일 때 sa_handler() 대신에 호출되는 처리기
 
 - `sigset_t sa_mask; // 시그널을 처리하는 동안 차단할 시그널 집합`
 
 - `int sa_flags : 시그널 처리 절차 `
-  - SA_SIGINFO -> sa_handler 대싞에 sa_sigaction을 사용함 
-  - SA_NOCLDSTOP -> <mark>signum이 SIGCHILD일 경우, 자식 프로세스가 종료/중단 되었 을 때 부모 프로세스에게 SIGCHILD를 젂달 하지 않음 </mark>
-  - SA_ONESHOT -> 시그널을 수싞하면 설정된 액션을 하고 SIG_DFL로 재설정됨 
-  - SA_NOMASK -> 시그널을 처리하는 동안에 젂달되는 시그널은 차단되지 않음
+  - SA_SIGINFO -> sa_flag가 sa_handler 대신에 sa_sigaction을 사용함 
+  - SA_NOCLDSTOP -> <mark>signum이 SIGCHILD일 경우, 자식 프로세스가 종료/중단 되었 을 때 부모 프로세스에게 SIGCHILD를 전달 하지 않음 </mark>
+  - SA_ONESHOT -> 시그널을 수신하면 설정된 액션을 하고 SIG_DFL로 재설정됨 
+  - SA_NOMASK -> 시그널을 처리하는 동안에 전달되는 시그널은 차단되지 않음
 
 <br>
 
@@ -641,7 +655,7 @@ struct sigaction {
 - int sigdelset(sigset_t *set, int signum); 
   - 시그널 집합 set에서 시그널 signum을 삭제 
 - int sigismember(sigset_t *set, int signum); 
-  - 시그널 signum이 집합 set의 원소인지 여부 반홖
+  - 시그널 signum이 집합 set의 원소인지 여부 반환
 
 <br>
 
@@ -657,7 +671,7 @@ void sigint_handler(int signo);
 int main( void)
 {
     newact.sa_handler = sigint_handler; // 시그널 처리기 지정
-    sigfillset(&newact.sa_mask); // 모든 시그널을 차단하도록 마스크
+    sigfillset(&newact.sa_mask); // 모든 시그널을 차단하도록 마스크(초기화)
 
     // SIGINT의 처리 액션을 새로 지정, oldact에 기존 처리 액션을 저장
     sigaction(SIGINT, &newact, &oldact); 
@@ -670,11 +684,24 @@ int main( void)
 /* SIGINT 처리 함수 */ 
 void sigint_handler(int signo) 
 { 
-    printf( "%d 번 시그널 처리!\n", signo);
-    printf( "또 누르면 종료됩니다.\n");
+    printf("%d 번 시그널 처리!\n", signo);
+    printf("또 누르면 종료됩니다.\n");
     sigaction(SIGINT, &oldact, NULL); // 기존 처리 액션으로 변경
 }
 ```
+
+```shell
+$ sigint2
+Ctrl-C를 눌러보세요!
+Ctrl-C를 눌러보세요!
+^c
+2번 시그널 처리!
+또 누르면 종료됩니다.
+Ctrl-C를 눌러보세요!
+^c
+```
+
+사용자가 Ctrl-C를 누르게 되면 종료를 하게 된다.
 
 
 
@@ -682,15 +709,19 @@ void sigint_handler(int signo)
 
 ## Execution and Inheritance
 
-- When a process is first executed, all signals are set to their default actions, unless the parent process is ignoring them; in this case, the newly created process will also ignore those signals. 
-  - Put another way, any signal caught by the parent is reset to the default action in the new process, and all other signals remain the same. 
-  - This makes sense because a freshly executed process does not share the address space of its parent, and thus any registered signal handlers may not exist. 
-- When a process calls fork( ), the child inherits the exact same signal semantics as the parent. 
+- When a process is first executed, **all signals** are set to their **default actions**, unless the parent process is ignoring them; in this case, the newly created process will also **ignore** those signals. 
+  - Put another way, any signal caught by the parent is reset to the **default action** in the new process, and all other signals remain the same. 
+    - 사용자 정의도 defaul로 세팅된다.
+    - This makes sense because a freshly executed process **does not share the address space of its parent**, and thus any registered signal handlers may not exist. 
+- When a process calls fork( ), the child **inherits** the exact same signal semantics as the parent. 
   - This also makes sense, as the child and parent share an address space, and thus the parent‘s signal handlers exist in the child
 
-- when the shell executes a process "in the background" (or when another background process executes another process), the newly executed process should ignore the interrupt and quit character 
+- when the shell executes a process **"in the background"** (or when another background process executes another process), the newly executed process **should ignore the interrupt and quit character** 
   - Catches the signals in foreground process 
+  
 - Thus, before a shell executes a background process, it should set SIGINT and SIGQUIT to SIG_IGN. 
+  - SIGQUIT나 SIGINT는 키보드로 받는 입력을 받을 때 이기 때문에 background에서 받을 수 없는 것이다. 
+
 - It is therefore common for programs that handle these signals to first check to make sure they are not ignored
 
 <br>
