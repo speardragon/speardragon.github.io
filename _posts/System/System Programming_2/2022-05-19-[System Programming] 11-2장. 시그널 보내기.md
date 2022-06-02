@@ -11,7 +11,7 @@ tag: ['Signal']
 
 ## 시그널 보내기: kill 명령어
 
-- killl 명령어 
+- kill 명령어 
   - 한 프로세스가 다른 프로세스를 제어하기 위해 특정 프로세스에 임의의 시그널을 강제적으로 보낸다. 
 
 ![image](https://user-images.githubusercontent.com/79521972/169327444-b216aa64-f7ce-4296-ac5b-cdaecf92b4fa.png)
@@ -57,8 +57,9 @@ int kill(int pid, int signo);
   - signal to the process whose process ID is pid 
 - pid == 0 : 
   - signal to the processes whose process group ID equals that of sender 
+  - process group ID가 sender의 group ID와 동일한 모든 프로세스에게 전달
 - pid < 0 : 
-  - signal to the processes whose process group ID equals abs. of pid 
+  - signal to the processes whose process group ID equals **absolute** of pid 
 - pid == -1 : 
   - POSIX.1 leaves this condition unspecified (used as a broadcast signal in SVR4, 4.3+BSD)
 
@@ -72,10 +73,10 @@ int kill(int pid, int signo);
   - 명령줄 인수로 받은 명령어를 제한 시간 내에 실행 
   - execute3.c 프로그램을 알람 시그널을 이용하여 확장 
 - 프로그램 설명 
-  - 자식 프로세스가 명령어를 실행하는 동안 정해짂 시간이 초과되면 SIGALRM 시그널이 발생 
-  - SIGALRM 시그널에 대한 처리함수 alarmHandler()에서 자식 프로 세스를 강제 종료 
-  - kill(pid, SIGINT) 호출을 통해 자식 프로세스에 SIGINT 시그널을 보 내어 강제 종료 
-  - 만약 SIGALRM 시그널이 발생하기 젂에 자식 프로세스가 종료하 면 이 프로그램은 정상적으로 끝남
+  - 자식 프로세스가 명령어를 실행하는 동안 정해진 시간이 초과되면 SIGALRM 시그널이 발생 
+  - SIGALRM 시그널에 대한 처리함수 alarmHandler()에서 자식 프로세스를 강제 종료 
+  - kill(pid, SIGINT) 호출을 통해 자식 프로세스에 SIGINT 시그널을 보내어 강제 종료 
+  - 만약 SIGALRM 시그널이 발생하기 전에 자식 프로세스가 종료하면 이 프로그램은 정상적으로 끝남
 
 
 
@@ -94,10 +95,12 @@ void alarmHandler();
 int main(int argc, char *argv[])
 {
     int child, status, limit;
+    
     signal(SIGALRM, alarmHandler);
     sscanf(argv[1], "%d", &limit);
     alarm(limit);
-    pid = fork( );
+    
+    pid = fork(); //부모 프로세스의 pid
     if (pid == 0) {
         execvp(argv[2], &argv[2]);
         fprintf(stderr, "%s:실행 불가\n", argv[1]);
@@ -130,7 +133,7 @@ SIGCONT 프로세스 재개
 SIGSTOP 프로세스 중지
 SIGKILL 프로세스 종료
 SIGTSTP Ctrl-Z에서 발생
-SIGCHLD 자식 프로세스 중지 혹은 종료 시 부모 프로세스에 젂달
+SIGCHLD 자식 프로세스 중지 혹은 종료 시 부모 프로세스에 전달
 ```
 
 - 예제: 시그널을 이용한 자식 프로세스 제어
@@ -159,7 +162,7 @@ int main( )
     if (pid2 == 0) {
         while (1) {
             sleep(1);
-            printf(＂자식 [2] 실행:%d\n―, ++count2);
+            printf("자식 [2] 실행:%d\n―", ++count2);
         }
     }
     sleep(2);
@@ -212,6 +215,7 @@ int raise(int signo);
 
 - Sends a signal to itself. 
   - `raise(signo);` is equivalent to kill(getpid(), signo);
+  - 자기 자신에게 signal을 보내라.
 
 <br>
 
@@ -224,7 +228,7 @@ void abort(void);
  //This function never returns
 ```
 
-- Sends the SIGABRT to the caller
+- **Sends the SIGABRT to the caller**
 
 <br>
 
@@ -232,17 +236,17 @@ void abort(void);
 
 ## 비지역 점프 (non-local) :setjmp/longjmp
 
-- C에서는 함수밖의 label로 goto 불가 
+- C에서는 함수 밖의 label로 goto 불가 (only local 영역에서만)
 - 임의의 위치로 비지역 점프 
   - 오류/예외 처리, 시그널 처리 등에 유용함 
 - int setjmp(jmp_buf env) 
-  - longjmp 젂에 호출되어야 함 
+  - longjmp 전에 호출되어야 함 
   - longjmp 할 곳을 지정함. 
   - 한 번 호출되고 여러 번 반환함. 
 - void longjmp(jmp_buf env, int val) 
   - setjmp 후에 호출됨 
   - setjmp에 의해 설정된 지점으로 비지역 점프 
-  - 한 번 호출되고 반홖하지 않음. 
+  - 한 번 호출되고 반환하지 않음. 
 
 <img src="https://user-images.githubusercontent.com/79521972/169328857-49fbaa38-2d51-43cf-b13d-329dfb253fd0.png" alt="image" style="zoom:67%;" />
 
@@ -255,10 +259,10 @@ void abort(void);
 ```c
 #include <setjmp.h>
 int setjmp(jmp_buf env);
-//비지역 점프를 위해 실행 스택 내용 등을 env에 저장한다. setjmp()는 처음 반홖할 때 0을 반홖하고 저장된 내용을 사용하는 longjmp()에 의해 두 번째 반홖할때는 0이 아닌 val 값을 반홖한다.
+//비지역 점프를 위해 실행 스택 내용 등을 env에 저장한다. setjmp()는 처음 반환할 때 0을 반환하고 저장된 내용을 사용하는 longjmp()에 의해 두 번째 반환할때는 0이 아닌 val 값을 반환한다.
 
 void longjmp(jmp_buf env, int val);
-//env에 저장된 상태를 복구하여 스택 내용 등이 저장된 곳으로 비지역 점프한다. 구체적으로 상응하는 setjmp() 함수가 val 값을 반홖하고 실행이 계속된다.
+//env에 저장된 상태를 복구하여 스택 내용 등이 저장된 곳으로 비지역 점프한다. 구체적으로 상응하는 setjmp() 함수가 val 값을 반환하고 실행이 계속된다.
 ```
 
 
