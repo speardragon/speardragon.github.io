@@ -17,12 +17,12 @@ greedy algorithm과 dynamic programming은 굉장히 많이 쓰이는 알고리�
 
 ## Fibonacci series
 
-Let's consider and example to understant how dynamic programming works. We use the Fibonacci series to illustrate
+Let's consider and example to understand how dynamic programming works. We use the Fibonacci series to illustrate
 
 The sequence of numbers
 ![image](https://user-images.githubusercontent.com/79521972/168503404-9961b12a-10f9-48ce-a26d-331fbdfb3d14.png)
 
-that are defined  by the formula
+that are defined by the formula
 
 ![image](https://user-images.githubusercontent.com/79521972/168503427-c3af3aa6-15bf-4c8d-9ba3-88f5c36158f2.png)
 
@@ -82,8 +82,12 @@ Dynamic programming, like the divide-and-conquer method, <mark>solves problems b
 
 - tabular method: 테이블에 기록하는 방식
 
-**Divide-and-conquer algorithms** partition the problem into disjoint subproblems, solve the subproblems recursively, and then combine their solutions to solve the original problem.
-In contrast, **dynamic programming** applies <span style="color:red">when the subproblems overlap</span>-that is, when subproblems share subsubproblems. In this context, a divide-and-conquer algorithm does more work than necessary, repeatedly solving the common subsubproblems. <mark>A dynamic-programming algorithm solves each subsubproblem just once and then saves its answer in a table</mark>, thereby avoiding the work of recomputing the answer every time it solves each subsubproblem.
+**Divide-and-conquer algorithms** `partition` the problem into disjoint subproblems, `solve` the subproblems recursively, and then `combine` their solutions to solve the original problem.
+In contrast, **dynamic programming** applies <span style="color:red">when the subproblems overlap</span>
+
+- that is, when subproblems share subsubproblems. 
+
+In this context, a divide-and-conquer algorithm does more work than necessary, repeatedly solving the common subsubproblems. <mark>A dynamic-programming algorithm solves each subsubproblem just once and then saves its answer in a table</mark>, thereby avoiding the work of recomputing the answer every time it solves each subsubproblem.
 
 - 작은 size의 문제를 딱 한 번만 풀고 그 푼 결과를 table에 저장해 두는 것이다.
   - 나중에 그 문제가 또 중복되어 나왔을 때 사용하기 위해서
