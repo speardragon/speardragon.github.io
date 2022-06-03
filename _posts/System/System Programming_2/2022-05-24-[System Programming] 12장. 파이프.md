@@ -48,7 +48,7 @@ int pipe(int fd[2])
   - unrelated processes can share 
   - fixed size 
   - life-time 
-  - lack of synchronization (매우 불편)
+  - **lack of synchronization** (매우 불편)
 - IPC using **pipes** 
   - for transmitting data between related processes 
   - can transmit an unlimited amount of data 
@@ -66,7 +66,8 @@ int pipe(int fd[2])
 
 1. 한 프로세스가 파이프를 생성한다.
 2. 그 프로세스가 자식 프로세스를 생성한다.
-3. 쓰는 프로세스는 읽기용 파이프 디스크립터를 닫는다. 읽는 프로세스는 쓰기용 파이프 디스크립터를 닫는다. 
+3. 쓰는 프로세스는 읽기용 파이프 디스크립터(fd[0])를 닫는다. 
+   읽는 프로세스는 쓰기용 파이프 디스크립터(fd[1])를 닫는다. 
 4. write()와 read() 시스템 호출을 사용하여 파이프를 통해 데이터를 송수신한다.
 5. 각 프로세스가 살아 있는 파이프 디스크립터를 닫는다.
 
@@ -89,8 +90,7 @@ int pipe(int fd[2])
 ```c
 #include <unistd.h>
 #define MAXLINE 100
-/* 파이프를 통해 자식에서 부모로
-데이터를 보내는 프로그램 */
+/* 파이프를 통해 자식에서 부모로 데이터를 보내는 프로그램 (자식 to 부모)*/
 int main( )
 {
     int n, length, fd[2];
@@ -98,8 +98,9 @@ int main( )
     char message[MAXLINE], line[MAXLINE];
 
     pipe(fd); /* 파이프 생성 */
+    
     if ((pid = fork()) == 0) { /* 자식 프로세스 */
-        close(fd[0]);
+        close(fd[0]); //읽기는 필요 없으니까 close
         sprintf(message, "Hello from PID %d\n", getpid());
         length = strlen(message)+1;
         write(fd[1], message, length);
@@ -167,6 +168,15 @@ int main(int argc, char* argv[])
 }
 ```
 
+```shell
+$ stdpipe
+자식 프로세스로부터 받은 결과
+Hello! pipe
+Bye! pipe
+```
+
+자식 프로세스의 결과 fd[1]이 부모 프로세스의 fd[0]로 간다.
+
 <br>
 
 ## 명령어 표준출력을 파이프로 보내기
@@ -210,15 +220,27 @@ int main(int argc, char* argv[])
 
 ```
 
+```shell
+$ pexec1 date
+자식 프로세스로부터 받은 결과
+2012년 3월 1일 목요일 오전 11시59분44초
+```
+
+date 명령어(argv[1])를 표준 출력으로 받았고 이를 부모 프로세스의 fd[0]에 전달이 되면 이를 읽어서 화면에 출력한다.
+
+이 때 fd[0]를 통해 읽는 것은 부모 프로세스가 표준 입력으로 입력 받는 것이 아니라 fd[0]으로 받기 때문이다.
+
+- 자식 프로세스는 fd[1]로 쓰는 것이 아니라 표준 출력으로 썼음
+
 <br>
 
-## 쉘 파이프
+## 쉘 파이프(앞에와 차이점을 잘 보자)
 
 - 쉘 파이프 기능
 
    [shell] command1 | command2
 
-  - 자식 프로세스가 실행하는 command1의 표준출력을 파이프를 통 해서 부모 프로세스가 실행하는 command2의 표준입력으로 전달
+  - 자식 프로세스가 실행하는 command1의 **표준출력**을 파이프를 통해서 부모 프로세스가 실행하는 command2의 **표준입력**으로 전달
 
 ![image](https://user-images.githubusercontent.com/79521972/169851629-d4a88e66-8157-4322-bd1f-8b87f538af61.png)
 
@@ -270,7 +292,9 @@ $ shellpipe
 [shell] ls | wc
 ```
 
+ls가 자식 프로세스에서 command1으로 실행되고 wc는 부모 프로세스에서 command2로 실행된다.
 
+wc를 표준 입력을 통해 실행 -> ls를 표준 출력을 통해 실행
 
 <br>
 
@@ -281,22 +305,27 @@ $ shellpipe
 - 자식 프로세스에게 명령어를 실행시키고 그 출력(입력)을 파이프를 통해 받는 과정을 하나의 함수로 정의
 
 ```c
-#include <stdio.h>
+#include <stdio.h> //여기에 저장되어 있는 표준 라이브러리
 FILE *popen(const char *command, const char *type);
 //성공하면 파이프를 위한 파일 포인터를 실패하면 NULL을 리턴한다.
 int pclose(FILE *fp);
-//성공하면 command 명령어의 종료 상태를 실패하면 -1을 리턴한다. 
+//성공하면 command 명령어의 종료 상태를, 실패하면 -1을 리턴한다. 
 ```
 
 - fp = popen(command, "r")
+  - 자식 프로세스가 보내는 내용을 읽기 위한 목적으로 파이프 생성
   - ![image](https://user-images.githubusercontent.com/79521972/169852162-5165fd95-7826-44de-9579-579a629ed114.png)
-
+  
 - fp = popen(command, “w");
+  - 자식 프로세스에게 데이터를 보내는 목적으로 파이프를 생성
   - ![image](https://user-images.githubusercontent.com/79521972/169852224-43bd8a41-653c-44cc-b2f5-fd56d51d4e23.png)
+
 
 <br>
 
 ## pexec2.c
+
+pexec1.c 코드로부터 많이 줄어든 것을 볼 수 있을 것이다.
 
 ```c
 #include <stdio.h>
@@ -318,11 +347,23 @@ int main(int argc, char* argv[])
 }
 ```
 
+```shell
+$ pexec2 date
+자식 프로세스로부터 받은 결과
+2012년 3월 1일 목요일 오전 11시 59분 44초
+```
+
 
 
 <br>
 
 # 12.4 이름 있는 파이프
+
+지금까지 배웠던 파이프들은 unnamed pipe, 즉 이름이 없는 파이프였다.
+
+- pipe(fd);
+
+그 전에 파이프는 자식 프로세스가 부모 프로세스의 fd를 그대로 복제하여 사용했기 때문에 이름을 몰라도 사용할 수 있었다.
 
 ## 이름 있는 파이프(named pipe)
 
@@ -332,6 +373,7 @@ int main(int argc, char* argv[])
 - 이름 있는 파이프 (named pipe, fifo file) 
   - 다른 파일처럼 이름이 있으며 파일 시스템 내에 존재한다. 
   - 서로 관련 없는 프로세스들도 공유하여 사용할 수 있다.
+  - IPC를 가능케 한다.
 
 
 
@@ -345,9 +387,11 @@ int main(int argc, char* argv[])
 
 `$chmod ug+rw myPipe`
 
+- user group read/write
+
 `$ls -l myPipe`
 
-`prw-rw-r-- 1 chang faculty 0 4월 11일 13:03 myPipe //p는 pipe임을 명시`
+`prw-rw-r-- 1 chang faculty 0 4월 11일 13:03 myPipe //p는 pipe파일 임을 명시`
 
 - mkfifo() 시스템 호출
 
@@ -369,15 +413,14 @@ int mkfifo(const char *pathname, mode_t mode);
 #include <sys/stat.h>
 #include <fcntl.h>
 #define MAXLINE 100
-/* 이름 있는 파이프를 통해 읽은 내용을
-프린트한다. */
+/* 이름 있는 파이프를 통해 읽은 내용을 프린트한다. */
 int main( )
 {
     int fd;
     char str[MAXLINE];
     unlink("myPipe");
-    mkfifo("myPipe", 0660);
-    fd = open("myPipe", O_RDONLY);
+    mkfifo("myPipe", 0660); //myPipe 생성, 접근 권한 0660
+    fd = open("myPipe", O_RDONLY); // regular file처럼 열 수 있음.
     while (readLine(fd, str))
         printf("%s \n", str);
     close(fd);
@@ -405,8 +448,7 @@ int readLine(int fd, char *str)
 #include <sys/stat.h>
 #include <fcntl.h>
 #define MAXLINE 100
-/* 이름 있는 파이프를 통해 메시지를
-출력한다. */
+/* 이름 있는 파이프를 통해 메시지를 출력한다. */
 int main( )
 {
     int fd, length, i;
@@ -462,7 +504,7 @@ Hello from PID 10717
 main() {
     int fd1, fd2, n;
     char msg[MAXLINE];
-    if (mkfifo("./chatfifo1", 0666) == -1) {
+    if (mkfifo("./chatfifo1", 0666) == -1) {// named pipe 생성
         perror("mkfifo");
         exit(1);
     }
@@ -470,8 +512,9 @@ main() {
         perror("mkfifo");
         exit(2);
     }
-    fd1 = open("./chatfifo1", O_WRONLY);
-    fd2 = open("./chatfifo2", O_RDONLY);
+    // 파일 이름을 명시하는 이유는 이름있는 pipe이기 때문이다.
+    fd1 = open("./chatfifo1", O_WRONLY);// 클라이언트는 이것과 반대가 되어야 겠지?
+    fd2 = open("./chatfifo2", O_RDONLY);// 클라이언트는 이것과 반대가 되어야 겠지?
     if (fd1 == -1 || fd2 == -1) {
         perror("open");
         exit(3);
@@ -479,7 +522,7 @@ main() {
     printf("* 서버 시작 \n");
     while(1) {
         printf("[서버] : ");
-        fgets(msg, MAXLINE, stdin);
+        fgets(msg, MAXLINE, stdin);// 키보드 입력
         n = write(fd1, msg, strlen(msg)+1);
         if (n == -1) {
             perror("write");
