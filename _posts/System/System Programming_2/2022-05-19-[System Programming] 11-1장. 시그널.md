@@ -13,7 +13,7 @@ tag: ['Signal']
 
 - Signals 
   - **Software interrupts** : 소프트웨어 프로그래밍에서 굉장히 중요한 이벤트
-  - provides a way of handling asynchronous events 
+  - provides a way of **handling asynchronous events** 
     - 프로세스가 실행 중간에 예기치 않은 사건이 발생할 때 이를 알리는 수단 
     - E.g. A user types the interrupt key to stop a program. 
 - Signal name 
@@ -111,9 +111,9 @@ CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
 ## 시그널 기본 처리
 
 - **시그널 무시(ignore)** 
-- 프로세스 종료 
+- **프로세스 종료** 
   - 비정상 종료, exit()에 의한 정상종료와 다름 
-- 코어 덤프 파일 생성 및 프로세스 종료 
+- **코어 덤프 파일 생성 및 프로세스 종료** 
   - 프로세스의 가상 메모리 이미지 포함, 
   - 프로세스 종료 시점의 상태 점검을 위해 디버거가 사용 
 - 프로세스 중지(suspend) 

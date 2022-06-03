@@ -142,7 +142,7 @@ SIGCHLD 자식 프로세스 중지 혹은 종료 시 부모 프로세스에 전�
 
 <br>
 
-## control.c
+## control.c(시험)
 
 ```c
 #include <signal.h>
@@ -243,9 +243,10 @@ void abort(void);
   - longjmp 전에 호출되어야 함 
   - longjmp 할 곳을 지정함. 
   - 한 번 호출되고 여러 번 반환함. 
+  - longjmp로 인해 돌아오면 setjmp는 0이 아닌 값으로 돌아오기 때문에 그 안의 값을 출력하는 것이다.
 - void longjmp(jmp_buf env, int val) 
   - setjmp 후에 호출됨 
-  - setjmp에 의해 설정된 지점으로 비지역 점프 
+  - **setjmp에 의해 설정된 지점**으로 비지역 점프 
   - 한 번 호출되고 반환하지 않음. 
 
 <img src="https://user-images.githubusercontent.com/79521972/169328857-49fbaa38-2d51-43cf-b13d-329dfb253fd0.png" alt="image" style="zoom:67%;" />
@@ -265,7 +266,7 @@ void longjmp(jmp_buf env, int val);
 //env에 저장된 상태를 복구하여 스택 내용 등이 저장된 곳으로 비지역 점프한다. 구체적으로 상응하는 setjmp() 함수가 val 값을 반환하고 실행이 계속된다.
 ```
 
-
+비지역 점프를 위해 실행 스택 내용 등을 env에 저장한다. setjmp()는 처음 반환할 때 0을 반환하고 저장된 내용을 사용하는 <mark>longjmp()에 의해 두 번째 반환할때는 0이 아닌 val 값을 반환한다.</mark>
 
 <br>
 
@@ -309,6 +310,10 @@ $ jump1
 오류
 오류로 인해 복귀
 ```
+
+longjmp가 실행되면 setjmp로 실제로 리턴을 하는 것은 아니지만 리턴 위치로 복귀하게 된다.
+
+longjmp로 인해 돌아오면 setjmp는 0이 아닌 값(val)으로 돌아오기 때문에 그 안의 값을 출력하는 것이다.
 
 <br>
 

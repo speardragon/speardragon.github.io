@@ -17,9 +17,11 @@ tag: ['Pipe']
 
 - 파이프
   - 물을 보내는 수도 파이프와 비슷 
-  - 한 프로세스는 쓰기용 파일 디스크립터를 이용하여 파이프에 데이 터를 보내고(쓰고) 
-  - 다른 프로세스는 읽기용 파일 디스크립터를 이용하여 그 파이프에 서 데이터를 받는다(읽는다). 
-  - 한 방향(one way) 통싞
+  - 한 프로세스는 쓰기용 파일 디스크립터를 이용하여 파이프에 데이터를 보내고(쓰고) 
+  - 다른 프로세스는 읽기용 파일 디스크립터를 이용하여 그 파이프에서 데이터를 받는다(읽는다). 
+  - **한 방향(one way) 통신**
+- 프로세스 주소를 통해서 전달할 방법이 없다.
+- pipe size가 꽉찬 경우 알아서 속도를 조절해준다. -> synchronization
 
 <br>
 
@@ -42,19 +44,20 @@ int pipe(int fd[2])
 
 ## IPC using Pipes
 
-- IPC using regular files 
+- IPC using **regular files** 
   - unrelated processes can share 
   - fixed size 
   - life-time 
-  - lack of synchronization 
-- IPC using pipes 
+  - lack of synchronization (매우 불편)
+- IPC using **pipes** 
   - for transmitting data between related processes 
   - can transmit an unlimited amount of data 
   - automatic synchronization on open()
-
+  - pipe size가 꽉찬 경우 알아서 속도를 조절해준다. -> synchronization
+  
 - Limitations of Pipes 
   - Half duplex (data flows in one direction) 
-  - Can only be used between processes that have a common ancestor (Usually used between the parent and child processes) 
+  - Can only be used between processes that have a common ancestor (**Usually used between the parent and child processes**) 
   - A child process inherits pipes of its parent process
 
 <br>
@@ -64,7 +67,7 @@ int pipe(int fd[2])
 1. 한 프로세스가 파이프를 생성한다.
 2. 그 프로세스가 자식 프로세스를 생성한다.
 3. 쓰는 프로세스는 읽기용 파이프 디스크립터를 닫는다. 읽는 프로세스는 쓰기용 파이프 디스크립터를 닫는다. 
-4. write()와 read() 시스템 호출을 사용하여 파이프를 통해 데이터를 송수싞한다.
+4. write()와 read() 시스템 호출을 사용하여 파이프를 통해 데이터를 송수신한다.
 5. 각 프로세스가 살아 있는 파이프 디스크립터를 닫는다.
 
 

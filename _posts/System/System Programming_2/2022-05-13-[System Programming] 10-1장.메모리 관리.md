@@ -13,7 +13,7 @@ tag: ['memory', 'variable']
 
 - 프로세스는 실행 중인 프로그램이다. 
 - 프로그램 실행을 위해서는 
-  - 프로그램의 코드, 데이터, 스택, 힙, U-영역 등이 필요하다. 
+  - 프로그램의 코드, 데이터, 스택,  힙, U-영역 등이 필요하다. 
 - 프로세스 이미지(구조)는 메모리 내의 프로세스 레이아웃 
 - 프로그램(program definition) 자체가 프로세스(program instance)는 아니다 !
 
@@ -37,15 +37,28 @@ tag: ['memory', 'variable']
 
 ![image](https://user-images.githubusercontent.com/79521972/168198658-5f67ba47-8f05-46c7-b542-197692732d02.png)
 
+- CPU로부터 출발하는 주소 -> logical address
+
+- Mem의 주소 -> physical address
+- 그래서 주소 번역을 담당하는 MMU라는 칩에서 번역이 된다. (V->P)
+
+virtual address에서는 contiguous and linear하게 저장되어 있음
+
 Paging 기법: 연속된 logical memory를 연속적이지 않은 physical memory에 mapping
 
-page table이 존재함.
+
+
+- paging model을 사용하는 이유
+  - memory 낭비를 없애기 위해
 
 <br>
 
 ## 프로세스 이미지 구조 (주소공간)
 
 - 프로세스 구조
+  - 아래는 실제로 탑재된 내용 기준으로 그린 그림이다.
+  - 위의 그림은 물리적인 size(용량)을 기준으로 그린 그림이다.
+
 
 ![image](https://user-images.githubusercontent.com/79521972/168198905-d71739aa-fccf-4f5d-8986-aae32c569db3.png)
 
@@ -88,7 +101,7 @@ page table이 존재함.
 
 <br>
 
-## vars.c
+## vars.c(시험)
 
 ```c
 #include <stdio.h>
@@ -110,7 +123,17 @@ void fun(int n)
 } 
 ```
 
+- a, b는 함수 밖에 선언 되었으므로 global 변수이고, d는 함수 안에서 선언 되었지만 static으로 선언되었기 때문에 a,b,d는 data section에 자리를 잡는다.
 
+- c와 p는 지역 변수 이기 때문에 stack section에 저장이 된다.
+
+  - stack에는 이외에도 지역 변수, 매개변수, 반환 주소, 반환 값 들이 저장된다.
+
+  - 다른 함수를 호출했을 때는 stack frame이 하나 할당 되어 그 안에 그 함수만의 지역 변수들이 저장된다.
+
+- data section의 변수들은 프로그램이 종료되어도 사라지지 않는다.
+
+- stack의 변수들은 해당 함수 리턴 시 사라진다.
 
 <br>
 
@@ -126,7 +149,7 @@ void fun(int n)
 
 ![image](https://user-images.githubusercontent.com/79521972/168521575-a311dc3c-3ddc-40ae-8942-ea9fe148c828.png)
 
-- malloc에 40바이트 요구
+- malloc에 40 바이트 요구
 - p, c 지역 변수 선언 및 초기화
 
 local 변수 -> stack에 저장
@@ -209,7 +232,7 @@ local 변수 -> stack에 저장
 
 - Advantages 
 
-  - call-stack memory model provides a fast managed memory 
+  - **call-stack** memory model provides a **fast managed memory** 
     - the memory used by the stack is automatically discarded when popping the stack frame just by changing the value of a single register. 
 
   - In addition, the compiler is responsible of generating the instructions that manipulate the stack and therefore can optimize them. 
@@ -491,6 +514,8 @@ p는 컴파일 할 때가 아니라 실제 이 프로세스 실행될 때 결정
 ## Heap
 
 - Sometimes, programs need to store information which is relevant across function calls, too big to fit on the stack, or of size that is unknown at compile time. 
+  - stack과의 차이점: 함수가 종료되더라도 살아있다.
+
 - We would like to be able to specify that we want a block of memory of a given size to store some information. 
 - We usually do not care where the memory comes from, we are just interested in getting a block of it for our use. 
 - As a result, we abstract this service as a heap, where blocks of memory are heaped in a pile, and we can get to the block we need if we remember where we left it. 
@@ -508,7 +533,7 @@ p는 컴파일 할 때가 아니라 실제 이 프로세스 실행될 때 결정
   - the heap is much larger than the stack and consists from most of the memory available to the process (the virtual memory). 
   
 - **Disadvantages** 
-  - heap allocation **costs** more than stack allocation (as the runtime must find an empty memory location to allocate on the fly) and can cause memory **fragmentation**. 
+  - heap allocation **costs** more than stack allocation (as the runtime must find an empty memory location to allocate on the fly) and can cause **memory** **fragmentation**. 
     - 하드디스크나 메모리에서 데이터가 저장되었다가 빼졌을 때 남는 사용되지 않는 공간
   - If the user is responsible to free the allocated memory by hand 
     - the program may be pruned to memory leaks and access to non-allocated memory. 
