@@ -12,12 +12,12 @@ tag: ['Socket', 'Network']
 ## Network Model
 
 - How is data transferred through network? 
-  - circuit switching: dedicated circuit per call: telephone net 
+  - **circuit switching**: <span style="color:red">dedicated circuit per call: telephone net </span>
     - the whole message is sent from the source to the destination without being divided into packets 
-    - End-end resources reserved for “call” 
+    - End-end resources reserved for “**call**” 
     - QoS 보장 : No end-to-end delay 
     - Call blocking in case of congestion 
-- packet-switching: data sent thru net in discrete “chunks” 
+- **packet-switching**: data sent thru net in discrete “chunks” 
   - Store & forward 
   - each end-end data stream divided into packets 
   - 자원 공유 
