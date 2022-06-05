@@ -47,7 +47,7 @@ jump는 CPI가 다른 것과 비교했을 때 매우 큰 값인 2이지만 비�
 
   2(t<sub>pcq </sub>+ t<sub>mux </sub>+ t<sub>RFwrite</sub>) }
   
-  RFread or RFwrite은 falling edge trigger이기 때문에 2 배만큼의 clock이 더 걸리게 된다.
+  W방과 D방에서는 RFread or RFwrite은 falling edge trigger이기 때문에 2 배만큼의 clock이 더 걸리게 된다.
 
 ![image](https://user-images.githubusercontent.com/79521972/167231399-ea48621b-1799-4eb1-8a1b-cfacda039b74.png)
 
@@ -57,7 +57,7 @@ jump는 CPI가 다른 것과 비교했을 때 매우 큰 값인 2이지만 비�
 
 ![image](https://user-images.githubusercontent.com/79521972/167231421-ca272749-21d3-47ec-92b5-3386d4a8b412.png)
 
-
+D방이 제일 오래 걸린다.
 
 Tc = 2(t<sub>RFread </sub>+ t<sub>mux </sub>+ t<sub>eq </sub>+ t<sub>AND </sub>+ t<sub>mux </sub>+ t<sub>setup </sub>) 
 

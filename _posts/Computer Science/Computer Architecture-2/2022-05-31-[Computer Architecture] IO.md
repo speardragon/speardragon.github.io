@@ -270,7 +270,7 @@ special IO
 - Multiple smaller disks as opposed to one big disk 
   - Spreading over multiple disks (**striping**) means that **multiple blocks can be  accessed in parallel** increasing the performance  
     - A 4 disk system gives four times the  throughput of a 1 disk system 
-  - Same cost as one big disk – assuming 4  small disks cost the same as one big disk 
+  - Same cost as one big disk – assuming 4 small disks cost the same as one big disk 
 - No redundancy, so what if one disk  fails? 
   - Failure of one or more disks is more likely  as the number of disks in the system increases
 - reliability가 떨어짐 - 하나 있을 때보다 두 개 있을 때 고장날 확률이 더 높기 때문에
@@ -290,7 +290,7 @@ RAID 0 에서 reliability가 낮던 단점을 보완
     - Write data to both data disk and mirror disk 
     - On disk failure, read from mirror 
       - 하나가 고장나면 다른 곳에서 가져오면 됨
-  - 용량이 두 배가 되기 때문에 비효율
+  - 용량이 두 배가 되기 때문에 비효율 
 
 ![image](https://user-images.githubusercontent.com/79521972/172031135-fcc5128b-9956-4847-915a-8000960ac41f.png)
 
@@ -634,7 +634,7 @@ ARM
 몇 번지부터 몇 번지 까지 I/O를 쓸 것인가
 
 - **Memory mapped I/O** 
-  - Registers are addressed in same space as memory: the same  load/store instruction used 
+  - Registers are addressed in **same space as memory**: the same load/store instruction used 
   - Address decoder distinguishes between them 
   - OS uses address translation mechanism to make them only  accessible to kernel 
   - RISC
@@ -685,16 +685,17 @@ CPU와 IO간 어떤 방식으로 통신하는가?
 
 - **Polling** 
   - Periodically check I/O status register (through the OS) 
-    - If device ready, do operation 
-    - If error, take action 
+    - 주기적으로 IO status register를 check한다.
+    - If device ready, do operation -> device가 준비되면 작동 하고
+    - If error, take action -> error이면 행동을 취한다.
   - Common in small or low-performance real-time embedded  systems 
     - Predictable timing 
     - Low hardware cost 
   - In other systems, wastes CPU time 
   - CPU가 하루종일 그것에만 낭비하면 손해임 그래서 나온게 Interrupt-driven I/O
-- **Interrupt-driven I/O** 
+- **Interrupt-driven I/O** (<span style="color:red">중요</span>)
   - I/O device issues and interrupt to ask service
-  - more efficient - CPU가 할일이 많고 Interrupt 걸 수 있는 I/O가 많을 때
+  - more efficient - CPU가 할일이 많고 Interrupt 걸 수 있는 I/O가 많을 때 효율적이다.
     - 하지만 냉장고와 같은 거는 할 일이 없기 때문에 굳이 이런 기능이 없어도 되는 것이다.
 
 
@@ -825,13 +826,18 @@ interrupt source들 모아서 CPU에게 알려주고 우선순위, 대기열 등
 ## Direct Memory Access (DMA)
 
 - For high-bandwidth devices (like disks) interrupt-driven I/O would consume a lot of processor cycles 
+  - disk와 같은 높은 bandwidth를 가진 기기(interrupt-driven IO)는 수많은 processor cycle을 소비할 것이다. 
+
 - With DMA, the DMA controller has the ability to transfer large blocks of data **directly** to/from the memory **without involving the processor**
+  - DMA controller는 CPU 없이 memory와 직접적으로 거대 data block을 옮기는 능력이 있다
+
 
 1. The processor **initiates the DMA transfer** by supplying the I/O device address, the operation to be performed, the memory address destination/source, the number of bytes to transfer
-
+   - CPU는 IO device adress를 공급함으로써 DMA 전송을 시작한다.
 2. The **DMA controller manages the entire transfer** (possibly  thousand of bytes in length), arbitrating for the bus 
-
+   - DMA controller는 전체의 전송을 관리한다.(가능한 한 1000 bytes 크기) ,bus를 커버하면서
 3. When the DMA transfer is complete, the DMA controller **interrupts the processor** to let it know that the transfer is complete 
+   - DMA 전송이 끝나면 DMA controller가 CPU에게 interrupt를 걸어서 다 끝났음을 알린다.
 
 - **There may be multiple DMA devices in one system** 
   - Processor and DMA controllers contend(다투다, 경쟁하다) for bus cycles and for memory
@@ -873,9 +879,10 @@ CPU가 허락함(Bus Grant)
 ## DMA data Transfer
 
 - If DMA writes to a memory block that is cached 
-  - Cached copy becomes **stale** 
-- If write-back cache has dirty block, and DMA  reads memory block 
+  - Cached copy becomes **stale** (탁해진다, 신선하지 않다)
+- If write-back cache has dirty block, and DMA reads memory block 
   - Reads stale data 
 - Need to ensure **cache coherence** 
+  - memory에 있는 데이터가 cache에도 있을 경우에는 memory에서 가져오거나 memory에 write해 봤자 의미가 없다.
   - OS forces write-backs from cache if they will be used  for DMA (called a **cache flush**) 
   - Or use **non-cacheable memory** locations for I/O
