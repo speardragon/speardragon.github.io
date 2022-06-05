@@ -17,7 +17,7 @@ tag: ['Pipeline']
     - jump 명령이 fetch되고 decode 되면서 jump라는 것을 알 수 있는데 그 때 PC에 BTA를 넣어주어야 하는데 이미 그 다음 줄 instruction이 들어와 있다. 그래서 그 명령을 flush 해 주는 clock이 하나 더 소비 되기 때문에 jump 명령의 CPI는 2이다.
   - 52% R-type 
 - Suppose: 
-  - 40% of loads used by next instruction -> lode use hazard
+  - 40% of loads used by next instruction -> lode use hazard(stalling)
     - CPI = 2 (due to stalling)
   - 25% of branches mispredicted
     - CPI = 2 (due to flush)  

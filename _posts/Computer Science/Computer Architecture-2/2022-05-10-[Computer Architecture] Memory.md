@@ -105,7 +105,7 @@ Exploit locality to make memory accesses fast
   - Locality in space 
   - If data used recently, likely to use nearby data soon 
     - data가 최근에 사용됐으면 그 근처에 있는 데이터가 사용될 가능성이 높다.
-  - **How to exploit**: when access data, bring nearby data  into higher levels of memory hierarchy too
+  - **How to exploit**: when access data, bring nearby data into higher levels of memory hierarchy too
 
 goto를 최대한 사용을 지양하는 이유가 이것이다.(근처에 있는 data를 건너 뛰기 때문에)
 
@@ -128,7 +128,7 @@ goto를 최대한 사용을 지양하는 이유가 이것이다.(근처에 있�
 - **Average memory access time (AMAT)**: average time for processor to access data 
   AMAT = t<sub>cache </sub>+ MR<sub>cache</sub>[t<sub>MM </sub>+ MR<sub>MM</sub>(t<sub>VM</sub>)]
 
-- Cache hit일 경우 memory access가 불필요하므로 hit time을(tcache)
+- Cache hit일 경우 memory access가 불필요하므로 hit time(t<sub>cache</sub>)이 AMAT
 - Cache miss일 경우 memory acess가 필요하므로 miss에 대한 계산(Miss rate)
   - 이대로 이어져서 cache miss이면 main memory에 대해서 진행하고
     - 또 main memory miss이면 VM에 대해서 진행한다.
@@ -282,9 +282,9 @@ s: fraction of the serial natured code (cannot be parallelized)
 
 - 주기적으로 읽어 주어야 함.
 - Simple 1-Transistor cell 
-- No direct power source requires periodic Refresh
+- **No direct power source** requires periodic Refresh
 - Share address line due to large capacity 
-- Two new signals: RAS and CAS 
+- **Two new signals**: RAS and CAS 
   - Row Address Strobe 
   - Column Address Strobe
 - DRAM은 집적도가 높기 때문에 addressing  bit에 34bit가 필요한데 이를 17bit의 Row address와 17bit의 Column address를 나누었다.
@@ -308,7 +308,6 @@ s: fraction of the serial natured code (cannot be parallelized)
 
 - 10 bit의 address
   - 두 개(RAS, CAS) 합쳐서 20bit addressing수행
-
 
 <br>
 

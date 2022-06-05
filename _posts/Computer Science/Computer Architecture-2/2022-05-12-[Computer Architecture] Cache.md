@@ -120,8 +120,8 @@ Line = Block
 
 - **Block or cache-line size** (unit of data transfer between cache and  main). 
   - 어디다 둘 거냐
-  - With a larger cache line, more data is brought in cache with  each miss. 
-  - This can improve the hit rate but also may bring low-utility  data in.  
+  - With a larger cache line, more data is brought in cache with each miss. 
+  - This can improve the hit rate but also may bring low-utility data in.  
   
 - **Placement policy**. 
   - Determining where an incoming cache line is stored.  
@@ -129,14 +129,14 @@ Line = Block
 
 - **Replacement policy**. 
   - 어떤 걸 쫓아낼지
-  - Determining which of several existing cache  blocks (into which a new cache line can be mapped) should be  overwritten.
+  - Determining which of several existing cache blocks (into which a new cache line can be mapped) should be overwritten.
   - Typical policies: choosing a random or the **least recently  used** (LRU) block. 
 
 - **Write policy**.
   - 사실상 memory에 write을 해야 하는데 시간이 매우 많이 걸리기 때문에 cache를 잘 사용하여 write하도록 하자.
   - Determining if updates to cache words are immediately  forwarded to main (**write-through**) or 
     - 그때 그때 write 하는 것 -> 엄청난 시간 소요
-  - modified blocks are copied back  to main if and when they must be replaced (**write-back** or copy-back).
+  - modified blocks are copied back to main if and when they must be replaced (**write-back** or copy-back).
     - 모아놨다가 몽땅 write 하는 것 -> 효율적임
 
 
@@ -169,27 +169,22 @@ Line = Block
 ## Compulsory, Capacity, and Conflict Misses
 
 - **Compulsory misses**: 
-  - With on-demand fetching, first access to any  item is a miss. 
-  - Some “compulsory” misses can be avoided by  prefetching. 
+  - With on-demand **fetching**, **first access** to any  item is a miss. 
+  - Some “compulsory” misses can be avoided by prefetching. 
   - 시스템을 처음 켰을 때는 cache에 아무것도 없을 것이기 때문에 처음에 무조건 한 번은 갖다 놔야 한다.
   - invalid bit이기 때문에 생기는 misses
-  
 - **Capacity misses**: 
-  - We have to oust some items to make room for  others. This leads to misses that are not incurred with an infinitely  large cache.  
+  - We have to oust(쫓아내다) some items to make room for others. This leads to misses that are not incurred with an infinitely  large cache.  
   - cache 사이즈가 너무 작아서 생기는 misses
-
 - **Conflict misses**: 
   - Occasionally, there is free room, or space  occupied by useless data, but the mapping/placement scheme  forces us to displace useful items to bring in other items. 
   - This  may lead to misses in future
   - cache size는 큰데, 들어올 자리는 한정되어 들어오는 data에 대해서 충돌이 일어나서 생기는 miss
     - 위 비유에서 188번과 208번 자리는 들어오는 곳이 똑같은 것과 같은 이유.
-
 - main memory와 hard disk 간의 miss는 굉장히 큰 영향을 주기 때문에 이를 줄이기 위해선 무조건 fully associative를 사용해야 함
+  - virtual memory에서는 miss rate을 줄여야 함.
 
-- 그런데 fully associative를 위해선 다 뒤져봐야 하기 때문에 이를 OS가 관리하도록 되어있다.(page table)
-
-- virtual memory에서는 miss rate을 줄여야 함.
-
+  - 그런데 fully associative를 위해선 다 뒤져봐야 하기 때문에 이를 OS가 관리하도록 되어있다.(page table)
 
 
 <br>
@@ -246,7 +241,6 @@ We focus on data loads, but stores flow same principles.
   - 메모리에 있는 data를 cache에 가져오는데 몇 자리에 넣을 수 있는지
 - **Number of sets (S = B/N):**  
   - each memory address maps to exactly one cache set 
-  - 
 
 
 
@@ -313,7 +307,7 @@ Ridiculously small, but will illustrate organizations
 
 ![image](https://user-images.githubusercontent.com/79521972/167998009-3c872bcb-83e8-4724-9f8c-7281487561de.png)
 
-- set을 토대로 cache 에 access하여 그곳의 data를 바로 가져가는 것이 아니라 tag를 확인 비교해서 맞는 지를 확인하고 데이터 read를 하고 있는 중임을 나타내는 Validation bit와 AND 연산을 통해 Hit이 결정된다.
+- set을 토대로 cache에 access하여 그곳의 data를 바로 가져가는 것이 아니라 tag를 확인 비교해서 맞는 지를 확인하고 데이터 read를 하고 있는 중임을 나타내는 Validation bit와 AND 연산을 통해 Hit이 결정된다.
   - 만약 tag가 다르면 miss가 난 것.
 - 초기에는 0이고 데이터가 load가 되었다라는 것을 알려주기 위한 validation bit
 
@@ -368,9 +362,8 @@ MIPS Rate = 3/15 =20 % =0.2
 
 
 - 4번지와 24번지에 access하는 상황 -> 계속해서 싸운다.
-
   - 0x04: 00**001**00
-
+  
   - 0x24: 01**001**00
     - 001(1)에 access 하려고 하기 때문에 miss 발생.
     - 4번지를 넣고 tag를 확인하려 하는데 tag가 다름
@@ -382,7 +375,7 @@ MIPS Rate = 3/15 =20 % =0.2
   - **Conflict Misses**
 
 
-그럼 들어갈 수 있는 곳을 한 군데 말고 두 군데로 만들어보자라는 idea 도입 -> 2-way set associative 
+그럼 들어갈 수 있는 곳을 한 군데 말고 두 군데로 만들어 보자 라는 idea 도입 -> 2-way set associative 
 
 <br>
 

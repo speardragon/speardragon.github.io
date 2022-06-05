@@ -25,8 +25,6 @@ direct mapped (b=2)
 
 
 
-
-
 ---
 
 Q) block size가 크면 pollution data가 들어올 수도 있는데 왜 이렇게 하냐
@@ -71,7 +69,7 @@ hit인 경우를 판단하여 Hit일 때 memory address의 값을 읽어 data로
 
 ![image](https://user-images.githubusercontent.com/79521972/168724373-ecab6642-edac-4fa4-8a4c-60f5a0206e28.png)
 
-0x4: 000<span style="color:red">0</span>**01**00 
+0x4: 000<span style="color:red">0</span>**01**00
 
 0xC: 000<span style="color:red">0</span>**11**00
 
@@ -100,7 +98,7 @@ A)
   - Larger blocks => pollution 
 - Larger miss penalty 
   - Can override benefit of reduced miss rate 
-  - Early restart and critical-word-first can hel
+  - Early restart and critical-word-first can help
 
 
 
@@ -114,7 +112,7 @@ A)
 - **Conflict**: data of interest maps to same  location in cache
   - n-way를 조금 늘리면 괜찮아지는 miss (용량을 늘리고 tag로 확인)
 
-**Miss penalty**: time it takes to retrieve a block from  lower level of hierarchy
+**Miss penalty**: time it takes to retrieve a block from lower level of hierarchy
 
 
 
@@ -125,7 +123,7 @@ A)
 - Capacity: C  
 - Block size: b 
 - Number of blocks in cache: **B = C/b** 
-- Number of blocks in a set: N 
+- Number of blocks in a set: N (direct의 경우 1)
 - Number of sets: S = B/N
 
 ![image](https://user-images.githubusercontent.com/79521972/168725294-cccc1950-a96f-417b-aaac-3007e4a79145.png)
@@ -136,16 +134,12 @@ A)
 
 ## Cache Replacement Policy
 
-
-
-<br>
-
 ## Replacement Policy
 
-- Cache is too small to hold all data of interest at  once 
-- If cache full: program accesses data X & evicts  data Y 
+- Cache is too small to hold all data of interest at once 
+- If cache full: program accesses data X & evicts data Y 
 - **Capacity miss** when access Y again 
-- How to choose Y to minimize chance of needing  it again?  
+- How to choose Y to minimize chance of needing it again?  
   - **Least recently used (LRU) replacement**: the least  recently used block in a set evicted
 
 - cache에 데이터가 다시 들어오게 되는 경우 기존에 있던 것을 버려야 할텐데 무슨 기준으로 버려야 되는가?
@@ -156,15 +150,14 @@ A)
 - Direct mapped: no choice 
 - Set associative: 
   - Prefer non-valid entry, if there is one 
-  - Otherwise, choose among entries in the set Conflict: data of  interest maps to same location in cache 
+  - Otherwise, choose among entries in the set Conflict: data of interest maps to same location in cache 
 - Least-recently used (LRU) 
   - Choose the one unused for the longest time 
     - Simple for 2-way, manageable for 4-way, **too hard beyond that** 
     - 2-way나 4-way는 managable 한데 엄청 큰 건 힘듦
 - Random 
-  - Gives approximately the same performance as LRU for  high associativity
+  - Gives approximately the same performance as LRU for high associativity
   - 생각보다 성능이 높음(n이 클 때 거의 LRU와 비슷한 성능)
-
 
 <br>
 
@@ -199,7 +192,7 @@ A)
 ## Write-Through
 
 - On data-write hit, could just update the block in cache 
-  - cache에는 write이 바로 될지라도 실질적은 memory에 써지지는 않는다.
+  - cache에는 write이 바로 될 지라도 실질적은 memory에 써지지는 않는다.
   - But then cache and memory would be inconsistent 
   
 - **Write through**: also update memory 
@@ -212,7 +205,7 @@ A)
 - **Solution**: <mark>write buffer</mark>
   - Holds data waiting to be written to memory 
   - CPU continues immediately 
-    - Only stalls on write if write buffer is already full
+    - **Only stalls on write if write buffer is already full**
 
 
 
@@ -295,7 +288,7 @@ Virtual memory와 합쳐진 processor 구조가 중요함 (추후에 배울 것)
 
 그렇다면 4word(16 byte)를 가져오는데 몇 clock이 걸릴까?
 
-
+1 + 15 *
 
 <br>
 

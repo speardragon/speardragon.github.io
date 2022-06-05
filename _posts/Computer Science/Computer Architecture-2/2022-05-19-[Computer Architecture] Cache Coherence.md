@@ -168,7 +168,7 @@ before 방식처럼 사용하게 되면 access를 세로로 하기 때문에 데
 
 ## Software optimization via Blocking
 
-- **Goal**: maximize accesses to data before it is  replaced 
+- **Goal**: maximize accesses to data before it is replaced 
   - Consider the loops of DGEMM (double precision general matrix multiplication): X = YZ
 
 ```c

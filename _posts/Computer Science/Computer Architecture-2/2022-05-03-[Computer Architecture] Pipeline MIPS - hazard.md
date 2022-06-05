@@ -154,8 +154,8 @@ Introduced another data hazard in **Decode stage**
   - 다음 다음 clock에서는 ALU에서 이미 계산이 완료 되었기 때문에
 
 
-- 그런데 만약 오른쪽의 code처럼 두 clock 앞에 가는 명령이 lw 이거나 
-- 바로 앞에 가는 clock에서 add와 같은 register write이 일어난다면 
+- 그런데 만약 오른쪽의 code처럼 두 clock 앞에 가는 명령(M방)이 lw 이거나 
+- 바로 앞에 가는 clock(E방)에서 add와 같은 register write이 일어난다면 
 - 그 때는 ALU 계산을 하기도 전이라서 새로운 data hazard를 발생하기 때문에 이 경우에는 stall이 필요하다.
 
 Q) 만약에 lw 명령어에서 rt에 load 하는 명령 바로 다음 beq에서 그 레지스터를 사용하면 stalling을 두 클락동안 해야 하나요?
@@ -199,6 +199,10 @@ Q) 만약에 lw 명령어에서 rt에 load 하는 명령 바로 다음 beq에서
 (현재(D) Branch라는 명령이고) AND (한 개 앞에 가는 명령(E)이 RegWrite || 두 개 앞에 가는 명령(M)이 lw )
 
 - (lwstall 인 듯 위에는 표시가 안 되어 있음)
+- E방에서는 R-type인지를 알아내고 싶은 것이기 때문에 RegWriteE를 넣었다.
+- M방에서는 lw인지를 알아내고 싶기 때문에 MemtoRegM을 넣었다.
+  - 이것들이 만족하면서 현재 beq에서 rs 혹은 rd가 저장할 레지스터와 동일한지를 확인한다.
+
 
 
 
@@ -206,7 +210,7 @@ MemtoReg: lw명령어만 갖고 있는 control signal
 
 즉, 두 개 앞에 가고 있는 명령어가 lw일 때를 의미한다.
 
-
+![image](https://user-images.githubusercontent.com/79521972/172038952-1a18e438-2c72-44fa-9472-d0b4a15f95b1.png)
 
 <br>
 

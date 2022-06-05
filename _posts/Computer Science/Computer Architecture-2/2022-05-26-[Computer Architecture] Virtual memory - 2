@@ -15,8 +15,6 @@ Virtual memory가 없다면 여러개의 프로그램이 도는 multi task syste
 
 <br>
 
-Virtual page에서 
-
 
 
 https://ahnanne.tistory.com/15
@@ -27,9 +25,11 @@ https://ahnanne.tistory.com/15
 
 ![image](https://user-images.githubusercontent.com/79521972/169947717-8dcec477-7ce9-4ba6-b888-4f2c48b43de6.png)
 
-cache가 size가 충분히 크지 못하면 tlb랑 page table은 hit인데 cach는 miss인 경우가 나타날 수 있다.
+cache size가 충분히 크지 못하면 TLB랑 page table은 hit인데 cache는 miss인 경우가 나타날 수 있다.
 
 page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit일 수가 없다.
+
+
 
 <br>
 
@@ -54,7 +54,7 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
 - TLB miss indicates 
   - Page present, but PTE not in TLB -> loading the  translation from PTE to TLB, and trying the  reference again (much more frequent) 
   - Or, Page not present -> true page fault 
-- Must recognize TLB miss before destination  register overwritten 
+- Must recognize TLB miss before destination register overwritten 
   - Raise exception 
 - Handler **copies PTE from memory to TLB** 
   - Then restarts instruction 
@@ -91,10 +91,10 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
 ![image](https://user-images.githubusercontent.com/79521972/170416793-cd2dc6c2-c5ae-4af3-a332-9428bb523a7f.png)
 
 - If cache tag uses physical address 
-  - Need to translate before  cache lookup 
-- Alternative: use virtual  address tag 
-  - Complications due to  aliasing 
-    - Different virtual  addresses for shared  physical address
+  - Need to translate before cache lookup 
+- Alternative: use virtual address tag 
+  - Complications due to aliasing 
+    - Different virtual addresses for shared physical address
 
 - content addressable memory
   - 보통은 address가 가면 data가 나오는데
@@ -110,7 +110,9 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
 
 
 
-- But, Two programs which are sharing data will have two  different virtual addresses for the same physical address  (**aliasing**) so have two copies of the shared data in the cache  and two entries in the TBL which would lead to coherence  issues – Must update all cache entries with the same physical address or the  memory becomes inconsistent
+- But, Two programs which are sharing data will have two  different virtual addresses for the same physical address  (**aliasing**) so have two copies of the shared data in the cache  and two entries in the TLB which would lead to coherence  issues 
+  - Must update all cache entries with the same physical address or the  memory becomes inconsistent
+
 
 하나의 PA를 공유하는 두 프로그램이 있다고 하면 cache coherence 문제가 발생할 수 있다.
 
@@ -257,10 +259,10 @@ separate lookup table
 ## Memory summary
 
 - The Principle of Locality: 
-  - Program likely to access a relatively small portion of the  address space at any instant of time. 
+  - Program likely to access a relatively small portion of the address space at any instant of time. 
     - Temporal Locality: Locality in Time 
     - Spatial Locality: Locality in Space 
-- Caches, TLBs, Virtual Memory all understood by  examining how they deal with the four questions 
+- Caches, TLBs, Virtual Memory all understood by examining how they deal with the four questions 
 
 1. Where can entry be placed? 
 

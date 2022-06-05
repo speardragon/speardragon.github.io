@@ -77,7 +77,7 @@ miss rate을 최소화하기 위해서 fully associative를 사용 -> 아무데�
 ## Virtual Memory
 
 - Gives the illusion of bigger memory 
-- Main memory (DRAM) acts as cache for hard  disk
+- Main memory (DRAM) acts as cache for hard disk
 
 ![image](https://user-images.githubusercontent.com/79521972/169217291-052e2f4c-4d36-4a58-9819-185138d771de.png)
 
@@ -147,9 +147,9 @@ sector가 하나의 데이터를 저장하는 단위
 
 - Manufacturers quote average seek time 
   - Based on all possible seeks 
-  - **Locality** and **OS scheduling** lead to smaller actual  average seek times 
+  - **Locality** and **OS scheduling** lead to smaller actual average seek times 
     - 한 track의 sector에 access하면 다음에도 그 근처를 access할 확률이 높다.
-- Smart disk controller allocate physical sectors on  disk 
+- Smart disk controller allocate physical sectors on disk 
   - Present logical sector interface to host 
   - SCSI, ATA, SATA 
 - Disk drives include **caches** (RAM) 
@@ -220,7 +220,7 @@ VPN: Virtual Page Number
 PPN: Physical Page Number
 
 - Virtual address = virtual page number + page offset
-- page size가 4k라고 하면 그 4k가 되는 page 중에서 어디인 지를 알아내는 것이 page offset이다.
+- page size가 4k라고 하면 그 4k가 되는 page 중에서 어디인지를 알아내는 것이 page offset이다.
 - Virtual address에서나 physical address에서의 page 는 똑같을 것이기 때문에 동일한 page offset이 존재한다.
 - 따라서 VPN -> PPN 변환 과정이 translation의 전부이다.
 
@@ -293,7 +293,7 @@ virtual page number 7FFFF -> 111 1111 1111 1111 1111 -> 19bit
 
 ![image](https://user-images.githubusercontent.com/79521972/170418303-da1d5e5a-f72a-491e-bde4-8fa6e4c0b110.png)
 
-
+Virtual page number로 page table에 먼저 접근해서 있으면 해당 table에서 Physical page number와 page offset을 합쳐 physical address를 만들어 낼 수 있다.
 
 <br>
 
@@ -301,7 +301,7 @@ virtual page number 7FFFF -> 111 1111 1111 1111 1111 -> 19bit
 
 ![image](https://user-images.githubusercontent.com/79521972/169944630-db8738d7-0f94-436a-af85-60bb61367eca.png)
 
-What is the physical  address of virtual  address 0x5F20?
+What is the physical address of virtual address 0x5F20?
 
 ![image](https://user-images.githubusercontent.com/79521972/170392702-794230a3-b792-4f72-b790-e8830d6bd2e6.png)
 
@@ -419,7 +419,10 @@ hard disk 까지 가야하는 경우를 대비하여 miss rate을 줄여야 하�
 
 - TLB를 먼저 봐서 같은 것이 있다면 해당 Physical page number를 바로 가져와서 사용한다.
 
-- 캐시랑 다른 점은 상위비트?(46:40 다시 보기)
+- cache랑 다른 점
+  - cache에서는 Tag이던 게
+  - TLB에서는 Virtual Page Number이다.
+
 
 <br>
 

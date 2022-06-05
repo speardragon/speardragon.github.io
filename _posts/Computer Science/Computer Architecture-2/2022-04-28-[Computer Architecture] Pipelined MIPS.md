@@ -334,9 +334,11 @@ RegWriteX: X방에서의 RegWrite **control 신호** (<mark>각 방에서 계속
 
 <br>
 
-- (E번방에 있는 읽고자 하는 source register(rs)가 하나 앞에 가는 명령어(M방)의 write 할 register와 같으면) and (M번방에 있는 명령어가 register에 뭔가를 write할 때)
+- (E번방에서 읽고자 하는 source register(rs)가 하나 앞에 가는 명령어(M방)에서 write 할 register와 같으면) and (M번방에 있는 명령어가 register에 뭔가를 write할 때)
   - ForwardAE = 10
-- (E번방에 있는 읽고자 하는 source register(rs)가 앞에 앞에(두 번 앞에) 가는 W방에 명령어의 write 할 register와 같으면) and (W번방에 있는 명령어가 register에 뭔가를 write할 때)
+- (E번방에서 읽고자 하는 source register(rs)가 앞에 앞에(두 번 앞에) 가는 W방에 명령어에서 write 할 register와 같으면) and (W번방에 있는 명령어가 register에 뭔가를 write할 때)
+  - ForwardAE = 01
+
 
 ---
 
