@@ -14,7 +14,7 @@ tag: ['Shortest Path Algorithms']
 ## Single-Source Shortest Paths
 
 In a shortest-paths problem, we are in given a **weighted**, directed graph G = (V, E), 
-with **weight function** ![image](https://user-images.githubusercontent.com/79521972/170176160-90ec4724-0977-4ee6-8986-272a5c5ce0ee.png) mapping edges to real-valued weights. (각 edge마다 주어지는 path 값)
+with **weight function** ![image](https://user-images.githubusercontent.com/79521972/170176160-90ec4724-0977-4ee6-8986-272a5c5ce0ee.png) mapping edges to real-valued weights. (각 edge마다 주어지는 path값)
 
 The **weight w(p) of path** ![image](https://user-images.githubusercontent.com/79521972/170176223-bae160b8-1367-44f5-8b69-42d7995b530d.png) is the <mark>sum of the weights of its constituent edges</mark>:
 
@@ -36,7 +36,7 @@ Shortest-paths algorithms typically rely on the property that a shortest path <u
 
 Recall that optimal substructure is one of the key indicators that dynamic programming (Chapter 15.) and the greedy method (Chapter 16) might apply.
 
-shortest path는 그 안에 존재하는 sub path에서도 shortest path인 구조이다.
+- shortest path는 그 안에 존재하는 sub path에서도 shortest path인 구조이다.
 
 ![image](https://user-images.githubusercontent.com/79521972/170176866-0701837a-593a-4747-9fb7-bc26d7c5a248.png)
 
@@ -54,7 +54,7 @@ shortest path는 그 안에 존재하는 sub path에서도 shortest path인 구�
 
 - c<->d 는 cycle인데 한 번 갔다가 다시 오면 cost 3이 든다.
 
-- e<->f 역시도 cycle인데 한 번 갔다가 다시 오면 cost -1이 된다. -> negative-weight cycle
+- e<->f 역시도 cycle인데 한 번 갔다가 다시 오면 cost -3이 된다. -> negative-weight cycle
 
 - 그런데 이 negative-weight cycle이 있으면 shortest path가 존재할 수 없는데 그 이유는 shortest path는 최소한의 cost가 드는 거리를 찾는 것인데 negative cycle을 발견하면 cost를 계속해서 줄이려고 하기 때문에 그 loop를 빠져나가지 않게 될 것이고 shortest path는 결국 negative infinity가 될 것이다.
 
@@ -67,7 +67,7 @@ shortest path는 그 안에 존재하는 sub path에서도 shortest path인 구�
 
 ## Representing shortest paths
 
-Given a graph G = (V, E), we maintain for each vertex v ∈ V a **predecessor(선임, 이전의)** v.*π* that is is either another vertex of NIL.
+Given a graph G = (V, E), we maintain for each vertex v ∈ V a **predecessor(선임, 이전의)** v.*π* that is either another vertex of NIL.
 
 - 그래서 v.*π*는 v 노드까지 왔을 때 바로 앞 노드를 말하고
   - t.*π*  = s
@@ -84,16 +84,16 @@ Given a graph G = (V, E), we maintain for each vertex v ∈ V a **predecessor(�
 
 ## Initialize-Single-Source
 
-For each vertex v ∈ V, we maintain an attribute v.d, which is an upper bound on the weight of a shortest path from source s to v. We call v.d a shortest-path estimate. We initialize the shortest-path estimates and predecessors by the following ![image](https://user-images.githubusercontent.com/79521972/170177462-601c7941-2e40-4ff9-84bb-912a621c0a0b.png)-time procedure:
+For each vertex v ∈ V, we maintain an attribute v.d, which is an upper bound on the weight of a shortest path from source s to v. We call **v.d** a **shortest-path estimate**. We initialize the shortest-path estimates and predecessors by the following ![image](https://user-images.githubusercontent.com/79521972/170177462-601c7941-2e40-4ff9-84bb-912a621c0a0b.png)-time procedure:
 
 ![image](https://user-images.githubusercontent.com/79521972/170177498-b950d302-4aaa-4b16-b0bf-caaa18fb0505.png)
 
-- G는 내가가지고 있는 graph
+- G는 내가가지고 있는 graph 
 
-- V는 vertex의 집합
+- V는 vertex의 집합 
 
-- v.d 는 shortest-path estimate이다.
-  - source에서 모든 vertex까지의 추정되는 shortest distance 값이므로 처음에는 모두 무한대로 초기화한다.
+- v.d 는 shortest-path estimate이다. 
+  - source에서 모든 vertex까지의 추정되는 shortest distance 값이므로 처음에는 모두 **무한대로 초기화**한다.
   - 그 바로 앞에 있는 노드역시 처음이기 때문에 값을 아직 받은 것이 없어 None로 초기화 한다.
   
   - s.d 즉, source에서 source까지의 distance는 당연히 0이다.(같은 노드이니까)
@@ -106,7 +106,7 @@ For each vertex v ∈ V, we maintain an attribute v.d, which is an upper bound o
 
 shortest path를 찾기 위해서 공통적으로 사용하는 방법
 
-The process of **relaxing an edge (u, v)** consists of testing whether we can improve the shortest path to v found so far by going through u and, if so, updating v.d and v.*π* . A relaxation step may decrease the value of the shortest-path estimate v.d and update v's predecessor attribute v.*π*.
+The process of **relaxing an edge (u, v)** consists of testing whether we can improve the shortest path to v found so far by going through u and, if so, updating v.d and v.*π* . A relaxation step may decrease the value of the shortest-path estimate v.d and update v's predecessor attribute v.*π*
 
 ![image](https://user-images.githubusercontent.com/79521972/170177716-d41110ac-c539-4697-9674-630836c66677.png)
 
@@ -114,7 +114,6 @@ The process of **relaxing an edge (u, v)** consists of testing whether we can im
 - 현재까지 알려진 v까지의 거리 -  v.d
 - relax한다는 것은 u 를 update 한다는 것이다.
   - 현재 v의 경로 보다 u를 들리면 더 짧은 경로가 있는지를 확인하고 더 짧다면 그 경로로 update한다는 것
-- 
 
 ---
 
@@ -124,11 +123,15 @@ The process of **relaxing an edge (u, v)** consists of testing whether we can im
 
 ![image](https://user-images.githubusercontent.com/79521972/170177765-be7ce602-30f2-4f2b-a003-3b8e9eb9b6ba.png)
 
-Each algorithm in the chapter calls Initialize-single-source and then repeatedly relaxes edges. Moreover, <mark>relaxation is the only means by which shortest-path estimates and predecessors change.</mark> 
+Each algorithm in the chapter calls Initialize-single-source and then repeatedly relaxes edges. 
+
+Moreover, <mark>relaxation is the only means by which shortest-path estimates and predecessors change.</mark> 
 
 The algorithms in the chapter differ in how many times they relax each edge and the order in which they relax edges. 
 
-Dijkstra's algorithm and the shortest-paths algorithm for directed acyclic graphs relax **each edge exactly once**. 
+**Dijkstra's algorithm** and **the shortest-paths algorithm** for directed acyclic graphs relax **each edge exactly once**. 
+
+- 노드 당 정확히 한 번
 
 The Bellman-Ford algorithm relaxes **each edge |V| ㅡ 1 times.**
 
@@ -140,10 +143,11 @@ The Bellman-Ford algorithm relaxes **each edge |V| ㅡ 1 times.**
 
 ![image](https://user-images.githubusercontent.com/79521972/170178173-481702e0-472d-4e02-b3a5-4d6f32b72acc.png)
 
-- Bellman-Ford의 장점은 edge의 weight가 negative여도 동작한다는 것이다.
+- **Bellman-Ford의 장점**은 edge의 weight가 **negative여도** 동작한다는 것이다.
   - 다익스트라는 동작 안 함.
 - 가장 먼저 **negative cycle**이 있는지를 판단해야 함.
   - 만약 있다면 algorithm을 돌려도 solution이 구해지지 않는다.
+  - 없으면 shortest path를 구한다.
 
 ---
 
@@ -159,8 +163,6 @@ The Bellman-Ford algorithm relaxes **each edge |V| ㅡ 1 times.**
 - 이 결과 negative (weight) cycle이 있다면 이상한 결과가 들어가 있을 것이고 그렇지 않으면 shortest path가 구해졌을 것이다.
 
 ![image](https://user-images.githubusercontent.com/79521972/170193554-ed2a7cd4-2c2a-4390-809e-f564bbaf4c79.png)
-
-
 
 
 
@@ -203,48 +205,57 @@ The Bellman-Ford algorithm relaxes **each edge |V| ㅡ 1 times.**
 13-13
 
 ```python
-def bellamn_ford(grpah, source): # 1
+def bellman_ford(graph, source):  # 1
     # intialize
-    distance = {} # v.d
-    predecessor = {} # v.ㅠ
-    for node i in graph.keys(): # 5
+    distance = {}  # v.d
+    predecessor = {}  # v.ㅠ
+    for node in graph.keys():  # 5
         distance[node] = float('inf')
         predecessor[node] = None
     distance[source] = 0
-    
+
     # relax all edges for V-1 times
-    for _ in range(len(graph) - 1): # 11
-        for u in graph: # 이중 dictionary 일 것이기 때문에 u도 dictionary임
+    for _ in range(len(graph) - 1):  # 11
+        for u in graph:  # 이중 dictionary 일 것이기 때문에 u도 dictionary임 -> key를 하나씩
             # w is the weight of edge (u, v)
-            for v, w in graph[u].items(): # 14
+            for v, w in graph[u].items():  # 14
                 if distance[v] > distance[u] + w:
                     distance[v] = distance[u] + w
                     predecessor[v] = u
-                    
-	for u in graph: # 20
-        for v, w in grpah[i].items():
+
+    # check for a negative-weight cycle
+    for u in graph:  # 20
+        for v, w in graph[u].items():
             if distance[v] > distance[u] + w:
                 return False, distance, predecessor
-            
+
     return True, distance, predecessor
 
 
-Fig24_4 = { # 28; 앞에 있는 그래프 그림에 대한 adjacency list
+Fig24_4 = {  # 28; 앞에 있는 그래프 그림에 대한 adjacency list
     's': {'t': 6, 'y': 7},
     't': {'x': 5, 'y': 8, 'z': -4},
     'x': {'t': -2},
     'y': {'x': -3, 'z': 9},
     'z': {'s': 2, 'x': 7}
 }
-check, dist, pre = bellman_ford(Fig24_4, 's') # 35; graph와 source 노드를 넘겨줌
+check, dist, pre = bellman_ford(Fig24_4, 's')  # 35; graph와 source 노드를 넘겨줌
 if check:
     print(pre)
     print(dist)
+
 ```
 
 ![image](https://user-images.githubusercontent.com/79521972/170179063-21ac162b-faed-41bf-b161-680c58855671.png)
 
+- graph의 key는 u -> predecessor
 
+- v는 현재 노드
+
+- 처음에 distance[v]가 무한대일 것이기 때문에 distance[u] + w(eight) 보다는 무조건 클 것이고 해당 노드의 distance[v]를 distance[u] + w로 초기화하는 것이다.
+
+- 그리고 해당 노드의 predecessor를 u로 update한다.
+- predecessor 는 shortest path가 정해지면 해당 노드에 오기까지 바로 전 노드를 의미한다.
 
 ---
 
@@ -261,7 +272,22 @@ def bellamn_ford(grpah, source): # 1
 
 for문을 한 번씩 돌 때마다 distance가 어떻게 되는지 한 번 찍어보기
 
+```
+{'s': inf}
+{'s': None}
 
+{'s': inf, 't': inf}
+{'s': None, 't': None}
+
+{'s': inf, 't': inf, 'x': inf}
+{'s': None, 't': None, 'x': None}
+
+{'s': inf, 't': inf, 'x': inf, 'y': inf}
+{'s': None, 't': None, 'x': None, 'y': None}
+
+{'s': inf, 't': inf, 'x': inf, 'y': inf, 'z': inf}
+{'s': None, 't': None, 'x': None, 'y': None, 'z': None}
+```
 
 
 
@@ -275,11 +301,11 @@ for문을 한 번씩 돌 때마다 distance가 어떻게 되는지 한 번 찍�
 
 - 처음에 초기화를 한다.
   - source에서 c까지의 distance -> 무한대
-  - '' 에서 e, f까지의 distance -> 무한대
+  - s에서 e, f까지의 distance -> 무한대
 - bellman-ford 알고리즘
   - 노드 4개 -> for loop 3번
-    - 모든 edge들에 대해서 relax
-      - c = 5
+    - 모든 edge들에 대해서 relax (s제외 모든 노드 무한대)
+      - 무한대보다는 무조건 더 짧은 경로이기 때문에 c = 5로 update한다.
       - e 혹은 f로 오는 경로는 없기 때문에 여전히 무한대로 둔다.
       - 현재 얻은 distance가 shortest distance인지를 판단한다.
       - c.d = 5 -> shortest distance
@@ -287,7 +313,21 @@ for문을 한 번씩 돌 때마다 distance가 어떻게 되는지 한 번 찍�
       - True 리턴 : 내가 가진 그래프에 negative cycle가 없다.
       - 그러나 e와 f는 negative cycle이다.
       - 이 경우에 negative cycle을 detect 하기 위해서 어떻게 해야 하는가?
-      - 각 vertex에서 distance를 100으로 초기화한다.
+        - solution -> 각 vertex에서 distance를 100으로 초기화한다.(적당한 값으로)
+
+```
+{'s': None, 'c': 's', 'e': None, 'f': None}
+{'s': 0, 'c': 5, 'e': inf, 'f': inf}
+```
+
+<br>
+
+- 무한대 -> 100으로 바꾸면 False 리턴으로 바뀌어 아무 값도 나오지 않는다.
+
+```
+{'s': None, 'c': 's', 'e': 'f', 'f': 'e'}
+{'s': 0, 'c': 5, 'e': 88, 'f': 94}
+```
 
 
 
@@ -296,16 +336,12 @@ for문을 한 번씩 돌 때마다 distance가 어떻게 되는지 한 번 찍�
 - vertex를 모두 100으로 초기화 하면
 - c를 먼저 relax 하면 5로 update된다. 
 - e를 relax하면 f를 통해 오는 경우 94만에 올 수 있기 때문에 update
-- f는 e를 통하면 97만에 올 수 있다.(e가 방금 94로 update 되었기 때문에)
+- f는 e를 통하면 97 만에 올 수 있다.(e가 방금 94로 update 되었기 때문에)
 - c는 그대로고 e는 계속해서 내려갈 것이고 이에 따라 f도 계속해서 shortest가 update 될 것이다.
 - 그러면 결과적으로 c는 아무리 for문을 돌려도 그대로 일 것이지만
-- e는 더 작은 shortest distance가 존재하기 때문에 False가 리턴 될 것이고 negative cycle을 detect 할 ㅜㅅ 있게 되는 것이다.
+- e는 더 작은 shortest distance가 존재하기 때문에 False가 리턴 될 것이고 negative cycle을 detect 할 수 있게 되는 것이다.
 - 이를 통해 무조건 inf로 초기화하는 것 보다 충분히 큰 값으로 초기화 시키면 detect 할 수 있는 경우가 있다.
   - <mark>edge의 갯수 x weight 의 최댓값</mark>
-
-
-
-![image](https://user-images.githubusercontent.com/79521972/170915293-f8b36403-a61b-4b66-b789-1778ea2ed6c3.png)
 
 
 
@@ -314,8 +350,6 @@ for문을 한 번씩 돌 때마다 distance가 어떻게 되는지 한 번 찍�
 13-16
 
 ![image](https://user-images.githubusercontent.com/79521972/170179208-dc36fc66-153c-4de4-a911-dd688f251c90.png)
-
-
 
 [https://www.acmicpc.net/problem/1865](https://www.acmicpc.net/problem/1865)
 
@@ -335,6 +369,8 @@ for문을 한 번씩 돌 때마다 distance가 어떻게 되는지 한 번 찍�
 
 ![image](https://user-images.githubusercontent.com/79521972/170179271-f29f2c91-2c30-44f5-8476-8e97db1fe7ec.png)
 
+<img src="https://user-images.githubusercontent.com/79521972/172175027-eee25267-2db7-428f-b18e-5b5a95f30f82.png" alt="image" style="zoom:50%;" />![image](https://user-images.githubusercontent.com/79521972/170915293-f8b36403-a61b-4b66-b789-1778ea2ed6c3.png)
+
 N: vertex의 갯수
 
 M: edge의 갯수
@@ -343,11 +379,48 @@ W: negative edge의 갯수
 
 S와 E가 undirected 이어졌다.
 
-M+2 번쨰 줄 부터는 S가 시작, E가 도착이 된다. T는 negative edge
+M+2 번째 줄 부터는 S가 시작, E가 도착이 된다. T는 negative edge
 
 
 
 ```python
+import sys
+
+
+def bellman_ford(start):  # 1
+    dist[start] = 0
+    for i in range(1, N+1):
+        for s in range(1, N+1):
+            for next, time in road[s]:
+                if dist[next] > dist[s] + time:
+                    dist[next] = dist[s] + time
+                    if i == N:
+                        return True
+    return False
+
+
+sys.stdin = open('bj1865_in.txt', 'r')
+input = sys.stdin.readline
+
+tc = int(input())
+for _ in range(tc):
+    N, M, W = map(int, input().split())
+    road = [[] for _ in range(N + 1)]
+    dist = [M * 10] * (N + 1)
+
+    for _ in range(M):
+        S, E, T = map(int, sys.stdin.readline().split())
+        road[S].append([E, T])
+        road[E].append([S, T])
+
+    for _ in range(W):
+        S, E, T = map(int, sys.stdin.readline().split())
+        road[S].append([E, -T])
+
+    if bellman_ford(1):
+        print("YES")
+    else:
+        print("NO")
 tc = int(input())
 for _ in range(tc):
     N, M, W = map(int, input().split())
@@ -360,15 +433,20 @@ for _ in range(tc):
     #for 
 ```
 
-dictionary로 하면 안되는 이유? -> 강의 보고 적기
+```
+NO
+YES
+```
+
+
+
+dictionary로 하면 안되는 이유? -> 강의 보고 적기 (key가 string이 아니기 때문에)
 
 이차원 리스트로 저장 - vertex 갯수 + 1
 
 초기화할 때 값을 무한대로 하면 안되고 
 
 - edge의 갯수 x weight 의 최댓값
-
-
 
 
 
@@ -382,7 +460,7 @@ dictionary로 하면 안되는 이유? -> 강의 보고 적기
 
 - Bellman-Ford 와 마찬가지로 single-source shortest-paths를 구하는 알고리즘이다.
 
-- 하지만 다른 점은 모든 edge의 weight가 non-negative이다.
+- **하지만 다른 점은 모든 edge의 weight가 non-negative이다.**
   - w(u, v) >= 0
 
 - 다익스트라 알고리즘은 벨만포드보다 running time 이 빠르다.
@@ -390,14 +468,14 @@ dictionary로 하면 안되는 이유? -> 강의 보고 적기
 <br>
 
 - 다익스트라 알고리즘은 set S를 유지한다.
-  - source 부터의 shortest path가 이미 결정된 vertex의 집합
+  - source부터의 shortest path가 이미 결정된 vertex의 집합
   - 알고리즘을 돌리다 보면 이 set S에 한놈씩 추가가 되고
   - 알고리즘이 끝나면 모든 vertex가 set S에 들어가게 된다.
 - 알고리즘을 돌리면서 아래와 같은 두 가지 동작을 반복한다.
-  - 1. select: source부터의 distance가 현재까지 가장 작은 애를 선택한다. -> 얘가 set S에 추가
-  - 2. relax(update): u가 1번에서 고른 vertex인데 여기서 출발하는 모든 vertex를 다시 relax 한다.
+  - 1. **select**: source부터의 distance가 현재까지 가장 작은 애를 선택한다. -> 얘가 set S에 추가 됨
+  - 2. **relax** (update): u가 1번에서 고른 vertex인데 여기서 출발하는 모든 vertex를 다시 relax 한다.
 
-- 위 loop가 끝나면 모든 vertex에 대해서 relax가 끝나게 된다.
+- 위 loop가 끝나면 모든 vertex에 대해서 relax가 끝나있게 된다.
 
 ---
 
@@ -411,12 +489,12 @@ dictionary로 하면 안되는 이유? -> 강의 보고 적기
     - 가장 작은 distance는 s이기 때문에 s가 select에 들어간다.
   - t와 y에 대해 relax 진행
     - t: s를 통해서 가는 경우 10만에 갈 수 있으니 10으로 update
-    - y: s를 통해서 가는 경우 5만에 갈 수 ㅣㅇㅆ다.
+    - y: s를 통해서 가는 경우 5만에 갈 수 있으니 10으로 update
   - 이 과정이 끝나고 distance가 가장 작은 y가 set S에 들어간다.
   - y와 가까운 t, x,z에 대해 relax
-    - t: y를 통해 8만에 가는 것으로 update
-    - x: y를 통해 14만에 가는 것으로 update
-    - z: y를 통해 7만에 가는 것으로 update
+    - t: y를 통해 8 만에 가는 것으로 update
+    - x: y를 통해 14 만에 가는 것으로 update
+    - z: y를 통해 7 만에 가는 것으로 update
   - 또 남은 애들(s, y제외; set S에 없는 애들 중에서) 중에서 제일 작은애 set S에 넣는다. -> z
     - x -> 13으로 update
   - set S에 t 대입
@@ -451,7 +529,6 @@ dictionary로 하면 안되는 이유? -> 강의 보고 적기
 
 - 위 pseudo code를 그대로 쓸 수 없는 이유
   - 큐에 distance와 vertex name을 묶은 정보가 쭉 저장할 것인데
-  - 
 
 while loop안 for 문 안에서 relax를 진행하는데 relax는 vertex 당 한 번만 진행한다.
 
@@ -474,6 +551,8 @@ while loop안 for 문 안에서 relax를 진행하는데 relax는 vertex 당 한
   - (앞의 벨만포드는 O(EV))
 
 ---
+
+## 시험 범위(X)
 
 13-23
 
@@ -508,7 +587,7 @@ def dijkstra(graph, source):
                     predecessor[v] = u
                     heappush(min_q, (distance[v], v)) #update한 정보를 다시 q에 넣는다.
                     
-	return distance, predecessor
+	return distance, predecessor # 31
 
 
 Fig24_6 = { # 34

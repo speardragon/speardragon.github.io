@@ -19,13 +19,16 @@ For many **optimization problems**, using dynamic programming to determine the b
 - local optimum
   - 전체가 어떻게 생겼는지는 모르지만 현 상황에서 오른쪽에서는 올라가고 왼쪽에서는 내려간다.
   - 그렇다면 현 상황에서는 오른쪽으로 가는 것이 최선의 선택이고 가다가 기울기가 0인 지점이 극댓값 즉, local optimum이라고 한다.
+  - 이 local optimum이 global optimum이 되기를 바라고 하는 것이 그리디 알고리즘
 - global optimum
   - 전체 그래프 상에서 최댓값을 global optimum이라고 한다.
 - greedy algorithm을 적용할 수 있는 상황은 local optimum을 찾았을 때 그것이 global optimum이 될 수 있는 경우이다. (예를 들어, 위로 볼록한 이차 함수의 그래프 y = - x<sup>2</sup>)
 
 <br>
 
-Greedy algorithms do not always yield optimal solutions, but for many problems they do. We shall first examine, in Section 16.1, a simple but nontrivial problem, the activity-selection problem, for which a greedy algorithm efficiently computes an optimal solution.
+**Greedy algorithms do not always yield optimal solutions**, but for many problems they do. 
+
+We shall first examine, in Section 16.1, a simple but nontrivial problem, the activity-selection problem, for which a greedy algorithm efficiently computes an optimal solution.
 
 - 항상 optimal solution을 제공하지는 않는다.
 - 하지만 많은 경우에 써 먹을 수 있다.
@@ -75,7 +78,7 @@ The rod-cutting problem is the following. Given a rod of length n inches and a t
 <br>
 
 - Greedy approach 
-  - At a node, go to the node of max(left child, right child)
+  - At a node, go to the node of <mark>max(left child, right child)</mark>
 
 ---
 
@@ -119,7 +122,9 @@ A greedy algorithm obtains an optimal solution to problem by making a sequence o
 
 <br>
 
-How can we tell whether a greedy algorithm will solve a particular optimization problem? No way works all the time, but the **①greedy-choice property** and **②optimal substructure** are the two key ingredients. If we can demonstrate that the problem has these properties, then we are well on the way to developing a greedy algorithm
+How can we tell whether a greedy algorithm will solve a particular optimization problem? No way works all the time, but the **①greedy-choice property** and **②optimal substructure** are the two key ingredients. 
+
+If we can demonstrate that the problem has these properties, then we are well on the way to developing a greedy algorithm
 
 <br>
 
@@ -133,7 +138,11 @@ How can we tell whether a greedy algorithm will solve a particular optimization 
 
 **Greedy-choice property**
 
-The first key ingredient is the **greedy-choice property**: we can assemble a globally optimal solution by making locally optimal (greedy) choices. In other words, when we are considering which choice to make, we make the choice that looks best in the current problem, without considering results from subproblems.
+The first key ingredient is the **greedy-choice property**:
+
+we can assemble a globally optimal solution by making locally optimal (greedy) choices. In other words, when we are considering which choice to make, we make the choice that looks best in the current problem, without considering results from subproblems.
+
+- 즉, 이전의 선택이 이후의 선택에 영향을 주지 않는다.
 
 <br>
 
@@ -188,11 +197,15 @@ In the activity-selection problem, we wish to select <mark>a maximum-size subset
 
 ## Making the greedy choice 
 
-What do we mean by the greedy choice for the activity-selection problem? Intuition suggests that we should choose and activity that leaves the resource available for as many other activities as possible. Now, of the activities we end up choosing, one of them must be the first one to finish. Our intuition tells us, therefore, to choose the activity in S with the earliest finish time, since that would leave the resource available for as many of the activities that follow it as possible.
+What do we mean by the greedy choice for the activity-selection problem? Intuition suggests that we should choose and activity that leaves the resource available for as many other activities as possible. 
+
+Now, of the activities we end up choosing, one of them must be the first one to finish. Our intuition tells us, therefore, to choose the activity in S with the earliest finish time, since that would leave the resource available for as many of the activities that follow it as possible.
 
 <br>
 
-Furthermore, we have already established that the activity-selection problem exhibits **optimal substructure**. Let ![image](https://user-images.githubusercontent.com/79521972/169722241-ccf2aeec-142d-46ef-ac63-16246acc9b0c.png) be the set of activities that start after activity a<sub>k</sub> finishes. If we make the greedy choice of activity a1, then S1 remains as the only subproblem to solve.
+Furthermore, we have already established that the activity-selection problem exhibits **optimal substructure**. Let ![image](https://user-images.githubusercontent.com/79521972/169722241-ccf2aeec-142d-46ef-ac63-16246acc9b0c.png) be the set of activities that start after activity a<sub>k</sub> finishes. 
+
+If we make the greedy choice of activity a1, then S1 remains as the only subproblem to solve.
 
 - S0: 0번 activity가 끝난 후에 시작되는 모든 회의의 집합(전체 집합)
   - S0 = a1 + S1
@@ -222,7 +235,7 @@ Consider any non-empty subproblem S<sub>k</sub>, and let a<sub>m</sub> be an act
 
 Thus, we see that although we might be able to solve the activity-selection problem with dynamic programming, we don't need to.
 
-Greedy algorithms typically have his top-down design: make a choice and then solve a subproblem, rather than the bottom-up technique of solving subproblems before making a choice.
+**Greedy algorithms** typically have his **top-down design**: make a choice and then solve a subproblem, rather than the bottom-up technique of solving subproblems before making a choice.
 
 - greedy를 써도 될 지 말지가 고민 되면 그냥 dynamic programming으로라도 해야 한다.
 
@@ -275,6 +288,7 @@ print(selector(_s, _f))
 - 실행 결과
 
 ```
+[1, 4, 8, 11]
 ```
 
 
@@ -316,6 +330,47 @@ for _ in range(n):
   - sort(acts, lambda x: (x[1], x[0])
 - 그래서 예제 입력 2의 경우 답이 [1,2,3] -> 3이다.
 
+```python
+import sys
+
+
+def selector(a_list):
+    selected_act = 0
+    result = [selected_act]
+
+    for act in range(1, len(acts)):
+        if a_list[act][0] >= a_list[selected_act][1]:
+            selected_act = act
+            result.append(selected_act)
+
+    return len(result)
+
+
+sys.stdin = open('bj1931_in.txt', 'r')
+input = sys.stdin.readline
+
+n = int(input())
+acts = []
+
+for _ in range(n):
+    a, b = map(int, input().split())
+    acts.append((a, b))
+
+acts.sort(key=lambda x: (x[1], x[0]))
+print(acts)
+print(selector(acts))
+
+```
+
+
+
+```
+[(1, 4), (3, 5), (0, 6), (5, 7), (3, 8), (5, 9), (6, 10), (8, 11), (8, 12), (2, 13), (12, 14)]
+4
+```
+
+
+
 
 ---
 
@@ -333,11 +388,29 @@ for _ in range(n):
 
 <br>
 
-- 손님이 380원을 샀고 1000을 냈으면 거스름 돈을 620원을 주어야 하는데 이 때 동전의 갯수를 최소한으로 주는 경우 몇 개의 동전을 줄 수 있는가?를 찾아내는 문제
+- 손님이 380원을 샀고 1000을 냈으면 거스름 돈을 620원을 주어야 하는데 이 때 동전의 갯수를 최소한으로 주는 경우 몇 개의 동전을 줄 수 있는가? 를 찾아내는 문제
 - dynamic programming으로 모든 경우를 다 뒤져서 가장 작은 경우를 찾을 수 있겠지만 greedy로 하면 빠르게 찾을 수 있다.
 - 쓸 수 있는 동전 중에서 큰 단위의 동전을 최우선으로 줄 수 있는 만큼 주면 된다.
   - 500원으로 줄 수 있는만큼 다 주고
   - 100원으로 줄 수 있는 만큼 다 주고
   - 10원짜리로 다 채우면 
   - 그 때의 동전을 count 한 것이 답.
+
+```python
+cost = 1000 - int(input())
+
+coin = [500, 100, 50, 10, 5, 1]
+
+count = 0
+for i in coin:
+    count += cost // i
+    cost %= i
+
+print(count)
+
+```
+
+```
+4
+```
 

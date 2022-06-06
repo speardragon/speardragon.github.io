@@ -28,7 +28,7 @@ that are defined by the formula
 
 are known as the fibonacci numbers
 
-- 0 번째와 1 번쨰는 0과 1로 항상 정해져 있는 값이다.
+- 0 번째와 1 번째 값은 0과 1로 항상 정해져 있는 값이다.
 
 ---
 
@@ -113,9 +113,11 @@ The savings may be dramatic: an exponential-time solution may be transformed int
 
 There are usually two equivalent ways to implement a dynamic-programming approach.
 
-<mark>The first approach is top-down with memoization.</mark> In this approach, we write the procedure recursively in a natural manner, but modified to save the result to each subproblem (usually in an array or hash table). The procedure now first checks to see whether it has previously solved this subproblem. If so, it returns the saved value, saving further computation at this level; if not, the procedure computes the value in the usual manner. We say that the recursive procedure has been memoized; 
+<mark>The first approach is top-down with memoization.</mark> In this approach, we write the procedure recursively in a natural manner, but modified to save the result to each subproblem (usually in an array or hash table). The procedure now first checks to see whether it has previously solved this subproblem. 
 
-- it "remembers" what results it has cimputed previously.
+If so, it returns the saved value, saving further computation at this level; if not, the procedure computes the value in the usual manner. We say that the recursive procedure has been memoized; 
+
+- it "remembers" what results it has computed previously.
 
 <br>
 한 size의 문제를 조금씩 줄여나간다.
@@ -137,7 +139,7 @@ def fibonacci_td(n): # 5
     if n < 2:
         return n
     
-    if _memo[n] is None: # 9
+    if _memo[n] is None: # 9 ; 존재하지 않으면 memo!
         _memo[n] = fibonacci_td(n - 1) + fibonacci_td(n - 2)
         
     return _memo[n]
@@ -147,21 +149,36 @@ _memo = [None] * 50 # 15
 print(fibonacci_td(36))
 ```
 
-The numbers grow exponentially, so the array is smal - for example, F<sub>46</sub> = 1836311903 is the largest Fibonacci number that can be represented as a 32-bit integer
+The numbers grow exponentially, so the array is small - for example, F<sub>46</sub> = 1836311903 is the largest Fibonacci number that can be represented as a 32-bit integer
 
 - 32-bit integer로 저장할 수 있는 최대 fibonacci 수는 46이다.
-- 그 이상은 long long 데이터 타입을 사용해야 한다.
+- 그 이상은 long long 데이터 타입을 사용해야 한다.(파이썬은 상관 없음)
 
 list에 저장되어 있는지를 확인하여 
 
 - 만약 저장되어 있지 않다면: 더 작은 size의 문제를 subproblem을 나눠서 memo에 저장하고
-- 만약 저장되어 있다면 
+- 만약 저장되어 있다면 해당 인덱스의 memo 되어있는 값을 반환
+  - 이러면 재귀를 타지 않아도 그냥 바로 리턴이 가능하다.
+
+
+
+
+- 실행 결과
+
+```
+14930352
+0.0
+```
+
+
 
 ---
 
 11-8
 
-<mark>The second approach is the bottom-up method.</mark> This approach typically depends on some natural notion of the "size" of a subproblem, such that solving any paricular subproblem depends only on solving "smaller" subproblems. We sort the subproblems by size and solve them in size order, smallest first. When solving a particular subproblem, we ahve already solved all of the smaller subproblems its solution depends upon, and we have saved their solutions.
+<mark>The second approach is the bottom-up method.</mark> This approach typically depends on some natural notion of the "size" of a subproblem, such that solving any paricular subproblem depends only on solving "smaller" subproblems. We sort the subproblems by size and solve them in size order, smallest first. 
+
+When solving a particular subproblem, we have already solved all of the smaller subproblems its solution depends upon, and we have saved their solutions.
 
 - 제일 작은 size인 f(1)부터 시작하여 f(2), f(3), ... 이런 식으로 차근차근 올라가면서 푸는 방법이다.
 
@@ -191,9 +208,11 @@ print(fibonacci_bu(36)) # 14
 
 그러나 일반적으로 특징을 비교해 보자면 아래 글과 같다.
 
-Indeed, we can use the bottom-up approach any time that we use the top-down approach, although we need to take care to ensure that we compute the function values in an appropriate order, so that each value that we need has been computed when we need it.
+Indeed, we can use the **bottom-up** approach **any time that we use the top-down approach**, although we need to take care to ensure that we compute the function values in an appropriate order, so that each value that we need has been computed when we need it.
 
 In top-down dynamic programming, we save known values; in bottom-up dynamic programming, we precompute them. **We generally prefer top-down to bottom-up dynamic programming, because**
+
+bottom up 보다 top down을 선호한다.
 
 - It is a mechanical transformation of a natural problem solution.
   - 좀 더 자연스러운 문제 해결 가능
@@ -218,6 +237,27 @@ In top-down dynamic programming, we save known values; in bottom-up dynamic prog
 
 
 [https://www.acmicpc.net/problem/2748](https://www.acmicpc.net/problem/2748)
+
+```python
+def fibonacci_td(n):
+    if n < 2:
+        return n
+
+    if _memo[n] is None:
+        _memo[n] = fibonacci_td(n-1) + fibonacci_td(n-2)
+
+    return _memo[n]
+
+
+_n = int(input())
+_memo = [None] * 91
+print(fibonacci_td(_n))
+
+```
+
+
+
+
 
 
 
@@ -265,11 +305,11 @@ More generally, we can frame the values rn for n >= 1 in terms of optimal revenu
 - r<sub>1</sub>+r<sub>n-1</sub> 은 사실상 p<sub>1</sub>+r<sub>n-1</sub> 과 같다.
   - 그래서 앞에 더해지는 rn을 모두 pn으로 대치하여 하는 것이 더 편하다. 
 
-In a related, but slightly simpler, way to arrange a recursive structure for the rod-cutting problem, we view a decomposition as consisting of a first piece of length i cut off the left-hand end, and then a right-hand remainder of length n - i. Only the remainder, and not the first piece, may be further divided. We thus obtain the sollowing simpler version of equation (15.1):
+In a related, but slightly simpler, way to arrange a recursive structure for the rod-cutting problem, we view a decomposition as consisting of a first piece of length i cut off the left-hand end, and then a right-hand remainder of length n - i. Only the remainder, and not the first piece, may be further divided. We thus obtain the following simpler version of equation (15.1):
 
 ![image](https://user-images.githubusercontent.com/79521972/168505091-16374575-d984-43aa-ba39-7ec3cfedd609.png)
 
-
+p[i] + cut_rod(length - i)
 
 예를 들어, 4인치 나무인 경우
 
@@ -299,7 +339,7 @@ def cut_rod(length): # 4
     max_revenue = -math.inf # -infinity
     for i in range(1, length+1): # 9
         revenue = _price[i] + cut_rod(length-i) 
-        if revenue > max_revuenue:
+        if revenue > max_revenue:
             max_revenue = revenue # 가장 큰 값을 저장하는 logic
             
     return max_revenue
@@ -309,6 +349,10 @@ _price = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30] # 17
 _length = 8
 print(cut_rod(_length))
 
+```
+
+```
+22
 ```
 
 
@@ -370,13 +414,13 @@ def cut_rod_bu(length):# 4
     for i in range(1, length+1):
         max_revenue = -math.inf
         for j in range(1, i+1):
-            revenue = _price[j] + _memo[i-j] # 9
+            revenue = _price[j] + _memo[i-j] # 9; memo를 활용함
             if max_revenue < revenue:
                 max_revenue = revenue
         # save r_i
         _memo[i] = max_revenue # 13 
         
-    return _memo[length]
+    return _memo[length] # _memo[-1]
 
 
 _price = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30] # 18
@@ -410,11 +454,11 @@ i=2: p1+ r1
 
 
 
-- Two key ingredients that an optimization problem must have to apply dynamic programming:
+- **Two key ingredients** that an optimization problem must have to apply dynamic programming:
 
 1. **Optimal substructure**
    - divide-and-conquer에서와의 똑같은 특성
-   - An optimal solution contains optimal solutions to subproblems
+   - An optimal solution contains optimal solutions to **subproblems**
 2. **Overlapping subproblems**
    - divide-and-conquer와 구분을 짓는 차이점
    - Finding the solution involves solving the same subproblem multiple times
@@ -429,7 +473,7 @@ We typically apply dynamic programming to **optimization problems**. <mark>Such 
 
 - optimal value로 부터 optimal solution을 만들어나간다.
 
-When developing a dynamic-programming algorithm, we flow a sequence of four steps:
+When developing a dynamic-programming algorithm, we flow a sequence of **four steps**:
 
 1. Characterize the structure of an optimal solution.
 2. Recursively define the value of an optimal solution.
@@ -472,6 +516,26 @@ while _length:
 
 - 코드 돌려볼 것!!!!!!!!!
 
+```
+# length 8
+22 
+2 6 
+
+#length 4
+10
+2 2 
+
+#length 6
+17
+6 
+
+#length 10
+30
+10 
+```
+
+length 6은 6 혼자 파는 게 제일 비싸니까 legnth 8에서 6이 쓰였구나!
+
 ---
 
 11-21
@@ -494,7 +558,47 @@ optimal structure
 
 maxV(0, 0)에서 얻을 수 있는 최대값
 
+![image](https://user-images.githubusercontent.com/79521972/172112001-304fa604-0393-4d37-846f-db8331e3986c.png)
 
+```python
+import sys
+
+sys.stdin = open('bj1932_in.txt', 'r')
+
+n = int(input())
+triangle = []
+
+for _ in range(n):
+    triangle.append(list(map(int, input().split())))
+
+for i in range(1, n):
+    for j in range(i+1):
+        if j == 0:
+            triangle[i][j] += triangle[i-1][j]
+        elif i == j:
+            triangle[i][j] += triangle[i-1][j-1]
+        else:
+            triangle[i][j] += max(triangle[i-1][j], triangle[i-1][j-1])
+    print(triangle)
+
+print(max(triangle[n-1]))
+
+```
+
+```
+[[7], [3, 8], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]] # origina triangle
+[[7], [10, 15], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]]
+[[7], [10, 15], [18, 16, 15], [2, 7, 4, 4], [4, 5, 2, 6, 5]]
+[[7], [10, 15], [18, 16, 15], [20, 25, 20, 19], [4, 5, 2, 6, 5]]
+[[7], [10, 15], [18, 16, 15], [20, 25, 20, 19], [24, 30, 27, 26, 24]]
+30
+```
+
+j = 0인 경우는 삼각형의 한 줄에서 가장 왼쪽에 있는 값이기 때문에 바로 위의 줄의 j = 0 값과 더한 값으로 치환한다.
+
+j == i인 경우 즉, 삼각형의 한 줄에서 가장 오른쪽에 있는 값이기 때문에 바로 위의 줄의 j = i 값과 더한 값으로 치환한다.
+
+위 두 경우가 아니라면 왼쪽 branch와 오른쪽 branch가 겹치는 경우인데 이 때는 두 값에 max를 취해 주면 된다.
 
 ---
 
@@ -528,13 +632,54 @@ print(max_path(0, 0))
 - Top down의 경우 triangle과 크기가 완전히 똑같은 memo list 하나를 만들고 max_path 함수를 호출했을 때 memo에 저장되어 있는지를 확인 후 저장이 안되어 있다면 함수를 실행하도록 하고 저장이 되어 있다면 그냥 그 값을 리턴하도록 한다.
 - Bottom up의 경우 loop를 사용하여 밑에서부터 위로 계산하면서 올라가면 된다.
 
+```python
+import sys
+
+sys.stdin = open('bj1932_in.txt', 'r')
+
+
+def max_path(row, col):
+    if row == _size - 1:
+        return _triangle[row][col]
+
+    if _memo[row][col] is None:
+        path_left = _triangle[row][col] + max_path(row + 1, col)
+        path_right = _triangle[row][col] + max_path(row + 1, col + 1)
+
+        _memo[row][col] = max(path_left, path_right)
+
+    return _memo[row][col]
+
+
+_triangle = []
+_memo = []
+_size = int(input())
+for _ in range(_size):
+    _triangle.append(list(map(int, input().split())))
+
+_memo = [[None]*i for i in range(1, _size+1)]
+
+
+print(max_path(0, 0))
+print(_memo)
+```
+
+
+
+```
+30
+[[30], [23, 21], [20, 13, 10], [7, 12, 10, 10], [None, None, None, None, None]]
+```
+
+
+
 ---
 
 11-24
 
 ## 0-1 Knapsack problem
 
-The **0-1 knapsack problem** is the following. A thief robbing a store finds n items. The *i*-th item is worth v<sub>i</sub> dollars and weighs w<sub>i</sub> pounds, where v<sub>i</sub>and w<sub>i</sub> are integers. The thief wants to take as valuable a load as possible, but he can carry at most W pounds in his knapsack, for some integer W. Which items should he take?
+The **0-1 knapsack problem** is the following. A thief robbing a store finds n items. The *i*-th item is worth v<sub>i</sub> dollars and weighs w<sub>i</sub> pounds, where v<sub>i</sub> and w<sub>i</sub> are integers. The thief wants to take as valuable a load as possible, but he can carry at most W pounds in his knapsack, for some integer W. Which items should he take?
 
 ![image](https://user-images.githubusercontent.com/79521972/168520845-99c2122c-af74-467f-8aee-f6524079ac88.png)
 
@@ -560,8 +705,6 @@ The **0-1 knapsack problem** is the following. A thief robbing a store finds n i
 ![image](https://user-images.githubusercontent.com/79521972/168520917-cfa3fa1d-b85d-47b7-b79f-83bbc32da83a.png)
 
 [https://www.acmicpc.net/problem/12865](https://www.acmicpc.net/problem/12865)
-
-
 
 
 
@@ -612,9 +755,59 @@ def knapsack(capacity, item): # 5
 
 
 
+![image](https://user-images.githubusercontent.com/79521972/172128274-35d340e4-d961-4d67-900f-e3b2cf93422f.png)
+
+따라서 왼쪽으로 가서 물건을 집어 넣으면 capcity에서 물건의 weight 만큼 뺀 후 다음 아이템에 대해 knapsack 함수를 재귀 호출을 진행한다.
 
 
 
+```python
+import sys
 
 
+def knapsack(capacity, item):  # 5
+    # capacity: current capacity of the knapsack, [0.._capacity]
+    # item: index of the item to be considered, [0..number-1]
+    # _number: number of items -> N
+    # _capacity: capacity of the knapsack -> W
+    # _weight: weight list of the items -> wi
+    # _value: value list of the items -> vi
+
+    if capacity == 0 or item >= _number:  # 13
+        return 0
+
+    if _memo.get((capacity, item), None) is None:
+        if _weight[item] > capacity:  # 16 ; 넣고 싶어도 못넣는 경우
+            return knapsack(capacity, item + 1) # 만약 현재 item이 용량을 넘어서면 다음 item 보기
+
+        with_the_item = _value[item] + knapsack(capacity - _weight[item], item + 1)  # 19
+        without_the_item = knapsack(capacity, item + 1)
+        _memo[(capacity, item)] = max(with_the_item, without_the_item)
+
+    return _memo[(capacity, item)]
+
+
+sys.stdin = open('bj12865_in.txt')
+input = sys.stdin.readline
+
+_number, _capacity = map(int, input().split()) # n: 갯수, k: 버틸 수 있는 무게
+
+_memo = {}
+_weight = []
+_value = []
+
+for i in range(_number):
+    w, v = map(int, input().split())
+    _weight.append(w)
+    _value.append(v)
+
+print(knapsack(_capacity, 0))
+print(_memo)
+
+```
+
+```
+14
+{(3, 2): 6, (7, 3): 12, (7, 2): 12, (7, 1): 14, (7, 0): 14}
+```
 
