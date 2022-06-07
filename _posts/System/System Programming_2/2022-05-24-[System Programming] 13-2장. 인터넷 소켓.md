@@ -15,6 +15,7 @@ tag: ['Socket', 'Network']
   - 예: 203.252.201.8  (4byte로 구성)
 - IP 주소는 대응하는 도메인 이름을 갖는다. 
   - 예: 203.252.201.8 --> www.sookmyung.ac.kr 
+    - 사람이 읽을 수 있는 문자로 표현 된 주소  -> 도메인 이름
 - 32 비트 IP 주소는 저장
 
 ```c
@@ -23,6 +24,8 @@ struct in_addr {
  unsigned int s_addr; // 네트워크 바이트 순서(big-endian)
 };
 ```
+
+
 
 <br>
 
