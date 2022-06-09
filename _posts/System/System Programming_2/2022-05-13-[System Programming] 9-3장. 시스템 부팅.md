@@ -65,7 +65,7 @@ login process의 역할은 로그인을 할 수 있도록 -> 로그인이 끝나
   - **exec** /bin/login, after entering a response to the login prompt. 
 - login 프로세스 
   - 사용자의 로그인 아이디 및 패스워드를 검사 (/etc/passwd) 
-  - 성공시: exec /bin/sh or /bin/csh (쉘 프로그램) 
+  - 성공 시: exec /bin/sh or /bin/csh (쉘 프로그램) 
   - set the evnironment variables like HOME, LOGNAME, PATH... 
 - shell 프로세스 
   - 시작 파일을 실행한 후에 쉘 프롬프트를 내고 사용자로부터 명령어를 기다린다
@@ -129,7 +129,7 @@ Processes after everything is set.
 
 ## Network Logins
 
-기본적인 방법은 대동소이하다.
+기본적인 방법은 대동소이 하다.
 
 - inetd 
   - waits for most network connections 
@@ -189,9 +189,10 @@ session part를 위한 remind
 
 ## Sessions and Process Groups
 
-- On a given system, there are many sessions: one for each user login session, and others for processes not tied to user login sessions, such as daemons. 
+- On a given system, there are many sessions: 
+  - one for each user login session, and others for processes not tied to user login sessions, such as daemons. 
   - 로그인을 위해서 만들어지는 것이 session
-
+  
 - Daemons tend to create their own sessions to avoid the issues of association with other sessions that may exit. 
 - pid_t setsid(void);
 

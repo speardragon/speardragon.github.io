@@ -29,7 +29,8 @@ tag: ['memory', 'variable']
 - This address space is **linear**, with addresses **starting at zero**, and increasing to some maximum value 
 - Pages and Paging 
   - The virtual address space is composed of **pages**. 
-  - The system architecture and machine type determine the size of a page, which is fixed; typical sizes include 4 KB (for 32-bit systems), and 8 KB (for 64-bit systems)
+  - The system architecture and machine type determine the size of a page, which is fixed; 
+    - typical sizes include 4 KB (for 32-bit systems), and 8 KB (for 64-bit systems)
 
 <br>
 
@@ -207,7 +208,7 @@ local 변수 -> stack에 저장
 ## The Call Stack 
 
 - Procedural calls can be viewed in a **stack-like manner**; each procedure's activation (function call) requires a dedicated frame on a stack. 
-- This function-call-dedicated stack frame is called an Activation Frame. 
+- This function-call-dedicated stack frame is called an **Activation Frame**. 
   - Each time a procedure is called, a new activation frame is generated on the stack. 
   - Each activation frame holds the following information: 
     - The **parameters** passed to the procedure 
@@ -230,20 +231,18 @@ local 변수 -> stack에 저장
 
 ## Stack: Advantages and Disadvantages 
 
-- Advantages 
-
+- **Advantages** 
   - **call-stack** memory model provides a **fast managed memory** 
     - the memory used by the stack is automatically discarded when popping the stack frame just by changing the value of a single register. 
-
+  
   - In addition, the compiler is responsible of generating the instructions that manipulate the stack and therefore can optimize them. 
-
-- Disadvantages 
-
-  - the stack is often limited in **size** 
-
-  - one cannot use values that resides inside a stack frame once it is popped (i.e., by one of the methods that correspond to the upper stack frames). 
-
-  - the **allocations** must be **static** and the size allocated must be known at compile time, because the compiler generate the instructions that manipulate the stack at compile time.
+  
+- **Disadvantages** 
+- the stack is often limited in **size** 
+  
+- one cannot use values that resides inside a stack frame once it is popped (i.e., by one of the methods that correspond to the upper stack frames). 
+  
+- the **allocations** must be **static** and the size allocated must be known at compile time, because the compiler generate the instructions that manipulate the stack at compile time.
 
 <br>
 
@@ -254,7 +253,8 @@ local 변수 -> stack에 저장
 - 동적 할당을 사용하는 이유 
   - 필요할 때 필요할 만큼만 메모리를 요청해서 사용하여 
   - 메모리를 절약한다. 
-  - 고정 할당의 경우 프로그램 시작 전에 메모리를 할당해야 한다. - 메모리가 적게 사용되어도 반드시 지정된 메모리를 할당해야 하기 때문에 비효율적인 경우 다반사
+  - 고정 할당의 경우 프로그램 시작 전에 메모리를 할당해야 한다. 
+  - 메모리가 적게 사용되어도 반드시 지정된 메모리를 할당해야 하기 때문에 비효율적인 경우 다반사
 - malloc( ) 
 - calloc( ) 
 - realloc( ) 
@@ -355,11 +355,10 @@ struct student {
     int id;
     char name[20];
 };
-/* 입력받을 학생 수를 미리 입력받고 이어서 학생 정보를 입력받은 후,
-이들 학생 정보를 역숚으로 출력하는 프로그램 */
+/* 입력받을 학생 수를 미리 입력받고 이어서 학생 정보를 입력받은 후, 이들 학생 정보를 역순으로 출력하는 프로그램 */
 int main()
 {
-    struct student *ptr; // 동적 핛당된 블록을 가리킬 포인터
+    struct student *ptr; // 동적 할당된 블록을 가리킬 포인터
     int n, i;
     printf("몇 명의 학생을 입력하겠습니까? ");
     scanf("%d", &n);
@@ -417,11 +416,11 @@ int main(void) {
     char *buffer;
     /*Allocating memory*/
     if((buffer=(char *) malloc(sizeof(char)*20))==NULL) {
-        printf(“Malloc failed\n”);
+        printf("Malloc failed\n");
         exit(1);
     }
-    strcpy(buffer, “Kwangwoon Univ.”);
-    printf(“%s\n”, buffer);
+    strcpy(buffer, "Kwangwoon Univ.");
+    printf("%s\n", buffer);
     /*freeing memory*/
     free(buffer); // size of char * 20 이  free
 } 
@@ -431,7 +430,7 @@ int main(void) {
 
 ## 배열 할당
 
-- 같은 크기의 메모리를 여러 개를 핛당핛 경우
+- 같은 크기의 메모리를 여러 개를 할당한 경우
 
 ```c
 #include <stdlib.h>
@@ -483,7 +482,7 @@ stack frame에서 생성된 모든 변수는 stack frame이 사라지면서 같�
 - Static 
   - Inefficient in memory usage 
   - **Faster** 
-  - **Reliable** because all required memory spaces are reserved at compilation time 
+  - **Reliable** because all required memory spaces are **reserved** at compilation time 
   - Realization : declaring memory 
   - 컴파일 전에 할당 - 메모리가 확보 된 상황에서 시작 됨
 - Real world : Dynamic + Static
@@ -514,8 +513,9 @@ p는 컴파일 할 때가 아니라 실제 이 프로세스 실행될 때 결정
 ## Heap
 
 - Sometimes, programs need to store information which is relevant across function calls, too big to fit on the stack, or of size that is unknown at compile time. 
+  - 함수 호출에 관련된 정보 저장, 스택에 맞추기에는 너무 큰 데이터, 컴파일 당시 알 수 없는 크기의 정보 저장 -> 이 경우에 heap
   - stack과의 차이점: 함수가 종료되더라도 살아있다.
-
+  
 - We would like to be able to specify that we want a block of memory of a given size to store some information. 
 - We usually do not care where the memory comes from, we are just interested in getting a block of it for our use. 
 - As a result, we abstract this service as a heap, where blocks of memory are heaped in a pile, and we can get to the block we need if we remember where we left it. 
@@ -529,7 +529,7 @@ p는 컴파일 할 때가 아니라 실제 이 프로세스 실행될 때 결정
 - **Advantages** 
   - The Heap model allows for dynamic memory allocation 
     - i.e., the size of the allocation does not have to be known at compile time. 
-  - memory on the heap stays on the heap until it is explicitly freed (either by the user or by the garbage collector),  
+  - memory on the heap **stays on the heap until it is explicitly freed** (either by the user or by the garbage collector),  
   - the heap is much larger than the stack and consists from most of the memory available to the process (the virtual memory). 
   
 - **Disadvantages** 

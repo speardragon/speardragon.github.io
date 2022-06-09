@@ -44,6 +44,8 @@ int pipe(int fd[2])
 
 ## IPC using Pipes
 
+Inter-Process Communication - process 간 통신
+
 - IPC using **regular files** 
   - unrelated processes can share 
   - fixed size 
@@ -127,7 +129,7 @@ $ pipe
 
 ## 표준 출력을 파이프로 보내기
 
-- 자식 프로세스의 표준출력을 파이프를 통해 부모 프로세스에 게 보내려면 어떻게 하여야 할까? 
+- 자식 프로세스의 표준출력을 파이프를 통해 부모 프로세스에게 보내려면 어떻게 하여야 할까? 
   - 쓰기용 파이프 디스크립터 fd[1]을 표준출력을 나타내는 1번 파일 디스크립터에 복제 
   - dup2(fd[1],1)
 
@@ -226,7 +228,7 @@ $ pexec1 date
 2012년 3월 1일 목요일 오전 11시59분44초
 ```
 
-date 명령어(argv[1])를 표준 출력으로 받았고 이를 부모 프로세스의 fd[0]에 전달이 되면 이를 읽어서 화면에 출력한다.
+date 명령어(argv[1])를 파이프에 쓰고 이를 부모 프로세스의 fd[0]에 전달이 되면 이를 읽어서 화면에 출력한다.
 
 이 때 fd[0]를 통해 읽는 것은 부모 프로세스가 표준 입력으로 입력 받는 것이 아니라 fd[0]으로 받기 때문이다.
 
@@ -335,7 +337,7 @@ int main(int argc, char* argv[])
 {
     char line[MAXLINE];
     FILE *fpin;
-    if ((fpin = popen(argv[1],"r")) == NULL) {
+    if ((fpin = popen(argv[1],"r")) == NULL) { // 자식 프로세스가 파이프로 보내는 내용 보기 위함
         perror("popen 오류");
         return 1;
     }
@@ -418,9 +420,11 @@ int main( )
 {
     int fd;
     char str[MAXLINE];
+    
     unlink("myPipe");
     mkfifo("myPipe", 0660); //myPipe 생성, 접근 권한 0660
     fd = open("myPipe", O_RDONLY); // regular file처럼 열 수 있음.
+    
     while (readLine(fd, str))
         printf("%s \n", str);
     close(fd);
@@ -453,8 +457,10 @@ int main( )
 {
     int fd, length, i;
     char message[MAXLINE];
+    
     sprintf(message, "Hello from PID%d", getpid());
     length = strlen(message)+1;
+    
     do {
         fd = open("myPipe", O_WRONLY);
         if (fd == -1) sleep(1);
@@ -504,14 +510,17 @@ Hello from PID 10717
 main() {
     int fd1, fd2, n;
     char msg[MAXLINE];
+    
     if (mkfifo("./chatfifo1", 0666) == -1) {// named pipe 생성
         perror("mkfifo");
         exit(1);
     }
+    
     if (mkfifo("./chatfifo2", 0666) == -1) {
         perror("mkfifo");
         exit(2);
     }
+    
     // 파일 이름을 명시하는 이유는 이름있는 pipe이기 때문이다.
     fd1 = open("./chatfifo1", O_WRONLY);// 클라이언트는 이것과 반대가 되어야 겠지?
     fd2 = open("./chatfifo2", O_RDONLY);// 클라이언트는 이것과 반대가 되어야 겠지?
@@ -550,8 +559,10 @@ main() {
 main() {
     int fd1, fd2, n;
     char inmsg[MAXLINE];
+    
     fd1 = open("./chatfifo1", O_RDONLY);
     fd2 = open("./chatfifo2", O_WRONLY);
+    
     if(fd1 == -1 || fd2 == -1) {
         perror("open");
         exit(1);

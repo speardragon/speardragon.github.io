@@ -73,7 +73,7 @@ CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
   - 접근 불가 메모리 접근 -> SIGSEGV 
 - **kill() 시스템 호출** 
   - 프로세스(그룹)에 시그널 보내는 시스템 호출 
-  - 프로세스의 소유자이거나 슈퍼유저이어야 한다.
+  - 프로세스의 소유자이거나 **슈퍼유저**이어야 한다.
 
 
 
@@ -85,7 +85,7 @@ CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
   - 타이머 만료 
   - SIGALRM: 알람 시계 울림 
   - SIGPIPE: 끊어진 파이프 
-  - SIGCHLD: 자식 프로세스가 끝났을 때 부모에 전달되는 시그널 
+  - SIGCHLD: **자식 프로세스가 끝났을 때 부모에 전달되는 시그널** 
   -  SIGCHLD: 자식 프로세스 종료  
   - CPU time slice expire
     - 어떤 프로세스가 CPU를 10초 동안 쓴다고 가정, (IO는 안하고) -> CPU 활용 측면에서 좋을 진 몰라도 멀티 유저 프로세스 측면에서는 좋지 않은 것이다. 이 때 CPU를 사용할 수 있는 최대 시간이 정해진 것이다.
@@ -103,6 +103,7 @@ CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
     - We should tell the kernel to call a **signal handler function** whenever the signal occurs. 
   - **Execute the default action** 
     - The default action for most signals is **to terminate**.
+    - 디폴트 액션은 종료
 
 
 
@@ -117,7 +118,8 @@ CPU 내부에서 발생하는 interrupt를 software interrupt라고 한다.
   - 프로세스의 가상 메모리 이미지 포함, 
   - 프로세스 종료 시점의 상태 점검을 위해 디버거가 사용 
 - 프로세스 중지(suspend) 
-- Stopped 프로세스 계속(resume)
+- Stopped 
+- 프로세스 계속(resume)
 
 <br>
 
@@ -266,12 +268,12 @@ unsigned int alarm(unsigned int sec)
 
 - Set a timer that will expire at a specified time in the future. 
   - sec초 후에 프로세스에 SIGALRM 시그널이 발생한다. 
-  - 이 시그널을 받으면 ―자명종 시계" 메시지를 출력하고 프로그램은 종료된다
+  - 이 시그널을 받으면 "자명종 시계" 메시지를 출력하고 프로그램은 종료된다
 
 ![image](https://user-images.githubusercontent.com/79521972/169324027-7b9bd600-086b-4078-83aa-f1b5401dd06f.png)
 
 - alarm(0) 
-  - 이전에 설정된 알람은 취소된다. 
+  - 이전에 설정된 알람이 취소된다. 
 
 - Default action is to terminate the process, but most processes catch this signal. 
   - default action은 프로세스를 종료하지만 대부분 프로세스는 user defined handler 실행
@@ -298,7 +300,7 @@ int main( )
     printf("무한 루프 \n");
     while (1) { 
         sleep(1); 
-        printf(―%d초 경과 \n―, ++sec);
+        printf("%d초 경과 \n", ++sec);
     }
     printf("실행되지 않음 \n"); 
 } 
@@ -341,7 +343,7 @@ signal(int signo, void (*func)( )))
   - **SIG_IGN** : 시그널 무시 
     - -> all signals can be ignored, except SIGKILL and SIGSTOP 
   - **SIG_DFL** : 기본 처리 
-  - **사용자 정의 함수 이름** -> most are to terminate process
+    - **사용자 정의 함수 이름** -> most are to terminate process
 
 <br>
 
@@ -355,12 +357,12 @@ void alarmHandler();
 int main( )
 { 
     int sec = 0;
-    signal(SIGALRM,alarmHandler); //사용자 정의 핸들러 함수 등록
+    signal(SIGALRM,alarmHandler); //사용자 정의 핸들러 함수 등록- > SIGALRM을 다음 함수로 처리
     alarm(5); /* 알람 시간 설정 */
     printf("무한 루프 \n");
     while (1) {
         sleep(1);
-        printf(―%d초 경과 \n―, ++sec);
+        printf("%d초 경과 \n", ++sec);
     }
     printf("실행되지 않음 \n");
 }
@@ -406,7 +408,7 @@ int main( )
 void intHandler(int signo)
 {
     printf("인터럽트 시그널 처리\n");
-    printf(―시그널 번호: %d\n―, signo);
+    printf("시그널 번호: %d\n", signo);
     exit(0);
 }
 ```
@@ -435,6 +437,8 @@ pause()
   - SIGKILL이나 SIGSTOP은 catch할 수 없는 signa이기 때문에 해당 signal에 대한 handler를 만드는 것은 의미가 없다.(make no sense)
 
 - The handler function **must return void**, which makes sense because (unlike with normal functions) <mark>there is no standard place in the program for this function to return</mark>
+  - 돌아갈 곳이 없기 때문에 (부른 곳이 명확치 않아)
+
 
 <br>
 
@@ -569,8 +573,8 @@ signal handler를 user defined handler로 지정하지 않은 경우(SIG_DFL, SI
 ## Ex2
 
 ```c
-include <signal.h> /* sigusr.c */
-    static void sig_usr(int signo) { /* argument is signal number */
+#include <signal.h> /* sigusr.c */
+static void sig_usr(int signo) { /* argument is signal number */
     if (signo == SIGUSR1)
         printf("received SIGUSR1\n");
     else if (signo == SIGUSR2)
@@ -711,7 +715,7 @@ Ctrl-C를 눌러보세요!
 
 - When a process is first executed, **all signals** are set to their **default actions**, unless the parent process is ignoring them; in this case, the newly created process will also **ignore** those signals. 
   - Put another way, any signal caught by the parent is reset to the **default action** in the new process, and all other signals remain the same. 
-    - 사용자 정의도 defaul로 세팅된다.
+    - 사용자 정의도 default로 세팅된다.
     - This makes sense because a freshly executed process **does not share the address space of its parent**, and thus any registered signal handlers may not exist. 
 - When a process calls fork( ), the child **inherits** the exact same signal semantics as the parent. 
   - This also makes sense, as the child and parent share an address space, and thus the parent‘s signal handlers exist in the child
@@ -725,3 +729,4 @@ Ctrl-C를 눌러보세요!
 - It is therefore common for programs that handle these signals to first check to make sure they are not ignored
 
 <br>
+

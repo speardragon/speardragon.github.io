@@ -501,8 +501,7 @@ Hello stdout !
 #include <stdio.h>
 #include <fcntl.h>
 
-/* 자식 프로세스의 표준 출력을 파일
-에 재지정한다. */
+/* 자식 프로세스의 표준 출력을 파일에 재지정한다. */
 int main(int argc, char* argv[])
 {
     int child, pid, fd, status;
@@ -715,7 +714,6 @@ CHILD: PID = 17769 GID = 17769
   - pid > 0 : 자식 프로세스 pid가 종료하기를 기다린다. 
   - pid == 0 : 호출자와 같은 프로세스 그룹 내의 어떤(아무) 자식 프로세스가 종료하기를 기다린다. 
   - pid < -1 : pid의 절대값과 같은 프로세스 그룹 내의 어떤 자식 프로세스가 종료하기를 기다린다.
-
 
 
 
