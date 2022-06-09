@@ -35,7 +35,7 @@ tag: ['System Programming', 'File System']
       - 하드디스크는 너무 느려서 하드디스크에서 데이터를 읽거나 쓸 때는 block 단위로 (512바이트) 가져오게 된다.
     - 하드디스크 조각이 많아지면 파일을 찾을 때 저장 공간을 찾기 위해 막 찾아다녀야 하기 때문에 이럴 때 효율성이 많이 떨어진다.
   
-  - fragment: 사용하지 않지만 사용하기엔 size가 작은 공간 -> 이러한 공간을 낭비하지 않도록 해야함.
+  - fragment: 사용하지 않지만 사용하기엔 size가 작은 공간 -> 이러한 공간을 낭비하지 않도록 해야 함.
   
     - 가상 공간으로 해결?
   
@@ -292,7 +292,7 @@ logical file system 부터 devices까지가 file system이다.
   - 파일 소유자 및 그룹 (e.g. obama) 
   - 마지막 접근 및 갱신 시간
   - <mark>일반 파일: 데이터 블록에 대한 포인터(주소, 위치정보) </mark>
-    - i-노드에서 데이터 블럭이 어디있는지의 주소를 포함하고 있다.
+    - i-노드에서 데이터 블럭이 어디 있는지의 주소를 포함하고 있다.
   - 스페셜 파일: device number (e.g. /dev/hda0) 
   - **접근 위치** (e.g. offset) 
   - …
@@ -367,7 +367,7 @@ logical file system 부터 devices까지가 file system이다.
 
 첫 번째 찾아간 것이 logical block number가 0인 것이고 두 번째 찾아간 것이 logical block number가 1인 것이다...
 
-따라서 배열의 원소가 physical block number 인 것이고 배열의 index를 logical block number인 것이다.
+따라서 배열의 원소가 physical block number 인 것이고 배열의 index가 logical block number인 것이다.
 
 - 그래서 왜 physical number를 거치는 것이지 ?? -> 
 
@@ -915,11 +915,6 @@ hello world
 
 standard 출력이 가리키는 것이 모니터가 아니라 file이기 때문에 실행 파일을 실행해도(`./a.out`)를 해도 printf의 결과가 STDOUT이기 때문에 출력이 되지 않지만 
 cat명령어로 해당 파일을 열어보면 해당 내용은 잘 출력된다.
-
-
-
-
-
 
 
 
