@@ -162,7 +162,7 @@ chang 8793 0.0 0.0 4252 940 pts/3 R+ 11:15 0:00 ps u
 
 - ps [-옵션] 명령어 
 
-- 현재 존재하는 프로세스들의 실행 상태를 요약해서 출력 
+- 현재 존재하는 프로세스들의 실행 상태를 **요약해서** 출력 
   ```shell
   PID TTY TIME CMD
   25435 pts/3 00:00:00 csh
@@ -230,18 +230,18 @@ chang 8976 0.0 0.0 4252 940 pts/3 R+ 11:24 0:00 ps aux
 int a,b;
 int glob_var = 3;
 void test_func(void) {
-     int local_var, *buf;
+    int local_var, *buf;
 
-     buf = (int *) malloc(10,000 * sizeof(int));
-     …
-    }
-    int main(int argc, char *argv[]) {
-     int i = 1;
-     int local_var;
+    buf = (int *) malloc(10,000 * sizeof(int));
+    …
+}
+int main(int argc, char *argv[]) {
+    int i = 1;
+    int local_var;
 
-     a = i + 1;
-     printf("value of a = %d\n", a);
-     test_func();
+    a = i + 1;
+    printf("value of a = %d\n", a);
+    test_func();
 }
 ```
 
@@ -261,7 +261,8 @@ $ ./test_program
 
 
 
-- \* bss: Block Started by Symbol PCB: Process Control Block
+- \* bss: Block Started by Symbol 
+- PCB: Process Control Block
 - 프로그램(or definition): 하드디스크에 program image로 저장 되어 있음\
 - 프로세스: 
   - 빨간 부분이 프로그램이 컴파일할 때 만들어지는 부분이고 stack과 heap 영역은 program에도 존재하긴 하지만 실제 내용이 만들어지는 것은 process화 된 이후이다.
@@ -271,7 +272,7 @@ $ ./test_program
 
 ## sleep
 
-shell 명령어에서의 (sleep, wait, kill) vs. 시스템 콜에서의 sleep, wait, kill) 
+shell 명령어에서의 (sleep, wait, kill) vs. 시스템 콜에서의 (sleep, wait, kill) 
 
 - 둘 간의 차이는 shell 명령어는 prompt 창에서 실행을 시키지만 시스템 콜은 프로그램 안에서 실행시킨다.
 
@@ -479,7 +480,7 @@ argv[2]:world
 
 ```c
 #include <stdio.h>
-/* 젂역변수 environ 을 이용해 모든 홖경 변수를 출력한다. */
+/* 전역변수 environ 을 이용해 모든 환경 변수를 출력한다. */
 int main(int argc, char *argv[])
 {
     char **ptr; // local variable, 이중 포인터 
@@ -523,7 +524,7 @@ char *getenv(const char *name);
 ```c
 #include <stdio.h>
 #include <stdlib.h>
-/* 홖경 변수를 3개 프릮트한다. */
+/* 환경 변수를 3개 프릮트한다. */
 int main(int argc, char *argv[])
 {
      char *ptr;
@@ -681,7 +682,6 @@ void atexit(void (*func)(void));
 
 
 
-
 <br>
 
 ## exit 처리기 예
@@ -724,20 +724,19 @@ main 끝
 ## Termination status  (Exit status)
 
 - Terminating process notify its parent how it terminated. 
-  - 프로세스가 종료될 때는 parent process에게 어떠한 이유로 종료되었는지를 통보하게 된다.
+  - 프로세스가 종료될 때는 parent process에게 어떠한 **이유로** 종료되었는지를 통보하게 된다.
 
 - **normal termination** 
   - pass an **exit status** as argument to exit() or _exit(). 
   - return value from main() 
     - exit( main( argc, argv) ); 
     - void exit(int status);       void _exit(int status); 
-  - exit status is converted into a termination status. 
+  - exit status is converted into a **termination status**. 
 - **abnormal termination** 
   - Kernel generates a **termination status**(종료 이유) to indicate the reason for the abnormal termination. 
 - The parent of the terminated process can obtain the termination status from **wait()** or **waitpid()**.
   - wait(): 자식 프로세스 종료
   - waitpid(): 특정 프로세스 종료
-
 
 
 
@@ -778,7 +777,7 @@ main 끝
     - PID, termination status, and CPU usage time 
     - This information is available when parent calls wait(). 
   - the process that has terminated, but whose parent has not yet waited for it, is called a **zombie**. 
-    - 자식 process가 종료가 되었는데 이 프로세스의 parent process가 wait system call을 호출하지 않은 경우에 종료된 process를 zombie process라고 한다.
+    - 자식 process가 종료가 되었는데 이 프로세스의 parent process가 **wait system call을 호출하지 않은 경우**에 종료된 process를 **zombie process**라고 한다.
     - If no parent waiting (did not invoke **wait()**) process is a **zombie** 
   - If parent terminated without invoking **wait** , process is an **orphan** 
 - If the parent terminates before the child? 

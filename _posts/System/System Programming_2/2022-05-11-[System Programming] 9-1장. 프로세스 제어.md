@@ -287,7 +287,7 @@ $
 - Two uses for fork (왜 fork를 하는가?)
   - A process wants to duplicate itself. 
     - Parent and child can each execute different sections of code at the same time. 
-    - Common for network servers. 
+    - Common for **network servers.** 
   - A process wants to execute a different program. 
     - Common for shells. 
     - Child does exec() right after it returns from fork().
@@ -316,6 +316,19 @@ $ ls
 $ a.out
 ….
 $
+```
+
+```
+while(true){
+	display prompt
+	read command(command, params)
+	if (fork()!=0) then {
+		wait(&status);
+		exit()
+	}
+	else
+		exec(command, params)
+}
 ```
 
 
@@ -654,7 +667,6 @@ pid_t waitpid (pid_t pid, int *status, int options);
   - As with WUNTRACED, this flag is useful for implementing a shell 
 - wait (&status); 
   - is identical to waitpid (-1, &status, 0);
-
 
 <br>
 

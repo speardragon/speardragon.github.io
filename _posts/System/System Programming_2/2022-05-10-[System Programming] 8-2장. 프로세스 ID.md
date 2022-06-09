@@ -44,6 +44,8 @@ int main()
 
 shell prompt에 pid 실행파일을 치면 나의 프로세스는 pid process가 되는 것이고 나의 부모 process는 shell process가 되는 것이다.
 
+get parent pid -> getppid()
+
 <br>
 
 ## Process identifiers
@@ -117,7 +119,7 @@ process id는 고정적인 번호가 아닌데 0,1,2 번은 고정되어 있다.
 
 ## 프로세스의 사용자 ID(uid)
 
-- 프로세스는 프로세스 ID 외에 
+- **프로세스는 프로세스 ID 외에** 
 - 프로세스의 사용자 ID와 그룹 ID를 갖는다. 
   - 그 **프로세스를 실행시킨 사용자**의 ID와 사용자의 그룹 ID 
   - 프로세스가 수행할 수 있는 연산 권한 (예:파일 사용권한)을 결정 하는 데 사용된다. 
@@ -269,7 +271,7 @@ struct group *getgrgid(gid_t gid);
 - Comment 
   - 사용자에 대한 설명 
 - Home directory 
-  - 로그인하면 최초 존재하는 디랙토리 
+  - 로그인하면 최초 존재하는 디렉토리 
   - HOME 환경 변수의 값 
 - Login shell
   - 쉘 프로그램의 종류 
@@ -345,6 +347,7 @@ Stick bit의 사용
   - But, effective user(group) ID **can be different** from the real user(group) ID, 
     - In the case of executing programs with the setuid(setgid) bit set. 
       - 이에 대해서 아래에서 설명하도록 하겠다.
+      - set user id bit set을 가진 프로그램을 실행하는 경우
     - **In the case of calling system call: setuid(). setgid()** 
       - 원래 둘이 같았었는데 직접 변경한 경우
 
@@ -382,7 +385,7 @@ s가 set-user-ID가 세팅 되었음을 의미한다.
 ## Ownerships of new files
 
 - When a file is created using open or creat 
-  - Generally, **the user ID of a new file** is set to the effective user ID of the process
+  - Generally, **the user ID of a new file** is set to the **effective user ID** of the process
 
 ![image](https://user-images.githubusercontent.com/79521972/168038789-911fc7e3-a32d-49ec-8862-56af3bb6e34b.png)
 
@@ -490,11 +493,11 @@ $ uid
 ## 핵심 개념
 
 - 프로세스는 실행중인 프로그램이다. 
-- 쉘은 사용자와 운영체제 사이에 창구 역할을 하는 소프트웨어로 사 용자로부터 명령어를 입력받아 이를 처리하는 명령어 처리기 역할을 한다. 
-- 프로그램이 실행되면 프로그램의 시작 루틴에게 명령줄 인수와 홖경 변수가 젂달된다. 
+- 쉘은 사용자와 운영체제 사이에 창구 역할을 하는 소프트웨어로 사용자로부터 명령어를 입력받아 이를 처리하는 명령어 처리기 역할을 한다. 
+- 프로그램이 실행되면 프로그램의 시작 루틴에게 명령줄 인수와 환경 변수가 전달된다. 
 - exit()는 뒷정리를 한 후 프로세스를 정상적으로 종료시키고 _exit()는 뒷정리를 하지 않고 프로세스를 즉시 종료시킨다. 
-- exit 처리기는 exit()에 의한 프로세스 종료 과정에서 자동으로 수행된 다. 
-- 각 프로세스는 프로세스 ID를 갖는다. 각 프로세스는 자싞을 생성해 준 부모 프로세스가 있다. 
+- exit 처리기는 exit()에 의한 프로세스 종료 과정에서 자동으로 수행된다. 
+- 각 프로세스는 프로세스 ID를 갖는다. 각 프로세스는 자신을 생성해 준 부모 프로세스가 있다. 
 - 각 프로세스는 실제 사용자 ID와 유효 사용자 ID를 가지며 실제 그룹 ID와 유효 그룹 ID를 갖는다. 
 - 프로세스 이미지는 텍스트(코드), 데이터, 힙, 스택 등으로 구성된다.
 
