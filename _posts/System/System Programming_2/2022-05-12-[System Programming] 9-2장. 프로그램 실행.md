@@ -57,10 +57,10 @@ if ((pid = fork()) == 0 ){
 <br>
 
 - exec() 호출이 성공하면 리턴할 곳이 없어진다. 
-  - 부모 프로세스와의 connection이 끊어졌기 때문에
+  - 부모 프로세스와의 connection이 끊어졌기 때문에 리턴값을 받을 수 없음
 
-- 성공한 exec() 호출은 절대 리턴하지 않는다. 
-  - 실패한 경우에만 리턴함.
+- 성공한 exec() 호출은 **절대 리턴하지 않는다.** 
+  - 실패한 경우에만 리턴함. (새로운 프로그램을 실행하지 않았기 때문)
 
 
 ```c
@@ -85,8 +85,8 @@ file: current working directory 기준으로 한 파일
   - pathname(filename) of a file to be executed. 
   - execl, execv, execle, execve take a pathname argument. 
   - execl**p**, execv**p** take a filename argument. 
-    - If filename contains a '/', it is taken as a pathname. 
-    - Otherwise, the executable file is searched for in the directories specified by PATH. E.g. PATH=/bin:/usr/bin:/usr/local/bin/:.
+    - If **filename** contains a '/', it is taken as a pathname. 
+    - **Otherwise**, the executable file is searched for in the directories specified by **PATH**. E.g. PATH=/bin:/usr/bin:/usr/local/bin/:.
 
 - Argument list 
   - arg0, arg1, ..., argn in the execl, execlp, and execle. 
@@ -100,7 +100,7 @@ file: current working directory 기준으로 한 파일
     - execv("/bin/ls", argv);
   
 - Environment variable 
-  - *envp[] in execve and execle 
+  - *envp[] in execv**e** and execl**e** 
   - A pointer to an array of pointers to the **environment strings**. 
   - The other functions use the environ variable. 
     - char *env[2] = {"TERM=vt100", 0}; 
@@ -165,7 +165,7 @@ hello
 부모 프로세스 끝
 ```
 
-exec()이 성공했단 의미는 자식 프로세스의 공간이 echo 프로그램으로 대치되었기 때문에 그 아래 문장은 모두 없어진다는 뜻이다.
+exec()이 성공했단 의미는 자식 프로세스의 공간이 echo 프로그램(echo.c)으로 대치되었기 때문에 그 아래 문장은 모두 없어진다는 뜻이다.
 
 <br>
 
@@ -220,6 +220,7 @@ int main(int argc, char *argv[])
 {
     int child, pid, status;
     pid = fork( );
+    
     if (pid == 0) { // 자식 프로세스
         execvp(argv[1], &argv[1]); // 부모 프로세스의 argument을 다시 전달
         fprintf(stderr, "%s:실행 불가\n",argv[1]); 
@@ -240,7 +241,7 @@ $ execute3 wc you.txt
 
 ![image](https://user-images.githubusercontent.com/79521972/168190749-2a32586c-1aef-43e5-b8f4-3aa1d89494b9.png)
 
-
+자식 프로세스의 종료는 exec() 호출이 되면 그 안에서 되는 것임
 
 <br>
 
@@ -267,7 +268,7 @@ int main(void)
     if ((pid = fork()) < 0) {
         err_sys("fork error");
     } else if (pid == 0) { /* specify filename, inherit environment */
-        if (execlp("echoall", "echoall", "only 1 arg", (char *)0) < 0)
+        if (execlp("echoall", "echoall", "only 1 arg", (char *)0) < 0)//환경변수로 찾아감
             err_sys("execlp error");
     }
     exit(0);
@@ -276,7 +277,7 @@ int main(void)
 
 <br>
 
-- echoall
+- 자식이 실행하는 echoall 프로그램
 
 ```c
 #include "apue.h"
@@ -315,8 +316,13 @@ HOME=/home/sar
 ## system()
 
 - fork()와 wait()을 합친 시스템 콜
-- Both ANSI C and POSIX define an interface that couples spawning a new process and waiting for its termination —think of it as **synchronous process creation**. 
+- Both ANSI C and POSIX define an interface that couples spawning a new process 
+- and waiting for its termination
+  - think of it as **synchronous process creation**. 
+
 - If a process is spawning a child only to immediately wait for its termination, it makes sense to use this interface 
+  - 바로 wait하는 경우 굳이 생성(fork)과 wait를 분리할 필요가 없어짐 -> 하나의 system()으로 대체
+
 - It is common to use system( ) to run a simple utility or shell script, often with the explicit goal of simply obtaining its return value
 
 <br>
@@ -361,7 +367,7 @@ int system(const char *cmdstring)
             if (errno != EINTR) { 	/* 오류 원인 시스템변수 errno로 전달 */
  				status = -1; 		/* waitpid()로부터 EINTR외의 오류 */
                 break; 				/* EINTR은 시스템 호출중 인터럽트에 의해 수행이 중단된 오류*/
-            }               
+            }               		/*수행이 중단된 오류*/
     }
     return(status);
 }
@@ -545,9 +551,10 @@ $ cat out
 
 <br>
 
-- Each process is owned by a **user** and a group 
-- Each process is also part of a process group, which simply expresses its relationship to other processes, and must not be confused with the aforementioned user/group concept
-- "userid라는 유저 아이디를 가진 유저가 만든 프로세스 그룹"
+- Each process is owned by a **user** and a **group** 
+- Each process is also part of a **process group**, which simply expresses its relationship to other processes, and must **not be confused with the aforementioned user/group concept**
+  - "userid라는 유저 아이디를 가진 유저가 만든 프로세스 그룹"과 혼동 노노
+
 
 
 
@@ -573,10 +580,12 @@ $ cat out
 ## Process groups
 
 - Process group ID 
-  - Each process group has a unique PGID. 
-  - Each process group can have the process group leader, whose PID equals its PGID. 
-    - 프로세스 그룹 리더: Process GID = PID 
+  - Each process group has a unique **PGID.** 
+  - Each process group can have the **process group leader**, whose PID equals its PGID. 
+    - 프로세스 그룹 리더: Process GID = PID (리더의 PID)
 - The process group **exists**, as long as there is at least one process in the group, **regardless whether the group leader terminates or not.**
+  - 리더가 없어도 프로세스 그룹 존재 O
+
 
 ```shell
 $ ps -o pid,ppid,pgid,comm | cat
@@ -597,7 +606,7 @@ ps와 cat은 하나의 job을 형성하니까 동일 process group id를 갖고 
   - 프로세스 ID(PID) 
   - 프로세스 그룹 ID(GID) 
   - 각 프로세스는 하나의 프로세스 그룹에 속함. 
-  - 각 프로세스는 자신이 속한 프로세스 그룹 ID를 가지며 fork 시 물려받는다. 
+  - 각 프로세스는 자신이 속한 프로세스 그룹 ID를 가지며 fork() 시 물려받는다. 
 
 ```c
 #include <sys/types.h>
@@ -616,6 +625,9 @@ pid_t getpgid(pid_t pid);
 ```
 
 - Return the process group ID of the process with pid. 
+  
+  - 주어진 pid가 속한 프로세스 그룹의 PGID
+  
   - If pid is 0, return the process group ID of the calling process. 
     - getpgid(0); is equivalent to getpgrp();
 
@@ -645,6 +657,10 @@ CHILD: PID = 17769 GID = 17768
 
 parent process와 child process는 동일 process group에 속한다.
 
+parent는 프로세스 그룹의 리더이지만
+
+child는 리더는 아니다 (PID와 GID가 다르기 때문)
+
 <br>
 
 ## 프로세스 그룹
@@ -654,7 +670,9 @@ parent process와 child process는 동일 process group에 속한다.
   - int setpgid(pid_t pid, pid_t pgid); 
 - 프로세스 그룹 소멸 
   - the last process terminates OR 
+    - 프로세스 그룹에 속한 프로세스가 다 종료하여 아무것도 없을 때
   - joins another process group 
+    - 그룹을 떠났을 때
 
 ```c
 #include <sys/types.h>
@@ -670,7 +688,7 @@ int setpgid(pid_t pid, pid_t pgid);
   - pid == 0 ->  호출자의 PID 사용 
   - pgid == 0  ->  새로운 그룹 리더가 됨 
 
-- 호출자가 새로운 프로세스 그룹을 생성하고 그룹의 리더 
+- 호출자가 새로운 프로세스 그룹을 생성하고 그룹의 리더가 된다.
   - setpgid(getpid(), getpid()); 
   - setpgid(0,0);
 
@@ -706,9 +724,9 @@ CHILD: PID = 17769 GID = 17769
 ## 프로세스 그룹 사용
 
 - 프로세스 그룹 내의 모든 프로세스에 시그널을 보낼 때 사용 
-  - $ kill –9 pid          // 9번 시그널 SIGKILL 
-  - $ kill –9 0             // 현재 속한 프로세스 그룹 내의 모든 프로세스에게 시그널을 보내 종료시킴 
-  - $ kill –9 –pid        // –pid 는 프로세스그룹 pid에 속한 모든 프로세스에게 시그널을 보내 종료시킴 
+  - $ kill –9 pid          // 9번 시그널 SIGKILL -> pid에게 보냄 
+  - $ kill –9 0             // 현재 속한 프로세스 그룹 내의 모든 프로세스에게 시그널을 보내 종료 시킴 
+  - $ kill –9 –pid        // –pid 는 프로세스 그룹 pid에 속한 모든 프로세스에게 시그널을 보내 종료 시킴 
 - pid_t waitpid(pid_t pid, int *status, int options); 
   - pid == -1 : 임의의 자식 프로세스가 종료하기를 기다린다. 
   - pid > 0 : 자식 프로세스 pid가 종료하기를 기다린다. 

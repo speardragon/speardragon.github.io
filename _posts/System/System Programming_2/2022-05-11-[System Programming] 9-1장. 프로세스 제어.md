@@ -14,6 +14,7 @@ tag: ['Process control']
   - 이 프로세스의 유효 사용자 ID는 그 실행파일의 소유자로 바뀜. 
     - 프로세스의 실제 사용자 ID (real user ID)는 그 프로세스를 실행한 원래 사용자의 사용자 ID로 설정된다. 
     - 예를 들어 chang이라는 사용자 ID로 로그인하여 어떤 프로그램을 실행 시키면 그 프로세스의 실제 사용자 ID는 chang이 된다. 
+      - effective ID는 chang이 아니라 그 파일의 소유자
   - 이 프로세스는 실행되는 동안 그 파일의 소유자 권한을 갖게 됨. 
 - 예 : /usr/bin/passwd 명령어 실행 파일 
   - set-user-id 실행권한이 설정된 실행파일이며 소유자는 root 
@@ -62,6 +63,7 @@ pid_t fork(void);
   - Child gets a copy of the parent‘s data, heap, and stack. 
 
   - Parent and child often share the text segment.
+    - 실행 중에 코드는 수정되지 않기 때문에
   
   - data, heap, stack은 공유하지 않는다.
     - global 변수는 data 영역이기 때문에 이를 공유하지 않는 것
@@ -95,7 +97,7 @@ heap 구역은 동적 변수가 들어가는 곳
   - 자식 프로세스에게는 0을 리턴하고 
   - 부모 프로세스에게는 자식 프로세스 ID를 리턴한다. 
   - 부모 프로세스와 자식 프로세스는 병행적(concurrently)으로 각각 fork() 이후 문장의 실행을 계속한다.
-  - 즉, tread control이 두 개 이상이 된다.
+  - 즉, thread control이 두 개 이상이 된다.
 
 
 
@@ -279,7 +281,7 @@ $
   - the return value from fork. 
   - PID and PPID 
   - child‘s resource utilizations are set to 0. 
-  - pending signals - signal 그 자체는 공유 x
+  - pending signals - signal handler는 공유되지만 signal 그 자체는 공유 x
 
 - Two main reasons for fork to fail 
   - if there are already too many processes in the system. 
@@ -356,7 +358,7 @@ while(true){
 - A process that calls wait() or waitpid() 
   - Block, if all of its children are still running. 
   - Return immediately if a child has terminated. 
-  - Return immediately with an error, if it doesn't have any child processes.
+  - Return immediately with an error, if it doesn't have any child processes.(부모 프로세스가 child 프로세스를 생성하지 않았을 때)
     - fork를 하지 않고 wait -> 즉시 return
 
 ![image](https://user-images.githubusercontent.com/79521972/168042761-9c5f5129-89a4-41d8-9aa4-eca3704d3c21.png)
@@ -399,8 +401,8 @@ pid_t wait(int *statloc);
   - If the caller blocks and has multiple children, wait returns when one terminates. 
 - statloc argument 
   - Pointer to integer 
-  - Store termination status (in case of normal termination) in the location pointed to by staloc. 
-    - And signal number (abnormal termination) 
+  - Store termination **status** (in case of normal termination) in the location pointed to by staloc. 
+    - And **signal number** (abnormal termination) 
       - 왜 비정상 종료가 되었는지를 나타내는 정보
     - And if core file was created
 
@@ -440,23 +442,23 @@ $ forkwait
 
 ## macros for interpreting the termination status
 
-매크로 함수
+termination status를 해석하기 위한 매크로 함수 - WIF
 
 - If not NULL, the status pointer contains additional information about the child (how the process terminated) 
 - #include  \<sys/wait.h>
 - WIFEXITED (status); 
-  - returns true if the child process terminated normally 
-  - 정상적으로 종료한 경우에 참(TRUE) 값을 리턴 
+  - returns true if the child process terminated **normally** 
+  - 정상적으로 종료한 경우에 참(**TRUE**) 값을 리턴 
   - WEXITSATUS(status) 
     - WIFEXITED()가 True이면 exit 함수의 인자에서 하위 8 비트 값을 리턴 
 - WIFSIGNALED (status); 
   - returns **true** if a signal that it **did not catch** caused the child process‘ termination (abnormal) 
-  - WTERMSIG(status) : if WIFSIGNALED is True, fetch the signal number that caused the termination.
+  - WTERMSIG(status) : if WIFSIGNALED is True, **fetch the signal numbe**r that caused the termination.
 
 
 
 - WIFSTOPPED (status); 
-  - Child 프로세스가 실행이 일시 중단된 경우에 참 값을 리턴 
+  - Child 프로세스가 실행이 **일시 중단**된 경우에 참 값을 리턴 
   - WSTOPSIG(status) 
     - if WIFSTOPPED is True, Child 프로세스의 실행을 일시 중단시킨 시그널 번호를 리턴 
 - WIFCONTINUED (status); 
@@ -466,9 +468,9 @@ $ forkwait
 <br>
 
 - A process that calls wait or waitpid can 
-  - block (if all of its children are still running), or 
+  - **block** (if all of its children are **still running**), or 
     - wait() is called at any random point in time 
-  - return immediately with the termination status of a child, (SIGCHLD-asynchronous notification) or 
+  - **return** immediately with the termination status of a child, (SIGCHLD-asynchronous notification) or 
     - 예를 들어 zombie process 같은 경우
   - return immediately with an error (**if it doesn‘t have any child processes**) errno value: 
   - **ECHILD** - The calling process does not have any children.
@@ -567,7 +569,7 @@ int main (void){
     
     if (!fork ( )) //child
         return 1;
-    pid = wait (&status);
+    pid = wait (&status); //parent
     
     if (pid == -1) //error
         perror ("wait");
@@ -624,11 +626,11 @@ pid_t waitpid (pid_t pid, int *status, int options);
   - a process has multiple children, and does not wish to wait for all of them, but **rather for a specific child process** 
   - wait() returns on termination of any of the children. 
 - One solution would be to make multiple invocations of wait( ), each time noting the return value 
-  - wait() 여러번 호출 -> 번거로움
+  - wait() 여러번 호출하면서 자기가 생성한 것이 맞는지 확인 -> 번거로움
 
 - If you know the pid of the process you want to wait for, you can use the waitpid( ) system call 
 - The waitpid( ) call is a more **powerful** version of wait( ). Its additional parameters allow for fine-tuning 
-  - Provides some controls with options argument
+  - Provides some controls with **options** argument
 
 <br>
 
@@ -652,7 +654,7 @@ pid_t waitpid (pid_t pid, int *status, int options);
 ### waitpid option parameter
 
 - The status parameter works identically to the sole parameter to wait( ) 
-- **부모 프로세스의 대기 방법** 
+- option - > **부모 프로세스의 대기 방법** 
 - **WNOHANG** 
   - **Do not block**, but **return** immediately **if no matching child process has already terminated** (or stopped or continued) 
     - if a child specified by pid is not terminated. 
@@ -662,11 +664,12 @@ pid_t waitpid (pid_t pid, int *status, int options);
   - 실행을 중단한 자식 프로세스의 상태값을 리턴 
   - This flag allows for the implementation of more general job control, as in a shell.
 - WCONTINUED 
-  - If set, WIFCONTINUED is set even if the calling process is not tracing the child process. 
+  - If set, WIFCONTINUED is set even if the calling process is **not tracing** the child process. 
   - 수행중인 자식 프로세스의 상태값 리턴 
   - As with WUNTRACED, this flag is useful for implementing a shell 
 - wait (&status); 
   - is identical to waitpid (-1, &status, 0);
+  - 0 -> no option
 
 <br>
 
@@ -741,8 +744,8 @@ else {
   - 좀비 프로세스는 프로세스 테이블에만 존재 
 - Zombie processes continue to consume system resources 
 - wait() returns immediately with that child‘s status 
-- These resources remain so that parent processes that want to check up on the status of their children can obtain **information** relating to the **life** and **termination of those processes**. 
-- Once the parent does so, the kernel cleans up the process for good and the zombie ceases(stop) to exist.
+- These resources remain so that parent processes that want to **check up** on the status of their children can obtain **information** relating to the **life** and **termination of those processes**. 
+- Once the parent does so, the kernel **cleans up** the process for good and the zombie ceases(stop) to exist.
 
 <br>
 
@@ -765,7 +768,7 @@ int main()
         exit(1);
     }
 
-    pid2 = fork();
+    pid2 = fork(); // 자식 프로세스가 돌고 있는 도중에도 이를 실행
     if (pid2 == 0) {
         printf("[%d] 자식 프로세스 [2] 시작 \n", getpid( ));
         sleep(2);
@@ -801,11 +804,12 @@ sleep이 영향을 미친다.
 - 자식은 부모의 fd 테이블을 복사한다. 
   - 부모와 자식이 **같은 파일 디스크립터를 공유** (FD table, U area 복사) 
   - 같은 파일 오프셋을 공유 
-  - 부모와 자식으로부터 출력이 서로 섞이게 됨 
+  - 부모와 자식으로부터 출력이 서로 **섞이게 됨** 
 - 자식에게 상속되지 않는 성질 
   - fork()의 반환값 
+    - 리턴을 두 번 함
   - 프로세스 ID
-  -  부모 프로세스가 설정한 프로세스 잠금, 파일 잠금 
+  - 부모 프로세스가 설정한 프로세스 잠금, 파일 잠금 
   - 설정된 알람과 시그널
 
 
@@ -818,7 +822,9 @@ sleep이 영향을 미친다.
 
 자식 프로세스가 생성되면 동일한 내용의 file descriptor를 그대로 복사하고 open file table 뒷단은 모두 공유하게 된다.(같은 곳을 가리킴)
 
-같은 open file entry를 공유하기 때문에 부모와 자식으로부터 출력이 서로 섞일 수 있음
+- per process table
+
+같은 open file entry를 공유하기 때문에 파일 오프셋이 공유되어 둘이 같이 파일을 작성하면 부모와 자식으로부터 출력이 서로 섞일 수 있음
 
 <br>
 
@@ -827,15 +833,16 @@ sleep이 영향을 미친다.
 fork() 의 효율성을 높이기 위한 방법
 
 - Copy-on-write is a **lazy optimization strategy** designed to mitigate the overhead of duplicating resources. 
-  - duplication을 가능한한 지연
+  - 자식의 duplication을 가능한한 지연
 
 - The premise is simple: 
-  - if multiple consumers request **read access** to their own copies of a resource, **duplicate** copies of the resource need not be made. Instead, each consumer can be handed a pointer to the same resource. 
-    - So long as no consumer attempts to modify its "copy" of the resource, the illusion of exclusive access to the resource remains, and the overhead of a copy is avoided. 
+  - if multiple consumers request **read access** to their own copies of a resource, **duplicate** copies of the resource need not be made. Instead, each consumer **can be handed a pointer** to the **same resource**. (처음부터 fork하면 바로 copy하지 않도록 -> 같은 resource로 포인트로 hand)
 
-  - If a consumer does attempt to **modify** its copy of the resource, at that point, the resource is transparently duplicated, and the copy is given to the modifying consumer
+- So long as no consumer attempts to modify its "copy" of the resource, the illusion of exclusive access to the resource remains, and the overhead of a copy is avoided. 
+  - 자기 만의 resource를 가진다고 착각
 
-- modify가 일어나지 않은 경우에는 한 개의 copy만 공유하도록 하고 만약 두 프로세스 중에서 한 프로세스가 modify 하게 되면 그제서야 비로소 lazy하게 뒤늦게 copy를 만들어준다.
+- If a consumer does attempt to **modify** its copy of the resource, at that point, the resource is transparently duplicated, and the copy is given to the modifying consumer
+- modify가 일어나지 않은 경우에는 한 개의 copy만 가지고 공유하도록 하다가 만약 두 프로세스 중에서 한 프로세스가 modify 하게 되면 그제서야 비로소 lazy하게 뒤늦게 copy를 만들어준다.
 
 <br>
 
@@ -849,6 +856,8 @@ fork() 의 효율성을 높이기 위한 방법
 
 ![image](https://user-images.githubusercontent.com/79521972/168189298-84a8013c-2960-49dd-879d-d50f0b87ef3e.png)
 
+read만 하면 포인터를 공유
+
 c만 modify를 하고자 하면 별도의 copy본을 만들어 각자 다른 것을 가리키게 하는 것이다.
 
 <br>
@@ -856,19 +865,19 @@ c만 modify를 하고자 하면 별도의 copy본을 만들어 각자 다른 것
 ## Vfork()
 
 - Creates a new process **only to exec a new program** 
-
+  - 완전히 새로운 program을 실행시키기 위한 목적으로만 사용
   - No copy of parent's address space for child (not needed!) 
   - Before exec, child runs in "address space of parent" 
+    - 주소 공간을 달리하지 않고 parent의 주소 공간에서 실행
+
   - Efficient in paged virtual memory 
 
 - **Child runs first** 
   - Parent waits until child exec or exit (block)
-
-  - Then the parent resume 
+    - Then the parent resume 
 
   - The deadlock(block된 상태) possibility if the child wait for something from the parent
     - 부모의 자원을 필요로하는 경우 -> deadlock 발생 가능 -> 굉장히 복잡한 동기화 기술로 해결
-
 
 <br>
 
@@ -885,8 +894,9 @@ pid_t vfork(void);
 - intended to create a new process when the purpose of the new process is to exec() a new program. 
   - Does not copy the address space of parent into the child. 
   - The child calls exec() or exit() right after the vfork(). 
-  - The child runs in the address space of the parent. (exec() 전까지는)
+  - The child runs **in the address space of the parent**. (exec() 전까지는)
   - Provides an efficiency. 
+    - exec이 바로 호출되는 경우에 효율적임
 - vfork() guarantees that the child runs first.
 
 <br>

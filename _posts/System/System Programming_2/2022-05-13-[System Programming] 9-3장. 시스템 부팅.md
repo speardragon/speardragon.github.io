@@ -9,9 +9,12 @@ tag: ['booting']
 
 ## 시스템 부팅
 
-- 부팅: 커널 이미지를 로딩, 커널 시작 
-- 시스템 부팅은 fork/exec 시스템 호출을 통해 이루어진다. 
-- 커널은 우선 swapper 프로세스를 생성함
+- 부팅: 커널 이미지를 로딩, 커널 시작 (파워를 키면 부팅 시작)
+- 시스템 부팅은 **fork/exec** 시스템 호출을 통해 이루어진다. 
+- 커널은 구동되면 우선 swapper 프로세스를 생성함
+  - fork/exec을 통해 init 프로세스가 만들어지고
+  - 이것이 여러 자식 프로세스를 만듬(ex. 여러 개의 getty)
+
 
 ![image](https://user-images.githubusercontent.com/79521972/168194104-4aa3d82d-2f61-4e80-9196-c577e1567260.png)
 
@@ -29,14 +32,14 @@ login process의 역할은 로그인을 할 수 있도록 -> 로그인이 끝나
   - system process 
   - part of the kernel 
   - no program on disk corresponds to this process 
-    - code 자체가 kernel의 일부분이기 때문에 별도의 swapper 실행파일이 존재하지 않는 것이다.
+    - code 자체가 kernel의 일부분이기 때문에 별도의 swapper 실행파일이 존재하지 않는 것이다.(harddisk에 없음)
   - 커널 내부에서 만들어진 프로세스로 프로세스 스케줄링을 한다
   
 - Process ID 1: init process (초기화 프로세스) 
-  - invoked by the kernel (/etc/init or /sbin/init) 
+  - **invoked by the kernel** (/etc/init or /sbin/init) 
   - /etc/inittab 파일에 기술된 대로 시스템을 초기화 
-    - reads the system initialization files (/etc/rc*)  - 초기화 할 내용
-    - brings the system to a certain state (multi-user) 
+    - reads the system initialization files (/etc/rc<* - 초기화 할 내용이 저장된 곳)
+    - brings the system to a certain state (**multi-user**) 
     - creates processes based upon script files getty, login process, mounting file systems, start daemon processes 
 - Process ID 2: pagedaemon 
   - supports the paging of the virtual memory system 
@@ -48,11 +51,11 @@ login process의 역할은 로그인을 할 수 있도록 -> 로그인이 끝나
 
 ## Daemons
 
-- A daemon is a process that runs in the background, not connecting to any controlling terminal. 
+- A daemon is a **process** that runs in the **background**, not connecting to any controlling terminal. 
 - Daemons are normally started at boot time, are run as root or some other special user (such as apache or postfix), and handle system-level tasks 
 - A daemon has two general requirements: 
   - it must run as a child of init, and 
-  - it must not be connected to a terminal
+  - it must **not be connected to a controlling terminal**
     - background에서 실행 되어야 하기 때문
 
 <br>
@@ -61,46 +64,51 @@ login process의 역할은 로그인을 할 수 있도록 -> 로그인이 끝나
 
 - getty 프로세스 (/etc/getty) 
   - 터미널 디바이스 오픈 
-  - 로그인 프롬프트를 내고 키보드 입력(사용자 ID)을 감지한다. 
+  - 로그인 프롬프트를 내고 키보드 입력(사용자 ID, pw)을 감지한다. 
   - **exec** /bin/login, after entering a response to the login prompt. 
+    - login 프로세스로 변환하기 위해서 bin/login으로 exec을 한다.
 - login 프로세스 
-  - 사용자의 로그인 아이디 및 패스워드를 검사 (/etc/passwd) 
-  - 성공 시: exec /bin/sh or /bin/csh (쉘 프로그램) 
-  - set the evnironment variables like HOME, LOGNAME, PATH... 
+  - 사용자의 로그인 아이디 및 패스워드를 **검사** (/etc/passwd) 
+  - **성공 시**: exec /bin/sh or /bin/csh (**쉘 프로그램**) 
+  - **set the evnironment variables** like HOME, LOGNAME, PATH... 
 - shell 프로세스 
-  - 시작 파일을 실행한 후에 쉘 프롬프트를 내고 사용자로부터 명령어를 기다린다
+  - 시작 파일을 실행한 후에 쉘 프롬프트를 내고 사용자로부터 명령어를 기다린다($    )
 
 <br>
 
 ## BSD Terminal Logins
 
-- The system administrator creates a file, usually /etc/ttys, that has one line per terminal device. 
-- Each line specifies the name of the device and other parameters that are passed to the getty program 
-- The init process reads the file /etc/ttys and, for every terminal device that allows a login, does a fork followed by an exec of the program getty 
+- The system administrator creates a file, usually **/etc/ttys**, that has one line per terminal device. 
+  - Each line specifies the name of the device and other parameters that are passed to the getty program (전송 속도 등...)
+
+- The init process **reads the file /etc/ttys and**, for **every terminal device** that allows a login, does a **fork** followed by an **exec of the program getty** 
 - Linux Terminal Logins 
-  - The Linux login procedure is very similar to the BSD procedure
+  - The Linux login procedure is **very similar** to the BSD procedure
 
 <br>
 
 ## 터미널 로그인 과정
 
-1. . init forks once per terminal. 
+1. init forks once per terminal. 
+   - init process가 terminal마다 한 번씩 fork
 2. each child of init execs getty.
+   - getty 실행 파일 exec
 
 > /etc/ttys: 1 line per terminal device Each line specifies the name of the device and other parameters that has passed to getty program
 
 ![image](https://user-images.githubusercontent.com/79521972/168194595-ea636df1-822a-4997-9c43-860cf8f016be.png)
 
 - Processes invoked by init to allow terminal logins. 
-- All the processes in this slide have a real user ID 0, and effective user ID 0 – superuser privileges
+- All the processes in this slide have a real user ID 0, and effective user ID **0** – **superuser privileges**
 
 <br>
 
 ## 로그인 후 상태
 
-3. **getty** opens for terminals for reading and writing and then waits for us to enter our user name.
+3. **getty** opens for **terminals** for reading and writing and then waits for us to **enter our user name**.
+   - 이 때 0, 1, 2 의 file descriptor를 받음
 
-4. When we enter our user name, getty execs login.
+4. When we enter our user name, **getty execs login**.
    process ID 1
 
 
@@ -115,9 +123,9 @@ State of processes after login has been invoked.
 
 ## Terminal Logins
 
-5.  login reads password and authenticates.
-6. If we log in correctly, login changes to our home directory, changes ownership of our terminal device, and initializes environment variables.
-7.  login execs our login shell, execl("/bin/bash", "-bash", 0);
+5.  login reads password and **authenticates**.
+6. If we log in correctly, **login** changes to our **home directory**, changes **ownership** of our terminal device, and initializes environment variables.
+7.  login execs our **login shell**, execl("/bin/bash", "-bash", 0);
 
 
 
@@ -131,13 +139,13 @@ Processes after everything is set.
 
 기본적인 방법은 대동소이 하다.
 
-- inetd 
+- **inetd** 
   - waits for most network connections 
   - sometimes called the Internet superserver 
-- As part of the system start-up, init (fork/exec) invokes a shell that executes the shell script /etc/rc. 
+- As part of the system start-up, init (fork/exec) invokes a shell that executes the shell script **/etc/rc**. 
   - One of the daemons that is started by this shell script is inetd. 
   - Once the shell script terminates, the parent process of inetd becomes init; 
-  - inetd waits for TCP/IP connection requests to arrive at the host. 
+  - **inetd waits for TCP/IP connection requests** to arrive at the host. 
   - When a connection request arrives, inetd does a fork and exec of the appropriate program (Telnet)
 
 <br>
@@ -145,8 +153,8 @@ Processes after everything is set.
 ## Network Logins (Telnet)
 
 - Let‘s assume that a TCP connection request arrives for the TELNET server. 
-  - TELNET is a remote login application that uses the TCP protocol. 
-  - A user on another host or on the same host initiates the login by starting the TELNET client: 
+  - TELNET is a **remote login application that uses the TCP protocol**. 
+  - **A user on another host** or on the same host **initiates the login** by starting the TELNET client: 
     - telnet hostname 
   - The client opens a TCP connection to hostname, and the program that‘s started on hostname is called the TELNET server. 
   - The client and the server then exchange data across the TCP connection using the TELNET application protocol. 
@@ -179,8 +187,10 @@ session part를 위한 remind
 
 ## Sessions
 
-- When a new user first logs into a machine, the login process creates **a new session** that consists of a single process, the user‘s **login shell**. 
-- The login shell functions as the session leader. The pid of the session leader is used as the session ID. 
+- When a new user first logs into a machine, the **login process** creates **a new session** that consists of a **single process**, the user‘s **login shell**. 
+  - login process가 만든 새로운 session에 login shell이라는 하나의 process가 만들어짐
+
+- The login shell functions as the **session leader**. The **pid of the session leader** is used as the **session ID**. 
 - A session is a collection of one or more process groups. 
 - Sessions arrange a logged-in user‘s activities, and associate that user with a controlling terminal, which is a specific tty device that handles the user‘s terminal I/O. 
 - Consequently, sessions are largely the business of shells
@@ -247,7 +257,7 @@ pid_t setsid(void);
 
 - create a new session. 
   - The calling process becomes the leader of the new session. 
-  - The calling process becomes the process group leader of the new process group.
+  - The calling process **becomes the process group leader** of the new process group.
 
 <br>
 
@@ -269,12 +279,14 @@ pid_t getsid(pid_t pid);
   - **A session can have a single controlling terminal**. 
     - Controlling terminal is usually **the terminal device**. 
     - /dev/tty 
-  - A session may have a single foreground process group and one or more background process groups. 
-  - The session leader that established the connection to the controlling terminal is called **controlling process**. 
-  - **interrupt or quit signal** are sent to all processes in the foreground process group. 
-  - **hang-up signal** is sent to the controlling process
+  - **A session** may have a single foreground process group and one or more background process groups. 
+  - **The session leader** that established the connection to the controlling terminal is called **controlling process**. 
+  - **interrupt or quit signal** are **sent to all processes** in the foreground process group. 
+  - hang-up signal is sent to the controlling process
 
 - Process groups and sessions showing controlling terminal
+  - 여러 개의 process group이 하나의 controlling terminal과 연결 되어 있다.
+
 
 ![image](https://user-images.githubusercontent.com/79521972/168196311-ba1e3f29-57eb-4919-a50c-fb9ac5f373fe.png)
 
@@ -309,6 +321,10 @@ pid_t getsid(pid_t pid);
 ![image](https://user-images.githubusercontent.com/79521972/168196621-4d8dbf0b-7266-4a06-bd44-c26d2874c9c7.png)
 
 getty를 통해 login을 하면 shell이 fork/exec을 한다.
+
+init에서 getty로 내려올 때는 fork/exec하고 login으로 user name을 받고
+
+getty에서 login process로 exec()하여 password를 받고 인증 절차를 거친 다음에 맞다고 판단되면 login shell로 exec()해서 shell command를 낸다.
 
 <br>
 

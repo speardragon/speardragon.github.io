@@ -244,6 +244,7 @@ waiting time: packet이 router에 저장됐다가 다시 보내기 전까지 걸
 
 - pipes, FIFOs, message queues, semaphores, and shared memory 
   - allow processes running on the **same machine** to communicate with one another. 
+
 - **socket** 
   - allows processes running on **different machines** to communicate with one another.
   - 다른 머신에서 동작해도 돌아간다!
@@ -330,9 +331,9 @@ waiting time: packet이 router에 저장됐다가 다시 보내기 전까지 걸
   - 네트워크에 대한 사용자 수준의 인터페이스를 제공 
   - 소켓은 **양방향** 통신 방법으로 클라이언트-서버 모델을 기반으로 프로세스 사이의 통신에 매우 적합하다. 
   - 유닉스 소켓(AF_UNIX) 
-    - 같은 호스트 내의 프로세스 사이의 통신 방법 
+    - **같은 호스트** 내의 프로세스 사이의 통신 방법 
   - 인터넷 소켓(AF_INET) 
-    - 인터넷에 연결된 서로 다른 호스트에 있는 프로세스 사이의 통신 방법
+    - 인터넷에 연결된 서로 **다른 호스트**에 있는 프로세스 사이의 통신 방법
 
 <br>
 
@@ -369,7 +370,7 @@ waiting time: packet이 router에 저장됐다가 다시 보내기 전까지 걸
 
 - 클라이언트
 
-1. socket() 호출을 이용하여 소켓 을 만듞다. 
+1. socket() 호출을 이용하여 소켓 을 만든다. 
 2. connection() 호출을 이용하여 서버에 연결 요청을 한다. 
 3. 서버가 연결 요청을 수락하면 소켓 연결이 만들어진다. 
 4. 서버에 서비스를 요청하고 서버로부터 응답을 받아 처리
@@ -410,7 +411,7 @@ int socket(int domain, int type, int protocol)
 
 ![image](https://user-images.githubusercontent.com/79521972/169858862-59aed75c-dd79-4279-99dc-2c4e0048f89e.png)
 
-socket()에 domain type protocol 세 개의 parameter를 주게 되면 구조체의 각 멤버(domain type protocol)이 해당 값으로 setting 된다.
+socket()에 domain type protocol 세 개의 parameter를 주게 되면 구조체의 각 멤버(domain, type, protocol)가 해당 값으로 setting 된다.
 
 <br>
 
@@ -691,7 +692,6 @@ int connect(int fd, struct sockaddr* address, int addressLen)
   - Before exchanging data, we need to create a connection between the socket of client and server. 
   - addrress is **the address of the server**.
 
-
 <br>
 
 ## 연결 요청 수락
@@ -709,7 +709,7 @@ int accept(int fd, struct sockaddr* address, int* addressLen)
 1.  서버는 fd가 나타내는 서버 소켓을 경청하고 
 2. 클라이언트의 연결 요청이 올 때까지 기다린다. 
 3. <mark>클라이언트로부터 연결 요청이 오면 원래 서버 소켓과 같은 복사본 소켓을 만들어 </mark>이 **복사본 소켓**과 클라이언트 소켓을 연결 
-4. 연결이 이루어지면 address는 클라이언트 소켓의 주소로 세팅되고 addressLen는 그 크기로 세팅
+4. 연결이 이루어지면 address는 **클라이언트 소켓의 주소로 세팅**되고 addressLen는 그 크기로 세팅
 5. **새로 만들어진 복사본 소켓의 파일 디스크립터를 리턴**
 
 <br>
@@ -848,6 +848,7 @@ int main ( )
     clientfd = socket(AF_UNIX, SOCK_STREAM, DEFAULT_PROTOCOL);
     serverUNIXaddr.sun_family = AF_UNIX;
     strcpy(serverUNIXaddr.sun_path, "convert")
+        
         do { /* 연결 요청 */
             result = connect(clientfd, &serverUNIXaddr, sizeof(serverUNIXaddr));
             if (result == -1) sleep(1);

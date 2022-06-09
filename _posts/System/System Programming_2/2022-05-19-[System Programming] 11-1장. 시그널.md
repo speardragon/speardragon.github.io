@@ -434,7 +434,7 @@ pause()
 ## 시그널 처리기
 
 - a process can catch neither **SIGKILL nor SIGSTOP**, so setting up a handler for either of these two signals makes no sense 
-  - SIGKILL이나 SIGSTOP은 catch할 수 없는 signa이기 때문에 해당 signal에 대한 handler를 만드는 것은 의미가 없다.(make no sense)
+  - SIGKILL이나 SIGSTOP은 catch할 수 없는 signal이기 때문에 해당 signal에 대한 handler를 만드는 것은 의미가 없다.(make no sense)
 
 - The handler function **must return void**, which makes sense because (unlike with normal functions) <mark>there is no standard place in the program for this function to return</mark>
   - 돌아갈 곳이 없기 때문에 (부른 곳이 명확치 않아)
