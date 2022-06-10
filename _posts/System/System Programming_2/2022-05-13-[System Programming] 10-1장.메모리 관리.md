@@ -238,11 +238,12 @@ local 변수 -> stack에 저장
   - In addition, the compiler is responsible of generating the instructions that manipulate the stack and therefore can optimize them. 
   
 - **Disadvantages** 
-- the stack is often limited in **size** 
-  
-- one cannot use values that resides inside a stack frame once it is popped (i.e., by one of the methods that correspond to the upper stack frames). 
-  
-- the **allocations** must be **static** and the size allocated must be known at compile time, because the compiler generate the instructions that manipulate the stack at compile time.
+  - the stack is often limited in **size** 
+
+  - one cannot use values that resides inside a stack frame once it is popped (i.e., by one of the methods that correspond to the upper stack frames). 
+
+  - the **allocations** must be **static** and the size allocated must be known at compile time, because the compiler generate the instructions that manipulate the stack at compile time.
+
 
 <br>
 

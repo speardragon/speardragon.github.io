@@ -126,7 +126,7 @@ waiting time: packet이 router에 저장됐다가 다시 보내기 전까지 걸
   - 이더넷(Ethernet)
 
 - **인터넷 계층**(Internet layer) 
-  - 네트워크 액세스 계층의 도움을 받아, 젂송 계층이 내려 보낸 데이터를 종단 시스템까지 전달 
+  - 네트워크 액세스 계층의 도움을 받아, 전송 계층이 내려 보낸 데이터를 종단 시스템까지 전달 
   - 사용 주소  
     - IP 주소(Internet Protocol address) 
   - 라우팅(routing) 

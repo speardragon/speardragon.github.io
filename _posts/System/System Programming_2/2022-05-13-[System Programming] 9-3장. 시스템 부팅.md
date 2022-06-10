@@ -32,7 +32,7 @@ login process의 역할은 로그인을 할 수 있도록 -> 로그인이 끝나
   - system process 
   - part of the kernel 
   - no program on disk corresponds to this process 
-    - code 자체가 kernel의 일부분이기 때문에 별도의 swapper 실행파일이 존재하지 않는 것이다.(harddisk에 없음)
+    - code 자체가 kernel의 일부분이기 때문에 별도의 swapper 실행파일이 존재하지 않는 것이다.(**harddisk에 없음**)
   - 커널 내부에서 만들어진 프로세스로 프로세스 스케줄링을 한다
   
 - Process ID 1: init process (초기화 프로세스) 
