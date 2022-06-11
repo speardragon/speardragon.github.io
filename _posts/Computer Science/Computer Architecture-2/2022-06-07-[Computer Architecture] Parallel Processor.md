@@ -13,8 +13,9 @@ tag: ['Parallel Processors']
 
 여러개 processor에다가 나눠서 각각에서 실행시키도록 한다.
 
-- Goal: connecting multiple computers to get higher **performance** 
-  - Multiprocessors 
+- Goal: connecting multiple computers to get **higher** **performance** 
+  - **Multiprocessors** 
+    - 여러개 core에서 골고루 task를 실행
   - Scalability, availability, power efficiency 
 - Task-level (process-level) parallelism 
   - High throughput for independent jobs 
@@ -36,19 +37,19 @@ tag: ['Parallel Processors']
 - Sequential/concurrent software can run on serial/parallel  hardware 
   - Challenge: making effective use of parallel hardware
 
-
+<br>
 
 ## Parallel Programming
 
 여러개 multiprocessor를 사용해서 parallel programming
 
-각자 할당된 부분만 실행함.
+여러 개의 processor에다가 각자 할당된 부분만 실행함.
 
 - Parallel software is the problem 
 - Need to get significant performance improvement 
   - Otherwise, just use a faster uniprocessor, since it’s  easier! 
 - Difficulties 
-  - Partitioning : 나누는 것
+  - Partitioning : task를 나누는 것
   - Coordination : 나눠준 결과를 다 받는 것
   - Communications overhead : 통신
 
@@ -81,15 +82,15 @@ tag: ['Parallel Processors']
 
 ## Scaling Example
 
-- Workload: sum of 10 scalars, and 10 × 10 matrix  sum 
+- Workload: sum of 10 scalars, and 10 × 10 matrix sum 
   - Speed up from 10 to 100 processors 
 - **Single** processor:  
   - Time = (10 + 100) × tadd 
 - **10** processors 
-  - Time = 10 × tadd + 100/10 × tadd = 20 × tadd 
+  - Time = **10** × tadd + 100/10 × tadd = **20** × tadd 
   - Speedup = 110/20 = **5.5** (55% of potential) 
 - **100** processors 
-  - Time = 10 × tadd + 100/100 × tadd = 11 × tadd 
+  - Time = 10 × tadd + 100/100 × tadd = **11** × tadd 
   - Speedup = 110/11 = **10** (10% of potential) 
 - Assumes load can be balanced across  processors
 
@@ -104,11 +105,11 @@ tag: ['Parallel Processors']
 - Single processor:  
 - Time = (10 + 10000) × tadd 
 - 10 processors 
-- Time = 10 × tadd + 10000/10 × tadd = 1010 × tadd 
-- Speedup = 10010/1010 = 9.9 (99% of potential) 
+- Time = 10 × tadd + 10000/10 × tadd = **1010** × tadd 
+- Speedup = 10010/1010 = **9.9** (99% of potential) 
 - 100 processors 
-- Time = 10 × tadd + 10000/100 × tadd = 110 × tadd 
-- Speedup = 10010/110 = 91 (91% of potential) 
+- Time = 10 × tadd + 10000/100 × tadd = **110** × tadd 
+- Speedup = 10010/110 = **91** (91% of potential) 
 - Assuming load balanced
 
 - 데이터의 사이즈를 100x100으로 높이니까 91배까지 늘어날 수 있었다.
@@ -118,11 +119,11 @@ tag: ['Parallel Processors']
 
 ## Strong vs Weak Scaling
 
-- Strong scaling: problem size fixed 
+- **Strong scaling**: problem size fixed 
   - As in example 
-  - Goal is to run the same problem size faster.
+  - <u>Goal is to run the same problem size faster.</u>
 
-- Weak scaling: problem size proportional to number of  processors 
+- **Weak scaling**: problem size proportional to number of  processors 
   - Goal is to run larger problem in same amount of time. 
   - 10 processors, 10 × 10 matrix 
     - Time = (10 + 100/10) × tadd = 20 × tadd 
@@ -167,7 +168,7 @@ tag: ['Parallel Processors']
 
 SIMD의 특별한 타입
 
-MIPS도 이 버전이 있음
+MIPS의 vector
 
 
 
@@ -210,7 +211,8 @@ MIPS도 이 버전이 있음
 - Multithreading and Multiprocessing 
   - 하나의 프로세스에서 여러개의 
   - 여러 개의 프로세스
-- Multithreading: the ability of a CPU (or a single core  in a multicore processor) to provide multiple **threads  of execution** concurrently, supported by OS 
+  - 프로세스에서도 여러 개의 thread
+- Multithreading: the ability of a CPU (or a single core  in a multicore processor) to provide multiple **threads of execution** concurrently, supported by OS 
 - Multiprocessing: include multiple complete  processing units in one or more cores 
 - As the two techniques are complementary, they are  combined in nearly all modern systems  architectures with multiple multithreading CPUs and  with CPUs with multiple multithreading cores.
 
@@ -220,9 +222,9 @@ MIPS도 이 버전이 있음
 
 ## Hardware Multithreading (on a Chip)
 
-- core 안에 여러 개의 thread를 동시에 실행시킬 수 있음
-  - hareware support가 되어야 함(register file 복사품이 여러 개 있어야 함)
-- Performing multiple threads of execution in parallel (to  increase the utilization of a single core by using threadlevel and instruction-level parallelism) 
+- core 안에 여러 개의 thread를 **동시에** 실행시킬 수 있음
+  - hareware support가 되어야 함(register file 복사품이 여러 개 있어야 함, PC도 마찬가지)
+- Performing multiple threads of execution **in parallel** (to  **increase the utilization of a single core** by using threadlevel and instruction-level parallelism) 
   - Hardware must support Replicate register files, PC,  etc. 
   - And, Fast switching between threads 
 - The threads share the resources of a single or multiple  cores, which include the computing units, the CPU  caches, and the TLB.
@@ -235,7 +237,7 @@ MIPS도 이 버전이 있음
 
 ## Threading on a 4-way Super Scalar Processor
 
-연산 unit이 여러개 들어있는 processor(동시에 fetch)
+연산 unit이 여러개 들어있는 superscalarprocessor(동시에 fetch)
 
 ![image](https://user-images.githubusercontent.com/79521972/172293326-204aeef4-3c44-4b01-b6f8-54b863a0fdbf.png)
 
@@ -265,9 +267,15 @@ Q1
 
 ## Shared memory
 
-여러 core들이 같은 address의 memory를 공유
+여러 multi processor, 여러 core들이 같은 address의 memory를 동시에 공유
 
+- Q1 – **Single address space** shared by all processors 
+- Q2 – Processors coordinate/communicate through **shared variables** in memory (via loads and stores) 
+  - Use of shared data must be coordinated via synchronization primitives (locks) that allow access to data to only one processor at a time
 
+- They come in two styles 
+  - Uniform memory access (UMA) multiprocessors 
+  - Nonuniform memory access (NUMA) multiprocessors
 
 
 
@@ -276,23 +284,22 @@ Q1
 ## Example: Sum Reduction
 
 - Sum 100,000 numbers on 100 processor UMA 
+  - 각 프로세서마다 1000개 씩
   - Each processor has ID: 0 ≤ Pn ≤ 99 
   - Partition 1000 numbers per processor 
   - Initial summation on each processor
+  
 - 자기에게 할당된 계산을 각자 계산하고 합침
 
 ![image](https://user-images.githubusercontent.com/79521972/172293767-dfe3e39c-96bd-4a07-a506-c2c5d33555b2.png)
 
 - Now need to add these partial sums 
-- Reduction: divide and conquer 
-- Half the processors add pairs, then quarter, … 
-- Need to synchronize between reduction steps
+  - Reduction: divide and conquer 
+  - Half the processors add pairs, then quarter, … 
+  - Need to synchronize between reduction steps
 
 
-
-<br>
-
-## Process synchronization
+계층적으로 계산 결과를 취합하면서 올라감
 
 
 
@@ -300,9 +307,9 @@ Q1
 
 ## Message Passing Multiprocessors(MPP)
 
-shared memory에서는 
+shared memory에서는 공통적인 메모리 하나를 여러 프로세서가 공유(확인)
 
-network를 통해서 나눠져 있음
+network을 두고 이를 통해서 나눠져 있음 + send/receive protocol
 
 - Each processor has its own private address space 
 - Q1 – Processors share data by explicitly sending and receiving  information (**message passing**) 
@@ -310,7 +317,23 @@ network를 통해서 나눠져 있음
 
 - 주고 받는 protocol 때문에 느려질 수 있음
 
+<br>
 
+- Message sending and receiving is much **slower** than addition 
+
+  - multi core 방식 같은 경우 SMT 모델을 쓰는 것이 좋고 일반적인 경우는 MPP를 사용한다.
+
+- But message passing multiprocessors and much easier to design 
+
+- Don’t have to worry about cache coherency 
+
+- Communication is explicit (vs. implicit communication in SMPs) 
+
+  
+
+- It is harder to port a sequential program to a message passing multiprocessor since every communication must be identified in advance. 
+
+- With cache-coherent shared memory the hardware figures out what data needs to be communicated
 
 <br>
 
@@ -328,17 +351,40 @@ network를 통해서 나눠져 있음
 
 ## MPT and OpenMP in multi-core
 
-
-
-
+- OpenMP: 
+  - Interface to threading 
+  - The code is annotated with special **#pragma** statements to indicate parallel regions, reductions, synchronization etc. 
+    - #pragma 는 여기서 부터 parallel 하게 하겟다는 뜻
+    - Needs special compiler flags to turn it on. (e.g. –fopenmp) 
+      - thread를 여러개로
+  - Favored in multi-core CPU 
+  - The performance was better in terms of scalability by increasing the number of cores used and using small and large data sizes. 
+- MPI 
+  - High overhead for communication 
+  - more dependent on communication because it is the norm for large scale parallel computing that do not use shared memory 
+  - designed for solving large-scale scientific problems on distributed-memory systems
 
 
 
 <br>
 
+## MPI
+
+- Mpiexec (or mpirun) 
+  - Can specify hostfiles: mpiexec –hostfile myhostfile ./a.out 
+  - Can specify number of processes 
+- mapping MPI processes to Nodes (processors) 
+  - reads the number of processes from –np option 
+  - Determine where the processes will run: 
+    - Available hosts (or nodes), specified by a hostfile or by the –host option 
+    - Scheduling the policy (round-robin or by-slot) 
+    - Default and maximum numbers of slots available on each host
+
+<br>
+
 ## CPU info (example)
 
-
+![image](https://user-images.githubusercontent.com/79521972/173186094-4893bd21-2e3f-4f09-a158-547cccc02898.png)
 
 - socket -> cpu가 2개
 - 실제로 cpu의 갯수 -> 56개 -> logical core의 개수를 말함
