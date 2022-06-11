@@ -244,3 +244,4 @@ CPU 는 DMA controller 에게 다음과 같은 정보를 보냅니다.
 
 
 disk controller 안에 dma가 들어있다.
+
