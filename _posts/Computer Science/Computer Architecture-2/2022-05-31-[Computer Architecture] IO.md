@@ -271,7 +271,7 @@ special IO
     - disk가 많아질 수록 고장날 확률이 올라가기 때문에
   - 그치만 동시에 여러 개의 데이터를 준비시킬 수 있음
 - Arrays of small and inexpensive disks 
-  - **Increase** potential **throughput** by having many disk  drives 
+  - **Increase** potential **throughput** by having many disk drives 
     - Data is spread over multiple disk 
     - Multiple accesses are made to several disks at a time 
 - Reliability is lower than a single disk 
@@ -408,8 +408,8 @@ redundancy를 두 개 쓰자는 아이디어
 
 - N + 2 disks 
   - Like RAID 5, but two lots of parity 
-  - Greater fault tolerance through more redundancy 
-- Multiple RAID 
+  - **Greater fault tolerance** through more redundancy 
+- **Multiple RAID** 
   - More advanced systems give similar fault tolerance with better  performance
 
 ![image](https://user-images.githubusercontent.com/79521972/171556412-8d8e5283-7d02-483c-8406-1caf7fad1263.png)
@@ -490,7 +490,7 @@ IO device마다 속도가 다름
 - A **bus** is a shared communication link (a single set of wires used to connect multiple subsystems) that needs to support a range of devices with widely varying latencies and data transfer rates 
   - 키보드와 같은 IO device가 CPU에게 데이터를 보내기 위해서 IO controller의 serial interface를 통한다.
   - **Advantages** 
-    - **Versatile**(변하기 쉬움) – new devices can be added easily and can be  moved between computer systems that use the same bus  standard 
+    - **Versatile**(변하기 쉬움) – new devices can be added easily and can be moved between computer systems that use the same bus standard 
     - **Low cost** – a single set of wires is shared in multiple ways 
   - **Disadvantages** 
     - Creates a communication bottleneck 
@@ -508,7 +508,7 @@ IO device마다 속도가 다름
 
 - **Processor-memory bus** (“Front Side Bus”, proprietary) 
   - Short and **high speed** 
-  - Matched to the memory system to maximize the memoryprocessor bandwidth 
+  - Matched to the memory system to maximize the memory-processor bandwidth 
   - Optimized for cache block transfers 
 - **I/O bus** (industry standard, e.g., SCSI, USB, Firewire) 
   - Usually is lengthy and **slower** 
@@ -523,7 +523,7 @@ IO device마다 속도가 다름
 ## I/O Transactions(read/write)
 
 - An I/O transaction is a sequence of operations over the interconnect that includes a **request** and may include a **response** either of which may carry data.  
-- A transaction is initiated by a single request and may take many individual bus operations. An I/O transaction typically includes two  parts 
+- A transaction is initiated by a single request and may take many individual bus operations. An I/O transaction typically includes two parts 
   - Sending the **address** 
   - Receiving or sending the **data**
 
@@ -533,7 +533,7 @@ IO device마다 속도가 다름
 
   - 메모리는 수동적
 
-- IO도 마찬가지로 address를 보내주고 데이터르 받아오는데 가만히 있는 것이 아니라 능동적으로
+- IO도 마찬가지로 address를 보내주고 데이터를 받아오는데 가만히 있는 것이 아니라 능동적으로
 
 <br>
 
@@ -549,10 +549,10 @@ IO device마다 속도가 다름
   - It is not clocked, so requires a **handshaking protocol** and additional  control lines 
     - (ReadReq, Ack, DataRdy) 
   - handshaking: 준비 됐어? -> 준비 됐다 -> 왔다 갔다
-- Advantages: 
-  - Can accommodate a wide range of devices and device speeds 
-  - Can be lengthened without worrying about clock skew or  synchronization problems 
-- Disadvantage: slow(er)
+  - Advantages: 
+    - Can accommodate a wide range of devices and device speeds 
+    - Can be lengthened without worrying about clock skew or  synchronization problems 
+  - Disadvantage: slow(er)
 
 
 
@@ -577,7 +577,7 @@ IO device마다 속도가 다름
   - **Longer**, allowing multiple connections 
   - 조금 느려도 low power?
   - Specified by standards for interoperability 
-  - Connect to processor-memory bus through a bridg
+  - Connect to processor-memory bus through a bridge
 
 
 
