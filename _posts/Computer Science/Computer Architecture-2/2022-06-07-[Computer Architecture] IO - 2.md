@@ -117,7 +117,7 @@ CPU 는 DMA controller 에게 다음과 같은 정보를 보냅니다.
 
 ![image](https://user-images.githubusercontent.com/79521972/171561248-ac76fd20-5533-493a-88bc-5ad9ee1901a9.png)
 
-1. CPU writes command(r/w), device address, memory address, and count
+1. CPU **writes** command(r/w), device address, memory address, and count
 2. Bus Request and Bus Grant
 3. DMA controls data transfer (CPU can still use cache and do other calculation)
 4. Once it's done, send interrupt to CPU
@@ -198,8 +198,8 @@ CPU 는 DMA controller 에게 다음과 같은 정보를 보냅니다.
     - % IO time = 10/100 = 10%
   - Double the number of CPUs / 2-years 
     - I/O unchanged
-  - CPU time은 줄여도 IO time은 줄일 수 없기 때문에 IO time이 차지하는 비율이 점점 커진다.
-  - 따라서 speed up을 할 수 없는 부분인 I/O가 중요하다.
+  - CPU time(1/f)은 줄여도 IO time(f)은 줄일 수 없기 때문에 IO time이 차지하는 비율이 점점 커진다.
+  - 따라서 speed up을 할 수 없는 부분(f)인 I/O가 중요하다.
 
 ![image](https://user-images.githubusercontent.com/79521972/172289474-a58b7cdc-9884-4fdd-a6e8-73b92fa9b753.png)
 
@@ -209,11 +209,11 @@ CPU 는 DMA controller 에게 다음과 같은 정보를 보냅니다.
 
 ## I/O System Design
 
-- Satisfying latency requirements 
+- Satisfying **latency** requirements 
 
   - For time-critical operations 
 
-- Maximizing throughput 
+- Maximizing **throughput** 
 
   - Find “weakest link” (lowest-bandwidth component) in  the I/O system 
 
@@ -239,7 +239,7 @@ CPU 는 DMA controller 에게 다음과 같은 정보를 보냅니다.
 - I/O benchmarks 
   - TPC, SPECSFS, SPECWeb 
 - RAID 
-  - Improves performance and dependabilit
+  - Improves performance and dependability
 
 
 
