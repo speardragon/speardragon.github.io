@@ -253,13 +253,13 @@ SMT: hazard 등의 이유로 비어 있는 공간에 다른 thread를 실행
 
 <br>
 
-## ''
-
 
 
 ## Multicore or Multiprocessor
 
-Q1
+- Q1 – How do they share data? 
+- Q2 – How do they coordinate? 
+- Q3 – How scalable is the architecture? How many processors can be supported?
 
 
 
