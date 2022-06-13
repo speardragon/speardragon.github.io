@@ -333,7 +333,7 @@ network을 두고 이를 통해서 나눠져 있음 + send/receive protocol
 
 - It is harder to port a sequential program to a message passing multiprocessor since every communication must be identified in advance. 
 
-- With cache-coherent shared memory the hardware figures out what data needs to be communicated
+- With **cache-coherent** shared memory the hardware figures out what data needs to be communicated
 
 <br>
 
