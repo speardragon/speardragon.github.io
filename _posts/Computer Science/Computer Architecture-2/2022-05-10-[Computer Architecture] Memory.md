@@ -70,7 +70,7 @@ In prior chapters, assumed access memory in 1 clock cycle – but hasn’t been 
 
 ![image](https://user-images.githubusercontent.com/79521972/167536086-6ba5ec18-962d-4745-95f1-282be7671b5f.png)
 
-- 실질적인 data는 main memory에 있다고 생각할 수 있지만 사실은 hard disk에 있고 이를 그 중에서 몇 개만main memory에 탑재 시켜 놓은 것이다.
+- 실질적인 data는 main memory에 있다고 생각할 수 있지만 사실은 hard disk에 있고 이를 그 중에서 몇 개만 main memory에 탑재 시켜 놓은 것이다.
 - CPU 안에도 Register File이라는 별도의 memory가 존재한다
   - 그래서 사실상 memory hierarchy 맨 꼭대기에는 reg file인 것이다.
 - cache에서 register file로 옮겨주는 것은 우리가 앞에서부터 계속 해왔던 것임 -> assembly 

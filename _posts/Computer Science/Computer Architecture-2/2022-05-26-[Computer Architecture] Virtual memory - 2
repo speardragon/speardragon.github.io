@@ -110,7 +110,7 @@ page table miss는 physical memory에 없다는 뜻이기 때문에 cache가 hit
 
 
 
-- But, Two programs which are sharing data will have two  different virtual addresses for the same physical address  (**aliasing**) so have two copies of the shared data in the cache  and two entries in the TLB which would lead to coherence  issues 
+- But, Two programs which are sharing data will have two  different virtual addresses for the same physical address  (**aliasing**) so have two copies of the shared data in the cache and two entries in the TLB which would lead to coherence issues 
   - Must update all cache entries with the same physical address or the  memory becomes inconsistent
 
 

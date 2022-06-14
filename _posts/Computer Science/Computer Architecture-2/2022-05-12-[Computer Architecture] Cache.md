@@ -186,7 +186,6 @@ Line = Block
 
   - 그런데 fully associative를 위해선 다 뒤져봐야 하기 때문에 이를 OS가 관리하도록 되어있다.(page table)
 
-
 <br>
 
 ## Cache
@@ -233,11 +232,12 @@ We focus on data loads, but stores flow same principles.
 - **Capacity (C):**  
   - number of data bytes in cache (전체 cache size)
 - **Block size (b):**   
-  - bytes of data brought into cache at once (연속되어 있는 data를 한 번에 가져오는 크기)
+  - bytes of data brought into cache at once (연속되어 있는 data를 **한 번에** 가져오는 크기)
 - **Number of blocks (B = C/b):**  
   - number of blocks in cache: B = C/b 
 - **Degree of associativity (N):**  
   - number of blocks in a set  
+  - 한 set에서 block의 수
   - 메모리에 있는 data를 cache에 가져오는데 몇 자리에 넣을 수 있는지
 - **Number of sets (S = B/N):**  
   - each memory address maps to exactly one cache set 
