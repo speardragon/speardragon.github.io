@@ -79,6 +79,7 @@
           {% elsif category[0] == "Math" %}<li><a href="/categories/math" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% elsif category[0] == "LinkedList" %}<li><a href="/categories/linkedList" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% elsif category[0] == "Stack" %}<li><a href="/categories/stack" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "Searching" %}<li><a href="/categories/searching" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% elsif category[0] == "Queue" %}<li><a href="/categories/queue" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% elsif category[0] == "Hash" %}<li><a href="/categories/hash" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% elsif category[0] == "Sorting" %}<li><a href="/categories/sorting" class="">{{category[0]}} ({{category[1].size}})</a></li>
