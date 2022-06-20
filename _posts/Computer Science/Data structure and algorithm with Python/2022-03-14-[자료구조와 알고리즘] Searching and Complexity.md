@@ -515,7 +515,7 @@ print(a)
 2. binary search를 하는 코드
 3. bisect를 사용한 코드
 
-[백준 1920번 카드2][https://www.acmicpc.net/problem/1920](https://www.acmicpc.net/problem/1920)
+[백준 1920번 수 찾기](https://www.acmicpc.net/problem/1920)
 
 이 코드를 바탕으로 위 세 가지 방법을 구현하여 어떻게 나오는지 봐보기
 
