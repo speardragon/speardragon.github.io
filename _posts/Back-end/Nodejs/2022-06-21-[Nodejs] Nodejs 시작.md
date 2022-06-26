@@ -70,3 +70,11 @@ Type checking
 
 
 TypeScript가 node 환경에서도 동작하게 하려면 types node package를 설치해주어야 한다.
+
+
+
+
+
+### [nodemon] app crashed
+
+else문을 빠져 나왔는데도 statusCode가 있고  res.end를 하는 경우
