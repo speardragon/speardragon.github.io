@@ -186,23 +186,304 @@ npm i -D @types/react-native-vector-icons
 
 
 
+<br>
+
+## 폰트 직접 설치하고 사용하기
+
+구글에서 'dancing script'를 검색하여 나온 사이트에서 폰트를 다운 받아 src 디렉터리 밑에 assets 폴더의 fonts 디렉터리에 다운 받은 4개의 파일을 저장한다. 
+
+src/assets/fonts 디렉터리의 자원 파일은 앱에 포함하려면 `npx react-native link`라는 명령을 실행해야 한다. 그런데 이 명령은 다음 구성 파일을 필요로 한다.
+
+- react-native.config.js
+
+해당 파일의 내용은 다음과 같이 작성한다.
+
+```react
+module.exports = {
+  project: {
+    ios: {},
+    android: {},
+  },
+  assets: ['./src/assets/fonts'],
+};
+
+```
+
+여기서 중요한 점은 ios와 android라는 키를 설정하고 있는데, 이 키는 link 명령이 ios와 android 디렉터리를 대상으로 동작해야 한다는 것을 지정하기 떄문에 project 키가 반드시 있어야 하는 것이다.
+
+<br>
+
+### 갑자기 발생한 delete 'CR' 문제
+
+모든 행에서 prettier가 delte 'CR' 문제를 일으켰다. 이를 해결하기 위해서는 vscode 하단 부분의 화살표가 가리킨 부분을 CRLF에서 LF가 되도록 바꾸면 된다.
+
+![image](https://user-images.githubusercontent.com/79521972/176086918-2de7bd4f-1ef7-4a21-a47f-5dd2deb68e2e.png)
+
+```
+CR : 현재 커서를 줄 올림 없이 가장 앞으로 옮기는 동작 
+LF : 커서는 그 자리에 그대로 둔 상황에서 종이만 한 줄 올려 줄을 바꾸는 동작
+```
+
+
+
+<br>
+
+### react-native link 명령으로 폰트 자원 링크하기
+
+이미지 파일과 달리 폰트 파일은 반드시 `npx react-native link`명령을 실행해야 사용할 수 있다.
+
+그러나 이는 현재 일자 기준(22-06-28)으로 더 이상 지원되지 않는 서비스라 하여 다른 방식을 찾아야 했다.
+
+
+
+<br>
+
+## flex: 1의 의미
+
+만약 View 컴포넌트에 있던 flex: 1 스타일 속성이 없애면 
+
+- 'ImageBackground의 heigt-(paddingTop + paddingBottom) - Image의 height - Icon의 height 만큼의 높이 여분이 생긴다.
+
+
+
+하지만 flex: 1로 설정되면 ImageBackground와 같은 부모 컴포넌트의 height 여분이 모두 flex: 1인 컴포넌트의 높이가 된다.
+
+
+
+<br>
+
+### flex: 1과 height: '100%'의 차이
+
+
+
+![image](https://user-images.githubusercontent.com/79521972/176095861-2ace527c-7f2b-4add-9e03-0b142011a125.png)
+
+이것이 height: '100%' 로 설정했을 때이고
+
+<br>
+
+![image](https://user-images.githubusercontent.com/79521972/176095815-30e15bd2-1a02-49e7-ad23-04fb7991058b.png)
+
+이것이 flex: 1 로 설정했을 때의 모습이다.
+
+<br>
+
+flex: 1 스타일 속성을 부여하면 Content의 형제 요소인 TopBar와 BottomBar의 높이가 반영된 부모 컴포넌트의 높이를 가져온다.
+
+이에 반해 'height: '100%'는 TopBar와 BottomBar의 높이와 무관하게 부모 컴포넌트의 높이를 모두 가져오므로 (즉, Content의 루트 View의 height에 Dimensions.get('window').height값을 설정한 것과 같은 효과) Content의 높이가 너무 커져 BottomBar가 화면에 나타나지 못하게 된 것이다.
+
+
+
+<br>
+
+- alignitems 스타일 속성
+
+  - 부모 요소의 높이나 넓이에 여분이 있을 때 이 여분을 이용하여 자식 요소의 배치 간격을 조정하는데 사용
+
+  - ```
+    left, center, right, stretch
+    ```
+
+  - stretch 값은 부모 컴포넌트의 크기에 여분이 있으면 자식 컴포넌트의 크기를 늘림.
+
+- jutisfyContent 스타일 속성
+
+  - flexDirection에 따라 진행 방향이 달라짐
+
+  - ```
+    flex-start, center, flex-end, space-around, space-between, space-evenly
+    ```
+
+- flexWrap 스타일 속성
+
+  - 폭보다 길이가 긴 요소들을 렌더링 할 때 줄을 바꿔가면서 렌더링 하도록하는
+
+  - ```
+    nowrap, wrap, wrap-reverse
+    ```
+
+- overflow 스타일 속성
+
+  - 전체 콘텐츠의 크기가 컴포넌트 크기보다 클 때 이를 어떻게 할 지를 결정하는 속성
+
+  - ```
+    visible, hidden, scroll
+    ```
+
+  - 네이티브에서 스크롤은 ScrollView나 FlatList 코어 컴포넌트 위에서만 가능하다.
+
+
+
+<br>
+
+### ScrollView의 contentContainerStyle 속성
+
+contentContainerStyle 속성은 스크롤 대상 콘텐츠 컴포넌트에 적용되는 속성이다. 이 속성을 설정할 때는 flex: 1 부분이 없어야 스크롤이 정상 작동한다.
+
+
+
+<br>
+
+## floating action button(FAB)
+
+FAB 효과는 아이콘이 SafeAreaView의 자식 컴포넌트여서는 안된다. 
+
+그래서 Fragment라는 컴포넌트를 사용해야 한다.
+
+그런데 Fragment는 이름이 좀 길기 때문에 리액트에서는 <> </> 라는 단축 구문을 제공한다.
 
 
 
 
 
+<br>
+
+## 재사용 할 수 있는 컴포넌트 만들기
+
+JSON.stringify 가 아닌 실제로 컴포넌트를 스타일링하는 방법을 알아보자
+
+
+
+### FlatList
+
+타입스크립트 관점에서 타입 T의 배열 T[] 타입 데이터를 data 속성에 설정하려면 renderItem에는 ({item}: {item: T}) => {} , 즉 T 타입 데이터이며 item이란 이름의 속성이 있는  객체를 매개변수로 하는 콜백 함수를 설정한다.
+
+그런데 renderItem이 반환하는 리액트 요소에는 key 속성을 설정하는 부분이 빠졌다. FlatList는 다음과 같이 keyExtractor 속성에 item과 index값이 매개 변수인 콜백 함수를 지정해 renderItem에 설정한 콜백함수가 반환하는 컴포넌트의 key 속성에 설정할 값을 얻는다.
+
+```react
+<FlatList
+    data={people}
+    renderItem={({item} => <Person person={item} />)}
+    keyExtractor={(item, index) => item.id} />
+```
+
+- 이 때 item.id 혹은 index.toString() (id와 같은 속성이 없는 데이터의 경우에)
+
+<br>
+
+#### FlatList가 제공하는 속성
+
+- data
+  - data={people}
+- renderItem
+  - {(item) => <Person person={item} /\>}
+- keyExtractor
+  - {(item, index) => item.id}
+  - {(item, index) => index.toString()}
+- ItemSeparatorComponent
+  - {() => <View style={styles.itemSeparator} /\>}
+
+
+
+<br>
+
+### 객체를 리턴할때는 어떻게 하지?
+
+객체 자체가 괄호에 쌓인 형태이기 때문에, 객체를 리턴하려면 기존 방식을 사용해야 하지만, ES6 화살표 함수는 이런 문제를 해결할 수 있는 기능을 이미 내장하고 있다.
+
+```react
+// 괄호 안에 이상한 문법이 들어가 버렸습니다...!
+const newFunctionWrong = () => { a: '나는객체요소' };
+
+// 소괄호로 감싸게 되면 객체 자체를 리턴할 수가 있게 됩니다.
+const newFunction = () => ({ a: '나는객체요소' });
+```
+
+리턴할 객체 위에 소괄호를 감싸면 객체 자체를 리턴할 수 있는 형태가 된다.
+
+
+
+<br>
 
 
 
 
 
+### 재사용할 수 있는 컴포넌트란?
+
+댓글, 리트윗, 좋아요와 같은 아이콘들에 각각 이름을 붙여주고 싶다면 각각의 icon이 부착된 View 컴포넌트 안에서만 가능했지만 재사용할 수 있는 컴포넌트를 사용하면 이를 하나 만들어 놓고 각각의 Icon 컴포넌트를 감싸기만 하면 된다.
+
+- 그렇기 때문에 유지보수가 뛰어난 코드가 만들어질 수 있는 것이다.
+
+하나의 목적에만 부합하는 것이 아니라 어떤 패턴의 코드에 항상 적용할 수 있는 사용자 컴포넌트를 재사용할 수 있는 컴포넌트라고 한다. 
+
+그런데 타입스크립트로 재사용할 수 있는 컴포넌트를 만드려면 ReactNode라는 타입, children이란 속성, 그리고 수신한 속성을 한꺼번에 다른 컴포넌트에 전달하는 기법 등에 익숙해야 한다.
+
+<br>
+
+- 재사용할 수 있는 컴포넌트 만들기
+
+  - ```react
+    import type {FC, ReactNode} from 'react'
+    
+    type SomeComponent = {
+        children?: ReactNode
+    }
+    
+    export const SomeComponent: FC<SomeComponentProps> = ({children}) => {
+        return <View>{children}</View>
+    } 
+    ```
+
+- 재사용할 수 있는 컴포넌트 적용
+
+  - ```react
+    <View>
+    	<SomeComponent><Image /></SomeComponent>
+        <SomeComponent><Text>some text</Text></SomeComponent>
+    </View>
+    ```
 
 
 
+<br>
 
+## TouchableView 컴포넌트 만들기
 
+- 타입스크립트 교집합 타입과 JSX 전개 연산자 구문 혼합 사용
 
+  - ```react
+    import React from 'react';
+    import type {FC, ReactNode, ComponentProps} from 'react';
+    import {TouchableOpacity, View} from 'react-native';
+    
+    type TouchableOpacityProps = ComponentProps<typeof TouchableOpacity>;
+    
+    export type TouchableViewProps = TouchableOpacityProps & {
+      children?: ReactNode;
+    };
+    
+    export const ToucahbleView: FC<TouchableViewProps> = ({
+      children,
+      ...touchableProps
+    }) => {
+      return (
+        <TouchableOpacity {...touchableProps}>
+          <View>{children}</View>
+        </TouchableOpacity>
+      );
+    };
+    
+    ```
 
+  - 이 코드의 특징은 07행에서 타입스크립트의 교집합 타입을 사용하여 TouchableViewProps타입을 선언하고 12행에서 잔여 연산자 구문으로 TouchableOpacityProps 부분을 얻은 다음, 14행에서 JSX의 {...props} 구문으로 TouchableOpacity의 속성을 한꺼번에 넘겨준다는 데 있다.
+
+<br>
+
+## 잔여 연산자?
+
+```react
+let address: any ={
+    country: 'Korea',
+    city: 'Seoul',
+    address1: 'Gangnam-gu',
+	address2: 'Sinsa-dong 123-456',
+    address3: '789 street, 2 Floor ABC building',
+}
+const {country, city, ...detail} = address
+```
+
+address 변수의 6개 속성 중 country와 city를 제외한 나머지 속성을 별도의 detail이라는 변수로 저장하고 싶다면 detail 변수 앞에 잔여 연산자(...)를 붙인다.
 
 
 

@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[React Native] 리액트 네이티브 1일차-개발 환경 세팅 및 기본 다지기"
+title: "[React Native] 리액트 네이티브 1-개발 환경 세팅 및 기본 다지기"
 categories: ['Front-end', 'React-Native']
 toc: true
 toc_sticky: true
