@@ -10,6 +10,15 @@ toc_sticky: true
 
 ## 3.1 Style 속성과 StyleSheet API 이해하기
 
+style을 적용하는 방법은 두 가지가 있다.
+
+1. 인라인 스타일 설정
+2. StyleSheet API 사용
+
+<br>
+
+### 스타일 속성과 스타일 객체
+
 style 속성에 style 객체를 설정한다. (Not string)
 
 ```react
@@ -18,22 +27,62 @@ style 속성에 style 객체를 설정한다. (Not string)
 </SafeAreaView>
 ```
 
+- 안쪽 중괄호는 객체를 의미하는 문법, 바깥쪽 중괄호는 JSX 구문에서 자바스크립트 코드를 설정할 때 쓰는 문법
+
 <br>
 
 - 스타일 객체가 가지는 속성을 스타일 속성이라고 한다.
 
 - 스타일 속성에는 요가 엔진이 지정한 이름만 사용할 수 있으며 소문자로 시작한다.
+
 - 스타일 속성 설정 값이 배열이면 배열 안의 스타일 객체를 모두 결합하여 하나의 스타일 객체로 만들어준다.
 
+  - style 속성에 배열 설정 구문
 
+  - ```
+    <컴포넌트_이름 style={[스타일_객체1, 스타일_객체2, ...]} />
+    ```
+
+- View 컴포넌트(코어 컴포넌트 중 'View' 자가 들어간 컴포넌트) backgroundColor 속성으로 자신의 바탕색을 설정할 수 있다.
+  - Text는 자신의 바탕을 설정할 수 없지만 color 속성을 글자색은 바꿀 수 있고 해당 텍스트를 View 컴포넌트로 감싸면 가능하다.
 
 <br>
 
 ### Sytle Sheet API
 
-- StyleSheet.create의 목적이 자바스크립트 언어로 만든 스타일 객체를 네이티브 모듈 쪽으로 옮겨 주는 것이므로 여러 번 호출하여 스타일 객체 여러 개를 일일이 전달하는 것보다는 한꺼번에 전달하는 것이 효율적이다. 
+위에서 style 속성에 설정한 스타일 객체를 인라인 스타일이라고 하는데 style 속성에는 인라인 스타일 외에도 StyleSheet API를 사용할 수 있다.
+
+<br>
+
+StyleSheet는 create 메서드를 제공하는데, 이 메서드를 사용하여 캐시된 스타일 객체를 생성할 수 있다.
+
+- StyleSheet.create 메서드 사용법
+
+  - ```react
+    const styles = StyleSheet.create({
+        키_이름1: 스타일_객체1
+        키_이름2: 스타일_객체2
+        (... 생략 ...)
+    })
+    ```
+
+    
+
+- StyleSheet.create의 목적이 자바스크립트 언어로 만든 스타일 객체를 네이티브 모듈 쪽으로 옮겨 주는 것이므로 **여러 번 호출**하여 스타일 객체 여러 개를 일일히 전달하는 것보다는 한꺼번에 전달하는 것이 효율적이다. 
 
 - StyleSheet.create 함수는 매개변수에 설정된 스타일 객체를 네이티브 모듈 쪽에 전달한다. 
+  - 매개변수에는 키와 이에 해당하는 스타일 객체 쌍을 여러 개 만드는 방식으로 사용한다.
+- 그리고 네이티브 모듈 쪽은 이렇게 전달 받은 스타일 객체를 자신의 로컬 저장소에 보관한다.(즉, 캐시 형태로 저장한다.). 이후 네이티브 모듈 쪽의 렌더링은 로컬 저장소에 보관된 스타일 객체를 참조하므로 불필요한 자바스크립트 엔진 스레드와 네이티브 UI 스레드 간의 데이터 전송이 일어나지 않아 전체적인 렌더링 속도가 빨라진다.
+
+<br>
+
+### 인라인 스타일과 StyleSheet 스타일의 차이
+
+컴포넌트는 필요에 따라 리액트 네이티브에 의해 재렌더링된다. 재렌더링은 상황에 따라 반복해서 발생하는데 이런 상황을 고려하여 **인라인 스타일 방식**은 자바스크립트 엔진 쪽 스레드에서 UI 스레드 쪽으로 **브리지를 경유**하여 옮겨 가므로 내용이 컴포넌트 로직에 의해 바뀌지 않을 때는 앱의 디스플레이 속도가 떨어진다.
+
+반면 StyleSheet.create로 생성된 스타일 객체는 UI 스레드 쪽에 캐시되므로 앱 전체의 디스플레이 속도가 빨라진다. 
+
+<mark>그래서 내용이 변하지 않는 스타일(즉, 정적 스타일) 객체는 StyleSheet .create 방식으로 구현하는 것이 효과적이고 컴포넌트 구현 로직에 따라 동적으로 변하는 스타일 객체는 인라인 스타일 방식으로 구현하는 것이 일반적이다.</mark>
 
 <br>
 
@@ -41,15 +90,25 @@ style 속성에 style 객체를 설정한다. (Not string)
 
 CSS에서 색상은 16진수 RGB(#fff, #21963f)로 표현 되어 있는데 이를 white or Colors.blue 와 같이 하도록 도와주는 패키지이다.
 
+#### 구글 머티리얼 디자인 가이드
 
+![image](https://user-images.githubusercontent.com/79521972/176381923-d40021d4-4a43-4445-a139-2df6044c2c60.png)
+
+구글은 모든 안드로이드 앱을 가능한 한 이 가이드라인에 따라 디자인 할 것을 권고한다.
+
+구글 색상표에서 세로줄의 색 이름은 색상을 HSL 방식으로 표현하고 나서 Hue 값을 30도씩 회전해 만든 것이다. 이와는 달리 가로줄은 Light를 조금씩 어둡게 해가며 만든 것이다.
+
+react-native-paper 란 패키지는 Colors라는 심벌을 제공하는데 이 심벌을 이용하면 구글 색상표에서 Blue열 500번 색상을 Colors.blue500처럼 표현할 수 있다.
+
+<br>
 
 #### color 패키지
 
-구글 머티리얼 디자인은 앱의 색상을 주 색상과 보조 색상으로 나눠서 애브이 테마 색상을 결정할 것을 권고한다.
+- 구글 머티리얼 디자인은 앱의 색상을 주 색상과 보조 색상으로 나눠서 애브이 테마 색상을 결정할 것을 권고한다.
 
-앱의 테마 색상이 결정되면 글자가 모든 색상에서 잘 보일 수 있도록 글자 색상도 잘 결정해야 한다.
+- 앱의 테마 색상이 결정되면 글자가 모든 색상에서 잘 보일 수 있도록 글자 색상도 잘 결정해야 한다.
 
-color 패키지는 위 경우에 어떤 색보다 좀 더 밝게 또는 어둡게 하거나 투명도를 가감하여 좋은 색상을 정하는데 유용합니다.
+- color 패키지는 위 경우에 어떤 색보다 좀 더 밝게 또는 어둡게 하거나 투명도를 가감하여 좋은 색상을 정하는데 유용하다.
 
 ```react
 text: {fontSize: 20, color: Color(Colors.blue500).lighten(0.9).string()}
@@ -57,21 +116,21 @@ text: {fontSize: 20, color: Color(Colors.blue500).lighten(0.9).string()}
 
 다음과 같이 Color로 감싼 색상에 대해서 가장 잘 보이는 색으로 대치해 주는 것이다.
 
-
-
 <br>
 
 ## View 컴포넌트와 CSS 박스 모델
 
-리액트 네이티브는 각종 'View' 가 들어간 컴포넌트를 제공한다. 이는 화면 UI와 레이아웃과 스타일리을 담당한다.
+리액트 네이티브는 각종 'View' 가 들어간 컴포넌트를 제공한다. 이는 여러 개의 리액트 네이티브 컴포넌트를 자식 요소로 가질 수 있고 화면 UI와 레이아웃과 스타일링을 담당한다.
 
+<br>
 
+### Platform과 Dimensions API
 
 - **Platform API**
   - 현재 앱이 실행되는 폰이 무엇인지를 알기 위한 모듈
 
-- Dimensions API
-  - 현재 실행된 폰의 크기를 알아야 할 때 사용하는 API
+- **Dimensions API**
+  - 현재 실행된 폰의 화면 크기를 알아야 할 때 사용하는 API
 - alpha: 투명도
 - lighten: 밝기
 
@@ -80,22 +139,72 @@ text: {fontSize: 20, color: Color(Colors.blue500).lighten(0.9).string()}
   - 모듈을 불러올 때 import라고 쓰는 것처럼 모듈을 다른 파일에 보내려면 export라고 명시해야 한다.
   - 이 때 다른 모듈로부터 가져오는데 해당 모듈에서 이를 export할 때 default(해당 모듈 자체를 import하면 내보내지는 것)로 내보낸 것은 괄호가 필요없지만 나머지의 경우 필요하다.
 
+<br>
 
+### 뷰 컴포넌트의 backgroundColor 스타일 속성
+
+---
+
+- import 문 쪽에 `// prettier-ignore`를 작성해 놓으면 prettier가 불필요하게 import 문을 여러 줄로 포맷하는 것을 방지한다.
+
+- CSS와 달리 리액트 네이티브의 fontSize 스타일 속성에는 반드시 number 타입이나 undefined를 값으로 설정해야 한다.
+
+---
+
+그래서 스타일을 설정한 뷰 컴포넌트의 자식 컴포넌트로 텍스트를 넣게되면 뷰 컴포넌트의 바탕색이 화면 전체가 아니라 단순히 Text의 높이 부분까지만 덮는다.
+
+- 바로 아래에서 이것에 대한 이유가 나온다.(1번 방법)
 
 <br>
 
 ### View의 기본 width값과 height값
 
-- 'View' 컴포넌트에 width와 height 스타일 속성값을 직접 명시하지 않았을 때 리액트 네이티브는 'View'의 width는 부모 컴포넌트의 width를 그대로 설정하고 height는 자식 요소의 height를 'View'의 height로 설정한다.
-  - 자식 요소를 수평으로 배치한 경우 - 자식 요소 중 가장 높은 요소의 height 값
-  - 자식 요소를 수직으로 배치한 경우 - 자식 요소의 height 값을 모두 더한 값
-- 가장 바깥의 'View' 컴포넌트(코어 컴포넌트)의 부모는 App(사용자 컴포넌트)임.
-  - 사용자 컴포넌트는 렌더링에 참여하지 않고 리액트 네이티브 코어 컴포넌트만 화면에 직접 렌더링 함.
-- CSS에서 퍼센트값은 항상 부모 컴포넌트의 크기를 기준으로 봤을 때의 비율이다.
+리액트 네이티브는 CSS 박스 모델을 적용한 컴포넌트를 사용하여 width와 height 스타일 속성으로 자신의 크기를 설정할 수 있다.
+
+- 이 widht와 height 스타일 속성값에는 다음 4가지 방법 중 하나를 골라 설정하도록 한다.
+  1. 명시적으로 widht, height를 설정하지 않고 리액트 네이티브의 기본 설정(default) 방식을 따르는 방법
+  2. 픽셀(pixel, px) 단위의 숫자를 직접 설정하는 방법
+  3. 부모 요소의 width, height를 기준으로 자식 컴포넌트의 크기를 퍼센트(%)로 설정하는 방법
+  4. flex 속성을 사용하여 여러 자식 컴포넌트가 부모 컴포넌트의 크기를 분할하여 가지는 방법
 
 <br>
 
-### flex 스타일 속성
+#### 1. 명시적으로 widht, height를 설정하지 않고 리액트 네이티브의 기본 설정(default) 방식을 따르는 방법
+
+SafeAreaView와 같은 뷰 컴포넌트에 width와 height 스타일 속성값을 직접 명시하지 않았을 때 리액트 네이티브는 'View'의 width는 부모 컴포넌트의 width를 그대로 설정하고 `height는 자식 요소의 height를 'View'의 height로 설정한다.`
+
+- 자식 요소를 수평으로 배치한 경우 -> 자식 요소 중 가장 높이 있는 요소의 height 값
+- 자식 요소를 수직으로 배치한 경우 -> 자식 요소의 height 값을 모두 더한 값
+
+그래서 앞에서 SafeAreaView의 높이가 수직으로 배열된 자식 요소 3개의 높이를 모두 더한 값이 리액트 네이티브에 자동 설정 된 것이다.
+
+<br>
+
+#### 2. 명시적으로 픽셀 단위의 값을 설정하는 방법
+
+앞서 Dimensions API를 이용해 폰의 크기를 width와 height에 저장한 바가 있다. 따라서 Dimensions.get('window')를 통해 얻은 값으로 height를 설정할 수 있다.
+
+- 이 과정에서 'height: height'와 같이 작성을 할 텐데 이는 height 단어 하나로 단축하여 쓸 수 있다.
+  - 속성이름과 값을 담은 변수 이름이 똑같을 때는 생략할 수 있는 단축 구문을 제공함.
+
+<br>
+
+#### 3. 부모 요소의 크기를 기준으로 퍼센트를 설정하는 방법
+
+- 가장 바깥의 'View' 컴포넌트(코어 컴포넌트)의 부모는 App(사용자 컴포넌트)임.
+  - 하지만 App과 같은 사용자 컴포넌트는 렌더링에 참여하지 않고 리액트 네이티브 코어 컴포넌트만 화면에 직접 렌더링 함.
+  - 그래서 렌더링 관점에서만 봤을 때는 SafeAreaView의 부모 컴포넌트는 App이 아니라 네이티브 쪽 모듈에서 생성된 자바나 오브젝티브-C로 구현한 네이티브 컴포넌트가 된다.
+  - 그리고 이 네이티브 컴포넌트의 크기는 폰의 크기와 같다.
+    - 즉, Dimensions.get('window')의 반환값은 네이티브 모듈 쪽의 최상위 컴포넌트의 크기이다.
+
+- CSS에서 퍼센트값은 항상 부모 컴포넌트의 크기를 기준으로 봤을 때의 비율이다.
+  - height='100%'의 의미는 네이티브 쪽 최상위 컴포넌트 height 값의 100%라는 의미이다.
+
+
+
+<br>
+
+### 4. flex 스타일 속성
 
 - 앞서 width, height 스타일 속성(100%, 50% 등으로 설정하던 것)을 flex 스타일 속성에 적용하면 1은 100%를 0.5는 50%를 의미하도록 할 수 있다.
 
@@ -115,9 +224,19 @@ text: {fontSize: 20, color: Color(Colors.blue500).lighten(0.9).string()}
 
 ### margin
 
-- marginLeft와 marginRight 값이 같은 상황(즉, marginLeft=marginRight일 때)이면 marginHorizontal 스타일 속성으로 이 둘을 동시에 설정할 수 있으며
-- marginTop=marginBottom 상황이면 marginVertical을 사용하여 두 값을 한꺼번에 설정할 수 있다.
-- marginHorizontal=marginVertical 상황이면 margin 속성을 사용하여 이 두 값을 한꺼번에 설정할 수 있다.
+대부분 코어 컴포넌트에는 margin이라는 스타일 속성을 설정할 수 있다.
+
+margin 스타일 속성은 부모/자식 간 혹은 이웃한 형제 요소간의 간격을 조정한다.
+
+- marginLeft와 marginRight 값이 같은 상황(즉, marginLeft=marginRight일 때)이면
+  -  **marginHorizontal** 스타일 속성으로 이 둘을 동시에 설정할 수 있으며
+
+- marginTop=marginBottom 상황이면 
+  - **marginVertical**을 사용하여 두 값을 한꺼번에 설정할 수 있다.
+
+- marginHorizontal=marginVertical 상황이면
+  - **margin** 속성을 사용하여 이 두 값을 한꺼번에 설정할 수 있다.
+
 
 
 
@@ -125,33 +244,49 @@ text: {fontSize: 20, color: Color(Colors.blue500).lighten(0.9).string()}
 
 ### padding
 
-- padding 스타일 속성은 부모/자식 간의 관계에서 부모 컴포넌트 쪽에 적용하는 스타일 속성이다. 
-- 대부분 부모 컴포넌트 내부에 자식 컴포넌트를 배치할 때 자식 컴포넌트가 자신의 영역을 꽉 채우지 않고 간격을 주는 것이 시각적으로 좋다.
+padding 스타일 속성은 부모/자식 간의 관계에서 **부모 컴포넌트 쪽에 적용하는 스타일 속성**이다. 
 
-- 안드로이드에서 SafeAreaView는 단순히 View로 동작하지만 iOS에서 SafeAreaView는 View가 아니기 때문이다.
+대부분 부모 컴포넌트 내부에 자식 컴포넌트를 배치할 때 자식 컴포넌트가 자신의 영역을 꽉 채우지 않고 간격을 주는 것이 시각적으로 좋다.
+
+<br>
+
+- paddingLeft와 paddingRight 값이 같은 상황(즉, padidngLeft=paddingRight일 때)이면
+  -  **paddingHorizontal** 스타일 속성으로 이 둘을 동시에 설정할 수 있으며
+- paddingTop=paddingBottom 상황이면 
+  - **paddingVertical**을 사용하여 두 값을 한꺼번에 설정할 수 있다.
+- paddingHorizontal=paddingVertical 상황이면
+  - **padding** 속성을 사용하여 이 두 값을 한꺼번에 설정할 수 있다.
+
+안드로이드에서 SafeAreaView는 단순히 View로 동작하지만 iOS에서 SafeAreaView는 View가 아니기 때문에 iOS에서는 padding 스타일 속성은 동작하지 않는다.
+
+<br>
+
+
+
+### margin vs. padding
+
+margin과 padding의 차이는 아래 그림으로 명확히 알 수 있다.
+
+![image](https://user-images.githubusercontent.com/79521972/176390398-ec6e6117-0b1a-45a4-b2f0-6bbbd96190a6.png)
 
 <br>
 
 ### border 관련 속성
 
-- 리액트 네이티브 코어 컴포넌트는 대부분 자신 영역의 **경계**를 설정할 수 있는 다음과 같은 스타일 속성을 사용할 수 있다.
-  - borderWidth: border 넓이
+- 리액트 네이티브 코어 컴포넌트는 **대부분** 자신 영역의 **경계**를 설정할 수 있는 다음과 같은 스타일 속성을 사용할 수 있다.
+  - **borderWidth**: border 넓이
     - borderLeftWidth, borderRightWidth, borderTopWidth, borderBottomWidth
-  - borderColor: border 색상
+  - **borderColor**: border 색상
     - borderLeftColor, borderRightColor, borderTopColor, borderBottomColor
-  - borderRadius: border 모서리 둥근 정도를 의미
+  - **borderRadius**: border 모서리 둥근 정도를 의미
     - borderTopLeftRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius
-  - borderStyle: 실선, 점선 등 border 스타일을 의미
+  - **borderStyle**: 실선, 점선 등 border 스타일을 의미
     - 'solid', 'dotted', 'dashed'
-
-
 
 <br>
 
 - 궁금증: 만든 스타일객체로 스타일을 설정하는데 객체 안에 이미 들어 있는 속성을 배열에 다른 객체를 추가하여 더하여도 추가한 걸로 적용이 되는가?
   - 된다.
-
-
 
 <br>
 
