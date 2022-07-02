@@ -405,7 +405,7 @@ Image 코어 컴포넌트는 ImageBackground처럼 이미지 파일을 화면에
 
 이미지 파일과 달리 폰트 파일은 반드시 `npx react-native link`명령을 실행해야 사용할 수 있다.
 
-그러나 이는 현재 일자 기준(22-06-28)으로 더 이상 지원되지 않는 서비스라 하여 다른 방식을 찾아야 했다.
+그러나 이는 현재 일자 기준(22-06-28)으로 더 이상 지원되지 않는 서비스라 하여 autolinking이 되어 그냥 src/assets/fonts 에 폰트를 저장하고 사용하면 된다.
 
 
 
@@ -417,11 +417,15 @@ Image 코어 컴포넌트는 ImageBackground처럼 이미지 파일을 화면에
 
 - 'ImageBackground의 heigt-(paddingTop + paddingBottom) - Image의 height - Icon의 height 만큼의 높이 여분이 생긴다.
 
+ImageBackground와 같은 부모 컴포넌트의 Image, View, Icon 등 자식 컴포넌트 중에 flex 스타일 속성에 0이 아닌 값을(1, 2 ...) 가지는 컴포넌트가 **없다면** 이 여분은 그대로 남을 것이다.
 
+하지만 지금처럼 View가 flex: 1로 설정되면 ImageBackground와 같은 부모 컴포넌트의 height 여분이 모두 flex: 1인 컴포넌트의 높이가 된다.
 
-하지만 flex: 1로 설정되면 ImageBackground와 같은 부모 컴포넌트의 height 여분이 모두 flex: 1인 컴포넌트의 높이가 된다.
+따라서 View는 이 높이 여분을 자신의 높이로 삼으므로 View 아래에 있는 Icon은 화면 아래에 위치하게 된다.
 
+<br>
 
+정리하자면 이렇게 flex 속성을 설정하지 않아서 생기는 남은 여분에는 아무런 컴포넌트도 존재하지 않게 되는 것이다.
 
 <br>
 
@@ -468,13 +472,32 @@ Content의 루트 View는 현재 flex: 1 스타일링이기 때문에 '화면 �
 
 그리고 이런 비율 계산법이 적용되므로 flex 속성값을 1, 2가 아닌 100,200 으로 설정해도 비율이 같으므로 같은 결과가 될 것이다.
 
+<br>
+
+### flexDirection 스타일 속성
+
+플렉스박스 레이아웃은 부모 컴포넌트의 크기가 고정일 때 자식 컴포넌트를 자신의 영역에 배치하는 기법이다. 그런데 플렉스박스 레이아웃 기능은 부모 컴포넌트가 자식 컴포넌트를 배치할 때 수평이나 수직 방향 한쪽으로만 가능하다.
+
+그리고 이 방향은 flexDirection이란 스타일 속성으로 조정할 수 있다.
+
+- 'row'
+- 'column'
+
+이 두 가지로 설정할 수 있고 기본(default)값은 column이다. 그 동안 우리가 배치했던 컴포넌트가 배치되던 방식을 생각하면 된다.(bottomBar가 가장 밑에 있던 이유)
+
+<br>
+
+탑바를 다음과 같이 구성하기 위해서 이미지와 아이콘 사이에 텍스트를 row 형태로 배치하는데 이 때 텍스트는 이미지와 아이콘 사이 공간을 모두 차지하고 싶음에도 Text 컴포넌트는 flex 스타일 속성을 부여할 수 없다. 
+
+그렇기 때문에 View 컴포넌트가 이를 감싸고 이 View 스타일 속성에 flex: 1로 설정을 하면 된다.
+
+<br>
+
+다음으로 계속해서 여러가지 스타일 속성에 대해서 알아보도록 하겠다.
 
 
 
-
-
-
-- alignitems 스타일 속성
+- #### alignitems 스타일 속성
 
   - 부모 요소의 높이나 넓이에 여분이 있을 때 이 여분을 이용하여 자식 요소의 배치 간격을 조정하는데 사용
 
@@ -484,7 +507,14 @@ Content의 루트 View는 현재 flex: 1 스타일링이기 때문에 '화면 �
 
   - stretch 값은 부모 컴포넌트의 크기에 여분이 있으면 자식 컴포넌트의 크기를 늘림.
 
-- jutisfyContent 스타일 속성
+    - stretch가 동작하려면 자식 컴포넌트 크기는 고정되지 않아야 한다.
+
+  - 그런데 alignItems는 flexDirection 속성값에 따라 동작 방향이 달라진다. 앞서 Topbar를 구성할 때 view는 flexdirection 속성값이 'row'였다.
+
+    - flexDirection 속성값이 'row'라면 alignItems는 자식 컴포넌트의 수직 방향 배치에 영향을 준다. 
+    - 반대로 flexDirection 속성값이 'column'이라면 alignItems는 자식 컴포넌트의 수직 방향 배치에 영향을 준다. 
+
+- #### jutisfyContent 스타일 속성
 
   - flexDirection에 따라 진행 방향이 달라짐
 
@@ -492,15 +522,32 @@ Content의 루트 View는 현재 flex: 1 스타일링이기 때문에 '화면 �
     flex-start, center, flex-end, space-around, space-between, space-evenly
     ```
 
-- flexWrap 스타일 속성
+  - flex-start: 앞쪽에 몰아서
 
-  - 폭보다 길이가 긴 요소들을 렌더링 할 때 줄을 바꿔가면서 렌더링 하도록하는
+  - flex-end: 끝쪽에 몰아서
+
+  - center: 중앙에 몰아서
+
+    - 위 세 개는 부모 요소의 수평 방향 여백을 자식 요소 간의 간격에 전혀 반영하지 않았다.
+
+  - space-around: 폰 양 끝에 padding을 적용함
+
+  - space-between: 폰 양 끝에 padding을 적용하지 않음
+
+  - space-evenly: 여분 넓이를 균등하게 부여함 -> `부모 컴포넌트 넓이 -(자식 컴포넌트 넓이 합) 
+    -> 공백수가 자식 컴포넌트 수보다 하나 많으므로 (자식 컴포넌트 수 + 1)로 나누어 얻은 여분 넓이를 균등하게 부여하는 방식
+
+    - 위 세 개는 부모 요소의 여백을 자식 요소의 간격에 반영한다.
+
+- #### flexWrap 스타일 속성
+
+  - 폰 화면의 폭보다 길이가 긴 요소들을 렌더링 할 때 줄을 바꿔가면서 렌더링 하도록하는
 
   - ```
     nowrap, wrap, wrap-reverse
     ```
 
-- overflow 스타일 속성
+- #### overflow 스타일 속성
 
   - 전체 콘텐츠의 크기가 컴포넌트 크기보다 클 때 이를 어떻게 할 지를 결정하는 속성
 
@@ -508,7 +555,14 @@ Content의 루트 View는 현재 flex: 1 스타일링이기 때문에 '화면 �
     visible, hidden, scroll
     ```
 
-  - 네이티브에서 스크롤은 ScrollView나 FlatList 코어 컴포넌트 위에서만 가능하다.
+  - visible이면 콘텐츠는 컴포넌트의 크기와 무고나하게 컴포넌트 바깥쪽으로도 렌더링된다.
+  
+  - hidden이면 오른쪽이면 컴포넌트 바깥쪽에 렌더링되지 않는다.
+  
+  - 그런데 웹과는 달리 overflow에 scroll을 설정해도 스크롤 효과는 발생하지 않는데 
+  
+    - 리액트 네이티브에서 스크롤은 ScrollView나 FlatList 코어 컴포넌트 위에서만 가능하기 때문이다.
+  
 
 
 
@@ -516,21 +570,95 @@ Content의 루트 View는 현재 flex: 1 스타일링이기 때문에 '화면 �
 
 ### ScrollView의 contentContainerStyle 속성
 
-contentContainerStyle 속성은 스크롤 대상 콘텐츠 컴포넌트에 적용되는 속성이다. 이 속성을 설정할 때는 flex: 1 부분이 없어야 스크롤이 정상 작동한다.
+- ScrollView는 다른 코어 컴포넌트와 달리 style 이외에 contentContainerStyle 속성을 **별도로** 제공한다.
+  - contentContainerStyle 속성은 스크롤 대상 콘텐츠 컴포넌트에 적용되는 속성이다. 
+  - 이 속성을 설정할 때는 flex: 1 부분이 없어야 스크롤이 정상 작동한다.
+
+<br>
+
+
+
+## 화면에 뜬 효과 주기: floating action button(FAB)
+
+- 화면 어딘가에 떠 있는 아이콘혹은 이미지 효과를 줄 수 있는 것으로 floaing action button이라고 한다.
+- 이런 FAB 효과를 주려면 <mark>position, left, right, top, bottom과 같은 스타일 속성과 리액트가 제공하는 Fragment 컴포넌트를 반드시 이해해야 한다.</mark>
 
 
 
 <br>
 
-## floating action button(FAB)
+### React.Fragment 컴포넌트와 `<></>` 단축 구문
 
-FAB 효과는 아이콘이 SafeAreaView의 자식 컴포넌트여서는 안된다. 
+먼저 floating icon을 만드는 방법은 다음과 같다.
 
-그래서 Fragment라는 컴포넌트를 사용해야 한다.
+```react
+<View style={[styles.absoluteView]}>
+	<Icon name="feather" size={50} color="white" />
+</View>
+```
 
-그런데 Fragment는 이름이 좀 길기 때문에 리액트에서는 <> </> 라는 단축 구문을 제공한다.
 
 
+이를 App.tsx에 bottombar 컴포넌트 아래에 추가하면 다음과 같이 되는데 이 이유는 아이콘이 SafeAreaView의 자식 컴포넌트 형태로 JSX가 구성되기 때문이다.
+
+요컨데 **FAB 효과를 주려면 아이콘이 SafeAreaView의 자식 컴포넌트여서는 안된다**. 그런데 계속 다뤘던 내용에서는 반드시 SafeAreaview가 최상위 컴포넌트여야만 했던 것을 알 수 있다.
+
+리액트에서는 이런 딜레마를 해결하기 위해서 Fragment 컴포넌트를 제공한다.
+
+JSX는 XMl 문이기 때문에 다음처럼 부모 컴포넌트 없이는 여러 개의 컴포넌트가 올 수 없다.
+
+```react
+<SafeAreaview />
+<View />
+```
+
+<br>
+
+Fragment는 실제 존재하지는 않지만 XML 문법이 요구하는 부모 컴포넌트로 동자가도록 만들어진 컴포넌트이다. 즉, 동작하는 방식이 다음과 같은 것이다.
+
+```react
+<Fragment>
+    <SafeAreaView />
+    <View />
+</Fragment>
+```
+
+<br>
+
+그런데 Fragment는 이름이 좀 긴 감이 있기 때문에서 인지 `<></>`와 같은 단축 구문을 제공한다.
+
+```react
+<>
+    <SafeAreaView />
+    <View />
+</>
+```
+
+<br>
+
+이를 적용하여 FAB을 구성하여도 별 차이는 없어보인다.
+
+<br>
+
+## left, right, top, bottom과 position 스타일 속성
+
+이 스타일 속성들은 컴포넌트가 렌더링되는 위치를 바꾸고 싶을 때 사용한다.
+
+그런데 이 스타일 속성은 position 스타일 속성은 position 스타일 속성값을 'absolute'로 지정해야 비로소 설정값이 컴포넌트에 반영된다.(절대적인 위치를 지정하고 싶은 것이기 때문일 것으로 추정)
+
+- position: 'absolute'
+
+예를 들어 left 스타일 속성에 10과 같은 값을 설정하면 컴포넌트 왼쪽으로 기준으로 10픽셀 오른쪽으로 이동해 컴포넌트가 렌더링 되는 식이다.
+
+<br>
+
+최종적으로 FAB 아이콘을 띄우는 방법은 다음과 같다.
+
+- View로 Icon을 감싼다.
+- View의 스타일 속성에는 position을 'absolute'로 설정해 주고 아이콘이 띄워질 절대적인 위치를 적절한 픽셀값만큼 옮긴다.
+- 초기에는 좌측 상단에 있기 때문에 이 위치를 기준으로 옮기면 되는데,(그래서 right, bottom만 건들이면 된다.)
+  - android의 경우, `right: 30, bottom: 80`
+  - ios의 경우, `right: 30, bottom: 100` 
 
 
 
@@ -540,13 +668,57 @@ FAB 효과는 아이콘이 SafeAreaView의 자식 컴포넌트여서는 안된�
 
 JSON.stringify 가 아닌 실제로 컴포넌트를 스타일링하는 방법을 알아보자
 
+<br>
+
+### 필요한 패키지
+
+```
+faker
+@types/faker
+react-native-vector-icons
+@types react-native-vector-icons
+moment
+```
+
+<br>
+
+moment 패키지는 보기 좋게 날짜를 출력할 수 있도록 도와주는 패키지 이다. 다운을 받기 위해서는 다음과 같은 명령어를 입력하면 된다.
+
+```shell
+npm i moment moment-with-locales-es6
+```
+
+<br>
 
 
-### FlatList
+
+### ScrollView 대신 FlatList 코어 컴포넌트 사용하기
+
+지금까지는 배열로 만든 아이템을 렌더링하기 위해서 ScrollView 컴포넌트를 사용하여 화면에 렌더링했다.
+
+그런데 리액트 네이티브는 렌더링에 최적화된 FlatList 코어 컴포넌트를 제공한다. 똑같은 컴포넌트를 여러 개 렌더링할 때는 FlatList를 사용하는 것이 좀 더 속도가 빠르다.
+
+<br>
+
+- FlatList 사용법
+
+  - ```react
+    <FlatList data={people} />
+    ```
+
+그런데 FlatList의 사용법은 조금 복잡하다.
+
+이는 위에서 보듯이 **data**라는 속성을 제공하는데, 출력하고 싶은 데이터를 data 속성에 설정하는 것이다.
+
+또한 **renderItem**이란 속성을 제공한다.
+
+<br>
 
 타입스크립트 관점에서 타입 T의 배열 T[] 타입 데이터를 data 속성에 설정하려면 renderItem에는 ({item}: {item: T}) => {} , 즉 T 타입 데이터이며 item이란 이름의 속성이 있는  객체를 매개변수로 하는 콜백 함수를 설정한다.
 
-그런데 renderItem이 반환하는 리액트 요소에는 key 속성을 설정하는 부분이 빠졌다. FlatList는 다음과 같이 keyExtractor 속성에 item과 index값이 매개 변수인 콜백 함수를 지정해 renderItem에 설정한 콜백함수가 반환하는 컴포넌트의 key 속성에 설정할 값을 얻는다.
+그런데 renderItem이 반환하는 리액트 요소에는 key 속성을 설정하는 부분이 빠졌다. 
+
+<span style="color:red">FlatList는 다음과 같이 keyExtractor 속성에 item과 index값이 매개 변수인 콜백 함수를 지정해 renderItem에 설정한 콜백함수가 반환하는 컴포넌트의 key 속성에 설정할 값을 얻는다.</span>
 
 ```react
 <FlatList
@@ -559,16 +731,20 @@ JSON.stringify 가 아닌 실제로 컴포넌트를 스타일링하는 방법을
 
 <br>
 
-#### FlatList가 제공하는 속성
+#### FlatList가 제공하는 속성 종류 및 예시
 
 - data
   - data={people}
 - renderItem
   - {(item) => <Person person={item} /\>}
 - keyExtractor
+  - keyExtractor는 item.id를 반환하지만 id와 같은 속성이 없는 데이터라면 index.toString()을 반환해도 된다.
   - {(item, index) => item.id}
   - {(item, index) => index.toString()}
+  
 - ItemSeparatorComponent
+  - 이 속성은 설정한 콜백 함수가 반환하는 컴포넌트를 아이템과 아이템 간의 구분자(Item Separator) 역할을 하는 컴포넌트로 삽입한다.
+  - 이를 아래와 같이 설정해 주면 여러 아이템이 나열 될 때 각각을 구분해 주는 선이 생기는 것을 볼 수 있다.
   - {() => <View style={styles.itemSeparator} /\>}
 
 
@@ -593,17 +769,94 @@ const newFunction = () => ({ a: '나는객체요소' });
 
 <br>
 
+### moment 패키지 기능 사용하기
+
+자바스크립트와 타입스크립트에서는 날짜와 시간 관련 기능을 처리하는 Date 클래스를 제공한다. 그런데 왜 moment 패키지를 써야하는 걸까?
+
+그 이유는 Date 클래스가 제공하지 않는 몇 가지 유용한 기능을 moment 패키지가 제공해 주기 때문이다.
+
+moment 패키지를 활용하는 법은 다음과 같다.
+
+```react
+import moment from 'moment'
+
+// person = createRandomPerson()
+console.log('createDate', moment(person.createdDate).format('llll'))
+console.log('modifiedDate', moment(person.modifiedDate).format('llll'))
+// createDate Mon, Nov 23, 2020 2:25 AM
+// createDate Mon, Nov 23, 2020 7:53 PM
+```
+
+<br>
+
+또한 moment 패키지를 쓰는 가장 큰 이유라고 할 수 있는 것은 다음 코드처럼 과거와 현재의 시간 차이를 알기 쉬운 형태로 알려주기 때문이다.
+
+```react
+console.log(
+	moment(person.createdDate).startOf('day').fromNow() //20 hours ago
+)
+```
+
+<br>
+
+#### moment-with-locales-es6 패키지 사용하기
+
+앞에서 이 패키지를 설치할 때 이 패키지를 설치했었는데 이 패키지를 통해 '20 hours ago ' 라고 나오던 것을 '20시간 전'으로 나오게 할 수 있다.
+
+즉, 한국에서 사용하는 형식으로 나오도록 할 수 있는 것이다.
+
+그러기 위해서 다음과 같이 사용하면 된다
+
+```react
+import moment from 'moment-with-locales-es6'
+
+...
+moment.locale('ko')
+```
 
 
 
+<br>
+
+### Person 컴포넌트 초기 스타일
+
+컴포넌트를 개발할 때는 관련된 정보를 따로따로 모아 화면에 알기 쉬운 형태로 나타나게 하는 것이 중요하다. 화면에 이것저것 보이면 세부 스타일링이 쉽기 때문이다.
+
+Person 컴포넌트를 스타일링하여 FlatList로 여러 개를 화면에 렌더링하면 다음과 같은 화면이 나오는데 각 컴포넌트 아래에 있는 숫자의 의미를 따로 부여하고 싶기 때문에 이를 아이콘을 붙여주고 TouchableView와 iconText등 재사용 할 수 있는 컴포넌트로 구현해 보자.
+
+<br>
 
 ### 재사용할 수 있는 컴포넌트란?
+
+- JSX로 구현한 댓글 갯수
+
+  - ```react
+    <View>
+    	<Icon name='comment' size={24} color='blue'
+            onPress={() => Alert.alert('comment clicked')} />
+        <Text>{person.counts.comment}</Text>
+    </View>
+    ```
+
+예를 들어 60이 댓글 개수라면 JSX로는 위와 같이 구현할 수 있는 것이다. 그런데 이 패턴은 리트윗이나 좋아요 등에도 똑같이 적용한다.
+
+그러므로 앞 형태의 코드보다는 다음 IconText처럼 범용(general purpose)으로 사용할 수 있는 사용자 컴포넌트를 적용해야 더 코드 유지보수 차원에서 바람직하다.
+
+- 사용자 컴포넌트로 구현
+
+  - ```react
+    <IconText viewStyle={styles.touchableIcon} onPress={onPress}
+        name="comment" size={24} color='blue'
+        textStyle={styles.iconText} text={person.counts.comment} />
+    ```
+
+
 
 댓글, 리트윗, 좋아요와 같은 아이콘들에 각각 이름을 붙여주고 싶다면 각각의 icon이 부착된 View 컴포넌트 안에서만 가능했지만 재사용할 수 있는 컴포넌트를 사용하면 이를 하나 만들어 놓고 각각의 Icon 컴포넌트를 감싸기만 하면 된다.
 
 - 그렇기 때문에 유지보수가 뛰어난 코드가 만들어질 수 있는 것이다.
 
-하나의 목적에만 부합하는 것이 아니라 어떤 패턴의 코드에 항상 적용할 수 있는 사용자 컴포넌트를 재사용할 수 있는 컴포넌트라고 한다. 
+이처럼 `하나의 목적에만 부합하는 것이 아니라 어떤 패턴의 코드에 항상 적용할 수 있는 사용자 컴포넌트`를 **재사용할 수 있는 컴포넌트**라고 한다. 
 
 그런데 타입스크립트로 재사용할 수 있는 컴포넌트를 만드려면 ReactNode라는 타입, children이란 속성, 그리고 수신한 속성을 한꺼번에 다른 컴포넌트에 전달하는 기법 등에 익숙해야 한다.
 
@@ -632,11 +885,72 @@ const newFunction = () => ({ a: '나는객체요소' });
     </View>
     ```
 
+SomeComponent를 이처럼 구현하면 자식 컴포넌트를 자유롭게 바꿔가며 자식 컴포넌트에는 없는 기능을 재사용할 수 있는 방식으로 제공할 수 있다.
 
+TouchableView 컴포넌트에 이를 그럼 실제로 적용해 보자.
 
 <br>
 
-## TouchableView 컴포넌트 만들기
+----
+
+#### 타입스크립트 교집합 타입 구문
+
+타입스크립트는 algebraic data type, ADT(대수 데이터 타입)을 지원한다. ADT는 A와 B를 타입이라고 할 때 'A타입 이거나 B타입' 혹은 'A타입이면서 B타입' 과 같은 타입을 만들고 싶을 때 적용하는 타입이다. 대수 데이터 타입은 |(합집합 타입) 기호와 &(교집합 타입) 기호를 사용하여 다음처럼 타입을 결합할 수 있다.
+
+
+
+---
+
+### TouchableView 컴포넌트 만들기
+
+#### ComponentProps 타입
+
+react 패키지는 ComponentProps 타입을 제공한다. `import type {componentProps} from 'react'`
+
+<br>
+
+ComponentProps 타입은 다음처럼 사용하는 제네릭 타입이다.
+
+```react
+속성_타입 = ComponentProps<typeof 컴포넌트_이름>
+```
+
+다음 코드는 TouchableOpacity 컴포넌트의 속성 타입을 ComponentProps로 알아낸 다음, 이를 TouchableOpacityProps 타입으로 만든다.
+
+```react
+type TouchableOpacityProps = ComponentProps<typeof TouchableOpacity>
+```
+
+<br>
+
+#### JSX {...props} 구문
+
+앞서 TouchableOpacity의 onPress 이벤트 속성에 다음처럼 onPress 속성을 설정한 코드를 본 적이 있다.
+
+```react
+<TouchableOpacity onPress={onPress}>
+```
+
+이 때 TouchableView는 다음처럼 구현할 수 있다.
+
+```react
+export type TouchableViewProps = {
+    children?: ReactNode
+    onPress?: () => void
+}
+    
+export const TouchableView: FC<ToucahbleViewProps> = ({children, onPress}) => {
+    return (
+    	<TouchableOpacity onPress={onPress}>
+        	<View>{children}</View>
+        </TouchableOpacity>
+    )
+} 
+```
+
+그러나 좀 더 좋은 방식은 다음처럼 구현하는 것이다.
+
+<br>
 
 - 타입스크립트 교집합 타입과 JSX 전개 연산자 구문 혼합 사용
 
@@ -647,13 +961,13 @@ const newFunction = () => ({ a: '나는객체요소' });
     
     type TouchableOpacityProps = ComponentProps<typeof TouchableOpacity>;
     
-    export type TouchableViewProps = TouchableOpacityProps & {
+    export type TouchableViewProps = TouchableOpacityProps & { // 7행
       children?: ReactNode;
     };
     
     export const ToucahbleView: FC<TouchableViewProps> = ({
-      children,
-      ...touchableProps
+      children, 
+      ...touchableProps // 12행
     }) => {
       return (
         <TouchableOpacity {...touchableProps}>
@@ -664,11 +978,15 @@ const newFunction = () => ({ a: '나는객체요소' });
     
     ```
 
-  - 이 코드의 특징은 07행에서 타입스크립트의 교집합 타입을 사용하여 TouchableViewProps타입을 선언하고 12행에서 잔여 연산자 구문으로 TouchableOpacityProps 부분을 얻은 다음, 14행에서 JSX의 {...props} 구문으로 TouchableOpacity의 속성을 한꺼번에 넘겨준다는 데 있다.
+  - 이 코드의 의의 07행에서 타입스크립트의 교집합 타입을 사용하여 TouchableViewProps타입을 선언하고 12행에서 잔여 연산자 구문으로 TouchableOpacityProps 부분을 얻은 다음, 14행에서 JSX의 {...props} 구문으로 TouchableOpacity의 속성을 한꺼번에 넘겨준다는 데 있다.
 
 <br>
 
-## 잔여 연산자?
+---
+
+#### 잔여 연산자?
+
+ESNext 자바스크립트와 타입스크립트는 점을 연이어 3개 사용하는 잔여 연산자를 제공한다.
 
 ```react
 let address: any ={
@@ -682,6 +1000,131 @@ const {country, city, ...detail} = address
 ```
 
 address 변수의 6개 속성 중 country와 city를 제외한 나머지 속성을 별도의 detail이라는 변수로 저장하고 싶다면 detail 변수 앞에 잔여 연산자(...)를 붙인다.
+
+
+
+---
+
+
+
+#### FC 타입과 children 속성
+
+그런데 사실 함수 컴포넌트의 타입인 FC 타입은 ReactNode 타입인 children 속성을 포함한다.
+
+---
+
+**ReactNode이 뭐였지?**
+
+클래스형 컴포넌트는 render메소드에서 ReactNode를 리턴한다. 함수형 컴포넌트는 ReactElement를 리턴한다. JSX는 바벨에 의해서 React.createElement(component, props, ...children) 함수로 트랜스파일된다.
+
+ReactNode는 모든 것을 지칭한다고 볼 수 있다.
+`string, number, boolean, null, undefined, ReactElement, ReactFragment, ReactPortal`
+
+클래스형 render함수의 리턴타입, PropsWithChildren의 children 타입으로 사용된다.
+`type PropsWithChildren<P> = P & { children?: ReactNode };`
+
+포함 관계를 따져보면 다음 그림과 같다.
+
+![image](https://user-images.githubusercontent.com/79521972/176857842-c7190821-096e-4dc5-a309-ac78b92344c8.png)
+
+---
+
+- FC 타입이 children 속성ㅇ르 제공하는 것에 착안한 구현
+
+  - ```react
+    import React from 'react'
+    import type {FC, ReactNode, ComponentProps} from 'react'
+    import {TouchableOpacity, View} from 'react-native'
+    
+    type TouchableOpacityProps = ComponentProps<typeof TouchableOpacity>
+       
+    export type TouchableViewProps = TouchableOpacityProps
+    
+    export const TouchableView: FC<TouchableViewProps> = ({
+        children, ...touchableProps}) => {
+        return (
+        	<TouchableOpacity {...touchableProps}>
+            	<View>{children}</View>
+            </TouchableOpacity>
+        )
+    }
+    ```
+
+  - 이 코드에서 보듯 TouchableViewProps 속성은 단순히 5행의 타이 선언으로 충분하다.
+
+  - 10행의 children 매개변수는 FC타입이 제공하는 속성을 얻은 것이다.
+
+<br>
+
+#### StyleProp타입
+
+react-native 패키지는 StyleProp 타입을 제공한다.
+
+그리고 모든 리액트 네이티브 컴포넌트는 다음처럼 `컴포넌트_이름Style` 형식의 타입을 제공한다.
+
+```react
+import type {ViewStyle, TextStyle, ImageStyle} from 'react-native'
+```
+
+StyleProp 타입을 사용하는 방식은 다음과 같다.
+
+```react
+viewStyle?: StyleProp<ViewStyle>
+```
+
+<br>
+
+TouchableView.tsx 파일의 코드를 종합하면 다음과 같이 된다.
+
+```react
+import React from 'react'
+import type {FC, ReactNode, ComponentProps} from 'react'
+import {TouchableOpacity, View} from 'react-native'
+import type {StyleProp, ViewStyle} from 'react-native'
+
+type TouchableOpacityProps = ComponentProps<typeof TouchableOpacity>
+   
+export type TouchableViewProps = TouchableOpacityProps & {
+    viewStyle?: StyleProp<ViewStyle>
+}
+
+export const TouchableView: FC<TouchableViewProps> = ({
+    children, ...touchableProps}) => {
+    return (
+    	<TouchableOpacity {...touchableProps}>
+        	<View style={[viewStyle]}>{children}</View>
+        </TouchableOpacity>
+    )
+}
+```
+
+JSX 문의 TouchableOpacity와 View 컴포넌트에는 flex: 1과 같은 스타일링이 없다. 이는 {children}의 크기를 자신의 크기로 사용하겠다는 의사표시이다.
+
+<br>
+
+### Avatar 컴포넌트 만들기
+
+이번엔 TouchableView를 사용하여 Avatar라는 재사용 컴포넌트를 구현해 보겠다.
+
+Avatar 컴포넌트를 다음 JSX 코드를 염두에 두고 동작하도록 설계한 컴포넌트이다. uri와 size는 Avatar 고유 속성이고 viewStyle과 onPress는 Avatar를 구현하는 데 사용하는 TouchableView의 속성이다.
+
+```
+<Avatar uri={person.avatar} size: {50} viewStyle:{styles.avatar} onPress={onPress} />
+```
+
+
+
+
+
+### IconText 컴포넌트 만들기
+
+
+
+#### Text코어 컴포넌트의 속성 탐구
+
+
+
+### Person 컴포넌트 스타일 완료
 
 
 
