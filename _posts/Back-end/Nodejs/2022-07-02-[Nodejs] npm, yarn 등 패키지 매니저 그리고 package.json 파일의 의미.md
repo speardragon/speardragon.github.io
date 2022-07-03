@@ -1,3 +1,14 @@
+---
+layout: single
+title: "[Nodejs] npm, yarn 등 패키지 매니저 그리고 package.json 파일의 의미"
+categories: ['Back-end', 'Nodejs']
+tag: ['Nodejs']
+toc: true
+toc_sticky: true
+---
+
+
+
 <br>
 
 ## nodejs의 핵심 개념 정리
