@@ -472,6 +472,10 @@ Content의 루트 View는 현재 flex: 1 스타일링이기 때문에 '화면 �
 
 그리고 이런 비율 계산법이 적용되므로 flex 속성값을 1, 2가 아닌 100,200 으로 설정해도 비율이 같으므로 같은 결과가 될 것이다.
 
+![image](https://user-images.githubusercontent.com/79521972/177899655-420b637e-3c2b-452a-8cbc-0eb0414ae015.png)
+
+
+
 <br>
 
 ### flexDirection 스타일 속성
@@ -524,20 +528,31 @@ Content의 루트 View는 현재 flex: 1 스타일링이기 때문에 '화면 �
 
   - flex-start: 앞쪽에 몰아서
 
+    - ![image](https://user-images.githubusercontent.com/79521972/177899828-4415258b-e0c1-4b5f-9aa7-38e970436693.png)
+
   - flex-end: 끝쪽에 몰아서
+
+    - ![image](https://user-images.githubusercontent.com/79521972/177899839-2fa4da87-b61c-4140-ab76-5d79feee7f01.png)
 
   - center: 중앙에 몰아서
 
     - 위 세 개는 부모 요소의 수평 방향 여백을 자식 요소 간의 간격에 전혀 반영하지 않았다.
+    - ![image](https://user-images.githubusercontent.com/79521972/177899807-2d89377c-f4e9-4c54-ab4c-1039b883f9fd.png)
 
   - space-around: 폰 양 끝에 padding을 적용함
 
+    - ![image](https://user-images.githubusercontent.com/79521972/177899773-75c8aa4a-c148-4eca-9286-f3cefa25d63c.png)
+
   - space-between: 폰 양 끝에 padding을 적용하지 않음
+
+    - ![image](https://user-images.githubusercontent.com/79521972/177899900-aba9aacc-0c68-44d1-911c-d7fb5968b6b9.png)
 
   - space-evenly: 여분 넓이를 균등하게 부여함 -> `부모 컴포넌트 넓이 -(자식 컴포넌트 넓이 합) 
     -> 공백수가 자식 컴포넌트 수보다 하나 많으므로 (자식 컴포넌트 수 + 1)로 나누어 얻은 여분 넓이를 균등하게 부여하는 방식
 
     - 위 세 개는 부모 요소의 여백을 자식 요소의 간격에 반영한다.
+
+    - ![image](https://user-images.githubusercontent.com/79521972/177899868-0174ee25-66fe-4c8e-9872-e7286b053b61.png)
 
 - #### flexWrap 스타일 속성
 
@@ -600,6 +615,8 @@ Content의 루트 View는 현재 flex: 1 스타일링이기 때문에 '화면 �
 
 
 이를 App.tsx에 bottombar 컴포넌트 아래에 추가하면 다음과 같이 되는데 이 이유는 아이콘이 SafeAreaView의 자식 컴포넌트 형태로 JSX가 구성되기 때문이다.
+
+![image](https://user-images.githubusercontent.com/79521972/177899990-cc6ad2be-9c20-4c71-aa4c-ca8dd3154d24.png)
 
 요컨데 **FAB 효과를 주려면 아이콘이 SafeAreaView의 자식 컴포넌트여서는 안된다**. 그런데 계속 다뤘던 내용에서는 반드시 SafeAreaview가 최상위 컴포넌트여야만 했던 것을 알 수 있다.
 
@@ -1114,19 +1131,320 @@ Avatar 컴포넌트를 다음 JSX 코드를 염두에 두고 동작하도록 설
 
 
 
+<br>
+
+- Avatar.tsx
+
+  - ```react
+    import React from 'react'
+    import type { FC } from 'react'
+    import { TouchableOpacity, View, Image } from 'react-native'
+    import type { StyleProp, ImageStyle } from 'react-native'
+    import { TouchableView } from './TouchableView'
+    import type { TouchableViewProps } from './TouchableView'
+    
+    export type AvatarProps = TouchableViewProps & {
+      uri: string
+      size: number
+      imageStyle?: StyleProp<ImageStyle>
+    }
+    
+    export const Avatar: FC<AvatarProps> = ({
+      uri,
+      size,
+      imageStyle,
+      ...toucahblevViewProps
+    }) => {
+      return (
+        <TouchableView {...toucahblevViewProps}>
+          <Image
+            source={{ uri }}
+            style={[
+              imageStyle,
+              { width: size, height: size, borderRadius: size / 2 },
+            ]}
+          />
+        </TouchableView>
+      )
+    }
+    
+    ```
+
+-  8행~12행의 Avatarprops 타입은 앞 JSX 코드 형태로 구현할 수 있다. 
+- 구현에 사용한 Image 컴포넌트에는 uri속성과 width, height 속성은 반드시 있어야 한다.
+
+
+
+<br>
+
 
 
 ### IconText 컴포넌트 만들기
 
+IconText 컴포넌트는 아이콘과 텍스트를 모아서 표시하는 컴포넌트이다.
 
+
+
+```react
+import React from 'react'
+import type { FC, ComponentProps } from 'react'
+import { TouchableOpacity, View, Image } from 'react-native'
+import type { StyleProp, TextStyle } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { TouchableView } from './TouchableView'
+import type { TouchableViewProps } from './TouchableView'
+
+export type IconTextProps = TouchableViewProps &
+  ComponentProps<typeof Icon> & {
+    text: number | string
+    textStyle: StyleProp<TextStyle>
+  }
+
+// prettier-ignore
+export const IconText: FC<IconTextProps> = ({
+  name,
+  size,
+  color,
+  textStyle,
+  text,
+  ...touchableViewProps
+}) => {
+  return (
+    <TouchableView {...touchableViewProps}>
+      <Icon name={name} size={size} color={color} />
+      <Text style={textStyle}>{text}</Text>
+    </TouchableView>
+  )
+}
+
+```
+
+위와 같이 IconText.tsx 파일을 구현한다.
+
+<br>
+
+사용하는 쪽 코드를 간결하게 만들기 위해 지금까지 만든 컴포넌트는 index.ts 파일에 다음처럼 반영한다.
+
+<br>
 
 #### Text코어 컴포넌트의 속성 탐구
 
+최종적으로 Person 컴포넌트의 스타일링을 완료하기 전에 잠시 Text 코어 컴포넌트의 속성과 스타일 속성을 알아보겠다.
 
+<br>
+
+Text는 화면에 텍스트를 렌더링하는 컴포넌트이다. 렌더링하는 텍스트 줄 수를 제한하려면 numberOfLines 속성에 워하는 줄 수를 설정한다.
+
+```react
+<Text numberOfLines={3}>text</Text>
+```
+
+
+
+<br>
+
+또한 numberOfLines 속성에 따라 텍스트 일부가 나타나지 않는다면 ellipsizeMode 속성을 사용하여 남은 텍스트가 있다는 것을 '...'형태로 보여줄 수있다.
+
+- ellpsizeMode 속성에 지정할 수 있는 값
+
+  - ```
+    head, middle, tail, clip
+    ```
+
+<br>
+
+텍스트에 밑줄을 긋고 싶다면 다음처럼 textDecorationLine 스타일 속성에 'underline'을 지정하고 밑줄 생상은 textDecorationColor 스타일 속성으로 지정한다.
+
+- 텍스트 꾸미기
+
+  - ```
+    email: {textDecorationLine: 'underline', textDecorationColor; 'blue'}
+    ```
+
+
+
+<br>
 
 ### Person 컴포넌트 스타일 완료
 
+![image](https://user-images.githubusercontent.com/79521972/177900077-68b1059a-c725-4cb3-8b21-0de2a08de327.png)
 
+다음 코드는 앞서 구현한 재사용할 수 있는 Avatar, IconText 컴포넌트를 Person 컴포넌트에 적용하고 관련된 컴포넌트를 좀 더 자세하게 배치하고 스타일링한 것이다.
+
+- Person.style.ts
+
+```
+import { StyleSheet } from 'react-native'
+import { Colors } from 'react-native-paper'
+import color from 'color'
+
+// prettier-ignore
+export const styles = StyleSheet.create({
+  view: { flexDirection: 'row', backgroundColor: Colors.orange100, padding: 5 },
+  leftView: {padding: 5},
+  avatar: { borderColor: color(Colors.blue500).lighten(0.5).string(), borderWidth: 2 },
+  rightView: {flex: 1, padding: 5, maringRight: 10},
+  name: { marginRight: 5, fontSize: 22, fontWeight: '500' },
+  email: {textDecorationLine: 'underline', color: Colors.blue500, textDecorationColor: Colors.blue500},
+  dateView: {flexDirection: 'row', justifyContent: 'space-between', padding: 3, marginTop: 5},
+  text: { fontSize: 16 },
+  comments: {marginTop: 10, fontSize: 16},
+  image: { marginTop: 15, height: 150 },
+  countsView: {
+    flexDirection: 'row',
+    padding: 3,
+    justifyContent: 'space-around',
+  },
+  touchableIcon: {flexDirection: 'row', padding: 5, alignItems: 'center'},
+  iconText: {color: Colors.deepPurple500, marginLeft: 3}
+})
+
+```
+
+<br>
+
+- Person.tsx
+
+```
+import React, { FC } from 'react'
+import { View, Image, Text, Alert } from 'react-native'
+import { Colors } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import * as D from '../data'
+import { styles } from './Person.style'
+import moment from 'moment-with-locales-es6'
+import { Avatar, IconText } from '../components'
+
+moment.locale('ko')
+
+export type PersonProps = {
+  person: D.IPerson
+}
+
+const avatarPressed = () => Alert.alert('아바타가 클릭되었습니다.')
+const deletPressed = () => Alert.alert('delete가 클릭되었습니다.')
+const countIconPressed = (name: string) => () => Alert.alert(`${name} pressed`)
+
+// prettier-ignore
+const Person: FC<PersonProps> = ({person}) => {
+  return (
+    <View style={styles.view}>
+      <View style={[styles.leftView]}>
+        <Avatar imageStyle={[styles.avatar]} uri={person.avatar} size={50} onPress={avatarPressed} />
+      </View>
+      <View style={[styles.rightView]}>
+        <Text style={[styles.name]}>{person.name}</Text>
+        <Text style={[styles.email]}>{person.email}</Text>
+        <View style={[styles.dateView]}>
+          <Text style={[styles.text]}>
+            {moment(person.createdDate).startOf('day').fromNow()}
+          </Text>
+          <Icon name='trash-can-outline' size={26} color={Colors.lightBlue500} onPress={deletPressed} />
+        </View>
+        <Text numberOfLines={3} ellipsizeMode='tail' style={[styles.text, styles.comments]}>{person.comments}</Text>
+        <Image style={[styles.image]} source={{uri: person.image}} />
+        <View style={[styles.countsView]}>
+          <IconText viewStyle={[styles.touchableIcon]} onPress={countIconPressed('comment')} name='commment' size={24} color={Colors.blue500} textStyle={[styles.iconText]} text={person.counts.comment} />
+          <IconText viewStyle={[styles.touchableIcon]} onPress={countIconPressed('retweet')} name='twitter-retweet' size={24} color={Colors.purple500} textStyle={[styles.iconText]} text={person.counts.retweet} />
+          <IconText viewStyle={[styles.touchableIcon]} onPress={countIconPressed('heart')} name='heart' size={24} color={Colors.red500} textStyle={[styles.iconText]} text={person.counts.heart} />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default Person
+
+```
+
+
+
+<br>
+
+- App.tsx
+
+```
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * Generated with the TypeScript template
+ * https://github.com/react-native-community/react-native-template-typescript
+ *
+ * @format
+ */
+
+import color from 'color'
+import React from 'react'
+import {
+  Dimensions,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  Image,
+  ImageBackground,
+  FlatList,
+  Alert,
+} from 'react-native'
+
+import {
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen'
+
+import { Avatar, Colors } from 'react-native-paper'
+import * as D from './src/data'
+
+import TopBar from './src/screens/TopBar'
+import Content from './src/screens/Content'
+import BottomBar from './src/screens/BottomBar'
+import ArrowComponent from './src/screens/ArrowComponent'
+import Person from './src/copy/Person'
+import Color from 'color'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
+const people: D.IPerson[] = D.makeArray(10).map(D.createRandomPerson)
+const avatarUrl = D.randomAvatarUrl()
+const avatarSize = 50
+const onFABPressed = () => Alert.alert('깃털이 눌러짐', '암튼그럼')
+
+function App() {
+  return (
+    <SafeAreaView style={[styles.flex]}>
+      <FlatList
+        data={people}
+        renderItem={({ item }) => <Person person={item} />}
+        keyExtractor={(item, index) => item.id}
+        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+      />
+    </SafeAreaView>
+  )
+}
+
+// prettier-ignore
+const styles = StyleSheet.create({
+  flex: {flex: 1},
+  itemSeparator: {
+    borderWidth: 1,
+    borderColor: color(Colors.grey500).lighten(0.3).string(),
+  },
+  safeAreaView: {backgroundColor: Colors.lime300, flex: 1, margin:10},
+  box: {width: '70%', height: 100, backgroundColor: 'black', marginBottom: 10, marginLeft: 0},
+  text: {fontSize: 30, fontFamily: 'DancingScript-Medium'},
+  image: {width: avatarSize, height: avatarSize, borderRadius: avatarSize / 2},
+  absoluteView: {backgroundColor: Colors.purple900, position: 'absolute', right: 30, bottom: 80, padding: 10, borderRadius: 10}
+})
+
+export default App
+
+```
 
 
 

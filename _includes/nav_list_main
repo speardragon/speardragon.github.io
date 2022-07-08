@@ -25,7 +25,27 @@
                 {% elsif category[0] == "Kotlin" %}<li><a href="/categories/kotlin" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
-            </ul>    
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">`💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          {% for category in site.categories %}
+          {% if category[0] == "NodeJs" %}<li><a href="/categories/nodejs" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% endif %}
+          {% endfor %}
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">` 🎨FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          {% for category in site.categories %}
+          {% if category[0] == "React Native" %}<li><a href="/categories/reactnative" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% endif %}
+          {% endfor %}
+      </ul> 
 
       <!-------------------------------------- 상위 카테고리: System-------------------------------------->
       <span class="nav__sub-title">📟 System</span>
@@ -65,7 +85,7 @@
                 <!-- 하위 카테고리 -->
                 {% for category in site.categories %}
                 {% if category[0] == "Better-Choice" %}<li><a href="/categories/betterchoice" class="">{{category[0]}} ({{category[1].size}})</a></li>
-                {% elsif category[0] == "Scheduler" %}<li><a href="/categories/scheduler" class="">{{category[0]}} ({{category[1].size}})</a></li>
+                {% elsif category[0] == "Hanieum" %}<li><a href="/categories/hanieum" class="">{{category[0]}} ({{category[1].size}})</a></li>
                 {% endif %}
                 {% endfor %}
             </ul>   
