@@ -320,6 +320,7 @@ CREATE TABLE \<table name> \<like_table_clause>
 - 테이블에 새로운 row을 삽입하는 SQL 
 - **Syntax** 
   - INSERT \<table_name> [(\<column_name>, ...)] VALUES (value, …) 
+    - column_name을 적지 않으면 전체 컬럼에 대한 INSERT
 - **Example** 
   - INSERT student values (’20210001’, ‘James’, ‘Computer’, 1); 
   - INSERT student (id, name, dept_name, grade) VALUES (‘20210001’, ‘James’,  ‘Computer’, 1) 
