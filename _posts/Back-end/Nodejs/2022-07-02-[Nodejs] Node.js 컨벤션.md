@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Nodejs] Node.js 컨벤션"
-categories: ['Back-end', 'Nodejs']
+categories: ['BackEnd', 'NodeJs']
 tag: ['Nodejs']
 toc: true
 toc_sticky: true
@@ -177,5 +177,4 @@ async function main() {
 
 main()
 ```
-
 

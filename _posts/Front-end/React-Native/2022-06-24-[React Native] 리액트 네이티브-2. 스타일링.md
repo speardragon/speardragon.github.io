@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[React Native] 리액트 네이티브-2. 스타일링"
-categories: ['Front-end', 'React-Native']
+categories: ['FrontEnd', 'ReactNative']
 toc: true
 toc_sticky: true
 ---

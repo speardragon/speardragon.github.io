@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Nodejs] express 모듈로 서버 구축"
-categories: ['Back-end', 'Nodejs']
+categories: ['BackEnd', 'NodeJs']
 tag: ['Nodejs']
 toc: true
 toc_sticky: true

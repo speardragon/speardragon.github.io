@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Nodejs] npm, yarn 등 패키지 매니저 그리고 package.json 파일의 의미"
-categories: ['Back-end', 'Nodejs']
+categories: ['BackEnd', 'NodeJs']
 tag: ['Nodejs']
 toc: true
 toc_sticky: true
@@ -335,5 +335,4 @@ npm run lint만 쳐도 linter 검사를 할 수 있게 되는 것이다.
 ### yarn
 
 yarn은 npm의 대체제의 대표로 꼽히는 프로그램으로 초기에 가장 큰 sales point로 caching을 이용한 빠른 설치 속도와 특수한 커맨드를 들고 등장했지만 최근 npm도 속도의 개선이 이루어 졌기 때문에 사실상 거의 차이가 없다고 볼 수 있어 npm을 사용해도 되지만 yarn도 yarn만의 매력이 있기 때문에 이를 찾는 사람도 적지 않게 찾아볼 수 있다.
-
 

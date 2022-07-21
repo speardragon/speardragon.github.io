@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Nodejs] Nodejs 시작"
-categories: ['Back-end', 'Nodejs']
+categories: ['BackEnd', 'NodeJs']
 tag: ['Nodejs']
 toc: true
 toc_sticky: true
