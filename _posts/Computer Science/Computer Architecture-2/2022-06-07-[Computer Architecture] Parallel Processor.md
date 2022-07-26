@@ -13,7 +13,7 @@ tag: ['Parallel Processors']
 
 여러개 processor에다가 나눠서 각각에서 실행시키도록 한다.
 
-- Goal: connecting multiple computers to get **higher** **performance** 
+- 목표:  **더 높은 성능**을 얻기 위해 여러 컴퓨터를 연결하는 것
   - **Multiprocessors** 
     - 여러개 core에서 골고루 task를 실행
   - Scalability, availability, power efficiency 
