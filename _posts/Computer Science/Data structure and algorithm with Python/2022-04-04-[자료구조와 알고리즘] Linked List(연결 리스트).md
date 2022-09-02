@@ -17,10 +17,10 @@ Linked List를 ADT로 만들어 볼 것이다.
 
 <mark>중요한 컨셉</mark>
 
-- head node란 리스트에서 가장 앞에 있는 노드를 말하고 그 노드를 가리키는 포인터로 head라는 것이 존재하는 것이다.
-  - head가 가리키고 있는 노드가 head!
+- head node란 리스트에서 가장 앞에 있는 노드를 말하고 그 노드를 가리키는 포인터로 head라는 변수가 존재하는 것이다.
+  - head 변수가 가리키고 있는 노드가 head!
 
-singly linked list는 두 연속적인 node들 사이의 one pointer만을 가진 리스트를 말한다. 단방향으로만 이동될 수 있다.
+singly linked list는 두 연속적인 node들 사이의 하나의 pointer만을 가진 리스트를 말한다. 단방향으로만 이동될 수 있다.
 
 - 한 노드가 다른 노드를 가리킴
 - 각 노드마다 데이터가 들어있음
@@ -40,6 +40,8 @@ singly linked list는 두 연속적인 node들 사이의 one pointer만을 가�
 우리가 Linked List를 ADT로 만들면 위와 같은 함수를 사용하여 데이터 관리를 할 수 있다.
 
 <br>
+
+### Array vs. Linked List
 
 **Array**
 
@@ -71,7 +73,7 @@ singly linked list는 두 연속적인 node들 사이의 one pointer만을 가�
 
 변수 s는 오히려 set에 대한 reference(a safe pointer)라고 말할 수 있다. set contructor(생성자)는 메모리 안 어딘가에 set을 하나 만들고나서 그 set이 만들어진 memory location을 return한다. 이것은 s에 저장되는 것이다. python은 우리로부터 이러한 complexity(복잡한 내부사정)를 숨긴다.
 
-우리는 이로부터 s는 set이고 모든 것이 잘 수행된다고 안전하게 가정할 수 있는 것이다.
+우리는 이 때문에 s는 set이고 모든 것이 잘 수행된다고 안전하게 가정할 수 있는 것이다.
 
 <br>
 
@@ -124,7 +126,7 @@ a = Node('eggs')
 
 list는 node와는 구별되는 컨셉이다. 우리는 우리의 list를 이해하기 위해 매우 단순한 class를 만드는 것으로부터 시작할 것이다.
 
-우리는 첫 번째 노드에서 첫 번째 노드에 대한 reference를 유지하는 contructor(생성자)부터 시작한다.(즉, 다음 코드에서 head)
+우리는 첫 번째 노드에서 첫 번째 노드에 대한 reference를 유지하는 constructor(생성자)부터 시작한다.(즉, 다음 코드에서 head)
 
 ```python
 class SinglyLinkedList:

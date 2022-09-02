@@ -56,7 +56,7 @@ class Stack:
         self.size = 0
 ```
 
-Stack을 사용하기 위해서는 Stack object(instacne)를 만들고 해당 object로 stack class의 변수 및 함수에 접근한다.
+Stack을 사용하기 위해서는 Stack object(instance)를 만들고 해당 object로 stack class의 변수 및 함수에 접근한다.
 
 
 
