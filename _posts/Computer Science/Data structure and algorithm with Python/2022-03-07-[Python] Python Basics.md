@@ -42,7 +42,7 @@ else:
 Something else
 ```
 
-if - elif - else 가 같은 개행에 있는 경우 그 중 조건에 맞는 한 가지 경우의 코드 블럭만 실행한다.
+if - elif - else 가 **같은 개행에 있는 경우** 그 중 조건에 맞는 한 가지 경우의 코드 블럭만 실행한다.
 
 <br>
 
@@ -105,7 +105,9 @@ print()
 
 - Python's `for loop` iterates over the items of any iterable object(list, string, etc)
 
-- range(start, end, step)
+- 사용법
+  - range(start, end, step)
+
 
 <br>
 
