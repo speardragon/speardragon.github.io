@@ -85,10 +85,11 @@ print("%d! = %d" % (num, factorial(num)))
 recursive 함수의 핵심은 두 가지 경우가 존재해야 한다.
 
 - **Baes cases**: 계산을 안 해도 한 번에 답이 바로 나오는 경우(위의 factorial 예시에서 n = 0 일 때 1 인 상황)
-  - These tell the recursion when to terminate, meaning the recursion  will be stopped once the base condition is met
+  - These tell the recursion when to terminate, meaning the recursion will be stopped once the base condition is met
+  - 이는 회귀의 종료를 말하며, 회귀가 기본 조건을 만족하기만 하면 멈추게 될 것을 의미한다.
 - **Recursive cases**: 함수 호출을 종료 시킬 수 있는 조건이 있는 경우
   - The function calls itself and we progress towards achieving the base criteria
-  - 함수가 자기자신을 호출하여 base criteria를 성취하는 방향으로 진행하는 것.
+  - 함수가 자기 자신을 호출하여 기본 조건을 성취하는 방향으로 진행하는 것.
 
 ![image](https://user-images.githubusercontent.com/79521972/159201014-d9b70d0e-f5a2-47e1-8285-ada37d04f32d.png)
 
@@ -117,7 +118,7 @@ power function의 정의는 다음 공식에 기반한다.
 
 n = 0, 즉 stopping case의 경우, 만약 n = 0이면 power(x, n)은 단순히 1을 반환한다.(x<sup>0</sup> = 1 이기 때문.)
 
-- base case 존재!
+- base case 존재! -> 회귀 사용!
 
 <br>
 
@@ -182,7 +183,7 @@ f(n) = c + f(n-1)    //  n = n - 1을 계속 대입한다.
 
 ![image](https://user-images.githubusercontent.com/79521972/159201643-c299fc43-c604-430f-9392-d974a519b579.png)
 
-따라서 body는 O(1) (위에서는 c로 표현함)이고 recursion은 O(n) 이기 때문에 전체 algorithm의 order는 O(n) 이다.
+따라서 body는 O(1) (위에서는 c로 표현함)이고 recursion은 O(n)만큼 반복이기 때문에 전체 algorithm의 order는 O(n) 이다.
 
 
 
@@ -193,8 +194,8 @@ f(n) = c + f(n-1)    //  n = n - 1을 계속 대입한다.
 - Divide and conquer (분할 및 정복)
   - algorithm design paradigm(방법)
   - based on <span style="color:red">multi-branched recursion</span>
-
-앞서 다루었던 fatorial을 recursion으로 풀었던 문제는 single-branched recursion이라고 볼 수 있다.
+  
+  - 앞서 다루었던 fatorial을 recursion으로 풀었던 문제는 single-branched recursion이라고 볼 수 있다.
 
 - Divided-and-conquer technique (typical case)
   - ![image](https://user-images.githubusercontent.com/79521972/159202274-f10d3160-d1c2-4a42-917c-08653a793098.png)
@@ -254,11 +255,12 @@ Y
 
 ![image](https://user-images.githubusercontent.com/79521972/159203233-35147d0f-b630-4252-b466-ba0bd3d2603c.png)
 
-그니까 크기가 1인 거는 그냥 아무거나 리턴해도 되니까 (base case니까) 1인거에 대해서는 가장 먼저 처리를 한 거고 만약에 리스트가 나눠 졌는데 (2,1) 로 나눠지면 2부분은 (1,1) 로 나눠져서 각각 x,y에 들어가서 비교를 한 뒤에 더 큰 걸 반환하고 (2,1)로 올라가서 1부분과 도 비교하여 거기서 큰 걸 반환해서 또 그 위로 올라가고 하는 식.
+그니까 크기가 1인 리스트는 그냥 그 원소를 리턴하면 되니까 (base case니까) 1 인거에 대해서는 가장 먼저 처리를 하고
+만약에 리스트의 크기가 (2, 1) 로 나눠지면 '2' 부분은 (1,1) 로 나눠져서 각각 x, y에 들어가서 비교를 한 뒤에 더 큰 걸 반환하고 호출했던 (2, 1)로 올라가서 '1' 부분과도 비교하여 거기서 큰 걸 반환해서 또 그 위로 올라가서 비교하고 하는 방식.
 
-그니까 x,y는 계속해서 재귀 호출이 진행되면서 left branch와 right branch로 분기되는데 <mark>그 때마다의</mark> left-list의 max값과, right-list의 max값을 의미하게 된다.
+쉽게 설명해서 x, y의 값은 계속해서 재귀 호출이 진행되면서 left branch와 right branch로 분기되는데 <mark>그 때마다의</mark> left-list의 max값과, right-list의 max값을 의미하게 된다.
 
-- 그래서 현재 돌고있는 left-list의 max값이 정해지면 y을 알아내야 하기 때문에 mid+1, right으로 지정하여 재귀호출을 하는 것이다.
+- 그래서 현재 돌고 있는 left-list의 max값이 정해지면 y을 알아내야 하기 때문에 mid+1, right으로 지정하여 재귀 호출을 하는 것이다.
 
 <br>
 
@@ -275,7 +277,7 @@ function F(x):
         return F(y1), F(y2)로부터 F(x)를 구한 값
 ```
 
-큰 문제를 2개 이상의 작은 문제로, 즉 y1과 y2로 나누고 만약 y1 또는 y2가 바로 계산할 수 있다면 (base case) 계산한 값을 반환함으로써 작은 문제를 하나씩 해결해 나가면서 큰 문제를 해결할 수 있다.
+큰 문제를 2개 이상의 작은 문제로, 즉 y1과 y2로 나누고 만약 y1 또는 y2가 바로 계산할 수 있다면 (base case의 경우) 계산한 값을 반환함으로써 작은 문제를 하나 씩 해결해 나가면서 큰 문제를 해결할 수 있다.
 
 
 
@@ -283,13 +285,9 @@ function F(x):
 
 Q) size에 따라 iterative 방법과 recursive 방법이 더 좋은 것이 있을 것인데 이를 어떻게 판단하는가?
 
-A) 각각의 장단점이 존재하고 무엇을 쓸지에 대한 명확한 기준은 없으나 프로그래머가 판단했을 때 몇 줄만에 코드가 끝나고 size가 적당하다면 recursive를 사용하지만 data의 size가 너무 크면 iterative를 사용한다.
+A) 각각의 장단점이 존재하고 무엇을 쓸 지에 대한 명확한 기준은 없으나 프로그래머가 판단했을 때 몇 줄만에 코드가 끝나고 size가 적당하다면 recursive를 사용하지만 data의 size가 너무 크면 iterative를 사용한다.
 
 ---
-
-
-
-
 
 <br>
 
@@ -299,14 +297,14 @@ A) 각각의 장단점이 존재하고 무엇을 쓸지에 대한 명확한 기�
 
 ![image](https://user-images.githubusercontent.com/79521972/159203344-49984788-f548-4363-98bd-f04fc0561b91.png)
 
-막대기 세 개가 존재한다. 왼쪽 부터 source, extra, destination
+막대기 세 개가 존재한다. 왼쪽부터 source, extra, destination 으로 지칭하겠다.
 
 이 수수께끼의 목표는 source(first) peg에 모여있는 disk를 destination(third) peg으로 모두 옮기는 것이다. 우리는 이때 "extra"라는 중간에 놓인 peg를 잠시 둘 수 있는 임시 공간으로 사용할 수 있다. 
 
 하지만 다음 세 가지 규칙을 반드시 준수해야 한다.
 
-1. 우리는 한 번에 하나의 disk 만을 옮길 수 있다.
-2. 우리는 한 disk 위에 그것보다 더 큰 disk를 놓을 수 없다.
+1. 한 번에 하나의 disk 만을 옮길 수 있다.
+2. 한 disk 위에 그것보다 크기가 큰 disk를 놓을 수 없다.
 3. 모든 disk들은 3 개의 peg 중에 한 개의 peg 위에 있어야 한다.
 
 
@@ -317,12 +315,14 @@ recursive로 해결하기 위해 제일 간단한 경우부터 생각해 보자.
 
 ### 1-disk & 2-disk cases
 
-![image](https://user-images.githubusercontent.com/79521972/159203781-dea2eb53-c0bc-4483-9d73-904de3a58d09.png)
-
 - Moving 1 disk - Move one disk from source to destination
 
   - 1 step is required
   - 계산이 필요없는 base case에 해당한다.
+
+<br>
+
+![image](https://user-images.githubusercontent.com/79521972/159203781-dea2eb53-c0bc-4483-9d73-904de3a58d09.png)
 
 - Moving 2 disks
 
@@ -331,6 +331,8 @@ recursive로 해결하기 위해 제일 간단한 경우부터 생각해 보자.
   3. Move one disk from extra to destination
 
   - 3 step is required
+
+
 
 <br>
 
@@ -341,6 +343,7 @@ recursive로 해결하기 위해 제일 간단한 경우부터 생각해 보자.
 
 
 - 위에 있는 두 개를 extra로 옮겨야 한다.(f(2) 사용 - 3 step)
+  - 이 경우 extra가 destination인 셈.
 
 - 제일 큰 거가 하나가 남는데 이는 base case이다. (1 step)
 - extra로 옮겨놨던 두 개를 다시 dest로 옮긴다.(f(2) 사용 - 3 step)
@@ -414,7 +417,7 @@ f(n) = 2f(n-1) + 1
        = 2<sup>n-1</sup>f(1) + 2<sup>i</sup> - 1
        = 2<sup>n</sup> - 1
 
-만약 1초당 하나 씩 disk를 옮긴다면 n=40인 경우, 적어도 다 끝내기 위해서 348 세기가 걸리는 것이다.
+만약 1초당 하나 씩 disk를 옮긴다면 n=40인 경우, 적어도 다 끝내기 위해서 **348 세기**가 걸리는 것이다.
 
 
 
@@ -422,10 +425,10 @@ f(n) = 2f(n-1) + 1
 
 ## Backtracking
 
-- techqniue
-- paradigm
-- method
-- algorithm
+- Backtracking techqniue
+- Backtracking paradigm
+- Backtracking method
+- Backtracking algorithm
 
 라고 한다.
 
@@ -435,8 +438,10 @@ f(n) = 2f(n-1) + 1
 
 - `Brute-force search` or `exhaustive search`
   - A very general problem-solving technique(paradigm)
+    - 매우 전형적인 문제 풀이 기술
   - Systematically enumerating all possible candidates for the solution and checking whether each candidate satisfies the problem's statement
-  - solution에 대해 가능성 있는 모~든 후보자들을 시스템적으로 나열하고 각 후보자들이 problem의 상태를 만족하는지 아닌지 확인하는 알고리즘이다.
+  - solution에 대해 가능성 있는 모~든 후보자들을 시스템적으로 나열하고 각 후보자들이 problem의 상태를 만족하는지 아닌지 판별하는 알고리즘이다.
+  - 간단히 말해서 무식하게 푸는 방식이라고 할 수 있다.(하지만 때론 무식하게 푸는 것이 쉽게 풀리는 경우도 많다.)
 
 <br>
 
@@ -456,13 +461,13 @@ For **Sudoku**, there are 9<sup>n</sup> ways to fill the n blank squares.
 
 <br>
 
-만약 첫 번째 칸에 1을 넣고 바로 다음 칸에 1을 넣는 경우 그 뒤는 볼 것도 없이 해당 경로는 스도쿠가 만족하지 않는 코드인 것이다. 이를 활용하여 이 경우를 잘 판별해서 다시 뒤로 돌아갈 수 있는 방법을 찾아야 할 것이다.
+만약 첫 번째 칸에 1을 넣고 바로 다음 칸에 1을 넣는 경우 그 뒤는 볼 것도 없이 해당 경로는 스도쿠가 만족하지 않는 코드인 것이다. 이를 활용하여 이 경우를 잘 판별해서 다시 뒤(back)로 돌아갈 수 있는 방법을 찾아야 할 것이다.
 
 <br>
 
 <mark>코드로 구현(브루트 포스)</mark>
 
-브루트 포스 알고리즘의 예시를 코드를 통해 살펴보자. 아래는 주어진 string s와 길이 n에 대하여 가능한 모든 배치 방식을 생성하기 위한 recursive 접근 방식을 사용했다.
+브루트 포스 알고리즘의 예시를 코드를 통해 살펴보자. 아래는 주어진 string 's'와 길이 n에 대하여 가능한 모든 배치 방식을 생성하기 위한 recursive 접근 방식을 사용했다.
 
 ```python
 def bit_str(ans):
@@ -503,13 +508,13 @@ for loop보다 recursion이 더 좋다.
 
 ### Backtracking
 
-Backtracking은 traversing tree 구조와 같은 문제의 유형에 특히 유용한 recursion의 한 형태인데, 각 노드에 대한 수 많은 옵션들이 제시된 곳에서 유용한 것이다.
+Backtracking은 traversing tree(트리 순회) 구조와 같은 문제의 유형에 특히 유용한 recursion의 한 형태인데, 각 노드에 대한 수 많은 옵션들이 제시된 곳에서 유용한 것이다.
 
 또한 <mark>Backtracking은 exhaustive searching(완전 탐색)을 위한 divide-and-conquer 방식이다. 중요한 점은 백트래킹은 결과를 낼 수 없는 가지들은 쳐내는 것이다.</mark>
 
 ![image](https://user-images.githubusercontent.com/79521972/159659310-fbdb74ca-8420-4582-a585-fa836e7b3d90.png)
 
-즉 위의 그림처럼 가지를 모두 탐색하면서 조건을 일일히 따져보는 것이 아니라, 중간에 failed candidates가 발견되면 다음 가지로 넘어가지 않고 다시 되돌아가(back) 현재 노드부터 다시 tracking을 시작하여 결과를 찾아내는 알고리즘인 것이다.
+즉 위의 그림처럼 가지를 모두 탐색하면서 조건을 일일히 따져보는 것이 아니라, 중간에 failed candidates(가망이 없는 후보)가 발견되면 다음 가지로 넘어가지 않고 다시 되돌아가(back) 현재 노드부터 다시 tracking을 시작하여 결과를 찾아내는 알고리즘인 것이다.
 
 <br>
 
@@ -538,7 +543,7 @@ permute([])
 ```
 
 ```
-3 2 #input
+3 2 // input
 1 2
 1 3
 2 1
@@ -574,8 +579,12 @@ combine([])
 
 idea: n과m 1번 문제와 동일하게 돌긴 도는데 특정 부분에서만 넘어가게 짜야 하기 때문에 그 특정 부분을 지정하는 것이 제일 중요하다.
 
+if문에서 반드시 배열의 길이를 먼저 check 하고 그 다음 i가 배열의 마지막보다 큰 지를 check해야 한다.(순서 유의)
+
+- 배열의 크기가 1보다 커야지 배열의 마지막이 존재할 것이기 때문
+
 ```
-4 2 # input
+4 2 // input
 1 2
 1 3
 1 4
@@ -588,7 +597,7 @@ idea: n과m 1번 문제와 동일하게 돌긴 도는데 특정 부분에서만 
 
 
 
-### 조건문에서 되도록 &대신 and를 사용해야 하는 이유
+### 조건문에서 되도록 &amp;대신 and를 사용해야 하는 이유
 
 ```python
 >>> 0 < 1

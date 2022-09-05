@@ -11,12 +11,12 @@ tag: ['Data structures and algorithms', 'Python']
 
 ### linear search 
 
-the searching operation은 정렬된 데이터로부터 주어진 item을 찾아내는 것이다. 만약 발견한 item이 정렬된 리스트에서 가져올 수 있다면 그것이 위치한 **index 위치**를 반환하거나 발견하지 못했다는 것(**None)**을 반환한다.
+'The searching operation'은 정렬된 데이터로부터 주어진 item을 찾아내는 것이다. 만약 발견한 item이 정렬된 리스트에서 가져올 수 있다면 그것이 위치한 **index 위치**를 반환하거나 발견하지 못했다는 것**(None)**을 반환한다.
 
 리스트 안의 item을 search하는 가장 쉬운 방식은 linear search 방법이며, 이는 전체 리스트의 item을 하나씩(one-by-one) 찾는 방식이다.
 
-\<주의 사항>
-리스트의 item's type을 개념 이해를 위해서 이 chapter에서는 interger 변수로 할 것이다. (정수가 비교적 제일 이해가 쉽기 때문에). 하지만 리스트 item's type은 어떠한 data type도 가능 하다는 것을 잊지마라.
+**\<주의 사항>**
+이 chapter에서는 개념 이해를 돕기 위해서 리스트의 item's type을 integer 변수로 할 것이다. (정수가 비교적 제일 이해가 쉽기 때문에). 하지만 리스트 item's type은 어떠한 data type도 가능 하다는 것을 잊지마라.
 
 <br>
 
@@ -29,7 +29,7 @@ The linear search의 접근 방식은 item이 어떻게 정렬되어 있는 지�
 
 
  ```python
- import random # 실습 데이터 만들기 위한 모듈
+ import random # 실습 데이터를 만들기 위한 모듈
  
  def search(unordered_list, target):
      for i in range(len(unordered_list)):
@@ -61,8 +61,6 @@ The linear search의 접근 방식은 item이 어떻게 정렬되어 있는 지�
 
 <mark>항상 변수 이름은 알아보기 쉽게 직관적으로 지을 것</mark>
 
-
-
 <br>
 
 ### Ordered linear search
@@ -70,7 +68,7 @@ The linear search의 접근 방식은 item이 어떻게 정렬되어 있는 지�
 알고리즘이 다음과 같은 단계로 감소한다.
 
 1. list를 순차적으로 이동한다.
-2. 만약 현재 loop에서 inspection하고 있는 object(item)가 찾는 target item 보다 커지면 종료하고 None을 반환한다.
+2. 만약 현재 loop에서 inspection(조사)하고 있는 object(or item)가 찾는 target item 보다 커지면 종료하고 None을 반환한다.
 
 
 
@@ -110,22 +108,22 @@ else:
 
 - random 변수의 범위를 1~ 14로 주었고 이는 중복이 없기 때문에 만약 저 범위 내에서 숫자를 15개 이상을 뽑으라고 하면 오류가 발생할 것이다.
 
-문제는 이론보다 코딩 위주(강의 자료에 있는 코드를 이해하고 있는가, 공부를 했는가)
-
 <br>
 
 ### Binary search
 
-linear search보다 좋은 알고리즘이지만 그만큼 더 복잡하다.(모든 알고리즘에서 적용되는 rule)
+linear search보다 좋은 알고리즘이지만 그만큼 더 복잡하다. (모든 알고리즘에서 적용되는 규칙이다)
 
 ![image](https://user-images.githubusercontent.com/79521972/158100915-5c9840dd-4a4a-4723-a23a-3f564c68a5f9.png)
 
+- 타켓값을 지정 -> 43을 찾는다고 가정함.
+  
 - 가장 가운데 값을 먼저 본다
-  - 0~11의 index의 중간 index = (0+11)/2 = 5
+  - 0~11의 index의 중간 index = (0+11)/2 = 5(번째)
 
 - 해당 값과 target값을 비교한다.
   - 43(target)>37
-- 더 작기 때문에 큰 부분으로 위 과정을 반복한다.
+- 더 작기 때문에 오른쪽 부분(mid+1 ~ right)으로 위 과정을 반복한다.(더 큰 값이 위치해 있을 것이기 때문)
   - 6~11 -> (6+11)/2 = 8
 
 
@@ -134,7 +132,7 @@ linear search보다 좋은 알고리즘이지만 그만큼 더 복잡하다.(모
 def binary_search(ordered_list, target):
     left, right = 0, len(order_list)-1
     
-    while left <= right: #left와 right가 교차하기 전까지
+    while left <= right: # left와 right가 교차하기 전까지
         mid = (left + right) // 2
         
         if target < ordered_list[mid]:
@@ -154,15 +152,13 @@ print(test)
 
 
 
-시험문제는 100% 강의 자료에 나옴
-
 <br>
 
 ### bisect - Array bisection algorithm
 
 - bisect.bisect_left(a, x, lo=0, hi=len(a))
   - x라는 point를 a리스트에 삽입을 하는데 order를 유지한 채 삽입할 수 있는 위치를 알려준다.
-  - lo라는 파라미터와 hi라는 파라미터는 서브리스트를 만들 수 있는 start, end index를 정할 수 있다.
+  - lo라는 파라미터와 hi라는 파라미터는 서브리스트를 만들 수 있는 start, end index를 각각 정할 수 있다.
     - default는 전체 리스트에 대해 보는 것으로 한다.
   - 만약 리스트 안에 이미 들어있는 값과 동일한 값에 대하여 삽입을 원하는 경우 가장 왼쪽값으로 넣게 된다.
   - [<u><span style="color:blue">bisect — Array bisection algorithm — Python 3.8.7 documentation</span></u>](https://docs.python.org/3.8/library/bisect.html)
@@ -235,7 +231,7 @@ bisect로 해당 target이 그 리스트에 들어갔을 때의 index를 지정�
 
 ### Running time *f(n)* of an algorithm
 
-중첩된 loop내에 연속된 구문들에 대하여, 각 구문의 시간복잡도들을 더하고(add) 구문이 실행되는 횟수들의 갯수에 의해 곱해진다. 예를 들어:
+중첩된 loop(반복문)내에 연속된 구문들에 대하여, 각 구문의 시간복잡도들을 더하고(add) 구문이 실행되는 횟수들의 갯수에 의해 곱해진다. 예를 들어:
 
 ```python
 n = 500 # c0
@@ -268,9 +264,9 @@ while i < n:
     print(i)
 ```
 
-n = 4; 2번
+n = 4 -> 2번
 
-n= 8; 3번
+n= 8 -> 3번
 
 ...
 
@@ -329,16 +325,17 @@ while i < n:
 
 - **C<sub>1</sub>n** vs. **C<sub>2</sub>n<sup>2</sup>** (C<sub>1</sub>> C<sub>2</sub>는 항상 일정하게 유지된다.)
   - Regardless of C<sub>1</sub> and C<sub>2</sub> , there exists a break even point.
-  - C<sub>1</sub>, C<sub>2</sub>와 관계없이 분기점이 존재한다.
-    - 2중 for loop이 커져서 단일 for loop가 ignorable 되어지는 것
+    - C<sub>1</sub>, C<sub>2</sub>와 관계없이 분기점이 존재한다.
+    - **2중 for loop**이 너무 커져서 **단일 for loop**가 ignorable(무시할만한) 되는 것
 
 ![image](https://user-images.githubusercontent.com/79521972/158543160-d48615a6-3eef-44b0-9072-fb9261da6569.png)
 
 - 매우 큰 n에 대해서는
-  - f(n)의 차수가 중요하다.
-  - 상수항은 무시될 수 있다.
+  - f(n)의 **차수**가 중요하다.
+  - 상수항은 무시될 수 있다.(그러나, 상수만 있는 경우는 O(1))
     - n이 매우 크기 때문에 n과 관련된  term만 살아남는다.
   - `1000n`은`2n^2`보다 효율적이다.
+    - O(n) vs. O(n^2) 이기 때문.
 
 
 
@@ -355,7 +352,7 @@ while i < n:
 
 <br>
 
-### Big O natation
+### Big O natation(중요)
 
 - The big-O notation represents ***order of*** f(n)
 
@@ -377,6 +374,8 @@ growth율이 어떤 function의 order로 정의 되기 때문에 big O notation�
 
 f(n) = O(g(n)) if there exist constants **n<sub>0</sub>** and **c** such that **f(n) <= cg(n)** for all n >= n<sub>0</sub>
 
+- 특정 지점 이후에서 f(n) <= cg(n)를 만족하면 f(n) = O(g(n)) 만족.
+
 ![image](https://user-images.githubusercontent.com/79521972/163696506-8e54623f-bb07-4f8a-b20b-aa1bff2e6775.png)
 
 <br>
@@ -394,9 +393,9 @@ O(1) > O(log n) > O(n) > O(n log n) > O(n<sup>2</sup>) > O(n<sup>3</sup>) > O(2<
 <br>
 이진 탐색 알고리즘의 running time complexity 최악의 경우는 O(log n)이고 반면, 선형 탐색의 경우 O(n)이다.
 
-- 선형 탐색은 for-loop를 사용하지만 이진 탐색은 data range가 1/2 씩 감소하기 때문에
+- 선형 탐색은 for-loop를 사용하지만 이진 탐색은 탐색 범위가 1/2 씩 감소하기 때문에
 
-참고로 binary search(이진 탐색)의 f(n) = O(log n) + 1
+- 참고로 binary search(이진 탐색)는 f(n) = O(log n) + 1
 
 
 
@@ -410,11 +409,13 @@ Q.
 
 A.
 
-언어와 CPU에 따른 time complexity를 생각하지 않는 이유는 물론 runnin time이 짧아지고 길어지긴 하겠지만  비율은 여전히 똑같을 것이기 때문에 이 과목에서는 무의미한 비교이기 때문이다.
+언어와 CPU에 따른 time complexity를 생각하지 않는 이유는 물론 running time이 짧아지고 길어지긴 하겠지만  비율은 여전히 똑같을 것이기 때문에 이 과목에서는 무의미한 비교이기 때문이다.
 
 ---
 
 big O가 점진적인 분석과 관련되어 가장 많이 사용되긴 하지만, 이와 관련된 두 개의 다른 notation들이 존재한다. 이에 대해 짧게 알아보도록 하겠다. 
+
+<br>
 
 #### Big Omega notation(Ω)
 
@@ -426,7 +427,7 @@ Big Omega notation은 tight한 upper bound를 묘사하는 big O notation과 유
 
 #### Big Theta notation(Θ)
 
-이는 주어진 function의 upper bound와 lower bound 둘 다 모두 같은 경우 고려하는 것이며 이의 목적은 만약 이 경우인지 아닌지를 판단하기 위함에 있다.
+이는 주어진 `function의 upper bound와 lower bound 둘 다 모두 같은 경우`를 고려하는 것이며 이의 목적은 만약 이 경우인지 아닌지를 판단하기 위함에 있다.
 
 <br>
 

@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Python] Linked List"
+title: "[Python] Abstract Data Types"
 categories: ['Computer Science', 'Data structures and algorithms with Python', 'Python']
 tag: ['Abstract Data Types', 'ADT']
 ---
