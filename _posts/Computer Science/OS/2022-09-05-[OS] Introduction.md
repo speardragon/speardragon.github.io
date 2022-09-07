@@ -418,13 +418,13 @@ master-slave 관계가 아닌 동등한 관계
 
 ## Operating System Structure
 
-- Multiprogramming (Batch system) needed for efficiency 
+- **Multiprogramming** (**Batch system**) needed for efficiency 
   - Single user cannot keep CPU and I/O devices busy at all times 
   - Multiprogramming organizes jobs (code and data) so CPU always has one to execute 
   - A subset of total jobs in system is kept in memory (job pool)  
   - One job selected and run via job scheduling 
   - When it has to wait (for I/O for example), OS switches to another job 
-- Timesharing (multitasking) is logical extension in which CPU switches jobs so frequently that users can interact with each job while it is running, creating interactive computing 
+- **Timesharing** (**multitasking**) is logical extension in which CPU switches jobs so frequently that users can interact with each job while it is running, creating interactive computing 
   - Response time should be < 1 second 
   - Each user has at least one program executing in memory => process 
   - If several jobs ready to run at the same time => CPU scheduling 
