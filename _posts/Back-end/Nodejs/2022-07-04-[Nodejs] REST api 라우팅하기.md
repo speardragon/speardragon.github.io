@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[Nodejs] express 모듈로 서버 구축"
+title: "[Nodejs] REST api 라우팅하기"
 categories: ['BackEnd', 'NodeJs']
 tag: ['Nodejs']
 toc: true

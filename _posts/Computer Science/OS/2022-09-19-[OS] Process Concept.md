@@ -495,6 +495,699 @@ while (true) {
 
 <br>
 
-## 
+## Interprocess Communication - Shared Memory
 
-36p~
+- An area of memory shared among the processes that wish to communicate 
+- The communication is under the control of the user processes not the operating system 
+- Major issue is to provide mechanism that will allow the user processes synchronize their actions when they access shared memory.
+- IPC using SM requires communicating processes to establish a region of shared memory 
+- shared memory resides in the address space of the process creating the shared memory segment 
+- Other processes that wish to communicate using this SM segment must attach it to their address space
+
+
+
+<br>
+
+## Interprocess Communication – Message Passing
+
+- Mechanism for processes to communicate and to synchronize their actions. 
+  - processes communicate with each other without resorting to shared variables. 
+  - Useful in a distributed environment 
+- Message passing facility provides two operations: 
+  - send(message) - message size fixed or variable 
+  - receive(message) 
+- The message size is either fixed or variable 
+  - Using fixed-sized message, implementation of OS is simple, application programming is difficult 
+  - Using variable-sized message, implementation of OS is complex, application programming is simple
+
+
+
+<br>
+
+## Message Passing (Cont.)
+
+- If P and Q wish to communicate, they need to: 
+  - establish a communication link between them 
+  - exchange messages via send/receive 
+- Implementation issues: 
+  - How are links established?  
+  - Can a link be associated with more than two processes? 
+  - How many links can there be between every pair of communicating processes?
+  - What is the capacity of a link? 
+  - Is the size of a message that the link can accommodate fixed or variable? 
+  - Is a link unidirectional or bi-directional?
+
+
+
+<br>
+
+- Implementation of communication link 
+  - Physical: 
+    - Shared memory 
+    - Hardware bus 
+    - Network
+  - Logical: 
+    - Direct or indirect (**Naming**) 
+    - Symmetric or asymmetric communication (**Symmetry**) 
+    - Synchronous or asynchronous (**Synchronization**) 
+    - Automatic or explicit buffering (**Buffering**)
+
+
+
+<br>
+
+## Naming Direct Communication
+
+- Processes must name each other explicitly: 
+  - send (P, message) - send a message to process P 
+  - receive(Q, message) - receive a message from process Q 
+- Properties of communication link 
+  - Links are established automatically. 
+  - A link is associated with exactly one pair of communicating processes. 
+  - Between each pair there exists exactly one link. 
+  - The link may be unidirectional, but is usually bi-directional. 
+
+![image-20220909204018656](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909204018656.png)
+
+
+
+<br>
+
+## Direct Communication
+
+- Exhibits symmetry in addressing 
+  - Both the sender and the receiver processes must name the other to communicate 
+- A variant (Asymmetry) 
+  - Only the sender names the recipient; recipient is not required to name the sender 
+  - **send** (P, message) : send a message to process P 
+  - **receive**(id, message) : receive a message from any process; id is set to the name of the process with which communication has taken place
+
+
+
+<br>
+
+## Naming Indirect Communication
+
+- Messages are directed and received from mailboxes (also referred to as ports). 
+  - Send(A, msg), receive(A, msg) 
+  - Each mailbox has a unique id. 
+  - A process can communicate with some other process via a number of different mail boxes 
+  - Processes can communicate only if they share a mailbox. 
+- Properties of communication link 
+  - Link established only if processes share a common mailbox 
+  - A link may be associated with more than two processes. 
+  - Each pair of processes may share several communication links. 
+  - Link may be unidirectional or bi-directional.
+
+
+
+<br>
+
+## Indirect Communication (Continued)
+
+- Operations 
+  - create a new mailbox (port) 
+  - send and receive messages through mailbox 
+  - destroy a mailbox 
+- Primitives are defined as: 
+  - **send**(A, message) – send a message to mailbox A
+  - **receive**(A, message) – receive a message from mailbox A
+
+
+
+- Mailbox owned by process 
+  - Mailbox is part of address space of the process 
+  - Owner can only receive messages, user can only send messages 
+- Mailbox owned by kernel 
+  - Mailbox is not attached to any particular process 
+  - Ownership can be passed to other processes 
+  - Operations of mailbox 
+    - create a new mailbox (owner) 
+    - send (owner) and receive (user) messages through mailbox 
+    - destroy a mailbox
+
+
+
+- Mailbox sharing 
+  - P1 , P2 , and P3 share mailbox A. 
+  - P1 , sends; P2 and P3 receive. 
+  - Who gets the message? 
+- Solutions 
+  - Allow a link to be associated with at most two processes. 
+  - Allow only one process at a time to execute a receive operation. 
+  - Allow the system to select arbitrarily the receiver. Sender is notified who the receiver was.
+
+<br>
+
+## Synchronization
+
+- Message passing may be either blocking or non-blocking. 
+- **Blocking** is considered **synchronous** 
+  - Blocking **send** has the sender block until the message is received 
+  - Blocking **receive** has the receiver block until a message is available 
+- **Non-blocking** is considered **asynchronous** 
+  - Non-blocking send has the sender send the message and continue 
+  - Non-blocking receive has the receiver receive a valid message or null message 
+- send and receive primitives may be either blocking or non-blocking. 
+  - Blocking send 
+  - Nonblocking send 
+  - Blocking receive 
+  - Nonblocking receive 
+- When both the send and receive are blocking -> rendezvous scheme
+
+
+
+- Producer-consumer becomes trivial
+
+
+
+- message next produced;
+
+```c
+while (true) {
+ /* produce an item in next produced */
+ send(next produced);
+} 
+```
+
+- message next consumed;
+
+```c
+while (true) {
+ receive(next consumed);
+ /* consume the item in next consumed */
+}
+```
+
+
+
+<br>
+
+## Buffering
+
+- Queue of messages attached to the link; implemented in one of three ways.
+
+1. Zero capacity – 0 messages Sender must wait for receiver (rendezvous, synchronous). 
+
+2. Bounded capacity – finite length of n messages Sender must wait if link full. (Asynchronous) 
+
+3. Unbounded capacity – infinite length Sender never waits.
+
+
+
+| Process P       | Process Q       |
+| --------------- | --------------- |
+| Send(Q, msg)    | receive(P, msg) |
+| Receive(Q, msg) | send(P, ACK)    |
+
+
+
+<br>
+
+## Examples of IPC Systems - POSIX
+
+- POSIX provides both of Message Passing and Shared Memory 
+- POSIX Shared Memory 
+- POSIX SM is organized using memory-mapped file, which associate the region of SM with a file 
+  - Process first creates shared memory segment 
+    - `shm_fd = shm_open(name, O CREAT | O RDRW, 0666);` 
+  - Also used to open an existing segment to share it 
+  - Set the size of the object 
+    - `ftruncate(shm_fd, 4096);`
+  - Establish a memory-mapped file containg shared memory segment using `mmap( ) `
+  - Now the process could write to the shared memory 
+    - `sprintf(shared memory, "Writing to shared memory");`
+
+
+
+<br>
+
+## IPC POSIX Producer
+
+![image-20220909205059261](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909205059261.png)
+
+
+
+
+
+<br>
+
+## IPC POSIX Consumer
+
+![image-20220909205123387](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909205123387.png)
+
+
+
+<br>
+
+## An example of IPC: Mach
+
+- Mach developed at CMU 
+
+- Task : similar to multi-threaded-process 
+
+- Most communication (system call or intertask information) is done by message using mailbox 
+
+  - Even system calls are messages 
+  - Each task gets two mailboxes at creation- Kernel and Notify 
+    - Kernel mailbox: kernel communicate with task through this 
+    - Notify mailbox : kernel sends notification of event occurrence 
+  - Only three system calls needed for message transfer 
+    - `msg_send(), msg_receive(), `
+    - `msg_rpc()`: sends a message and waits for exactly one return message from the sender 
+  - Mailboxes needed for commuication, created via 
+    - port_allocate()
+
+  - Send and receive are flexible, for example four options if mailbox full: 
+    - Wait indefinitely 
+    - Wait at most n milliseconds 
+    - Return immediately 
+    - Temporarily cache a message
+
+
+
+<br>
+
+## Examples of IPC Systems - Windows XP
+
+- Message-passing centric via **local procedure call (LPC)** facility 
+  - Only works between processes on the same system 
+  - Uses ports (like mailboxes) to establish and maintain communication channels 
+  - Communication works as follows: 
+    - The client opens a handle to the subsystem’s **connection port** object. 
+    - The client sends a connection request. 
+    - The server creates two **private communication ports** and returns the handle to one of them to the client. 
+    - The client and server use the corresponding port handle to send messages or callbacks and to listen for replies.
+
+
+
+<br>
+
+## Local Procedure Calls in Windows XP
+
+![image-20220909205521746](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909205521746.png)
+
+
+
+
+
+<br>
+
+## Communications in Client-Server Systems
+
+- Sockets – low level form of communication between distributed processes 
+- Remote Procedure Calls 
+- Pipes 
+- Remote Method Invocation (Java)
+
+
+
+<br>
+
+## Sockets
+
+- A socket is defined as an endpoint for communication. 
+- Concatenation of IP address and port number 
+- The socket 161.25.19.8:1625 refers to port 1625 on host 161.25.19.8 
+- Communication consists between a pair of sockets. 
+- Three types of sockets 
+  - Connection-oriented (TCP) 
+  - Connectionless (UDP) 
+  - MulticastSocket class– data can be sent to multiple recipients 
+- All ports below 1024 are well known, used for standard services 
+- Special IP address 127.0.0.1 (loopback) to refer to system on which process is running
+
+
+
+<br>
+
+## Socket Communication
+
+![image-20220909205747581](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909205747581.png)
+
+
+
+- Communication using socket is considered a low-level form of communication between distributed processes 
+- Socket allows only an unstructured stream of bytes to be exchanged 
+- It is the responsibility of server/client to impose a structure on the data
+
+
+
+<br>
+
+## Date Client
+
+```java
+public class DateClient {
+    public static void main(String[] args) {
+        try { // this could be changed to an IP name or address other than the localhost
+            Socket sock = new Socket("127.0.0.1",6013);
+            InputStream in = sock.getInputStream();
+            BufferedReader bin = new BufferedReader(new InputStreamReader(in));
+            String line;
+            while( (line = bin.readLine()) != null)
+                System.out.println(line);
+            sock.close();
+        }
+        catch (IOException ioe) {
+            System.err.println(ioe);
+        }
+    }
+}
+```
+
+
+
+<br>
+
+## Date Server
+
+```java
+public class DateServer{
+    public static void main(String[] args) {
+        try {
+            ServerSocket sock = new ServerSocket(6013); // now listen for connections
+            while (true) {
+                Socket client = sock.accept();
+                // we have a connection
+                PrintWriter pout = new PrintWriter(client.getOutputStream(), true);
+                // write the Date to the socket
+                pout.println(new java.util.Date().toString());
+                client.close();
+            }
+        }
+        catch (IOException ioe) {
+            System.err.println(ioe);
+        }
+    }
+}
+```
+
+
+
+<br>
+
+## Remote Procedure Calls
+
+- Remote procedure call (RPC) abstracts procedure calls between processes on networked systems. 
+  - Again uses ports for service differentiation 
+  - Messages exchanged are well structured and are not no longer just packets of data 
+  - Each message is addressed to an RPC daemon listening to a port on the remote system 
+  - Each message contains an id. Specifying the function to execute, and parameters 
+  - The function is executed as requested, and any out is sent back in a separate message 
+- Port – used to service differentiation
+
+- Stubs – client-side proxy for the actual procedure on the server. 
+
+  - Separate stub for each separate remote procedure 
+  - The client-side stub locates the server and marshalls the parameters. 
+  - The server-side stub receives this message, unpacks the marshalled parameters, and performs the procedure on the server. 
+  - On Windows, stub code compile from specification written in Microsoft Interface Definition Language (MIDL)
+
+- Data representation handled via External Data Representation (XDL) format to account for different architectures 
+
+  - Big-endian and little-endian (marshalling, unmarshalling) 
+
+- Semantics of RPC 
+
+  - Remote communication has more failure scenarios than local 
+
+  - Messages can be delivered exactly once rather than at most once 
+
+- OS typically provides a rendezvous (or matchmaker) service to connect client and server
+
+
+
+<br>
+
+## Execution of RPC
+
+![image-20220909210100852](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210100852.png)
+
+
+
+<br>
+
+## Pipes
+
+- Acts as a conduit allowing two processes to communicate 
+- **Issues** 
+  - Is communication unidirectional or bidirectional? 
+  - In the case of two-way communication, is it half or full-duplex? 
+  - Must there exist a relationship (i.e. parent-child) between the communicating processes? 
+  - Can the pipes be used over a network? 
+- Ordinary pipes – cannot be accessed from outside the process that created it. Typically, a parent process creates a pipe and uses it to communicate with a child process that it created. (same machime) 
+- Named pipes – can be accessed without a parent-child relationship.
+
+
+
+<br>
+
+## Ordinary Pipes
+
+- Ordinary Pipes allow communication in standard producer-consumer style 
+- Producer writes to one end (the **write-end** of the pipe) 
+- Consumer reads from the other end (the **read-end** of the pipe) 
+- Ordinary pipes are therefore unidirectional 
+- If two way communication is required, two pipes must be used 
+- Require parent-child relationship between communicating processes 
+  - Is used to communicate with a child process that it creates via fork() 
+- Windows calls these **anonymous pipes** 
+- See Unix and Windows code samples in textbook
+
+
+
+<br>
+
+## Ordinary Pipes
+
+```c
+Pipe ( int fd[] )
+```
+
+- Creates a pipe 
+- fd(0) is the read-end of pipe, fd(1) is write-end
+
+![image-20220909210445086](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210445086.png)
+
+
+
+<br>
+
+## Ordinary pipe in UNIX
+
+![image-20220909210516531](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210516531.png)
+
+
+
+<br>
+
+![image-20220909210602247](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210602247.png)
+
+
+
+<br>
+
+## Named Pipes
+
+- Named Pipes are more powerful than ordinary pipes 
+- Communication is bidirectional, half-duplex 
+  - For full-diplex, two named pipes are required 
+  - Can be used in a single machine 
+- No parent-child relationship is necessary between the communicating processes 
+- Several processes can use the named pipe for communication 
+- Provided on both UNIX and Windows systems 
+  - Named Pipe of Window provides full duplex, intra or inter machine communication 
+- makefifo(), open(), read(), write(), close() for Unix 
+- CreateNamedPipe(), ConnectNamed Pipe(), ReadFile(), WriteFile()
+
+
+
+<br>
+
+## Remote Method Invocation
+
+- Remote Method Invocation (RMI) is a Java mechanism similar to RPCs. 
+- RMI allows a Java program on one machine to invoke a method on a remote object.
+
+![image-20220909210741721](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210741721.png)
+
+
+
+<br>
+
+## RPC vs. RMI
+
+- RPC support procedural programming; only remote procedures or functions are called 
+- RMI is object-based; supports invocation of methods on remote objects 
+- Parameters to remote procedures are ordinary data structures in RPC 
+- Possible to pass objects as parameters to remote methods in RMI
+
+
+
+<br>
+
+## Marshalling Parameters
+
+![image-20220909210827672](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210827672.png)
+
+
+
+
+
+<br>
+
+## Concurrency
+
+- Concurrency in Clients 
+  - Clients can be run on a machine either iteratively (running them one by one) or 
+  - Concurrently (more than two clients can run at the same time) 
+  - Iterative running means 
+- Concurrency in Servers 
+  - Iterative server 
+  - Concurrent server
+
+
+
+<br>
+
+## Connectionless iterative server
+
+![image-20220909210929495](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210929495.png)
+
+
+
+<br>
+
+## Connection-oriented concurrent server
+
+![image-20220909211000015](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211000015.png)
+
+
+
+<br>
+
+## Programs and processes
+
+![image-20220909211018635](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211018635.png)
+
+
+
+<br>
+
+## A Program that prints its own processid
+
+![image-20220909211132736](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211132736.png)
+
+
+
+<br>
+
+## A program with one parent and one child
+
+![image-20220909211334384](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211334384.png)
+
+
+
+<br>
+
+## A program with two fork functions
+
+![image-20220909211450970](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211450970.png)
+
+
+
+<br>
+
+## The output of the program in Figure 15.12
+
+![image-20220909211623606](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211623606.png)
+
+
+
+<br>
+
+## A program that prints the processids of the parent and the child
+
+![image-20220909211643635](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211643635.png)
+
+
+
+<br>
+
+## Example of a server program with parent and child processes
+
+![image-20220909211707582](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211707582.png)
+
+
+
+<br>
+
+## TCP 서버 함수 (1/8)
+
+- TCP 서버 함수
+
+![image-20220909211740525](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211740525.png)
+
+
+
+<br>
+
+![image-20220909211811550](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211811550.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

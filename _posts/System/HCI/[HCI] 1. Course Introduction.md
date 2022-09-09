@@ -1,0 +1,84 @@
+---
+layout: single
+title: "[HCI] 1. Course Introduction"
+categories: ['System', 'HCI']
+tag: ['HCI']
+toc: true
+toc_sticky: true
+---
+
+## Course Information
+
+- Instructor 
+  - Prof. Lee 
+- Textbook 
+  - Handouts & Reading Assignments 
+- Other Readings (If you want to know more…) 
+  - Alan Dix & Janet Finlay , "Human Computer Interaction, 3rd Ed.," Prentice Hall, 2003. 
+- Grading Policy 
+  - Midterm (30%), Final Project (40%), HWs (20%), Attnd. (10%) 
+  - Or TBA…
+
+
+
+<br>
+
+## Course Outline
+
+- Introduction 
+- Human, Computer, & Interaction 
+- Principles of HCI 
+- HCI Development Methodology 
+- Utilizing Computer Systems for HCI 
+- HCI Tools
+
+
+
+<br>
+
+## What is HCI?
+
+- The study of how people interact with computers and to what extent computers are or are not developed for successful interaction with human beings. 
+- ACM SIGCHI definition of HCI (1992) 
+  - “Human-computer interaction is a discipline concerned with the design, evaluation and implementation of interactive computing systems for human use and with the study of major phenomena surrounding them”
+
+
+
+<br>
+
+## What fields does HCI cover?
+
+- Computer Science 
+- Psychology (cognitive) 
+- Communication 
+- Education 
+- Anthropology 
+- Design (e.g. graphic and industrial)
+
+
+
+<br>
+
+## HCI Tools
+
+- Sound 
+- 3D 
+- Animation 
+- Video 
+- Devices 
+  - Size (small->very large) 
+  - Portable (PDA, phone) 
+  - Plasticity 
+- Context sensitive/aware 
+- Personalizable 
+- Ubiquitous
+
+![image-20220909213217701](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909213217701.png)
+
+<br>
+
+## Course Organization
+
+- This course is a 50% online course. Most online lectures will be given after midterm. 
+- All assignments are stepping-stones for the project 
+- Grading for assignments and the project will be done in terms of functional or operational aspects, not aesthetic points of view

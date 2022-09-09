@@ -1,0 +1,620 @@
+---
+layout: single
+title: "[HCI] 4. Computer"
+categories: ['System', 'HCI']
+tag: ['HCI']
+toc: true
+toc_sticky: true
+---
+
+## The Computer
+
+- a computer system is made up of various elements 
+- each of these elements affects the interaction 
+  - input devices – text entry and pointing 
+  - output devices – screen (small&large), digital paper 
+  - virtual reality – special interaction and display devices 
+  - physical interaction – e.g. sound, haptic, bio-sensing 
+  - paper – as output (print) and input (scan) 
+  - memory – RAM & permanent media, capacity & access 
+  - processing – speed of processing, networks
+
+
+
+<br>
+
+## Interacting with computers
+
+to understand human–computer interaction … need to understand computers!
+
+![image-20220909221050687](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221050687.png)
+
+
+
+<br>
+
+## A 'typical' computer system
+
+- screen, or monitor, on which there are windows 
+- keyboard 
+- mouse/trackpad 
+- variations 
+  - desktop 
+  - laptop 
+  - tablet 
+- the devices dictate the styles of interaction that the system supports 
+- If we use different devices, then the interface will support a different style of interaction
+
+
+
+<br>
+
+## How many computers ...
+
+- in your house?
+
+  - PC 
+  - TV, VCR, DVD, HiFi, cable/satellite TV 
+  - microwave, cooker, washing machine 
+  - central heating 
+  - security system 
+
+  -> can you think of more?
+
+- in your pockets? 
+
+  - tablet 
+  - phone, camera 
+  - smart card, card with magnetic strip? 
+  - electronic car key 
+  - USB memory 
+
+  -> try your pockets and bags
+
+
+
+<br>
+
+## Interactivity?
+
+- Long ago in a galaxy far away … batch processing 
+  - punched card stacks or large data files prepared 
+  - long wait …. 
+  - line printer output 
+  - … and if it is not right … 
+- Now most computing is interactive  
+  - rapid feedback 
+  - the user in control (most of the time) 
+  - doing rather than thinking … 
+- Is faster always better?
+
+
+
+<br>
+
+## text entry devices: Keyboards
+
+- Most common text input device 
+- Allows rapid entry of text by experienced users 
+- Keypress closes circuit connection, causing a character code to be sent 
+- Usually connected by cable, but can be wireless
+
+
+
+<br>
+
+## Layout - QWERTY
+
+- Standardised layout 
+- but … 
+  - non-alphanumeric keys are placed differently 
+  - accented symbols needed for different scripts 
+  - minor differences between UK and USA keyboards 
+- QWERTY arrangement not optimal for typing 
+  - layout to prevent typewriters jamming! 
+- Alternative designs allow faster typing but large social base of QWERTY typists produces reluctance to change.
+
+![image-20220909221454692](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221454692.png)
+
+
+
+<br>
+
+## Alternative keyboard layouts
+
+- Alphabetic 
+  - keys arranged in alphabetic order 
+  - not faster for trained typists 
+  - not faster for beginners either! 
+- Dvorak 
+  - common letters under dominant fingers 
+  - biased towards right hand 
+  - common combinations of letters alternate between hands 
+  - 10-15% improvement in speed and reduction in fatigue 
+  - But - large social base of QWERTY typists produce market pressures not to change
+
+
+
+<br>
+
+## Special keyboard
+
+![image-20220909221607087](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221607087.png)
+
+- One-handed keyboard 
+  - designs to reduce fatigue for RSI 
+  - e.g. the Maltron left-handed keyboard
+
+<br>
+
+![image-20220909221619732](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221619732.png)
+
+- Chord keyboard 
+  - letters typed as combination of keys pressed simultaneously 
+  - BUT - social resistance, plus fatigue after extended use 
+  - NEW – niche market for some wearables
+
+
+
+<br>
+
+## Phone pad and T9 entry
+
+![image-20220909221648373](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221648373.png)
+
+- use numeric keys with multiple presses
+
+![image-20220909221659462](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221659462.png)
+
+- hello = 4433555[pause]555666 
+- surprisingly fast!
+
+<br>
+
+![image-20220909221719369](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221719369.png)
+
+- T9 predictive entry 
+  - type as if single key for each letter 
+  - use dictionary to ‘guess’ the right word 
+  - hello = 43556 … 
+  - but 26 
+  - menu ‘am’ or ‘an’
+
+
+
+<br>
+
+## Handwriting recognition
+
+- Text can be input into the computer, using a pen and a digitizing tablet 
+  - natural interaction 
+- Technical problems: 
+  - capturing all useful information - stroke path, pressure, etc. in a natural manner 
+  - segmenting joined up writing into individual letters 
+  - interpreting individual letters 
+  - coping with different styles of handwriting 
+- Used in smartphones, and tablet computers … … leave the keyboard on the desk! 
+
+
+
+<br>
+
+## Speech recognition
+
+- Improving rapidly 
+- Most successful when: 
+  - single user – initial training and learns peculiarities 
+  - limited vocabulary systems 
+- Problems with 
+  - external noise interfering 
+  - imprecision of pronunciation 
+  - large vocabularies 
+  - different speakers
+
+
+
+<br>
+
+## Scanners
+
+- Take paper and convert it into a bitmap 
+- Two sorts of scanner 
+  - flat-bed: paper placed on a glass plate; whole page converted into bitmap  
+  - hand-held: scanner passed over paper, digitising strip typically 3-4” wide. some camera apps do the same. 
+- Shines light at paper and note intensity of reflection 
+  - colour or greyscale 
+- Typical resolutions from 600–2400 dpi
+
+
+
+<br>
+
+## Optical character recognition
+
+- OCR converts bitmap back into text 
+- different fonts 
+  - create problems for simple “template matching” algorithms 
+  - more complex systems segment text, decompose it into lines and arcs, and decipher characters that way 
+- page format 
+  - columns, pictures, headers and footers 
+
+
+
+<br>
+
+## Positioning, pointing and drawing: the Mouse
+
+![image-20220909222026683](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222026683.png)
+
+- Handheld pointing device 
+  - very common & easy to use 
+- Two characteristics 
+  - planar movement 
+  - Buttons : usually from 1 to 3 buttons on top, used for making a selection, indicating an option, or to initiate drawing etc. 
+- Relative movement only is detectable. 
+- Movement of mouse moves screen cursor 
+- … an indirect manipulation device. 
+  - device itself doesn’t obscure screen, is accurate and fast. 
+  - hand-eye coordination problems for novice users
+
+
+
+<br>
+
+## Trackball and thumbwheels
+
+![image-20220909222120750](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222120750.png)
+
+- Touchpad 
+  - small touch sensitive tablets 
+  - ‘stroke’ to move mouse pointer 
+  - used mainly in laptop computers 
+- Trackball 
+  - ball is rotated inside static housing 
+  - like an upside-down mouse! 
+  - relative motion moves cursor 
+  - indirect device, fairly accurate 
+  - separate buttons for picking  very fast for gaming 
+  - used in some portable and notebook computers. 
+- Thumbwheels … 
+  - for accurate CAD – two dials for X-Y cursor position 
+  - for fast scrolling – single dial on mouse
+
+
+
+<br>
+
+## Joystick and Pointing Stick
+
+![image-20220909222205235](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222205235.png)
+
+- Joystick 
+
+  - indirect 
+
+    pressure of stick = velocity of movement 
+
+  - buttons for selection
+
+    on top or on front like a trigger 
+
+  - often used for computer games
+
+    aircraft controls and 3D navigation
+
+<br>
+
+![image-20220909222217448](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222217448.png)
+
+- Pointing Stick 
+  - for laptop computers 
+  - miniature joystick in the middle of the keyboard
+
+
+
+<br>
+
+## Digitizing tablet
+
+![image-20220909222247069](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222247069.png)
+
+- Mouse like-device with cross hairs 
+- used on special surface 
+  - rather like stylus 
+- very accurate 
+  - used for digitizing maps
+
+
+
+<br>
+
+## Touch screen
+
+- Detect the presence of finger or stylus on the screen. 
+  - works by interrupting matrix of light beams, capacitance changes or ultrasonic reflections 
+  - direct pointing device 
+- Advantages: 
+  - fast, and requires no specialised pointer 
+  - good for menu selection 
+  - suitable for use in hostile environment: clean and safe from damage. 
+- Disadvantages: 
+  - finger can mark screen 
+  - imprecise (finger is a fairly blunt instrument!) 
+    - difficult to select small regions or perform accurate drawing 
+  - lifting arm can be tiring
+
+
+
+<br>
+
+## Eyegaze
+
+- Control interface by eye gaze direction 
+  - e.g. look at a menu item to select it 
+- Uses IR laser reflected off retina 
+  - … a very low power laser! 
+- Mainly used for evaluation 
+- Potential for hands-free control 
+- High accuracy requires headset 
+- Cheaper and lower accuracy devices available 
+- Sit under the screen like a small webcam
+
+![image-20220909222403698](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222403698.png)
+
+<br>
+
+## Display devices: Resolution and colour depth
+
+- Resolution … used (inconsistently) for 
+  - number of pixels on screen (width x height) 
+    - e.g. SVGA 1024 x 768, Full HD 1920 x 1080 
+  - density of pixels (in pixels or dots per inch - dpi) 
+    - typically between 72 and 96 dpi, for retina 200 to 400 dpi 
+- Aspect ratio 
+  - ration between width and height 
+  - 4:3 for computer screens, 16:9 for wide-screen TV 
+- Colour depth: 
+  - how many different colours for each pixel? 
+  - black/white or greys only 
+  - 256 from a palette 
+  - 8 bits each for red/green/blue = millions of colours
+
+
+
+<br>
+
+## Cathode ray tube(CRT)
+
+- Stream of electrons emitted from electron gun, focused and directed by magnetic fields, hit phosphor-coated screen which glows 
+- used in TVs and computer monitors
+
+![image-20220909222523023](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222523023.png)
+
+<br>
+
+## Liquid crystal displays (LCD)
+
+- Smaller, lighter, and … no radiation problems.  Found on phones, portables and notebooks, … and increasingly on desktop and for home TV  also used in dedicated displays: digital watches, mobile phones, HiFi controls 
+- How it works … 
+  - Top plate transparent and polarised, bottom plate reflecting or transparent. 
+  - Voltage applied to crystal changes polarisation and hence colour 
+  - Light reflected not emitted => less eye strain 
+  - For a device with an internal light source has a backlight
+
+
+
+<br>
+
+## LCD Operating Principle
+
+![image-20220909222628763](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222628763.png)
+
+- Online 
+  - Surrounding light is polarized on the upper plate. 
+  - Molecules and lights are parallel to the lower analyzer. 
+  - Light passes through the plate. 
+- Offline 
+  - Surrounding light is polarized on the upper plate. 
+  - Molecules and lights are perpendicular to the lower analyzer. 
+  - Light cannot pass through the plate.
+
+
+
+<br>
+
+## Digital paper
+
+- what? 
+  - thin flexible sheets 
+  - updated electronically 
+  - but retain display 
+- how? 
+  - small spheres turned 
+  - or channels with coloured liquid and contrasting spheres 
+  - or move up and down B/W microballs (e-ink) 
+  - rapidly developing area
+
+![image-20220909222703633](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222703633.png)
+
+<br>
+
+## Virtual reality and 3D interaction: 3D displays
+
+- Desktop VR  
+  - Ordinary screen, mouse or keyboard control 
+  - Perspective and motion give 3D effect 
+- Seeing in 3D 
+  - Use stereoscopic vision  
+  - VR helmets 
+  - Screen plus shuttered specs, etc
+
+![image-20220909222750595](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222750595.png)
+
+<br>
+
+## VR motion sickness
+
+- Time delay 
+  - move head … lag … display moves 
+  - conflict: head movement vs. eyes 
+- Depth perception 
+  - headset gives different stereo distance 
+  - but all focused in same plane 
+  - conflict: eye angle vs. focus 
+- Conflicting cues => sickness
+  - helps motivate improvements in technology
+
+
+
+<br>
+
+## Simulators and VR caves
+
+- Scenes projected on walls 
+- Realistic environment 
+- Hydraulic rams! 
+- Real controls 
+- Other people
+
+![image-20220909222845514](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222845514.png)
+
+<br>
+
+## Dedicated displays
+
+- Analogue representations: 
+  - dials, gauges, lights, etc. 
+- Digital displays: 
+  - small LCD screens, LED lights, etc. 
+- Head-up displays (HUD) 
+  - found in aircraft cockpits or automobiles 
+  - show most important controls … depending on context 
+- Hologram 
+  - Gatebox animated robot
+
+![image-20220909222923428](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222923428.png)
+
+
+
+<br>
+
+## Printing
+
+- image made from small dots 
+  - allows any character set or graphic to be printed, 
+- critical features: 
+  - resolution 
+    - size and spacing of the dots 
+    - measured in dots per inch (dpi) 
+  - speed 
+    - usually measured in pages per minute 
+  - cost!!
+
+
+
+<br>
+
+## Types of dot-based printers
+
+- dot-matrix printers 
+  - use inked ribbon (like a typewriter)
+  - line of pins that can strike the ribbon, dotting the paper. 
+  - typical resolution 80-120 dpi 
+- ink-jet and bubble-jet printers 
+  - tiny blobs of ink sent from print head to paper 
+  - typically 300 dpi or better . 
+- laser printer 
+  - like photocopier: dots of electrostatic charge deposited on drum, which picks up toner (black powder form of ink) rolled onto paper which is then fixed with heat 
+  - typically 600 dpi or better.
+
+
+
+<br>
+
+## Processing and networks: Finite processing speed
+
+- Designers tend to assume fast processors, and make interfaces more and more complicated 
+- But problems occur, because processing cannot keep up with all the tasks it needs to do 
+  - cursor overshooting because system has buffered keypresses 
+  - icon wars - user clicks on icon, nothing happens, clicks on another, then system responds and windows fly everywhere 
+- Also problems if system is too fast 
+  - e.g. help screens may scroll through text much too rapidly to be read
+
+​	
+
+<br>
+
+## Moore's law
+
+- computers get faster and faster! 
+- 1965 … 
+  - Gordon Moore, co-founder of Intel, noticed a pattern 
+  - processor speed doubles every 18 months 
+  - PC … 1987: 1.5 Mhz, 2002: 1.5 GHz 
+- similar pattern for memory 
+  - but doubles every 12 months!! 
+  - hard disk … 1991: 20Mbyte : 2002: 30 Gbyte 
+- baby born today 
+  - record all sound and vision 
+  - by 70 all life’s memories stored in a grain of dust!
+
+
+
+<br>
+
+## The myth of the infinitely fast machine
+
+- implicit assumption … no delays 
+  - an infinitely fast machine 
+- what is good design for real machines? 
+- good example … the telephone : 
+  - type keys too fast 
+  - hear tones as numbers sent down the line 
+  - actually an accident of implementation 
+  - emulate in design
+
+
+
+<br>
+
+## Limitations on interactive performance
+
+- Computation bound 
+  - Computation takes ages, causing frustration for the user 
+- Storage channel bound 
+  - Bottleneck in transference of data from disk to memory 
+- Graphics bound 
+  - Common bottleneck: updating displays requires a lot of effort sometimes helped by adding a graphics coprocessor optimised to take on the burden 
+- Network capacity 
+  - Many computers networked – shared resources and files, access to printers etc. – but interactive performance can be reduced by slow network speed
+
+
+
+<br>
+
+## Networked computing
+
+- Networks allow access to … 
+  - large memory and processing 
+  - other people (groupware, email) 
+  - shared resources – esp. the web 
+- Issues 
+  - network delays – slow feedback 
+  - conflicts – many people update data 
+  - unpredictability
+
+
+
+<br>
+
+## The internet
+
+- history … 
+  - 1969: DARPANET US DoD, 4 sites 
+  - 1971: 23; 1984: 1000; 1989: 10000 
+- common language (protocols): 
+  - TCP – Transmission Control protocol 
+    - lower level, packets (like letters) between machines 
+  - IP – Internet Protocol 
+    - reliable channel (like phone call) between programs on machines 
+  - email, HTTP, all build on top of these
