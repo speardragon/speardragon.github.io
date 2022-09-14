@@ -9,20 +9,34 @@ toc_sticky: true
 
 
 
+1, 2 장은 중요도가 떨어짐(많은 시간을 투자해서 이해할 필요 X)
+
+대충 보면서 이해하고 나중에 관련 내용이 나왔을 때 돌아와서 보기
+
+
+
 # Chapter 2: Operating-System Structures
 
-- the services an OS provides to users, processes, and other systems 
+- **the services an OS provides to users, processes, and other systems** 
   - Operating System Services 
   - User Operating System Interface 
   - System Calls 
   - System Programs 
 - the various ways of structuring an operating system 
   - Operating System Design and Implementation 
-  - Operating System Structure 
+  - Operating System Structure (어떻게 구현하는 지)
 - how operating systems are installed and customized and how they boot 
   - Operating System Debugging 
   - Operating System Generation 
   - System Boot
+
+- 리눅스는 monolothic 구조를 갖고 있음
+  - OS는 성능이 최대 관건 vs. OS는 모듈화가 관건
+
+- OS는 **실행환경**이다.
+  - cloud OS 의 시대
+  - JVM은 실행환경이지만 OS위에 있다.
+  - 쿠버네티스, docker -> 전망이 있음
 
 
 
@@ -30,38 +44,44 @@ toc_sticky: true
 
 ## Operating System Services
 
-- Operating systems provide an environment for execution of programs and services to programs and users 
+- Operating systems provide an **environment** for execution of programs and **services** to programs and users 
 
-- One set of operating-system services provides functions that are helpful to the user: 
+- One set of operating-system **services** provides functions that are helpful to the user: 
 
-  - User interface - Almost all operating systems have a user interface (UI). 
-    - Varies between Command-Line Interface (CLI) – text command, 
-    - Graphics User Interface (GUI), 
-    - Batch - file including several commands is executed – shell script 
-  - Program execution - The system must be able to load a program into memory and to run that program, end execution, either normally or abnormally (indicating error) 
+  - **User interface** - Almost all operating systems have a user interface (UI). 
+    - Varies between **Command-Line Interface (CLI)** – text command, 
+    - **Graphics User Interface (GUI)**, 
+    - **Batch** - file including several commands is executed – shell script 
+      - 여러 CLI가 나열된 파일
+  - Program execution - The system must be able to **load a program** into memory and to run that program, end execution, either normally or abnormally (indicating error) 
+    - c 소스 파일에서 object 파일로 만드는 것은 compiler의 역할
+    - 여러 개의 object 파일을 하나로 모아서 실행파일로 만드는 역할은 linker
+    - main memory에 탑재 시키는 것이 loader
   - I/O operations - A running program may require I/O, which may involve a file or an I/O device
 
-  - File-system manipulation - The file system is of particular interest. Programs need to read and write files and directories, create and delete them, search them, list file Information, permission management. 
-  - Communications – Processes may exchange information, on the same computer or between computers over a network 
-    - Communications may be via shared memory or through message passing (packets moved by the OS) 
-  - Error detection – OS needs to be constantly aware of possible errors 
+  - **File-system manipulation** - The file system is of particular interest. Programs need to read and write files and directories, create and delete them, search them, list file Information, permission management. 
+  - **Communications** – Processes may exchange information, on the same computer or between computers over a network 
+    - Communications may be via **shared memory** or through **message passing** (packets moved by the OS) 
+  - **Error detection** – OS needs to be constantly aware of possible errors 
     - May occur in the CPU and memory hardware, in I/O devices, in user program 
     - For each type of error, OS should take the appropriate action to ensure correct and consistent computing 
     - Debugging facilities can greatly enhance the user’s and programmer ’s abilities to efficiently use the system
 
-- Another set of OS functions exists for ensuring the efficient operation of the system itself via resource sharing 
-  - Resource allocation - When multiple users or multiple jobs running concurrently, resources must be allocated to each of them 
+- Another set of OS **functions** exists for ensuring the efficient operation of the system itself via resource sharing 
+  - **Resource allocation** - When multiple users or multiple jobs running concurrently, resources must be allocated to each of them 
     - Many types of resources - CPU cycles, main memory, file storage, I/O devices. 
-  - Accounting - To keep track of which users use how much and what kinds of computer resources 
-  - Protection and security - The owners of information stored in a multiuser or networked computer system may want to control use of that information, concurrent processes should not interfere with each other 
-    - Protection involves ensuring that all access to system resources is controlled 
-    - Security of the system from outsiders requires user authentication, extends to defending external I/O devices from invalid access attempts
+  - **Accounting** - To keep track of which users use how much and what kinds of computer resources 
+  - **Protection and security** - The owners of information stored in a multiuser or networked computer system may want to control use of that information, concurrent processes should not interfere with each other 
+    - **Protection** involves ensuring that all access to system resources is controlled 
+    - **Security** of the system from outsiders requires user authentication, extends to defending external I/O devices from invalid access attempts
 
 <br>
 
 ## A View of Operating System Services
 
 ![image-20220907225450734](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907225450734.png)
+
+사용자가 하드웨어를 직접 접근할 일은 없음 -> OS가 하드웨어를 추상화 하였기 때문에 
 
 
 

@@ -11,7 +11,7 @@ toc_sticky: true
 
 - Information I/O … 
   - visual, auditory, haptic, movement 
-- Information stored in memory 
+- Information stored in **memory** 
   - sensory, short-term, long-term 
 - Information processed and applied 
   - reasoning, problem solving, skill, error 
@@ -25,11 +25,11 @@ toc_sticky: true
 ## Vision
 
 - Two stages in vision 
-  - Physical reception of stimulus 
+  - Physical reception of stimulus (입력을 받아들이는 감각)
     - Eyes 
     - Ears 
     - Fingers 
-  - Processing and interpretation of stimulus 
+  - Processing and interpretation of stimulus (카메라로 사진을 찍고 나서의 처리과정과 같은 과정)
     - Perception 
     - Memory
 
@@ -39,13 +39,13 @@ toc_sticky: true
 
 ## The Eye - physical reception
 
-- Mechanism for receiving light and transforming it into electrical energy 
+- Mechanism for **receiving light** and transforming it into **electrical energy** 
 - Light reflects from objects 
-- Images are focused upside-down on retina 
-- Retina contains rods for low light vision and cones for colour vision 
+- Images are focused **upside-down on retina** 
+- Retina contains rods(모든 종류의 파장이 가능해서 강조를 파악) for low light vision and cones(특정 주파수를 통해 wavelength에 의해서 가능한 cell) for colour vision 
 - Ganglion cells (brain!) detect pattern and movement
 
-![image-20220909213907303](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909213907303.png)
+![image-20220914092108054](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220914092108054.png)
 
 
 
@@ -53,11 +53,12 @@ toc_sticky: true
 
 ## Interpreting the signal
 
-- Size and depth 
-  - Visual angle indicates how much of view object occupies (relates to size and distance from eye) 
+- **Size and depth** 
+  - Visual angle indicates how much of view object occupies (relates to size and **distance** from eye) 
   - Visual acuity is ability to perceive detail (limited)
   - Familiar objects perceived as constant size (in spite of changes in visual angle when far away) 
-  - Cues like overlapping help perception of size and depth
+    - 책상을 예로 우리의 시각에서는 사다리꼴처럼 보이지만 뇌에서는 이를 직사각형으로 인식하거나 아무리 멀리 있어도 그 크기를 가늠할 수 있는 것이다.
+  - Cues like **overlapping** help perception of size and depth
 
 
 
@@ -69,11 +70,12 @@ toc_sticky: true
   - Subjective reaction to levels of light 
   - Affected by luminance of object 
   - Measured by just noticeable difference 
-  - Visual acuity increases with luminance as does flicker 
+  - Visual acuity increases with luminance as does flicker(깜빡깜빡) 
 - Color 
   - Made up of hue, intensity, saturation 
   - Cones sensitive to colour wavelengths 
-  - Blue acuity is lowest 
+  - Blue acuity is lowest (파란색의 명암이 구분이 제일 힘듬; 그린 > 레드 > 블루)
+    - acuity: 명확히 보고 듣고 생각하는 능력
   - 8% males and 1% females colour blind
 
 
@@ -82,7 +84,7 @@ toc_sticky: true
   - Movement 
   - Changes in luminance. 
 - Context is used to resolve ambiguity 
-- Optical illusions sometimes occur due to overcompensation
+- Optical illusions(왜곡) sometimes occur due to overcompensation
 
 
 
@@ -101,8 +103,8 @@ toc_sticky: true
 - Several stages: 
   - Visual pattern perceived
   - Decoded using internal representation of language 
-  - Interpreted using knowledge of syntax, semantics, pragmatics 
-- Reading involves saccades and fixations 
+  - Interpreted using knowledge of syntax(문법), semantics(의미), pragmatics(맥락)
+- Reading involves saccades(홱 스킵하면서 읽는) and fixations(가만히 있는) 
 - Perception occurs during fixations 
 - Word shape is important to recognition 
 - Negative contrast improves reading from computer screen
@@ -113,17 +115,17 @@ toc_sticky: true
 
 ## Hearing
 
-- Provides information about environment: distances, directions, objects etc. 
+- Provides information about environment: **distances**, **directions**, **objects** etc. 
 - Physical apparatus: 
   - Outer ear: protects inner and amplifies sound 
   - Middle ear: transmits sound waves as vibrations to inner ear 
   - Inner ear: chemical transmitters are released and cause impulses in auditory nerve 
 - Sound 
-  - Pitch: sound frequency 
-  - Loudness: amplitude 
-  - Timbre: type or quality
+  - Pitch: sound frequency (높낮이)
+  - Loudness: amplitude (크기)
+  - Timbre: type or quality (음색)
 
-![image-20220909214208968](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214208968.png)
+![image-20220914093741301](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220914093741301.png)
 
 
 
@@ -131,7 +133,7 @@ toc_sticky: true
   - Less accurate distinguishing high frequencies than low. 
 - Auditory system filters sounds 
   - Can attend to sounds over background noise. 
-  - For example, the cocktail party phenomenon.
+  - For example, the cocktail party phenomenon(웅성웅성하고 시끄러운 상황에서 대화를 하고 있는 상대의 말소리만 catch하는 능력).
 
 
 
@@ -147,6 +149,8 @@ toc_sticky: true
   - Mechanoreceptors: pressure (some instant, some continuous) 
 - Some areas more sensitive than others e.g. fingers. 
 - Kinesthesis - awareness of body position 
+  - 눈을 감고도 내가 어떤 자세를 취하고 있는지를 인식하고 있는 것.
+
 - Affects comfort and performance.
 
 
@@ -155,7 +159,9 @@ toc_sticky: true
 
 ## Movement
 
-- Time taken to respond to stimulus: reaction time + movement time  Movement time dependent on age, fitness etc. 
+- Time taken to respond to stimulus: 
+  - reaction time + movement time 
+- Movement time dependent on age, fitness etc. 
 - Reaction time - dependent on stimulus type: 
   - visual ~ 200ms 
   - auditory ~ 150 ms 
@@ -168,7 +174,7 @@ toc_sticky: true
 
 ## Movement (cont)
 
-- Fitts' Law describes the time taken to hit a screen target 
+- **Fitts' Law** describes the time taken to hit a screen target 
   - Shannon formulation (Dr. Scott MacKenzie)
 
 ![image-20220909214350846](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214350846.png)
@@ -239,13 +245,15 @@ HEC ATR ANU PTH ETR EET
 
 - Repository for all our knowledge 
   - Slow access ~ 1 to 10 seconds 
-  - Slow decay, if any 
+  - Slow decay, if any (사라지지 않을지도 모름)
+    - 연구 중에는 실제로 사라지지 않지만 해당 기억과 연결하는 시냅스가 끊어져서 기억이 안 나는 것일 수도 있다.
   - Huge or unlimited capacity 
 - Two types 
   - Explicit memories are declarative memories, include all of the memories that are available in consciousness 
-  - Episodic memory & Semantic memory 
+    - Episodic memory & Semantic memory 
   - Implicit memories are those that are mostly unconscious 
-  - Procedural memory & Emotional memory
+    - Procedural memory & Emotional memory
+    - 의식적으로 기억하지 않는, 글씨 쓸 때 펜을 어떻게 잡고 있고 어떻게 쓰고 있는지 생각 안 하는 것처럼
 
 
 
@@ -254,12 +262,12 @@ HEC ATR ANU PTH ETR EET
 ## Long-term Memory (cont.)
 
 - Explicit memories 
-  - Episodic: serial memory of events 
-  - Semantic: structured memory of facts, concepts, skills 
+  - Episodic: serial memory of events (일어났던 사건을 기억하는)
+  - Semantic: structured memory of facts, concepts, skills (역할을 기억하는)
   - Semantic LTM derived from episodic LTM 
 - Implicit memories 
-  - Procedural: the use of objects or movements of the body, such as how exactly to use a pencil or ride a bicycle 
-  - Emotional: the memory for events that evoke a particularly strong emotion
+  - **Procedural**: the use of objects or movements of the body, such as how exactly to use a pencil or ride a bicycle 
+  - **Emotional**: the memory for events that evoke a particularly strong emotion
 
 
 
@@ -300,6 +308,7 @@ HEC ATR ANU PTH ETR EET
 
 - Model of stereotypical information required to interpret situation 
 - Script has elements that can be instantiated with values for context
+- 수의사를 만나러 가는 스크립트
 
 ![image-20220909214834542](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214834542.png)
 
@@ -356,7 +365,7 @@ HEC ATR ANU PTH ETR EET
   - Information reproduced from memory can be assisted by cues, e.g. categories, imagery 
 - Recognition 
   - Information gives knowledge that it has been seen before 
-  - Less complex than recall - information is cue
+  - Less complex than recall - information is **cue***(recall과의 차이)
 
 
 

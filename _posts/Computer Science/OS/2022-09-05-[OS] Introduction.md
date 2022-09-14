@@ -84,6 +84,9 @@ toc_sticky: true
 - Computer-system operation
   - One or more CPUs, device controllers connect through common bus providing access to shared memory 
   - Concurrent execution of CPUs and devices competing for memory cycles (memory controller)
+  - mesh, switch 방식으로 하면 효율은 좋겠지만 비싸다 -> 그래서 common bus를 이용
+    - CPU와 controller가 동시에 돌아감
+    - bus master가 두 개 이상이면 충돌이 일어남 (근데 CPU 뿐만 아니라 disk controller도 master가 될 수 있기 때문에 bus arbitray가 있어야 함.)
 
 ![image-20220905150720928](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905150720928.png)
 
@@ -121,6 +124,7 @@ toc_sticky: true
 
 ## Common Functions of Interrupts
 
+- 외부에서 요청을 하지 않으면 OS는 일을 하지 않음
 - Interrupt transfers control to the interrupt service routine, through the **interrupt vector**, which contains the addresses of all the interrupt service routines (ISR) 
 - Interrupt architecture must save the address of the interrupted instruction - ISR 실행 후 리턴을 위해
   - 반드시 interrupt 됐을 당시 address를 save를 해 놔야 처리 후 다시 돌아갈 수 있음
@@ -261,9 +265,28 @@ CPU의 간섭없이 device to/from memory read/write하는 방법
 
 ## How a Modern Computer Works
 
+중요!!!
+
 ![image-20220905151927609](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905151927609.png)
 
-폰노이만 구조를 해치지 않으면서 좀 더 효율적으로 read/write
+- 대부분의 컴퓨터는 이 구조
+
+- 폰노이만 구조를 해치지 않으면서 좀 더 효율적으로 read/write
+
+- DMA
+
+  - 원래는 CPU가 device controller로부터 값을 읽어서 memory에 전달해야 하는데
+
+  - DMA를 통해 device가 CPU는 쉬고 있을 때 어떤 data를 메모리에 가져다 놓겠다고 선언한 후 CPU 몰래 가져다 놓는 방식
+
+
+
+- 가장 먼저 메모리에 탑재를 시켜야 함
+- CPU가 한 번에 하나씩 명령(instruction)을 받아들여서 
+- 이 때, thread of execution이 여러 개가 될 수 있음 -> parallel processing
+- I/O device + I/O controller
+- CPU는 직접 IO하지 않음(HDD와 같이 엄청 느린 디바이스를 상대할 시간이 없음) -> device controller가 대신 control
+- 그 때부터 CPU와 device controller는 parallel하게(각자) 돌아간다.
 
 <br>
 
@@ -301,6 +324,9 @@ CPU의 간섭없이 device to/from memory read/write하는 방법
 ![image-20220905152102610](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152102610.png)
 
 <br>
+
+중요!!!
+
 ![image-20220905152112450](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152112450.png)
 
 
