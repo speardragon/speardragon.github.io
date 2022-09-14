@@ -9,9 +9,9 @@ toc_sticky: true
 
 ## Thinking
 
-- Reasoning 
+- Reasoning(추론) - 앞 뒤를 생각해서 이건 이렇게 될 것 같아! 처럼 추측하는 행위
   - deduction, induction, abduction 
-- Problem solving
+- Problem solving - reasoning과는 달리 답이 없는 상태에서 답을 찾아내려고 하는 방식
 
 
 
@@ -19,15 +19,18 @@ toc_sticky: true
 
 ## Deductive Reasoning
 
-- Deduction: If A, then B 
-  - Derive logically necessary conclusion from given premises. 
+- Deduction(연역): If A, then B 
+  - Derive logically necessary conclusion from given premises(전제). 
     - e.g. If it is Friday then she will go to work 
     - It is Friday 
     - Therefore she will go to work. 
-  - Logical conclusion not necessarily true: 
+  - Logical conclusion **not necessarily true**: 
     - e.g. If it is raining then the ground is dry 
     - It is raining 
     - Therefore the ground is dry
+
+- 꼭 옳다는 것을 의미하는 것은 아님(잘못될 수도 있음)
+  - 전제가 틀려있을 수도 있다.
 
 
 
@@ -37,9 +40,11 @@ toc_sticky: true
 
 - When truth and logical validity clash … 
 
+  - 조건이 불충분할 수 있다.
   - e.g. Some people are babies 
   - Some babies cry 
   - Inference - Some people cry 
+  - some 때문에 전체적으로 맞는 경우가 아니라 부분적으로 맞는 경우가 된다.(불충분)
 
   Correct? 
 
@@ -49,14 +54,18 @@ toc_sticky: true
 
 <br>
 
-## Inductive Reasoning
+## Inductive Reasoning(귀납적 추론)
 
-- Induction: Generalizing from previous cases to learn about new ones 
+- Induction: **Generalizing** from previous cases to learn about new ones 
   - Generalize from cases seen to cases unseen 
+    - case들을 모아 일반화시키는 방식
     - e.g. All elephants we have seen have trunks, therefore all elephants have trunks. 
 - Unreliable: 
   - Can only prove false, not true – checking all elephants (?) 
+  - 하나만 잘못된 것을 찾으면 바로 틀린 논제가 되어버림
+    - 그래서 이를 증명하려면 모든 경우를 확인해야 함.
   - … but useful! 
+    - 하지만 효율적임!
 - Humans not good at using negative evidence 
   - e.g. Wason's cards.
 
@@ -68,7 +77,7 @@ toc_sticky: true
 
 ![image-20220909215413187](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909215413187.png)
 
-> If a card has a vowel on one side, it has an even number on the other
+> If a card has a vowel(모음) on one side, it has an even number on the other
 
 Is this true? 
 
@@ -76,29 +85,31 @@ How many cards do you need to turn over to find out?
 
 …. and which cards?
 
-
+- E를 뒤집으면 반드시 짝수가 있어야 하지만 4를 뒤집었을 땐 모음이 없어도 된다.(조건을 잘 읽으면...)
+- 이것이 negative evidence!
+- 조건문이 앞에 것이 뒤에 것을 보장하지만 뒤에 것이 앞에 것을 보장하지 않는다.
 
 <br>
 
-## Abductive Reasoning
+## Abductive Reasoning(가설 유도적 추론)
 
-- Abduction: Reasoning from a fact back to the action or state that caused it 
+- Abduction: Reasoning from a **fact back to the action** or state that caused it 
   - Reasoning from event to cause 
     - e.g. Sam drives fast when drunk. 
     - If I see Sam driving fast, assume drunk. 
-- Unreliable: 
+- **Unreliable**: 
   - Can lead to false explanations
 
-
+정말 모르겠을 때 추론하는 방법
 
 <br>
 
 ## Reasoning
 
-- Deductive reasoning is valid 
+- **Deductive reasoning** is valid 
   - Deductive inference guarantees if the premises are true so it the conclusion 
 - Inductive and abductive reasoning are unreliable 
-  - Cannot guarantee true conclusions even with true premises 
+  - Cannot guarantee true conclusions even with true premises(전제) 
   - Inductive reasoning: conclusion merely likely 
   - Abductive reasoning: taking your best shot 
 - Deductive reasoning is limited to application of rules to examples 
@@ -122,10 +133,10 @@ How many cards do you need to turn over to find out?
 ## Reasoning to Problem-Solving
 
 - Where reasoning involves inference about a familiar problem domain 
-  - Problem so	lving refers to the ability to design solutions to problems in unfamiliar problem domains 
+- **Problem solving** refers to the ability to design solutions to problems in **unfamiliar problem domains** 
 - Humans use at least three types of problem-solving techniques 
-  - Heuristics 
-  - Analogy and metaphor 
+  - Heuristics (해 보고 판단하는 것)
+  - Analogy(유추) and metaphor(비유) 
   - Learning
 
 
@@ -134,11 +145,13 @@ How many cards do you need to turn over to find out?
 
 ## Problem-Solving Techniques
 
-- Heuristics: using informed trial and error based on rules of thumb 
+- **Heuristics**: using informed trial and error based on rules of thumb 
+  - 사람이 대충 정해서 하겠다.(사바사)
   - E.g. Chess openings (develop your pieces, gain control of the center of the board) 
+  
 - Analogy and metaphor: adapting solutions from one problem domain to another 
-  - E.g Object-orientation (treating software modules as physical objects) 
-- Learning: improving performance by acquiring skills over time with repeated exposure to a problem 
+  - E.g **Object-orientation** (treating software modules as physical objects) 
+- **Learning**: improving performance by **acquiring skills** over time with repeated exposure to a problem 
   - E.g. Multiply 1496 by 20
 
 
@@ -149,11 +162,13 @@ How many cards do you need to turn over to find out?
 
 - Process of finding solution to unfamiliar task using knowledge 
   - Storage in LTM, then application of knowledge 
-- Observation: 
-  - People are more heuristic than algorithmic 
+- **Observation**: 
+  - People are more **heuristic than algorithmic** - 사람들은 algorithmic보단 heuristic을 더 좋아함.
     - Try a few quick shots rather than plan because resources are simply not available
-  - People often choose suboptimal strategies for low priority problems 
+  - People often choose **suboptimal** strategies for **low priority** problems 
+    - 우선순위가 낮다고 생각될 수록 대충함
   - People learn better strategies with practice 
+    - 연습하면 더 좋아짐
 - Several theories. 
   - Gestalt 
   - Problem Space Theory 
@@ -169,14 +184,15 @@ How many cards do you need to turn over to find out?
 - means "unified whole" 
 - Problem solving both productive and reproductive 
 - Productive draws on insight and restructuring of problem 
-- Attractive but not enough evidence to explain `insight' etc. 
+- Attractive but not enough evidence to explain **`insight'** etc. 
 - Move away from behaviourism and led towards information processing theories 
 - Principles: 
   - Similarity 
   - Continuation 
   - Closure 
-  - Proximity 
-  - Figure and Ground
+  - Proximity (근처에 있는 것일수록)
+  - Figure and Ground(foreground, background에 따라서)
+- 전혀 상관없어 보이는 도형일지라도 모이면 무슨 의미인지 알 수 있다.
 
 ![image-20220909215821382](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909215821382.png)
 
@@ -184,11 +200,17 @@ How many cards do you need to turn over to find out?
 
 ## Problem Space Theory
 
-- Problem space comprises problem states 
-- Problem-solving involves generating states using legal operators  Heuristics may be employed to select operators 
+- **Problem space** comprises **problem states** 
+  - 문제를 단계적으로 해석
+  - state들을 내가 원하는 쪽으로 몰고 감.
+
+- Problem-solving involves generating states using legal operators 
+- Heuristics may be employed to select operators 
   - e.g. means-ends analysis 
+  - 수단을 통해 목적을 달성하도록 하는 것
 - Operates within human information processing system 
   - e.g. STM limits etc. 
+  - short term memory가 관여
 - Largely applied to problem-solving in well-defined areas 
   - e.g. puzzles rather than knowledge intensive areas
 
@@ -204,12 +226,10 @@ How many cards do you need to turn over to find out?
     - Use knowledge of similar problem from similar domain 
   - Analogical mapping difficult if domains are semantically different 
 - Skill Acquisition 
-  - Skilled activity characterized by chunking 
-  - Lot of information is chunked to optimize STM 
+  - **Skilled activity** characterized by **chunking** 
+  - Lot of information is chunked to optimize STM                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
   - Conceptual rather than superficial grouping of problems 
   - Information is structured more effectively
-
-
 
 <br>
 
@@ -274,11 +294,11 @@ The circle is above and to the right of the square
 ## Expanding mental models
 
 - HCI researchers have expanded the idea 
-  - Includes a user’s understanding of the workings of a computing device 
+  - Includes a **user’s understanding** of the workings of a computing device 
   - Expectations of menu structures, where files are stored, etc. 
 - In HCI understanding user’s mental models is important 
-  - Understand how learning a system works 
-  - Reduce stress/workload by supporting user’s mental models 
+  - Understand **how learning a system works** 
+  - Reduce **stress/workload** by supporting user’s mental models 
   - Tailor systems to fit how users perceive the system
 
 
@@ -310,12 +330,15 @@ The circle is above and to the right of the square
     - Causes: poor physical skill, inattention etc. 
 
     - Change to aspect of skilled behaviour can cause slip 
+    
+    - 잘못누른 것이기 때문에 설명으로 해결되지 않음
 
 - Mistakes 
   - Wrong intention 
   - Cause: incorrect understanding 
     - humans create mental models to explain behaviour. 
     - if wrong (different from actual system) errors can occur
+  - 처음부터 이해를 잘못한 것.
 
 
 
@@ -325,9 +348,12 @@ The circle is above and to the right of the square
 
 - Various theories of how emotion works 
   - James-Lange: emotion is our interpretation of a physiological response to a stimuli 
+    - 자극에 대해서 신체적 반응이 나타내는 것
   - Cannon: emotion is a psychological response to a stimuli 
+    - 심리적으로 나타나는 것
   - Schachter-Singer: emotion is the result of our evaluation of our physiological responses, in the light of the whole situation we are in 
-- Emotion clearly involves both cognitive and physical responses to stimuli
+    - 개가 짖으면 어떤 반응이 보여질 텐데 나중에 가서 '아 이게 공포였구나'를 느끼는 것이 감정이다.(?)
+- **Emotion** clearly involves both cognitive and physical responses to **stimuli**
 
 ![image-20220909220704859](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909220704859.png)
 
@@ -347,6 +373,7 @@ The circle is above and to the right of the square
   - Stress will increase the difficulty of problem-solving 
   - Relaxed users will be more forgiving of shortcomings in design 
   - Aesthetically pleasing and rewarding interfaces will increase positive affect
+    - interface의 효율 뿐 아니라 보기 좋은 것 -> positive affect를 주기 때문에
 
 
 
@@ -357,7 +384,7 @@ The circle is above and to the right of the square
 - Long term 
   - sex, physical and intellectual abilities 
 - Short term 
-  - effect of stress or fatigue 
+  - effect of stress or fatigue(피로도; 지속적인) 
 - Changing 
   - age
 
@@ -373,7 +400,10 @@ will design decision exclude section of user population?
 - Some direct applications 
   - e.g. blue acuity is poor 
     - blue should not be used for important detail 
-- However, correct application generally requires understanding of context in psychology, and an understanding of specific experimental conditions 
+- 눈에 띄면서 자세한 걸 원하면 그린
+- 눈에 확실히 띄게 하려면 레드
+- 블루는 자세한 걸 나타날 때 맹점을 보임
+- However, correct application generally requires **understanding of context in psychology**, and an understanding of **specific experimental conditions** 
 - A lot of knowledge has been distilled in 
   - guidelines 
   - cognitive models 

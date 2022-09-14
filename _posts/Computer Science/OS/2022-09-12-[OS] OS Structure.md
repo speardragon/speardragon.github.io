@@ -30,6 +30,8 @@ toc_sticky: true
   - Operating System Generation 
   - System Boot
 
+<br>
+
 - 리눅스는 monolothic 구조를 갖고 있음
   - OS는 성능이 최대 관건 vs. OS는 모듈화가 관건
 
@@ -51,26 +53,26 @@ toc_sticky: true
   - **User interface** - Almost all operating systems have a user interface (UI). 
     - Varies between **Command-Line Interface (CLI)** – text command, 
     - **Graphics User Interface (GUI)**, 
-    - **Batch** - file including several commands is executed – shell script 
+    - **Batch** - file including several commands is executed – **shell script** 
       - 여러 CLI가 나열된 파일
-  - Program execution - The system must be able to **load a program** into memory and to run that program, end execution, either normally or abnormally (indicating error) 
+  - **Program execution** - The system must be able to **load a program** into **memory** and to run that program, end execution, either 'normally' or 'abnormally' (indicating error) 
     - c 소스 파일에서 object 파일로 만드는 것은 compiler의 역할
     - 여러 개의 object 파일을 하나로 모아서 실행파일로 만드는 역할은 linker
     - main memory에 탑재 시키는 것이 loader
-  - I/O operations - A running program may require I/O, which may involve a file or an I/O device
+  - **I/O operations** - A running program may require I/O, which may involve a file or an I/O device
 
   - **File-system manipulation** - The file system is of particular interest. Programs need to read and write files and directories, create and delete them, search them, list file Information, permission management. 
   - **Communications** – Processes may exchange information, on the same computer or between computers over a network 
     - Communications may be via **shared memory** or through **message passing** (packets moved by the OS) 
   - **Error detection** – OS needs to be constantly aware of possible errors 
     - May occur in the CPU and memory hardware, in I/O devices, in user program 
-    - For each type of error, OS should take the appropriate action to ensure correct and consistent computing 
+    - For each type of error, OS should take the **appropriate action** to ensure correct and consistent computing 
     - Debugging facilities can greatly enhance the user’s and programmer ’s abilities to efficiently use the system
 
-- Another set of OS **functions** exists for ensuring the efficient operation of the system itself via resource sharing 
+- Another set of OS **functions** exists for ensuring the **efficient** operation of the system itself via resource sharing 
   - **Resource allocation** - When multiple users or multiple jobs running concurrently, resources must be allocated to each of them 
     - Many types of resources - CPU cycles, main memory, file storage, I/O devices. 
-  - **Accounting** - To keep track of which users use how much and what kinds of computer resources 
+  - **Accounting** - To keep track of which users use how much and what kinds of computer resources (얼마나 사용하는 지 모니터링)
   - **Protection and security** - The owners of information stored in a multiuser or networked computer system may want to control use of that information, concurrent processes should not interfere with each other 
     - **Protection** involves ensuring that all access to system resources is controlled 
     - **Security** of the system from outsiders requires user authentication, extends to defending external I/O devices from invalid access attempts
@@ -89,13 +91,14 @@ toc_sticky: true
 
 ## User Operating System Interface - CLI
 
-- CLI or command interpreter allows direct command entry 
+- CLI or **command interpreter** allows direct command entry 
   - Sometimes implemented in kernel, sometimes by systems program (Window/Unix) 
-  - Sometimes multiple flavors implemented – shells 
+  - Sometimes multiple flavors implemented – **shells** 
     - Bourne shell, C shell, Bourne-Again shell, Korn shell 
   - Primarily fetches a command from user and executes it
   - Sometimes commands built-in, sometimes just names of programs 
     - If the latter, adding new features doesn’t require shell modification 
+  - ls와 같은 명령 또한 프로그램이다.(시스템 프로그램)
 
 
 
@@ -111,15 +114,15 @@ toc_sticky: true
 
 ## User Operating System Interface - GUI
 
-- User-friendly desktop metaphor interface 
+- User-friendly **desktop** metaphor interface 
   - Usually mouse, keyboard, and monitor 
-  - Icons represent files, programs, actions, etc 
-  - Various mouse buttons over objects in the interface cause various actions (provide information, options, execute function, open directory (known as a folder) 
+  - **Icons** represent files, programs, actions, etc 
+  - Various mouse buttons over objects in the interface cause various actions (provide information, options, execute function, open directory (known as a **folder**) 
   - Invented at Xerox PARC (Palo Alto Research Center) 
 - Many systems now include both CLI and GUI interfaces 
   - Microsoft Windows is GUI with CLI “command” shell 
   - Apple Mac OS X is “Aqua” GUI interface with UNIX kernel underneath and shells available 
-  - Unix and Linux have CLI with optional GUI interfaces 
+  - Unix and Linux have CLI with optional GUI(optional) interfaces 
     - Commercial- CDE(Common Desktop Environment), X-window 
     - Open source - KDE, GNOME
 
@@ -130,7 +133,7 @@ toc_sticky: true
 ## Touchscreen Interfaces
 
 - Touchscreen devices require new interfaces 
-  - Mouse not possible or not desired 
+  - **Mouse not possible** or not desired 
   - Actions and selection based on gestures 
   - Virtual keyboard for text entry 
 - Voice commands.
@@ -151,10 +154,13 @@ toc_sticky: true
 
 ## System Calls
 
-- Programming interface to the services provided by the OS 
+- **Programming interface** to the services provided by the OS 
 - Typically written in a high-level language (C or C++) 
-- Mostly accessed by programs via a high-level Application Programming Interface (API) rather than direct system call use 
-- Three most common APIs are Win32 API for Windows, POSIX API for POSIX-based systems (including virtually all versions of UNIX, Linux, and Mac OS X), and Java API for the Java virtual machine (JVM) 
+- Mostly accessed by programs via a high-level **Application Programming Interface (API)** rather than direct system call use 
+  - API -> system call 전환
+- Three most common APIs are **Win32 API** for Windows, **POSIX API** for POSIX-based systems (including virtually all versions of UNIX, Linux, and Mac OS X), and **Java API** for the Java virtual machine (JVM) 
+  - 3 개의 API가 존재한다.
+
 
 >  Note that the system-call names used throughout this text are generic
 
@@ -170,7 +176,7 @@ toc_sticky: true
 
 ![image-20220907231055458](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231055458.png)
 
-
+시스템 콜은 커널에서 실행되는 커널 함수이다.
 
 <br>
 
@@ -178,14 +184,16 @@ toc_sticky: true
 
 ![image-20220907231116093](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231116093.png)
 
+read()
 
+??/
 
 <br>
 
 ## System Call Implementation
 
-- Typically, a number associated with each system call 
-  - System-call interface maintains a table indexed according to these numbers 
+- Typically, a **number** associated with each system call 
+  - **System-call interface** maintains a table indexed according to these numbers 
 - The system call interface invokes the intended system call in OS kernel and returns status of the system call and any return values 
 - The caller need know nothing about how the system call is implemented 
   - Just needs to obey API and understand what OS will do as a result call 
@@ -200,7 +208,7 @@ toc_sticky: true
 
 ![image-20220907231213382](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231213382.png)
 
-
+open() 시스템 콜의 number가 i라 할 때,
 
 <br>
 
@@ -210,7 +218,7 @@ toc_sticky: true
 
 ![image-20220907231241893](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231241893.png)
 
-
+printf() -> library call(API)
 
 <br>
 
@@ -223,7 +231,7 @@ toc_sticky: true
     - In some cases, may be more parameters than registers 
   - Parameters stored in a block, or table, in memory, and address of block passed as a parameter in a register 
     - This approach taken by Linux and Solaris 
-  - Parameters placed, or pushed, onto the stack by the program and popped off the stack by the operating system 
+  - Parameters placed, or **pushed**, onto the **stack** by the program and **popped** off the stack by the operating system 
   - Block and stack methods do not limit the number or length of parameters being passed
 
 
@@ -234,11 +242,12 @@ toc_sticky: true
 
 ![image-20220907231734443](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231734443.png)
 
+
 <br>
 
 ## Types of System Calls
 
-- Process control 
+- **Process control** 
   - create process, terminate process 
   - Normal termination, abort 
   - load, execute 
@@ -247,9 +256,9 @@ toc_sticky: true
   - wait event, signal event : wait_event(), signal_event() 
   - allocate and free memory 
   - Dump memory if error 
-  - Debugger for determining bugs, single step execution 
-  - Locks for managing access to shared data between processes 
-  - acquire_lock(), release_lock()
+  - **Debugger** for determining **bugs**, **single step** execution 
+  - **Locks** for managing access to shared data between processes 
+    - acquire_lock(), release_lock()
 
 
 
@@ -275,13 +284,15 @@ toc_sticky: true
 
 ## Example: MS-DOS
 
-- Single-tasking 
+- **Single-tasking** 
 - Shell invoked when system booted 
 - Simple method to run program 
   - No process created 
 - Single memory space 
 - Loads program into memory, overwriting all but the kernel 
 - Program exit -> shell reloaded
+  - overwriting 하는 경우 reload
+
 
 ![image-20220907231923235](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231923235.png)
 
@@ -292,7 +303,9 @@ toc_sticky: true
 ## Example: FreeBSD
 
 - Unix variant 
-- Multitasking 
+- **Multitasking** 
+  - 여러 프로그램이 동시에 실행
+
 - User login -> invoke user’s choice of shell 
 - Shell executes fork() system call to create process 
   - Executes exec() to load program into process 
@@ -308,37 +321,38 @@ toc_sticky: true
 
 ## Types of System Calls
 
-- File management 
+- **File management** 
   - create file, delete file 
   - open, close file 
   - read, write, reposition 
   - get and set file attributes 
   - Same for directories 
-- Device management 
+- **Device management** 
   - physical device (disk drives), logical device (file) 
   - request device, release device (similar to open, close files) 
   - read, write, reposition 
   - get device attributes, set device attributes 
   - logically attach or detach devices
 
-- Information maintenance 
+- **Information maintenance** 
   - get time or date, set time or date 
   - get system data, set system data 
   - get and set process, file, or device attributes 
-- Communications 
-  - create, delete communication connection 
-  - send, receive messages if message passing model to host name or process name 
-    - From client to server 
-  - Shared-memory model create and gain access to memory regions 
-    - allows memory transfer speed, but may have synch problem 
+- **Communications** 
+  - create, delete **communication connection** 
+  - send, receive messages if **message passing model** to **host name** or **process name** 
+    - From **client** to **server** 
+    - 받을 host 이름과 process name이 필요로 됨
+  - **Shared-memory model** create and gain access to memory regions 
+    - allows memory transfer speed, but may have **synch problem** 
     - shared_memory create, shared_memory attach 
   - transfer status information 
   - attach and detach remote devices
-
+  
 - Protection 
-  - Control access to resources 
-  - Get and set permissions 
-  - Allow and deny user access
+  - Control access to **resources** 
+  - Get and set **permissions** 
+  - **Allow** and **deny** user access
 
 <br>
 
