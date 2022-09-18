@@ -358,6 +358,8 @@ printf() -> library call(API)
 
 ## System Programs
 
+utility program이라고 하기도 함.
+
 - System programs provide a convenient environment for program development and execution. They can be divided into: 
   - File manipulation 
   - Status information sometimes stored in a File modification 
@@ -366,43 +368,46 @@ printf() -> library call(API)
   - Communications 
   - Background services 
   - Application programs 
-- Most users’ view of the operation system is defined by system programs, not the actual system calls
+- Most users’ **view** of the operation system is defined by system programs, not the actual system calls
 
 - Provide a convenient environment for program development and execution 
   - Some of them are simply user interfaces to system calls; others are considerably more complex 
-- File management - Create, delete, copy, rename, print, dump, list, and generally manipulate files and directories 
-- Status information 
+- **File management** - Create, delete, copy, rename, print, dump, list, and generally manipulate files and directories 
+- **Status information** 
   - Some ask the system for info - date, time, amount of available memory, disk space, number of users 
   - Others provide detailed performance, logging, and debugging information 
   - Typically, these programs format and print the output to the terminal or other output devices 
-  - Some systems implement a registry - used to store and retrieve configuration information
+  - Some systems implement a **registry** - used to store and retrieve configuration information
 
-- File modification 
+- **File modification** 
   - Text editors to create and modify files 
   - Special commands to search contents of files or perform transformations of the text 
-- Programming-language support - Compilers, assemblers, debuggers and interpreters sometimes provided 
-- Program loading and execution- Absolute loaders, relocatable loaders, linkage editors, and overlay-loaders, debugging systems for higher-level and machine language 
-- Communications - Provide the mechanism for creating virtual connections among processes, users, and computer systems 
+- **Programming-language support** - Compilers, assemblers, debuggers and interpreters sometimes provided 
+- **Program loading and execution**- Absolute **loaders**, relocatable loaders, linkage editors, and overlay-loaders, debugging systems for higher-level and machine language 
+- **Communications** - Provide the mechanism for creating virtual connections among processes, users, and computer systems 
   - Allow users to send messages to one another’s screens, browse web pages, send electronic-mail messages, log in remotely, transfer files from one machine to another
 
-- Background Services 
+- **Background Services** 
   - Launch system program-process at boot time 
     - Some for system startup, then terminate 
     - Some from system boot to shutdown 
-  - Provide facilities like disk checking, process scheduling, error logging, printing  Run in user context not kernel context 
-  - Known as services, subsystems, daemons 
-- Application programs 
+  - Provide facilities like disk checking, process scheduling, error logging, printing 
+  - Run in user context **not kernel context** 
+  - Known as **services**, **subsystems**, **daemons** 
+  - 모니터를 통해서 사용자와 interaction이 일어나지 않는다.
+- **Application programs** 
   - Don’t pertain to system 
+  - 사용자가 짠 프로그램이 아님
   - Word processor, web browser . .. 
   - Run by users 
-  - Not typically considered part of OS 
+  - **Not typically considered part of OS** 
   - Launched by command line, mouse click, finger poke
 
 <br>
 
 ## Linker &amp; Loader
 
-- Will be explained later
+- Will be explained later(memory management part)
 
 
 
@@ -413,20 +418,22 @@ printf() -> library call(API)
 - Design and Implementation of OS is not easy, but some approaches have been proven successful 
 - Internal structure of different Operating Systems can vary widely 
 - Start the design by defining goals and specifications 
-  - Affected by choice of hardware, type of system 
+  - **Affected** by **choice** of hardware, type of system 
     - Batch, time-sharing, multi-user, distributed, real-time … 
-- User goals and System goals 
+- **User** goals and **System** goals 
   - User goals – operating system should be convenient to use, easy to learn, reliable, safe, and fast 
     - May not be useful in the system design 
   - System goals – operating system should be easy to design, implement, and maintain, as well as flexible, reliable, error-free, and efficient 
   - No unique solution
 
 - Important principle to separate the following for flexibility 
-  - Policy: What will be done? 
-  - Mechanism: How to do it? 
+  - **Policy**: <u>What</u> will be done? 
+  - **Mechanism**: <u>How</u> to do it? 
 - Mechanisms determine how to do something, policies decide what will be done 
-- The separation of policy from mechanism is a very important principle, it allows maximum flexibility if policy decisions are to be changed later (example – timer) 
-- Specifying and designing an OS is highly creative task of software engineering
+- The **separation** of policy from mechanism is a very important principle, it allows maximum flexibility if policy decisions are to be changed later (example – timer) 
+  - 둘 간의 dependency를 줄일 수 있음
+
+- Specifying and designing an OS is highly creative task of **software engineering**
 
 <br>
 
@@ -437,17 +444,17 @@ printf() -> library call(API)
   - Then system programming languages like Algol, PL/1 
   - Now C, C++ 
 - Actually usually a mix of languages 
-  - Lowest levels in assembly 
+  - Lowest levels in assembly (실행속도가 빠름)
   - Main body in C 
   - Systems programs in C, C++, scripting languages like PERL, Python, shell scripts 
-- More high-level language easier to port to other hardware 
+- More high-level language easier to **port** to other hardware (port-한 시스템에서 작동되는 걸 다른 시스템에서도 작동되도록 해 주는)
   - Can be written faster, easy to understand, debug 
-  - But slower. Require more memory 
+  - But slower. Require more memory (기술의 발전으로 gap이 그렇게 크진 않음.)
   - Linux is written in C, so it can be available on various CPUs 
 - MS-DOS written in Intel 8088 assembly language 
   - It runs natively only on Intel X86 family. 
-  - Emulators of X86 instruction set allow OS to run on other CPUs 
-- Emulation can allow an OS to run on non-native hardware by duplicating functionalities between two systems
+  - **Emulators** of X86 instruction set allow OS to run on other CPUs 
+- **Emulation** can allow an OS to run on **non-native hardware** by duplicating functionalities between two systems
 
 
 
@@ -457,7 +464,7 @@ printf() -> library call(API)
 
 - General-purpose OS is very large program 
   - Monolithic structure vs. Modular structure 
-- Various ways to structure ones 
+- Various ways to structure ones (위로 갈 수록 monolithic, 아래로 갈 수록 modular)
   - Simple structure – MS-DOS 
   - More complex -- UNIX 
   - Layered – an abstraction 
@@ -470,9 +477,11 @@ printf() -> library call(API)
 ## Simple Structure -- MS-DOS
 
 - MS-DOS – written to provide the most functionality in the least space 
-  - Not divided into modules 
+  - Not divided into modules (monolithic)
+  - application program이 직접 device drivers에 interface -> 굉장한 문제가 발생할 확률이 높다.
   - Although MS-DOS has some structure, its interfaces and levels of functionality are not well separated 
   - 8088 provides no dual mode, hardware protection
+    - 되도록 적은 자원으로 OS 구현하려고 시도
 
 ![image-20220907233015240](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233015240.png)
 
@@ -482,13 +491,13 @@ printf() -> library call(API)
 
 ## Non Simple Structure -- UNIX
 
-- original UNIX – limited by hardware functionality, the original UNIX operating system had limited structuring. 
+- original UNIX – **limited** by hardware functionality, the original UNIX operating system had limited structuring. 
 - The UNIX OS consists of two separable parts 
   - Systems programs 
   - The kernel 
-    - Consists of everything below the system-call interface and above the physical hardware 
+    - Consists of everything **below** the **system-call interface** and **above the physical hardware** 
     - Provides the file system, CPU scheduling, memory management, and other operating-system functions; a large number of functions for one level 
-    - Layered some extent, but basically monolithic
+    - Layered some extent, but basically **monolithic**
 
 
 
@@ -500,18 +509,23 @@ Beyond simple but not fully layered
 
 ![image-20220907233156659](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233156659.png)
 
-
+OS kernel 부분이 그렇게 막 well-structured 되진 않음, 단지 사용자와 kernel사이가 잘 구분 되어 있음
 
 <br>
 
 ## Layered Approach
 
-- Modular structure 
+- **Modular structure** 
 - Information hiding 
-- The operating system is divided into a number of layers (levels), each built on top of lower layers. The bottom layer (layer 0), is the hardware; the highest (layer N) is the user interface. 
-- With modularity, layers are selected such that each uses functions (operations) and services of only lower-level layers 
+  - lower layer의 구조를 알 필요 없음
+
+- The operating system is **divided** into a number of layers (levels), each built on top of lower layers. The bottom layer (layer 0), is the hardware; the highest (layer N) is the user interface. 
+- With modularity, layers are selected such that each uses functions (operations) and **services of only lower-level layers** 
 - Simple construction, debugging 
 - Overhead in each layer
+  - monolithic - interaction이 하나의 계층에서만 이루어지지만 modular는 layer에 걸쳐서 이루어 지기 때문에 response 시간이 길다.
+  - 성능은 그렇다고 하지만 엔지니어링 시간이나 유지보수 기간 등을 따져 보았을 때 modular가 압도적으로 좋다.
+
 
 ![image-20220907233427206](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233427206.png)
 
@@ -519,20 +533,20 @@ Beyond simple but not fully layered
 
 ## Microkernel System Structure
 
-- seperation between policy and mechanism 
-  - Policy free mechanisms of building blocks 
-  - Modularized Kernel 
+- **seperation** between policy and mechanism 
+  - Policy free mechanisms of building blocks(kernel 모듈) 
+  - Modularized Kernel (커다란 OS의 터전)
 - Moves as much from the kernel into user space 
-- Mach (CMU) example of microkernel 
-  - Mac OS X kernel (Darwin) partly based on Mach 
-- Communication takes place between user modules using message passing 
+- **Mach (CMU)** example of **microkernel** 
+  - Mac OS X kernel (**Darwin**) partly based on Mach 
+- Communication takes place between user modules using **message passing** 
 - Benefits: 
-  - Easier to extend a microkernel 
-  - Easier to port the operating system to new architectures 
+  - Easier to extend a microkernel (얹기만 하면 됨)
+  - Easier to **port** the operating system to new architectures 
   - More reliable (less code is running in kernel mode) 
   - More secure 
 - Detriments: 
-  - Performance overhead of user space to kernel space communication
+  - **Performance overhead** of user space to kernel space communication
 
 ​	
 
@@ -542,17 +556,21 @@ Beyond simple but not fully layered
 
 ![image-20220907233551710](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233551710.png)
 
-
+- 일부 kernel의 내용이 밖에 나올 수 있음
+- microkernel: 최소한의 기능만을 가진 kernel
 
 <br>
 
 ## Modules 
 
-- Many modern operating systems implement loadable kernel modules 
-  - Kernel provides core services while other services are implemented (via modules) dynamically (dynamic linking rather than recompiling) 
+기존의 modular approach에서 진보한 구조
+
+- Many modern operating systems implement **loadable kernel modules** 
+  - Kernel provides core services while other services are implemented (via modules) dynamically (**dynamic linking** rather than recompiling) 
+    - core service가 아니기 때문에 처음부터 linking 되어 탑재 되어 있진 않다.
   - Uses object-oriented approach 
   - Each core component is separate 
-  - Each talks to the others over known interfaces 
+  - Each talks to the others over **known interfaces** 
   - Each is loadable as needed within the kernel 
 - Overall, similar to layers but with more flexible 
   - Linux, Solaris, etc
@@ -570,11 +588,11 @@ Beyond simple but not fully layered
 ## Hybrid Systems
 
 - Most modern operating systems are actually not one pure model 
-  - Hybrid combines multiple approaches to address performance, security, usability needs 
-  - Linux and Solaris kernels in kernel address space, so monolithic, plus modular for dynamic loading of functionality 
-  - Windows mostly monolithic, plus microkernel for different subsystem personalities 
-- Apple Mac OS X hybrid, layered, Aqua UI plus Cocoa programming environment 
-  - Below is kernel consisting of Mach microkernel and BSD Unix parts, plus I/O kit and dynamically loadable modules (called kernel extensions)
+  - **Hybrid** combines multiple approaches to address performance, security, usability needs 
+  - Linux and Solaris kernels in kernel address space, **so monolithic**(because of performance), plus modular for **dynamic loading** of functionality(core가 아닌 경우에 대하여) 
+  - **Windows** mostly monolithic, plus microkernel for different subsystem personalities 
+- Apple Mac OS X hybrid, **layered**, Aqua UI plus Cocoa programming environment 
+  - Below is kernel consisting of Mach microkernel and BSD Unix parts, plus I/O kit and dynamically loadable modules (called **kernel extensions**)
 
 
 
@@ -585,6 +603,12 @@ Beyond simple but not fully layered
 ![image-20220907233918782](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233918782.png)
 
 
+
+---
+
+<mark>이 아래는 생략</mark>
+
+---
 
 <br>
 
