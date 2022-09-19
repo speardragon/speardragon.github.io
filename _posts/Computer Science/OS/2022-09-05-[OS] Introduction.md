@@ -299,6 +299,11 @@ CPU의 간섭없이 device to/from memory read/write하는 방법
 
 
 
+- PC - CPU가 갖고 있는 register
+  - 다음에 실행할 instruction의 주소를 가지고 있음
+
+
+
 어떤 프로그램도 아래 세 가지를 벗어나지 않음
 
 1. sequence
@@ -323,7 +328,13 @@ CPU의 간섭없이 device to/from memory read/write하는 방법
 
 ![image-20220905152102610](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152102610.png)
 
-<br>
+- instruction cycle = 한 문장을 실행하는 한 cycle
+
+- 왜 main memory에 탑재해야 하는가?
+  - CPU internal 메모리는 비싸기 때문에 많은 메모리를 탑재하지 못하고
+  - HDD는 속도가 너무 느리기 때문이다.
+
+<bra
 
 중요!!!
 
@@ -472,8 +483,9 @@ master-slave 관계가 아닌 동등한 관계
   - I/O를 하지 않는 동안에 CPU를 굉장히 오래 붙잡고 있어도 크게 문제가 되지 않는다.
     - non preemptive - 강제로 빼앗지 않는
   - I/O를 하기 위해서 자발적으로 내놓지 않으면 다른 프로그램이 실행될 수 없음
+  - pseudo parallel processing (실제로 둘이 같이 돌지 않기 때문에)
 - Preemptive multiprogramming - Time Quantum 부여
-  - 어떤 프로그램이 CPU에서 실행이 되는데 CPU에서 실행될 수 있는 최대 시간이 바로 time quantum이다.
+  - 어떤 프로그램이 CPU에서 실행이 되는데 CPU에서 실행될 수 있는 최대 시간이 바로 **time quantum**이다.
   - time quantum 시간 동안만 CPU를 사용하는 것을 허락한다.
   - I/O를 하지 않아도 CPU를 빼앗아서 동시에 프로그램을 실행시킬 수 있음
   - 만약 time quantum이 굉장히 커지게 되면 Non-preemptive 에 가까워 짐.
@@ -486,7 +498,7 @@ master-slave 관계가 아닌 동등한 관계
 
 ![image-20220905152816091](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152816091.png)
 
-- 누구를 먼저 탑재시킬 지를 정하는 것이 job scheduling
+- 어떤 job(program)을 먼저 탑재시킬 지를 정하는 것이 job scheduling
 - 탑재된 job들 중에서 누가 먼저 CPU를 차지할 지를 결정하는 것이 CPU scheduling
 - swapping: 탑재된 job들 중에서 별로 시급하지 않은 job의 경우 hard disk job pool에 보내고(swap out) 더 중요한 job을 job pool(swap in)로부터 불러 들인다.
 
@@ -543,7 +555,9 @@ master-slave 관계가 아닌 동등한 관계
 
 ## Process Management
 
-program definition이 만들어내는 instance가 process(msword 창을 두 개 띄우는 경우 '하나의 program definition에서 두 개의 process가 생겼다'라고 한다.)
+program definition은 어떤 프로그램의 모양(붕어빵틀)
+
+program definition이 만들어내는 instance가 process(msword 창을 두 개 띄우는 경우 '하나의 program definition에서 두 개의 process가 생겼다'라고 한다.; 틀로 찍어낸 붕어빵)
 
 - <u>A process is a program in execution</u>. It is a unit of work within the system. Program is a **passive entity**, process is an **active entity**. 
   - 프로세스는 실제로 실행되고 있는 상태이기 때문에 active entity인 것.

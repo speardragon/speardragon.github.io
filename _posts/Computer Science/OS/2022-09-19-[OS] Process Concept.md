@@ -30,8 +30,8 @@ toc_sticky: true
 - Textbook uses the terms job and process almost interchangeably. 
 - Process – a program in execution; process execution must progress in sequential fashion.  
 - A process includes: 
-  - Resources: timers, pending signals, open files, network connections, hardware, and IPC mechanisms 
-  - state, and a virtualized processor
+  - **Resources**: timers, pending signals, open files, network connections, hardware, and IPC mechanisms 
+  - **state, and a virtualized processor**
 
 
 
@@ -56,13 +56,26 @@ toc_sticky: true
 
 ![image-20220907234751229](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234751229.png)
 
+- program definition에서 하나의 process가 만들어진 모습 - process 주소 공간
+  - process 마다 만들어 지는 것! (protection 가능)
 
+- text(code)는 program definition이 들어있는데 이를 그대로 탑재 - read only
+  - 그러나 모두 다 탑재하는 것은 비효율적이기 때문에 여러 process가 공유한다.
+- data: 함수 밖에서 선언한 변수가 저장되는 공간 or static 변수
+- stack: local 함수 변수
+- heap: 동적 메모리 할당
+
+
+
+유일하게 공유되는 부분은 text 부분!
+
+다른 프로세스의 정보를 읽거나 수정하기 위해서는 커뮤니케이션이 이루어져야 함.(MPP or Shared memory)
 
 <br>
 
 ## Process Concept
 
-- Program is passive entity stored on disk (executable file), process is active 
+- Program is **passive** entity stored on disk (**executable file**), process is **active** 
   - Program becomes process when executable file loaded into memory 
 - Execution of program started via GUI mouse clicks, command line entry of its name, etc 
 - One program can be several processes 
@@ -90,13 +103,26 @@ toc_sticky: true
 
 ![image-20220907234908196](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234908196.png)
 
+- new: process 주소 공간을 만듬
 
+- ready: 탑재가 종료되면 admitted 되어 CPU를 할당 받아야 하는데 다른 실행되어야 하는 프로그램들도 있기 때문에 줄을 서야 한다.
+  - 갯수 제한이 없음
+
+- running: CPU scheduling or priority
+  - 오로지 하나의 process만 가능(core가 하나이기 때문에)
+
+- waiting: I/O를 하는 경우, waiting을 하고나서 바로 실행 불가(다른 프로그램이 기다리고 있기 때문),
+  - 갯수 제한이 없음
+
+- terminated: 모든 자원 반남(process 주소공간, 무수히 많은 자원)
 
 <br>
 
 ## Process Control Block (PCB)
 
 Information associated with each process. 
+
+- new state에서 만들어짐
 
 - Process state – running, waiting, etc 
 - Program counter – location of instruction to next execute 
@@ -118,7 +144,11 @@ Information associated with each process.
 
 ![image-20220907235102206](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907235102206.png)
 
+idle -> suspend
 
+executing -> resume
+
+suspend 되는 시점에서의 정보 -> running snapshot을 PCB에 저장
 
 <br>
 
@@ -127,7 +157,7 @@ Information associated with each process.
 - So far, process has a single thread of execution 
 - Consider having multiple program counters per process  
   - Multiple locations can execute at once 
-    - Multiple threads of control -> threads 
+    - Multiple threads of control -> **threads** 
 - Must then have storage for thread details, multiple program counters in PCB 
 - See next chapter
 
@@ -159,7 +189,7 @@ struct mm struct *mm; /* address space of this pro */
 ## Process Scheduling
 
 - Maximize CPU use, quickly switch processes onto CPU for time sharing 
-- Process scheduler selects among available processes for next execution on CPU 
+- **Process scheduler** selects among available processes for next execution on CPU 
 - Maintains scheduling queues of processes 
   - Job queue – set of all processes in the system 
   - Ready queue – set of all processes residing in main memory, ready and waiting to execute 
@@ -188,10 +218,10 @@ struct mm struct *mm; /* address space of this pro */
 
 ## Schedulers
 
-- Long-term scheduler (or job scheduler) 
+- **Long-term scheduler** (or job scheduler) 
   - selects which processes should be brought into the ready queue. 
-  - Long-term scheduler is invoked infrequently (seconds, minutes) => (may be slow) 
-  - The long-term scheduler controls the degree of multiprogramming
+  - Long-term scheduler is invoked **infrequently** (seconds, minutes) => (may be slow) 
+  - The long-term scheduler controls the **degree of multiprogramming**
     - If too many jobs with a lot of I/O, 
       - CPU utilization may be low, 
       - processes mainly blocked 
@@ -202,10 +232,10 @@ struct mm struct *mm; /* address space of this pro */
     - CPU-bound process – spends more time doing computations; few very long CPU bursts. 
   - Long-term scheduler strives for good **process mix**
 
-- Short-term scheduler (or CPU scheduler) 
+- **Short-term** scheduler (or CPU scheduler) 
   - selects which ready process should be executed next and allocates CPU 
   - Sometimes the only scheduler in a system 
-  - Short-term scheduler is invoked very frequently (milliseconds) 
+  - Short-term scheduler is invoked **very frequently** (milliseconds) 
     - => (must be fast).
 
 <br>
@@ -214,9 +244,9 @@ struct mm struct *mm; /* address space of this pro */
 
 ![image-20220907235624346](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907235624346.png)
 
-- Medium-term scheduler can be added if degree of multiple programming needs to decrease 
+- **Medium-term scheduler** <u>can be added if degree of multiple programming needs to decrease</u> 
   - Sometimes system load needs to be readjusted 
-  - Remove process from memory, store on disk, bring back in from disk to continue execution: swapping
+  - **Remove process from memory, store on disk, bring back in from disk to continue execution: swapping**
 
 - Some systems do not have
 
