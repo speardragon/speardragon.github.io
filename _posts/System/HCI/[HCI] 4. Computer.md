@@ -37,7 +37,10 @@ to understand human–computer interaction … need to understand computers!
 
 - screen, or monitor, on which there are windows 
 - keyboard 
-- mouse/trackpad 
+- mouse/trackpad ![image-20220919121321481](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220919121321481.png)
+
+
+
 - variations 
   - desktop 
   - laptop 
@@ -111,7 +114,7 @@ to understand human–computer interaction … need to understand computers!
   - accented symbols needed for different scripts 
   - minor differences between UK and USA keyboards 
 - QWERTY arrangement not optimal for typing 
-  - layout to prevent typewriters jamming! 
+  - layout to prevent typewriters jamming! (그래서 많이쓰고 연속되는 키가 바로 옆에 있지 않다.)
 - Alternative designs allow faster typing but large social base of QWERTY typists produces reluctance to change.
 
 ![image-20220909221454692](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221454692.png)
@@ -177,8 +180,7 @@ to understand human–computer interaction … need to understand computers!
   - type as if single key for each letter 
   - use dictionary to ‘guess’ the right word 
   - hello = 43556 … 
-  - but 26 
-  - menu ‘am’ or ‘an’
+  - but 26 -> menu ‘am’ or ‘an’
 
 
 
@@ -274,7 +276,8 @@ to understand human–computer interaction … need to understand computers!
   - like an upside-down mouse! 
   - relative motion moves cursor 
   - indirect device, fairly accurate 
-  - separate buttons for picking  very fast for gaming 
+  - separate buttons for picking 
+  - very fast for gaming 
   - used in some portable and notebook computers. 
 - Thumbwheels … 
   - for accurate CAD – two dials for X-Y cursor position 
@@ -394,10 +397,12 @@ to understand human–computer interaction … need to understand computers!
 
 ## Liquid crystal displays (LCD)
 
-- Smaller, lighter, and … no radiation problems.  Found on phones, portables and notebooks, … and increasingly on desktop and for home TV  also used in dedicated displays: digital watches, mobile phones, HiFi controls 
+- Smaller, lighter, and … no radiation problems. 
+- Found on phones, portables and notebooks, … and increasingly on desktop and for home TV 
+- also used in dedicated displays: digital watches, mobile phones, HiFi controls 
 - How it works … 
   - Top plate transparent and polarised, bottom plate reflecting or transparent. 
-  - Voltage applied to crystal changes polarisation and hence colour 
+  - Voltage applied to crystal changes polarisation(편광) and hence colour 
   - Light reflected not emitted => less eye strain 
   - For a device with an internal light source has a backlight
 
@@ -430,8 +435,9 @@ to understand human–computer interaction … need to understand computers!
   - but retain display 
 - how? 
   - small spheres turned 
-  - or channels with coloured liquid and contrasting spheres 
+  - or channels with **coloured** liquid and contrasting spheres 
   - or move up and down B/W microballs (e-ink) 
+    - 소비전력이 낮음
   - rapidly developing area
 
 ![image-20220909222703633](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222703633.png)
@@ -516,7 +522,7 @@ to understand human–computer interaction … need to understand computers!
 
 ## Types of dot-based printers
 
-- dot-matrix printers 
+- dot-matrix printers (가끔 영수증 뽑는 데서 보임)
   - use inked ribbon (like a typewriter)
   - line of pins that can strike the ribbon, dotting the paper. 
   - typical resolution 80-120 dpi 
@@ -537,7 +543,7 @@ to understand human–computer interaction … need to understand computers!
 - But problems occur, because processing cannot keep up with all the tasks it needs to do 
   - cursor overshooting because system has buffered keypresses 
   - icon wars - user clicks on icon, nothing happens, clicks on another, then system responds and windows fly everywhere 
-- Also problems if system is too fast 
+- **Also problems if system is too fast** 
   - e.g. help screens may scroll through text much too rapidly to be read
 
 ​	
@@ -578,6 +584,8 @@ to understand human–computer interaction … need to understand computers!
 <br>
 
 ## Limitations on interactive performance
+
+bottleneck
 
 - Computation bound 
   - Computation takes ages, causing frustration for the user 

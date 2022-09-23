@@ -11,6 +11,7 @@ toc_sticky: true
 
 - communication
   - user <-> system
+  - 이를 어떻게 모델링 할 수 있는지?
 - interaction models 
   - translations between user and system 
 - ergonomics 
@@ -26,12 +27,13 @@ toc_sticky: true
 
 ## 1. Models of interaction: Some terms of interaction
 
-- domain – the area of work under study 
+- **domain** – the area of work under study 
   - e.g. graphic design 
-- goal – what you want to achieve; **or** final result to be achieved 
+- **goal** – what you want to achieve; **or** final result to be achieved 
   - e.g. create a solid red triangle 
-- task– how you go about doing it; structured set of related activities undertaken in a sequence – ultimately in terms of operations or actions 
+- **task**– how you go about doing it; structured set of related activities undertaken in a sequence – ultimately in terms of operations or actions 
   - e.g. … select fill tool, click over triangle 
+- goal과 task가 사용될 때는 마구 섞여서 사용된다.(context를 파악해야 함)
 - note … 
   - use of terms differs a lot especially task/goal !!! 
   - system’s language vs. user’s language
@@ -74,6 +76,7 @@ toc_sticky: true
   - Gap btw: user’s formulation of actions ≠ actions allowed by the system 
 - Gulf of Evaluation 
   - Gap btw: user’s expectation of changed system state ≠ actual presentation of this state 
+  - 실제와 유저가 생각했던 것과 다를 때
 - Gulf of Execution Example: VCR problem
 
 ![image-20220909223815585](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909223815585.png)
@@ -240,7 +243,7 @@ toc_sticky: true
 
 - first spreadsheet VisiCalc, followed by Lotus 1-2-3, MS Excel most common today 
 - sophisticated variation of form-filling. 
-  - grid of cells contain a value or a formula 
+  - **grid of cells** contain a value or a formula 
   - formula can involve values of other cells 
     - e.g. sum of all cells in this column
   - user can enter and alter data spreadsheet maintains consistency
@@ -253,14 +256,14 @@ toc_sticky: true
 
 ![image-20220909224524728](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224524728.png)
 
-- Windows, Icons, Menus, Pointers 
+- **W**indows, **I**cons, Menus, **P**ointers 
   - default style for majority of interactive computer systems, especially PCs and desktop machines
 
 <br>
 
 ![image-20220909224547069](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224547069.png)
 
-- Before WIMP: Command Line Interface (CLI) 
+- Before WIMP: **Command Line Interface (CLI)** 
   - Needed to know each command’s keyword 
   - Needed to know the syntax for each comman
   - Eg. Copy source_file destination_file
@@ -273,10 +276,11 @@ toc_sticky: true
 
 - People found it hard to use 
   - Forgot command names 
-  - Would transpose command parameters 
+  - Would transpose command parameters (옵션이 많음)
   - Novices would be overwhelmed (‘blank screen’)
-- Cognitive analysis 
+- **Cognitive analysis** 
   - Many of the problems can be traced to recall vs. recognition memory 
+    - recall보다 recognition이 많아지도록 구성
   - Commands and syntax had to be recalled (quite hard) 
   - Almost no recall cues are provided 
   - Can expect even experts to make mistakes
@@ -356,6 +360,7 @@ toc_sticky: true
   - fall-down menus - mouse just moves over bar! 
 - Contextual menu appears where you are 
   - pop-up menus - actions for selected object 
+    - 우클릭
   - pie menus - arranged in a circle 
     - easier to select item (larger target area) 
     - Quicker (same distance to any option) … but not widely used!
@@ -395,7 +400,7 @@ toc_sticky: true
   - set of mutually exclusive choices 
 - check boxes 
   - set of non-exclusive choices 
-- Dialogue boxes 
+- Dialogue boxes (그림 4) 
   - information windows that pop up to inform of an important event or request information. 
   - e.g: when saving a file, a dialogue box is displayed to get the filename and location. Once the file is saved, the box disappears.
 
@@ -458,6 +463,7 @@ toc_sticky: true
   - pre-emptive parts of the interface 
 - modal dialog boxes 
   - come and won’t go away! 
+    - 튀어나와서 안 없어지는
   - good for errors, essential steps 
   - but use with care
 
@@ -469,7 +475,7 @@ toc_sticky: true
 
 ## Context & Experience
 
-- Interaction affected by social and organizational context 
+- Interaction affected by **social** and **organizational** context 
   - By other people: desire to impress, competition, fear of failure 
   - By motivation: fear, allegiance, ambition, self-satisfaction 
   - Inadequate systems cause frustration and lack of motivation 
@@ -487,11 +493,13 @@ toc_sticky: true
 
 - home, entertainment, shopping 
   - not enough that people can use a system 
-  - they must want to use it! 
+  - **they must want to use it**! 
+  - 사용할 수 있는 것이 목적이 아니라 유저가 사용하고 싶어해야 한다.
 - psychology of experience 
   - Flow: The Psychology of Optimal Experience (Prof. Csikszentimihalyi) 
+    - 완전한 몰입
   - A state in which people are so involved in an activity that nothing else seems to matter 
-  - balance between anxiety and boredom: optimal challenge, sense of control 
+  - **balance between anxiety and boredom**: optimal challenge, sense of control 
 - education 
   - zone of proximal development 
   - things you can just do with help 
@@ -577,7 +585,7 @@ people use something
   - money £, $, € 
   - learning effort
 
-Discounted future  
+**Discounted future**  
 
 - in economics Net Present Value: 
   - discount by (1+rate)<sup>years to wait </sup>
