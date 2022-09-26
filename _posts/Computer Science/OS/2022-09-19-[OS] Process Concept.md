@@ -9,6 +9,10 @@ toc_sticky: true
 
 
 
+일부 내용은 시험에서 제외됨
+
+
+
 # Chapter 3: Process Concept
 
 - Process Concept 
@@ -107,14 +111,17 @@ toc_sticky: true
 
 - ready: 탑재가 종료되면 admitted 되어 CPU를 할당 받아야 하는데 다른 실행되어야 하는 프로그램들도 있기 때문에 줄을 서야 한다.
   - 갯수 제한이 없음
-
+  - running으로 가는 걸 결정하는 것: short term scheduler
+  
 - running: CPU scheduling or priority
   - 오로지 하나의 process만 가능(core가 하나이기 때문에)
 
-- waiting: I/O를 하는 경우, waiting을 하고나서 바로 실행 불가(다른 프로그램이 기다리고 있기 때문),
+- waiting: I/O 혹은 event wait을 하는 경우, waiting을 하고나서 바로 실행 불가(다른 프로그램이 기다리고 있기 때문),
   - 갯수 제한이 없음
-
-- terminated: 모든 자원 반남(process 주소공간, 무수히 많은 자원)
+  - resume을 기다림
+  - event: read, printf, sleep, recv
+  
+- terminated: 모든 자원 반납(process 주소공간, 무수히 많은 자원)
 
 <br>
 
@@ -144,11 +151,14 @@ Information associated with each process.
 
 ![image-20220907235102206](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907235102206.png)
 
-idle -> suspend
+- idle -> suspend
 
-executing -> resume
+- executing -> resume
 
-suspend 되는 시점에서의 정보 -> running snapshot을 PCB에 저장
+- suspend 되는 시점에서의 정보 -> running snapshot을 PCB에 저장
+
+- 이 중 상당부분은 context switching overhead 때문에 사용되지 못함.
+  - 이 overhead를 해결하기 위해 나온 개념이 thread
 
 <br>
 
@@ -160,8 +170,8 @@ suspend 되는 시점에서의 정보 -> running snapshot을 PCB에 저장
     - Multiple threads of control -> **threads** 
 - Must then have storage for thread details, multiple program counters in PCB 
 - See next chapter
-
-
+- 어떤 프로그램에 프로그램 궤적이 여러 개가 있다면??
+- 이 각각의 궤적을 thread라고 부른다!!
 
 <br>
 
@@ -250,7 +260,7 @@ struct mm struct *mm; /* address space of this pro */
 
 - Some systems do not have
 
-
+- 시스템 load가 줄어들 때까지 메모리에서 프로세스를 harddisk에 저장을 하고 죽인다. 
 
 <br>
 
@@ -272,8 +282,8 @@ struct mm struct *mm; /* address space of this pro */
 
 ## Context Switch
 
-- When CPU switches to another process, the system must 1) save the state of the old process and 2) load the saved state for the new process via a context switch & 3) restart new process 
-- Context of a process represented in the PCB 
+- When CPU switches to another process, the system must 1) **save the state of the old process** and 2) load the **saved state** for the new process via a **context switch** & 3) restart new process 
+- **Context** of a process represented in the PCB 
 - Context-switch time is overhead; the system does no useful work while switching 
   - The more complex the OS and the PCB -> the longer the context switch 
 - Time dependent on hardware support 
@@ -283,7 +293,7 @@ struct mm struct *mm; /* address space of this pro */
 
 <br>
 
-## Operations on Processes
+## Operations on Processes(매우 중요)
 
 - System must provide mechanisms for
   - process creation, 
@@ -296,17 +306,17 @@ struct mm struct *mm; /* address space of this pro */
 
 ## Process Creation
 
-- Parent process create children processes, which, in turn create other processes, forming a tree of processes 
+- **Parent** process create **children** processes, which, in turn create other processes, forming a tree of processes 
 - Generally, process identified and managed via a process identifier (pid) 
 - Resource sharing options 
-  - Parent and children share all resources. 
-  - Children share subset of parent’s resources. 
-  - Parent and child share no resources. 
+  - Parent and children share **all** resources. 
+  - Children share **subset** of parent’s resources. 
+  - Parent and child share **no** resources. 
 - Execution options 
   - Parent and children execute concurrently. 
   - Parent waits until children terminate
 
-
+- 모든 프로세스는 init process의 자손이다.
 
 <br>
 
@@ -321,11 +331,16 @@ struct mm struct *mm; /* address space of this pro */
 ## Process Creation (Cont.)
 
 - Address space 
-- Child duplicate of parent. 
-- Child has a program loaded into it. 
+  - Child duplicate of parent. 
+  - Child has a program(new program) loaded into it. 
+
 - UNIX examples 
-- fork system call creates new process 
-- exec system call used after a fork to replace the process’ memory space with a new program. 
+  - fork system call creates new process 
+  - exec system call used after a fork to replace the process’ memory space with a new program. 
+  - m = fork()
+    - m값은 parent도 받고 child도 받는데 그 값은 다르다.
+      - child한테는 0을, parent 한테는 child의 pid
+
 
 ```
 if (fork() != 0) /* parent code */ 
@@ -378,7 +393,7 @@ int main() {
 
 ## Process Creation (Cont.)
 
-- Shell : process which is command interpreter 
+- **Shell** : process which is command interpreter 
   - Get command  
   - Execute command (fork a child, wait for a child to finish) 
   - Go back to get command
@@ -391,7 +406,7 @@ While (true) {
      else { execve(command, parmas) }
 ```
 
-
+shell이든 일반적인 프로그램에서 fork를 하든 동작원리는 같다.
 
 <br>
 
@@ -400,19 +415,23 @@ While (true) {
 - Process executes last statement and then asks the operating system to delete it using the exit() system call. 
   - Returns status data from child to parent (via wait()) 
   - Process’ resources are deallocated by operating system 
-- Parent may terminate the execution of children processes using the abort() system call. Some reasons for doing so: 
+- Parent may terminate the execution of children processes using the **abort()** system call. Some reasons for doing so: 
+  - 다른 프로세스가 나를 종료시키려 할 때 쓰는 것이 abort
   - Child has exceeded allocated resources 
   - Task assigned to child is no longer required 
   - The parent is exiting 
     - operating systems does not allow a child to continue if its parent terminates
-
--  Some operating systems do not allow child to exists if its parent has terminated. If a process terminates, then all its children must also be terminated. 
-  - cascading termination. All children, grandchildren, etc. are terminated. 
+  
+- Some operating systems do not allow child to exists if its parent has terminated. If a process terminates, then all its children must also be terminated. 
+  - **cascading termination**. All children, grandchildren, etc. are terminated. 
   - The termination is initiated by the operating system. 
 - The parent process may wait for termination of a child process by using the wait()system call. The call returns status information and the pid of the terminated process 
   - pid = wait(&status); 
-- If no parent waiting (did not invoke wait()) process is a zombie 
-- If parent terminated without invoking wait , process is an orphan
+
+정상적인 방법으로 종료하지 못하는 프로세스
+
+- If no parent waiting (did not invoke wait()) process is a **zombie** 
+- If parent terminated without invoking wait , process is an **orphan**
 
 <br>
 
@@ -431,18 +450,18 @@ While (true) {
 
 <br>
 
-## Interprocess Communication
+## Interprocess Communication(IPC)
 
 - Processes within a system may be independent or cooperating 
 - Independent process cannot affect or be affected by the execution of another process 
-- Cooperating process can affect or be affected by the execution of another process , including sharing data 
+- **Cooperating process** can affect or be affected by the execution of another process , including sharing data 
 - Reasons for cooperating processes: 
   - Information sharing 
   - Computation speedup 
   - Modularity 
   - Convenience 
 - Cooperating processes need interprocess communication (IPC) 
-- Two models of IPC 
+- **Two models** of IPC 
   - Shared memory 
   - Message passing
 
@@ -454,11 +473,21 @@ While (true) {
 
 ![image-20220908001020013](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220908001020013.png)
 
+- shared memory
 
+  - process가 공유하는 메모리가 있음
+
+  - shared memory가 만들어질 때는 OS의 도움을 받지만 그 이후는 OS의 도움을 받지 않는다.
+
+- MPP
+  - 메세지를 보낼 때마다 OS의 도움을 받는다.
+  - send
 
 <br>
 
-## Producer-Consumer Problem (SM)
+## Producer-Consumer Problem (SM; shared memory)
+
+example
 
 - Paradigm for cooperating processes, producer process produces information that is consumed by a consumer process. 
   - unbounded-buffer places no practical limit on the size of the buffer. 
@@ -478,7 +507,7 @@ While (true) {
 ```c
 #define BUFFER_SIZE 10
 typedef struct {
-. . .
+    . . .
 } item;
 item buffer[BUFFER_SIZE];
 int in = 0;
@@ -497,7 +526,7 @@ int out = 0;
 item next_produced;
 while (true) {
     /* produce an item in next produced */
-    while (((in + 1) % BUFFER_SIZE) == out)
+    while (((in + 1) % BUFFER_SIZE) == out) // is buffer full?
         ; /* do nothing */
     buffer[in] = next_produced;
     in = (in + 1) % BUFFER_SIZE;
@@ -550,7 +579,7 @@ while (true) {
   - Using fixed-sized message, implementation of OS is simple, application programming is difficult 
   - Using variable-sized message, implementation of OS is complex, application programming is simple
 
-
+- send(), receie()
 
 <br>
 
@@ -580,6 +609,7 @@ while (true) {
     - Direct or indirect (**Naming**) 
     - Symmetric or asymmetric communication (**Symmetry**) 
     - Synchronous or asynchronous (**Synchronization**) 
+      - async - 상대방의 수신여부와 상관없이 막 보내는
     - Automatic or explicit buffering (**Buffering**)
 
 
@@ -823,10 +853,12 @@ while (true) {
 
 <br>
 
+분산 어플리케이션의 예 client server model
+
 ## Communications in Client-Server Systems
 
 - Sockets – low level form of communication between distributed processes 
-- Remote Procedure Calls 
+- Remote Procedure Calls (RPC)
 - Pipes 
 - Remote Method Invocation (Java)
 
@@ -1164,60 +1196,5 @@ Pipe ( int fd[] )
 <br>
 
 ![image-20220909211811550](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211811550.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
