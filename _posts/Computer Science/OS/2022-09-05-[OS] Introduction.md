@@ -11,7 +11,7 @@ toc_sticky: true
 
 ## What is an Operating System?
 
-- A program that acts as an intermediary between a user of a computer and the computer hardware
+- A program that acts as an intermediary between **a user of a computer** and **the computer hardware**
 - Operating system goals:
   - Execute user programs and make solving user problems **easier**
   - Provide an execution environment in which a user can execute programs
@@ -25,16 +25,16 @@ toc_sticky: true
 ## Computer System Structure
 
 - Computer system can be divided into four components: 
-  - Hardware – provides basic computing resources 
+  - **Hardware** – provides basic computing resources 
     - CPU, memory, I/O devices 
 
-  - Operating system 
+  - **Operating system** 
     - Controls and coordinates use of hardware among various applications and users 
 
-  - Application programs – define the ways in which the system resources are used to solve the computing problems of the users 
+  - **Application programs** – define the ways in which the system resources are used to solve the computing problems of the users 
     - Word processors, compilers, web browsers, database systems, video games 
 
-  - Users 
+  - **Users** 
     - People, machines, other computers
 
 
@@ -334,7 +334,7 @@ CPU의 간섭없이 device to/from memory read/write하는 방법
   - CPU internal 메모리는 비싸기 때문에 많은 메모리를 탑재하지 못하고
   - HDD는 속도가 너무 느리기 때문이다.
 
-<bra
+<br>
 
 중요!!!
 
@@ -367,7 +367,7 @@ CPU의 간섭없이 device to/from memory read/write하는 방법
     - 예를 들어 채점을 두 명이서 나눠서 하는데 한 사람은 만 명에 대한 걸 하고 한 사람은 10명에 대한 채점을 한다면 밸런싱이 맞지 않아 비효율이 발생할 것이기 때문이다.  
   - Most modern operating systems support SMP 
 - Asymmetric multiprocessing 
-  - Each processor is assigned a **specific task**; **master** processor schedules and allocates work to **slave** processors. 
+  - Each processor is assigned a **specific task**; **master** **processor** schedules and allocates work to **slave** **processors**. 
   - More common in extremely large systems
 
 <br>
@@ -378,13 +378,16 @@ CPU의 간섭없이 device to/from memory read/write하는 방법
 
 master-slave 관계가 아닌 동등한 관계
 
+dependent 관계의 CPU들이 같이 일을 함.(memory를 공유하기 때문에)
+
 <br>
 
 ## A Dual-Core Design
 
 - **Memory access model**: **UMA**(uniform memory access ) and **NUMA** architecture variations 
   - Multiprocessing increases computing power by adding CPUs 
-  - Adding CPUs also increases amount of memory addressable 
+  - Adding CPUs also increases amount of memory addressable
+  - NUMA(non-uniform): 각 CPU가 memory에서 자주쓰는 내용을 가져와서 사용함.
 - Multi-chip and **multicore** 
 - Blade server systems 
   - Chassis containing multiple independent multiprocessor systems
@@ -405,7 +408,7 @@ master-slave 관계가 아닌 동등한 관계
   - Usually sharing storage via a **storage-area network (SAN)** 
   - Provides a **high-availability(HA)** service which survives failures 
     - **Asymmetric clustering** has one machine in hot-standby mode 
-    - Sy**mmetric clustering** has multiple nodes running applications, monitoring each other 
+    - **Symmetric** clustering has multiple nodes running applications, monitoring each other 
   - Some clusters are for **high-performance computing (HPC)** 
     - Applications must be written to use parallelization 
   - Other forms of Clusters 
