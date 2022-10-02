@@ -458,15 +458,16 @@ dependent 관계의 CPU들이 같이 일을 함.(memory를 공유하기 때문�
 
 ## Operating System Structure
 
-- **Multiprogramming** (**Batch system**) needed for efficiency (non-preemptive multiprogramming)
+- **Multiprogramming** (**Batch system**) needed for efficiency (**non-preemptive** multiprogramming)
   - Single user cannot keep CPU and I/O devices busy at all times 
-  - Multiprogramming organizes jobs (code and data) so CPU always has one to execute 
+  - Multiprogramming organizes jobs (code and data) so CPU **always** has one to execute 
   - A subset of total jobs in system is kept in memory (job pool)  
   - One job selected and run via **job scheduling** 
     - job scheduling: 누가 먼저 스케쥴링 될 것인지
   - When it has to wait (for I/O for example), OS switches to another job 
 - **Timesharing** (**multitasking**) is logical extension in which CPU switches jobs so frequently that users can interact with each job while it is running, creating **interactive computing** 
   - **Response time** should be < 1 second 
+    - good response time!
   - Each user has at least one program executing in memory => **process** 
   - If several jobs ready to run at the same time => **CPU scheduling** 
   - If processes don’t fit in memory, **swapping** moves them in and out to run 
@@ -485,12 +486,12 @@ dependent 관계의 CPU들이 같이 일을 함.(memory를 공유하기 때문�
   - CPU와 I/O device가 동시에 활용되는 경우가 생길 수 있음
   - I/O를 하지 않는 동안에 CPU를 굉장히 오래 붙잡고 있어도 크게 문제가 되지 않는다.
     - non preemptive - 강제로 빼앗지 않는
-  - I/O를 하기 위해서 자발적으로 내놓지 않으면 다른 프로그램이 실행될 수 없음
-  - pseudo parallel processing (실제로 둘이 같이 돌지 않기 때문에)
+  - **I/O를 하기 위해서 자발적으로 내놓지 않으면 다른 프로그램이 실행될 수 없음**
+  - **pseudo** parallel processing (실제로 둘이 같이 돌지 않기 때문에)
 - Preemptive multiprogramming - Time Quantum 부여
   - 어떤 프로그램이 CPU에서 실행이 되는데 CPU에서 실행될 수 있는 최대 시간이 바로 **time quantum**이다.
   - time quantum 시간 동안만 CPU를 사용하는 것을 허락한다.
-  - I/O를 하지 않아도 CPU를 빼앗아서 동시에 프로그램을 실행시킬 수 있음
+  - I/O를 하지 않아도 CPU를 빼앗아서 동시에 다른 프로그램을 번갈아가면서 실행시킬 수 있음
   - 만약 time quantum이 굉장히 커지게 되면 Non-preemptive 에 가까워 짐.
   - 만약 time quantum이 굉장히 작아지게 되면 interaction은 굉장히 올라가는 대신에 시스템 성능은 오히려 Non-preemptive 보다 안 좋아 지게 된다.
     - 그래서 적정한 값을 정하는 것이 중요함
@@ -513,9 +514,9 @@ dependent 관계의 CPU들이 같이 일을 함.(memory를 공유하기 때문�
   - Hardware interrupt by one of the devices (외부 디바이스에 의한)
   - Software interrupt (**exception** or **trap**): 
     - exception: Software error (e.g., division by zero) 
-    - trap: Request for operating system service 
+    - trap: Request for operating system service(시스템 콜을 호출하는 경우) 
   - Other process problems include infinite loop, processes modifying each other or the operating system 
-    - 정상적으로 실행되는 것처럼 보이지만 무한 루프를 돌고 있는 경우(interrupt 검출이 되지 않음)
+    - 정상적으로 실행되는 것처럼 보이지만 무한 루프를 돌고 있는 경우(**interrupt 검출이 되지 않음**)
     - 이를 잡아낼 수 있는 tool이 있어야 함(아래와 같이)
 - Basic tools to Ensure correct operation of computer system 
   - Dual mode - user가 kernel의 권한을 행사하지 못하도록 하는 것
@@ -556,22 +557,23 @@ dependent 관계의 CPU들이 같이 일을 함.(memory를 공유하기 때문�
 
 <br>
 
-## Process Management
+## Process Management(중요)
 
-program definition은 어떤 프로그램의 모양(붕어빵틀)
+program definition은 어떤 프로그램의 모양(붕어빵틀) - 실행 파일
 
-program definition이 만들어내는 instance가 process(msword 창을 두 개 띄우는 경우 '하나의 program definition에서 두 개의 process가 생겼다'라고 한다.; 틀로 찍어낸 붕어빵)
+program definition이 만들어내는 **instance가** process(msword 창을 두 개 띄우는 경우 '하나의 program definition에서 두 개의 process가 생겼다'라고 한다.; 틀로 찍어낸 붕어빵 두 개)
 
 - <u>A process is a program in execution</u>. It is a unit of work within the system. Program is a **passive entity**, process is an **active entity**. 
   - 프로세스는 실제로 실행되고 있는 상태이기 때문에 active entity인 것.
-
+  - 변수 x도 선언 시에 메모리에 할당되는 것이 아니라 프로세스가 실행되면 할당 된다.
+  
 - Process needs resources to accomplish its task 
   - CPU, memory, I/O, files 
   - Initialization data 
 - Process termination requires reclaim of any reusable resources 
 - `Single-threaded process` has one **program counter** specifying location of next instruction to execute 
   - 하나의 process에 하나의 program counter
-  - program counter가 갖는 값의 궤적이 thread
+  - program counter가 갖는 값의 궤적이 바로 thread
   - Process executes instructions sequentially, one at a time, until completion 
 - `Multi-threaded process` has one program counter per thread 
 - Typically system has many processes, some user, some operating system running concurrently on one or more CPUs 
@@ -599,7 +601,6 @@ The operating system is responsible for the following activities in connection w
 - Providing mechanisms for deadlock handling
   - 동기화를 하다가 잘못되면 두 프로세스 모두가 실행이 되지 않는 경우(둘 중 어느 프로세스도 이도저도 못하는 상황) 가 발생하는데 
   - 검출하여 해결하는 것이 process management의 역할
-
 
 
 
@@ -831,6 +832,8 @@ virtual machine manager
 
 - 가상화를 해 주고 관리하는
 
+여러 개의 실행환경이 생김
+
 <br>
 
 ## VMware Architecture
@@ -899,6 +902,7 @@ load balancer - 적절하게 load를 분배해야 최대 성능을 얻을 수 �
 ## Real-Time Systems
 
 - Often used as a control device in a dedicated application such as controlling scientific experiments, medical imaging systems, industrial control systems, and some display systems. 
+- 단순히 빠르기만 한 게 real-time os가 아님.
 - Well-defined fixed-time constraints. 
   - time sharing systems : fast response 
   - Batch system: no time constraints 
@@ -910,7 +914,7 @@ load balancer - 적절하게 load를 분배해야 최대 성능을 얻을 수 �
   - Limited utility in industrial control or robotics 
   - Useful in applications (multimedia, virtual reality) requiring advanced operating-system features.
   - ex. 전화 교환기
-  - 제한된 시간 안에 이벤트 처리가 100% 보장되지는 않지만 대부분 처리는 되는 시스템
+  - 제한된 시간 안에 이벤트 처리가 100% 보장되지는 않지만 **대부분** 처리는 되는 시스템
 
 <br>
 
