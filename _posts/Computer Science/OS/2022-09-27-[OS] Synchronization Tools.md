@@ -17,3 +17,84 @@ toc_sticky: true
 - Semaphores 
 - Classical Problems of Synchronization 
 - Monitors
+
+
+
+<br>
+
+## Objectives
+
+- To present the concept of process synchronization.
+- To introduce the critical-section problem, whose solutions can be used to ensure the consistency of shared data
+- To present both software and hardware solutions of the critical-section problem
+- To examine several classical process-synchronization problems
+- To explore several tools that are used to solve process synchronization problems
+
+
+
+<br>
+
+## Background
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

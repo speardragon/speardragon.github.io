@@ -48,21 +48,22 @@ toc_sticky: true
 
 - Operating systems provide an **environment** for execution of programs and **services** to programs and users 
 
-- One set of operating-system **services** provides functions that are helpful to the user: 
+- One set of operating-system **services** provides functions that are helpful to the user: (convinience 측면)
 
-  - **User interface** - Almost all operating systems have a user interface (UI). 
+  - **User interface** - Almost all operating systems have a user interface (**UI**). 
     - Varies between **Command-Line Interface (CLI)** – text command, 
     - **Graphics User Interface (GUI)**, 
     - **Batch** - file including several commands is executed – **shell script** 
       - 여러 CLI가 나열된 파일
-  - **Program execution** - The system must be able to **load a program** into **memory** and to run that program, end execution, either 'normally' or 'abnormally' (indicating error) 
+  - **Program execution** - The system must be able to **load a program** into **memory** and to run that program, end execution, either 'normally' or 'abnormally' (**indicating error**) 
     - c 소스 파일에서 object 파일로 만드는 것은 compiler의 역할
     - 여러 개의 object 파일을 하나로 모아서 실행파일로 만드는 역할은 linker
     - main memory에 탑재 시키는 것이 loader
   - **I/O operations** - A running program may require I/O, which may involve a file or an I/O device
 
   - **File-system manipulation** - The file system is of particular interest. Programs need to read and write files and directories, create and delete them, search them, list file Information, permission management. 
-  - **Communications** – Processes may exchange information, on the same computer or between computers over a network 
+    - like 파일 탐색기
+  - **Communications** – Processes may exchange information, on the **same computer** or between computers over a **network** 
     - Communications may be via **shared memory** or through **message passing** (packets moved by the OS) 
   - **Error detection** – OS needs to be constantly aware of possible errors 
     - May occur in the CPU and memory hardware, in I/O devices, in user program 
@@ -71,11 +72,13 @@ toc_sticky: true
 
 - Another set of OS **functions** exists for ensuring the **efficient** operation of the system itself via resource sharing 
   - **Resource allocation** - When multiple users or multiple jobs running concurrently, resources must be allocated to each of them 
-    - Many types of resources - CPU cycles, main memory, file storage, I/O devices. 
+    - OS가 제공하는 굉장히 중요한 기능
+    - Many types of resources - CPU cycles, main memory, file storage, I/O devices... 
   - **Accounting** - To keep track of which users use how much and what kinds of computer resources (얼마나 사용하는 지 모니터링)
-  - **Protection and security** - The owners of information stored in a multiuser or networked computer system may want to control use of that information, concurrent processes should not interfere with each other 
+    - 과금 확인 목적 or 통계를 위한 기능
+  - **Protection and security** - The owners of information stored in a multiuser or networked computer system may want to **control** use of that information, concurrent processes should not interfere with each other 
     - **Protection** involves ensuring that all access to system resources is controlled 
-    - **Security** of the system from outsiders requires user authentication, extends to defending external I/O devices from invalid access attempts
+    - **Security** of the system from outsiders requires user **authentication**, extends to defending external I/O devices from **invalid access attempts**
 
 <br>
 
@@ -83,7 +86,15 @@ toc_sticky: true
 
 ![image-20220907225450734](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907225450734.png)
 
-사용자가 하드웨어를 직접 접근할 일은 없음 -> OS가 하드웨어를 추상화 하였기 때문에 
+- For convinience, 
+  - program execution, I/O operations, file systems, communication
+- For efficiency,
+  - resource allocation, accounting, error detection, proteection and security
+
+- user interface
+  - GUI, batch, command line(CLI)
+  - 사용자는 위 세 가지 중 하나의 interface를 통해서 OS가 제공하는 서비스를 사용할 수 있게 된다.
+- 사용자가 하드웨어를 직접 접근할 일은 없음 -> OS가 하드웨어를 추상화 하였기 때문에 
 
 
 
@@ -91,14 +102,15 @@ toc_sticky: true
 
 ## User Operating System Interface - CLI
 
-- CLI or **command interpreter** allows direct command entry 
+- **CLI** or **command interpreter** allows direct command entry 
   - Sometimes implemented in kernel, sometimes by systems program (Window/Unix) 
   - Sometimes multiple flavors implemented – **shells** 
     - Bourne shell, C shell, Bourne-Again shell, Korn shell 
   - Primarily fetches a command from user and executes it
-  - Sometimes commands built-in, sometimes just names of programs 
+  - Sometimes commands **built-in**, sometimes just **names of programs** 
     - If the latter, adding new features doesn’t require shell modification 
-  - ls와 같은 명령 또한 프로그램이다.(시스템 프로그램)
+  - ls와 같은 명령 또한 프로그램임.(시스템 프로그램)
+  - shell은 명령을 기다렸다가 명령을 실행하고 다시 또 기다리는 것의 반복하는 프로그램
 
 
 
@@ -132,11 +144,13 @@ toc_sticky: true
 
 ## Touchscreen Interfaces
 
+- 어떻게 보면, GUI의 한 종류
+
 - Touchscreen devices require new interfaces 
   - **Mouse not possible** or not desired 
   - Actions and selection based on gestures 
   - Virtual keyboard for text entry 
-- Voice commands.
+- Voice commands.(최근)
 
 ![image-20220907230322554](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907230322554.png)
 
@@ -156,15 +170,16 @@ toc_sticky: true
 
 - **Programming interface** to the services provided by the OS 
 - Typically written in a high-level language (C or C++) 
-- Mostly accessed by programs via a high-level **Application Programming Interface (API)** rather than direct system call use 
+- Mostly accessed by programs via a high-level **Application Programming Interface (API)** rather than direct **system call** use 
   - API -> system call 전환
 - Three most common APIs are **Win32 API** for Windows, **POSIX API** for POSIX-based systems (including virtually all versions of UNIX, Linux, and Mac OS X), and **Java API** for the Java virtual machine (JVM) 
-  - 3 개의 API가 존재한다.
+  - 3개의 API가 존재한다.
+  - POSIX API를 사용하는 시스템은 모두 같은 API 형태를 사용하지만 UNIX와 LINUX는 각각 다른 OS이기 때문에 다른 시스템 콜의 형태를 사용하게 된다.
 
 
 >  Note that the system-call names used throughout this text are generic
 
-
+- 시스템콜 이름이 generic 스타일로 제공됨
 
 
 
@@ -176,7 +191,7 @@ toc_sticky: true
 
 ![image-20220907231055458](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231055458.png)
 
-시스템 콜은 커널에서 실행되는 커널 함수이다.
+system call은 커널 안에서 구현된 커널 함수이다.
 
 <br>
 
@@ -184,16 +199,19 @@ toc_sticky: true
 
 ![image-20220907231116093](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231116093.png)
 
-read()
-
-??/
+- `man read` 와 같이 입력하면 read에 대한 사용법이 좌르륵 나오게(display) 된다.
+  - man page: POISX 계열의 API 사용법을 알려주는 기능
+- 반드시 unistd.h 를 include 해야 함.
+  - ssize_t 나 size_t의 타입이 해당 라이브러리에 포함되어 있기 때문에
 
 <br>
 
 ## System Call Implementation
 
-- Typically, a **number** associated with each system call 
-  - **System-call interface** maintains a table indexed according to these numbers 
+- Typically, a **number** associated with each system call (마치 interrupt vector가 숫자를 가진 것처럼)
+  - 과제 1번에서도 그래서 시스템콜을 만들 때 숫자를 등록했었음.
+  - **System-call interface** maintains a **table** indexed according to these numbers 
+  
 - The system call interface invokes the intended system call in OS kernel and returns status of the system call and any return values 
 - The caller need know nothing about how the system call is implemented 
   - Just needs to obey API and understand what OS will do as a result call 
@@ -208,7 +226,8 @@ read()
 
 ![image-20220907231213382](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231213382.png)
 
-open() 시스템 콜의 number가 i라 할 때,
+- open() 시스템 콜의 number가 i라 할 때, 테이블의 i번째 entry를 찾아가게 되면 open() 시스템 콜 함수의 주소가 적혀 있어 이를 invoke 할 수 있게 된다.
+- 사용자가 어떤 system call을 호출했냐에 따라서 system call table을 번호를 indexing해서 해당 시스템 콜 함수를 실행 후 리턴하게 된다.
 
 <br>
 
@@ -218,21 +237,24 @@ open() 시스템 콜의 number가 i라 할 때,
 
 ![image-20220907231241893](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231241893.png)
 
-printf() -> library call(API)
+- printf() -> library call(API) -> write()
+  - API가 write을 대신 호출해 줌.
+  - 시스템콜에서 API로 리턴, API에서 사용자 쪽으로 리턴
 
 <br>
 
 ## System Call Parameter Passing
 
 - Often, more information is required than simply identity of desired system call 
-  - Exact type and amount of information vary according to OS and call 
+  - Exact type and amount of information **vary according to OS and call.** 
 - Three general methods used to pass parameters to the OS 
-  - Simplest: pass the parameters in registers 
+  - Simplest: pass the parameters in **registers** 
     - In some cases, may be more parameters than registers 
-  - Parameters stored in a block, or table, in memory, and address of block passed as a parameter in a register 
+  - Parameters stored in a block, or table, in memory, and **address of block** passed as a parameter in a register 
+    - 많은 parameter를 memory에 block 형태로 저장하고 block의 주소를 register에 저장
     - This approach taken by Linux and Solaris 
   - Parameters placed, or **pushed**, onto the **stack** by the program and **popped** off the stack by the operating system 
-  - Block and stack methods do not limit the number or length of parameters being passed
+  - **Block and stack methods do not limit** the number or length of parameters being passed
 
 
 
@@ -242,6 +264,9 @@ printf() -> library call(API)
 
 ![image-20220907231734443](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231734443.png)
 
+- X라는 여러 파라미터가 있는 메모리 공간이 있는데 
+- 이것의 주소를 register에 load하고 system call 13을 호출하면 OS system call table에서 13번을 보면 해당 시스템 콜을 호출할 수 있는 주소가 있는데 
+- 이 시스템콜에서 register를 참조해서 파라미터 X를 전달받을 수 있게 되는 것이다.
 
 <br>
 
@@ -282,10 +307,13 @@ printf() -> library call(API)
 
 <br>
 
+system call을 실행시키는 환경
+
 ## Example: MS-DOS
 
+- No GUI
 - **Single-tasking** 
-- Shell invoked when system booted 
+- **Shell** invoked when system booted 
 - Simple method to run program 
   - No process created 
 - Single memory space 
@@ -307,9 +335,9 @@ printf() -> library call(API)
   - 여러 프로그램이 동시에 실행
 
 - User login -> invoke user’s choice of shell 
-- Shell executes fork() system call to create process 
-  - Executes exec() to load program into process 
-  - Shell waits for process to terminate or continues with user commands 
+- Shell executes **fork()** system call to create process 
+  - Executes **exec()** to load program into process 
+  - Shell **waits for process** to terminate or continues with user commands 
 - Process exits with: 
   - code = 0 – no error 
   - code > 0 – error code
@@ -342,9 +370,9 @@ printf() -> library call(API)
   - create, delete **communication connection** 
   - send, receive messages if **message passing model** to **host name** or **process name** 
     - From **client** to **server** 
-    - 받을 host 이름과 process name이 필요로 됨
+    - 받을 host name과 메세지를 수신할 process name이 필요로 됨
   - **Shared-memory model** create and gain access to memory regions 
-    - allows memory transfer speed, but may have **synch problem** 
+    - allows memory transfer speed, but may have **synch problem** (읽고 쓰는 시간의 차이 때문에 발생하는 problem)
     - shared_memory create, shared_memory attach 
   - transfer status information 
   - attach and detach remote devices
@@ -358,7 +386,8 @@ printf() -> library call(API)
 
 ## System Programs
 
-utility program이라고 하기도 함.
+- kernel 위에서 실행되는 프로그램(사용자 모드에서 돌고 있음)
+  - utility program이라고 하기도 함.
 
 - System programs provide a convenient environment for program development and execution. They can be divided into: 
   - File manipulation 
@@ -383,21 +412,22 @@ utility program이라고 하기도 함.
   - Text editors to create and modify files 
   - Special commands to search contents of files or perform transformations of the text 
 - **Programming-language support** - Compilers, assemblers, debuggers and interpreters sometimes provided 
-- **Program loading and execution**- Absolute **loaders**, relocatable loaders, linkage editors, and overlay-loaders, debugging systems for higher-level and machine language 
+- **Program loading and execution**- `Absolute loaders`, `relocatable loaders`, linkage editors, and overlay-loaders, debugging systems for higher-level and machine language 
 - **Communications** - Provide the mechanism for creating virtual connections among processes, users, and computer systems 
   - Allow users to send messages to one another’s screens, browse web pages, send electronic-mail messages, log in remotely, transfer files from one machine to another
 
 - **Background Services** 
-  - Launch system program-process at boot time 
+  - Launch system program-process at **boot** time 
     - Some for system startup, then terminate 
     - Some from system boot to shutdown 
   - Provide facilities like disk checking, process scheduling, error logging, printing 
   - Run in user context **not kernel context** 
   - Known as **services**, **subsystems**, **daemons** 
-  - 모니터를 통해서 사용자와 interaction이 일어나지 않는다.
+  - background의 의미: 모니터를 통해서 사용자와 interaction이 일어나지 않는 프로그램
 - **Application programs** 
   - Don’t pertain to system 
   - 사용자가 짠 프로그램이 아님
+    - 일반 사용자에게 제공하는 프로그램
   - Word processor, web browser . .. 
   - Run by users 
   - **Not typically considered part of OS** 
@@ -415,15 +445,15 @@ utility program이라고 하기도 함.
 
 ## Operating System Design and Implementation
 
-- Design and Implementation of OS is not easy, but some approaches have been proven successful 
+- Design and Implementation of OS is **not easy**, but some approaches have been proven successful 
 - Internal structure of different Operating Systems can vary widely 
-- Start the design by defining goals and specifications 
+- Start the design by defining **goals** and **specifications** 
   - **Affected** by **choice** of hardware, type of system 
     - Batch, time-sharing, multi-user, distributed, real-time … 
 - **User** goals and **System** goals 
-  - User goals – operating system should be convenient to use, easy to learn, reliable, safe, and fast 
+  - **User goals** – operating system should be convenient to use, **easy** to learn, reliable, safe, and fast 
     - May not be useful in the system design 
-  - System goals – operating system should be easy to design, implement, and maintain, as well as flexible, reliable, error-free, and efficient 
+  - **System goals** – operating system should be easy to design, implement, and maintain, as well as flexible, reliable, error-free, and efficient 
   - No unique solution
 
 - Important principle to separate the following for flexibility 
@@ -431,9 +461,9 @@ utility program이라고 하기도 함.
   - **Mechanism**: <u>How</u> to do it? 
 - Mechanisms determine how to do something, policies decide what will be done 
 - The **separation** of policy from mechanism is a very important principle, it allows maximum flexibility if policy decisions are to be changed later (example – timer) 
-  - 둘 간의 dependency를 줄일 수 있음
+  - 둘이 묶여 있으면 둘 중 하나를 바꿀 때 생기는 dependency가 있기 때문에 둘 간의 dependency를 줄일 수 있음
 
-- Specifying and designing an OS is highly creative task of **software engineering**
+- Specifying and designing an OS is highly creative task(창의적 업무) of **software engineering**
 
 <br>
 
@@ -448,13 +478,13 @@ utility program이라고 하기도 함.
   - Main body in C 
   - Systems programs in C, C++, scripting languages like PERL, Python, shell scripts 
 - More high-level language easier to **port** to other hardware (port-한 시스템에서 작동되는 걸 다른 시스템에서도 작동되도록 해 주는)
-  - Can be written faster, easy to understand, debug 
+  - Can be written faster, easy to understand, debug (compiler의 발전으로 assembly만큼 빨라짐)
   - But slower. Require more memory (기술의 발전으로 gap이 그렇게 크진 않음.)
   - Linux is written in C, so it can be available on various CPUs 
 - MS-DOS written in Intel 8088 assembly language 
   - It runs natively only on Intel X86 family. 
-  - **Emulators** of X86 instruction set allow OS to run on other CPUs 
-- **Emulation** can allow an OS to run on **non-native hardware** by duplicating functionalities between two systems
+  - **Emulators** of X86 instruction set allow OS to run **on other CPUs** 
+- **Emulation** can allow an OS to run on **non-native hardware** by **duplicating** functionalities between two systems
 
 
 
@@ -477,7 +507,7 @@ utility program이라고 하기도 함.
 ## Simple Structure -- MS-DOS
 
 - MS-DOS – written to provide the most functionality in the least space 
-  - Not divided into modules (monolithic)
+  - **Not divided** into modules (monolithic)
   - application program이 직접 device drivers에 interface -> 굉장한 문제가 발생할 확률이 높다.
   - Although MS-DOS has some structure, its interfaces and levels of functionality are not well separated 
   - 8088 provides no dual mode, hardware protection
@@ -498,12 +528,13 @@ utility program이라고 하기도 함.
     - Consists of everything **below** the **system-call interface** and **above the physical hardware** 
     - Provides the file system, CPU scheduling, memory management, and other operating-system functions; a large number of functions for one level 
     - Layered some extent, but basically **monolithic**
+      - hardware 기능이 매우 제한적이기 때문에
 
 
 
 <br>
 
-## Traditional UNIX System Structure
+### Traditional UNIX System Structure
 
 Beyond simple but not fully layered
 
@@ -517,14 +548,14 @@ OS kernel 부분이 그렇게 막 well-structured 되진 않음, 단지 사용�
 
 - **Modular structure** 
 - Information hiding 
-  - lower layer의 구조를 알 필요 없음
+  - higher layer의 설계, 사용자가 lower layer의 구조를 알 필요 없음
 
 - The operating system is **divided** into a number of layers (levels), each built on top of lower layers. The bottom layer (layer 0), is the hardware; the highest (layer N) is the user interface. 
 - With modularity, layers are selected such that each uses functions (operations) and **services of only lower-level layers** 
 - Simple construction, debugging 
-- Overhead in each layer
-  - monolithic - interaction이 하나의 계층에서만 이루어지지만 modular는 layer에 걸쳐서 이루어 지기 때문에 response 시간이 길다.
-  - 성능은 그렇다고 하지만 엔지니어링 시간이나 유지보수 기간 등을 따져 보았을 때 modular가 압도적으로 좋다.
+- Overhead in each layer(단점)
+  - monolithic - interaction이 하나의 계층에서만 이루어지지만 modular는 layer에 걸쳐서 이루어 지기 때문에 response 시간이 느려진다.
+- 그렇지만! 성능은 그렇다고 하지만 엔지니어링 시간이나 유지보수 기간 등을 따져 보았을 때 modular가 압도적으로 좋다.
 
 
 ![image-20220907233427206](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233427206.png)
@@ -534,7 +565,8 @@ OS kernel 부분이 그렇게 막 well-structured 되진 않음, 단지 사용�
 ## Microkernel System Structure
 
 - **seperation** between policy and mechanism 
-  - Policy free mechanisms of building blocks(kernel 모듈) 
+  - Policy free mechanisms of building blocks (kernel mode 모듈) 
+    - 다른 것이 변경되는 것과 상관이 없도록!
   - Modularized Kernel (커다란 OS의 터전)
 - Moves as much from the kernel into user space 
 - **Mach (CMU)** example of **microkernel** 
@@ -547,6 +579,7 @@ OS kernel 부분이 그렇게 막 well-structured 되진 않음, 단지 사용�
   - More secure 
 - Detriments: 
   - **Performance overhead** of user space to kernel space communication
+    - due to message passing's communication
 
 ​	
 
@@ -558,21 +591,26 @@ OS kernel 부분이 그렇게 막 well-structured 되진 않음, 단지 사용�
 
 - 일부 kernel의 내용이 밖에 나올 수 있음
 - microkernel: 최소한의 기능만을 가진 kernel
+  - 나머지는 user mode
+
 
 <br>
 
 ## Modules 
 
-기존의 modular approach에서 진보한 구조
+- loadable kernel modules approach
+  - 기존의 modular approach에서 진보한 구조
+  - performance에 지장이 없으면서 유지보수를 문제없이 할 수 있도록 하는 시도
 
 - Many modern operating systems implement **loadable kernel modules** 
-  - Kernel provides core services while other services are implemented (via modules) dynamically (**dynamic linking** rather than recompiling) 
+  - **Kernel** provides **core services** while **other services** are implemented (<mark>via modules</mark>) dynamically (**dynamic linking** rather than recompiling) 
+    - dynamic linking의 대상이 되는 것이 loadable kernel modules
     - core service가 아니기 때문에 처음부터 linking 되어 탑재 되어 있진 않다.
   - Uses object-oriented approach 
   - Each core component is separate 
   - Each talks to the others over **known interfaces** 
   - Each is loadable as needed within the kernel 
-- Overall, similar to layers but with more flexible 
+- Overall, **similar to layers but with more flexible** 
   - Linux, Solaris, etc
 
 <br>
@@ -588,13 +626,15 @@ OS kernel 부분이 그렇게 막 well-structured 되진 않음, 단지 사용�
 ## Hybrid Systems
 
 - Most modern operating systems are actually not one pure model 
-  - **Hybrid** combines multiple approaches to address performance, security, usability needs 
-  - Linux and Solaris kernels in kernel address space, **so monolithic**(because of performance), plus modular for **dynamic loading** of functionality(core가 아닌 경우에 대하여) 
+  - **Hybrid** combines multiple approaches to address `performance, security, usability `needs 
+  - Linux and Solaris kernels in kernel address space, **so monolithic**(<mark>because of performance</mark>), plus modular for **dynamic loading** of functionality(core가 아닌 경우에 대하여) 
   - **Windows** mostly monolithic, plus microkernel for different subsystem personalities 
 - Apple Mac OS X hybrid, **layered**, Aqua UI plus Cocoa programming environment 
   - Below is kernel consisting of Mach microkernel and BSD Unix parts, plus I/O kit and dynamically loadable modules (called **kernel extensions**)
 
 
+
+> 핵심 기능은 성능을 위해 monolithic으로, 나머지 기능은 dependency, 유지보수를 위해 dynamic loading(즉, modular 방식)으로 구현한 것이다.
 
 <br>
 
