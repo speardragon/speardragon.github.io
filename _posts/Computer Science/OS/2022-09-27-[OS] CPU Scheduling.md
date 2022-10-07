@@ -24,7 +24,7 @@ toc_sticky: true
 
 ## Objectives
 
-- To introduce CPU scheduling, which is the basis for multiprogrammed  operating systems 
+- To introduce **CPU scheduling**, which is the basis for multiprogrammed operating systems 
 - To describe various CPU-scheduling algorithms 
 - To discuss evaluation criteria for selecting a CPU-scheduling algorithm  for a particular system 
 - To examine the scheduling algorithms of several operating systems
@@ -35,8 +35,8 @@ toc_sticky: true
 
 ## Basic Concepts
 
-- Maximum CPU utilization obtained with multiprogramming 
-  - When one process has to wait, OS takes the CPU away from that  process and gives the CPU to another process 
+- 목적: **Maximum CPU utilization** obtained with multiprogramming 
+  - When one process has to wait, OS takes the CPU away from that process and gives the CPU to another process 
 - The success of CPU scheduling depends on the property 
   - CPU–I/O Burst Cycle  
   - Process execution consists of a cycle of CPU execution and I/O  wait. 
@@ -45,7 +45,7 @@ toc_sticky: true
 - CPU burst distribution 
   - An I/O bound program typically have many very short CPU burst 
   - A CPU bound program might have a few very long CPU burst 
-  - Distribution can be important in the selection of an appropriate CPU  scheduling algorithms
+  - Distribution can be important in the selection of an appropriate CPU scheduling algorithms
 
 
 
@@ -53,7 +53,7 @@ toc_sticky: true
 
 ## Alternating Sequence of CPU And I/O Bursts
 
-- Maximum CPU utilization obtained  with multiprogramming 
+- Maximum CPU utilization obtained with multiprogramming 
 - CPU–I/O Burst Cycle – Process  execution consists of a cycle of  CPU execution and I/O wait 
 - CPU burst followed by I/O burst 
 - CPU burst distribution is of main  concern
@@ -66,14 +66,16 @@ toc_sticky: true
 
 ![image-20220927151354687](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927151354687.png)
 
-
+짧은 CPU burst가 많다. -> multi program이 성공할 수 있는 근거
 
 <br>
 
-## CPU Scheduler
+## CPU Scheduler(short-term scheduler)(중요)
 
-- Short-term scheduler selects from among the processes in memory that  are ready to execute, and allocates the CPU to one of them. 
-- Queue may be ordered in various ways – Ready queue may be implemented as FIFO Q, priority Q, tree, linked  list 
+- **Short-term scheduler** selects from among the processes in memory that are ready to execute, and allocates the CPU to one of them. 
+  - Queue may be ordered in various ways 
+  - Ready queue may be implemented as FIFO Q, priority Q, tree, linked  list 
+
 - The records in the q are generally PCBs of the processes 
 - CPU scheduling decisions may take place when a process: 
   1. Switches from running to waiting state.
@@ -81,12 +83,16 @@ toc_sticky: true
   3. Switches from waiting to ready. 
   4. Terminates. 
 - Scheduling under 1 and 4 is nonpreemptive. 
+  - 스스로 끝났거나 waiting으로 갔기 때문에
+
 - Preemptive scheduling is possible under 2 and 3 
   - Consider access to shared data 
   - Consider preemption while in kernel mode 
   - Consider interrupts occurring during crucial OS activities
-
-
+  - time quantum으로 강제로 CPU를 뺏기 때문
+  - waiting에서 event가 completion이 되었다면 running을 해야 하는데 ready를 거쳤다가 가게된다.
+    - 이때, 해당 process가 우선순위가 굉장히 높다면 설령 ready queue에 여러 다른 프로세스가 있어도 곧바로 running으로 갈 수 있는 여지도 있다.
+    - 즉, 우선순위가 무지하게 높은 프로세스가 waiting이 끝나서 ready로 가는 경우 preemption이 일어난다.
 
 <br>
 
@@ -109,8 +115,9 @@ toc_sticky: true
 
 ## Dispatcher
 
-- Dispatcher module gives control of the CPU to the process selected by the  short-term scheduler; this involves: 
+- Dispatcher module gives control of the CPU to the process selected by the short-term scheduler; this involves: 
   - switching context 
+    - context가 바뀔 때 해당 process가 block 되면서 남긴 running snapshot 정보를 PCB에 저장해 두었다가 다시 실행 될 때 해당 running snapshot을 복구하여 실행된다.
   - switching to user mode 
   - jumping to the proper location in the user program to restart that program 
 - Dispatch latency – time it takes for the dispatcher to stop one process and start  another running.
@@ -119,22 +126,34 @@ toc_sticky: true
 
 <br>
 
-## Scheduling Criteria
+## Scheduling Criteria(뭐가 더 좋은지를 비교할 수 있는 기준)
 
 - Different algorithms have different properties which may favor 1 class of  process over another 
   - Need criteria to measure performance of various algorithms 
+
+
+
 - CPU utilization – keep the CPU as busy as possible 
   - Percentage of time CPU is busy 
-    - 0~100 % CPU overload, too many waiting jobs 
+    - 0~100 % CPU **overload**(100), too many waiting jobs 
+      - 0: CPU가 사용자 process는 사용하지 않고 오직 OS만
+      - 100: 사용자 process만 계속해서 실행됨.
 - Throughput – # of processes that complete their execution per time unit 
-  - Size of job affect throughput 
-- Turnaround time – amount of time to execute a particular process 
+  - 단위 시간당 얼마나 많은 process가 실행되었는지
+  - **Size of job affect throughput** 
+- Turnaround time – amount of time to execute a particular process (**running + waiting,** not ready)
+  - process가 실행되고나서 종료될 때까지의 시간
   - Total waiting time at all queues & execution time (batch?) 
+    - execution time: running state에서 머문 시간
+    - total waiting time at all queues: waiting state에서 머문 시간
 - Waiting time 
-  - amount of time a process has been waiting in the ready,  
-  - CPU scheduling alg. Does not affect the amount of time during which a  process executes or does I/O  
+  - amount of time a process has been waiting **in the ready**,  
+    - <mark>waiting time은 ready에서 머문 시간!!!!!!!!!!!!!</mark>
+  - CPU scheduling alg. Does not affect the amount of time during which a process executes or does I/O  
+    - CPU scheduling 알고리즘은 ready queue에서 대기한 시간에는 영향을 주지만 running 상태나 waiting 상태에서 머문 시간에는 아무런 영향도 주지 않는다.
   - It affects only the amount of time that a process spends waiting in the  Ready Q 
-- Response time – amount of time it takes from when a request was submitted  until the first response is produced, not output (for time-sharing environment)
+- Response time – amount of time it takes from when a request was submitted until the first response is produced, not output (for time-sharing environment)
+  - 프로세스 요청(실행 요구)된 순간부터 사용자가 응답을 받은 순간까지 걸린 시간 
 
 
 
@@ -148,7 +167,7 @@ toc_sticky: true
 - Min waiting time  
 - Min response time 
 - Fairness 
-  - No particular job should be overly penalized through CPU  schedulin
+  - No particular job should be overly penalized(피해를 받는) through CPU  scheduling
 
 
 
@@ -163,7 +182,7 @@ toc_sticky: true
 
 ![image-20220927151918471](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927151918471.png)
 
-- CPU utilization = busy time / total = 8/14 = 50 % 
+- CPU utilization = busy time / total = 8/14 = 57 % 
 - Throughput = 2 jobs/ 14 secs = 1/7 
 - Turnaround time
 
@@ -177,7 +196,7 @@ toc_sticky: true
 
 ![image-20220927151959948](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927151959948.png)
 
-
+- Throughput = 1/4 (not 1/7, 위 사진에서 오타남)
 
 
 
@@ -189,7 +208,7 @@ toc_sticky: true
   - Job allocated CPU and can remain an CPU until 
     - Completes, I/O request, System call 
 - Preemptive (external stimulus) 
-  - A job on CPU can be removed (at any time) and replaced with  another user process
+  - A job on CPU can be removed (at any time) and replaced with **another user process**
 
 
 
@@ -209,7 +228,8 @@ toc_sticky: true
 
 
 - Waiting time for P1 = 0; P2 = 24; P3 = 27 
-- Average waiting time: (0 + 24 + 27)/3 = 17
+  - Average waiting time: (0 + 24 + 27)/3 = 17
+
 
 
 
@@ -217,7 +237,7 @@ toc_sticky: true
 
 ## FCFS Scheduling (Cont.)
 
-Suppose that the processes arrive in the order P2 , P3 , P1 .
+**Suppose** that the processes arrive in the order P2 , P3 , P1 .
 
 
 
@@ -226,11 +246,19 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 ![image-20220927152157395](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927152157395.png)
 
 - Waiting time for P1 = 6; P2 = 0; P3 = 3 
-- Average waiting time: (6 + 0 + 3)/3 = 3 
+  - Average waiting time: (6 + 0 + 3)/3 = 3 
+
 - Much better than previous case. 
-- Convoy effect - short process behind long process 
+- **Convoy effect** - short process behind long process 
+  - short process가 long process 뒤에 서있는 효과
+  - 쇼핑카트에 물건이 많은 사람이 맨 앞에 서있으면 오래 걸림.
+
 - CPU bound job may benefit 
+  - CPU utilization이 높아지기 때문에 
+
 - I/O bound may be penalized
+  - waiting 시간이 길어지기 때문에
+
 
 
 
@@ -240,7 +268,7 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 - Problem 
   - Wide variance in turnaround time 
-  - Suceptible to convoy effect 
+  - Suceptible(민감) to convoy effect 
   - Bad for small jobs 
   - Troublesome for timesharing system 
 - Advantage 
@@ -257,13 +285,14 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
   - Use these lengths to schedule the process with the shortest time. 
   - Ready list is sorted in increasing order 
 - Two schemes:  
-  - Non-preemptive – once CPU given to the process it cannot be  preempted until completes its CPU burst. 
+  - **Non-preemptive** 
+    - once CPU given to the process it cannot be  preempted until completes its CPU burst. 
   - Preemptive  
-  - if a new process arrives with CPU burst length less than remaining  time of current executing process, preempt.  
-  - This scheme is known as the  Shortest-Remaining-Time-First (SRTF). 
-- SJF is optimal – gives minimum average waiting time for a given set of  processes. 
+    - if a new process arrives with CPU burst length **less than remaining time of current executing process**, preempt(뺏는다.).  
+    - This scheme is known as the  Shortest-Remaining-Time-First (SRTF). 
+- SJF is optimal – gives minimum average waiting time for a given set of processes. 
   - The difficulty is knowing the length of the next CPU request 
-  - Could ask the user
+  - How to know length of the next CPU burst? -> Could ask the user(정확도가 좀 떨어짐)
 
 
 
@@ -271,19 +300,25 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 ## Example of Non-Preemptive SJF
 
+이해를 위해 실제로 그럴 확률은 적지만 I/O burst가 없는 상황을 예로 보겠다.
+
 ![image-20220927152353544](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927152353544.png)
 
 - SJF (non-preemptive)
 
+- P2가 먼저 왔더라도 P1이 실행된 이후에 Burst time을 따져봤을 때 P3가 더 짧기 때문에 먼저 실행한다.
+
 ![image-20220927152405017](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927152405017.png)
 
-- Average waiting time = (0 + 6 + 3 + 7)/4 - 4
+- Average waiting time = (0 + 6 + 3 + 7)/4 = 4
 
 
 
 <br>
 
 ## Example of Preempitve SJF
+
+앞과 같은 예제 - preemptive 버전
 
 ![image-20220927152427425](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927152427425.png)
 
@@ -293,9 +328,9 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 ![image-20220927152440692](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927152440692.png)
 
-
-
-
+- running 상태에 진입을 했어도 preemption 조건이 만족되면 preempt를 실행한다.
+  - P1은 0초에 도착하여 P1 밖에 없으므로 실행을 하다가 2초가 되었을 때 P2가 도착하는데 이 때 P1의 남은 Burst Time은 5초이고 P2는 4초이므로 preemption을 진행하여 P2가 CPU를 빼앗아 실행을 진행한다.
+- Average waiting time = (9 + 1 + 0 + 2) / 4 = 3
 
 <br>
 
@@ -317,12 +352,15 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 ## problem
 
-- Starvation 
+- Starvation  -  프로세스가 끊임없이 필요한 컴퓨터 자원을 가져오지 못하는 상황
+  - fairness 문제
   - The granting of service to particular job is postponed forever 
   - Infinite wait 
   - Ex) job A 20 
-  - B 3 
-  - C 3 …
+    - B 3 
+    - C 3 …
+    - A가 너무 길어서 다른 프로세스가 올 때마다 다른 프로세스를 실행하느라 A를 계속 실행을 못하게 됨
+  
 
 
 
@@ -330,14 +368,16 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 ## Determining Length of Next CPU Burst
 
-- Although SJF is optimal, it can not be implemented. 
-  - There is no way to know the length of the next CPU burst 
+- Although SJF is optimal, it **can not be implemented**. 
+  - There is **no way to know** the length of the next CPU burst 
   - Can only predict the length. 
-- The next CPU burst is predicted as an exponential average of the  measured lengths of previous CPU burst
+- The next CPU burst is **predicted** as an exponential average of the  measured lengths of previous CPU burst
 
 ![image-20220927152732740](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927152732740.png)
 
 - Commonly, α set to ½
+
+  
 
 
 
@@ -351,15 +391,18 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
   - Current conditions are assumed to be transient 
 - α =1 
   - tau<sub>n+1</sub> = t<sub>n</sub> 
+  - 전에 실행되었던 실측치 만으로 tau_n+1 을 결정
   - Only the actual last CPU burst counts. 
-  - History is assumed to be old and irrelevant (Fig. 5.3 α =0.5) 
+  - History is assumed to be **old** and **irrelevant** (Fig. 5.3 α =0.5) 
 - If we expand the formula, we get:
 
 ![image-20220927152922082](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927152922082.png)
 
 
 
-- Since both α and (1 - α) are less than or equal to 1, each successive  term has less weight than its predecessor 
+- Since both α and (1 - α) are less than or equal to 1, each successive term has less weight than its predecessor 
+  - 그 전보다 낮은 weight를 가지게 됨
+
 
 
 
@@ -369,21 +412,25 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 ![image-20220927153000704](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927153000704.png)
 
-
+tau가 실측치 t에 거의 근사한 모습이다.
 
 <br>
 
 ## Priority Scheduling
 
-- A priority number (integer) is associated with each process 
-- The CPU is allocated to the process with the highest priority  (smallest integer 
-- highest priority). 
+- A **priority** number (임의로 주어진 integer) is associated with **each process** 
+  - SJF와는 조금 다름(SJF는 next CPU burst time만으로 결정)
+  - PS는 각 process에게 주어진 priority number로 결정
+
+- The CPU is allocated to the process with the highest priority  (smallest integer = highest priority). 
   - Preemptive 
     - Control the length of time a job is on CPU 
   - Non-preemptive 
-- SJF is a priority scheduling where priority is the predicted next CPU  burst time. 
-- Problem define -> Starvation – low priority processes may never execute. 
-- Solution define ->  Aging – as time progresses, increase the priority of the  process
+- SJF is a priority scheduling where priority is the predicted next CPU burst time. 
+- Problem define = Starvation –> low priority processes may never execute. 
+- **Solution** define =  **Aging** –> as time progresses, increase the priority of the  process
+  - ready queue에 머문 시간이 길어질 수록 priority가 높아짐
+
 
 
 
@@ -406,16 +453,21 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 ## Round Robin (RR)
 
 - Designed for time sharing systems 
-- Each process gets a small unit of CPU time (time quantum), usually 10-100 milliseconds.  After this time has elapsed, the process is preempted and added to the end of the ready  queue. 
-- If there are n processes in the ready queue and the time quantum is q, then each  process gets 1/n of the CPU time in chunks of at most q time units at once. No process  waits more than (n-1)q time units. 
-- Performance of RR depends heavily on the size of Time Quantum 
+- Each process gets a small unit of CPU time (**time quantum**), usually 10-100 milliseconds.  After this time has elapsed, the process is preempted and added to the **end** of the ready  queue. 
+  - time quantum: running state에서 머무를 수 있는 최대 시간
+
+- If there are n processes in the ready queue and the time quantum is q, then each  process gets 1/n of the CPU time in chunks of at most q time units at once. <mark>No process  waits more than (n-1)q time units. </mark>
+  - **fairness 보장**
+
+- Performance of RR **depends** heavily on the **size of Time Quantum** 
   - q large => FIFO 
     - Good for CPU bound, bad for interactive job 
     - Less context switch 
   - q small =>
     - Processor sharing 
-      - Appears to user as though each of n processes has its own processor  running at 1/n the speed of real processor 
+      - Appears(착각) to user as though each of n processes has its own processor running at 1/n the speed of real processor 
     - q must be large with respect to context switch, otherwise overhead is too high.
+      - context switching을 너무 자주 하면서 생기는 overhead
 
 
 
@@ -429,7 +481,8 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 ![image-20220927153357582](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927153357582.png)
 
-- Typically, higher average turnaround than SJF, but better response. 
+- P2는 burst time이 17이라 20이라는 time quantum을 다 사용하지 않고 마무리됨
+- Typically, **higher average turnaround** than SJF, **but better response**. 
 - q should be large compared to context switch time 
 - q usually 10ms to 100ms, context switch < 10 usec
 
@@ -441,7 +494,7 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 ![image-20220927153433105](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927153433105.png)
 
-
+high time quantum makes overhead
 
 <br>
 
@@ -451,7 +504,7 @@ Suppose that the processes arrive in the order P2 , P3 , P1 .
 
 
 
-
+올바른 time quantum 값을 정하기 어려움(비례하거나 반비례하지 않음)
 
 <br>
 
