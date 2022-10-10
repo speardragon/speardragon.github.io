@@ -38,11 +38,12 @@
       </ul> 
 
       <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
-      <span class="nav__sub-title">🎨FrontEnd</span>
+      <span class="nav__sub-title">🎨 FrontEnd</span>
       <ul>
           <!-- 하위 카테고리 -->
           {% for category in site.categories %}
           {% if category[0] == "ReactNative" %}<li><a href="/categories/reactnative" class="">{{category[0]}} ({{category[1].size}})</a></li>
+          {% elsif category[0] == "HCI" %}<li><a href="/categories/hci" class="">{{category[0]}} ({{category[1].size}})</a></li>
           {% endif %}
           {% endfor %}
       </ul> 
