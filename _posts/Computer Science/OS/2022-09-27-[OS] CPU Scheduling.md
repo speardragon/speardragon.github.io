@@ -56,7 +56,7 @@ toc_sticky: true
 - Maximum CPU utilization obtained with multiprogramming 
 - CPU–I/O Burst Cycle – Process  execution consists of a cycle of  CPU execution and I/O wait 
 - CPU burst followed by I/O burst 
-- CPU burst distribution is of main  concern
+- CPU burst distribution is of main concern
 
 ![image-20220927151336894](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927151336894.png)
 
@@ -510,14 +510,18 @@ high time quantum makes overhead
 
 ## Mulitilevel Queue Scheduling
 
-- Ready queue is partitioned into separate queues: foreground (interactive) background (batch) 
+- **Ready queue is partitioned** into separate **queues**: 
+  foreground (interactive) 
+  background (batch) 
 - Process permanently in a given queue 
 - Each queue has its own scheduling algorithm,  
-  - foreground – RR 
-  - background – FCFS 
+  - foreground – RR (Round Robin)
+  - background – FCFS (First come First served)
 - Scheduling must be done between the queues. 
-  - Fixed priority preemptive scheduling; i.e., serve all from  foreground then from background. Possibility of starvation. 
+  - Fixed priority preemptive scheduling; i.e., serve all from  foreground then from background.  (foreground에 하나라도 있으면 그거먼저(preemption) scheduling)
+    - Possibility of starvation.
   - Time slice – each queue gets a certain amount of CPU time  which it can schedule amongst its processes; i.e., 80% to foreground in RR, 20% to background in FCFS
+    - starvation reduces
 
 
 
@@ -533,10 +537,12 @@ high time quantum makes overhead
 
 ## Multilevel Feedback Queue Scheduling
 
-- In a Multi-level queue scheduling, processes are permanently assigned to a  queue on entry to the system 
+feedback을 허용하는 방식
+
+- **In a Multi-level queue** scheduling, processes are permanently assigned to a  queue on entry to the system (queue 간의 이동을 금지)
   - Processes do not move between queues  
 - A process can move between the various queues;  
-  - If a process uses too much CPU time, it will be moved to a lower  priority queue 
+  - If a process uses too much CPU time, it will be moved to a lower priority queue 
   - A process that waits too long in a lower priority queue may be moved  to a higher priority queue 
     - aging can be implemented this way. (prevents starvation) 
 - Multilevel-feedback-queue scheduler defined by the following parameters: 
@@ -545,7 +551,7 @@ high time quantum makes overhead
   - method used to determine when to upgrade a process 
   - method used to determine when to demote a process 
   - method used to determine which queue a process will enter when that  process needs service 
-  - I/O bound or interactive processes to the higher priority q
+    - I/O bound or interactive processes to the higher priority q
 
 
 
@@ -555,7 +561,13 @@ high time quantum makes overhead
 
 ![image-20220927153706500](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927153706500.png)
 
+interactive 성격을 띠는 process는 CPU burst time이 짧기 때문에 quantum 값을 작게 준다.
 
+우선순위가 낮아질 수록 quantum 값을 크게 줌.
+
+FCFS는 time quantum이 존재하지 않는다.
+
+- 사용할 수 있다면 CPU time을 만들어 바로 사용할 수 있는 방식이기 때문에
 
 
 
@@ -591,11 +603,14 @@ high time quantum makes overhead
 
 ![image-20220927154038193](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927154038193.png)
 
+- OS가 하는 결정: 여러 개 커널 thread 중에서 어떤 커널 thread가 먼저 실행 될지
+- user level에서 하는 결정: 어떤 user thread가 LWP에 할당될 것인가
+
 <br>
 
 ## Review: Scheduler Activations
 
-- How many LWPs to create? 
+- How many LWPs to create? (for user thread)
 - CPU-bound application running on a processor:  
   - only one thread can run at a time, so one LWP is sufficient 
   - Other type of application may require multiple LWPs (concurrent threads) 
@@ -617,7 +632,7 @@ high time quantum makes overhead
 
 ## Thread Scheduling: Contention scope
 
-- When threads supported by OS, threads (not processes) are scheduled,  
+- When threads supported by OS, **threads** (not processes) are scheduled,  
 - user-level과 kernel-level threads의 차이는 scheduling 되는 방법에 있음 
 - User-level threads are managed by thread library, kernel is unaware of them 
   - To run on CPU, user-level threads should be mapped to kernel-level threads  
@@ -639,7 +654,7 @@ high time quantum makes overhead
 ## Contention scope
 
 - Kernel thread are scheduled onto available CPU is system-contention scope (SCS) – competition among all threads in system 
-- System using O:O model (window, Linux) schedules threads using only SCS
+- System using O:O model (window, Linux) schedules threads **using only SCS**
 
 
 
@@ -725,12 +740,12 @@ void *runner(void *param)
 
 ## Approaches to Multiple-Processor Scheduling
 
-- Asymmetric multiprocessing  
+- **Asymmetric** multiprocessing  
   - only one processor handles scheduling decision, I/O processing and  system activities such as accessing the system data structures 
   - The other processors only execute use code 
   - alleviating the need for data sharing. 
   - Much simpler than symmetric multiprocessing 
-- Symmetric multiprocessing (SMP) - each processor is self-scheduling,  
+- **Symmetric** multiprocessing (SMP) - each processor is **self-scheduling**,  
   - all processes in common ready queue (has race condition problem),  
   - or each has its own private queue of ready processes 
     - Currently, most common 
