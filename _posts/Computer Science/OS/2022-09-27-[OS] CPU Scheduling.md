@@ -7,6 +7,12 @@ toc: true
 toc_sticky: true
 ---
 
+
+
+1, 2 장 출제 x (참고자료로 사용)
+
+
+
 # Chapter 5: CPU Scheduling
 
 - Basic Concepts 
@@ -121,6 +127,8 @@ toc_sticky: true
   - switching to user mode 
   - jumping to the proper location in the user program to restart that program 
 - Dispatch latency – time it takes for the dispatcher to stop one process and start  another running.
+  - real-time processing을 할 때, 이를 최소화 시키는 것이 중요함.
+
 
 
 
@@ -130,6 +138,7 @@ toc_sticky: true
 
 - Different algorithms have different properties which may favor 1 class of  process over another 
   - Need criteria to measure performance of various algorithms 
+  - 목적에 따라 다른 기준 적용
 
 
 
@@ -149,6 +158,7 @@ toc_sticky: true
 - Waiting time 
   - amount of time a process has been waiting **in the ready**,  
     - <mark>waiting time은 ready에서 머문 시간!!!!!!!!!!!!!</mark>
+    - ready는 실행을 하고 싶은데 못하고 있는 상황이기 때문에
   - CPU scheduling alg. Does not affect the amount of time during which a process executes or does I/O  
     - CPU scheduling 알고리즘은 ready queue에서 대기한 시간에는 영향을 주지만 running 상태나 waiting 상태에서 머문 시간에는 아무런 영향도 주지 않는다.
   - It affects only the amount of time that a process spends waiting in the  Ready Q 
@@ -168,6 +178,7 @@ toc_sticky: true
 - Min response time 
 - Fairness 
   - No particular job should be overly penalized(피해를 받는) through CPU  scheduling
+  - 리눅스의 aging 기법과 같은 애가 이를 해결함.(일정 시간이 지날수록 우선순위가 점점 높아짐)
 
 
 
@@ -177,7 +188,7 @@ toc_sticky: true
 
 - Process A, B : each job requires 4 sec CPU time 
 - Assuming each exhibit following behavior 
-  - CPU burst 1sec, I/O burst 1 sec -> 4sec CPU burst, 3 sec I/O burst 
+  - CPU burst 1sec, I/O burst 1 sec -> 완전히 실행되기 위해선 4sec CPU burst, 3 sec I/O burst 필요
   - Strategy: 1 job run to completion
 
 ![image-20220927151918471](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927151918471.png)
@@ -292,7 +303,7 @@ toc_sticky: true
     - This scheme is known as the  Shortest-Remaining-Time-First (SRTF). 
 - SJF is optimal – gives minimum average waiting time for a given set of processes. 
   - The difficulty is knowing the length of the next CPU request 
-  - How to know length of the next CPU burst? -> Could ask the user(정확도가 좀 떨어짐)
+  - **How to know length of the next CPU burst?** -> Could ask the user(정확도가 좀 떨어짐)
 
 
 
@@ -317,6 +328,8 @@ toc_sticky: true
 <br>
 
 ## Example of Preempitve SJF
+
+<mark>아래 차트 그리는 문제 나올 듯</mark>
 
 앞과 같은 예제 - preemptive 버전
 
@@ -455,10 +468,8 @@ tau가 실측치 t에 거의 근사한 모습이다.
 - Designed for time sharing systems 
 - Each process gets a small unit of CPU time (**time quantum**), usually 10-100 milliseconds.  After this time has elapsed, the process is preempted and added to the **end** of the ready  queue. 
   - time quantum: running state에서 머무를 수 있는 최대 시간
-
 - If there are n processes in the ready queue and the time quantum is q, then each  process gets 1/n of the CPU time in chunks of at most q time units at once. <mark>No process  waits more than (n-1)q time units. </mark>
-  - **fairness 보장**
-
+  - **fairness 보장**하는 방식!!!
 - Performance of RR **depends** heavily on the **size of Time Quantum** 
   - q large => FIFO 
     - Good for CPU bound, bad for interactive job 
@@ -515,8 +526,8 @@ high time quantum makes overhead
   background (batch) 
 - Process permanently in a given queue 
 - Each queue has its own scheduling algorithm,  
-  - foreground – RR (Round Robin)
-  - background – FCFS (First come First served)
+  - **foreground – RR (Round Robin)**
+  - **background – FCFS (First come First served)**
 - Scheduling must be done between the queues. 
   - Fixed priority preemptive scheduling; i.e., serve all from  foreground then from background.  (foreground에 하나라도 있으면 그거먼저(preemption) scheduling)
     - Possibility of starvation.
@@ -592,10 +603,11 @@ FCFS는 time quantum이 존재하지 않는다.
 
 ## Review: Scheduler Activations
 
-- Communication between kernel and thread library 
-  - Both M:M and Two-level models require  communication to maintain the appropriate number of  kernel threads allocated to the application 
+- Communication between kernel and **thread library** 
+  - Both M:M and Two-level models require communication to maintain the appropriate number of  kernel threads allocated to the application 
   - This communication allows an application to maintain  the correct number kernel threads for performance 
-- Typically use an intermediate data structure between user  and kernel threads - **lightweight process (LWP)** 
+- Typically use an intermediate data structure between user  and kernel threads - **lightweight process (LWP)** : 자료구조의 일종(유저스레드와 커널스레드에 mapping 정보를 담는)
+  - 한 애플리케이션에서 사용될 커널 스레드의 갯수를 타협하는 애
   - Appears to be a virtual processor on which process  can schedule user thread to run 
   - Each LWP attached to kernel thread 
   - OS schedules kernel threads to run on a physical  processor 
@@ -603,14 +615,17 @@ FCFS는 time quantum이 존재하지 않는다.
 
 ![image-20220927154038193](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927154038193.png)
 
-- OS가 하는 결정: 여러 개 커널 thread 중에서 어떤 커널 thread가 먼저 실행 될지
-- user level에서 하는 결정: 어떤 user thread가 LWP에 할당될 것인가
+- OS의 CPU scheduler가 하는 결정: 여러 개 커널 thread 중에서 어떤 커널 thread가 먼저 실행 될지
+  - CPU에 의해서 실행되기 때문에 kernel thread라고 불리는 것.
+
+- user level(<mark>thread library</mark>)하는 결정: 어떤 user thread가 LWP에 할당될 것인가
 
 <br>
 
 ## Review: Scheduler Activations
 
-- How many LWPs to create? (for user thread)
+How many LWPs(i.e., kernel thread) to create? (for user thread)
+
 - CPU-bound application running on a processor:  
   - only one thread can run at a time, so one LWP is sufficient 
   - Other type of application may require multiple LWPs (concurrent threads) 
@@ -619,8 +634,9 @@ FCFS는 time quantum이 존재하지 않는다.
   - a communication mechanism from the kernel to the thread library 
   - Kernel provides an application with a set of LWPs 
   - Kernel must inform an application about certain events (upcall) 
-    - Ex: notify which application thread is about to block 
+    - Ex: **notify which application thread is about to block** -> 그럼 다른 유저스레드 할당할 수 있겠네??
     - Upcalls are handled by the thread library with an upcall handler, which  must run on a LWP – Kernel allocates a new LWP to the application,  
+      - available kernel thread의 갯수를 조정해주는 -> upcall
     - upcall handler 실행, blocking thread의 state save 
     - blocking thread를 실행하던 기존 LWP는 반납 
     - upcall handler는 이 LWP에 다른 thread를 scheduling 함. 
@@ -641,9 +657,9 @@ FCFS는 time quantum이 존재하지 않는다.
     - Thread library schedules user-level threads to run on available LWP 
       - CPU에 의해 실행되는 것을 의미하는 것이 아님. 
     - Each LWP attached to kernel thread  
-    - How many LWPs to create? 
-  - managed by thread library 
-  - Known as **process-contention scope (PCS)** since scheduling competition is within the process 
+    - How many LWPs to create? - managed by thread library 
+  - Known as **process-contention scope (PCS)** <mark>since scheduling competition is within the process </mark>
+    - 어플리케이션 내에서
   - PCS is done via priority set by programmer 
   - Both M:M and Two-level models require communication to maintain the  appropriate number of kernel threads allocated to the application
 
@@ -653,10 +669,9 @@ FCFS는 time quantum이 존재하지 않는다.
 
 ## Contention scope
 
-- Kernel thread are scheduled onto available CPU is system-contention scope (SCS) – competition among all threads in system 
-- System using O:O model (window, Linux) schedules threads **using only SCS**
-
-
+- Kernel thread are scheduled onto available CPU is **system-contention scope** (SCS) – competition among all threads in system 
+- System using O:O(one-to-one) model (window, Linux) schedules threads **using only SCS**
+  - 선발할 이유가 없음, 어차피 OS는 소속을 보지 않기 때문에
 
 <br>
 
@@ -726,13 +741,14 @@ void *runner(void *param)
   - Currently, applies to 
     - Multi-core CPU 
     - Multi-threaded cores 
-    - NUMA systems 
+    - NUMA(non uniform memory access) systems 
+      - CPU마다 자기만 access하는 memory가 있다. (그래서 memory마다 접근하는 시간이 다 다르다.)
     - Heterogeneous multiprocessing 
-- Homogeneous processors within a multiprocessor. 
+- **Homogeneous processors** within a multiprocessor. 
   - Any available processor can be used to run any process in the queue 
-- Heterogeneous processors 
+- **Heterogeneous processors** 
   - Only programs compiled for a given processor’s instruction set could  be run on that processor 
-- Allows several processes to run in parallel by providing multiple physical  processors 
+- Allows several processes to run **in parallel by providing multiple physical  processors** 
 
 
 
@@ -742,32 +758,40 @@ void *runner(void *param)
 
 - **Asymmetric** multiprocessing  
   - only one processor handles scheduling decision, I/O processing and  system activities such as accessing the system data structures 
+    - cpu 중에 대장인 master cpu가 있다.
+    - 한 cpu가 스케쥴링, I/O 프로세싱을 지시하고 나머지 cpu는 시키는 일을 받아서 한다.
   - The other processors only execute use code 
-  - alleviating the need for data sharing. 
+  - alleviating the need for data sharing. (메모리 쉐어링을 할 필요가 없음.)
   - Much simpler than symmetric multiprocessing 
 - **Symmetric** multiprocessing (SMP) - each processor is **self-scheduling**,  
+  - 모두 동등한 cpu이다. 스케쥴링도 cpu 별로 각자 알아서 한다
   - all processes in common ready queue (has race condition problem),  
   - or each has its own private queue of ready processes 
     - Currently, most common 
   - Load sharing 
     - Common ready queue, and are scheduled onto any available  processor
+  
 
 
 
 <br>
 
-## Multiple-Processor Scheduling - Load balancing
+## Multiple-Processor Scheduling - Load Balancing
 
 - If SMP, need to keep all CPUs loaded for efficiency 
 - Load balancing attempts to keep workload evenly distributed 
 - Push migration – periodic task checks load on each processor, and if  found pushes task from overloaded CPU to other CPUs 
-- Pull migration – idle processors pulls waiting task from busy  processor
+  - 실행 상태(live)에서 이주 시킨다.
+
+- Pull migration – idle(한가한) processors pulls waiting task from busy processor
 
 
 
 <br>
 
 ## Processor affinity
+
+- CPU 별로 특성이 있는 경우
 
 - 실행중인 프로세서에서 계속 실행시키면 
   - Cache memory 잔상을 이용하여 fast successive memory  access 효과 기대 
