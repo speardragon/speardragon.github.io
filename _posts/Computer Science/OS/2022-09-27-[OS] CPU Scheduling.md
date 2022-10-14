@@ -44,7 +44,7 @@ toc_sticky: true
 - 목적: **Maximum CPU utilization** obtained with multiprogramming 
   - When one process has to wait, OS takes the CPU away from that process and gives the CPU to another process 
 - The success of CPU scheduling depends on the property 
-  - CPU–I/O Burst Cycle  
+  - CPU – I/O Burst Cycle  
   - Process execution consists of a cycle of CPU execution and I/O  wait. 
     - Process execution begins with CPU burst 
     - Process execution ends with CPU burst 
@@ -80,22 +80,23 @@ toc_sticky: true
 
 - **Short-term scheduler** selects from among the processes in memory that are ready to execute, and allocates the CPU to one of them. 
   - Queue may be ordered in various ways 
-  - Ready queue may be implemented as FIFO Q, priority Q, tree, linked  list 
+  - **Ready queue** may be implemented as FIFO Q, priority Q, tree, linked  list 
 
 - The records in the q are generally PCBs of the processes 
 - CPU scheduling decisions may take place when a process: 
-  1. Switches from running to waiting state.
-  2. Switches from running to ready state. 
-  3. Switches from waiting to ready. 
-  4. Terminates. 
+  1. Switches from **running** to **waiting** state.
+  2. Switches from **running** to **ready** state. 
+  3. Switches from **waiting** to **ready**. (우선순위가 높은 프로세스의 경우 waiting에서 running으로 갈 여지도 있음)
+  4. **Terminates**. 
 - Scheduling under 1 and 4 is nonpreemptive. 
   - 스스로 끝났거나 waiting으로 갔기 때문에
 
 - Preemptive scheduling is possible under 2 and 3 
-  - Consider access to shared data 
-  - Consider preemption while in kernel mode 
-  - Consider interrupts occurring during crucial OS activities
-  - time quantum으로 강제로 CPU를 뺏기 때문
+  - 하지만 고려사항이 있음
+    - Consider access to shared data (data consistency)
+    - Consider preemption while in kernel mode (kernel data의 protection)
+    - Consider interrupts occurring during crucial OS activities
+  - 2번 runnung -> ready : time quantum으로 강제로 CPU를 뺏기 때문
   - waiting에서 event가 completion이 되었다면 running을 해야 하는데 ready를 거쳤다가 가게된다.
     - 이때, 해당 process가 우선순위가 굉장히 높다면 설령 ready queue에 여러 다른 프로세스가 있어도 곧바로 running으로 갈 수 있는 여지도 있다.
     - 즉, 우선순위가 무지하게 높은 프로세스가 waiting이 끝나서 ready로 가는 경우 preemption이 일어난다.
@@ -122,13 +123,12 @@ toc_sticky: true
 ## Dispatcher
 
 - Dispatcher module gives control of the CPU to the process selected by the short-term scheduler; this involves: 
-  - switching context 
-    - context가 바뀔 때 해당 process가 block 되면서 남긴 running snapshot 정보를 PCB에 저장해 두었다가 다시 실행 될 때 해당 running snapshot을 복구하여 실행된다.
+  - switching context (by OS)
+    - context가 바뀔 때 해당 process가 block 되면서 남긴 running snapshot 정보를 PCB에 저장해 두었다가 다시 실행 될 때 해당 running snapshot을 복원하여 실행된다.
   - switching to user mode 
   - jumping to the proper location in the user program to restart that program 
 - Dispatch latency – time it takes for the dispatcher to stop one process and start  another running.
   - real-time processing을 할 때, 이를 최소화 시키는 것이 중요함.
-
 
 
 
@@ -146,7 +146,7 @@ toc_sticky: true
   - Percentage of time CPU is busy 
     - 0~100 % CPU **overload**(100), too many waiting jobs 
       - 0: CPU가 사용자 process는 사용하지 않고 오직 OS만
-      - 100: 사용자 process만 계속해서 실행됨.
+      - 100: OS는 실행이 안되고 사용자 process만 계속해서 실행됨.
 - Throughput – # of processes that complete their execution per time unit 
   - 단위 시간당 얼마나 많은 process가 실행되었는지
   - **Size of job affect throughput** 
