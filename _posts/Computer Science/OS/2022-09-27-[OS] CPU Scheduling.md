@@ -9,7 +9,7 @@ toc_sticky: true
 
 
 
-1, 2 장 출제 x (참고자료로 사용)
+1, 2 장 출제 x (참고자료로 사용) - 여기까지 시험범위
 
 
 
@@ -789,20 +789,20 @@ void *runner(void *param)
 
 <br>
 
-## Processor affinity
+## Processor affinity(친화적인)
 
 - CPU 별로 특성이 있는 경우
 
 - 실행중인 프로세서에서 계속 실행시키면 
-  - Cache memory 잔상을 이용하여 fast successive memory  access 효과 기대 
+  - Cache memory 잔상을 이용하여 fast successive memory access 효과 기대 
 - common ready queue 
 - private ready queue : 보다 나은 processor affinity 효과 
 - process has affinity for processor on which it is currently running 
-  - soft affinity 
-  - hard affinity 
+  - soft affinity : process affinity를 반드시 보장해야 하는 것은 아닌
+  - hard affinity : 반드시 보장해야 하는
   - Variations including processor sets
 
-
+- 프로세스가 돌다가 waiting 상태가 되었을 때 다시 돌아오려고 할 때 돌던 곳으로 돌아와서 실행하는 것이 좋은가 아니면 load balance를 고려했을 때 해당 프로세스가 실행될 지점의 load가 큰 경우 어떻게 해야 하는가?
 
 <br>
 
@@ -833,12 +833,22 @@ Note that memory-placement algorithms can  also consider affinity
 ## Multicore Processors
 
 - Memory stall 
+  - 메모리 access 와 CPU 성능 차이 때문에 CPU가 놀고 있는 것
+
 - Resulted from speed gap between CPU and memory, cache miss  
 - Multiple threads per core also growing 
   - Takes advantage of memory stall to make progress on another thread  while memory retrieve happens 
-- Multithreaded processing core in which several hardware threads are assigned to each core (chip multi-threading or hyper-threading) 
+- **Multithreaded processing core** in which several **hardware threads** are assigned to each core **(chip multi-threading or hyper-threading)** 
   - If one hardware thread stalls while waiting for memory, the core can switch to  another thread 
   - Oracle Sparc M7 processor 8 threads per core, 8 cores per processor, thus  providing OS with 64 logical CPUs 
+
+
+
+---
+
+atomic operation: instruction cycle을 중지시킬 interrupt는 존재하지 않음.
+
+---
 
 
 
@@ -848,13 +858,13 @@ Note that memory-placement algorithms can  also consider affinity
 
 ![image-20220927154752640](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927154752640.png)
 
-
+hyper thread: memory stall 시간 안에 여러 개의 thread를 concurrent하게 실행 함.
 
 <br>
 
 ## Heterogeneous multiprocessing
 
-- Homogeneous multiprocessing 
+- **Homogeneous multiprocessing** 
   - All processors are identical in terms of capabilities, allowing any  thread can run any processing core 
   - Memory access time can be vary according to load balancing,  processor affinity policy,  
 - Mobile systems include multi-core architecture that run the same  instruction set 
@@ -869,11 +879,16 @@ Note that memory-placement algorithms can  also consider affinity
 
 ## Real-Time systems
 
-- Hard real-time systems - required to complete a critical task within a  guaranteed amount of time.  
+- 일 처리가 의미있는 시간 안에 완료되는 System
+
+- **Hard real-time systems** - required to complete **a critical task** within a  guaranteed amount of time.  
   - Resource reservation 
   - Scheduler should know exactly how long each os function takes to  perform and be guaranteed to take a maximum amount of time  
   - Such a guarantee is impossible in a general purpose system  
-- Soft real-time systems – requires that critical processes receive priority  over less fortunate ones. 
+  - 프로세스가 탑재되기 전에 실행 시간이 미리 정해져 있음
+- **Soft real-time systems** – requires that critical processes receive priority  over less fortunate ones. 
+  - 전화가 연결될 때 ring-back tone과 같은(특정 시간 안에 끝나는 것이 보장되지 않음)
+    - ring-back tone이 routing이 빠르게 되면 금방 들리겠지만 routing이 느리게 되면 몇십초 있다가 들릴 수 있다.
   - Priority scheduling w/O aging 
     - Starvation possible 
   - Dispatch latency must be small 
@@ -894,6 +909,8 @@ Note that memory-placement algorithms can  also consider affinity
 
 
 
+kernel code를 실행 중에 우선순위가 높은 프로세스가 들어오면 preemption
+
 <br>
 
 ## Event Latency
@@ -902,7 +919,7 @@ Note that memory-placement algorithms can  also consider affinity
   - Software event – timer expiration 
   - Hardware event  
 - Different latency requirements for the events  
-- It should be minimize
+- It should be minimize event latency
 
 ![image-20220927155042925](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155042925.png)
 
@@ -915,10 +932,20 @@ Note that memory-placement algorithms can  also consider affinity
 - Soft real-time systems - no guarantee as to when critical realtime process will be scheduled 
 - Hard real-time systems - task must be serviced by its deadline  
 - Two types of latencies affect  performance 
-  1. Interrupt latency – time from  arrival of interrupt at CPU to  start of routine that services  interrupt 
-  2. Dispatch latency – time for  schedule to take current  process off CPU and switch  to another
+  1. **Interrupt latency** – time from  arrival of interrupt at CPU to  start of routine that services  interrupt 
+     - interrupt가 발생하고 (CPU가 인지하고) ISR(Interrupt Service Routine)이 실행되는 시간까지의 간격
+  2. **Dispatch latency** – time for  schedule to take current  process off CPU and switch  to another
+     - 현재 돌고있는 프로세스를 끌어내리고 새로 run 할 프로세스로 바꾸는 시간
 
 ![image-20220927155301424](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155301424.png)
+
+- In Linux ISR이 두 개로 나눠짐, Top half, Bottom half
+
+- interrupt를 CPU가 감지하기 까지 걸린 시간(delay)
+  - interrupt 우선순위가 낮을 수록 이 delay가 커진다.
+- context switch: 프로세스의 잔상을 저장
+  - interrupt를 처리하고 되돌아 온다는 보장이 없는데 그러면 되돌아오지 않기 때문에 context switching이 필요하다.
+- interrupt latency: 이벤트가 발생한 시점부터 ISR이 딱 실행될 때까지의 시간
 
 <br>
 
@@ -934,13 +961,17 @@ Note that memory-placement algorithms can  also consider affinity
 
 - Amount of time required for dispatcher to stop one process and start another.  
 - To keep dispatch latency low, we need to allow  
-  - Conflict phase of dispatch latency (수 msecs): 
+  - **Conflict phase** of dispatch latency (수 msecs): 
     - Preemption of any process running in the kernel 
-    - Release by low-priority processes resources needed by a high-priority
+    - Release by low-priority processes **resources** needed by a high-priority
+      - 우선순위가 낮은 프로세스가 자원을 갖고 있는 경우 priority inversion
+      - prioity inversion: 순식간에 우선순위를 확 올려줘서 빨리 끝내게 하는
+      - ex) system call을 실행 중에 우선순위가 높은 놈이 큐에 들어오면 preemption이 진행되어야 하는데 안전하게 system call이 끝난 뒤에 하자니 real-time system이 보장되지 않기 때문에 이를 kernel에서 뺏어야 하는데 우선 순위가 높은 놈이 지금 쓰고 있던 놈의 자원을 필요로 할 수 있기 때문에 이를 priority inversion을 사용하는 것
 
 ![image-20220927155343341](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155343341.png)
 
-
+- interrupt processing: interrupt latency + ISR time
+- dispatch latency
 
 <br>
 
@@ -976,20 +1007,29 @@ Note that memory-placement algorithms can  also consider affinity
 
 ![image-20220927155522120](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155522120.png)
 
-
+- p: event 처리 시간
+- d: deadline
+- d < p 이면 real time 프로세싱이라고 할 수 없음
+- d > p 이면 처리 못한 애가 있는데 다음 거를 처리하게 되는 경우 발생 
 
 <br>
 
 ## Rate Monotonic Scheduling (1)
 
-- Schedules periodic tasks using a static priority with preemption  
-- A priority is assigned based on the inverse of its period 
+rate monohonic: 주기의 역순으로 우선순위를 설정
+
+- Schedules **periodic tasks** using a **static priority** with preemption  
+- A priority is assigned based on the inverse of its period -> 1/p 
 - Shorter periods = higher priority; 
 - Longer periods = lower priority 
 - Period: P1 = 50, p2 = 100 
 - Processing time: t1 = 20, t2 = 35 
-- CPU utilization = ti/pi ,    p1 -> 20/50 = 0.4,    p2 -> 35/100 = 0.35 
+- CPU utilization = ti/pi ,    p1 -> 20/50 = 0.4,    p2 -> 35/100 = 0.35
+  - 실제 처리에 필요한 시간의 비율 
+
 - Total CPU utilization = **0.75** -> both meet their deadlines 
+  - 둘 다 deadline 안에 처리가 가능하다.
+
 
 
 
@@ -997,13 +1037,15 @@ Note that memory-placement algorithms can  also consider affinity
 
 ## Rate Monotonic Scheduling (2)
 
-- If p2 is assigned higher priority than p1  p1 will miss its deadline
+만약 우선순위가 p이면 (not 1/p)
+
+- If p2 is assigned higher priority than p1 -> p1 will miss its deadline
 
 ![image-20220927155646648](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155646648.png)
 
 
 
-- P<sub>1</sub> is assigned a higher priority than P<sub>2</sub> . (rate monotonic) -> both can  meet deadlines
+- P<sub>1</sub> is assigned a higher priority than P<sub>2</sub> . (rate monotonic) -> both can meet deadlines
 
 ![image-20220927155708991](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155708991.png)
 
@@ -1015,6 +1057,8 @@ Note that memory-placement algorithms can  also consider affinity
 
 ## Missed Deadlines with Rate Monotonic Scheduling (3)
 
+rate monotonic scheduling은 완벽한 하드 리얼타임 시스템이 될 수 없음.
+
 - Optimal in which static priority is used 
 - Period: P1 = 50, p2 = 80 -> p1 will be assigned higher priority 
 - Processing time: t1 = 25, t2 = 35 
@@ -1025,6 +1069,10 @@ Note that memory-placement algorithms can  also consider affinity
 <br>
 
 ## Earliest Deadline First Scheduling (EDF)
+
+- 지금시점으로부터 deadline이 제일 임박한 애를 먼저 스케쥴링
+  - 주기가 짧은 놈이 preemption 되는 것이 아니라, 데드라인이 가장 작은 놈에게 preemption을 줌
+-  하드 리얼타임 시스템이 가능함!
 
 - Dynamic Priorities are assigned according to deadlines: 
   - the earlier the deadline, the higher the priority; 
@@ -1107,8 +1155,15 @@ int main(int argc, char *argv[])
     }
 ```
 
-
 <br>
+
+---
+
+이 아래의 OS example은 시험에 안나옴 (그 다음은 나옴)
+
+real time processing까지 시험범위
+
+
 
 ## Operating System Examples
 
@@ -1311,11 +1366,21 @@ int main(int argc, char *argv[])
 
 ## Priorities and Time-slice length
 
+CPU를 얼마나 사용했냐에 따라서 등급을 조정
+
 - Two priority ranges: time-sharing and real-time 
+  - real-time은 우선순위가 동적으로 조정되지 않음
+
 - Real-time range from 0 to 99 and nice value from 100 to 140 
 - Higher priority gets larger q
 
 ![image-20220927161247767](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927161247767.png)
+
+- real-time이 100개, other task(normal task)가 40개
+- real-time은 철저한 우선순위 기반
+- normal task는 계속해서 우선순위가 바뀜
+
+
 
 <br>
 
