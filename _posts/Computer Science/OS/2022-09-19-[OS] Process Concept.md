@@ -130,7 +130,6 @@ toc_sticky: true
   - exit() 호출
   - 마지막 문장 실행
 
-
 <br>
 
 ## Process Control Block (PCB)
@@ -289,9 +288,9 @@ struct mm struct *mm; /* address space of this pro */
 
 ## Multitasking in Mobile Systems
 
-- Some mobile systems (e.g., early version of iOS) allow only one process to run, others suspended 
+- Some mobile systems (e.g., early version of iOS) allow only one process to run, **others suspended** 
 - Due to screen real estate, user interface limits iOS provides for a
-  - Single **foreground** process- controlled via user interface 
+  - Single **foreground** process- controlled via user interface(ui) 
   - Multiple **background** processes– in memory, running, but not on the display, and with limits 
   - Limits include single, short task, receiving notification of events, specific long-running tasks like audio playback 
 - Android runs foreground and background, with fewer limits 
@@ -333,6 +332,7 @@ struct mm struct *mm; /* address space of this pro */
 - Generally, process identified and managed via a **process identifier (pid)** 
 - Resource sharing options - design issue
   - Parent and children share **all** resources. 
+    - 부모 자식 간은 모든 자원을 공유한다.
   - Children share **subset** of parent’s resources. 
   - Parent and child share **no** resources. 
 - Execution options 
@@ -360,6 +360,7 @@ struct mm struct *mm; /* address space of this pro */
 - UNIX examples 
   - **fork** system call creates new process 
   - **exec** system call used after a **fork** to `replace the process’ memory space with a new program.` 
+    - 프로세스의 메모리 공간을 새로운 프로그램으로 대치한다.
   - m = fork()
     - m값은 parent도 받고 child도 받는데 그 값은 다르다.
       - child한테는 0을, parent 한테는 child의 pid
@@ -447,10 +448,11 @@ shell이든 일반적인 프로그램에서 fork를 하든 동작원리는 같�
   - Task assigned to child is **no longer required** 
   - The parent is **exiting** 
     - operating systems does not allow a child to continue if its parent terminates
-      - 부모 프로세스가 종료되면 그 아래 자손 프로세스들은 모두 종료된다.
+      - <span style="color:red">부모 프로세스가 종료되면 그 아래 자손 프로세스들은 모두 종료된다.</span>
   
 - Some operating systems do not allow child to exists if its parent has terminated. If a process terminates, then all its children must also be terminated. 
   - **cascading termination**. All children, grandchildren, etc. are terminated. 
+    - 모든 자손이 종료
   - The termination is initiated by the operating system. 
 - The parent process may wait for termination of a child process by using the wait() system call. The call returns status information and the pid of the terminated process 
   - pid = wait(&status); 
@@ -464,10 +466,18 @@ shell이든 일반적인 프로그램에서 fork를 하든 동작원리는 같�
 - If no parent waiting (did not invoke wait()) process is a **zombie** 
   - 만약 child process가 exit() 시스템콜로 종료했는데 parent process가 wait()으로 child process의 종료를 기다리지 않는 경우
   - 이 때 종료되지 않은 child process를 zombie process라고 함.
-
+  - <span style="color:red">만약 child process가 exit() 시스템 콜을 호출하여 종료했는데 parent process가 이를 wait()으로 child process의 종료를 기다리지 않으면 이때 이 child process는 zombie process가 된다.</span>
+  
 - If parent terminated without invoking wait , process is an **orphan(고아)**
   - parent가 wait()을 호출하지 않고 그냥 종료해 버린 경우
   - wait()을 하지 않으면 parent가 자식이 종료되지 않았는데 그냥 종료되어 버릴 수 있는 것!
+  - <span style="color:red">parnet process가 child process가 아직 종료되지 않았는데 wait() 호출하지도 않고 그냥 종료되면 이때 child process는 orphan process가 된다.</span>
+
+**정리**
+
+- 부모 프로세스가 자식 프로세스보다 먼저 종료되면 orphan process
+- 자식 프로세스가 종료되었지만 부모 프로세스가 자식 프로세스의 종료를 회수하지 않는 경우 자식 프로세스는 zombie process
+
 
 
 <br>
@@ -493,6 +503,8 @@ shell이든 일반적인 프로그램에서 fork를 하든 동작원리는 같�
 - Processes within a system may be **independent** or **cooperating** 
 - **Independent** process cannot affect or be affected by the execution of another process 
 - **Cooperating process** can affect or be affected by the execution of another process , including **sharing data** 
+  - 공유데이터처럼 영향을 끼치거나 받는 프로세스
+
 - **Reasons** for cooperating processes: 
   - Information sharing 
   - Computation speedup 
@@ -518,7 +530,7 @@ shell이든 일반적인 프로그램에서 fork를 하든 동작원리는 같�
   - shared memory가 만들어질 때는 OS의 도움을 받지만 그 이후는 OS의 도움을 받지 않는다.
 
 - MPP
-  - 메세지를 보낼 때마다 OS의 도움을 받는다.
+  - **메세지를 보낼 때마다 OS의 도움을 받는다.**
   - kernel에 메세지를 보내고 이를 읽고의 과정
   - send
 
@@ -605,6 +617,8 @@ while (true) {
 
 - An area of memory shared among the processes that wish to communicate 
 - The communication is under the `control of the user processes` **not the operating system** 
+  - OS가 아니라 user process의 control 하에 통신이 이루어짐
+
 - Major issue is to provide mechanism that will allow the user processes **synchronize** their actions when they access shared memory.
 - IPC using SM requires communicating processes to establish a region of shared memory 
 - shared memory resides in the address space of the process creating the shared memory segment 
@@ -670,10 +684,10 @@ while (true) {
   - **send** (P, message) - send a message to process P 
   - **receive** (Q, message) - receive a message from process Q 
 - Properties of communication link 
-  - Links are established automatically. 
-  - A link is associated with exactly one pair of communicating processes. 
+  - Links are established **automatically**. 
+  - A link is associated with exactly **one pair** of communicating processes. 
   - Between each pair there exists exactly one link. 
-  - The link may be unidirectional, but is usually bi-directional. 
+  - The link may be **uni**directional, but is usually **bi**-directional. 
 
 ![image-20220909204018656](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909204018656.png)
 
@@ -699,6 +713,7 @@ while (true) {
 
 - Messages are directed and received from mailboxes (also referred to as ports). 
   - Send(A, msg), receive(A, msg) 
+    - A는 pid가 아닌 mailbox의 ID
   - **Each mailbox has a unique id**. 
   - A process can communicate with some other process via a number of different mail boxes 
   - Processes can communicate **only if they share a mailbox**. 
@@ -708,7 +723,7 @@ while (true) {
   - Each pair of processes may share several communication links. 
   - Link may be unidirectional or bi-directional.
 
-
+프로세스가 메시지를 보내는데, 메시지를 받을 수신자를 따로 명시하지 않는다.
 
 <br>
 
@@ -753,7 +768,9 @@ while (true) {
 - Message passing may be either blocking or non-blocking. 
 - **Blocking** is considered **synchronous** 
   - Blocking **send** has the sender block(waiting) until the message is received 
+    - 내가 원하는 프로세스가 메시지를 받을때까지 Block 되어 있는 것
   - Blocking **receive** has the receiver block until a message is available 
+    - 어떠한 메시지가 도착 할 때까지 Block 되어 있는 것
 - **Non-blocking** is considered **asynchronous** 
   - Non-blocking send has the sender send the message and continue 
   - Non-blocking receive has the receiver receive a valid message or null message 
@@ -765,6 +782,8 @@ while (true) {
   - Blocking receive 
   - Nonblocking receive 
 - When both the send and receive are blocking -> rendezvous scheme(랑데뷰 sheme)
+  - end, receive 는 꼭 먼저 호출한 것이 끝나야 그 다음 것을 send or receive 할 수 있다.
+
 
 
 
@@ -792,7 +811,7 @@ while (true) {
 
 
 
-non-blocking의 경우 위 코드로 동작하지 않음
+non-blocking의 경우 위 코드로 동작하지 않음 (기다리는 기능이 있기 때문)
 
 
 
