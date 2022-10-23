@@ -789,9 +789,10 @@ while (true) {
 
 - Producer-consumer becomes trivial
 
-message next produced;
+
 
 ```c
+message next produced;
 while (true) {
  /* produce an item in next produced */
  send(next produced);
@@ -800,9 +801,10 @@ while (true) {
 
 
 
-message next consumed;
+
 
 ```c
+message next consumed;
 while (true) {
  receive(next consumed);
  /* consume the item in next consumed */
@@ -811,7 +813,9 @@ while (true) {
 
 
 
-non-blocking의 경우 위 코드로 동작하지 않음 (기다리는 기능이 있기 때문)
+non-blocking의 경우 위 코드로 동작하지 않음 (자동으로 확인하여 기다리는(blocking) 기능이 있기 때문)
+
+non blocking은 가득찼는지를 확인하는 코드를 부수적으로 요구
 
 
 
@@ -1029,7 +1033,7 @@ public class DateServer{
 
 - Remote procedure call (RPC) abstracts procedure calls between processes on networked systems. 
   - Again uses ports for service differentiation 
-  - Messages exchanged are well structured(unlikely port) and are not no longer just packets of data 
+  - **Messages** exchanged are well structured(unlikely port) and are not no longer just packets of data 
   - Each message is addressed to an **RPC daemon** listening to a **port** on the remote system 
     - RPC daemon이 계속해서 port를 들여다 봐서 메세지가 왔는지를 확인한다.
   - Each message contains an **id**. 
@@ -1039,10 +1043,11 @@ public class DateServer{
 - **Port** – used to service differentiation
 
 - **Stubs** – client-side proxy for the actual procedure on the server. 
-- RPC마다 하나씩 존재
+  - 서버로부터 받은 메세지를 클라이언트 측에 가공해서 주는 역할
+  - RPC마다 하나씩 존재
   - Separate stub for each separate remote procedure 
   - The client-side stub locates the server and **marshalls**(전송 format으로 바꿔주는 역할) the parameters. 
-  - The server-side stub receives this message, **unpacks the marshalled** parameters, and performs the procedure on the server. 
+  - The server-side stub receives this message, **unpacks the marshalled**(local function 형태로 바꿈) parameters, and performs the procedure on the server. 
   - On Windows, stub code compile from specification written in **Microsoft Interface Definition Language (MIDL)**
 
 - Data representation handled via **External Data Representation (XDL)** format to account for different architectures 
@@ -1111,7 +1116,7 @@ public class DateServer{
 - Consumer reads from the other end (the **read-end** of the pipe) 
 - Ordinary pipes are therefore **unidirectional** 
 - If two way communication is required, two pipes must be used 
-- Require parent-child relationship between communicating processes 
+- **Require parent-child relationship** between communicating processes 
   - Is used to communicate with a child process that it creates via fork() 
 - Windows calls these **anonymous pipes** 
 - See Unix and Windows code samples in textbook
@@ -1216,7 +1221,7 @@ Pipe ( int fd[] )
 
 ![image-20220909210929495](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210929495.png)
 
-
+ephemeral: 일시적인
 
 <br>
 

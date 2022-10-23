@@ -32,7 +32,7 @@ toc_sticky: true
 
 - To introduce **CPU scheduling**, which is the basis for multiprogrammed operating systems 
 - To describe various CPU-scheduling algorithms 
-- To discuss evaluation criteria for selecting a CPU-scheduling algorithm  for a particular system 
+- To discuss evaluation criteria for selecting a CPU-scheduling algorithm for a particular system 
 - To examine the scheduling algorithms of several operating systems
 
 
@@ -45,7 +45,7 @@ toc_sticky: true
   - When one process has to wait, OS takes the CPU away from that process and gives the CPU to another process 
 - The success of CPU scheduling depends on the property 
   - CPU – I/O Burst Cycle  
-  - Process execution consists of a cycle of CPU execution and I/O  wait. 
+  - Process execution consists of a cycle of CPU execution and I/O wait. 
     - Process execution begins with CPU burst 
     - Process execution ends with CPU burst 
 - CPU burst distribution 
@@ -80,7 +80,7 @@ toc_sticky: true
 
 - **Short-term scheduler** selects from among the processes in memory that are ready to execute, and allocates the CPU to one of them. 
   - Queue may be ordered in various ways 
-  - **Ready queue** may be implemented as FIFO Q, priority Q, tree, linked  list 
+  - **Ready queue** may be implemented as FIFO Q, priority Q, tree, linked list 
 
 - The records in the q are generally PCBs of the processes 
 - CPU scheduling decisions may take place when a process: 
@@ -114,7 +114,7 @@ toc_sticky: true
   - Case of two processes sharing data 
   - Design of Kernel 
     - During the process of system call 
-      - UNIX waits either for a system call to complete or for  I/O block take place before doing a context switch 
+      - UNIX waits either **for a system call to complete** or **for I/O block take place before doing a context switch** 
 
 
 
@@ -127,7 +127,7 @@ toc_sticky: true
     - context가 바뀔 때 해당 process가 block 되면서 남긴 running snapshot 정보를 PCB에 저장해 두었다가 다시 실행 될 때 해당 running snapshot을 복원하여 실행된다.
   - switching to user mode 
   - jumping to the proper location in the user program to restart that program 
-- Dispatch latency – time it takes for the dispatcher to stop one process and start  another running.
+- Dispatch latency – time it takes for the dispatcher to stop one process and start another running.
   - real-time processing을 할 때, 이를 최소화 시키는 것이 중요함.
 
 
@@ -151,6 +151,7 @@ toc_sticky: true
   - 단위 시간당 얼마나 많은 process가 실행되었는지
   - **Size of job affect throughput** 
 - Turnaround time – amount of time to execute a particular process (**running + waiting,** not ready)
+  - N개의 job을 실행하는 데 걸린 총 시간
   - process가 실행되고나서 종료될 때까지의 시간
   - Total waiting time at all queues & execution time (batch?) 
     - execution time: running state에서 머문 시간
@@ -160,10 +161,10 @@ toc_sticky: true
     - <mark>waiting time은 ready에서 머문 시간!!!!!!!!!!!!!</mark>
     - ready는 실행을 하고 싶은데 못하고 있는 상황이기 때문에
   - CPU scheduling alg. Does not affect the amount of time during which a process executes or does I/O  
-    - CPU scheduling 알고리즘은 ready queue에서 대기한 시간에는 영향을 주지만 running 상태나 waiting 상태에서 머문 시간에는 아무런 영향도 주지 않는다.
+    - CPU scheduling 알고리즘이 ready queue에서 대기한 시간에는 영향을 주지만 running 상태나 waiting 상태에서 머문 시간에는 아무런 영향도 주지 않는다.
   - It affects only the amount of time that a process spends waiting in the  Ready Q 
 - Response time – amount of time it takes from when a request was submitted until the first response is produced, not output (for time-sharing environment)
-  - 프로세스 요청(실행 요구)된 순간부터 사용자가 응답을 받은 순간까지 걸린 시간 
+  - 프로세스 요청(실행 요구)된 순간부터 사용자가 응답을 받은 딱 그 순간까지 걸린 시간 
 
 
 
@@ -176,7 +177,7 @@ toc_sticky: true
 - Min turnaround time  
 - Min waiting time  
 - Min response time 
-- Fairness 
+- **Fairness** 
   - No particular job should be overly penalized(피해를 받는) through CPU  scheduling
   - 리눅스의 aging 기법과 같은 애가 이를 해결함.(일정 시간이 지날수록 우선순위가 점점 높아짐)
 
@@ -438,12 +439,12 @@ tau가 실측치 t에 거의 근사한 모습이다.
 - The CPU is allocated to the process with the highest priority  (smallest integer = highest priority). 
   - Preemptive 
     - Control the length of time a job is on CPU 
+    - 실행 중간에 자기보다 우선순위가 높은 애가 생기면 뺏김.
   - Non-preemptive 
 - SJF is a priority scheduling where priority is the predicted next CPU burst time. 
 - Problem define = Starvation –> low priority processes may never execute. 
 - **Solution** define =  **Aging** –> as time progresses, increase the priority of the  process
   - ready queue에 머문 시간이 길어질 수록 priority가 높아짐
-
 
 
 
@@ -457,7 +458,7 @@ tau가 실측치 t에 거의 근사한 모습이다.
 
 ![image-20220927153142972](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927153142972.png)
 
-- Average waiting time = 8.2 msec
+- Average waiting time = 41/5 = 8.2 msec
 
 
 
@@ -529,7 +530,8 @@ high time quantum makes overhead
   - **foreground – RR (Round Robin)**
   - **background – FCFS (First come First served)**
 - Scheduling must be done between the queues. 
-  - Fixed priority preemptive scheduling; i.e., serve all from  foreground then from background.  (foreground에 하나라도 있으면 그거먼저(preemption) scheduling)
+  - Fixed priority preemptive scheduling; 
+    - i.e., serve all from  foreground then from background.  (foreground에 하나라도 있으면 그거먼저(preemption) scheduling)
     - Possibility of starvation.
   - Time slice – each queue gets a certain amount of CPU time  which it can schedule amongst its processes; i.e., 80% to foreground in RR, 20% to background in FCFS
     - starvation reduces
@@ -574,6 +576,8 @@ feedback을 허용하는 방식
 
 interactive 성격을 띠는 process는 CPU burst time이 짧기 때문에 quantum 값을 작게 준다.
 
+- 아래로 갈 수록 우선순위가 낮은 큐
+
 우선순위가 낮아질 수록 quantum 값을 크게 줌.
 
 FCFS는 time quantum이 존재하지 않는다.
@@ -597,7 +601,7 @@ FCFS는 time quantum이 존재하지 않는다.
   - At Q1 job is again served FCFS and receives 16 additional milliseconds.  
     - If it still does not complete, it is preempted and moved to queue Q2
 
-
+- 우선순위가 높은 곳에서도 안 끝나면 넌 낮은데로 가버렷! 그래도 안 끝나면 넌 FCFS로 가버렷!(무조건 끝나게)
 
 <br>
 
@@ -669,7 +673,7 @@ How many LWPs(i.e., kernel thread) to create? (for user thread)
 
 ## Contention scope
 
-- Kernel thread are scheduled onto available CPU is **system-contention scope** (SCS) – competition among all threads in system 
+- Kernel thread are scheduled onto available CPU is **system-contention scope** (SCS) – competition **among all threads in system** 
 - System using O:O(one-to-one) model (window, Linux) schedules threads **using only SCS**
   - 선발할 이유가 없음, 어차피 OS는 소속을 보지 않기 때문에
 
@@ -743,7 +747,7 @@ void *runner(void *param)
     - Multi-threaded cores 
     - NUMA(non uniform memory access) systems 
       - CPU마다 자기만 access하는 memory가 있다. (그래서 memory마다 접근하는 시간이 다 다르다.)
-    - Heterogeneous multiprocessing 
+    - Heterogeneous multiprocessing (하는 일 특화)
 - **Homogeneous processors** within a multiprocessor. 
   - Any available processor can be used to run any process in the queue 
 - **Heterogeneous processors** 
@@ -799,9 +803,11 @@ void *runner(void *param)
 - private ready queue : 보다 나은 processor affinity 효과 
 - process has affinity for processor on which it is currently running 
   - soft affinity : process affinity를 반드시 보장해야 하는 것은 아닌
+    - 되도록이면 이렇게 하자
   - hard affinity : 반드시 보장해야 하는
+    - 무조건 이렇게 해야 해
   - Variations including processor sets
-
+  
 - 프로세스가 돌다가 waiting 상태가 되었을 때 다시 돌아오려고 할 때 돌던 곳으로 돌아와서 실행하는 것이 좋은가 아니면 load balance를 고려했을 때 해당 프로세스가 실행될 지점의 load가 큰 경우 어떻게 해야 하는가?
 
 <br>
@@ -944,7 +950,7 @@ kernel code를 실행 중에 우선순위가 높은 프로세스가 들어오면
 - interrupt를 CPU가 감지하기 까지 걸린 시간(delay)
   - interrupt 우선순위가 낮을 수록 이 delay가 커진다.
 - context switch: 프로세스의 잔상을 저장
-  - interrupt를 처리하고 되돌아 온다는 보장이 없는데 그러면 되돌아오지 않기 때문에 context switching이 필요하다.
+  - 우선순위가 높은 놈이 있으면 interrupt를 처리하고 다시 되돌아 온다는 보장이 없는데 그러면 되돌아오지 않기 때문에 context switching이 필요하다.
 - interrupt latency: 이벤트가 발생한 시점부터 ISR이 딱 실행될 때까지의 시간
 
 <br>
@@ -966,7 +972,7 @@ kernel code를 실행 중에 우선순위가 높은 프로세스가 들어오면
     - Release by low-priority processes **resources** needed by a high-priority
       - 우선순위가 낮은 프로세스가 자원을 갖고 있는 경우 priority inversion
       - prioity inversion: 순식간에 우선순위를 확 올려줘서 빨리 끝내게 하는
-      - ex) system call을 실행 중에 우선순위가 높은 놈이 큐에 들어오면 preemption이 진행되어야 하는데 안전하게 system call이 끝난 뒤에 하자니 real-time system이 보장되지 않기 때문에 이를 kernel에서 뺏어야 하는데 우선 순위가 높은 놈이 지금 쓰고 있던 놈의 자원을 필요로 할 수 있기 때문에 이를 priority inversion을 사용하는 것
+      - ex) system call을 실행 중에 우선순위가 높은 놈이 큐에 들어오면 preemption이 진행되어야 하는데 안전하게 system call이 끝난 뒤에 하자니 real-time system이 보장되지 않기 때문에 이를 kernel에서 뺏어야 하는데 우선 순위가 높은 놈이 지금 쓰고 있던 놈의 자원을 필요로 할 수 있기 때문에 이를 priority inversion을 사용해서 너 높은 우선순위 줄테니까 빨리 끝내!!! 하고 끝나면 다시 원래의 값으로 돌린다.
 
 ![image-20220927155343341](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155343341.png)
 
@@ -999,6 +1005,7 @@ kernel code를 실행 중에 우선순위가 높은 프로세스가 들어오면
 - For real-time scheduling, scheduler must support preemptive, priority-based  scheduling 
   - But only guarantees soft real-time 
 - For hard real-time must also provide ability to meet deadlines 
+  - deadline이 중요!
   - Admission control 
 - Processes have new characteristics: periodic ones require CPU at constant intervals 
   - Has processing time t, deadline d, period p 
@@ -1010,13 +1017,17 @@ kernel code를 실행 중에 우선순위가 높은 프로세스가 들어오면
 - p: event 처리 시간
 - d: deadline
 - d < p 이면 real time 프로세싱이라고 할 수 없음
+  - 데드라인이 지나서 처리하는 것은 real time 의 의미를 살리지 못한 것
+
 - d > p 이면 처리 못한 애가 있는데 다음 거를 처리하게 되는 경우 발생 
 
 <br>
 
 ## Rate Monotonic Scheduling (1)
 
-rate monohonic: 주기의 역순으로 우선순위를 설정
+rate monotonic: 주기의 역순으로 우선순위를 설정
+
+즉, 빈도(frequency)가 높은 애가 높은 우선순위를 갖는다.
 
 - Schedules **periodic tasks** using a **static priority** with preemption  
 - A priority is assigned based on the inverse of its period -> 1/p 
@@ -1032,22 +1043,26 @@ rate monohonic: 주기의 역순으로 우선순위를 설정
 
 
 
-
 <br>
 
 ## Rate Monotonic Scheduling (2)
 
 만약 우선순위가 p이면 (not 1/p)
 
+deadline이 주기랑 같다고 가정
+
 - If p2 is assigned higher priority than p1 -> p1 will miss its deadline
 
-![image-20220927155646648](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155646648.png)
+  - ![image-20220927155646648](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155646648.png)
+
+  - p2는 deadline안에 처리가 됨.
 
 
 
 - P<sub>1</sub> is assigned a higher priority than P<sub>2</sub> . (rate monotonic) -> both can meet deadlines
-
-![image-20220927155708991](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155708991.png)
+  - ![image-20220927155708991](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155708991.png)
+  - p2가 30초 동안 실행되다가 P1 주기에 도달하여 이제 누가 우선순위가 높은지 따져봐야 되는데 P1의 deadline이 더 짧기 때문에 P2를 preemption하게 된다.
+    - P1=50, P2=100
 
 
 
@@ -1063,6 +1078,8 @@ rate monotonic scheduling은 완벽한 하드 리얼타임 시스템이 될 수 
 - Period: P1 = 50, p2 = 80 -> p1 will be assigned higher priority 
 - Processing time: t1 = 25, t2 = 35 
 - Total CPU utilization = (25/50) + (35/80) = 0.94 -> p2 can not meet deadline
+  - 6%가 남아있기 때문에 가능할 것처럼 보이지만 진행 과정을 보면 P2가 끝나지 못했는데 P2 주기가 다가온 것을 볼 수 있다.
+
 
 ![image-20220927155747221](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155747221.png)
 
@@ -1071,12 +1088,18 @@ rate monotonic scheduling은 완벽한 하드 리얼타임 시스템이 될 수 
 ## Earliest Deadline First Scheduling (EDF)
 
 - 지금시점으로부터 deadline이 제일 임박한 애를 먼저 스케쥴링
-  - 주기가 짧은 놈이 preemption 되는 것이 아니라, 데드라인이 가장 작은 놈에게 preemption을 줌
+  - 주기가 짧은 놈이 preemption 되는 것이 아니라, 데드라인이 가장 작은 놈에게 **preemption을** 줌
 -  하드 리얼타임 시스템이 가능함!
 
 - Dynamic Priorities are assigned according to deadlines: 
-  - the earlier the deadline, the higher the priority; 
+  - Rate Monotonic과 다르게 우선순위가 계속해서 바뀐다.
+    - rate monotonic은 한 번 결정되면 바뀌지 않음(주기가 바뀌는 것이 아니기 때문에)
+  
+  - **the earlier the deadline, the higher the priority**; 
+    - 지금 시점에서!!!!!!!!
+  
   - the later the deadline, the lower the priority 
+  
 - Priorities are adjusted to reflect the deadline of newly runnable process 
 - Period: P1 = 50, p2 = 80 -> p1 will be assigned higher priority 
 - Processing time: t1 = 25, t2 = 35 
@@ -1084,16 +1107,33 @@ rate monotonic scheduling은 완벽한 하드 리얼타임 시스템이 될 수 
 
 ![image-20220927155830622](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927155830622.png)
 
+- 0초에 P1, P2가 동시에 시작
+- P1이 처음에 우선순위가 높기 때문에 먼저 실행
+- 25초동안 P1 실행
+- P2처리하다가 P1 주기에서 이제 누가 우선순위가 높은지 판정하게 되는데 P1은 이미 끝났기 때문에 deadline이 100이고 P2는 아직 실행 중이기 때문에 deadline이 80이므로 P2가 더 높은 우선순위를 차지하게 되어 preemption이 일어나지 않고 계속 실행된다.
+- 그러다가 P2 주기에서
+  - P2 deadline: 160
+  - P1 deadline: 100
+  - 이므로 P1이 우선순위라 그대로 실행을 진행하고
+- 다시 P1 주기에서는
+  - P2 deadline: 160
+  - P1 deadline: 150
+  - 이므로 P1이 우선순위가 더 높기 때문에 현재 실행중이던 P2 process를 preemption 하여 P1 process를 실행한 것이다.
 
+**rate monotonic 보다 real time process를 훨씬 더 보장!!!!**
 
 <br>
 
 ## Proportional Share Scheduling
 
 - T shares are allocated among all processes in the system 
-- An application receives N shares where N < T 
-- This ensures each application will receive N / T of the total processor  time 
-- Must work with admission control policy to guarantee that an application  receives its allocated shares of time
+  - 전체 CPU time의 비율
+
+- An application receives **N shares** where N < T 
+- This ensures **each application** will receive N / T of the total processor time 
+- Must work with a**dmission control policy** to guarantee that an application receives its allocated shares of time
+  - 일정 시간의 비율을 할당 받는 것이 보장되지 않으면 거부하는 policy
+
 
 
 
@@ -1106,7 +1146,7 @@ rate monotonic scheduling은 완벽한 하드 리얼타임 시스템이 될 수 
 - Defines two scheduling classes for real-time threads:
 
 1. SCHED_FIFO - threads are scheduled using a FCFS strategy with a FIFO  queue. There is no time-slicing for threads of equal priority 
-2. SCHED_RR - similar to SCHED_FIFO except time-slicing occurs for threads  of equal priority 
+2. SCHED_RR - similar to SCHED_FIFO except time-slicing occurs for threads of equal priority 
 3. SCHED_OTHER – system specific
 
 - Defines two functions for getting and setting scheduling policy:
@@ -1130,19 +1170,22 @@ int main(int argc, char *argv[])
     pthread attr t attr; 
     /* get the default attributes */ 
     pthread attr init(&attr); 
+    
     /* get the current scheduling policy */
     if (pthread attr getschedpolicy(&attr, &policy) != 0) 
         fprintf(stderr, "Unable to get policy.\n"); 
     else { 
+        
         if (policy == SCHED OTHER) printf("SCHED OTHER\n"); 
         else if (policy == SCHED RR) printf("SCHED RR\n"); 
         else if (policy == SCHED FIFO) printf("SCHED FIFO\n");
+        
         /* set the scheduling policy - FIFO, RR, or OTHER */ 
         if (pthread attr setschedpolicy(&attr, SCHED FIFO) != 0) 
             fprintf(stderr, "Unable to set policy.\n"); 
         /* create the threads */
         for (i = 0; i < NUM THREADS; i++) 
-            pthread create(&tid[i],&attr,runner,NULL); 
+            pthread_create(&tid[i],&attr,runner,NULL); 
         /* now join on each thread */
         for (i = 0; i < NUM THREADS; i++) 
             pthread join(tid[i], NULL); 
@@ -1373,12 +1416,15 @@ CPU를 얼마나 사용했냐에 따라서 등급을 조정
 
 - Real-time range from 0 to 99 and nice value from 100 to 140 
 - Higher priority gets larger q
+  - 우선순위가 높을 수록 time quantum을 높게 줌.
+
 
 ![image-20220927161247767](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927161247767.png)
 
 - real-time이 100개, other task(normal task)가 40개
 - real-time은 철저한 우선순위 기반
 - normal task는 계속해서 우선순위가 바뀜
+- 주어진 time quantum을 다 쓰는 경우에 우선 순위가 내려감
 
 
 
@@ -1387,11 +1433,16 @@ CPU를 얼마나 사용했냐에 따라서 등급을 조정
 ## List of Tasks Indexed According to Priorities
 
 - Task runnable as long as time left in time slice (active) 
+  - 다 실행되지 못하고 preemption 된 경우는 active queue에 머물러 있고 
+
 - If no time left (expired), not runnable until all other tasks use their slices 
-- All runnable tasks tracked in per-CPU runqueue data structure 
+  - time slice가 남아있는 경우 expired queue로 넘어간다.
+
+- All runnable tasks tracked in per-CPU **runqueue** data structure 
   - Two priority arrays (active, expired) 
   - Tasks indexed by priority 
   - When no more active, arrays are exchanged
+    - active queue에 있는 것들이 전부 expired로 넘어가면 그때 두 queue(active, expired)는 바뀌게 된다.
 
 ![image-20220927161321720](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220927161321720.png)
 
@@ -1477,6 +1528,8 @@ CPU를 얼마나 사용했냐에 따라서 등급을 조정
 <br>
 
 ## Simulations
+
+가상의 실시간을 소프트웨어로 구현하고, 시뮬레이션 돌리기
 
 - Queueing models limited 
 - Simulations more accurate 
