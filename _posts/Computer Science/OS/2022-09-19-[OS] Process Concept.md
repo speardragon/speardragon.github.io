@@ -212,7 +212,7 @@ struct mm struct *mm; /* address space of this pro */
 
 ## Process Scheduling
 
-- Maximize CPU use, quickly switch processes onto CPU for time sharing 
+- Maximize CPU use, quickly switch processes onto CPU for time sharing <span style="color:green">시험</span>
 - **Process scheduler** selects among available processes for next execution on CPU 
 - Maintains scheduling queues of processes 
   - **Job queue** – set of all processes in the system 
@@ -246,7 +246,7 @@ struct mm struct *mm; /* address space of this pro */
 - **Long-term scheduler** (or job scheduler) 
   - selects which processes should be brought into the ready queue. 
   - Long-term scheduler is invoked **infrequently** (seconds, minutes) => (may be slow) 
-  - The long-term scheduler controls the **degree of multiprogramming**
+  - The long-term scheduler controls the **degree of multiprogramming** <span style="color:green">(시험)</span>
     - If too many jobs with a lot of I/O, 
       - CPU utilization may be low, 
       - processes mainly blocked 
@@ -259,7 +259,7 @@ struct mm struct *mm; /* address space of this pro */
   - Long-term scheduler strives for good **process mix**
   
 - **Short-term** scheduler (or CPU scheduler) 
-  - selects which **ready process** should be executed next and allocates CPU 
+  - selects which **ready process** should be executed next and allocates CPU <span style="color:green"><span style="color:green">(시험)</span></span> 
   - Sometimes the only scheduler in a system 
   - Short-term scheduler is invoked **very frequently** (milliseconds) 
     - => (must be fast).
@@ -461,14 +461,14 @@ shell이든 일반적인 프로그램에서 fork를 하든 동작원리는 같�
 
 
 
-정상적인 방법으로 종료하지 못하는 프로세스
+정상적인 방법으로 종료하지 못하는 프로세스<span style="color:green">(시험)</span>
 
 - If no parent waiting (did not invoke wait()) process is a **zombie** 
   - 만약 child process가 exit() 시스템콜로 종료했는데 parent process가 wait()으로 child process의 종료를 기다리지 않는 경우
   - 이 때 종료되지 않은 child process를 zombie process라고 함.
   - <span style="color:red">만약 child process가 exit() 시스템 콜을 호출하여 종료했는데 parent process가 이를 wait()으로 child process의 종료를 기다리지 않으면 이때 이 child process는 zombie process가 된다.</span>
   
-- If parent terminated without invoking wait , process is an **orphan(고아)**
+- If parent terminated without invoking wait , process is an **orphan(고아)** 
   - parent가 wait()을 호출하지 않고 그냥 종료해 버린 경우
   - wait()을 하지 않으면 parent가 자식이 종료되지 않았는데 그냥 종료되어 버릴 수 있는 것!
   - <span style="color:red">parnet process가 child process가 아직 종료되지 않았는데 wait() 호출하지도 않고 그냥 종료되면 이때 child process는 orphan process가 된다.</span>
@@ -1109,7 +1109,7 @@ public class DateServer{
 
 <br>
 
-## Ordinary Pipes
+## Ordinary Pipes<span style="color:green">(시험)</span>
 
 - Ordinary Pipes allow communication in standard producer-consumer style 
 - Producer writes to one end (the **write-end** of the pipe) 

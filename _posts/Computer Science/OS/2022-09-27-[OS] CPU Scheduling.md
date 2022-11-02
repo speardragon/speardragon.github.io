@@ -41,7 +41,7 @@ toc_sticky: true
 
 ## Basic Concepts
 
-- 목적: **Maximum CPU utilization** obtained with multiprogramming 
+- 목적: **Maximum CPU utilization** obtained with multiprogramming <span style="color:green">(시험)</span>
   - When one process has to wait, OS takes the CPU away from that process and gives the CPU to another process 
 - The success of CPU scheduling depends on the property 
   - CPU – I/O Burst Cycle  
@@ -76,7 +76,7 @@ toc_sticky: true
 
 <br>
 
-## CPU Scheduler(short-term scheduler)(중요)
+## CPU Scheduler(short-term scheduler)(중요)<span style="color:green">(시험)</span>
 
 - **Short-term scheduler** selects from among the processes in memory that are ready to execute, and allocates the CPU to one of them. 
   - Queue may be ordered in various ways 
@@ -142,7 +142,7 @@ toc_sticky: true
 
 
 
-- CPU utilization – keep the CPU as busy as possible 
+- CPU utilization – keep the CPU as busy as possible <span style="color:green">(시험)</span>
   - Percentage of time CPU is busy 
     - 0~100 % CPU **overload**(100), too many waiting jobs 
       - 0: CPU가 사용자 process는 사용하지 않고 오직 OS만
@@ -150,7 +150,7 @@ toc_sticky: true
 - Throughput – # of processes that complete their execution per time unit 
   - 단위 시간당 얼마나 많은 process가 실행되었는지
   - **Size of job affect throughput** 
-- Turnaround time – amount of time to execute a particular process (**running + waiting,** not ready)
+- Turnaround time – amount of time to execute a particular process (**running + waiting,** not ready)<span style="color:green">(시험)</span>
   - N개의 job을 실행하는 데 걸린 총 시간
   - process가 실행되고나서 종료될 때까지의 시간
   - Total waiting time at all queues & execution time (batch?) 
@@ -279,7 +279,7 @@ toc_sticky: true
 ## FCFS Scheduling (Cont.)
 
 - Problem 
-  - Wide variance in turnaround time 
+  - Wide variance in turnaround time  <span style="color:green">(시험)</span>
   - Suceptible(민감) to convoy effect 
   - Bad for small jobs 
   - Troublesome for timesharing system 
@@ -552,7 +552,7 @@ high time quantum makes overhead
 
 feedback을 허용하는 방식
 
-- **In a Multi-level queue** scheduling, processes are permanently assigned to a  queue on entry to the system (queue 간의 이동을 금지)
+- **In a Multi-level queue** scheduling, processes are permanently assigned to a queue on entry to the system (queue 간의 이동을 금지)
   - Processes do not move between queues  
 - A process can move between the various queues;  
   - If a process uses too much CPU time, it will be moved to a lower priority queue 
@@ -662,7 +662,7 @@ How many LWPs(i.e., kernel thread) to create? (for user thread)
       - CPU에 의해 실행되는 것을 의미하는 것이 아님. 
     - Each LWP attached to kernel thread  
     - How many LWPs to create? - managed by thread library 
-  - Known as **process-contention scope (PCS)** <mark>since scheduling competition is within the process </mark>
+  - Known as **process-contention scope (PCS)** <mark>since scheduling competition is within the process  </mark><span style="color:green">(시험)</span>
     - 어플리케이션 내에서
   - PCS is done via priority set by programmer 
   - Both M:M and Two-level models require communication to maintain the  appropriate number of kernel threads allocated to the application
@@ -671,7 +671,7 @@ How many LWPs(i.e., kernel thread) to create? (for user thread)
 
 <br>
 
-## Contention scope
+## Contention scope<span style="color:green">(시험)</span>
 
 - Kernel thread are scheduled onto available CPU is **system-contention scope** (SCS) – competition **among all threads in system** 
 - System using O:O(one-to-one) model (window, Linux) schedules threads **using only SCS**
@@ -692,7 +692,7 @@ How many LWPs(i.e., kernel thread) to create? (for user thread)
 
 <br>
 
-## Pthread Scheduling API
+## Pthread Scheduling API<span style="color:green">(시험)</span>
 
 ```c
 #include <pthread.h> 
@@ -963,11 +963,11 @@ kernel code를 실행 중에 우선순위가 높은 프로세스가 들어오면
 
 <br>
 
-## Dispatch latency
+## Dispatch latency<span style="color:green">(시험)</span>
 
 - Amount of time required for dispatcher to stop one process and start another.  
 - To keep dispatch latency low, we need to allow  
-  - **Conflict phase** of dispatch latency (수 msecs): 
+  - **Conflict phase** of dispatch latency (수 msecs): <span style="color:green">(시험)</span>
     - Preemption of any process running in the kernel 
     - Release by low-priority processes **resources** needed by a high-priority
       - 우선순위가 낮은 프로세스가 자원을 갖고 있는 경우 priority inversion
@@ -1023,7 +1023,7 @@ kernel code를 실행 중에 우선순위가 높은 프로세스가 들어오면
 
 <br>
 
-## Rate Monotonic Scheduling (1)
+## Rate Monotonic Scheduling (1)<span style="color:green">(시험)</span>
 
 rate monotonic: 주기의 역순으로 우선순위를 설정
 
@@ -1085,7 +1085,7 @@ rate monotonic scheduling은 완벽한 하드 리얼타임 시스템이 될 수 
 
 <br>
 
-## Earliest Deadline First Scheduling (EDF)
+## Earliest Deadline First Scheduling (EDF)<span style="color:green">(시험)</span>
 
 - 지금시점으로부터 deadline이 제일 임박한 애를 먼저 스케쥴링
   - 주기가 짧은 놈이 preemption 되는 것이 아니라, 데드라인이 가장 작은 놈에게 **preemption을** 줌
@@ -1131,7 +1131,7 @@ rate monotonic scheduling은 완벽한 하드 리얼타임 시스템이 될 수 
 
 - An application receives **N shares** where N < T 
 - This ensures **each application** will receive N / T of the total processor time 
-- Must work with a**dmission control policy** to guarantee that an application receives its allocated shares of time
+- Must work with **admission control policy** to guarantee that an application receives its allocated shares of time
   - 일정 시간의 비율을 할당 받는 것이 보장되지 않으면 거부하는 policy
 
 
