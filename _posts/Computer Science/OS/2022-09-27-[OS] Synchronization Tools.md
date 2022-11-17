@@ -30,8 +30,8 @@ toc_sticky: true
 
 ## Objectives
 
-- To present the concept of process synchronization.
-- To introduce the critical-section problem, whose solutions can be used to ensure the consistency of shared data
+- To present the **concept** of process synchronization.
+- To introduce the **critical-section problem**, whose solutions can be used to ensure the **consistency** of shared data
 - To present both software and hardware solutions of the critical-section problem
 - To examine several classical process-synchronization problems
 - To explore several tools that are used to solve process synchronization problems
@@ -45,21 +45,23 @@ toc_sticky: true
 그래도 결국 thread of control은 두 개가 아니라 하나.
 
 - Processes can execute concurrently or in parallel 
-  - CPU scheduler switches between processes to provide concurrent  execution 
-  - May be interrupted at any time, partially completing execution at any  point in its instruction stream 
+  - CPU scheduler switches between processes to provide concurrent execution 
+  - May be interrupted at any time, partially completing execution at any point in its instruction stream 
     - 언제든지 interrupt가 걸릴 수 있음
       - time quatum expired(software interrupt)
       - 외부에서의 이벤트 발생 -> interrupt -> control이 잠시 OS로 내려가서 판단
     - Processing core may be assigned to execute instructions of another process (**concurrent execution**) 
-  - Two instruction streams (different processes) execute  simultaneously on separating processing cores (**parallel execution**) 
-    - 외부에서 interrupt가 걸리지 않아도 두개의 stream이 동시에 실행된다.
+  - Two instruction streams (different processes) execute simultaneously on separating processing cores (**parallel execution**) 
+    - 2개의 core에서 찐 parallel 하게 실행
+    - 외부에서 interrupt가 걸리지 않아도 두개 이상의 stream이 동시에 실행된다.
 - Concurrent access to shared data may result in data inconsistency 
   - 1번을 다 끝내지 못한 상태에서 2번을 실행하게 되버리면 1번에서 사용하던 데이터를 2번에서 공유데이터로 쓰게 되어 버릴 수 있다.
   - 믿을 만한 데이터인지 -> 데이터의 신뢰성이 떨어짐
   - 은행 계좌 얘기 - 각자 계좌를 따로 쓰면 문제가 없겠지만 가족끼리 계좌를 같이 쓰면 이것이 사실상 공유 데이터 인 것이다. 만약 동시에 10만원을 뽑게 되면 자칫해서 은행은 10만원을 손해를 볼 수 있음
     - 그래서 synchronization이 굉장히 중요한 것
-- Maintaining data consistency requires mechanisms to ensure the **orderly  execution** of cooperating processes
-  - 실행의 순서를 제어할 필요가 있다.
+- Maintaining data consistency requires mechanisms to ensure the **orderly execution** of cooperating processes
+  - 협력 관계의 프로세스 간에는 반드시 실행의 순서를 제어할 필요가 있다.
+  - 독립적이면 필요없음
 
 
 - parallel processing이나 pseudo parallel processing이나 얻을 수 있는 장점이 있음.
@@ -70,8 +72,8 @@ toc_sticky: true
 
 ## Cooperating Processes
 
-- Independent process cannot affect or be affected by the execution of  another process. 
-- Cooperating process can affect or be affected by the execution of another  process 
+- **Independent process** cannot affect or be affected by the execution of  another process. 
+- **Cooperating process** can affect or be affected by the execution of another process 
   - Directly share a logical address space (code and data) 
   - Share data through shared memory or message passing  
 - Advantages of process cooperation 
@@ -88,9 +90,9 @@ toc_sticky: true
 
 - Illustration of the problem: 
   - Suppose that we wanted to provide a solution to the consumer-producer problem that fills all the buffers.  
-  - We can do so by having an integer counter that keeps track of the  number of full buffers.  
+  - We can do so by having an integer **counter** that keeps track of the  number of full buffers.  
   - Initially, counter is set to 0. It is incremented by the producer after it  produces a new buffer and is decremented by the consumer after it  consumes a buffer. 
-- Paradigm for cooperating processes, producer process produces  information that is consumed by a consumer process. 
+- Paradigm for cooperating processes, **producer process** produces  information that is consumed by a **consumer process.** 
   - unbounded-buffer places no practical limit on the size of the buffer. 
   - bounded-buffer assumes that there is a fixed buffer size.
 
@@ -112,9 +114,11 @@ toc_sticky: true
     int out = 0;
     ```
 
-- if in=out, buffer is empty 
+- 10개의 item을 저장할 수 있는 buffer
 
-- if (in+1) mod n = out, buffer is full 
+- if **in=out**, buffer is empty 
+
+- if **(in+1) mod n = out**, buffer is full 
 
 - Solution is correct, but can only use BUFFER_SIZE-1 elements
 
@@ -193,7 +197,7 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
 ## Race Condition
 
-위 코드는 잘못된 코드임
+위 코드는 잘못된 코드임 -> atomic 하지 않음!
 
 - counter++ could be implemented in machine language as: 
 
@@ -215,7 +219,8 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
 
 
-- 하나의 instruction이 실행되는 동안에는 어떤 interrupt가 와도 반응하지 않음
+- 하나의 instruction이 실행되는 동안에는 어떤 interrupt가 와도 반응하지 않음(atomic instruction)
+- 그러나 instruction 사이사이에는 interrutpt가 발생할 수 있어서 context switching이 일어난다.
 
 <br>
 
@@ -258,7 +263,7 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
   - counter := counter - 1; 
 
-    must be executed atomically. 
+    must be executed atomically.  ->data consistency 보장
 
 - Atomic operation means an operation that completes in its entirety  without interruption. 
 
@@ -267,6 +272,8 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 - To prevent race conditions, concurrent processes must be  **synchronized**.
 
   - race condition을 원천 봉쇄하는 것 -> 동기화의 목적!
+  
+- 공유 데이터에 대한 접근을 동기화!
 
 
 
@@ -277,13 +284,16 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
 - Consider system of n processes {p0 , p1 , … pn-1 } 
 - n processes all competing to use some shared data 
-- Each process has critical section segment of code 
-  - Process may be changing common variables, updating table, writing file,  etc 
+- Each process has **critical section** segment of code 
+  - Process may be changing common variables(공유 데이터를 변경 가능!), updating table, writing file,  etc 
   - When one process in critical section, no other may be in its critical section 
-- Critical section problem is to design protocol to solve this 
+- **Critical section problem** is to design protocol to solve this 
   - ensure that when one process is executing in its critical section, no other  process is allowed to execute in its critical section.
 - Each process must ask permission to enter critical section in **entry section**,  may follow critical section with **exit section**, then **remainder section** 
-- Especially challenging with preemptive kernels
+- Especially **challenging** with preemptive kernels
+  - preemptive kernel: kernel 안에서 preemption을 허용
+  - 이 경우 더 어려움
+
 
 
 
@@ -297,24 +307,33 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
 
 
-- 원래 코드는 critical section과 remainder section이 한 부분을 이루어져 있었는데 race condition을 일으키는 부분이 있어서 이 부분을 따로 뺴야 했음.
+- 원래 코드는 critical section과 remainder section이 뭉쳐져서 한 부분을 이루어져 있었는데 race condition을 일으키는 부분이 있어서 이 부분을 따로 빼야 했음.
   - --> entry section
 - 딱 한 개만 돌도록 하기 위해서 순서를 결정하는 것임!
+  - entry section에 진입할 때 티켓을 뽑고 exit section에서 나갈 때 티켓 반납
+
 
 <br>
 
 ## Solution to Critical-Section Problem
 
+critical section problem을 제대로 해결했는지 확인하기 위해서는 다음 세 조건을 만족시키는 지를 확인하면 된다.
+
 1. **Mutual Exclusion**. 
 
+   - critical section을 실행 중인 process는 반드시 오직 하나여야만 한다.
    - If process Pi is executing in its critical section, then no other processes can be executing in their critical sections. 
+   - mutual exclusion은 critical section 문제를 해결했는지를 따지는 중요한 근간이 되는 조건이지만 이를 만족하기 위해 노력하다 보면 아래와 같은 역효과가 생기기 마련이다.
+     - 그래서 아래 두 조건도 만족 시켜야 문제를 완전히 해결했다고 할 수 있음
 
-2. **Progress**.  (역효과)
+2. **Progress**. 
 
    - 아무도 critical section에 들어갈 수 없는 상황이 만들어 지면 안된다. (그래서 아무도 critical section에 없는 상황)
 
    1. A process outside of its CS can not block another process from entering  its own CS  
-   2. If no process is executing in its critical section and there exist some  processes that wish to enter their critical section, then the selection of the  processes that will enter the critical section next cannot be postponed  indefinitely. 
+      - critical section에 막 들어가려고 하는 프로세스가 CS 밖에서 돌고 있는 process의 영향을 받아 CS 안으로 들어가지 못하는 경우
+   2. If no process is executing in its critical section and there exist some processes that wish to enter their critical section, then the selection of the  processes that will enter the critical section next cannot be postponed indefinitely. 
+      - CS를 실행 중인 프로세스가 없는 상황에서 여러 프로세스가 동시에 CS에 들어가려고 하고 싶을 때
 
 3. **Bounded Waiting**. 
 
@@ -332,8 +351,8 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 ## Critical-Section Handling in OS
 
 - Two approaches depending on if kernel is preemptive or non-preemptive  
-  - Preemptive – allows preemption of process when running in  kernel mode 
-  - Non-preemptive – runs until exits kernel mode, blocks, or  voluntarily yields CPU 
+  - **Preemptive** – allows preemption of process when running in  kernel mode 
+  - **Non-preemptive** – runs until exits kernel mode, blocks, or  voluntarily yields CPU 
     - Essentially free of race conditions in kernel mode
 
 
@@ -353,6 +372,8 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 - Only 2 processes, Pi and Pj 
 - turn - i => Pi can enter its critical section 
 - initially turn = i
+- line 2: entry section
+- line 4: exit section
 
 
 
@@ -363,11 +384,15 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 - mutex가 보장됨
   - initial 값이 i이기 때문에 처음에는 Pi만 들어갈 수 있기 때문
   - critical section에 들어감. -> critical section을 빠져 나올 때 `turn = j;` 라는 exit section을 거쳐서 Pj가 들어갈 수 있게 된다.
+  - turn이라는 변수에는 i 이거나 j 둘 중 하나의 값만 가질 수 있음
 
 
 
-- Satisfies mutual exclusion, but not progress (strict alternation)
+- Satisfies mutual exclusion, but not progress (**strict alternation**)
+  - strict alternation: 반드시 i후에 j가 올 수 있음(내가 원할 때 critical section에 들어가지 못함)
+    - i - j - i - j -i - j - .......
   - deadlock - 서로가 양보해서 어느 것도 들어가지 못함
+  - bounded wait: 한 번만 기다리면 들어갈 수 있음
 
 
 
@@ -391,15 +416,21 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 ![image-20221002204223532](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204223532.png)
 
 - Satisfies mutual exclusion, but not progress requirement. 
+  - 상대방의 진입 의사가 있으면 반드시 양보하기 때문에 mutual exclusion은 만족하지만,
+  - atomic한 instruction이 아니기 때문에 flag[i]와 flag[j]가 모두 true인 상황이 있을 수 있다.
+    - 그러면 서로 양보하기 때문에 progress 조건을 만족시키지 못함.
+
 - If switch 2 statements in entry section, then no mutual exclusion
 
 
 
 <br>
 
-1) MTX requirement is met
+<span style="color:red">시험 나올 듯 3번!</span>
 
-2) Progress Requirement is not met 
+1. MTX requirement is met
+
+2. Progress Requirement is not met 
 
    T0: Pi sets flag[i] = true
 
@@ -407,7 +438,10 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
    both processes are looping forever 
 
-3) Bounded-waiting Requirement ?
+3. <mark>Bounded-waiting Requirement ?</mark>
+
+   - 내가 들어가고 싶은데 계속 못들어갈 수가 있느냐?( 두 프로세스 모두 동시에 들어가고 싶어하는 경우 )
+   - 그런 경우에 둘 다 양보하는데 이것이 bounded -waiting 조건을 만족 시키는 것인지 아닌지
 
 
 
@@ -437,10 +471,18 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
 ![image-20221002204443244](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204443244.png)
 
+- 상대방이 들어갈 수 없는 경우에 들어갈 수 있음
+  - flag[j] == false || turn == i 인 경우에 CS에 들어갈 수 있음
+  - 상대방이 의사진입을 희망하고 있고 turn도 상대방으로 되어 있으면 못 들어감
+
+- 상대방이 들어갈 의사가 없는 경우 -> 무조건 들어감
+- 나도 상대방도 들어갈 의사가 있으면 turn 값을 보고 결정!
 - Combined shared variables of initial attempts 1 and 2. 
 - Meets all three requirements; solves the critical-section problem for two  processes. 
 - Problem: does not generalize well 
+  - n개의 process 상황으로 확장하기가 어려움
   - Very difficult to expand to more than 2 processes
+
 
 
 
@@ -449,6 +491,8 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 ## Peterson's Solution (Cont.)
 
 - to enter the CS, process Pi first sets flag[i] to be true and then sets turn to  value j , thereby asserting that if the other process wishes to enter CS it  can do so. 
+
+  - 들어가고 싶다는 의사 표시는 하지만 turn은 상대방에게 양보
 
 - Provable that the three CS requirement are met: 
 
@@ -468,11 +512,18 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
 ## Multiple-Process Solution: Bakery Algorithm
 
-Critical section for n processes
+Critical section **for n processes**
 
-- Before entering its critical section, process receives a number.  Holder of the smallest number enters the critical section. 
+- Before entering its critical section, process **receives a number**.  
+  - Holder of the smallest number enters the critical section. 
+
 - If processes Pi and Pj receive the same number, if i < j, then Pi is  served first; else Pj is served next . 
+  - 이 번호들은 unique한 번호가 아니기 때문에 문제가 생김!
+
 - The numbering scheme always generates numbers in increasing  order of enumeration; i.e., 1,2,3,3,3,3,4,5...
+  - 왜 똑같은 번호를 받는 프로세스가 생길까...?
+  - 이 경우 pid가 작은 프로세스가 들어가는 것으로 해결
+
 
 
 
@@ -482,7 +533,7 @@ Critical section for n processes
 
 프로세스가 N개일 때도 만족하는 알고리즘
 
-- Notation <= lexicographical order (ticket #, process id #) 
+- Notation <= lexicographical order (**ticket #, process id #**) 
 
   - (a,b) < (c,d) if a < c or if a = c and b < d 
   - max (a<sub>0</sub> ,…, a<sub>n-1</sub> ) is a number, k, such that k >= a<sub>i</sub> for i - 0,…, n – 1 
@@ -498,14 +549,19 @@ Critical section for n processes
 
 ![image-20221002204837783](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204837783.png)
 
+- i, j는 pid
+  
 - 하지만 보면 알겠지만 entry section이 너무 복잡함
   - 사용자가 하는 것은 사실상 불가능
 
-- 두 번째 문장이 atomic하지 않아서 
-  - 같은 번호를 발급받지 못해야 한다.
+- 두 번째 문장이 atomic하지 않아서(번호표 뽑는 문장 - number[i] = max ....) 동일한 번호가 발부 되는 것
+  - 그러나 같은 번호를 발급받지 못해야 한다.
 - 같은 번호면 pid가 작은 애를 찾음(loop를 돌면서)
 - 맨 위 세 문장을 실행시키고 있는 애들은 
-  - choosing number가 false가 아니라면 발급 받는 중인 애인 것이다.
+  - choosing number가 false가 아니라면(즉 true라면) 발급 받는 중인 애인 것이다.
+- number[i] = 0
+  - 발부 받은 번호표를 반납
+
 
 <br>
 
@@ -515,11 +571,28 @@ Critical section for n processes
    - number[j] ≠ 0 
    - (number[j], j) < (number[i], i) 
 2) Progress Requirement is met
+   - critical section 밖에 있는 프로세스의 number[i]는 0이다. lexical order에 의해서 누군가 하나는 CS에 들어가게 된다.
+   - 그래서 CS에 아무도 없는데 못들어가는 경우는 있을 수 없음.
 3) Bounded-waiting Requirement - ensures fairness - process enters CS on FCFS basis
+   - 늦게 온 프로세스가 먼저 될 수도 있긴하지만 번호표 + pid에 의해서 입장하기 때문에
 
 
 
 <br>
+
+---
+
+peterson과 bakery는 FCFS가 보장되지 않음 
+
+- CPU busy waiting 때문에(먼저 왔다고 먼저 실행된다는 보장이 되지 않음)
+
+
+
+---
+
+
+
+
 
 ## Reordering of instructions
 
