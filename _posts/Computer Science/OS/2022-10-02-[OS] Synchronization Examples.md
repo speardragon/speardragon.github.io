@@ -13,7 +13,7 @@ toc_sticky: true
   - the bounded-buffer synchronization problem 
   - the readers-writers synchronization problem 
   - The dining-philosophers synchronization problems 
-- Synchronization within the Kernel 
+- Synchronization within the **Kernel** 
 - the tools used by Linux and Windows to solve synchronization problems. 
 - POSIX Synchronization 
 - Synchronization in Java  
@@ -37,14 +37,24 @@ toc_sticky: true
 ## Bounded-Buffer Problem
 
 - **n** buffers, each can hold one item 
-- Semaphore mutex initialized to the value 1  - binary semaphore
+  - producer와 consumer간의 shared buffer
+  - in, out index로 조절 - full, empty 판단
+    - 혹은 count 변수로
+
+
+
+
+- Semaphore **mutex** initialized to the value 1  - binary semaphore
   - critical section의 진입 -> 0으로 초기화하면 영원히 못들어감!
+  - binary semaphore
 
-- Semaphore full initialized to the value 0 
-  - 차있는 slot의 갯수
+- Semaphore **full** initialized to the value 0 
+  - <mark>차있는 slot의 갯수</mark>
+  - count semaphore -> 0~n
 
-- Semaphore empty initialized to the value n
+- Semaphore **empty** initialized to the value n
   - 비어있는 slot의 갯수
+  - count semaphore -> 0~n
 
 
 - semaphore
@@ -63,6 +73,7 @@ toc_sticky: true
 - produce가 CS에 들어가면 consumer는 못 들어감
 - wait(empty) - 빈 slot이 없으면 대기(block)
   - empty의 값이 0에서 1로 바뀔 때까지
+  - empty의 값이 있기를 기다림 -> 빈 slot이 있기를 기다림
 - wait(mutex)
 
 <br>
@@ -74,6 +85,7 @@ toc_sticky: true
 ![image-20221002214648618](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002214648618.png)
 
 - 꺼내오려는데 꺼내올 것이 없으면 대기해야 하기 때문에 wait(full) 값이 0이면 wait한다.
+- full의 값이 있기를 기다림
 
 <br>
 
@@ -84,6 +96,7 @@ toc_sticky: true
     - 읽기만 하는 process
     - 여러개가 동시에 있어도 OK
   - **Writers** – can both read and write 
+    - 읽기도 하고 쓰기도 하는 프로세스
     - 오직 한 process만 가능
   - readers와 writers가 동시에 있는 것도 불가능
     - 즉 writer가 있으면 무조건 걔만 딱 하나 있어야 함.
@@ -150,7 +163,7 @@ toc_sticky: true
 ![image-20221002215037719](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215037719.png)
 
 - reader가 하나 들어가면 read_count값을 하나 증가시킨다.
-- mutex는 read_count 변수를 update할 때 atomic operator를 보장하기 위해서이므로 read_count 값을 바꿀 수 있다.
+- mutex는 read_count 변수를 update할 때 atomic operation를 보장하기 위해서이므로 wait(mutex) 후에read_count 값을 바꿀 수 있다.
 - read_count == 0 
   - CS에 존재하는 reader가 없다.
   - CS를 빠져 나오는 reader가 0
@@ -164,20 +177,23 @@ toc_sticky: true
 
 - The solution in previous slide can result in a situation where a writer process  never writes. It is referred to as the “First reader-writer” problem. 
 - First variation - **Reader’s priority**(reader에게 유리함) 
-  - no reader kept waiting unless writer has permission to use shared object 
+  - 만약 최초의 CS 진입 경쟁을 할 때 reader가 이겨서 reader가 들어갔다면 그 후에 reader는 계속 들어갈 수 있지만 writer는 못들어감
+  - <u>no reader kept waiting unless writer has permission to use shared object</u> 
   - No reader should wait simply because a writer is ready 
   - Readers obtain access to CS when needed 
   - Only block if writer has access to CS 
   - Writers may starve
     - 근데 writer에게 유리하게 코드를 바꿀 수 있음  
+  
 - Second variation - **Writer’s priority** 
   - writer와 reader가 경쟁하면 무조건 writer에게 우선순위
-  - once writer is ready, it performs the write ASAP 
+  - <u>once writer is ready, it performs the write ASAP</u> 
+    - writer님이 들어가고 싶어하십니다! -> reader들은 못들어감
   - If a writer is waiting to access a object, no new readers may start reading 
   - Readers may starve 
-  
+
 - Both may have starvation leading to even more variations 
-- Problem is solved on some systems by kernel providing reader-writer locks
+- Problem is solved on some systems by **kernel** providing **reader-writer locks**
 
 
 
@@ -190,6 +206,7 @@ toc_sticky: true
 - Philosophers spend their lives alternating thinking and eating 
 - Don’t interact with their neighbors, occasionally try to pick up 2  chopsticks (one at a time) to eat from bowl 
   - Need both to eat, then release both when done 
+    - 젓가락 두 개를 모두 집어야 식사 가능 -> 식사 후에 젓가락 내려놓기 가능
 - In the case of 5 philosophers 
   - Shared data  
     - Bowl of rice (data set) 
@@ -226,14 +243,24 @@ toc_sticky: true
   while (true){ 
       wait (chopstick[i] );
       wait (chopStick[ (i + 1) % 5] );
-      /* eat for awhile */
+      
+      /* eat for awhile - critical section*/
+      
       signal (chopstick[i] );
       signal (chopstick[ (i + 1) % 5] );
+      
       /* think for awhile */
+      
   }
   ```
 
 - What is the problem with this algorithm?
+
+  - 모든 다섯명의 철학자가 첫 코드를 실행했다고 했을 때 -> 모두가 젓가락 하나씩을 집으려고 할 때
+    - 그 다음 코드를 실행하지 못할 것이기 때문에 deadlock 발생 (코드가 진행이 안 됨)
+
+  - deadlock이 발생하지 않도록 semaphore로 해결할 수도 있음
+
 
 
 
@@ -248,24 +275,26 @@ monitor DiningPhilosophers
           condition self [5];
           void pickup (int i) { // wait에 해당하는 부분
               state[i] = HUNGRY;
-              test(i);
+              test(i); // 왼쪽 오른쪽 젓가락 확보를 위한 작업
               if (state[i] != EATING) self[i].wait;
           }
           void putdown (int i) { //signal에 해당하는 부분
               state[i] = THINKING;
-              // test left and right neighbors
+              
+              // test left and right neighbors - 내 좌우 사람들 중 나때문에 못먹던 사람 깨우기
               test((i + 4) % 5);
               test((i + 1) % 5);
           }
-          void test (int i) { 
-              if ((state[(i + 4) % 5] != EATING) &&
-                  (state[i] == HUNGRY) &&
-                  (state[(i + 1) % 5] != EATING) ) { 
+          void test (int i) { // private 함수(내부용)
+              if ((state[(i + 4) % 5] != EATING) && // 나의 왼쪽 철학자가 먹지 않고 있으면서
+                  (state[i] == HUNGRY) && // 내가 HUNGRY 상태 이면서
+                  (state[(i + 1) % 5] != EATING) )  // 나의 오른쪽 철학자가 먹지 않고 있을 때!
+              { 
                   state[i] = EATING ;
                   self[i].signal () ;
               }
           }
-          initialization_code() { 
+          initialization_code() { // 생성자
               for (int i = 0; i < 5; i++)
                   state[i] = THINKING; // CS 진입을 시도하지 않은 상태로 초기화
           }
@@ -273,13 +302,12 @@ monitor DiningPhilosophers
 ```
 
 - monitor instance (앞에 class가 붙었으면 class instance였을 것임)
-
 - EATING 상태 - CS에 진입한 상태
-
 - HUNGRY 상태 - CS에 진입하려는 상태
   - 젓가락 확보를 위해 경쟁하고 있는
 - test 함수
-  - 내가 밥을 먹으면 내 옆의 철학자는 wait하고 있기 때문에 마지막에 self[i].signal을 해 줌
+  - 내가 밥을 먹으면 내 옆의 철학자는 eating으로 바뀌지 않고 self.wait으로 condition queue에 들어가지기 때문에 즉, wait하고 있기 때문에 마지막에 self[i].signal을 해 주어 깨워준다.
+  - 깨어나면 pickup을 넘어갈 수 있기 때문에 critical section인 EAT에 도달할 수 있는 것이다.
 - pickup()
   - 진입을 시도하기 때문에 HUNGRY로 상태를 바꿈.
   - 상태가 EATING이 아니면 self[i].wait
@@ -295,6 +323,7 @@ monitor DiningPhilosophers
 ![image-20221002215440221](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215440221.png)
 
 - No deadlock, but starvation is possible
+  - 도착 순서에 의해서 젓가락을 잡을 수 있는 것이 아니기 때문에 일찍 hungry해도 eating하지 못할 수 있다.
 
 - mutex 보장
   - 옆사람하고 나하고 동시에 젓가락을 잡는 경우가 생기지 않음
@@ -339,7 +368,7 @@ R.release();
 
 <br>
 
-## Synchronization Examples
+## Synchronization Examples - 나 같으면 안 낼 듯...
 
 - Solaris 
 - Windows 
@@ -354,14 +383,21 @@ R.release();
 ## Solaris Synchronization
 
 - Implements a variety of locks to support multitasking, multithreading  (including real-time threads), and multiprocessing 
-- Uses adaptive mutexes for efficiency when protecting data from short  code segments 
-  - Starts as a standard semaphore spin-lock 
+- Uses **adaptive mutexes** for efficiency when protecting data from short  code segments 
+  - Starts as a standard semaphore spin-lock - 기본적으로는 spinlock
   - If lock held, and by a thread running on another CPU, spins 
-  - If lock held by non-run-state thread, block and sleep waiting for signal of  lock being released 
-- Uses condition variables and readers-writers locks when longer  sections of code need access to data 
-- Uses turnstiles to order the list of threads waiting to acquire either an  adaptive mutex or reader-writer lock 
-- Turnstiles are per-lock-holding-thread, not per-object 
+  - If lock held by **non-run-state thread**, **block** and sleep **waiting** for signal of  lock being released 
+    - 이게 금방 풀릴 것 같지 않으면 일반적인 semaphore로 동작!
+- Uses **condition variables** and **readers-writers locks** when longer  sections of code need access to data 
+- Uses **turnstiles** to order the list of threads waiting to acquire either an  adaptive mutex or reader-writer lock 
+  - Turnstiles(회전문) are per-lock-holding-thread, not per-object 
+  - 먼저 들어온 사람이 먼저 lock 획득
+
 - Priority-inheritance per-turnstile gives the running thread the highest of the priorities of the threads in its turnstile 
+  - 어떤 lock에 대해 소유권의 우선순위가 높은 프로세스가 있는데 현재 lock을 소유하고 있는 프로세스는 그것보다 우선순위가 낮을 때 이 우선순위가 낮은 프로세스가 release를 해야 우선순위가 높은 프로세스가 사용하므로 
+    - 높은 우선순위의 프로세스의 우선순위를 낮은 우선순위의 프로세스에게 잠시 빌려준다!
+      - 너 이거 빌려줄테니까 빨리 끝내라 !
+
 - Uses readers-writers locks when longer sections of code need access  to data
 
 
@@ -371,15 +407,15 @@ R.release();
 ## Kernel Synchronization - Windows
 
 - Uses interrupt masks to protect access to global resources on  uniprocessor systems 
-- Uses spinlocks on multiprocessor systems 
+- Uses **spinlocks** on multiprocessor systems 
   - Spinlocking-thread will never be preempted 
-- Also provides dispatcher objects 
+- Also provides **dispatcher objects** user-land which may act mutexes, semaphores, events, and timers
   - The kernel defines a set of object types called kernel dispatcher  objects, or just dispatcher objects.  
   - Dispatcher objects include timer objects, event objects,  semaphore objects, mutex objects, and thread objects. 
-  - Events 
+  - **Events** 
     - An event acts much like a condition variable 
   - Timers notify one or more thread when time expired 
-  - Dispatcher objects either signaled-state (object available) or  non-signaled state (thread will block)
+  - Dispatcher objects either **signaled-state** (object available) or **non-signaled state** (thread will block)
 
 
 
@@ -390,7 +426,7 @@ R.release();
 
 ![image-20221002220101063](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220101063.png)
 
-
+어떤 thread가 lock을 획득하면 nonsignaled로 바뀌고 release하면 다시 signaled 상태로 바뀐다.
 
 <br>
 
@@ -415,7 +451,7 @@ R.release();
 
 - atomic variables 
 
-- atomic_t is the type for atomic integer 
+- **atomic_t** is the type for atomic integer (data type)
 
 - Simplest synchronization tool within Linux kernel 
 
@@ -439,11 +475,11 @@ R.release();
 
 - Mutex lock is used to protect critical sections within kernel 
 
-  mutex_lock() 
+  ​	mutex_lock() 
 
   critical section // sleep is possible 
 
-  mutex_unlock() 
+  ​	mutex_unlock() 
 
 - Reader-writer version 
 
