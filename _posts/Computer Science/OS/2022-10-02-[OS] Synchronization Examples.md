@@ -36,12 +36,19 @@ toc_sticky: true
 
 ## Bounded-Buffer Problem
 
-- n buffers, each can hold one item 
-- Semaphore mutex initialized to the value 1 
+- **n** buffers, each can hold one item 
+- Semaphore mutex initialized to the value 1  - binary semaphore
+  - critical section의 진입 -> 0으로 초기화하면 영원히 못들어감!
+
 - Semaphore full initialized to the value 0 
+  - 차있는 slot의 갯수
+
 - Semaphore empty initialized to the value n
+  - 비어있는 slot의 갯수
 
 
+- semaphore
+  - 개발자, hardware의 도움이 아닌 OS의 도움!
 
 <br>
 
@@ -51,7 +58,12 @@ toc_sticky: true
 
 ![image-20221002214616833](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002214616833.png)
 
+- common buffer에 삽입하는 부분이 CS임 (add next ...)
 
+- produce가 CS에 들어가면 consumer는 못 들어감
+- wait(empty) - 빈 slot이 없으면 대기(block)
+  - empty의 값이 0에서 1로 바뀔 때까지
+- wait(mutex)
 
 <br>
 
@@ -61,15 +73,20 @@ toc_sticky: true
 
 ![image-20221002214648618](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002214648618.png)
 
-
+- 꺼내오려는데 꺼내올 것이 없으면 대기해야 하기 때문에 wait(full) 값이 0이면 wait한다.
 
 <br>
 
 ## Readers-Writers Problem
 
 - A data set is shared among a number of concurrent processes 
-  - Readers – only read the data set; they do not perform any updates 
-  - Writers – can both read and write 
+  - **Readers** – only read the data set; they do not perform any updates 
+    - 읽기만 하는 process
+    - 여러개가 동시에 있어도 OK
+  - **Writers** – can both read and write 
+    - 오직 한 process만 가능
+  - readers와 writers가 동시에 있는 것도 불가능
+    - 즉 writer가 있으면 무조건 걔만 딱 하나 있어야 함.
 - Determine need for mutex based on nature of processes 
   - Readers : allow multiple readers can read data simultaneously 
   - Writers : Only one single writer can access the shared data at the same time 
@@ -90,23 +107,39 @@ toc_sticky: true
 
   - Data set 
 
-  - Semaphore rw_mutex initialized to 1   // rw_mutex functions as a mutex semaphore  
+  - Semaphore **rw_mutex** initialized to 1   // rw_mutex functions as a mutex semaphore  
 
     ​																	// for writers. used by first or last reader 
 
     ​																	// that enters or exists cs 
 
-  - Semaphore mutex initialized to 1         // mutex is used to ensure mutex when  
-
+    - 1) writers끼리 경쟁
+    - 2. reader vs. writer
+    - writer가 경쟁하는 것은 first reader
+      - 첫번째 reader가 들어가면 그 다음 reader는 계속 들어가지기 때문에
+    - 진입제어 용
+  
+  - Semaphore **mutex** initialized to 1         // mutex is used to ensure mutex when  
+  
     ​																	// read_count is updated 
-
-  - Integer read_count initialized to 0
+  
+    - read_count가 바뀔 때 atomic 함을 보장해 주기 위해
+  
+  - Integer **read_count** initialized to 0
+  
+    - critical section에 진입을 시도하는 reader process의 갯수
+    - read_count 값을 바꾸는 과정이 atomic하지 않는다.
+    - 그래서 mutex로 감싸서 atomic operation을 보장한다.
 
 
 
 - The structure of a writer process
 
 ![image-20221002215006472](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215006472.png)
+
+- rw_mutex 값을 1로 초기화
+  - critical section을 빠져나오면서 signal(rw_mutex)를 통해 rw_mutex 값이 0에서 1로 바뀌어야지 다른 것들이 들어갈 수 있게 됨.
+- queue를 통해 FCFS 보장
 
 <br>
 
@@ -116,23 +149,33 @@ toc_sticky: true
 
 ![image-20221002215037719](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215037719.png)
 
-
+- reader가 하나 들어가면 read_count값을 하나 증가시킨다.
+- mutex는 read_count 변수를 update할 때 atomic operator를 보장하기 위해서이므로 read_count 값을 바꿀 수 있다.
+- read_count == 0 
+  - CS에 존재하는 reader가 없다.
+  - CS를 빠져 나오는 reader가 0
+  - signal(rw_mutex) -> 0
+  - 이제 writer가 들어갈 수 있음
+- read_count 가 2를 넘어서면 rw_mutex 값을 바꾸지 않기 때문에 계속 들어갈 수 있음
 
 <br>
 
 ## Readers-Writers Problem Variations
 
 - The solution in previous slide can result in a situation where a writer process  never writes. It is referred to as the “First reader-writer” problem. 
-- First variation - Reader’s priority 
+- First variation - **Reader’s priority**(reader에게 유리함) 
   - no reader kept waiting unless writer has permission to use shared object 
   - No reader should wait simply because a writer is ready 
   - Readers obtain access to CS when needed 
   - Only block if writer has access to CS 
-  - Writers may starve  
-- Second variation - Writer’s priority 
+  - Writers may starve
+    - 근데 writer에게 유리하게 코드를 바꿀 수 있음  
+- Second variation - **Writer’s priority** 
+  - writer와 reader가 경쟁하면 무조건 writer에게 우선순위
   - once writer is ready, it performs the write ASAP 
   - If a writer is waiting to access a object, no new readers may start reading 
   - Readers may starve 
+  
 - Both may have starvation leading to even more variations 
 - Problem is solved on some systems by kernel providing reader-writer locks
 
@@ -151,6 +194,7 @@ toc_sticky: true
   - Shared data  
     - Bowl of rice (data set) 
     - Semaphore chopstick [5] initialized to 1
+      - binary semaphore
 
 
 
@@ -159,6 +203,16 @@ toc_sticky: true
 ## Monitor with condition variables
 
 ![image-20221002215244131](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215244131.png)
+
+- 2개 이상의 process가 monitor 안에서 실행되면 동기화 자체에 문제가 생긴다.
+
+- initialization code: monitor가 만들어질 때 딱 한 번 실행됨
+  - shared data 초기화
+
+- next queue의 역할?
+- 제일 우선순위 높은 ; next queue, entry queue, 새로들어온 애
+  - condition queue는 next queue나 entry queue와는 비교 대상이 아님
+    - condition이 만족해야만 깨어날 수 있기 때문
 
 <br>
 
@@ -192,12 +246,12 @@ monitor DiningPhilosophers
 { 
     enum { THINKING; HUNGRY, EATING) state [5] ;
           condition self [5];
-          void pickup (int i) { 
+          void pickup (int i) { // wait에 해당하는 부분
               state[i] = HUNGRY;
               test(i);
               if (state[i] != EATING) self[i].wait;
           }
-          void putdown (int i) { 
+          void putdown (int i) { //signal에 해당하는 부분
               state[i] = THINKING;
               // test left and right neighbors
               test((i + 4) % 5);
@@ -213,12 +267,24 @@ monitor DiningPhilosophers
           }
           initialization_code() { 
               for (int i = 0; i < 5; i++)
-                  state[i] = THINKING;
+                  state[i] = THINKING; // CS 진입을 시도하지 않은 상태로 초기화
           }
 }
 ```
 
+- monitor instance (앞에 class가 붙었으면 class instance였을 것임)
 
+- EATING 상태 - CS에 진입한 상태
+
+- HUNGRY 상태 - CS에 진입하려는 상태
+  - 젓가락 확보를 위해 경쟁하고 있는
+- test 함수
+  - 내가 밥을 먹으면 내 옆의 철학자는 wait하고 있기 때문에 마지막에 self[i].signal을 해 줌
+- pickup()
+  - 진입을 시도하기 때문에 HUNGRY로 상태를 바꿈.
+  - 상태가 EATING이 아니면 self[i].wait
+    - condition 변수 - self[i].wait
+  - 다른 사람이 self[i].signal을 해야 살아남
 
 <br>
 
@@ -230,7 +296,13 @@ monitor DiningPhilosophers
 
 - No deadlock, but starvation is possible
 
-
+- mutex 보장
+  - 옆사람하고 나하고 동시에 젓가락을 잡는 경우가 생기지 않음
+- progress
+  - CS밖에 있는 process 때문에 CS에 못들어가는 일이 발생하지 않음
+- bounded waiting
+  - 실패를 하더라도 어느정도 시간 안에 들어가는 것이 보장
+- 위 세가지 조건 모두 만족! by OS
 
 <br>
 
@@ -241,8 +313,8 @@ Monitor ResourceAllocation {
     boolean busy; 
     condition x; 
     void acquire (int time){
-        if (busy)
-            x.wait (time);
+        if (busy) //resource가 하나밖에 없는데 이미 할당되어져 있는 경우
+            x.wait(time);
         busy = true;
     }
     void release() {
@@ -259,7 +331,7 @@ Monitor ResourceAllocation {
 ResourceAlocation R;
 
 R.acquire(t);
-	access the resource
+	access the resource //자원 사용 가능
 R.release();
 ```
 
