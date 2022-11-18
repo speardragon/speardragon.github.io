@@ -7,6 +7,8 @@ toc: true
 toc_sticky: true
 ---
 
+[toc]
+
 
 
 
@@ -523,24 +525,44 @@ Critical section for n processes
 
 ## Reordering of instructions
 
+![image-20221118124543252](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221118124543252.png)
+
 - 컴파일러가 code optimization(코드의 실행속도를 빠르게 하기 위해 크게 문제가 없다고 판단하면 문장 순서를 바꾸는 것, 즉 reordering) 을 진행.
 - 좋을라고 instruction reordering을 하지만 예기치 않은 상황이 일어날 수 있음(동기화 문제) 
+  - dependency에 의해
 - 그래서 memory_barrier();
   - flag값이 x 값이 바뀌기 전에 바뀌면 안되게끔 - 즉 reordering이 되지 않게 해 준다.
   - reordering이 되지 않기를 원하는 instruction 사이에 껴준다.
 - 그래서 사용자는 이런 경우까지 고려해야 되므로 굉장히 골치 아픔.
-
-
-
-
+- 만약 위 예제에서 thread 2의 순서를 바꾸지 않는다면 100이 출력 되겠지만 순서를 바꾼다면 flag를 true로 바꾸어 버려 기존 값인 0을 출력하고 그 후에 x값이 100으로 바뀐다.
+  - 이는 분명히 문제가 있는 경우이다. -> reordering을 하면 안됨
+- reordering을 하려면 하기 전과 후의 결과가 반드시 같음을 보장해야 함!
+- memory_barrier() : instruction reordering을 못하도록
 
 <br>
 
 ## Effects of Instruction reordering
 
-- reordering이 되면 
+![image-20221118151759725](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221118151759725.png)
+
+- instruction reordering을 하면 무슨일이 벌어지는 지 
 
 
+
+<br>
+
+## Hardware Support for Synchronization: Memory barrier
+
+- Memory model
+  - Strongly ordered
+    - Where a memory modification on one processor is immediately visible to all other processors
+  - Weakley ordered
+    - Where a memory modification on one processor may not be immediately visible to all other processors
+- Memory model vary by processor type
+  - Kernel can not make any assumption regarding the visibility of modification of memory on a shared memory multiprocessor
+- **Memory barriers** or **memory fences** instruction
+  - Ensure that memory modifications are visible to threads running on other processors 
+  - When they are executed, it ensures that all loads and stores are completed before any subsequent loads or stores are performed
 
 
 
@@ -713,7 +735,7 @@ user도 bounded waiting 보장이 안되고 HW도 not bad이지만 그냥 그렇
 - Previous solutions are complicated and generally inaccessible to  application programmers 
 - OS designers build software tools to solve critical section problem 
 - Simplest is mutex lock 
-- Product critical regions with it by first acquire() a lock then release() it 
+- Product critical regions with it by first **acquire()** a lock then release() it 
   - Boolean variable indicating if lock is available or not 
 - Calls to acquire() and release() must be atomic 
   - Usually implemented via hardware atomic instructions 
@@ -733,6 +755,8 @@ user도 bounded waiting 보장이 안되고 HW도 not bad이지만 그냥 그렇
 
 ![image-20221002205926375](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205926375.png)
 
+- lock이 이미 걸려 있으면 즉, not available이면 기다린다.
+
 - lock을 획득하면 들어가고 획득하지 못하면 기다리고 나갈 때는 다시 lock을 반납
 
 - 그렇다면 차이는?
@@ -742,15 +766,18 @@ user도 bounded waiting 보장이 안되고 HW도 not bad이지만 그냥 그렇
   - mutex lock은 OS 코드로 구현한 software
 
 - available 하면 들어가고 available = false가 됨. -> CPU busy waiting
+  - 다른애가 못들어 가도록 false
+  - CPU time을 할애하면서 available이 true가 될 때까지 기다림
   - critical section을 바로 들어가지 못하면 busy waiting(?)
+  
 - test_and_set보다 더 좋지 않지만 그럼에도 제공하는 이유?
-- 
+- acquire 함수가 atomic하게 실행됨
 
 <br>
 
 ## Semaphore
 
-얘는 CPU time을 낭비하지 않음
+얘는 CPU time을 낭비하지 않음 - CPU busy waiting을 필요로 하지 않는 locking mechanism
 
 - Synchronization tool that provides more sophisticated ways (than Mutex locks) for  process to synchronize their activities. 
 
@@ -759,7 +786,7 @@ user도 bounded waiting 보장이 안되고 HW도 not bad이지만 그냥 그렇
   - Spinlock : no context switch required 
   - When locks are expected to be held for short times, spinlocks are useful  
 
-- Semaphore S – integer variable 
+- Semaphore **S** – integer variable 
 
 - Can only be accessed via two indivisible (atomic) operations 
 
@@ -775,7 +802,7 @@ user도 bounded waiting 보장이 안되고 HW도 not bad이지만 그냥 그렇
   }
   ```
 
-- Definition of the signal() operation
+- Definition of the **signal() operation**
 
   ```c
   signal(S) { 
@@ -800,7 +827,7 @@ S값을 초기에 1로 해야 처음에는 들어가고 1이 감소하여 그 �
 
 - **Binary semaphore** – integer value can range only between 0 and 1 (오직 0 and 1)
 
-  - Same as a mutex lock 
+  - Same as a **mutex lock** 
 
 - Can solve various synchronization problems 
 
@@ -822,7 +849,9 @@ S값을 초기에 1로 해야 처음에는 들어가고 1이 감소하여 그 �
 
 ## Semaphore Implementation
 
-- Must guarantee that no two processes can execute the wait() and  signal() on the same semaphore at the same time 
+- Must guarantee that no two processes can execute the **wait()** and  **signal()** on the same semaphore at the same time 
+  - 한 semaphore에 대해서 wait()이 끝나야지 만이 signal()이 호출될 수 있음
+
 - Thus, the implementation becomes the critical section problem where  the wait and signal code are placed in the critical section 
   - Could now have busy waiting in critical section implementation 
     - But implementation code is short 
@@ -836,12 +865,12 @@ S값을 초기에 1로 해야 처음에는 들어가고 1이 감소하여 그 �
 ## Semaphore Implementation with no Busy waiting
 
 - With each semaphore there is an associated waiting queue 
-- Each entry in a waiting queue has two data items: 
+- Each entry in a waiting queue has two data items: 구조체 변수에 다음을 포함
   - value (of type integer) 
-  - pointer to next record in the list 
+  - pointer to next record in the list (queue)
 - Two operations: 
-  - **block** – place the process invoking the operation on the  appropriate waiting queue 
-  - **wakeup** – remove one of processes in the waiting queue  and place it in the ready queue
+  - **block** – place the process invoking the operation on the appropriate **waiting queue** 
+  - **wakeup** – remove one of processes in the waiting queue and place it in the **ready queue**
 
 ```c
 typedef struct{
@@ -855,7 +884,7 @@ typedef struct{
 
 <br>
 
-## Implementation with no Busy waiting (Cont.)
+## Implementation with no Busy waiting (Cont.) 시험!
 
 ```c
 wait(semaphore *S) { 
@@ -885,6 +914,7 @@ signal(semaphore *S) {
     - bounded waiting도 보장 - FCFS
 
 - S값은 1이 최대값임, 대기는 여러명이 할 수 있기 떄문에 -1, -2, -3, ... 이 가능함
+- S가 0이라는 것은 signal을 호출한 프로세스가 유일하게 wait함수를 호출했던 프로세스였다는 뜻
 - 하지만 잘못 사용하면 deadlock이 걸릴 수 있음
   - entry section에서 잘못 사용하면 아무도 critical section을 진입하지 못하는 경우가 생길 수 있음
   - 하지만 제일 강력한 방법
@@ -894,6 +924,8 @@ signal(semaphore *S) {
 ## Semaphore as General Synchronization Tool(중요)
 
 - Execute B in Pj only after A executed in Pi 
+  - B라는 instruction을 반드시 A라는 instruction 이후에 실행하도록 제어하고 싶은 경우
+
 - Use semaphore flag initialized to 0 
 - Code:
 
@@ -940,7 +972,7 @@ signal(semaphore *S) {
 
 <br>
 
-## Implementing S (Cont.)
+## Implementing S (Cont.) - 중요
 
 - wait operation
 
@@ -956,6 +988,8 @@ signal(semaphore *S) {
 
 ## Problems with Semaphores
 
+semaphore 사용할 때 주의점
+
 - Incorrect use of semaphore operations: 
   - signal (mutex) …. wait (mutex)
   - wait (mutex) … wait (mutex) 
@@ -970,8 +1004,8 @@ signal(semaphore *S) {
 
 semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하지는 않음
 
-- A high-level abstraction that provides a convenient and effective mechanism for  process synchronization 
-- Abstract data type, internal variables only accessible by code within the procedure 
+- A high-level abstraction that provides a convenient and effective mechanism for process synchronization 
+- Abstract data type(like class), internal variables only accessible by code within the procedure 
   - Ensure mutex at higher level, within monitor 
     - **Only one process at a time** can be executing within monitor 
   - Encapsulates data, procedures to manipulate data into one module 
@@ -979,17 +1013,6 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 - But not powerful enough to model some synchronization schemes
 
 ![image-20221002211222031](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211222031.png)
-
-
-
-<br>
-
-- A high-level abstraction that provides a convenient and effective  mechanism for process synchronization 
-- Abstract data type, internal variables only accessible by code within the  procedure 
-- Only one process may be active within the monitor at a time 
-- But not powerful enough to model some synchronization schemes
-
-![image-20221002211258316](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211258316.png)
 
 - 모니터에는 p1, p2,.. pn이 있을 것임.
 
@@ -1004,6 +1027,8 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 ## Monitors (continued)
 
 - Initialization code is executed when monitor is declared 
+  - 생성될 때 한 번만 실행
+
 - Monitor procedures can only access variables declared within  monitor, procedures 
   - Variables within monitor can not be accesses outside of monitor 
   - Only access to monitor is via calls to its procedures labeled entry 
@@ -1016,13 +1041,20 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
 ![image-20221002211359527](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211359527.png)
 
-생성자 - initialization code
+- 생성자 - initialization code
 
-메소드 - procedure operation
+- 메소드 - procedure operation
+
+- 모니터 안에서 생성될 수 있는 프로세스는 한 개로 제한
+- entry queue: 모니터 안에서 정의된 procedure에 대해서 호출을 한 프로세스가 여러개 인 경우 그중 한 프로세스만 실행이 허용되고 나머지는 이 큐에서 순서대로 기다리는 개념
 
 <br>
 
-## Monitors (continued)
+## Monitors (continued) - 시험
+
+procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에서 기다리면 아무 것도 실행이 되지 않는 문제 발생
+
+-> condition variable개념 도입
 
 - To allow a process to wait within the monitor, a condition variable must  be declared, as
 
@@ -1030,18 +1062,21 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
   - Associated with each condition is a queue 
 
-- Two operations are allowed on a condition variable: 
+- **Two operations** are allowed on a condition variable: 
 
 - Processes placed onto / removed from queue via wait and signal (모니터에서 정의한)
 
   - x means condition!
-  - x.wait() – means that the process that invokes this operation is  suspended until another process invokes x.signal()  
+  - **x.wait()** – means that the process that invokes this operation is <u>suspended</u> until another process invokes x.signal()  
     - event를 기다리는데 condition queue에 가서 기다리기
   
-  - x.signal() – resumes exactly one suspended process (if any) that invoked x.wait() 
+  - **x.signal()** – <u>resumes</u> exactly one suspended process (if any) that invoked x.wait() 
     - If no x.wait() on the variable, then it has no effect on the  variable 
+      - <mark>semaphore는 no effect가 아니라 value가 0에서 1로 바뀐다!!!</mark>
     - If no process is suspended, then the signal operation has no effect.
       - x.wait에 의해 suspend된 프로세스를 살려줌
+  - semaphore의 wait과 signal과 혼돈하지 말 것
+    - condition 변수의 함수임
   
 
 
@@ -1057,6 +1092,8 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
 - 실행을 하다가 event가 발생하여 더 이상 실행을 하지 못하는 경우 기다려야 하므로 손해
 
+- x라는 event가 발생하기를 기다리고 있는 프로세스
+
   
 
 <br>
@@ -1064,10 +1101,17 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 ## Monitors (continued)
 
 - Suppose that, when the x.signal is invoked by a process P, there is a  suspended process Q associated with condition x 
-- If the suspended process Q is allowed to resume its execution, the  signaling process P must wait, otherwise, both P and Q will be active  simultaneously within the monitor 
+  - P -> x.signal 호출
+  - Q -> x.signal이 호출되어져 살아남
+
+- If the suspended process Q is allowed to resume its execution, the  signaling process P must wait, otherwise, both P and Q will be active  **simultaneously** within the monitor 
+  - 이는 모니터 방식에 위배
+
 - 2 possibilities 
   - **Signal and wait** – P either waits until Q leaves the monitor, or  waits for another condition 
+    - 살려준 프로세스가 기다릴 것이냐
   - **Signal and continue** - Q either waits until P leaves the monitor, or  waits for another condition 
+    - 살려진 프로세스가 기다릴 것이냐
   - Both have pros and cons – language implementer can decide 
   - Monitors implemented in Concurrent Pascal compromise  
     - P executing signal immediately leaves the monitor, Q is resumed 
@@ -1083,17 +1127,24 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
 ![image-20221002211654825](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211654825.png)
 
-- Each procedure F will be replaced by
+- Each procedure **F** will always be replaced by
 
 ![image-20221002211711850](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211711850.png)
 
+- wait(mutext) - entry section
+- if-else  : exit section
+- body of F : critical section
 - Mutual exclusion within a monitor is ensured by mutex semaphore 
 - Signaling process must wait until the resumed process either leaves or waits 
   - Next semaphore on which signaling processes may suspend themselves  
   - Next-count counts the number of processes suspended on next
 
 - signal(next) - next 
-- 제일 우선순위 높은 ; next queue, entry queue, 새로들어온 애
+- <mark>제일 우선순위 높은 ; next queue, entry queue, 새로들어온 애</mark>
+  - condition queue에 있는 애들은 우선순위 대상이 들어가지 않는 이유
+    - 남을 위해서 일부러 기다려주거나(next q) 다른 사람이 있기 때문에 기다리는 것(entry q)이 아니라 x 혹은 y라는 event를 기다리는 것이기 때문에 event에 의존하여 살려줘도 의미가 없는 경우가 있을 수 있다.
+    - 따라서 얘는 조건적으로 살아남
+
 
 <br>
 
@@ -1103,7 +1154,7 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
 ![image-20221002211754045](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211754045.png)
 
-- The operation x.wait can be implemented as:
+- The operation **x.wait** can be implemented as:
 
 ![image-20221002211807215](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211807215.png)
 
@@ -1113,7 +1164,7 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
 ## Monitor Implementation (Cont.)
 
-- The operation x.signal can be implemented as:
+- The operation **x.signal** can be implemented as:
 
 ![image-20221002211833560](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211833560.png)
 
@@ -1126,7 +1177,7 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 - Resuming Processes within a Monitor 
   - If several processes queued on condition x, and x.signal()  executed, which should be resumed? 
   - FCFS frequently not adequate 
-- Condition operation with priority (process resumption order) 
+- Condition operation with **priority** (process resumption order) 
   - Conditional-wait construct: x.wait(c); 
   - c – integer expression evaluated when the wait operation is  executed. 
   - value of c (priority number) stored with the name of the process  that is suspended. 
@@ -1138,19 +1189,23 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
 ## Single Resource allocation
 
-- Allocate a single resource among competing processes using  priority numbers that specify the maximum time a process plans  to use the resource
+- Allocate a single resource among competing processes using  priority numbers that specify the maximum time a process plans to use the resource
 
 ![image-20221002212138116](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212138116.png)
 
 - Where R is an instance of type ResourceAllocator
+  - ex) ResourceAllocator R;
+
 
 
 
 <br>
 
-## A Monitor to Allocate Single Resource
+## A Monitor to Allocate Single Resource - 중요
 
 ![image-20221002212250416](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212250416.png)
+
+release()에서 x.signal()을 하면 누가먼저 살아나야 할까? -> 위에서 말했음
 
 
 
@@ -1166,7 +1221,13 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
 <br>
 
-## Liveness
+---
+
+이 아래는 뒤에서 배울 것이므로 무시
+
+
+
+## Liveness - 무시
 
 - Deadlock – two or more processes are waiting indefinitely for an event that can  be caused by only one of the waiting processes. 
 - Let S and Q be two semaphores initialized to 1
