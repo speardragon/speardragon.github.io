@@ -7,6 +7,10 @@ toc: true
 toc_sticky: true
 ---
 
+[toc]
+
+
+
 # Chapter 7: Synchronization Examples
 
 - Classic Problems of Synchronization 
@@ -406,7 +410,7 @@ R.release();
 
 ## Kernel Synchronization - Windows
 
-- Uses interrupt masks to protect access to global resources on  uniprocessor systems 
+- Uses interrupt masks to protect access to global resources on  **uniprocessor systems** 
 - Uses **spinlocks** on multiprocessor systems 
   - Spinlocking-thread will never be preempted 
 - Also provides **dispatcher objects** user-land which may act mutexes, semaphores, events, and timers
@@ -443,7 +447,7 @@ R.release();
   - semaphores 
   - reader-writer versions of both (spinlock, semaphores)
 
-- On single-CPU system, spinlocks replaced by enabling and  disabling kernel preemption
+- On single-CPU system, spinlocks replaced by **enabling and  disabling kernel preemption**
 
 
 
@@ -497,7 +501,9 @@ R.release();
 
 ## Pthread (POSIX) Synchronization
 
-- Pthreads API is OS-independent user level threads 
+이거는 user level에서의 synchronization 문제 해결하는 tool
+
+- Pthreads API is OS-independent **user level threads** 
 - Widely used on UNIX, Linux, and macOS 
 - It provides: 
   - mutex locks 
@@ -562,7 +568,7 @@ R.release();
 
 ## POSIX Condition Variables
 
-- Since POSIX is typically used in C/C++ and these languages do not  provide a monitor, POSIX condition variables are associated with a  POSIX mutex lock to provide mutual exclusion: Creating and initializing  the condition variable:
+- Since POSIX is typically used in C/C++ and these languages do not  provide a monitor, **POSIX condition variables** are associated with a **POSIX mutex lock** to provide mutual exclusion: Creating and initializing  the condition variable:
 
 ![image-20221002220813118](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220813118.png)
 
@@ -588,7 +594,8 @@ R.release();
 
 ![image-20221002220914354](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220914354.png)
 
-
+- 여러 operation들(method)이 있는데 어떤 프로세스가 해당 메소드를 실행할 때는 오로지 한 개씩만 실행이 가능하도록 제어해야 한다.
+- Java에서는 named condition variables이 없고 오직 하나의 unnamed condition variable만이 있다.
 
 <br>
 
@@ -607,8 +614,8 @@ R.release();
 ## Java Monitors
 
 - Concurrency mechanism for thread synchronization 
-- Every Java object has associated with it a single lock. 
-- If a method is declared as synchronized, a calling thread must own  the lock for the object. (single thread can be active in a monitor) 
+- Every Java object has associated with it a **single lock.** 
+- If a method is declared as synchronized, a calling thread **must own the lock** for the object. (single thread can be active in a monitor) 
 - If the lock is owned by another thread, the calling thread must wait for  the lock until it is released. (entry Q) 
 - Locks are released when the owning thread exits the synchronized method.
 
@@ -650,9 +657,9 @@ R.release();
 
 - How does a thread get notified? 
 
-- When a thread calls notify(): 
+- When a thread calls notify(): signal()이랑 동일
 
-  		1. An arbitrary thread T is selected from the wait set 
+  	1. An arbitrary thread T is selected from the wait set 
 
   2. T is moved from the wait set to the entry set 
 
@@ -670,7 +677,7 @@ R.release();
 
 ![image-20221002221334049](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221334049.png)
 
-
+notify()를 바깥으로 뺀 이유는 try안에 있으면 wait() 실행 중에 error 발생시 catch로 넘어가서 nofity()를 실행하지 못하는 경우가 있을 수 있기 때문이다.
 
 <br>
 
@@ -711,7 +718,7 @@ R.release();
 
   ![image-20221002221555261](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221555261.png)
 
-- A thread waits by calling the await() method, and signals by calling  the signal() method of condition variable.
+- A thread waits by calling the **await()** method, and signals by calling  the **signal()** method of condition variable.
 
 
 
@@ -726,8 +733,8 @@ R.release();
 ## Java Condition Variables
 
 - Example: Five threads numbered 0 .. 4 
-- Shared variable turn indicating which thread’s turn it is. 
-- Thread calls doWork() when it wishes to do some work.  
+- Shared variable **turn** indicating which thread’s turn it is. 
+- Thread calls **doWork()** when it wishes to do some work.  
   - But it may only do work if it is their turn. 
 - If not their turn, wait 
 - If their turn, do some work for awhile …... 
@@ -760,11 +767,11 @@ R.release();
 
 ## Transactional Memory
 
-- Consider a function update() that must be called atomically. One option is  to use mutex locks:
+- Consider a function update() that **must be called atomically**. One option is  to use mutex locks:
 
 ![image-20221002221916655](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221916655.png)
 
-- Synchronization mechanism such as semaphores, mutex locks has  deadlock and scalability problem, as the number of threads increases  
+- Synchronization mechanism such as semaphores, mutex locks has **deadlock** and scalability problem, as the number of threads increases      
 - A memory transaction is a sequence of read-write operations to  memory that are performed atomically. A transaction can be completed  by adding atomic{S} which ensure statements in S are executed  atomically:
 
 ![image-20221002221936000](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221936000.png)
@@ -785,7 +792,7 @@ R.release();
 
 ![image-20221002222021494](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002222021494.png)
 
-- The code contained within the #pragma omp critical directive is  treated as a critical section and performed atomically.
+- The code contained within the #pragma omp critical directive is  treated as a critical section and performed **atomically**.
 
 
 
@@ -797,36 +804,3 @@ R.release();
 - Functional programming languages offer a different paradigm  than procedural languages in that they do not maintain state.  
 - Variables are treated as immutable and cannot change state  once they have been assigned a value. 
 - There is increasing interest in functional languages such as  Erlang and Scala for their approach in handling data races.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
