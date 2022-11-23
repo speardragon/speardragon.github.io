@@ -66,7 +66,9 @@ toc_sticky: true
 
   CPU cycles, memory space, I/O devices 
 
-- Each resource type Ri has Wi instances. 
+- Each resource type Ri has Wi instances(CPU).
+
+- 공유가 안되는 resource에서 문제가 됨. 
 
 - If a resource is non-sharable, Each process utilizes a resource as follows: 
 
@@ -115,6 +117,8 @@ pthread_mutex_init(&second_mutex, NULL);
 
 
 
+mutex_lock은 semaphore와 다르게 block이 안됨.
+
 <br>
 
 ## Deadlock in multithreaded application
@@ -126,7 +130,7 @@ void *do_work_one(void *param){ /* thread one */
     /* do some work */
     pthread_mutex_unlock(&second_mutex);
     pthread_mutex_unlock(&first_mutex);
-    pthread_exit(0)l
+    pthread_exit(0);
 }
 void *do_work_two(void *param){ /* thread two */
     pthread_mutex_lock(&second_mutex);
@@ -138,7 +142,8 @@ void *do_work_two(void *param){ /* thread two */
 }
 ```
 
-
+- deadlock 발생
+  - 다른 상대방이 갖고 있는 mutex_lock을 가질 수 있는 경우는 없다.
 
 <br>
 
@@ -193,9 +198,9 @@ void *do_work_two(void *param){ /* thread two */
             done = 1;
         } 
         else
-            pthread_mutex_unlock(&seconf_mutex);
+            pthread_mutex_unlock(&second_mutex);
     }
-    pthread_exit(0)l
+    pthread_exit(0);
 }
 ```
 
@@ -203,11 +208,36 @@ if (pthread_mutex_trylock(mutex)) 를 해도 이미 first와 second 모두 lock�
 
 그래서 else문의 pthread_mutex_unlock을 하여 다시 돌아가서 똑같이 반복한다.
 
+
+
+livelock, deadlock, deadlock with semaphore 셋 간의 차이점
+
+- deadlock with semaphore 
+  - wait(S1)을 하면 kernel롤 내려우는데 semaphore 값이 1이니까 바로 return이 됨
+  - return 되면서 **semaphore가** 0->1로 바뀌고
+  - 그 이후에 wait(S2)
+  - 그러면 못 돌아옴(block)
+- deadlock in multithreaded
+  - mutex_lock
+  - 첫번째 문장으로 first_mutex를 얻고 다른 함수의 첫번째 문장으로 second_mutex를 얻음
+  - 근데 두 함수 어떤 것이든 두 번째 문장은 실행이 안된다. (1에서 0으로 바뀌었을테니까)
+  - 커널 안에서 빙글빙글 돌고 있음 (wait 상태를 간 게 아님)
+  - 다른 lock을 얻으려고 하는데 못얻고 있으니까 계속 얻으려고 시고하고 있는 거임.
+- livelock
+  - 두 thread가 각각 
+  - pthread_mutex_trylock: 바로 user에게 lock을 얻었는지 못얻었는지의 결과를 return해줌
+    - 그래서 if 조건문에 딱 걸리기 때문에 획득했는지 안했는지 딱 알 수 있음.
+  - 만약 못얻고 else에 걸리면 첫번째 문장으로 획득했던 lock을 회수하고 다시 시도한다.
+  - 이 과정을 반복하면 deadlock이 발생할 확률이 현저히 줄어든다.
+  - sleep(rand(100)) 과 같이 random time을 기다리게 한다.
+
+
+
 <br>
 
 ## Deadlock Characterization
 
-Deadlock can arise if four conditions hold simultaneously.
+Deadlock can arise if four conditions hold simultaneously.(4개의 필요조건)
 
 - **Mutual exclusion**: at least one resource must be held in a non-sharable mode  
   - <u>only one process at a time can use a resource.</u> 
@@ -290,7 +320,7 @@ A set of vertices V and a set of edges E.
 
 Cycle in resource allocation graph sufficient for deadlock if each resource type in cycle **consists of a single entity**
 
-
+- cycle이 존재하면 deadlock을 발생시킨다는 충분조건은 resource type가 single entity를 구성하는 것
 
 <br>
 
@@ -299,7 +329,7 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 ![image-20221002223354398](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002223354398.png)
 
 - P1이 R1을 요청하나 획득할 가능성은 없음
-  - P2가 가지고 있기 때문에
+  - P2가 가지고 있기 때문에 request edge가 assignment edge로 바뀔 수가 없음.
 - P2 역시 P3가 갖고 있는 것을 요구 하고 있기 때문에 가능성 없음
 - P3도 P1이 갖고 있는 것을 기다리고 있음.
 - 따라서 이는 circular wait
@@ -324,7 +354,9 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 - If graph contains no cycles => no deadlock. 
 - If graph contains a cycle => 
   - if only one instance per resource type, then **deadlock**. (충분조건)
+    - 하나면 무조건 데드락
   - if several instances per resource type, possibility of deadlock. (필요조건)
+    - 일수도 아닐수도
 
 
 
@@ -332,12 +364,16 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 
 ## Methods for Handling Deadlocks
 
-- Ensure that the system will **never** enter a deadlock state. 
+- Ensure that the system will **never** enter a deadlock state. : overhead가 있음(사전에 발생가능성을 차단해야 하기 때문에) 
   - Deadlock prevention 
   - Deadlock avoidance 
 - Allow the system to enter a deadlock state and then recover. 
   - Deadlock detection and recovery 
+  - 사전에 아무 조치를 취하지 않고 주기적으로 체크만 함.
 - Ignore the problem and pretend that deadlocks never occur in the  system; used by most operating systems, including UNIX.
+  - deadlock과 관련해서 OS가 해줄 수 있는 일이 아무것도 없으니까 그냥 무시
+  - OS가 제공하지 않으면 application 내에 해결책 구현이 필요할 수도 있음.
+
 
 
 
@@ -366,7 +402,8 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 2) Hold and Wait - must guarantee that whenever a process requests a resource, it does not hold any other resources. 
    - One shot allocation 
      - Require process to request and be allocated all its resources  before it begins execution,  
-   - or allow process to request resources only when the process has  none. 
+     - 한꺼번에 요구 -> 자원의 낭비가 심함(사용하지 않는 것도 미리 받아놓기 떄문)
+   - or allow process to request resources only when the process has none. 
      - Release resources held before requesting more 
    - Prob. 
      - Ability to acquire resources simultaneously may be limited 
@@ -392,6 +429,7 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
    - Ensure that there is no cycle of suspended processes 
    - impose a total ordering of all resource types,  
      - Disk(3), tape(5) ,,,, 
+     - 낮은 번호의 resource request는 거부
    - require that each process requests resources in an increasing order of  enumeration. 
      - Processes can only request a resource whose associated value is  greater than value of any resources it holds 
    - P1은 R1을 요구하기 위해서 R2를 release하고 해야 함!
@@ -414,7 +452,10 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 - Invalidating the circular wait  condition is most common. 
 - Simply assign each resource  (i.e., mutex locks) a unique  number. 
 - Resources must be acquired in  order. 
-- If first_mutex = 1 second_mutex = 5 code for thread_two could not  be written:
+- If 
+  first_mutex = 1 
+  second_mutex = 5 
+- code for thread_two could not  be written:
 
 ![image-20221002223951090](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002223951090.png)
 
@@ -429,7 +470,7 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 - Transactions 1 and 2 execute concurrently. Transaction 1 transfers $25  from account A to account B, and Transaction 2 transfers $50 from  account B to account A
 - Java: System.identifyHashCode(Object) – returns the hash code value  for ordering lock acquisition
 
-
+- lock 번호를 얻는데 도움이 되는 hash code
 
 <br>
 
@@ -470,7 +511,9 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 
 - If a system is in safe state => no deadlocks. 
 - If a system is in unsafe state => possibility of deadlock. 
-- Avoidance => ensure that a system will never enter an unsafe  state.
+- **Avoidance** => ensure that a system will never enter an unsafe  state.
+  - 항상 safe 상태에 있도록
+
 
 
 
@@ -480,13 +523,15 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 
 ![image-20221002224304739](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002224304739.png)
 
+unsafe: 현재는 deadlock이 아닌데 진전이 되면 deadlock이 걸릴 것이 농후해 보이는 상태
 
+safe: 아예 deadlock이 걸리지 않는 상태
 
 <br>
 
 ## Safe, unsafe state
 
-![image-20221002224329818](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002224329818.png)
+![image-20221002224329818](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002224329818.png)s
 
 P1은 2개만 있으면 되는데 현재 available이 3이므로 P1이 전부 요구해도 들어줄 수 있지만 나머지는 들어줄 수 없는 경우가 발생할 수 있다.
 
@@ -495,9 +540,8 @@ P1은 2개만 있으면 되는데 현재 available이 3이므로 P1이 전부 �
 ![image-20221002224344691](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002224344691.png)
 
 - if P2 requests and is allocated 1 more tape drive 
-- Safe sequence exist? => no!, so the request should not be allowed.
-
-
+- Safe sequence exist? => **no**!, so the request should not be allowed.
+  - deadlock avoidance!
 
 <br>
 
@@ -558,6 +602,8 @@ P1은 2개만 있으면 되는데 현재 available이 3이므로 P1이 전부 �
 ## Banker's Algorithm
 
 - Multiple instances. 
+  - multiple resource type - deadlock avoidance
+
 - Each process must a priori claim maximum use. 
 - When a process requests a resource it may have to wait.  
 - When a process gets all its resources it must return them in a  finite amount of time. 
@@ -637,7 +683,7 @@ Request = request vector for process Pi . If Request<sub>i</sub> [j] = k then  p
 
 <br>
 
-## Example of Banker's Algorithm
+## Example of Banker's Algorithm - 시험
 
 - 5 processes P<sub>0</sub> through P<sub>4</sub> ;  
 - 3 resource types  
@@ -672,11 +718,12 @@ Is this safe?
 ![image-20221002225801105](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002225801105.png)
 
 - Executing safety algorithm shows that sequence < P<sub>1</sub> , P<sub>3</sub> , P<sub>4</sub> , P<sub>0</sub> , P<sub>2</sub>> satisfies safety requirement.  
+- <mark>중요</mark>
 - Can request for (3,3,0) by P<sub>4</sub> be granted? 
 - Can request for (0,2,0) by P<sub>0</sub> be granted?
 - 위 예제에 대해서 safe sequence를 찾을 수 있으면 해당 request는 받아들여지는 것이고 찾을 수 없다면 받아들일 수 없는 것이다.
 
-초기에 2,3,0의 용량에 벗어나지 않는 Need를 가진 것은 P1밖엥 ㅓㅄ다.
+초기에 2,3,0의 용량에 벗어나지 않는 Need를 가진 것은 P1밖에 없다.
 
 <br>
 
@@ -696,6 +743,10 @@ Is this safe?
 - Nodes are processes. – Pi -> Pj if Pi is waiting for Pj . 
 - Periodically invoke an algorithm that searches for acycle in the graph. 
 - An algorithm to detect a cycle in a graph requires an order of n<sup>2</sup> operations, where n is the number of vertices in the graph.
+  - O(n^2)
+  - x: n
+  - y: O(n^2)
+
 
 
 
@@ -747,7 +798,7 @@ Algorithm requires an order of O(m x n<sup>2</sup>) operations to detect  whethe
 
 <br>
 
-## Example of Detection Algorithm
+## Example of Detection Algorithm - 시험
 
 - Five processes P<sub>0</sub> through P<sub>4</sub> ; three resource types  A (7 instances), B (2 instances), and C (6 instances). 
 - Snapshot at time T<sub>0</sub> :
@@ -764,6 +815,16 @@ Algorithm requires an order of O(m x n<sup>2</sup>) operations to detect  whethe
 
 
 <br>
+
+---
+
+## detection과 avoidance의 차이점을 명확히 알기
+
+
+
+
+
+---
 
 ## Example (Cont.)
 
