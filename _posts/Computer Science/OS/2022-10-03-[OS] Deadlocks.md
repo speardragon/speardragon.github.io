@@ -794,7 +794,7 @@ resource를 제거하더라도 사실상 프로세스 끼리 요구하는 것이
 
 Algorithm requires an order of O(m x n<sup>2</sup>) operations to detect  whether the system is in deadlocked state
 
-
+  ![그림입니다. 원본 그림의 이름: CLP0000b6980004.bmp 원본 그림의 크기: 가로 909pixel, 세로 475pixel](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/tmp45F0.jpg)  
 
 <br>
 
