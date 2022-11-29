@@ -951,16 +951,20 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
 - Pages can be mapped into **non-contiguous frames** 
 - **Page table** is kept in main memory. 
 - **Page-table base register (PTBR)** points to the page table 
+  - 빨리 찾아가기 위함
+
 - **Page-table length register (PTLR)** indicates size of the page table 
   - Rarely does a process use all its address range 
-- In this scheme every data/instruction access requires two memory  accesses(-> 성능 저하). One for the page table and one for the data/instruction. 
-- The two memory access problem can be solved by the use of a special fastlookup hardware cache called associative memory or translation lookaside buffers (TLBs)
+  - entry 갯수를 줄이기 위함
+- In this scheme every data/instruction access requires two memory  accesses( -> 성능 저하). 
+  One for the page table and one for the data/instruction. 
+- The two memory access problem can be solved by the use of a special fastlookup hardware cache called **associative memory** or translation lookaside buffers (**TLBs**)
 
 
 
-- Some TLBs(Translation Lookaside Buffer) store **address-space identifiers (ASIDs)** in each TLB entry  
-  - uniquely identifies each process to provide address-space protection for  that process 
-    - Otherwise need to flush at every context switch 
+- Some **TLBs**(Translation Lookaside Buffer) store **address-space identifiers (ASIDs)** in each TLB entry  
+  - uniquely identifies each process to provide address-space protection for that process 
+    - (context switching 시에)Otherwise need to flush at every context switch 
 - TLBs typically small (64 to 1,024 entries) 
 - On a TLB miss, value is loaded into the TLB for faster access next time 
   - Replacement policies must be considered 
@@ -978,7 +982,8 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
 
 - Address translation (p, d) 
   - If p is in associative register, get frame # out.  
-  - Otherwise get frame # from page table in memory
+  - Otherwise get frame # **from page table in memory**
+- ASID가 같이 저장될 수 있음
 
 
 
@@ -988,7 +993,9 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
 
 ![image-20221003000804647](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000804647.png)
 
+TLB hit의 overhead - TLB cache에서 searching time (<<<< MM access time)
 
+TLB Miss의 overhead - TLB searching time + page table searching time + MM access time
 
 <br>
 
@@ -1004,11 +1011,16 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
 
 - Consider α = 80%, ε = 20ns for TLB search, 100ns for memory access Assume  memory cycle time is 1 microsecond
 
--  **Effective Access Time (EAT)** 
+- **Effective Access Time (EAT)** 
 
   EAT = (1 + ε) α + (2 + ε)(1 – α) 
 
   = 2 + ε – α
+
+  - (1 + ε) α -> 
+    - TLB Hit : TLB seach  = 1 + ε
+  - (2 + ε)(1 – α) ->
+    - TLB Miss: TLB search + page table search + physical m.m search = 2 + ε
 
 - Consider α = 80%, ε = 20ns for TLB search, 100ns for memory access 
 
@@ -1023,6 +1035,8 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
 <br>
 
 ## Memory Protection
+
+page 단위 protection (by validation bit)
 
 - Memory protection implemented by associating protection bit with each  frame to indicate if read-only or read-write access is allowed 
   - Read only, read-write, execution only bits 
@@ -1042,14 +1056,15 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
 
 ![image-20221003001217135](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001217135.png)
 
-i - 포함 된 듯 하지만 사용하지 않는 page
+- i - 실제로 프로세스가 가리킬 수 있는 주소 공간 안에 포함 된 듯 하지만 실제로는 사용하지 않는 page
 
 <br>
 
 ## Shared Pages
 
 - **Shared code** 
-  - One copy of read-only (**reentrant**; 값이 바뀌지 않는) code shared among processes  (i.e., text editors, compilers, window systems) 
+  - One copy of read-only (**reentrant**; 값이 바뀌지 않는) code shared among processes  
+    (i.e., text editors, compilers, window systems) 
   - Similar to multiple threads sharing the same process space 
   - Also useful for interprocess communication(IPC) if sharing of read-write  pages is allowed 
 - **Private code and data**
@@ -1064,19 +1079,27 @@ i - 포함 된 듯 하지만 사용하지 않는 page
 
 ![image-20221003001303441](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001303441.png)
 
+- ed1~3: read only
+  - 공유하기 때문에 같은 곳을 가리켜서 접근
+
 
 
 <br>
 
 ## Structure of the Page Table
 
+- 두 가지 문제점
+  - 성능
+  - 메모리 - 메인메모리에 존재하기 때문에 어찌됐건 메인 메모리의 공간을 차지함.
+
 - Memory structures for paging can get huge using straight-forward  methods 
-  - Consider a 32-bit logical address space as on modern  computers 
+  - Consider a 32-bit logical address space as on modern computers 
   - Page size of 4 KB (2<sup>12</sup>) 
   - Page table would have 1 million entries (2<sup>32</sup> / 2<sup>12</sup>) 
   - If each entry is 4 bytes -> 4 MB of physical address space /  memory for page table alone 
+    - 프로세스 하나당 4MB
     - That amount of memory used to cost a lot 
-    - Don’t want to allocate that contiguously in main memory 
+    - **Don’t want to allocate that contiguously in main memory** 
 - Hierarchical Paging 
 - Hashed Page Tables 
 - Inverted Page Tables
@@ -1088,12 +1111,13 @@ i - 포함 된 듯 하지만 사용하지 않는 page
 ## Hierarchical Page Tables
 
 - Break up the logical address space into multiple page tables 
-- A simple technique is a two-level page table 
-- We then page the page table
-  - page table
+  - A simple technique is a two-level page table 
 
+- We then **page** the page table
 
-- 사용자 프로세스의 logical address 공간을 paging 하는 것이 paging의 목적인데 여기서는 사용자 프로세스를 지원하는 page table 자체를 또 다시 paging
+  - 사용자 프로세스의 logical address 공간을 paging 하는 것이 paging의 목적인데 여기서는(Hierarchical Page Tables) 사용자 프로세스를 지원하는 page table 자체를 또 다시 paging
+  - 용량을 줄이는 것이 목적이 아님!
+
 
 <br>
 
@@ -1101,9 +1125,15 @@ i - 포함 된 듯 하지만 사용하지 않는 page
 
 ![image-20221127165929205](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221127165929205.png)
 
-outer page table에 의해 mapping이 되게 때문에 page table에서 page들은 비연속적으로 깔려도 됨.
+- outer page table에 의해 mapping이 되게 때문에 page table에서 page들은 비연속적으로 깔려도 됨.
 
-한 page가 1024개의 entry를 갖고 있음
+- 한 page가 1024개의 entry를 갖고 있음
+- original page table
+  - 4KB 짜리 page 1024개
+  - original page table에서는 위 그림의 page table안에 있는 것들이 하나로 묶여 있었음.(continusouly)
+- Two-level page table 
+  - original page table에서 어떤 page인지 구분하기 위해서 outer page table 하나를 더 두어서 사용하기 때문에 4KB가 더 추가되었음.
+  - outer page table에 의해서 mapping이 되기 때문에 page가 비연속적으로 깔려도 된다!!!
 
 <br>
 
@@ -1119,9 +1149,13 @@ outer page table에 의해 mapping이 되게 때문에 page table에서 page들�
 
 ![image-20221003001715427](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001715427.png)
 
-- single P가 p1, p2로 나눠짐
+- single level page P가 p1, p2로 나눠짐
 
-- where pi is an index into the outer page table, and p2 is the displacement within the  page of the outer page table. 
+- where p1 is an index into the outer page table, and p2 is the displacement within the  page of the outer page table. 
+  - page entry 하나를 표현하는데 4byte, 하나의 page는 4KB
+    - -> 한 페이지가 수용할 수 있는 page entry의 갯수는 1K = 1000개
+    - -> 그래서 p2에 10bit가 할당 되어야지 1024까지 표현할 수 있음(2<sup>10</sup>)
+
 - Known as **forward-mapped page table**
 
 
@@ -1135,7 +1169,8 @@ outer page table에 의해 mapping이 되게 때문에 page table에서 page들�
 
 ![image-20221003001727500](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001727500.png)
 
-
+- outer page table에서 하나의 inner page table을 가리키게 되는데 inner page table은 page table 안에 1024개가 있고 각 inner page table마다 page entry가 1024개가 있다.
+  - 그리고 각 page entry 마다는 4KB이다.
 
 <br>
 
@@ -1155,10 +1190,11 @@ outer page table에 의해 mapping이 되게 때문에 page table에서 page들�
 
   - Outer page table has 2<sup>42</sup> entries or 2<sup>44</sup> bytes 
 
-  - One solution is to add a 2nd outer page table (**Three level paging scheme**) 
-
+    - outer page table이 너무 커지는데...?(심지어 연속적인 공간에 깔려야 함.)
+      - One solution is to add a 2nd outer page table (**Three level paging scheme**) 
+  
   - But in the following example the 2nd outer page table is still 2<sup>34</sup> bytes in size 
-
+  
     - And possibly 4 memory access (three level page + page offset) to get to one physical memory location
 
 
@@ -1175,15 +1211,20 @@ outer page table에 의해 mapping이 되게 때문에 page table에서 page들�
 
 ## Four level paging scheme
 
-- Since each level is stored as a separate table in memory, covering a  logical address to a physical one may take four memory accesses.  (p1,p2,p3,p4,d) -> 32bit가 여전히 부담 스러워서 
+- Since each level is stored as a separate table in memory, covering a  logical address to a physical one may take four memory accesses.  (p1,p2,p3,p4,d) 
+
+  - -> 32bit가 여전히 부담 스러워서 
 
 - Even though time needed for one memory access is quintupled, caching  permits performance to remain reasonable. 
 
 - Cache hit rate of 98 percent yields: 
 
-  effective access time = (0.98 x 120) + (0.02 x 520 )
+  effective access time = (0.98 x 120) + (0.02 x 520)
 
   ​									  = 128 nanoseconds. 
+
+  - 520: 5번의 access(500?) + TLB cache 검색 시간(20)
+    - 5번의 memory access -> 4 level page + page offset(actual page access)
 
 which is only a 28 percent slowdown in memory access time.
 
@@ -1195,7 +1236,9 @@ which is only a 28 percent slowdown in memory access time.
 
 - A Common approach in case of address spaces > 32 bits. 
 - The virtual page number is hashed into a page table.  
+  - VPN이 hash function의 key로 사용
   - This page table contains a chain of elements hashing to the same location. 
+  
 - Each element contains (1) the virtual page number(q) (2) the value of the mapped  page frame(s) 
   (3) a pointer to the next element 
 - Virtual page numbers are compared in this chain searching for a match.  
@@ -1210,11 +1253,14 @@ which is only a 28 percent slowdown in memory access time.
 
 ![image-20221003002014031](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002014031.png)
 
-hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장이 될텐데
+- 서로 다른 p값에 대해 동일한 hash 값이 얻어지게 되면 오또케? -> collision 발생
+  - 동의어(**Synonym**) : 충돌이 일어난 레코드의 집합. 키값이 같은 레코드의 집합으로, 동의어가 슬롯의 갯수보다 많으면 오버플로우가 일어날 수 있다.
+- hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장, 삽입
+  - O(1)
 
-그 경우가 아니라 동일한 곳을 가리키게 되면 collision이 발생했다고 한다.
-
-씨너닝?
+- collision을 해결하기 위한 방법으로는 linked list를 활용해서 중복 값이 나오면 linked list로 쭉쭉 연결해 나가서 p값, 즉 page number가 내가 찾는 page number인지를 확인하여 찾는 방법이 있다.
+  - O(n)
+- hash table을 통해 linked list로 이어지기 때문에 이 역시 비연속적인 탑재가 가능하다.
 
 <br>
 
@@ -1225,7 +1271,9 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
 - Rather than each process having a page table and keeping track of all possible  logical pages, track all physical pages 
   - One entry for each real page (frame) of memory. 
   - Entry consists of the virtual address of the page stored in that real memory  location, with information about the process that owns that page. 
-- Decreases memory needed to store each page table, but increases time needed to  search the table when a page reference occurs.- whole table might be searched 
+- Decreases memory needed to store each page table, but increases time needed to  search the table when a page reference occurs.-
+  - whole table might be searched 
+
 - Use hash table to limit the search to one — or at most a few — page-table entries. 
   - TLB can accelerate access (Associated memory register)
 - But how to implement shared memory? 
@@ -1241,14 +1289,24 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
 
 ![image-20221003002127392](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002127392.png)
 
+- 시스템에 page table이 딱 하나만 존재
+  - page table 탑재에 필요한 main memory 용량을 줄이는 효과를 볼 수 있음
+
+- pid + p 가 일치하는 index를 찾는다.
+- physical memory에 enry가 100개 있으면 page table도 100개가 있음
+
 
 
 <br>
 
+## OS에 의한 !
+
+
+
 ## Segmentation with Paging - MULTICS
 
 - The MULTICS system solved problems of external fragmentation  and lengthy search times by paging the segments. 
-- Solution differs from pure segmentation in that the segment-table  entry contains not the base address of the segment, but rather the  base address of a page table for this segment.
+- Solution differs from pure segmentation in that the segment-table  entry contains **not the base address of the segment, but rather the base address of a page table for this segment.**
 
 
 
@@ -1260,7 +1318,7 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
 
 
 
-
+한 segment가 여러 개의 page로 나눠지니까 d -> p+ d`가 되었다.
 
 <br>
 
@@ -1289,13 +1347,13 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
 
 ## Example: The Intel IA-32 Architecture
 
-- Supports both segmentation and segmentation with paging 
+- Supports both `segmentation` and `segmentation with paging` 
   - Each segment can be 4 GB (4*10<sup>9</sup> Bytes)  
   - Up to 16 K segments per process 
   - Logical address space of a process is divided into two partitions 
-    - First partition of up to 8 K segments are private to process (kept in local  descriptor table (LDT)) 
-    - Second partition of up to 8K segments shared among all processes (kept  in global descriptor table (GDT)) 
-    - Each entry in LDT & GDT consists of an 8-byte segment descriptor with  detailed information about a particular segment including base location  and limit of a segment
+    - First partition of up to 8 K segments are private to process (kept in **local  descriptor table (LDT)**) 
+    - Second partition of up to 8K segments shared among all processes (kept  in **global descriptor table (GDT)**) 
+    - Each entry in LDT & GDT consists of an 8-byte segment descriptor with  detailed information about a particular segment including <span style="color:red">base location  and limit of a segment</span>
 
 
 
@@ -1360,12 +1418,14 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
 
 ## Intel IA-32 Page Address Extensions
 
-- 32-bit address limits led Intel to create page address extension (PAE), allowing  32-bit apps access to more than 4GB of memory space 
-  - Paging went to a 3-level scheme 
-  - Top two bits refer to a page directory pointer table 
-  - Page-directory and page-table entries moved from 32 bits to 64-bits in size 
-    - Base address of page tables and page frames to extend from 20 to 24 bits  
-  - Net effect of PAE is increasing address space (from 32 bits) to 36 bits – 64GB of physical memory (24 + 12 bit offset)
+- 32-bit address limits led Intel to create **page address extension (PAE)**, allowing  32-bit apps access to more than 4GB of memory space 
+  - Paging went to a **3-level scheme** 
+  - Top two bits refer to a **page directory pointer table** 
+  - Page-directory and page-table entries moved from **32 bits to 64-bits** in size 
+    - Base address of page tables and page frames to extend from **20 to 24 bits**  
+  - Net effect of PAE is increasing address space (from 32 bits) to **36 bits – 64GB of physical memory** (24 + 12 bit offset)
+    - 24: page에서 특정 frame을 찾아가기 위한 용도
+    - 
 
 ![image-20221003002607170](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002607170.png)
 
@@ -1382,7 +1442,7 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
 - In practice only implement 48 bit addressing for virtual addressing 
   - Page sizes of 4 KB, 2 MB, 1 GB 
   - Four levels of paging hierarchy 
-- Can also use PAE, so virtual addresses are 48 bits and physical  addresses are 52 bits
+- Can also use PAE, so virtual addresses are 48 bits and physical addresses are 52 bits
 
 ![image-20221003002651857](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002651857.png)
 
@@ -1397,7 +1457,8 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
 - Dominant mobile platform chip  (Apple iOS and Google Android  devices for example) 
 - Modern, energy efficient, 32-bit  CPU 
 - 4 KB and 16 KB pages 
-- 1 MB and 16 MB pages (termed  sections)  One-level paging for sections, twolevel for smaller pages 
+- 1 MB and 16 MB pages (termed  **sections**)
+- One-level paging for sections, twolevel for smaller pages 
 - Two levels of TLBs 
   - Outer level has two micro  TLBs (one data, one  instruction) 
   - Inner is single main TLB 
@@ -1413,7 +1474,10 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
 
 ![image-20221003002742974](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002742974.png)
 
+offset에 따라 paging level이 달라진다.
 
+- 1GB region
+- 2MB region
 
 <br>
 
@@ -1430,6 +1494,9 @@ hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장�
   ![image-20221003002815700](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002815700.png)
 
 - But the Pentium only supports 2-level paging?!
+
+  - linux의 3 level은 그러면 어떻게 사용해? -> 한 level 그냥 사용 안 해버리긔~
+
 
 
 
