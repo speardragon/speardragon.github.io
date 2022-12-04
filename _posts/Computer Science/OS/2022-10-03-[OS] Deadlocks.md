@@ -636,11 +636,8 @@ Let n = number of processes, and m = number of resources types
 
 ## Safety Algorithm
 
-1. Let Work and Finish be vectors of length m and n, respectively.  Initialize: 
-
-   Work := Available 
-
-   Finish [i] = false for i = 1,2, …, n. 
+1. Let Work and Finish be vectors of length m and n, respectively.  
+   Initialize: Work := Available and Finish [i] = false for i = 1,2, …, n. 
 
 2. Find an i such that both:  
 
@@ -655,6 +652,12 @@ Let n = number of processes, and m = number of resources types
    go to step 2. 
 
 4. If Finish [i] = true for all i, then the system is in a safe state
+
+
+
+
+
+
 
 
 
