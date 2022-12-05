@@ -467,6 +467,7 @@ shell이든 일반적인 프로그램에서 fork를 하든 동작원리는 같�
   - 만약 child process가 exit() 시스템콜로 종료했는데 parent process가 wait()으로 child process의 종료를 기다리지 않는 경우
   - 이 때 종료되지 않은 child process를 zombie process라고 함.
   - <span style="color:red">만약 child process가 exit() 시스템 콜을 호출하여 종료했는데 parent process가 이를 wait()으로 child process의 종료를 기다리지 않으면 이때 이 child process는 zombie process가 된다.</span>
+  - 이미 좀비 상태에서 kill 하면 명령어가 통하지 않는데, 부모 프로세스를 kill 함으로써?
   
 - If parent terminated without invoking wait , process is an **orphan(고아)** 
   - parent가 wait()을 호출하지 않고 그냥 종료해 버린 경우
