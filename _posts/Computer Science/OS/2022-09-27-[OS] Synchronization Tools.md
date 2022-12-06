@@ -596,7 +596,7 @@ peterson과 bakery는 FCFS가 보장되지 않음
 
 
 
-## Reordering of instructions
+## Reordering of instructions - XXXX
 
 ![image-20221118124543252](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221118124543252.png)
 
@@ -614,17 +614,9 @@ peterson과 bakery는 FCFS가 보장되지 않음
 
 <br>
 
-## Effects of Instruction reordering
-
-![image-20221118151759725](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221118151759725.png)
-
-- instruction reordering을 하면 무슨일이 벌어지는 지 
 
 
-
-<br>
-
-## Hardware Support for Synchronization: Memory barrier
+## Hardware Support for Synchronization: Memory barrier - XXXX
 
 - Memory model
   - Strongly ordered
@@ -636,6 +628,16 @@ peterson과 bakery는 FCFS가 보장되지 않음
 - **Memory barriers** or **memory fences** instruction
   - Ensure that memory modifications are visible to threads running on other processors 
   - When they are executed, it ensures that all loads and stores are completed before any subsequent loads or stores are performed
+
+
+
+<br>
+
+## Effects of Instruction reordering - XXXX
+
+![image-20221118151759725](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221118151759725.png)
+
+- instruction reordering을 하면 무슨일이 벌어지는 지 
 
 
 
@@ -725,7 +727,7 @@ OS의 도움 - semaphore
 
 <br>
 
-## compare_and_swap Instruction
+## compare_and_swap Instruction - XXXX
 
 구현 내용만 다르고 동작은 test_and_set과 거의 동일함.
 
@@ -741,7 +743,7 @@ Definition:
 
 <br>
 
-## Solution using compare_and_swap
+## Solution using compare_and_swap - XXXX
 
 - Shared integer “lock” initialized to 0;  
 - Solution:
@@ -1300,7 +1302,7 @@ release()에서 x.signal()을 하면 누가먼저 살아나야 할까? -> 위에
 
 
 
-## Liveness - 무시
+## Liveness - 무시 XXXX
 
 - Deadlock – two or more processes are waiting indefinitely for an event that can  be caused by only one of the waiting processes. 
 - Let S and Q be two semaphores initialized to 1
@@ -1316,7 +1318,7 @@ release()에서 x.signal()을 하면 누가먼저 살아나야 할까? -> 위에
 
 <br>
 
-## Atomic Transactions
+## Atomic Transactions -XXXX
 
 - System Model 
 - Log-based Recovery 
@@ -1327,7 +1329,7 @@ release()에서 x.signal()을 하면 누가먼저 살아나야 할까? -> 위에
 
 <br>
 
-## System Model
+## System Model - XXXX
 
 - Assures that operations happen as a single logical unit of work, in its  entirety, or not at all 
 - Related to field of database systems 
@@ -1342,7 +1344,7 @@ release()에서 x.signal()을 하면 누가먼저 살아나야 할까? -> 위에
 
 <br>
 
-## Types of Storage Media
+## Types of Storage Media - XXXX
 
 - Volatile storage – information stored here does not survive system  crashes 
 

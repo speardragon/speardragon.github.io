@@ -384,7 +384,7 @@ R.release();
 
 <br>
 
-## Solaris Synchronization
+## Solaris Synchronization - XXXX
 
 - Implements a variety of locks to support multitasking, multithreading  (including real-time threads), and multiprocessing 
 - Uses **adaptive mutexes** for efficiency when protecting data from short  code segments 
@@ -408,7 +408,7 @@ R.release();
 
 <br>
 
-## Kernel Synchronization - Windows
+## Kernel Synchronization - Windows -XXXX
 
 - Uses interrupt masks to protect access to global resources on  **uniprocessor systems** 
 - Uses **spinlocks** on multiprocessor systems 
@@ -434,7 +434,7 @@ R.release();
 
 <br>
 
-## Linux Synchronization
+## Linux Synchronization-XXXX
 
 - Linux: 
   - Prior to kernel Version 2.6, Linux was a non-preemptive kernel 
@@ -599,7 +599,7 @@ R.release();
 
 <br>
 
-## Java Synchronization
+## Java Synchronization - 여기부터 쭉 XXXX
 
 - Java provides rich set of synchronization features:  
   - Java monitors 

@@ -46,13 +46,15 @@ toc_sticky: true
   - To keep many processes in memory simultaneously to allow MP 
   - Requires that an entire process to be in memory before process can execute 
 - Code needs to be in memory to execute, but entire program rarely used 
+  - 사용되지 않는 것들도 탑재되는 문제
   - Error code, unusual routines, large data structures 
   - Entire program code not needed at same time 
-- Consider ability to execute partially-loaded program 
+  
+- Consider ability to execute <mark>partially-loaded </mark>program 
   - Program no longer constrained by limits of physical memory 
     - Program and programs could be larger than physical memory 
   - Each program takes less memory while running -> more programs run at the same time 
-    - Increased CPU utilization and throughput with no increase in response time or turnaround time 
+    - Increased CPU **utilization** and **throughput** with no increase in response time or turnaround time 
   - Less I/O needed to load or swap programs into memory 
     - each user program runs faster
 
@@ -62,11 +64,12 @@ toc_sticky: true
 
 ## Background
 
-- Virtual memory 
+- **Virtual memory** 
   - A technique that allows the execution of processes that are not completely in memory 
+    - 모든 것을 다 탑재 시키지 않고도 프로세스를 실행시킬 수 있도록
   - separation of user logical memory from physical memory. 
   - Only part of the program needs to be in memory for execution 
-    - Need to allow pages to be swapped in and out. – Logical address space can therefore be much larger than physical address space 
+    - Need to allow pages to be swapped in and out. – Logical address space can therefore be much larger than physical address space  (거의 무한대처럼 보임)
       - each process has appearance of infinite memory (virtual address space) available to it 
       - Can deal with jobs with high memory requirement which system may not want to fulfill (in terms of multiprogramming) 
       - Overlay, dynamic loading (restriction) 
@@ -81,10 +84,10 @@ toc_sticky: true
 
 ## Background (Cont.)
 
-- Virtual address space – logical view of how process is stored in memory 
-  - Usually start at address 0, contiguous addresses until end of space
-  - Meanwhile, physical memory organized in non-contiguous page frames 
-  - MMU must map logical to physical 
+- **Virtual address space** – logical view of how process is stored in memory 
+  - Usually start at address 0, **contiguous** addresses until end of space
+  - Meanwhile, **physical memory** organized in **non-contiguous** page frames 
+  - **MMU** must map logical to physical (translation)
 - Virtual memory can be implemented via: 
   - Demand paging 
   - Demand segmentation
@@ -106,7 +109,7 @@ toc_sticky: true
 ## What should be done by OS
 
 - To perform the idea, OS must maintain the following perspectives 
-  - Which portion of a process will be in memory 
+  - Which portion of a process will be in memory -> locality(집중적으로 사용되는 page 집합)
     - In general, process is broken into pages 
   - When is a portion of job brought into memory 
     - On demand 
@@ -122,14 +125,18 @@ toc_sticky: true
 
 - Usually design logical address space for stack to start at Max logical address and grow “down” while heap grows “up” 
   - Maximizes address space use 
-  - Unused address space between the two is hole 
+  - Unused address space between the two is **hole** 
     - No physical memory needed until heap or stack grows to a given new page 
-- Enables **sparse address spaces** with holes left for growth, dynamically linked libraries, etc 
+- Enables **sparse address spaces**(중간이 비어있으니까) with holes left for growth, dynamically linked libraries, etc 
 - System libraries shared via mapping into virtual address space 
 - Shared memory by mapping pages readwrite into virtual address space 
 - Pages can be shared during fork(), speeding process creation
+  - code는 여러 프로세스와 공유하는 부분(read-only라서)
+
 
 ![image-20221123232146128](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232146128.png)
+
+
 
 <br>
 
@@ -149,29 +156,36 @@ toc_sticky: true
   - Less memory needed 
   - Faster response 
   - More users 
-- Similar to paging system with swapping (diagram on right) 
+- Similar to **paging system** with **swapping** (diagram on below) 
+  - 앞에서 배웠던 swapping은 process 전체가 swap in, swap out 되는 것이었다면 paging system에서는 page단위로 swap in, swap out된다.
+
 - Page is needed => reference to it 
   - invalid reference => abort 
-- valid reference
-  - not-in-memory => bring to memory
-- in-memory => OK 
-- Lazy swapper - never swaps a page into memory unless page will be needed 
+  - valid reference
+    - not-in-memory => bring to memory
+      - valid한 page지만 memory에는 탑재되지 않음!
+    - in-memory => OK (just referencing)
+- **Lazy swapper**(on demand로 paging되기 때문) - never swaps a page into memory unless page will be needed 
+  - on-demand means reference 되어질 때
   - Swapper that deals with pages is a pager
+
 
 ![image-20221123232418351](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232418351.png)
 
 
 
 - When is a portion of process (page) brought into memory ? 
-  - Demand paging (on-demand) 
+  - Demand paging (**on-demand**) 
     - Page is only brought into memory when needed 
       - lazy swapper: 
       - Swapper that deals with pages is a pager 
         - » view a process as a sequence of pages rather than one large contiguous address space 
     - Paging system with swapping ? 
   - Pre-fetching (Taking Guess) 
+    - 추측하고 미리 fetch(하드웨어에서 읽어오는 시간을 줄임)
     - Bring page into memory before it is needed 
     - Because I/O is slow, if guess is wrong then it costs high
+      - 만약 틀리면 그 대가가...크흠...
 
 
 
@@ -179,12 +193,13 @@ toc_sticky: true
 
 ## Basic Concepts
 
-- If pages needed are already memory resident 
+- If pages needed are already **memory resident** 
   - No difference from non demand-paging 
 - If page needed and not memory resident 
   - Need to detect and load the page into memory from storage 
     - Without changing program behavior 
     - Without programmer needing to change code
+  - virtual memory는 application program logic 과 상관없이 OS에 의해서만 제공되는 기능
 
 
 
@@ -193,7 +208,8 @@ toc_sticky: true
 ## Valid-Invalid Bit
 
 - With each page table entry a valid–invalid bit is associated 
-  (v => in-memory – memory resident, i => not-in-memory) 
+  (**v** => in-memory – **memory resident**, 
+    **i** => not-in-memory) 
 - Initially valid–invalid bit is set to i on all entries 
 - Example of a page table snapshot:
 
@@ -201,6 +217,7 @@ toc_sticky: true
 
 - During address translation, if valid–invalid bit in page table entry is I
   - page fault
+    - 처리 -> i를 v로 바꿔주는 일 동작
 
 
 
@@ -218,21 +235,24 @@ toc_sticky: true
 
 - Occurs when an attempt is made to access a location which is not in memory 
 - If there is a reference to a page, first reference will trap to OS 
-- page fault 
+  - page fault 
+
 - Cold faults
-- Faults which occur in a process’s initial execution when its first page are brought into memory 
+  - Faults which occur in a process’s **initial execution** when its first page are brought into memory 
+  - 절대 피할 방법 없음(얘 말고 일반적인 page fault를 줄이려고 노력해야 함.)
+
 
 1. OS looks at another table to decide: 
 
-   1. Invalid reference => abort. 
+   1. Invalid reference(뒤쪽에 붙어있는 테이블) => abort. 
 
    2. Just not in memory. 
 
-2. Get empty frame. 
+2. Get empty frame. (확보)
 
-3. Swap page into frame via scheduled disk operation 
+3. Swap page into frame via scheduled disk operation (disk I/O 요구)
 
-4. Reset tables, to indicate page now in memory Set validation bit = v 
+4. Reset tables, to indicate page now in memory Set validation bit = **v** 
 
 5. Restart instruction that caused the page fault
 
@@ -240,7 +260,9 @@ toc_sticky: true
 
 <br>
 
-## Steps in Handling a Page Fault
+## Steps in Handling a Page Fault - 시험
+
+위의 1~5 step을 그림으로 표현한 것(mapping 할 줄 알아야 함.)
 
 ![image-20221123232911116](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232911116.png)
 
@@ -249,12 +271,14 @@ toc_sticky: true
 ## Aspects of Demand Paging
 
 - Extreme case – start process with no pages in memory 
-  - OS sets instruction pointer to first instruction of process, nonmemory-resident -> page fault 
+  - OS sets instruction pointer to first instruction of process, non-memory-resident -> page fault 
   - And for every other process pages on first access 
-  - Pure demand paging 
+  - **Pure demand paging** (아무것도 탑재되지 않은)
+  - 성능 저해 요소가 있음
 - Actually, a given instruction could access multiple pages -> multiple page faults 
-  - Consider fetch and decode of instruction which adds 2 numbers 
-  - Pain decreased because of locality of reference 
+  - Consider fetch and decode of instruction which adds 2 numbers (page가 3개는 있어야 함)
+    - 이는 3개의 page fault를 필수적으로 요구해야 한 instruction이 실행됨.
+  - Pain decreased because of **locality of reference** 
 - Hardware support needed for demand paging (same as hardware for paging/swapping) 
   - Page table with valid / invalid bit 
   - Secondary memory (swap device with swap space)
@@ -266,7 +290,7 @@ toc_sticky: true
 
 ## Instruction Restart
 
-- Consider an instruction that could access several different locations 
+- Consider an instruction that could access **several different locations** (add 같은 instruction)
 
   - block move 
 
@@ -286,24 +310,30 @@ toc_sticky: true
 
 ## Performance of Demand Paging (When page fault occurs)
 
+normal page fault
+
+cold faults
+
+
+
 - Stages in Demand Paging (worse case)
 
-1. Trap to the operating system 
-2. Save the user registers and process state (context switch) 
-3. Determine that the interrupt was a page fault 
-4. Check that the page reference was legal and determine the location of the page on the disk 
-5. Issue a read from the disk to a free frame: 
+1. Trap to the operating system (interrupt)
+2. Save the user registers and process state (context switch) - handler가기 전에 이전 상태를 save
+3. Determine that the interrupt was a page fault (interrupt 종류가 머임?)
+4. Check that the page reference was legal and determine the location of the page on the disk (legal함?)
+5. Issue a read from the disk to a free frame: (읽어서 copy하라고 disk에게 요구)
    1. Wait in a queue for this device until the read request is serviced 
-   2. Wait for the device seek and/or latency time 
+   2. Wait for the device seek and/or latency time (HDD라서 필요한 부분)
    3. Begin the transfer of the page to a free frame 
 6. While waiting, allocate the CPU to other process 
-7. Receive an interrupt from the disk I/O subsystem (I/O completed) 
+7. Receive an interrupt from the disk I/O subsystem (**I/O completed**) 
 8. Save the registers and process state for the other process (context switch) 
 9. Determine that the interrupt was from the disk 
-10. Correct the page table and other tables to show page is now in memory 
+10. Correct the page table and other tables to show page is now in memory (v -> i)
 11. Wait for the CPU to be allocated to this process again 
-    - Job becomes ready, wait CPU to restart instruction 
-12. Restore the user registers, process state, and new page table, (context switch) and then resume the interrupted instruction
+    - Job becomes **ready**, wait CPU to restart instruction 
+12. **Restore** the user registers, process state, and new page table, (context switch) and then **resume** the interrupted instruction
 
 
 
@@ -312,17 +342,18 @@ toc_sticky: true
 ## Performance of Demand Paging (Cont.)
 
 - Three major activities 
-  - Service the interrupt - careful coding means just several hundred instructions needed 
-  - Read the page - lots of time 
-  - Restart the process – again just a small amount of time 
+  - Service the **interrupt** - careful coding means just several hundred instructions needed 
+  - **Read** the page - lots of time (HDD한테서 읽어야 돼서 오래 걸림)
+  - **Restart** the process – again just a small amount of time 
 - Page Fault Rate 0 ≤ p ≤ 1.0 
-  - if p = 0 no page faults 
-  - if p = 1, every reference is a fault 
+  - if p = 0 no page faults (demand paging을 하지 않는다)
+  - if p = 1, every reference is a fault (매 reference 마다 page fault가 일어남.)
+    - <mark>이 때, reference는 특정 address에 대한 reference를 말하는 것이 아니라 page에 대한 reference임.</mark>
 - Effective Access Time (EAT)
 
 ![image-20221123233316821](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123233316821.png)
 
-
+swap out? -> swap in 을 하기 위해서 free frame을 찾아보았는데 free frame이 없으면 기존에 사용하던 page 중 일부를 swap out 해야해서 생기는 과정
 
 <br>
 
@@ -336,16 +367,18 @@ toc_sticky: true
 - If one access out of 1000 causes a page fault, the effective access time is 25 micro seconds 
 - Computer would be slow down by a factor of 250 because of demand paging
 
+- cold faults가 아닌 일반 page fault를 줄이는 방법 ? -> TLB cache! (cache의 hit ratio를 증가시킴으로써!)
+
 <br>
 
-- Memory access time = 200 nanoseconds 
+- Memory access time = 200 nanoseconds (demand paging을 안한 경우)
 - Average page-fault service time = 8 milliseconds 
 - EAT = (1 – p) x 200 + p (8 milliseconds) 
-          = (1 – p x 200 + p x 8,000,000 
+          = (1 – p) x 200 + p x 8,000,000 
           = 200 + p x 7,999,800 
 - If one access out of 1,000 causes a page fault, then 
   - EAT = 8.2 microseconds. 
-  - This is a slowdown by a factor of 40!! 
+  - This is a slowdown by a factor of 40!! (demand paging을 안할 때보다 40배만큼 느려짐)
 - If want performance degradation < 10 percent 
   - 220 > 200 + 7,999,800 x p 
      20 > 7,999,800 x p 
@@ -374,30 +407,32 @@ toc_sticky: true
 
 ## Demand Paging Optimizations - Handling of Swap Space
 
-- I/O to Swap space is faster than file system I/O even if on the same device 
+demand paging 성능을 올리는 방법
+
+- I/O to **Swap space is faster than file system I/O** even if on the same device 
   - Swap space is allocated in larger chunks, less management needed than file system 
-    - File lookups and indirect allocation methods are not used 
+    - (file을 찾아가기 위해서는) File lookups and indirect allocation methods are not used 
 - For better paging performance,
   - First option: Copy entire process image to swap space at process load time 
-    - Then performing demand paging (page in and out) from the swap space 
-    - Disadvantage: copying of the file image at program start-up 
-  - Second option: demand paging from the file system initially, but to write the pages to swap space as they are replaced 
+    - Then performing demand paging (page in and out) **from the swap space** 
+    - Disadvantage: copying of the file image at program start-up(부담됨.) 
+  - Second option: demand paging from the file system initially, but to write the pages to swap space as they are replaced
+    - file system에서 demand paging을 바로 하긴 하는데 memory 탑재되었던 page가 replace(swap-out) 될 때, swap space로 swap-out한다.
+      - 즉 최초의 page가 read 될 때만 file system으로부터!
     - Ensure that only needed pages are read from the file system but that all subsequent paging is done from swap space 
     - Used in Linux, Windows
 
-
-
 <br>
 
-## Demand Paging Optimizations - Handling of Swap Space
-
-- Demand page in from program binary executable files on disk, but discard rather than paging out when freeing frame 
-  - Because they are not modified 
+- Demand page in from program binary executable files on disk, but **discard** rather than paging out when freeing frame 
+  - 수정되지 않은 부분의 swap-out은 그냥 버림.
+  - Because they are not modified, 상관없음
   - can reduce the size of swap space
   - Still need to write to swap space 
-    - Swap space is used for the pages not associated with a file (like stack and heap) – anonymous memory 
-    - Pages modified in memory but not yet written back to the file system 
+    - Swap space is used for the pages not associated with a file (like stack and heap) – **anonymous memory** 
+    - **Pages modified in memory but not yet written back to the file system** 
     - Used in Linux, BSD Unix 
+  
 - Mobile systems 
   - Typically don’t support swapping 
   - Instead, demand page from file system and reclaim read-only pages (such as code) from applications if memory becomes constrained 
@@ -411,15 +446,20 @@ toc_sticky: true
 
 ## Copy-on-Write
 
-- Copy-on-Write (COW) allows both parent and child processes to initially share the same pages in memory 
-  - If either process modifies a shared page, only then is the page copied 
+- **Copy-on-Write** (COW) allows both parent and child processes to initially share the same pages in memory (똑같은 프로세스 이미지를 copy하여 가지는 것이 아니라 똑같은 주소 공간을 공유함)
+  - child는 별도의 주소 공간이 만들어지지 않음
+  - If either process **modifies** a shared page, only then is the page **copied** 
+    - write 하는 경우 copy를 만든다!
+  
 - COW allows more efficient process creation as only modified pages are copied 
-- In general, free pages are allocated from a pool of zero-fill-on-demand pages 
-  - Pool should always have free frames for fast demand page execution 
+  - 시간도 적게 걸리고 메모리 효율도 good!
+
+- In general, free pages are allocated from a **pool** of **zero-fill-on-demand pages** 
+  - Pool should always(항상, 미리) have free frames for fast demand page execution 
     - Don’t want to have to free a frame as well as other processing on page fault 
   - Why zero-out a page before allocating it?
-- vfork() variation on fork() system call has parent suspend and child using copy-on-write address space of parent 
-  - Designed to have child call exec() 
+- **vfork()** variation on fork() system call has **parent suspend** and child using copy-on-write address space of parent 
+  - Designed to have child call **exec()** 
   - Very efficient
 
 
@@ -444,16 +484,22 @@ toc_sticky: true
 
 <br>
 
-## What Happens if There is no Free Frame?
+## What Happens if There is no Free Frame? - 시험
 
--  Used up by process pages 
+-  왜 free frame이 없음? -> Used up by process pages 
 - Also in demand from the kernel, I/O buffers, etc 
-- How much to allocate to each? 
-- Page replacement – find some page in memory, but not really in use, page it out 
-  - Algorithm – terminate? swap out? replace the page? 
-    - What page (of a job) in memory is going to be replaced by a new page which must be brought in ? 
-  - Performance – want an algorithm which will result in minimum number of page faults 
-- Same page may be brought into memory several times 
+-  How much to allocate to each? 
+   -  프로세스 당 사용할 수 있는 free frame의 개수 제한
+      -  모든 page가 다 사용되는 것이 아니기 때문에
+
+-  **Page replacement** – find some page in memory, but not really in use, page it out 
+  -  제한된 페이지 개수를 가진 프로세스가 페이지를 교체할 때 뭘(실제로 사용되지 않는) 빼고 넣을지 결정하는
+  -  Algorithm – terminate? swap out? replace the page? 
+    - What page (of a job) in memory is going to be replaced by a new page which must be brought in ? (기준이 뭐임?)
+  -  <mark>Performance – want an algorithm which will result in minimum number of page faults </mark>
+     -  잘 사용되지 않는 page를 교체하는 것으로 목표로 해야지 성능이 극대화됨.
+
+-  Same page may be brought into memory several times 
   - Reduce the # of page faults
 
 
@@ -462,8 +508,11 @@ toc_sticky: true
 
 ## Page Replacement
 
-- Prevent over-allocation of memory by modifying page-fault service routine to include page replacement 
-- Use modify (dirty) bit to reduce overhead of page transfers – only modified pages are written to disk 
+- Prevent **over-allocation** of memory by modifying page-fault service routine to include page replacement 
+- Use **modify (dirty) bit** to reduce overhead of page transfers – only modified pages are written to disk 
+  - page in을 하고 읽기만 했으면 page out을 하지 않아도 되는데 page in을 하고 수정을 했다면 **반드시** page out을 해주어야 한다.
+  - page out이 되어야 하는지 아닌지를 알려주는 bit가 modify bit(dirty bit)
+
 - Page replacement completes separation between logical memory and physical memory – large virtual memory can be provided on a smaller physical memory
 
 
@@ -483,8 +532,16 @@ toc_sticky: true
 ## Basic Page Replacement
 
 1. Find the location of the desired page on disk. 
-2. Find a free frame: - If there is a free frame, use it. - If there is no free frame, use a page replacement algorithm to select a victim frame. - Write victim frame to disk if dirty 
+
+2. Find a free frame: 
+
+   - If there is a free frame, use it. 
+
+   - If there is no free frame, use a page replacement algorithm to select a victim frame. 
+     - Write victim frame to disk if dirty (만약 dirty면 swap out을 먼저 해줘야 함.)
+
 3. Bring the desired page into the (newly) free frame. Update the page and frame tables. 
+
 4. Continue the process by restarting the instruction that caused the trap
 
 Note now potentially 2 page transfers for page fault – increasing EAT
@@ -497,19 +554,20 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ![image-20221123234316255](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234316255.png)
 
-
+- 1번에 의해서 f 위치에 있는 victim frame을 swap out하기 때문에 v -> i로 바꿔준다.
+- 3번에 의해서 page in 되기 때문에 다시 f 는 i->v로 바뀐다.
 
 <br>
 
 ## Page and Frame Replacement Algorithms
 
-- Frame-allocation algorithm determines 
+- **Frame-allocation algorithm** determines 
   - How many frames to give each process 
   - Which frames to replace 
-- Page-replacement algorithm 
+- **Page-replacement algorithm** 
   - Want lowest page-fault rate on both first access and re-access 
-- Evaluate algorithm by running it on a particular string of memory references (reference string) and computing the number of page faults on that string 
-  - String is just page numbers, not full addresses 
+- Evaluate algorithm by running it on a particular string of memory references (**reference string**) and computing **the number of page faults** on that string 
+  - **String is just page numbers, not full addresses** 
   - Repeated access to the same page does not cause a page fault 
   - Results depend on number of frames available 
 - In all our examples, the reference string is 
@@ -524,23 +582,24 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ![image-20221123234436585](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234436585.png)
 
-
+성능이 나빠지지 않는 선에서 frame수를 최소화
 
 <br>
 
 ## First-In-First-Out (FIFO) Algorithm
 
 - Reference string: 7,0,1,2,0,3,0,4,2,3,0,3,0,3,2,1,2,0,1,7,0,1 
-- Replace page which has been in memory for the largest period of time 
+- Replace page which has been in memory for the largest period of time (탑재된 시점이 가장 오래된 것)
 - 3 frames (3 pages can be in memory at a time per process)
 
 ![image-20221123234511222](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234511222.png)
 
 
 
+- 가장 오래된 걸 갈아치우면서 진행
 - Can vary by reference string: consider 1,2,3,4,1,2,5,1,2,3,4,5 
   - Adding more frames can cause more page faults! 
-    - Belady’s Anomaly 
+    - Belady’s Anomaly (규칙성이 없드라.)
 - How to track ages of pages? 
   - Just use a FIFO queue
 
@@ -561,6 +620,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 - FIFO Replacement – Belady’s Anomaly 
   - more frames => less page faults
+  - frame을 더 줬더니 page faults가 늘어났네?
 
 
 
@@ -574,12 +634,14 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 <br>
 
-## Belady’s Anomaly
+## Belady’s Anomaly - 시험
 
 - For certain replacement strategies, the page fault rate may increase for certain strings as the number of allocated frames increases 
 - Stack property 
   - At each point in any page reference string, the set of pages which would be in memory, if n pages were saved, is a subset of the pages which would be in memory if (n+1) pages were saved 
-  - FIFO exhibits belady’s anomaly because it does not have stack property
+  - **FIFO** exhibits belady’s anomaly because **it does not have stack property**
+  - <mark>왜 FIFO는 stack property를 갖지 않을까?</mark>
+    -  Belady’s Anomaly  때문에 어쩌고 저쩌고
 
 
 
@@ -590,9 +652,10 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 - Replace page that will not be used for longest period of time 
   - Replace page whose next reference is furthest in the future 
   - 9 is optimal for the example 
+  - 가장 좋은 알고리즘이라서 optimal이라는 이름이 붙음
 - How do you know this? 
-  - Can’t read the future 
-- Used for measuring how well your algorithm performs
+  - Can’t read the future (구현이 불가능함 ㅋㅋ - 미래의 패턴을 보고 해야 하기 때문에)
+- Used for measuring how well your algorithm performs(다른 알고리즘의 성능이 좋냐 안 좋냐 비교만 가능)
 
 ![image-20221123234718477](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234718477.png)
 
@@ -603,13 +666,17 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ![image-20221123234738988](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234738988.png)
 
+- 얘는 stack property를 갖고 있어서 page faults가 줄었어!
+
 <br>
 
 ## Least Recently Used (LRU) Algorithm
 
-- Use past knowledge rather than future 
+- Use past knowledge rather than future (과거의 패턴을 가지고 algorithm 결정)
 - Select page for replacement which has not been used for the longest period of time 
 - Associate time of last use with each page 
+  - 사용된 지 가장 오래된 page가 victim이 되어야 함(과거에도 사용 안 됐으면 나중에도 사용 안되겠지~)
+
 - Idea: recent past reflects behavior of near future 
   - Page least likely to be used in near future is page used furthest in the past 
   - FIFO: time, LRU: Use
@@ -619,6 +686,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 - 12 faults – better than FIFO but worse than OPT 
 - Generally good algorithm and frequently used 
 - But how to implement?
+- 사용 시점을 표현하는 방식이 LRU에서 핵심 포인트
 
 
 
@@ -628,26 +696,31 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ![image-20221123234840541](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234840541.png)
 
-
+- NF - No fault
+- CF - Cold Faults
+- F - Fault
+- 새로 들어오는 걸 가장 위에 두는 표현 방식
 
 <br>
 
 ## LRU Algorithm (Cont.)
 
 - We can expect god performance, “if past is reflections of future behavior” 
-- Problem: difficult to implement efficiently: Stack, Counter 
-- Counter implementation 
-  - Every page entry has a counter; every time page is referenced through this entry, copy the clock into the counter. 
-  - When a page needs to be changed, look at the counters to find smallest value (to determine which are to change). 
-    - Search through table needed 
-- Stack implementation 
+- Problem: **difficult** to implement efficiently: **Stack**, **Counter** 
+- **Counter implementation** 
+  - Every page entry has a counter; every **time** page is referenced through this entry, copy the clock into the counter. 
+  - When a page needs to be changed, look at the counters to find **smallest value** (to determine which are to change). 
+    - Search through table needed (비교를 해야 하기 때문에 각각을 search 해야 함.)
+- **Stack implementation** 
   - keep a stack of page numbers in a doublly linked list form: 
   - Page referenced: 
     - move it to the top 
-    - requires 6 pointers to be changed 
+    - 최대 : requires 6 pointers to be changed -> why?
   - But each update more expensive 
-  - No search for replacement 
-- LRU and OPT are cases of stack algorithms that don’t have Belady’ s 
+  - No search for replacement (스택의 top이 LRU 일것이고(가장 최근 사용) 맨 아래 깔린 게 victim이 될 것이기 때문 )
+- LRU and OPT are cases of **stack algorithms** that don’t have Belady’ s 
+  - stack property를 가짐!
+
 
 
 
@@ -657,7 +730,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ![image-20221123234932918](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234932918.png)
 
-
+<mark>한 번 해 보기!</mark>
 
 <br>
 
