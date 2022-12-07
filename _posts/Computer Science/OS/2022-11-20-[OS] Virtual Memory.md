@@ -749,8 +749,8 @@ Note now potentially 2 page transfers for page fault – increasing EAT
   - When page is referenced bit set to 1 
   - Periodically clear bits. 
   - Replace the one which is 0 (if one exists). 
-    - We do not know the order, however 
-- Additional reference bit 사용 
+    - We do not know the order, however (누가 레퍼런스가 먼저 됐는 지 모름)
+- Additional reference bit 사용 (앞선 문제 해결)
   - Shift register 
   - Maintain use bit for each page 
   - at periods, shift use bit into register 
@@ -760,17 +760,17 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ![image-20221123235025452](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123235025452.png)
 
-
+가장 작은 값이 제일 오래있었던 page
 
 
 
 <br>
 
 - Second chance algorithm 
-  - Generally FIFO, plus hardware-provided reference bit 
+  - Generally FIFO, plus hardware-provided reference bit  (FIFO + reference bit)
   - Clock replacement. 
   - If page to be replaced (in clock order) has 
-    - Reference bit = 0 -> replace it •
+    - Reference bit = 0 -> replace it
     - Reference bit = 1. then:  
       - set reference bit 0, leave page in memory. 
       - replace next page (in clock order), subject to same rules.
@@ -783,13 +783,13 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ![image-20221123235108592](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123235108592.png)
 
-
+1번으로 setting 되어 있으면 바로 victim으로 선정하지 않고 두번 째 다시 체크하겠다.
 
 <br>
 
 ## Enhanced Second-Chance Algorithm
 
-- Improve algorithm by using reference bit and modify bit (if available) in concert 
+- Improve algorithm by using **reference bit** and **modify bit** (if available) in concert 
 - Take ordered pair (reference, modify) 
 
 1. (0, 0) neither recently used not modified – best page to replace 
@@ -811,9 +811,11 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 - LFU (Least Frequently Used) 
   - Algorithm: replaces page with smallest count. 
   - Suffers from the situation in which a page is used heavily during initial phase, but then is never used again 
+    - 초반에만 많이 사용되고 나중에 잘 사용되지 않는 page와 초반엔 잘 사용되지 않다가 후반부에 많이 사용되는 페이지의 경우 LRU를 잘 찾아내지 못할 것이다.
   - Solution is to shift the counts right by 1 bit at regular intervals, forming an exponentially decaying average usage 
 - MFU (Most Frequently Used) Algorithm 
   - based on the argument that the page with the smallest count was probably just brought in and has yet to be used.
+    - count값이 작은 페이지는 최근에 탑재된 페이지일 가능성이 높다.라고 해석
 
 
 
@@ -821,15 +823,19 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ## Page-Buffering Algorithms
 
-- Keep a pool of free frames, always 
+demand paging의 성능을 높이기 위한 과정의 일종들
+
+- Keep a **pool** of free frames, always (pool을 사용)
   - Then frame available when needed, not found at fault time 
   - Read page into free frame and select victim to evict and add to free pool 
-  - When convenient, evict victim 
-- Possibly, keep list of modified pages 
+  - When convenient(편할 때 아무 때나), evict(쫓아내다) victim 
+- Possibly, keep list of **modified pages** (수정된 페이지 리스트로 관리)
   - When backing store otherwise idle, write pages there and set to non-dirty 
 - Possibly, keep free frame contents intact and note what is in them 
+  - victim으로 선정되었던 frame를 zero-out(초기화)을 하지 않게 되면 LRU 페이지 선정이 잘못 되어진 것을 조금 보정할 수 있게된다.
   - If referenced again before reused, no need to load contents again from disk 
   - Generally useful to reduce penalty if wrong victim frame selected 
+  
 
 
 
@@ -838,13 +844,14 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 ## Applications and Page Replacement
 
 -  All of these algorithms have OS guessing about future page access 
-- Some applications have better knowledge – i.e. databases 
-- Memory intensive applications can cause double buffering
+-  Some applications have better knowledge – i.e. databases 
+   - 미래의 패턴을 알고 있음
+-  **Memory intensive applications** can cause double buffering
   - OS keeps copy of page in memory as I/O buffer 
-  - Application keeps page in memory for its own work  
-- Operating system can given direct access to the disk, getting out of the way of the applications 
+  - Application keeps page in memory for its **own work**  
+-  Operating system can given direct access to the disk, getting out of the way of the applications 
   - Raw disk mode 
-- Bypasses buffering, locking, etc
+-  Bypasses buffering, locking, etc
 
 
 
@@ -853,12 +860,12 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 ## Allocation of Frames
 
 - Each process needs minimum number of pages. 
-- Example: IBM 370 – 6 pages to handle SS MOVE instruction: 
+- Example: IBM 370 – **6 pages** to handle SS MOVE instruction: 
   - instruction is 6 bytes, might span 2 pages. 
-  - 2 pages to handle from. 
-  - 2 pages to handle to. 
+  - 2 pages to handle **from**. 
+  - 2 pages to handle **to**. 
 - Maximum of course is total frames in the system 
-- Two major allocation schemes. –
+- Two major allocation schemes.
   - fixed allocation 
   - priority allocation 
 - Many variations
@@ -886,16 +893,18 @@ Note now potentially 2 page transfers for page fault – increasing EAT
   - select for replacement one of its frames. 
   - select for replacement a frame from a process with lower priority number.
 
-
+- FIFO를 제외하고는 frame을 많이 주면 page fault가 줄어듦.
 
 <br>
 
 ## Global vs. Local Allocation
 
-- Global replacement – process selects a replacement frame from the set of all frames; one process can take a frame from another 
+- **Global replacement** – process selects a replacement frame from the set of all frames; one process can take a frame from another 
+  - 다른 프로세스가 갖고 있는 frame도 victim으로 선정가능.
   - But then process execution time can vary greatly 
   - But greater throughput so more common 
-- Local replacement – each process selects from only its own set of allocated frames 
+  
+- **Local replacement** – each process selects from only its own set of allocated frames 
   - More consistent per-process performance 
   - But possibly underutilized memory
 
@@ -911,7 +920,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 - When a process incurs a page fault, a NUMA-aware virtual memory system will allocate that process a frame as close as possible to the CPU on which the process is running
 - Optimal performance comes from allocating memory “close to” the CPU on which the thread is scheduled 
   - And modifying the scheduler to schedule the thread on the same system board when possible 
-  - Solved by Solaris by creating lgroups (locality group) 
+  - Solved by Solaris by creating **lgroups (locality group)** 
     - Structure to track CPU / Memory low latency groups 
     - Used my schedule and pager 
     - When possible schedule all threads of a process and allocate all memory for that process within the lgroup
@@ -937,9 +946,10 @@ Note now potentially 2 page transfers for page fault – increasing EAT
       - Spending more time paging than executing 
     - operating system thinks that it needs to increase the degree of multiprogramming. 
     - another process added to the system. 
-  - Thrashing = a process is busy swapping pages in and out. 
+- Thrashing = a process is busy swapping pages in and out. (page in-out을 너무 많이 함.)
 - Solution : 
   - provide a process as many frames as it needs 
+    - demanding page의 장점이 하나도 없어짐
   - Then, How much ? => Working set model
 
 
@@ -957,14 +967,15 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 ## Thrashing Diagram
 
 - Why does demand paging work? 
-  - Locality model: Program references cluster in localities 
+  - Locality model: Program references cluster(집합) in localities 
+    - goto를 사용하면 locality를 위배하기 쉬움
   - Locality is set of pages actively being used together 
   - Once start referring to page within a locality, will continue to refer them for some time 
   - Process migrates from one locality to another. 
     - Once locality is exited (stop referring pages in locality), those pages will be referred to in frequently (in near future) 
-  - Localities may overlap. 
+  - Localities may **overlap**. 
 - Why does thrashing occur? 
-  - ∑size of locality > total memory size 
+  - ∑ size of locality > total memory size 
     - Limit effects by using local or priority page replacement
 
 
@@ -981,18 +992,20 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ## Working-Set Model
 
+적정선의 frame 개수가 얼마를 말하는 것이냐?
+
 - Based on locality 
 - Strategy : 
-  - prevents thrashing while keeping the degree of multiprogramming as high as possible 
-  - Increase/decrease # of frames allocated to a job based on locality 
+  - **prevents thrashing** while keeping the degree of multiprogramming as high as possible 
+  - Increase/decrease # of frames allocated to a job **based on locality** 
 - △ = working-set window = a fixed number of page references 
   - Approximate of program’s locality 
   - Example: 10,000 instruction 
-- WSSi (working set of Process Pi ) = total number of pages referenced in the most recent  (varies in time) 
+- WSSi (working set of Process Pi ) = total number of pages referenced in the most recent △ (varies in time) 
   - if △ too small will not encompass entire locality, lead too many page faults. 
   - if △ too large will encompass several localities. 
   - if △ = ∞ => will encompass entire program. 
-- D = ∑WSSi = total demand frames 
+- D = ∑ WSSi = total demand frames 
   - approximation of locality 
 - if D > m => Thrashing 
 - Policy if D > m, then suspend one of the processes.
@@ -1005,7 +1018,8 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ![image-20221124000545018](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124000545018.png)
 
-
+- 10개의 page가 reference 되는 것을 working set window로 잡았다.
+  - 10개의 page가 reference 되는 동안 5개의 page가 reference 되었다.
 
 
 
@@ -1013,7 +1027,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 ## Keeping Track of the Working Set
 
-- Approximate with interval timer + a reference bit 
+- Approximate with **interval timer** + **a reference bit** 
 - Example: △ = 10,000 
   - Timer interrupts after every 5000 time units. 
   - Keep in memory 2 bits for each page. 
@@ -1035,6 +1049,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
   - If actual rate too low, process loses frame. 
   - If actual rate too high, process gains frame. 
 - Check for reallocation only when a job experiences a fault
+- upper bound와 lower bound 사이에 잘 있도록
 
 ![image-20221124000710522](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124000710522.png)
 
@@ -1072,7 +1087,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 ## Memory-Mapped Files
 
 - File I/O using open(), read(), write() requires system call & disk access 
-- Memory-mapped file I/O allows file I/O to be treated as routine memory access by mapping a disk block to a page in memory 
+- Memory-mapped file I/O allows file I/O to be treated as routine memory access by **mapping** a disk block to a page in memory 
 - A file is initially read using demand paging 
   - A page-sized portion of the file is read from the file system into a physical page 
   - Subsequent reads/writes to/from the file are treated as ordinary memory accesses 
@@ -1116,11 +1131,11 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 ## Memory-Mapped Shared Memory in Windows
 
-![image-20221124001042722](C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20221124001042722.png)
+생략
 
 <br>
 
-## Shared Memory in Windows API
+## Shared Memory in Windows API - 생략
 
 - First create a file mapping for file to be mapped 
   - Then establish a view of the mapped file in process’s virtual address space 
@@ -1137,8 +1152,8 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 ## Memory Compression
 
-- An alternative to paging 
-- Rather than paging out modified frames to swap space, compress several frames into a single frame, enabling the system to reduce memory usage without resorting to swapping pages 
+- **An alternative to paging** 
+- Rather than paging out modified frames to swap space, **compress** several frames into a single frame, <mark>enabling the system to reduce memory usage without resorting to swapping pages </mark>
 
 ![image-20221124001214880](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124001214880.png)
 
@@ -1148,8 +1163,8 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 ## Allocating Kernel Memory
 
-- Treated differently from user memory 
-- Often allocated from a free-memory pool 
+- Treated **differently** from user memory 
+- Often allocated from a **free-memory pool** 
   - Kernel requests memory for structures of varying sizes 
   - Some kernel memory needs to be contiguous 
     - I.e. for device I/O
@@ -1158,10 +1173,10 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 <br>
 
-## Buddy System
+## Buddy System - 동작원리 중요
 
 - Allocates memory from fixed-size segment consisting of physically-contiguous pages 
-- Memory allocated using power-of-2 allocator 
+- Memory allocated using **power-of-2 allocator** 
   - Satisfies requests in units sized as power of 2 
   - Request rounded up to next highest power of 2 
   - When smaller allocation needed than is available, current chunk split into two buddies of next-lower power of 2 
@@ -1170,7 +1185,7 @@ Memory mapped files can be used for shared memory (although again via separate s
   - Split into A<sub>L</sub> and A<sub>r</sub> of 128KB each 
     - One further divided into BL and BR of 64KB 
       - One further into CL and CR of 32KB each – one used to satisfy request 
-- Advantage – quickly coalesce unused chunks into larger chunk 
+- Advantage – quickly coalesce unused chunks into larger chunk (합치는 건 쉬움)
 - Disadvantage - fragmentation
 
 
@@ -1185,18 +1200,20 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 <br>
 
-## Slab Allocator
+## Slab Allocator - 동작원리 중요
 
 - Alternate strategy 
-- Slab is one or more physically contiguous pages 
-- Cache consists of one or more slabs 
+- **Slab** is one or more physically contiguous pages 
+- **Cache** consists of one or more slabs 
 - Single cache for each unique kernel data structure 
-  - Each cache filled with objects – instantiations of the data structure 
+  - Each cache filled with **objects** – instantiations of the data structure 
 - When cache created, filled with objects marked as free 
 - When structures stored, objects marked as used 
 - If slab is full of used objects, next object allocated from empty slab 
   - If no empty slabs, new slab allocated 
-- Benefits include no fragmentation, fast memory request satisfaction
+- Benefits include **no fragmentation**, fast memory request satisfaction
+  - 메모리의 기본 단위가 kernel object인데 그 size 만큼 cache를 구성하기 때문에 fragmentation이 존재하지 않음.
+
 
 
 
@@ -1212,13 +1229,13 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 ## Slab Allocator in Linux
 
-- For example process descriptor is of type struct task_struct 
+- For example process descriptor is of type `struct task_struct ` - PCB
 
 - Approx 1.7KB of memory 
 
 - New task -> allocate new struct from cache 
 
-- Will use existing free struct task_struct 
+- Will use existing free `struct task_struct `
 
 - Slab can be in three possible states 
 
@@ -1274,7 +1291,7 @@ Memory mapped files can be used for shared memory (although again via separate s
 - Page size selection must take into consideration: 
   - Memory utilization : favors small page, internal fragmentation 
   - Page table size : : favors larger pages (fewer entries) 
-  - Resolution 
+  - **Resolution** 
   - I/O overhead 
     - Transfer once located pages relatively fast 
       - favor large pages 
@@ -1338,7 +1355,7 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 <br>
 
-## Other Consideration (Cont.)
+## Other Consideration (Cont.) - XXXX
 
 - Page size selection 
   - table size : favors larger pages (fewer entries) 
@@ -1367,7 +1384,7 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 <br>
 
-## Other Issues – I/O interlock
+## Other Issues – I/O interlock - XXXX
 
 - I/O interlock and addressing 
 - Consider I/O - Pages that are used for copying a file from a device must be locked from being selected for eviction by a page replacement algorithm 
@@ -1388,7 +1405,7 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 <br>
 
-## Reason Why Frames Used For I/O Must Be In Memory
+## Reason Why Frames Used For I/O Must Be In Memory - XXXX
 
 ![image-20221124002457581](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124002457581.png)
 
@@ -1396,7 +1413,7 @@ Memory mapped files can be used for shared memory (although again via separate s
 
 <br>
 
-## Demand Segmentation
+## Demand Segmentation - XXXX
 
 - Demand paging is the most efficient virtual memory system 
 - Used when insufficient hardware to implement demand paging. 
