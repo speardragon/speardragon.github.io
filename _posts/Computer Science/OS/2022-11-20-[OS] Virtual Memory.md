@@ -9,6 +9,10 @@ toc_sticky: true
 
 <br>
 
+[toc]
+
+
+
 # Chapter 10: Virtual Memory
 
 - Background 
@@ -643,7 +647,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
   - <mark>왜 FIFO는 stack property를 갖지 않을까?</mark>
     -  Belady’s Anomaly  때문에 어쩌고 저쩌고
 
-
+- belady's anomaly 현상이 일어나는 이유는 stack property를 갖고 있지 않기 때문
 
 <br>
 
@@ -708,7 +712,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 - We can expect god performance, “if past is reflections of future behavior” 
 - Problem: **difficult** to implement efficiently: **Stack**, **Counter** 
 - **Counter implementation** 
-  - Every page entry has a counter; every **time** page is referenced through this entry, copy the clock into the counter. 
+  - Every page entry has a counter; every **time** page is referenced through this entry, copy the clock into the counter. (page가 reference가 될 때마다)
   - When a page needs to be changed, look at the counters to find **smallest value** (to determine which are to change). 
     - Search through table needed (비교를 해야 하기 때문에 각각을 search 해야 함.)
 - **Stack implementation** 
@@ -716,6 +720,7 @@ Note now potentially 2 page transfers for page fault – increasing EAT
   - Page referenced: 
     - move it to the top 
     - 최대 : requires 6 pointers to be changed -> why?
+      - 현재 page가 stack에 존재한다면 해당 값을 stack의 top으로 옮겨 주어야 하기 때문에 최대 6개의 포인터를 바꾸어 주어야 하는 overhead가 생길 수 있다.
   - But each update more expensive 
   - No search for replacement (스택의 top이 LRU 일것이고(가장 최근 사용) 맨 아래 깔린 게 victim이 될 것이기 때문 )
 - LRU and OPT are cases of **stack algorithms** that don’t have Belady’ s 
@@ -734,12 +739,12 @@ Note now potentially 2 page transfers for page fault – increasing EAT
 
 <br>
 
-## LRU Approximation Algorithms
+## LRU Approximation Algorithms(유사 LRU)
 
 -  LRU needs special hardware and still slow 
 - Inexact LRU 
   - Select page for replacement which has not been used recently 
-- Reference bit 사용 
+- Reference bit 사용 (by hardware 구현)
   - With each page associate a bit, initially = 0 
   - When page is referenced bit set to 1 
   - Periodically clear bits. 
