@@ -26,8 +26,6 @@ toc_sticky: true
 
 
 
-시험문제 어마무시하게 심오하게 나올 듯
-
 <br>
 
 ## Objectives
