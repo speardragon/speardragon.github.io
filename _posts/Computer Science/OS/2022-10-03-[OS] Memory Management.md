@@ -232,7 +232,7 @@ base register - limit register가 가리키는 범주에 벗어난 것은 illega
 
 ## Address Binding
 
-- Internal address(위 예제의 빈칸)는 pass1,2를 통하여 reconcile됨. 
+- Internal address(위 예제의 빈칸)는 pass1,2를 통하여 reconcile(조정)됨. 
   - 소스 코드를 두 번 읽으면 가능
 
 - Reconcile : give actual address 
@@ -295,7 +295,7 @@ absolute address가 언제 결정되냐에 따라 다르다! (binding)
 - **Compile time**:  
   - If it is known at compile time where the process will reside in memory, absolute code can be generated; 
     - 컴파일 할 때 이 프로그램이 MM에 탑재될 위치의 시작 주소를 알고있을 때 가능
-  - link module을 만들지 않고 바로 load module을 만듦)
+  - link module을 만들지 않고 바로 load module을 만듦
   - must recompile code if starting location changes. 
 - **Load time**:  
   - Must generate **relocatable code** if memory location is not known at compile time. 
@@ -412,7 +412,7 @@ OS가 지원
 - Static linking – system libraries and program code combined by the loader into the  binary program image 
   - shared libraries 
 - Dynamic linking 
-  - Rather than loading being postponed until execution time, Linking is postponed until execution time. 
+  - Rather than **loading** being postponed until execution time, **Linking** is postponed until execution time. 
 - Usually used with system libraries such as language library 
   - W/O this facility, all programs on a system need to have a copy of their language  library, wastes both disk and memory 
 - Small piece of code, **stub**, is included in the image for each library routine reference 
@@ -436,11 +436,17 @@ OS가 지원
   - Total physical memory space of processes can exceed physical memory 
   - <span style="color:red">Need execution time binding </span>
 - **Backing store** – fast disk large enough to accommodate **copies** of all memory  images for all users; must provide direct access to these memory images 
-- **Roll out, roll in** – swapping variant used for priority-based scheduling  algorithms; lower-priority process is swapped out so higher-priority process can  be loaded and executed 
+- **Roll out, roll in** – swapping variant used for priority-based scheduling  algorithms; lower-priority process is swapped out so higher-priority process can be loaded and executed 
 - Major part of swap time is transfer time; total transfer time is directly proportional  to the amount of memory swapped 
 - System maintains a **ready queue** of ready-to-run processes which have  memory images on disk
 
 
+
+Swapping은 **우선순위가 높거나 중요한 프로세스가 메모리에 올라가려 할 때 공간이 부족하면** **현재 메모리 위에 올라가 있는 프로세스** 중 수많은 알고리즘 중 하나를 이용하여 어떤 프로세스를 **잠시 디스크에 저장**을 하고 **우선순위가 높은 프로세스를 수행**하게 되는데요. 
+
+이 프로세스가 **작업을 마치면 디스크에 있던 프로세스를 다시 메모리에 올리게** 됩니다. 이렇게 우선순위가 높거나 중요한 프로세스가 중간에 들어가는 것을 Swap-in이라 하며 자리를 내어주어 디스크로 빠지게 되는 과정을 Swap-out이라고 합니다.
+
+**Swap-out 된 프로세스가 다시 메모리에 올라갈 때는 원래 있던 자리로 돌아가지 않을 수 있습니다.** 여기서 수많은 알고리즘 중 상황에 맞는 알고리즘을 고르는 것과 디스크와 메모리 간의 속도 차로 인해 발생하는 이슈들이 존재합니다.
 
 <br>
 
@@ -543,10 +549,13 @@ OS가 지원
 - Limited resource, must allocate efficiently 
 - Determine different placement strategies for user processes 
 - Compare strategies based on 
-  - Internal fragmentation 
+  - **Internal fragmentation** 
+    - block의 단위 할당으로 인해 요청하는 메모리 크기보다 큰 메모리를 할당해 주어 메모리 낭비가 일어나는 것
     - Pieces of memory which are associated with a process but which the  process cannot using 
       - This space cannot be allocated  
-  - External fragmentation 
+  - **External fragmentation** 
+    - 메모리 공간을 연속적으로 할당해서 생기는 문제
+    - 메모리 공간 50이 남아있을 때 40을 요청해도 조각조각 나있으면 줄 수가 없다.
     - Pieces of free too small to be allocated and are therefore wasted 
       - free space이긴 하지만 너무 작아서 다른 것에게 할당할 수 없는 공간
   - 두가지 fragmentation을 최소화 시켜야 함.
@@ -639,6 +648,7 @@ OS가 지원
   - Degree of multiprogramming limited by number of partitions 
   - **Variable-partition** sizes for efficiency (sized to a given process’ needs) 
   - Hole – block of available memory; holes of various size are scattered  throughout memory. 
+    - 연속적으로 메모리를 할당해주면 프로세스마다 할당된 메모리 공간 사이에 할당 되지 않은 빈공간이 생기게 되는데 이를 hole 이라고 한다.
   - When a process arrives, it is allocated memory from a hole large enough to  accommodate it. 
   - Process exiting frees its partition, adjacent free partitions combined 
   - Operating system maintains information about: a) allocated partitions b) free partitions (hole) 
@@ -654,7 +664,10 @@ OS가 지원
 
 How to satisfy a request of size n from a list of free holes.
 
-- **First-fit**: Allocate the first hole that is big enough. 
+연속된 메모리 공간을 할당해 주는 방법에 크게 세가지 내부적은 방법이 존재한다.
+
+- **First-fit**: Allocate **the first hole** that is big enough. 
+  - 메모리 요청이 들어왔을 때 요청한 크기를 만족하는 hole 중 가장 첫 번째 hole을 할당
   - Maintain free space information as a **linked list** sorted by  address (start, size)to allocate search list, assign first partition  whose size is larger than job 
   - On fly compaction 
     - Ability to combine adjacent free space 
@@ -663,24 +676,30 @@ How to satisfy a request of size n from a list of free holes.
   - External fragmentation 
     - Decreases size of large block 
     - Potentially increase search time
+  
 
 
 
-- **Best-fit**: Allocate the smallest hole that is big enough; must search entire list, unless ordered by size. Produces the smallest leftover hole. 
+- **Best-fit**: Allocate **the smallest hole** that is big enough; must search entire list, unless ordered by size. Produces the smallest leftover hole. 
+  - 메모리 요청이 들어왔을 때, 요청한 크기를 만족하는 hole 중 가장 작은 크기의 hole을 할당
   - Maintain free space as large of chunks as possible 
     - Maintain list is sorted in increasing size order 
   - Elements may have to be moved in the list when they change in size 
   - Remainder is going to be smaller 
+  
 - **Worst-fit**: Allocate the largest hole; must also search entire list.  Produces the largest leftover hole. 
+  - *Best-Fit과 반대로 요청한 크기를 만족하는 Hole 중 가장 큰 크기의 Hole을 할당*
   - Maintain list in decreasing size order 
   - Try to avoid generating small pieces of free space 
   - Decrease the amount of large free space
 
 
 
+
 -  First-fit and best-fit better than worst-fit in terms of speed and  storage utilization 
 - First fit analysis reveals that given N blocks allocated, 0.5 N blocks lost to fragmentation 
   - 1/3 may be unusable -> 50-percent rule
+  - internal fragmentation 발생!!
 
 
 
@@ -690,17 +709,24 @@ How to satisfy a request of size n from a list of free holes.
 
 - External fragmentation – total memory space exists to satisfy a request,  but it is not contiguous. 
 - Internal fragmentation – allocated memory may be slightly larger than  requested memory; this size difference is memory internal to a partition,  but not being used. 
-- Reduce external fragmentation by compaction 
+- Reduce external fragmentation by compaction (따닥따닥 붙여서!)
   - Shuffle memory contents to place all free memory together in one  large block. 
-  - **Compaction is possible only if relocation is dynamic**, and is done at  execution time. 
+  - **Compaction is possible only if relocation is dynamic**, and is done at  execution time.
+  - 할당된 메모리 공간들을 한쪽으로 모아 연속된 공간을 확보하는 것 
   - I/O problem 
     - Latch job in memory while it is involved in I/O. 
     - Do I/O only into OS buffers. 
+  - 하지만 이러한 방법들은 실행 시간에 주소 바인딩이 일어나는 프로그램들만 가능하며 그렇지 않은 경우 압축되었을 때 잘못된 메모리 공간의 주소에 접근하게 될 수 있다. -> 상당히 제한적임
   - Now consider that backing store has same fragmentation problems
 
 
 
 <br>
+
+그래서 나온 방식이 애초에 메모리 공간을 연속하지 않게 할당해 주는 방법이다.
+
+- 하나는 Paging 기법
+- 하나는 Segmentation 기법
 
 ## Segmentation
 
@@ -729,7 +755,9 @@ How to satisfy a request of size n from a list of free holes.
     ​			symbol tablearray
   
 
-
+- Paging 기법은 Logical address를 page 단위로, physical address 를 같은 크기의 frame 단위로 나누어 올리고 접근
+- Segmentation은 모두 고정된 크기가 아니라 일련의 논리적 구조 단위(logical unit)로 나누어 진다.
+  - 이렇게 논리적 단위로 나누면 사용자가 메모리의 상태를 이해하는데 더욱 도움이 된다.
 
 <br>
 
@@ -769,7 +797,7 @@ How to satisfy a request of size n from a list of free holes.
 
   segment number s is legal if s < STLR
 
-
+- paging은 모두 같은 크기이기 때문에 따로 크기에 대한 정보를 갖고 있지 않지만, segmentation은 크기가 제각기 다 다르기 때문에 크기를 알기 위해 해당 segmentation의 시작점을 알리는 base 정보와 끝을 알리는 limit을 갖고 있는다.
 
 <br>
 
@@ -808,12 +836,14 @@ How to satisfy a request of size n from a list of free holes.
 
 ![image-20221003000143452](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000143452.png)
 
-CPU를 출발하는 주소 - logical address
+- CPU를 출발하는 주소 - logical address
 
-- segment 번호
-- displacement
+  - segment 번호
+
+  - displacement
 
 
+- segmentation table에 접근하는 S값에 대해서 먼저 limit를 초과하는지에 대한 검사를 통해 잘못된 주소 접근을 막는다.
 
 <br>
 
@@ -821,7 +851,7 @@ CPU를 출발하는 주소 - logical address
 
 ![image-20221003000157093](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000157093.png)
 
-
+- segmentation은 고정된 크기로 나누어 지지 않는 다는 점을 제외하고 paging 기법과 상당히 유사한 점이 많다.
 
 <br>
 
@@ -831,13 +861,16 @@ CPU를 출발하는 주소 - logical address
 
 
 
-code section은 segment table 정보(base+limit)를 동일하게 하면 공유가 가능!
+- code section은 segment table 정보(base+limit)를 동일하게 하면 공유가 가능!
+- segmentation 역시 paging과 마찬가지로 공통된 부분은 한 번씩만 올리고 그 주소를 같이 공유하는 shared code를 지원한다.
 
 <br>
 
 ## Paging
 
 segmentation과의 차이는 단위임.
+
+- 앞서 언급했듯이 프로세스에게 메모리를 연속적으로 할당해 주지 않기 위해 나온 방법이다.
 
 - Another solution to external fragmentation 
   - Physical address space of a process can be noncontiguous; process is allocated physical memory whenever the latter is available. 
@@ -847,9 +880,11 @@ segmentation과의 차이는 단위임.
 - Divide logical memory into blocks of same size called pages. 
 - Keep track of all free frames. 
 - To run a program of size **n pages**, need to find **n free frames** and load program. 
+  - n page 크기의 프로그램을 실행하기 위해서 n개의 남는 frame을 찾고 프로그램을 로딩한다.
+
 - Set up a page table to translate logical to physical addresses.  
 - Backing store likewise split into pages 
-- Still have Internal fragmentation, External?
+- <mark>Still have Internal fragmentation, External?</mark>
   - internal fragmentation 제거 불가능
     - 할당의 기본단위가 frame이기 때문에 1바이트를 위해서도 반드시 한 개의 frame을 할당받아야 한다.
 
@@ -862,7 +897,9 @@ segmentation과의 차이는 단위임.
 
 ## Address Translation Scheme
 
-- Address generated by CPU is divided into: 
+이러한 paging 기법은 메모리의 연속적인 공간에 올라가지 않기 때문에 각각이 어느 위치에 올라가는지 Page Table에 저장된 값으로 주소를 변환하여 원하는 위치에 접근해야 한다.
+
+- Address generated **by CPU** is divided into: 
 
   - **Page number** (p) – used as an index into a page table which  contains base address of each page in physical memory 
   - **Page offset** (d) – combined with base address to define the  physical memory address that is sent to the memory unit
@@ -950,6 +987,9 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
 
 - Pages can be mapped into **non-contiguous frames** 
 - **Page table** is kept in main memory. 
+- page table을 사용하기 위해서는 page table 역시 main memory에 올라가 있어야 하는데, 이 때 PTBR은 page table의 메모리 위에서의 시작지점을 의미하고 PTLR은 page table의 크기를 나타낸다.
+  - 이 두 값으로 잘못된 주소 접근을 방지한다.
+
 - **Page-table base register (PTBR)** points to the page table 
   - 빨리 찾아가기 위함
 
@@ -957,8 +997,14 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
   - Rarely does a process use all its address range 
   - entry 갯수를 줄이기 위함
 - In this scheme every data/instruction access requires two memory  accesses( -> 성능 저하). 
-  One for the page table and one for the data/instruction. 
+  <mark>One for the page table and one for the data/instruction. </mark>
+  - page table을 보기 위해서 메모리에 접근해서 생기는 문제!
+
 - The two memory access problem can be solved by the use of a special fastlookup hardware cache called **associative memory** or translation lookaside buffers (**TLBs**)
+  - page table이 memory에 올라가 있기 때문에 data나 instruction에 접근하기 위해서는 두 번의 메모리 access가 일어나는데 
+  - 하나의 데이터나 명령문에 접근하기 위해 메모리에 여러번 access 하는 건 비효율 적이기 때문에 그래서 나온 것이 Translation Look-aside Buffer(TLB)이다.
+
+
 
 
 
@@ -975,6 +1021,12 @@ compile time binding이나 load time binding은 이런 과정이 필요없음
 <br>
 
 ## Associative Register
+
+TLB는 일종의 캐시 역할을 하는 레지스터로 역할이 비슷핟.ㅏ
+
+메모리에 여러번 access 하는 걸 막고자 page table의 내용을 TLB에 저장하여 바로 메모리에 접근할 수 있게 한다.
+
+- 시작은 비어있는 TLB로 page table을 통해 메모리를 두 번 access를 반드시 해야하지만 한 번 access 되기만 한다면 그 다음부터는 해당 page table 정보가 TLB에 저장이 되어 이것을 통해 바로 memory에 access 하는 것이 가능해 진다.
 
 - Associative registers – parallel search
 
@@ -1009,7 +1061,7 @@ TLB Miss의 overhead - TLB searching time + page table searching time + MM acces
 
   - Hit ratio – percentage of times that a page number is found in the associative registers; ratio related to number of associative registers 
 
-- Consider α = 80%, ε = 20ns for TLB search, 100ns for memory access Assume  memory cycle time is 1 microsecond
+- Consider α = 80%, ε = 20ns for TLB search, 100ns for memory access Assume memory cycle time is 1 microsecond
 
 - **Effective Access Time (EAT)** 
 
@@ -1018,9 +1070,9 @@ TLB Miss의 overhead - TLB searching time + page table searching time + MM acces
   = 2 + ε – α
 
   - (1 + ε) α -> 
-    - TLB Hit : TLB seach  = 1 + ε
+    - TLB Hit : TLB seach  = 1 + ε (한번의 memory access)
   - (2 + ε)(1 – α) ->
-    - TLB Miss: TLB search + page table search + physical m.m search = 2 + ε
+    - TLB Miss: TLB search + page table search + physical m.m search = 2 + ε (2번의 memory access)
 
 - Consider α = 80%, ε = 20ns for TLB search, 100ns for memory access 
 
@@ -1056,14 +1108,20 @@ page 단위 protection (by validation bit)
 
 ![image-20221003001217135](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001217135.png)
 
+- Logical memory가 page 단위로 나누어져 있는 모습을 가장 왼쪽 그림을 보면 알 수 있는데 이 경우 internal fragmentation이 발생할 수밖에 없다.
+- 하지만 internal fragmentation되어 비어 있는 공간의 주소를 접근하는 것은 반드시 막아야 하기 때문에 valid-invalid Bit를 사용하게 된다.
+- v - 허용된 범위의 page table
 - i - 실제로 프로세스가 가리킬 수 있는 주소 공간 안에 포함 된 듯 하지만 실제로는 사용하지 않는 page
 
 <br>
 
 ## Shared Pages
 
+- 공통된 code를 갖는 여러 프로세스들이 page table을 가질 때 중복이 발생하게 되는데 아무래도 공통된 code를 공유하는 것이기 때문에 page table 역시 같은 부분이 존재하게 된다.
+- 이런 경우 공통된 page table을 한 번만 메모리에 올리고 그것에 대한 주소를 서로 다른 프로세스들이 공유하면서 중복된 page table을 공유하며 메모리 공간의 낭비를 막는다.
+
 - **Shared code** 
-  - One copy of read-only (**reentrant**; 값이 바뀌지 않는) code shared among processes  
+  - One copy of read-only (**reentrant**; 값이 바뀌지 않는, 재진입 가능한) code shared among processes 
     (i.e., text editors, compilers, window systems) 
   - Similar to multiple threads sharing the same process space 
   - Also useful for interprocess communication(IPC) if sharing of read-write  pages is allowed 
@@ -1111,13 +1169,13 @@ page 단위 protection (by validation bit)
 ## Hierarchical Page Tables
 
 - Break up the logical address space into multiple page tables 
+  - 하나의 페이지 테이블 안에 여러개의 페이지 테이블을 넣은 페이지 테이블을 의미한다. 
   - A simple technique is a two-level page table 
-
+  
 - We then **page** the page table
 
   - 사용자 프로세스의 logical address 공간을 paging 하는 것이 paging의 목적인데 여기서는(Hierarchical Page Tables) 사용자 프로세스를 지원하는 page table 자체를 또 다시 paging
   - 용량을 줄이는 것이 목적이 아님!
-
 
 <br>
 
@@ -1125,7 +1183,7 @@ page 단위 protection (by validation bit)
 
 ![image-20221127165929205](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221127165929205.png)
 
-- outer page table에 의해 mapping이 되게 때문에 page table에서 page들은 비연속적으로 깔려도 됨.
+- outer page table에 의해 mapping이 되기 때문에 page table에서 page들은 비연속적으로 깔려도 됨.
 
 - 한 page가 1024개의 entry를 갖고 있음
 - original page table
@@ -1150,6 +1208,8 @@ page 단위 protection (by validation bit)
 ![image-20221003001715427](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001715427.png)
 
 - single level page P가 p1, p2로 나눠짐
+
+- p1을 통해서 outer-page table의 index를 찾고 해당 index가 가리키는 page table entry 중 하나에서 p2를 통해 physical memory의 frame 번호를 찾는다. 마지막으로 d를 통해 physical 메모리에서의 위치를 찾는다.
 
 - where p1 is an index into the outer page table, and p2 is the displacement within the  page of the outer page table. 
   - page entry 하나를 표현하는데 4byte, 하나의 page는 4KB
@@ -1235,16 +1295,20 @@ which is only a 28 percent slowdown in memory access time.
 ## Hashed Page Tables
 
 - A Common approach in case of address spaces > 32 bits. 
+  - 주로 주소 공간이 32bit보다 큰 경우 사용한다.
+
 - The virtual page number is hashed into a page table.  
   - VPN이 hash function의 key로 사용
+  - 해시형 테이블의 각 항목은 linked list를 갖고 있다.
   - This page table contains a chain of elements hashing to the same location. 
-  
+
 - Each element contains (1) the virtual page number(q) (2) the value of the mapped  page frame(s) 
   (3) a pointer to the next element 
 - Virtual page numbers are compared in this chain searching for a match.  
   - If a match is found, the corresponding physical frame is extracted. 
 - Variation for 64-bit addresses is **clustered page tables** 
   - Similar to hashed but each entry refers to several pages (such as 16) rather  than 1 
+  - 한 개의 페이지 테이블 항목이 여러 페이지 프레임에 대한 매핑 정보를 지닐 수 있다. 
   - Especially useful for **sparse** address spaces (where memory references are  non-contiguous and scattered)
 
 <br>
@@ -1266,12 +1330,16 @@ which is only a 28 percent slowdown in memory access time.
 
 ## Inverted Page Table
 
+- 메모리 프레임마다 한 항목씩을 할당한다.
+  - 각 항목은 프레임에 올라와 있는 페이지 주소, 그 페이지를 소유하고 있는 pid를 표시한다.
+  - 따라서 그 시스템에는 단 하나의 페이지 테이블만 존재하게 되어 공간을 절약할 수 있게 된다.
+
 - Each process has a page table associated with it 
   - Each page table may consists of millions of entries 
 - Rather than each process having a page table and keeping track of all possible  logical pages, track all physical pages 
   - One entry for each real page (frame) of memory. 
   - Entry consists of the virtual address of the page stored in that real memory  location, with information about the process that owns that page. 
-- Decreases memory needed to store each page table, but increases time needed to  search the table when a page reference occurs.-
+- Decreases memory needed to store each page table, but increases time needed to  search the table when a page reference occurs.
   - whole table might be searched 
 
 - Use hash table to limit the search to one — or at most a few — page-table entries. 
@@ -1291,15 +1359,20 @@ which is only a 28 percent slowdown in memory access time.
 
 - 시스템에 page table이 딱 하나만 존재
   - page table 탑재에 필요한 main memory 용량을 줄이는 효과를 볼 수 있음
-
 - pid + p 가 일치하는 index를 찾는다.
 - physical memory에 enry가 100개 있으면 page table도 100개가 있음
+
+1. 가상 주소는 <pid, page number, offset> 으로 구성된다.
+
+2. 메모리 참조가 발생하면 page table에 가서 <pid, page number>가 일치하는 항목을 찾는다.
+
+3. 일치하는 것이 i번째 항목에서 발견되면 해당 physical address는 <i, offset>이 되고 일치하는 것이 없으면 잘못된 메모리로 간주한다.
 
 
 
 <br>
 
-## OS에 의한 !
+## OS에 의한 ! - 안나옴
 
 
 

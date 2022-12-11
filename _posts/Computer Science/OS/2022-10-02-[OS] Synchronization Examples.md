@@ -179,15 +179,15 @@ toc_sticky: true
 
 ## Readers-Writers Problem Variations
 
-- The solution in previous slide can result in a situation where a writer process  never writes. It is referred to as the “First reader-writer” problem. 
+- The solution in previous slide can result in a situation where a writer process never writes. It is referred to as the “**First reader-writer**” problem. 
 - First variation - **Reader’s priority**(reader에게 유리함) 
-  - 만약 최초의 CS 진입 경쟁을 할 때 reader가 이겨서 reader가 들어갔다면 그 후에 reader는 계속 들어갈 수 있지만 writer는 못들어감
+  - 만약 최초의 CS 진입 경쟁을 할 때 reader가 이겨서 reader가 들어갔다면 그 후에 reader는 계속 들어갈 수 있지만 writer는 못들어감(rw_mutex 값은 read_count가 ==0 일 때만 변경 되기 때문에 )
   - <u>no reader kept waiting unless writer has permission to use shared object</u> 
   - No reader should wait simply because a writer is ready 
   - Readers obtain access to CS when needed 
   - Only block if writer has access to CS 
   - Writers may starve
-    - 근데 writer에게 유리하게 코드를 바꿀 수 있음  
+    - -> 근데 writer에게 유리하게 코드를 바꿀 수 있음  
   
 - Second variation - **Writer’s priority** 
   - writer와 reader가 경쟁하면 무조건 writer에게 우선순위
@@ -207,10 +207,11 @@ toc_sticky: true
 
 ![image-20221002215159971](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215159971.png)
 
-- Philosophers spend their lives alternating thinking and eating 
+- Philosophers spend their lives alternating **thinking** and **eating** 
 - Don’t interact with their neighbors, occasionally try to pick up 2  chopsticks (one at a time) to eat from bowl 
   - Need both to eat, then release both when done 
     - 젓가락 두 개를 모두 집어야 식사 가능 -> 식사 후에 젓가락 내려놓기 가능
+    - 한 번에 하나의 젓가락만 집을 수 있음
 - In the case of 5 philosophers 
   - Shared data  
     - Bowl of rice (data set) 
@@ -230,7 +231,14 @@ toc_sticky: true
 - initialization code: monitor가 만들어질 때 딱 한 번 실행됨
   - shared data 초기화
 
+- 사용 중인 모니터에 접근하기를 원해서 대기 중인 프로세스들은 **entry queue**에서 대기한다.
+  
+- 해당 condition을 기다리는 프로세스들은 condition queue에서 대기한다.
+  
 - next queue의 역할?
+  - 다른 프로세스가 모니터 내부에 있어서 잠시 대기하는 큐
+  - 모니터 내부 작업 중에 잠시 프로세스가 대기하는 큐
+
 - 제일 우선순위 높은 ; next queue, entry queue, 새로들어온 애
   - condition queue는 next queue나 entry queue와는 비교 대상이 아님
     - condition이 만족해야만 깨어날 수 있기 때문
@@ -265,7 +273,23 @@ toc_sticky: true
 
   - deadlock이 발생하지 않도록 semaphore로 해결할 수도 있음
 
+- 간단한 솔루션 -> semaphore 사용
+  - 철학자는 그 semaphore에 wait()연산을 실행하여 젓가락을 집으려고 시도
+  - signal()연산을 수행하여 자신의 젓가락을 내려 놓음
+- 공유 데이터: 밥그릇 (데이터 셋)
+  - 1로 초기화된 semaphore -> chopstick[5]
+- 인접한 두 철학자가 동시에 식사하지 않음을 권장
+  - 그러나 모두가 동시에 자신의 왼쪽 젓가락을 집는다면?? -> deadlock 발생!
+  - 해제가 되려면 누군가는 오른쪽 젓가락을 집어야 되는데 아무도 해제가 될 상황이 없기 때문.
 
+
+
+- 해결안 1)
+  - 최대 4명의 철학자들만이 테이블에 동시에 앉을 수 있도록 함
+- 해결안 2)
+  - 한 철학자가 젓가락 두 개를 모두 집을 수 있을 때만 젓가락을 집도록 허용
+- 해결안 3)
+  - 비대칭 해결안 사용. 홀수 번호의 철학자는 왼쪽 젓가락부터, 짝수 번호의 철학자는 짝수 젓가락부터 집을 수 있다는 rule 적용
 
 
 <br>

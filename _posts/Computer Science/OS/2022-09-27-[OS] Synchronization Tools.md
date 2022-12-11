@@ -72,7 +72,7 @@ toc_sticky: true
 
 ## Cooperating Processes
 
-- **Independent process** cannot affect or be affected by the execution of  another process. 
+- **Independent process** cannot affect or be affected by the execution of another process. 
 - **Cooperating process** can affect or be affected by the execution of another process 
   - Directly share a logical address space (code and data) 
   - Share data through shared memory or message passing  
@@ -199,34 +199,38 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
 위 코드는 잘못된 코드임 -> atomic 하지 않음!
 
+- 조작하고 있는 사이에 Context Switching이 일어나게 되면 그 값은 원하는 결과를 가져오지 못할 것이다.
+
 - counter++ could be implemented in machine language as: 
 
-  register1 = counter 
+  register1 = counter [r1=5]
 
-  register1 = register1 + 1 
+  register1 = register1 + 1 [r1=6]
 
-  counter = register1 
+  counter = register1 [counter=6]
 
   - counter를 증가시키는 문장이 atomic하지 않다(아래도 마찬가지)
 
 - counter-- could be implemented in machine language as:
 
-  register2 = counter 
+  register2 = counter [r2=5]
 
-  register2 = register2 - 1 
+  register2 = register2 - 1 [r2=4]
 
-  counter = register2
+  counter = register2 [counter=4]
 
 
 
 - 하나의 instruction이 실행되는 동안에는 어떤 interrupt가 와도 반응하지 않음(atomic instruction)
 - 그러나 instruction 사이사이에는 interrutpt가 발생할 수 있어서 context switching이 일어난다.
 
+
+
 <br>
 
 ## Race Condition
 
-- If both the producer and consumer attempt to update the buffer  concurrently, the assembly language statements may get interleaved. 
+- If both the producer and consumer **attempt to update the buffer  concurrently**, the assembly language statements may get interleaved. 
 
   - 한 번에 2개 이상의 Writer 프로세스가 접근하는 경우 => Writer는 한 번에 1개만 접근가능
 
@@ -263,9 +267,9 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
   - counter := counter - 1; 
 
-    must be executed atomically.  ->data consistency 보장
+    must be executed atomically.  -> data consistency 보장
 
-- Atomic operation means an operation that completes in its entirety  without interruption. 
+- <mark>Atomic operation means an operation that completes in its entirety  without interruption. </mark>
 
 - **Race condition**: The situation where several processes access – and  manipulate shared data concurrently. The final value of the shared data  depends upon which process finishes last. 
 
@@ -312,7 +316,6 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 - 딱 한 개만 돌도록 하기 위해서 순서를 결정하는 것임!
   - entry section에 진입할 때 티켓을 뽑고 exit section에서 나갈 때 티켓 반납
 
-
 <br>
 
 ## Solution to Critical-Section Problem
@@ -322,18 +325,23 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 1. **Mutual Exclusion**. 
 
    - critical section을 실행 중인 process는 반드시 오직 하나여야만 한다.
-   - If process Pi is executing in its critical section, then no other processes can be executing in their critical sections. 
+     - 즉, 하나의 process가 critical section에 접근했으면 다른 프로세스는 접근하지 못해야 한다.
+   - If process Pi is executing in its critical section, then no other processes can be executing **in their critical sections.** 
    - mutual exclusion은 critical section 문제를 해결했는지를 따지는 중요한 근간이 되는 조건이지만 이를 만족하기 위해 노력하다 보면 아래와 같은 역효과가 생기기 마련이다.
      - 그래서 아래 두 조건도 만족 시켜야 문제를 완전히 해결했다고 할 수 있음
 
 2. **Progress**. 
 
    - 아무도 critical section에 들어갈 수 없는 상황이 만들어 지면 안된다. (그래서 아무도 critical section에 없는 상황)
+   - <mark>한 critical section에서 실행되고 있는 프로세스가 없는 상황에서, 어떤 프로세스가 그 critical section에 들어가고 싶다고 선언했으면 들어갈 수 있어야 한다.!</mark>
 
    1. A process outside of its CS can not block another process from entering  its own CS  
       - critical section에 막 들어가려고 하는 프로세스가 CS 밖에서 돌고 있는 process의 영향을 받아 CS 안으로 들어가지 못하는 경우
    2. If no process is executing in its critical section and there exist some processes that wish to enter their critical section, then the selection of the  processes that will enter the critical section next cannot be postponed indefinitely. 
-      - CS를 실행 중인 프로세스가 없는 상황에서 여러 프로세스가 동시에 CS에 들어가려고 하고 싶을 때
+      - CS를 실행 중인 프로세스가 없는 상황에서 여러 프로세스가 동시에 CS에 들어가려고 하고 싶을 때 경쟁에 가담하는 프로세스들은 그들의 remainder section에서 실행중이지 않는 프로세스여야 한다.
+      - 누가 들어갈 지 선택해야 함.
+
+   - 그리고 결정과정은 무한정으로 지연돼서는 안된다.
 
 3. **Bounded Waiting**. 
 
@@ -343,6 +351,8 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
    - Assume that each process executes at a nonzero speed
 
    - No assumption concerning relative speed of the n processes.
+   
+   - 프로세스가 Critical Section에 들어가기로 했으면 무한정 기다려서는 안된다. 일정 시간 안에 들어가야 한다.
 
 
 
@@ -350,9 +360,9 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 
 ## Critical-Section Handling in OS
 
-- Two approaches depending on if kernel is preemptive or non-preemptive  
-  - **Preemptive** – allows preemption of process when running in  kernel mode 
-  - **Non-preemptive** – runs until exits kernel mode, blocks, or  voluntarily yields CPU 
+- Two approaches depending on if kernel is preemptive or non-preemptive 
+  - **Preemptive** – allows preemption of process when running in kernel mode 
+  - **Non-preemptive** – runs until exits kernel mode, blocks, or voluntarily yields CPU 
     - Essentially free of race conditions in kernel mode
 
 
@@ -369,7 +379,7 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 
 ## Initial Attempt 1 to Solve Problem
 
-- Only 2 processes, Pi and Pj 
+- 가정: **Only 2 processes**, Pi and Pj 
 - turn - i => Pi can enter its critical section 
 - initially turn = i
 - line 2: entry section
@@ -391,9 +401,11 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 - Satisfies mutual exclusion, but not progress (**strict alternation**)
   - strict alternation: 반드시 i후에 j가 올 수 있음(내가 원할 때 critical section에 들어가지 못함)
     - i - j - i - j -i - j - .......
+  - i가 critical section에서 빠져나오면서 turn을 j로 바꿔주는데 이 때 프로세스j는 while문에 갖혀있거나 remainder section을 실행 중일 것이다.
+    - 근데 j가 remainder section을 실행 중인 경우
+      - j가 remainder section에서 시간이 오래 걸려서 **i가 먼저** remainder section을 모두 수행하고 다시 while 문에 들어가 critical section에 들어가고 싶어하는 상황이 생겨버리면 i는 앞서 이미 turn을 j에게 넘겨주었기 때문에 critical section에 아무 프로세스가 없음에도 불구하고 들어가지 못하는 상황이 생기고 만다.
   - deadlock - 서로가 양보해서 어느 것도 들어가지 못함
   - bounded wait: 한 번만 기다리면 들어갈 수 있음
-
 
 
 
@@ -440,7 +452,7 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 
 3. <mark>Bounded-waiting Requirement ?</mark>
 
-   - 내가 들어가고 싶은데 계속 못들어갈 수가 있느냐?( 두 프로세스 모두 동시에 들어가고 싶어하는 경우 )
+   - 내가 들어가고 싶은데 계속 못들어갈 수가 있느냐?( **두 프로세스 모두 동시에 들어가고 싶어하는 경우** )
    - 그런 경우에 둘 다 양보하는데 이것이 bounded -waiting 조건을 만족 시키는 것인지 아닌지
 
 
@@ -458,8 +470,11 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
   - int **turn**;  
   - Boolean **flag**[2] 
   - initially flag [0] = flag [1] = false 
-- The variable turn indicates whose turn it is to enter the critical  section 
-- The flag array is used to indicate if a process is ready to enter the  critical section. flag[i] = true implies that process Pi is ready ready enter its critical section!
+- The variable 'turn' indicates whose turn it is to enter the critical  section 
+  - 누가 critical section에 들어갈 차례인지
+
+- The flag array is used to indicate if a process is ready to enter the  critical section. flag[i] = true implies that process Pi is ready to enter its critical section!
+  - 각 프로세스가 critical section에 들어갈 준비가 되었는지(while문 직전에 true가 됨)
 
 - 프로세스를 2개인 경우를 가정한 것이므로 프로세스의 갯수가 N개로 늘어나면 코드를 수정해야 함.
 
@@ -474,7 +489,6 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 - 상대방이 들어갈 수 없는 경우에 들어갈 수 있음
   - flag[j] == false || turn == i 인 경우에 CS에 들어갈 수 있음
   - 상대방이 의사진입을 희망하고 있고 turn도 상대방으로 되어 있으면 못 들어감
-
 - 상대방이 들어갈 의사가 없는 경우 -> 무조건 들어감
 - 나도 상대방도 들어갈 의사가 있으면 turn 값을 보고 결정!
 - Combined shared variables of initial attempts 1 and 2. 
@@ -490,7 +504,7 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 
 ## Peterson's Solution (Cont.)
 
-- to enter the CS, process Pi first sets flag[i] to be true and then sets turn to  value j , thereby asserting that if the other process wishes to enter CS it  can do so. 
+- to enter the CS, process Pi first sets flag[i] to be true and then sets turn to value j , thereby asserting that if the other process wishes to enter CS it can do so. 
 
   - 들어가고 싶다는 의사 표시는 하지만 turn은 상대방에게 양보
 
@@ -516,11 +530,13 @@ Critical section **for n processes**
 
 - Before entering its critical section, process **receives a number**.  
   - Holder of the smallest number enters the critical section. 
-
+  - 가장 작은 숫자를 가진 애가 들어감
+  
 - If processes Pi and Pj receive the same number, if i < j, then Pi is  served first; else Pj is served next . 
   - 이 번호들은 unique한 번호가 아니기 때문에 문제가 생김!
-
-- The numbering scheme always generates numbers in increasing  order of enumeration; i.e., 1,2,3,3,3,3,4,5...
+  - 만약 같은 number를 부여 받으면 pid가 더 작은 애가 들어갈 권리가 주어짐.
+  
+- The numbering scheme always generates numbers in increasing order of enumeration; i.e., 1,2,3,3,3,3,4,5...
   - 왜 똑같은 번호를 받는 프로세스가 생길까...?
   - 이 경우 pid가 작은 프로세스가 들어가는 것으로 해결
 
@@ -531,7 +547,7 @@ Critical section **for n processes**
 
 ## Bakery Algorithm (Cont.)(중요)
 
-프로세스가 N개일 때도 만족하는 알고리즘
+**프로세스가 N개일 때도 만족하는 알고리즘**
 
 - Notation <= lexicographical order (**ticket #, process id #**) 
 
@@ -560,7 +576,7 @@ Critical section **for n processes**
 - 맨 위 세 문장을 실행시키고 있는 애들은 
   - choosing number가 false가 아니라면(즉 true라면) 발급 받는 중인 애인 것이다.
 - number[i] = 0
-  - 발부 받은 번호표를 반납
+  - 발부 받은 번호표를 반납했거나 아직 번호표를 받지 못한 상태(임계 영역에 들어가지 않겠다는 의미)
 
 
 <br>
@@ -712,6 +728,7 @@ peterson과 bakery는 FCFS가 보장되지 않음
 - 내가 먼저 while문장에 들어갔다고 나 다음에 while문에 들어와서 lock이 걸린 애들이 줄을 서고 있을 때 어떤 애가 먼저 한다는 보장이 있는가? -> No
   - 누가 먼저 도착했다고 기록되는 것이 없기 때문,
   - 최악의 경우 계속 들어가지 못할 수 있음
+  - 아무리 오래 기다렸어도 계속 못들어갈 수도 있다.
 
 
 
@@ -771,11 +788,25 @@ test_and_set은 entry section이 flag를 false로 바꿔주는 것으로 끝났�
 - boolean waiting[n]; 
 - Satisfies all the CS requirements 
 
+```
+// ---- 1. 각각의 프로세스들이 해당 코드에 진입하게 되면 각 프로세스의 해당하는 waiting 배열의 값을 TRUE로 바꿈으로써
+Critical Section에 들어갈 준비가 됐다는 것을 의미합니다. 예를 들어 P0, P2, P4, P5가 진입하여 준비가 되었다고 하고
+그중에 P2가 가장 먼저 도착했다고 가정해봅시다.
+
+// ---- 2. P2가 먼저 도착하여 while 문을 들어가게 되면 TestAndSet 함수를 통해 lock을 얻고 P2는 진입한다는 의미로 waiting 배열의 값을 FALSE로 바꿔 준 후 Critical Section에 진입하고 나머지 프로세스들은 lock이 TRUE로 인한 TestAndSet의 반환값이 TRUE이므로 계속해서 while 문에서 대기하게 됩니다.
+
+// ---- 3. P2가 Critical Section을 수행하고 자기 보다 큰 번호의 프로세스들 중 가장 작은 프로세스를 선택하게 됩니다. i는 현재 2이고 배열의 크기는 7이기 때문에 j의 값은 3이 되게 됩니다. 하지만 P3은 준비가 되어 있지 않은 상태이기 때문에 다시 한번 while 문 안으로 들어가 다음 프로세스가 준비되어 있는지를 검사하게 됩니다. 그리하여 j는 4가 되어 P4가 선택되고 waiting[j]가 FALSE가 되기 때문에 P4는 2번의 while 문을 벗어나 Critical Section을 들어가게 됩니다. 이런 식으로 모든 waiting 배열의 값이 FALSE가 되어 전부 통과되었다면 마지막 프로세스의 차례에서는 i와 j가 같아지게 됩니다. 그렇게 되면 서로 돌려가지던 lock을 최종 반납하고 모두 Critical Section을 벗어나게 됩니다.
+```
+
+
+
+
+
 1. MTX 
 
    - Pi can enter CS only if either  waiting[i] == false or key == false
 
-   - Value of key can become false only if  testAndSet is ececuted 
+   - Value of key can become false only if  testAndSet is executed 
    - waiting[i] can become false only if  another process leaves CS 
    - -> Only one waiting[i] can become  false
 
@@ -783,7 +814,7 @@ test_and_set은 entry section이 flag를 false로 바꿔주는 것으로 끝났�
 
    ![image-20221002205639849](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205639849.png)
 
-- a process exiting CS either sets lock to false, or sets  waiting[j] to false to allow a process that is waiting to enter  CS to proceed
+- a process exiting CS either sets lock to false, or sets  waiting[j] to false to allow a process that is waiting to enter CS to proceed
 
 3. Bounded-waiting Requirement
 
@@ -808,7 +839,7 @@ user도 bounded waiting 보장이 안되고 HW도 not bad이지만 그냥 그렇
 - Previous solutions are complicated and generally inaccessible to  application programmers 
 - OS designers build software tools to solve critical section problem 
 - Simplest is mutex lock 
-- Product critical regions with it by first **acquire()** a lock then release() it 
+- Product critical regions with it by first **acquire()** a lock then **release()** it 
   - Boolean variable indicating if lock is available or not 
 - Calls to acquire() and release() must be atomic 
   - Usually implemented via hardware atomic instructions 
@@ -830,7 +861,7 @@ user도 bounded waiting 보장이 안되고 HW도 not bad이지만 그냥 그렇
 
 - lock이 이미 걸려 있으면 즉, not available이면 기다린다.
 
-- lock을 획득하면 들어가고 획득하지 못하면 기다리고 나갈 때는 다시 lock을 반납
+- 내가 lock을 획득하면 다시 available을 false로 바꾸고 들어가는 거고, 획득하지 못하면 기다리고,마지막으로 나갈 때는 다시 lock을 반납
 
 - 그렇다면 차이는?
 
@@ -986,7 +1017,7 @@ signal(semaphore *S) {
     - 코드가 실행중인 것이 OS인데 wait()을 호출 시킨 프로세스를 block(runnung-> waiting)시키는 것
     - bounded waiting도 보장 - FCFS
 
-- S값은 1이 최대값임, 대기는 여러명이 할 수 있기 떄문에 -1, -2, -3, ... 이 가능함
+- S값은 1이 최대값임, 대기는 여러명이 할 수 있기 때문에 -1, -2, -3, ... 이 가능함
 - S가 0이라는 것은 signal을 호출한 프로세스가 유일하게 wait함수를 호출했던 프로세스였다는 뜻
 - 하지만 잘못 사용하면 deadlock이 걸릴 수 있음
   - entry section에서 잘못 사용하면 아무도 critical section을 진입하지 못하는 경우가 생길 수 있음
@@ -1077,6 +1108,8 @@ semaphore 사용할 때 주의점
 
 semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하지는 않음
 
+- <mark>A **Monitor** is an object designed to be accessed from multiple threads.</mark>
+
 - A high-level abstraction that provides a convenient and effective mechanism for process synchronization 
 - Abstract data type(like class), internal variables only accessible by code within the procedure 
   - Ensure mutex at higher level, within monitor 
@@ -1092,6 +1125,18 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 - 한 프로세스가 실행되는 동안에 다른 프로세스가 호출되면 
   - 공유 데이터에 접근하게 되므로 monitor 안에 race condition이 생기기 때문에 하나로 제한시키는 것이다.
 - 그래서 한 번에 하나의 프로세스만 모니터 안에서 실행이 가능
+
+```
+모니터 는 여러 스레드에서 액세스하도록 설계된 개체입니다. 모니터 개체의 멤버 함수 또는 메서드는 상호 배제를 시행하므로 지정된 시간에 하나의 스레드만 개체에 대한 작업을 수행할 수 있습니다. 한 스레드가 현재 개체의 멤버 함수를 실행 중이면 해당 개체의 멤버 함수를 호출하려는 다른 스레드는 첫 번째가 완료될 때까지 기다려야 합니다.
+
+세마포어 는 하위 수준 개체입니다. 세마포어를 사용하여 모니터를 구현할 수 있습니다. 세마포어는 기본적으로 카운터일 뿐입니다. 카운터가 양수일 때 스레드가 세마포어를 얻으려고 시도하면 허용되고 카운터가 감소합니다. 스레드가 완료되면 세마포어를 해제하고 카운터를 증가시킵니다.
+
+스레드가 세마포어를 얻으려고 할 때 카운터가 이미 0이면 다른 스레드가 세마포어를 해제할 때까지 기다려야 합니다. 스레드가 세마포어를 해제할 때 여러 스레드가 대기 중인 경우 그 중 하나가 세마포어를 가져옵니다. 세마포어를 해제하는 스레드는 이를 획득한 스레드와 동일할 필요는 없습니다.
+
+모니터는 공중 화장실과 같습니다. 한 번에 한 사람만 입장할 수 있습니다. 그들은 다른 사람이 들어오지 못하도록 문을 잠그고, 할 일을 하고, 나갈 때 문을 엽니다.
+
+세마포어는 자전거 대여소와 같습니다. 그들은 특정한 수의 자전거를 가지고 있습니다. 자전거를 빌리려고 하는데 무료 자전거가 있으면 가져갈 수 있고 그렇지 않으면 기다려야 합니다. 누군가 자전거를 반납하면 다른 사람이 가져갈 수 있습니다. 자전거가 있다면 다른 사람에게 돌려주도록 할 수 있습니다. --- 자전거 대여소는 자전거를 돌려받기만 하면 누가 돌려주든 상관하지 않습니다.
+```
 
 
 
@@ -1118,16 +1163,16 @@ semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하
 
 - 메소드 - procedure operation
 
-- 모니터 안에서 생성될 수 있는 프로세스는 한 개로 제한
+- <mark>모니터 안에서 생성될 수 있는 프로세스는 한 개로 제한</mark>
 - entry queue: 모니터 안에서 정의된 procedure에 대해서 호출을 한 프로세스가 여러개 인 경우 그중 한 프로세스만 실행이 허용되고 나머지는 이 큐에서 순서대로 기다리는 개념
 
 <br>
 
 ## Monitors (continued) - 시험
 
-procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에서 기다리면 아무 것도 실행이 되지 않는 문제 발생
+procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에서 기다리면 아무 것도 실행이 되지 않는 문제 발생(동기화에 대한 문제를 완전히 해결하지 못했음)
 
--> condition variable개념 도입
+​	-> condition variable개념 도입
 
 - To allow a process to wait within the monitor, a condition variable must  be declared, as
 
@@ -1160,7 +1205,12 @@ procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에�
 
 ![image-20221002211530941](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211530941.png)
 
+- 기본적인 모니터는 여러 동기화 기법 모델링을 위해서 충분히 강력하지가 않다.
+  
+  - 공통된 자원에 대한 경쟁을 막기 위해서 mutex lock, semaphore를 사용하는데 이러한 semaphore와  mutex lock을 가지려는 대상들이 2개 이상일 때 condition variables을 통해서 그 대상들의 순서를 결정해 준다.
+  
 - shared data의 queue는 무슨 역할?
+
   - condition queue - 어떤 condition이 발생할 때까지 대기
 
 - 실행을 하다가 event가 발생하여 더 이상 실행을 하지 못하는 경우 기다려야 하므로 손해
@@ -1176,15 +1226,16 @@ procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에�
 - Suppose that, when the x.signal is invoked by a process P, there is a  suspended process Q associated with condition x 
   - P -> x.signal 호출
   - Q -> x.signal이 호출되어져 살아남
-
-- If the suspended process Q is allowed to resume its execution, the  signaling process P must wait, otherwise, both P and Q will be active  **simultaneously** within the monitor 
+  - 즉, P가 x.signal()을 주고 Q는 x.wait()에 걸려있는 상태이다.
+- If the suspended process Q is allowed to resume its execution, the signaling process P must wait, otherwise, both P and Q will be active  **simultaneously** within the monitor 
   - 이는 모니터 방식에 위배
-
 - 2 possibilities 
   - **Signal and wait** – P either waits until Q leaves the monitor, or  waits for another condition 
     - 살려준 프로세스가 기다릴 것이냐
+    - P는 Q가 monitor를 떠나거나 다른 조건을 기다릴 때까지 기다린다.
   - **Signal and continue** - Q either waits until P leaves the monitor, or  waits for another condition 
     - 살려진 프로세스가 기다릴 것이냐
+    - Q는 P가 monitor를 떠나거나 다른 조건을 기다릴 때까지 기다린다.
   - Both have pros and cons – language implementer can decide 
   - Monitors implemented in Concurrent Pascal compromise  
     - P executing signal immediately leaves the monitor, Q is resumed 
@@ -1204,9 +1255,11 @@ procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에�
 
 ![image-20221002211711850](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211711850.png)
 
-- wait(mutext) - entry section
-- if-else  : exit section
-- body of F : critical section
+- signal and wait
+  - wait(mutex) - entry section
+  - if-else  : exit section
+  - body of F : critical section
+
 - Mutual exclusion within a monitor is ensured by mutex semaphore 
 - Signaling process must wait until the resumed process either leaves or waits 
   - Next semaphore on which signaling processes may suspend themselves  
@@ -1247,13 +1300,13 @@ procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에�
 
 ## Monitor Implementation (Cont.)
 
-- Resuming Processes within a Monitor 
+- Resuming Processes within a Monitor (monitor 내 프로세스들 재개하기!)
   - If several processes queued on condition x, and x.signal()  executed, which should be resumed? 
   - FCFS frequently not adequate 
 - Condition operation with **priority** (process resumption order) 
   - Conditional-wait construct: x.wait(c); 
-  - c – integer expression evaluated when the wait operation is  executed. 
-  - value of c (priority number) stored with the name of the process  that is suspended. 
+  - c – integer expression evaluated when the wait operation is  executed. (우선순위)
+  - value of c (**priority number**) stored with the name of the process  that is suspended. 
   - when x.signal is executed, process with smallest associated  priority number is resumed next.
 
 
@@ -1278,7 +1331,10 @@ procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에�
 
 ![image-20221002212250416](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212250416.png)
 
-release()에서 x.signal()을 하면 누가먼저 살아나야 할까? -> 위에서 말했음
+- release()에서 x.signal()을 하면 누가먼저 살아나야 할까? -> 위에서 말했음
+- time의 시간이 작을 수록 우선순위가 높다면, time이 짧은 애가 먼저 wait을 빠져나간다.
+
+
 
 
 

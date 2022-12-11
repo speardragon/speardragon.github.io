@@ -213,7 +213,7 @@ if (pthread_mutex_trylock(mutex)) 를 해도 이미 first와 second 모두 lock�
 livelock, deadlock, deadlock with semaphore 셋 간의 차이점
 
 - deadlock with semaphore 
-  - wait(S1)을 하면 kernel롤 내려우는데 semaphore 값이 1이니까 바로 return이 됨
+  - wait(S1)을 하면 kernel로 내려오는데 semaphore 값이 1이니까 바로 return이 됨
   - return 되면서 **semaphore가** 0->1로 바뀌고
   - 그 이후에 wait(S2)
   - 그러면 못 돌아옴(block)
@@ -239,19 +239,25 @@ livelock, deadlock, deadlock with semaphore 셋 간의 차이점
 
 Deadlock can arise if four conditions hold simultaneously.(4개의 필요조건)
 
+4가지가 동시에 일어나야 deadlock 발생
+
 - **Mutual exclusion**: at least one resource must be held in a non-sharable mode  
   - <u>only one process at a time can use a resource.</u> 
+  - 오로지 하나의 프로세스만이 하나의 자원을 사용할 수 있다.
   - If a process wants resource held by another process, it must suspend 
   - Wait for process holding resource to release it 
-
+  
 - **Hold and wait**: a process holding at least one resource is waiting to acquire additional resources held by other processes. 
   - 공유가 불가능한 resource를 적어도 한 개이상 보유하고 있는 프로세스 and 다른 resource를 요구할 때
-
+  - 자원을 최소 한 개를 갖고 있으면서 다른 자원을 기다리고 있는 상태
+  
 - **No preemption**: a resource can be released only voluntarily by the process  holding it, after that process has completed its task. 
   - preemption이 불가능한 resource가 있어야 함.
-
+  - 프로세스는 작업을 완료한 후에만 소유하고 있던 자원을 반납할 수 있다.
+  
 - **Circular wait**: there exists a set {P0 , P1 , …, P0 } of waiting processes such  that P0 is waiting for a resource that is held by  P1 , P1 is waiting for a resource that is held by P2 , …, Pn–1 is waiting for a  resource that is held by Pn , and P0 is waiting for a resource that is held by  P0 .
   - circular하게 다른 프로세스의 resource를 연쇄적으로 기다리고 있는 상태이다.
+  - 프로세스가 다른 프로세스의 자원을 요구하는 형태가 원형을 이루고 있는 상태
 
 
 
@@ -271,7 +277,6 @@ A set of vertices V and a set of edges E.
 
   - assignment edge – directed edge Rj -> Pi 
     - Indicates an instance of resource held by process
-
 
 
 
@@ -321,6 +326,8 @@ A set of vertices V and a set of edges E.
 Cycle in resource allocation graph sufficient for deadlock if each resource type in cycle **consists of a single entity**
 
 - cycle이 존재하면 deadlock을 발생시킨다는 충분조건은 resource type가 single entity를 구성하는 것
+- cycle이 없으면 deadlock도 없다.
+- 
 
 <br>
 
@@ -358,21 +365,30 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
   - if several instances per resource type, possibility of deadlock. (필요조건)
     - 일수도 아닐수도
 
-
+- 즉 cycle이 있는데 single resource type이면 무조건 데드락이다.
 
 <br>
 
 ## Methods for Handling Deadlocks
 
 - Ensure that the system will **never** enter a deadlock state. : overhead가 있음(사전에 발생가능성을 차단해야 하기 때문에) 
-  - Deadlock prevention 
-  - Deadlock avoidance 
+  - : Deadlock 현상 자체를 미연에 방지하는 방법
+    - Deadlock prevention 
+    - Deadlock avoidance 
+  
 - Allow the system to enter a deadlock state and then recover. 
-  - Deadlock detection and recovery 
+  - Deadlock 상태를 허용하면서 그것을 복구하는 방법
+    - Deadlock detection and recovery 
+
   - 사전에 아무 조치를 취하지 않고 주기적으로 체크만 함.
+
 - Ignore the problem and pretend that deadlocks never occur in the  system; used by most operating systems, including UNIX.
+  - Deadlock 문제 자체를 무시해 버리는 방법
   - deadlock과 관련해서 OS가 해줄 수 있는 일이 아무것도 없으니까 그냥 무시
+    - 그냥 kill 하거나 rebooting
+
   - OS가 제공하지 않으면 application 내에 해결책 구현이 필요할 수도 있음.
+
 
 
 
@@ -381,25 +397,30 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 
 ## Deadlock Prevention
 
-- Invalidate one of the four necessary conditions for deadlock: 
+- **Invalidate one of the four necessary conditions for deadlock**: 
   - A set of methods for ensuring that one of 4 necessary conditions for  deadlock cannot hold 
 - Restrain the ways request can be made. 
   - Result in low device utilization and reduced system throughput
 
 
 
-1) Mutual Exclusion  
+1) Mutual Exclusion 부정
    - not required for sharable resources 
      - (e.g., read-only files) 
    - must hold for non-sharable resources.  
    - Depends on resources  
    - Not practical - 의미가 없음(실현 불가능0)
+   - 애초에 자원에 동시 접근이 불가능하기 때문에 동시엥 접근을 하게 하는 것은 불가능
 
 
 
 <br>
 
-2) Hold and Wait - must guarantee that whenever a process requests a resource, it does not hold any other resources. 
+2. Hold and Wait 부정  - must guarantee that whenever a process requests a resource, it does not hold any other resources. 
+
+   - 프로세스가 자원을 요청할 때는 항상 어느 자원도 소유하고 있지 않도록 해야 한다.
+     - 프로세스가 실행되기 전에 필요한 자원들을 모두 요청하고 할당 받는다.
+
    - One shot allocation 
      - Require process to request and be allocated all its resources  before it begins execution,  
      - 한꺼번에 요구 -> 자원의 낭비가 심함(사용하지 않는 것도 미리 받아놓기 떄문)
@@ -415,10 +436,13 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 
 
 
-3) No Preemption
+3) No Preemption 부정
+   - 갖고 있는 자원을 프로세스가 스스로 반납하기 전까지는 회수 되지 않음
+     - 프로세스가 하나 이상의 자원을 소유하고 있고 즉시 할당 받을 수 없는 다른 자원을 요청하는 경우 소유하고 있는 자원을 모두 반납하게 하는 것
    - 절대로 preemption을 못하게 되면 deadlock 확률이 증가하기 때문에 preemption을 가능하게 하면 deadlock 확률이 감소한다.
    - If a process that is holding some resources requests another  resource that cannot be immediately allocated to it, then all resources currently being held are released 
-   - Take away resources from a process suspended on requests (If  a process that is holding some resources requests another  resource that cannot be immediately allocated to it, then all  resources currently being held are released) 
+   - Take away resources from a process suspended on requests 
+     - (If  a process that is holding some resources requests another  resource that cannot be immediately allocated to it, then all  resources currently being held are released) 
    - Preempted resources are added to the list of resources for  which the process is waiting. 
    - Process will be restarted only when it can regain its old  resources, as well as the new ones that it is requesting. 
    - Starvation
@@ -426,6 +450,7 @@ Cycle in resource allocation graph sufficient for deadlock if each resource type
 
 
 4) Circular Wait  
+   - 자원들의 total ordering을 반환하는 F() 함수를 사용
    - Ensure that there is no cycle of suspended processes 
    - impose a total ordering of all resource types,  
      - Disk(3), tape(5) ,,,, 
@@ -613,7 +638,6 @@ P1은 2개만 있으면 되는데 현재 available이 3이므로 P1이 전부 �
 
 
 
-
 <br>
 
 ## Data Structures for the Banker's Algorithm
@@ -779,7 +803,7 @@ resource를 제거하더라도 사실상 프로세스 끼리 요구하는 것이
 
    (a) Work = Available
 
-   (b) For i = 1,2, …, n, if Allocationi ≠ 0, then  
+   (b) For i = 1,2, …, n, if Allocation<sub>i</sub> ≠ 0, then  
    		Finish[i] = false; otherwise, Finish[i] = true 
 
 2. Find an index i such that both: 
@@ -870,7 +894,7 @@ Algorithm requires an order of O(m x n<sup>2</sup>) operations to detect  whethe
   - Resources the process has used. 
   - Resources process needs to complete. 
   - How many processes will need to be terminated.  
-  - Isprocess interactive or batch?
+  - Is process interactive or batch?
 
 
 
