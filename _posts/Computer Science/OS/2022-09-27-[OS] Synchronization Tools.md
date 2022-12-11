@@ -228,9 +228,9 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
 
 <br>
 
-## Race Condition
+## Race Condition - 중요
 
-- If both the producer and consumer **attempt to update the buffer  concurrently**, the assembly language statements may get interleaved. 
+- If both the producer and consumer **attempt to update the buffer concurrently**, the assembly language statements may get interleaved. 
 
   - 한 번에 2개 이상의 Writer 프로세스가 접근하는 경우 => Writer는 한 번에 1개만 접근가능
 
@@ -292,8 +292,8 @@ producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해�
   - Process may be changing common variables(공유 데이터를 변경 가능!), updating table, writing file,  etc 
   - When one process in critical section, no other may be in its critical section 
 - **Critical section problem** is to design protocol to solve this 
-  - ensure that when one process is executing in its critical section, no other  process is allowed to execute in its critical section.
-- Each process must ask permission to enter critical section in **entry section**,  may follow critical section with **exit section**, then **remainder section** 
+  - ensure that when one process is executing in its critical section, no other process is allowed to execute in its critical section.
+- Each process must ask permission to enter critical section in **entry section**, may follow critical section with **exit section**, then **remainder section** 
 - Especially **challenging** with preemptive kernels
   - preemptive kernel: kernel 안에서 preemption을 허용
   - 이 경우 더 어려움
@@ -337,7 +337,7 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 
    1. A process outside of its CS can not block another process from entering  its own CS  
       - critical section에 막 들어가려고 하는 프로세스가 CS 밖에서 돌고 있는 process의 영향을 받아 CS 안으로 들어가지 못하는 경우
-   2. If no process is executing in its critical section and there exist some processes that wish to enter their critical section, then the selection of the  processes that will enter the critical section next cannot be postponed indefinitely. 
+   2. If no process is executing in its critical section and there exist some processes that wish to enter their critical section, then the selection of the processes that will enter the critical section next cannot be postponed indefinitely. 
       - CS를 실행 중인 프로세스가 없는 상황에서 여러 프로세스가 동시에 CS에 들어가려고 하고 싶을 때 경쟁에 가담하는 프로세스들은 그들의 remainder section에서 실행중이지 않는 프로세스여야 한다.
       - 누가 들어갈 지 선택해야 함.
 
@@ -346,7 +346,7 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 3. **Bounded Waiting**. 
 
    - 입장권을 받기 위해 기다리고 있는데 FCFS로 하면 당연히 먼저온 사람이 먼저 들어가니까 기다려야 되는 시간은 내 앞이 몇 명이 서 있냐에 따라 결정되는데 번호표를 나눠주는 방법에 문제가 있으면 일찍 왔어도 늦게 들어갈 수 있게 된다.
-   - A bound must exist on the number of times that other  processes are allowed to enter their critical sections after a process has made a request to enter its critical section and before that request is granted. 
+   - A bound must exist on the number of times that other processes are allowed to enter their critical sections after a process has made a request to enter its critical section and before that request is granted. 
 
    - Assume that each process executes at a nonzero speed
 
@@ -415,9 +415,9 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 
 - turn 말고 flag를 쓰자(진입 의사를 나타내는)
 
-  - 양보를 하기 떄문에 mutex가 보장이 된다.
+  - 양보를 하기 때문에 mutex가 보장이 된다.
 
-  - 하지만 bounded waiting과 progress 요구 사항이 되지 않는다.
+  - 하지만 bounded waiting과 progress 요구 사항이 충족되지 않는다.
 
 
 
@@ -482,8 +482,6 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 
 ## Algorithm for Process Pi
 
-시간 없어서 설명은 x(영상으로 보길)
-
 ![image-20221002204443244](https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204443244.png)
 
 - 상대방이 들어갈 수 없는 경우에 들어갈 수 있음
@@ -492,11 +490,10 @@ critical section problem을 제대로 해결했는지 확인하기 위해서는 
 - 상대방이 들어갈 의사가 없는 경우 -> 무조건 들어감
 - 나도 상대방도 들어갈 의사가 있으면 turn 값을 보고 결정!
 - Combined shared variables of initial attempts 1 and 2. 
-- Meets all three requirements; solves the critical-section problem for two  processes. 
+- Meets all three requirements; solves the critical-section problem for two processes. 
 - Problem: does not generalize well 
   - n개의 process 상황으로 확장하기가 어려움
   - Very difficult to expand to more than 2 processes
-
 
 
 
@@ -578,7 +575,6 @@ Critical section **for n processes**
 - number[i] = 0
   - 발부 받은 번호표를 반납했거나 아직 번호표를 받지 못한 상태(임계 영역에 들어가지 않겠다는 의미)
 
-
 <br>
 
 1) MTX requirement is met 
@@ -659,7 +655,7 @@ peterson과 bakery는 FCFS가 보장되지 않음
 
 ## Synchronization Hardware
 
-- Many systems provide hardware support for implementing the critical  section code. 
+- Many systems provide hardware support for implementing the critical section code. 
 - All solutions below based on idea of **locking** 
   - Protecting critical regions via locks 
 - Uniprocessors – could disable interrupts 
@@ -697,7 +693,7 @@ peterson과 bakery는 FCFS가 보장되지 않음
 - Set the new value of passed parameter to “TRUE”. 
 - If multiple processes attempting to execute instruction, first successful  process will have value false returned to it
 
-- return 값이 통과가능 통과 불가능
+- return 값이 통과가능 통과 불가능을 결정
 
 <br>
 
