@@ -251,11 +251,11 @@ Deadlock can arise if four conditions hold simultaneously.(4개의 필요조건)
   - 공유가 불가능한 resource를 적어도 한 개이상 보유하고 있는 프로세스 and 다른 resource를 요구할 때
   - 자원을 최소 한 개를 갖고 있으면서 다른 자원을 기다리고 있는 상태
   
-- **No preemption**: a resource can be released only voluntarily by the process  holding it, after that process has completed its task. 
+- **No preemption**: a resource can be released only voluntarily(자발적으로) by the process  holding it, after that process has completed its task. 
   - preemption이 불가능한 resource가 있어야 함.
   - 프로세스는 작업을 완료한 후에만 소유하고 있던 자원을 반납할 수 있다.
   
-- **Circular wait**: there exists a set {P0 , P1 , …, P0 } of waiting processes such  that P0 is waiting for a resource that is held by  P1 , P1 is waiting for a resource that is held by P2 , …, Pn–1 is waiting for a  resource that is held by Pn , and P0 is waiting for a resource that is held by  P0 .
+- **Circular wait**: there exists a set {P0 , P1 , …, P0 } of waiting processes such that P0 is waiting for a resource that is held by  P1 , P1 is waiting for a resource that is held by P2 , …, Pn–1 is waiting for a resource that is held by Pn , and P0 is waiting for a resource that is held by  P0 .
   - circular하게 다른 프로세스의 resource를 연쇄적으로 기다리고 있는 상태이다.
   - 프로세스가 다른 프로세스의 자원을 요구하는 형태가 원형을 이루고 있는 상태
 
@@ -326,8 +326,10 @@ A set of vertices V and a set of edges E.
 Cycle in resource allocation graph sufficient for deadlock if each resource type in cycle **consists of a single entity**
 
 - cycle이 존재하면 deadlock을 발생시킨다는 충분조건은 resource type가 single entity를 구성하는 것
+
 - cycle이 없으면 deadlock도 없다.
-- 
+
+  
 
 <br>
 
