@@ -1,0 +1,1853 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[system programming] 11 2장. 시그널 보내기 | speardragon note</title>
+<meta name="description" content="layout: single title: &quot;[System Programming] 11-2장. 시그널 보내기&quot; categories: [&#39;System&#39;, &#39;System Programming&#39;] tag: [&#39;Signal&#39;]">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[system programming] 11 2장. 시그널 보내기">
+<meta property="og:url" content="http://localhost:4000/System-Programming-11-2%EC%9E%A5.-%EC%8B%9C%EA%B7%B8%EB%84%90-%EB%B3%B4%EB%82%B4%EA%B8%B0/">
+
+
+  <meta property="og:description" content="layout: single title: &quot;[System Programming] 11-2장. 시그널 보내기&quot; categories: [&#39;System&#39;, &#39;System Programming&#39;] tag: [&#39;Signal&#39;]">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-05-19T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/System-Programming-11-2%EC%9E%A5.-%EC%8B%9C%EA%B7%B8%EB%84%90-%EB%B3%B4%EB%82%B4%EA%B8%B0/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">[system programming] 11 2장. 시그널 보내기</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[system programming] 11 2장. 시그널 보내기">
+    <meta itemprop="description" content="layout: singletitle: &quot;[System Programming] 11-2장. 시그널 보내기&quot;categories: [&#39;System&#39;, &#39;System Programming&#39;]tag: [&#39;Signal&#39;]">
+    <meta itemprop="datePublished" content="2022-05-19T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/System-Programming-11-2%EC%9E%A5.-%EC%8B%9C%EA%B7%B8%EB%84%90-%EB%B3%B4%EB%82%B4%EA%B8%B0/" class="u-url" itemprop="url">[system programming] 11 2장. 시그널 보내기
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>layout: single
+title: "[System Programming] 11-2장. 시그널 보내기"
+categories: ['System', 'System Programming']
+tag: ['Signal']
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="113-시그널-보내기">11.3 시그널 보내기</h1>
+
+<h2 id="시그널-보내기-kill-명령어">시그널 보내기: kill 명령어</h2>
+
+<ul>
+  <li>kill 명령어
+    <ul>
+      <li>한 프로세스가 다른 프로세스를 제어하기 위해 특정 프로세스에 임의의 시그널을 강제적으로 보낸다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169327444-b216aa64-f7ce-4296-ac5b-cdaecf92b4fa.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>$ kill [-시그널] 프로세스ID</p>
+
+    <ul>
+      <li>$ kill -9 프로세스ID // 시그널 번호</li>
+      <li>$ kill -KILL 프로세스ID // 시그널 이름</li>
+    </ul>
+  </li>
+  <li>
+    <p>$ kill –l // 시그널 리스트</p>
+
+    <p>HUP INT QUIT ILL TRAP ABRT BUS FPE KILL USR1 SEGV USR2 PIPE ALRM TERM STKFLT CHLD CONT STOP TSTP TTIN TTOU URG XCPU XFSZ VTALRM PROF WINCH POLL PWR SYS …</p>
+  </li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>명령어 &amp;
+<span class="o">[</span>1]1234
+<span class="nv">$ </span><span class="nb">kill</span> <span class="nt">-STOP</span> 1234 // 1234 프로세스 중지시킴
+<span class="o">[</span>1] +Suspended <span class="o">(</span>signal<span class="o">)</span> 명령어
+<span class="nv">$ </span><span class="nb">kill</span> <span class="nt">-CONT</span> 1234 // 중지된 1234 프로세스의 실행을 재개
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="시그널-보내기-kill">시그널 보내기: kill()</h2>
+
+<ul>
+  <li>kill() 시스템 호출
+    <ul>
+      <li>특정 프로세스 pid에 원하는 임의의 시그널 signo를 보낸다.</li>
+      <li>보내는 프로세스의 소유자가 프로세스 pid의 소유자와 같거나 혹은 보내는 프로세스의 소유자가 슈퍼유저이어야 한다.</li>
+      <li>Signo를 명시하지 않으면 SIGTERM 시그널을 보내 해당 프로세스 를 강제 종료시킴.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">kill</span><span class="p">(</span><span class="kt">int</span> <span class="n">pid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">signo</span><span class="p">);</span>
+<span class="c1">//프로세스 pid에 시그널 signo를 보낸다. 성공하면 0 실패하면 -1를 리턴한다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="kill">kill()</h2>
+
+<ul>
+  <li>pid &gt; 0 :
+    <ul>
+      <li>signal to the process whose process ID is pid</li>
+    </ul>
+  </li>
+  <li>pid == 0 :
+    <ul>
+      <li>signal to the processes whose process group ID equals that of sender</li>
+      <li>process group ID가 sender의 group ID와 동일한 모든 프로세스에게 전달</li>
+    </ul>
+  </li>
+  <li>pid &lt; 0 :
+    <ul>
+      <li>signal to the processes whose process group ID equals <strong>absolute</strong> of pid</li>
+    </ul>
+  </li>
+  <li>pid == -1 :
+    <ul>
+      <li>POSIX.1 leaves this condition unspecified (used as a broadcast signal in SVR4, 4.3+BSD)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="예제-제한-시간-명령어-실행">예제: 제한 시간 명령어 실행</h2>
+
+<ul>
+  <li>tlimit.c 프로그램
+    <ul>
+      <li>명령줄 인수로 받은 명령어를 제한 시간 내에 실행</li>
+      <li>execute3.c 프로그램을 알람 시그널을 이용하여 확장</li>
+    </ul>
+  </li>
+  <li>프로그램 설명
+    <ul>
+      <li>자식 프로세스가 명령어를 실행하는 동안 정해진 시간이 초과되면 SIGALRM 시그널이 발생</li>
+      <li>SIGALRM 시그널에 대한 처리함수 alarmHandler()에서 자식 프로세스를 강제 종료</li>
+      <li>kill(pid, SIGINT) 호출을 통해 자식 프로세스에 SIGINT 시그널을 보내어 강제 종료</li>
+      <li>만약 SIGALRM 시그널이 발생하기 전에 자식 프로세스가 종료하면 이 프로그램은 정상적으로 끝남</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="tlimitc">tlimit.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="n">pid</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">alarmHandler</span><span class="p">();</span>
+<span class="cm">/* 명령줄 인수로 받은 명령어 실행에
+제한 시간을 둔다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">child</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">limit</span><span class="p">;</span>
+    
+    <span class="n">signal</span><span class="p">(</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">alarmHandler</span><span class="p">);</span>
+    <span class="n">sscanf</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">limit</span><span class="p">);</span>
+    <span class="n">alarm</span><span class="p">(</span><span class="n">limit</span><span class="p">);</span>
+    
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span> <span class="c1">//부모 프로세스의 pid</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">execvp</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"%s:실행 불가</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스 %d 종료 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">pid</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">alarmHandler</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[알람] 자식 프로세스 %d 시간 초과</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid</span><span class="p">);</span>
+    <span class="n">kill</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span><span class="n">SIGINT</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>tlimit 3 <span class="nb">sleep </span>5
+<span class="o">[</span>알람] 자식 프로세스 27260 시간 초과
+<span class="o">[</span>27259] 자식 프로세스 27260 종료
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="시그널을-이용한-프로세스-제어">시그널을 이용한 프로세스 제어</h2>
+
+<ul>
+  <li>시그널을 이용하여 다른 프로세스를 제어할 수 있다.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SIGCONT 프로세스 재개
+SIGSTOP 프로세스 중지
+SIGKILL 프로세스 종료
+SIGTSTP Ctrl-Z에서 발생
+SIGCHLD 자식 프로세스 중지 혹은 종료 시 부모 프로세스에 전달
+</code></pre></div></div>
+
+<ul>
+  <li>예제: 시그널을 이용한 자식 프로세스 제어</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169328047-f07bc8a7-6293-4c30-90fd-1f7cd3fd3139.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="controlc시험">control.c(시험)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cm">/* 시그널을 이용하여 자식 프로세스들을 제어한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">pid1</span><span class="p">,</span> <span class="n">pid2</span><span class="p">;</span> <span class="n">count1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">count2</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">pid1</span> <span class="o">=</span> <span class="n">fork</span><span class="p">(</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"자식 [1] 실행:%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">++</span><span class="n">count1</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">pid2</span> <span class="o">=</span> <span class="n">fork</span><span class="p">(</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"자식 [2] 실행:%d</span><span class="se">\n</span><span class="s">―"</span><span class="p">,</span> <span class="o">++</span><span class="n">count2</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">kill</span><span class="p">(</span><span class="n">pid1</span><span class="p">,</span> <span class="n">SIGSTOP</span><span class="p">);</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">kill</span><span class="p">(</span><span class="n">pid1</span><span class="p">,</span> <span class="n">SIGCONT</span><span class="p">);</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">kill</span><span class="p">(</span><span class="n">pid2</span><span class="p">,</span> <span class="n">SIGSTOP</span><span class="p">);</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">kill</span><span class="p">(</span><span class="n">pid2</span><span class="p">,</span> <span class="n">SIGCONT</span><span class="p">);</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">kill</span><span class="p">(</span><span class="n">pid1</span><span class="p">,</span> <span class="n">SIGKILL</span><span class="p">);</span>
+    <span class="n">kill</span><span class="p">(</span><span class="n">pid2</span><span class="p">,</span> <span class="n">SIGKILL</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>control
+자식 <span class="o">[</span>1] 실행:1
+자식 <span class="o">[</span>2] 실행:1
+자식 <span class="o">[</span>2] 실행:2
+자식 <span class="o">[</span>2] 실행:3
+자식 <span class="o">[</span>1] 실행:2
+자식 <span class="o">[</span>2] 실행:4
+자식 <span class="o">[</span>1] 실행:3
+자식 <span class="o">[</span>2] 실행:5
+자식 <span class="o">[</span>1] 실행:4
+자식 <span class="o">[</span>1] 실행:5
+자식 <span class="o">[</span>2] 실행:6
+자식 <span class="o">[</span>1] 실행:6
+자식 <span class="o">[</span>2] 실행:7
+자식 <span class="o">[</span>1] 실행:7
+
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169328281-d9049c54-8678-4067-96d2-b53f6ab1301c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="raise">raise()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">raise</span><span class="p">(</span><span class="kt">int</span> <span class="n">signo</span><span class="p">);</span>
+ <span class="c1">//Both return: 0 if OK, -1 on error </span>
+</code></pre></div></div>
+
+<ul>
+  <li>Sends a signal to itself.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">raise(signo);</code> is equivalent to kill(getpid(), signo);</li>
+      <li>자기 자신에게 signal을 보내라.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="abort">abort()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">abort</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ <span class="c1">//This function never returns</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Sends the SIGABRT to the caller</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h1 id="114-시그널과-비지역-점프">11.4 시그널과 비지역 점프</h1>
+
+<h2 id="비지역-점프-non-local-setjmplongjmp">비지역 점프 (non-local) :setjmp/longjmp</h2>
+
+<ul>
+  <li>C에서는 함수 밖의 label로 goto 불가 (only local 영역에서만)</li>
+  <li>임의의 위치로 비지역 점프
+    <ul>
+      <li>오류/예외 처리, 시그널 처리 등에 유용함</li>
+    </ul>
+  </li>
+  <li>int setjmp(jmp_buf env)
+    <ul>
+      <li>longjmp 전에 호출되어야 함</li>
+      <li>longjmp 할 곳을 지정함.</li>
+      <li>한 번 호출되고 여러 번 반환함.</li>
+      <li>longjmp로 인해 돌아오면 setjmp는 0이 아닌 값으로 돌아오기 때문에 그 안의 값을 출력하는 것이다.</li>
+    </ul>
+  </li>
+  <li>void longjmp(jmp_buf env, int val)
+    <ul>
+      <li>setjmp 후에 호출됨</li>
+      <li><strong>setjmp에 의해 설정된 지점</strong>으로 비지역 점프</li>
+      <li>한 번 호출되고 반환하지 않음.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169328857-49fbaa38-2d51-43cf-b13d-329dfb253fd0.png" alt="image" style="zoom:67%;" /></p>
+
+<p><br /></p>
+
+<h2 id="setjmplongjmp">setjmp/longjmp</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;setjmp.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">setjmp</span><span class="p">(</span><span class="kt">jmp_buf</span> <span class="n">env</span><span class="p">);</span>
+<span class="c1">//비지역 점프를 위해 실행 스택 내용 등을 env에 저장한다. setjmp()는 처음 반환할 때 0을 반환하고 저장된 내용을 사용하는 longjmp()에 의해 두 번째 반환할때는 0이 아닌 val 값을 반환한다.</span>
+
+<span class="kt">void</span> <span class="nf">longjmp</span><span class="p">(</span><span class="kt">jmp_buf</span> <span class="n">env</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val</span><span class="p">);</span>
+<span class="c1">//env에 저장된 상태를 복구하여 스택 내용 등이 저장된 곳으로 비지역 점프한다. 구체적으로 상응하는 setjmp() 함수가 val 값을 반환하고 실행이 계속된다.</span>
+</code></pre></div></div>
+
+<p>비지역 점프를 위해 실행 스택 내용 등을 env에 저장한다. setjmp()는 처음 반환할 때 0을 반환하고 저장된 내용을 사용하는 <mark>longjmp()에 의해 두 번째 반환할때는 0이 아닌 val 값을 반환한다.</mark></p>
+
+<p><br /></p>
+
+<h2 id="jump1c">jump1.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;setjmp.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">p1</span><span class="p">(),</span> <span class="n">p2</span><span class="p">();</span>
+<span class="kt">jmp_buf</span> <span class="n">env</span><span class="p">;</span> <span class="c1">// jmp_buf는 setjmp.h에서 정의</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">setjmp</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"오류로 인해 복귀</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span> 
+    <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"처음 통과</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span> 
+    <span class="n">p1</span><span class="p">();</span>
+<span class="p">}</span> 
+
+<span class="kt">void</span> <span class="nf">p1</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">p2</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">p2</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">error</span><span class="p">;</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"오류 </span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">longjmp</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>jump1
+처음 통과
+오류
+오류로 인해 복귀
+</code></pre></div></div>
+
+<p>longjmp가 실행되면 setjmp로 실제로 리턴을 하는 것은 아니지만 리턴 위치로 복귀하게 된다.</p>
+
+<p>longjmp로 인해 돌아오면 setjmp는 0이 아닌 값(val)으로 돌아오기 때문에 그 안의 값을 출력하는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="jump2c">jump2.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;setjmp.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">p1</span><span class="p">();</span>
+<span class="kt">void</span> <span class="nf">intHandler</span><span class="p">();</span>
+<span class="kt">jmp_buf</span> <span class="n">env</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> 
+<span class="p">{</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">intHandler</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">setjmp</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"인터립트로 인해 복귀</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> 
+    <span class="p">}</span> 
+    <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"처음 통과</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">p1</span><span class="p">();</span>
+<span class="p">}</span> 
+
+<span class="kt">void</span> <span class="nf">p1</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"루프</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">intHandler</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"인터럽트</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">longjmp</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>jump2
+처음 통과
+루프
+루프
+루프
+^c 인터럽트
+인터립트로 인해 복귀
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="핵심-개념">핵심 개념</h2>
+
+<ul>
+  <li>시그널은 예기치 않은 사건이 발생할 때 이를 알리는 소프트웨어 인터럽트이다.</li>
+  <li>signal() 시스템 호출은 특정 시그널에 대한 처리 함수를 지정한다.</li>
+  <li>kill 명령어나 kill() 시스템 호출을 이용하여 특정 프로세스에 원하는 시그널을 보낼 수 있다.</li>
+  <li>longjmp() 함수는 setjmp() 함수에 의해 설정된 지점으로 비지역 점프를 한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="주요-시그널">주요 시그널</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169329431-0f4df9f2-edbc-4f9f-959c-ebcda5877257.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169329502-d8e04a87-29d4-4bc3-b54c-8d643a4afd71.png" alt="image" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-05-19T00:00:00+09:00">2022-05-19</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5Bsystem+programming%5D+11+2%EC%9E%A5.+%EC%8B%9C%EA%B7%B8%EB%84%90+%EB%B3%B4%EB%82%B4%EA%B8%B0%20http%3A%2F%2Flocalhost%3A4000%2FSystem-Programming-11-2%25EC%259E%25A5.-%25EC%258B%259C%25EA%25B7%25B8%25EB%2584%2590-%25EB%25B3%25B4%25EB%2582%25B4%25EA%25B8%25B0%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2FSystem-Programming-11-2%25EC%259E%25A5.-%25EC%258B%259C%25EA%25B7%25B8%25EB%2584%2590-%25EB%25B3%25B4%25EB%2582%25B4%25EA%25B8%25B0%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2FSystem-Programming-11-2%25EC%259E%25A5.-%25EC%258B%259C%25EA%25B7%25B8%25EB%2584%2590-%25EB%25B3%25B4%25EB%2582%25B4%25EA%25B8%25B0%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/system/system%20programming/System-Programming-11-1%EC%9E%A5.-%EC%8B%9C%EA%B7%B8%EB%84%90/" class="pagination--pager" title="[System Programming] 11-1장. 시그널
+">이전</a>
+    
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Greedy-Algorithms/" class="pagination--pager" title="[자료구조와 알고리즘] Greedy Algorithms
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/System-Programming-11-2%EC%9E%A5.-%EC%8B%9C%EA%B7%B8%EB%84%90-%EB%B3%B4%EB%82%B4%EA%B8%B0/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/[System Programming] 11-2장. 시그널 보내기"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1879 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Algorithm] BackTracking(백트래킹) | speardragon note</title>
+<meta name="description" content="이번 시간에는 백트래킹 알고리즘에 대해서 알아보도록 하겠다.">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Algorithm] BackTracking(백트래킹)">
+<meta property="og:url" content="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/backtracking/Algorithm-BackTracking(%EB%B0%B1%ED%8A%B8%EB%9E%98%ED%82%B9)/">
+
+
+  <meta property="og:description" content="이번 시간에는 백트래킹 알고리즘에 대해서 알아보도록 하겠다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-01T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/backtracking/Algorithm-BackTracking(%EB%B0%B1%ED%8A%B8%EB%9E%98%ED%82%B9)/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#data-structures-and-algorithms-with-java" itemprop="item"><span itemprop="name">Data structures and algorithms with java</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#algorithm" itemprop="item"><span itemprop="name">Algorithm</span></a>
+          <meta itemprop="position" content="4" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#backtracking" itemprop="item"><span itemprop="name">Backtracking</span></a>
+          <meta itemprop="position" content="5" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Algorithm] BackTracking(백트래킹)</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Algorithm] BackTracking(백트래킹)">
+    <meta itemprop="description" content="이번 시간에는 백트래킹 알고리즘에 대해서 알아보도록 하겠다.">
+    <meta itemprop="datePublished" content="2022-03-01T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/backtracking/Algorithm-BackTracking(%EB%B0%B1%ED%8A%B8%EB%9E%98%ED%82%B9)/" class="u-url" itemprop="url">[Algorithm] BackTracking(백트래킹)
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>이번 시간에는 백트래킹 알고리즘에 대해서 알아보도록 하겠다.</p>
+
+<p><br /></p>
+
+<h2 id="1-백트래킹이란">1. 백트래킹이란?</h2>
+
+<p><code class="language-plaintext highlighter-rouge">백트래킹(BackTracking)</code>은 <span style="color:red">해를 찾는 도중 해가 아니라서 막히면, 뒤로 되돌아 가서 다시 해를 찾아 나가는 방법</span>이다.</p>
+
+<p>또한 다음과 같이 풀어서 설명하기도 한다.</p>
+
+<blockquote>
+  <p>재귀적으로 문제를 하나씩 풀어가다가 현재 재귀를 통해 확인 중인 노드가 제한 조건에 의해 위배 되고 있지는 않은지 판단하고(이 과정이 유망한지를 판단하는 과정), 그러한 경우에 해당 노드를 제외하고 돌아가서 다음 단계로 나아가는 방식이다.</p>
+</blockquote>
+
+<p>여기서 중요한 점은 특정 노드는 제외하고 진행을 이어간다는 점이다.</p>
+
+<p><br /></p>
+
+<p><span style="color:blue">부르트 포스</span>는 무작정 그냥 모든 방법에 대하여 가능한 해를 나열하는 것이라면 <span style="color:red">백트래킹</span>은 모든 조합의 수를 살펴보되 단 조건이 만족할 때만 살펴보는 것이다.</p>
+
+<p><br /> 이렇게 조건에 의해 더 이상 탐색할 필요가 없다고 판단된 노드를 제외하는 과정을 가지치기(pruning)이라고 한다.</p>
+
+<p>이러한 방식을 통해 모든 경우의 수를 체크하지 않고 필요한 것만 체크해 가기 때문에 풀이 시간을 단축할 수 있는 것이다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>백트래킹의 유망성 판단</strong></li>
+</ul>
+
+<p>특정 노드의 유망성을 판단한다는 것은 해당 노드가 해가 될 수 있는지 없는지를 판단하는 것이다. 만약 유망하지 않다고 판단되면 그 노드의 이전(부모)으로 돌아가(back) 다음 자식 노드로 간다.(tracking)</p>
+
+<p><br /></p>
+
+<h2 id="2-백트래킹-사용-예시">2. 백트래킹 사용 예시</h2>
+
+<p>백트래킹을 사용하는 예시 중 가장 유명한 알고리즘인 DFS가 있다.</p>
+
+<ul>
+  <li><strong>DFS</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-%EA%B9%8A%EC%9D%B4-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(DFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></li>
+</ul>
+
+<p><br /></p>
+
+<p>DFS는 재귀를 통해 가능한 경로 중에서 유망한 경로만 찾아서 탐색을 진행하고 다시 돌아와 그 중에서 가장 최적의 경로를 반환하는 방식이다.</p>
+
+<p><br /></p>
+
+<p>DFS 말고도 <code class="language-plaintext highlighter-rouge">의사 결정, 최적화 ,열거하기</code> 등의 문제를 해결할 수있다.</p>
+
+<p><br /></p>
+
+<p>백트래킹을 사용해 푸는 유명한 문제가 있다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155931190-4323c6e4-94d7-43e5-8010-b0a1a550f0a9.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="2-1-n-queen">2-1. N-Queen</h3>
+
+<p>N-Queen 문제를 통해서 백트래킹 사용 예시를 한 번 알아보자.</p>
+
+<ul>
+  <li><a href="https://www.acmicpc.net/problem/9663">백준 9663번 N-Queen</a></li>
+</ul>
+
+<blockquote>
+  <p><em>N * N 체스판에 최대한 많은 Queen을 놓고 싶다. 다만, 서로를 공격하지 않게 올려놓고 싶다면 총 몇 가지의 경우의 수가 있을까?</em></p>
+</blockquote>
+
+<p><br /></p>
+
+<p>체스를 잘 모르는 사람을 위해 설명하자면 체스 말중에 Queen(퀸)은 상하좌우 뿐 아니라 대각선 방향으로 이동할 수 있는 말이다.</p>
+
+<p><br /></p>
+
+<p>이러한 상황에서 퀸을 어떻게 배치해야 서로를 공격하지 않을까?</p>
+
+<p>서로를 공격하지 않아야 하므로 k번째 column에 넣는 Queen을 두기 위해서는 해당 위치에 대하여 <code class="language-plaintext highlighter-rouge">왼쪽, 왼쪽위 대각선, 왼쪽 아래 대각선</code>에는 다른 Queen들이 존재하지 않아야 한다.</p>
+
+<p><br /></p>
+
+<p>체스판의 왼쪽 상단 부터 하나씩 둘 수 있는지를 판단해서 놓는다고 하면 한 column에 하나의 Queen밖에 둘 수 없다는 것은 자명한 사실이다. 이를 계산하면 다음과 같다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">모든 경우의 수 = 컬럼의 수 ^ 한 컬럼에 Queen을 놓는 경우의 수 = N  ^ N</code>
+    <ul>
+      <li>Power N of N</li>
+    </ul>
+  </li>
+</ul>
+
+<p>이는 O(N^N) 시간 복잡도를 갖으며 N=10인 경우만 본다고 하더라도 대략 100억개가 넘는 숫자이다.</p>
+
+<p><br /></p>
+
+<p><mark>이제 백트래킹 기법을 사용해 보자.</mark></p>
+
+<p><br /></p>
+
+<ol>
+  <li>
+    <p>한 column에 Queen을 하나 두었다면 오른쪽 column에 가능한 자리에 Queen을 하나 둔다.</p>
+  </li>
+  <li>
+    <p>또 다시 오른쪽 column 중에서 가능한 자리에 Queen을 하나 둔다.</p>
+  </li>
+  <li>
+    <p>이 과정을 반복한다.</p>
+
+    <ul>
+      <li>
+        <p>이때 만약 N개의 Queen을 두었다면 count를 하나 증가 시킨다.</p>
+      </li>
+      <li>
+        <p>성공하기 직전으로 상태를 되돌린다.(Back)</p>
+      </li>
+      <li>N번째 column 중 다른 칸을 시도한다.
+        <ul>
+          <li>만약 없다면 N - 1 번째 column에 있는 Queen을 들어서 다음으로 가능한 칸에 옮긴다.</li>
+        </ul>
+      </li>
+      <li>다시 N 번째 column에 있는 Queen을 둘 수있는 곳을 찾는다.</li>
+      <li>N - 1 번째 column의 모든 경우를 시도했다면, N -2 번째로 되돌아가서 다음으로 가능한 위치로 Queen을 옮긴다.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>이를 도식화하여 다시 설명해 보겠다.</p>
+
+<ol>
+  <li>가장 먼저 가장 좌측 column(열)에서 시작하여 하나씩 비교해서 해당 column의 모든 row(행)에 퀸이 이미 배치 되었는지 체크한다.</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155932935-b4edf4a6-9b12-4778-a4ec-e713a09ca2f7.png" alt="image" /></p>
+
+<ul>
+  <li>제일 좌측 열의 모든 위치에 Queen이 있는지 확인</li>
+</ul>
+
+<p><br /></p>
+
+<ol>
+  <li>각 행을 체크할 때는 해당하는 행에 퀸이 없다면 우선 유망한 후보로 고르고, 해당 행 전체를 조사하여 퀸이 배치 되었는지를 조사한다.</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155933191-11248acd-7dde-44d9-91bc-37a301e6d99e.png" alt="image" /></p>
+
+<ul>
+  <li>0 by 0의 위치가 유망하다고 판단되어 위처럼 체크 되었다.</li>
+</ul>
+
+<p><br /></p>
+
+<ol>
+  <li>행 또한 체크를 마쳤다면, 이번엔 대각선으로 체크하여 퀸이 배치된 내역이 존재하는지 확인한다.</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155933420-dc302606-320f-49e5-9667-8be2d8b7f64e.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ol>
+  <li>위의 과정을 통해 모두 비어 있다고 판단되면 해당 위치에 퀸을 놓고, 다음 열에서도 동일하게 체크를 수행하는 과정을 이어나간다.</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155934420-59ed9a5f-268d-4da8-b662-8d2a41325276.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p>이 과정을 계속 반복하면 다음과 같이 될 것이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155934829-b9cb5652-92dd-4149-8662-3909dc882984.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p><mark>그러나 어떤 열에 대해 놓을 수 있는 곳을 보다가 놓지 못한 곳이 있으면 어떻게 될까?</mark></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155935738-142c1f35-74ac-4728-941d-f3dd9520d293.png" alt="image" /></p>
+
+<p>이 경우가 바로 특정 열에 어떠한 곳에도 퀸을 배치할 수 없는 경우이다.</p>
+
+<p><mark>이럴때 바로 백트래킹을 통해 해결하는 것이다.</mark></p>
+
+<p><br /></p>
+
+<p>위의 그림처럼 4 번째 열에는 어떠한 곳도 퀸을 배치할 수 없기 때문에 백트래킹을 통해 바로 전인 3 번째 열로 돌아가 다시 다른 가능한 행에 배치하는 것이다.</p>
+
+<p>그러면 다음 그림과 같이 배치가 완료 될 것이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155935950-70a87cd7-fd21-47e5-bf13-eac7338096bc.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p>이러한 방식을 반복을 통해 전체 퀸을 모든 열에 놓을 수 있는 경우를 찾을 때까지 반복한다.</p>
+
+<ul>
+  <li>재귀 + 반복문 기반 백트래킹</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="2-2-n-queen-구현">2-2. N-Queen 구현</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.Scanner</span><span class="o">;</span>
+ 
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+ 	
+    <span class="c1">//멤버 변수: 체스판, 크기, 결과 카운트</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="no">N</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+ 
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+ 		
+        <span class="c1">//체스판 크기 입력 및 생성</span>
+		<span class="nc">Scanner</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scanner</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+		<span class="no">N</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+		<span class="n">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="no">N</span><span class="o">];</span>
+ 
+		<span class="n">nQueen</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">count</span><span class="o">);</span>
+ 
+	<span class="o">}</span>
+ 
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">nQueen</span><span class="o">(</span><span class="kt">int</span> <span class="n">depth</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// 모든 원소를 다 채운 상태면 count 증가 및 return </span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">depth</span> <span class="o">==</span> <span class="no">N</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">count</span><span class="o">++;</span>
+			<span class="k">return</span><span class="o">;</span>
+		<span class="o">}</span>
+ 
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="no">N</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">arr</span><span class="o">[</span><span class="n">depth</span><span class="o">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+			<span class="c1">// 놓을 수 있는 위치일 경우 재귀호출</span>
+			<span class="k">if</span> <span class="o">(</span><span class="nc">Possibility</span><span class="o">(</span><span class="n">depth</span><span class="o">))</span> <span class="o">{</span>
+				<span class="n">nQueen</span><span class="o">(</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+ 
+	<span class="o">}</span>
+ 
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">Possibility</span><span class="o">(</span><span class="kt">int</span> <span class="n">col</span><span class="o">)</span> <span class="o">{</span>
+ 
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">col</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="c1">// 해당 열의 행과 i열의 행이 일치할경우 (같은 행에 존재할 경우) </span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">col</span><span class="o">]</span> <span class="o">==</span> <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">])</span> <span class="o">{</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="o">}</span> 
+			
+			<span class="cm">/*
+			 * 대각선상에 놓여있는 경우
+			 * (열의 차와 행의 차가 같을 경우가 대각선에 놓여있는 경우로 판정)
+			 */</span>
+			<span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="nc">Math</span><span class="o">.</span><span class="na">abs</span><span class="o">(</span><span class="n">col</span> <span class="o">-</span> <span class="n">i</span><span class="o">)</span> <span class="o">==</span> <span class="nc">Math</span><span class="o">.</span><span class="na">abs</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">col</span><span class="o">]</span> <span class="o">-</span> <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]))</span> <span class="o">{</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		
+		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="2-3-비선형-구조화dfs">2-3. 비선형 구조화(DFS)</h2>
+
+<p>비선형으로 구성된 자료 구조를 깊이 우선 탐색을 진행할 때 더 이상 나아갈 수 없는 상황에서 그 이전 단계로 되돌아가(back) 다시 탐색을 진행하는 과정을 말한다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155937222-d82b7fb2-2798-4c2a-a44e-4baa2b8a083a.png" alt="image" /></p>
+
+<ul>
+  <li>일반적으로 최적화 문제를 해결할 때 사용하는 방법.</li>
+  <li>문제의 구조를 비선형을 구조화하여 가능한 모든 상태(노드)를 깊이 우선 탐색 방식으로 해를 구성해 나간다.</li>
+  <li>이 과정에서 더 이상 탐색을 진행할 수 없다고 판단 되면(조건 불만족) 백트래킹 하여 다시 다른 상태(노드)부터 탐색을 진행한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="2-3-1-예제---행렬">2-3-1. 예제 - 행렬</h2>
+
+<blockquote>
+  <p>다음과 같은 행렬에서 3개 원소를 서로 행과 열이 중복 되지 않도록 선택하는 게임이 있다 여기서 얻을 수 있는 최소 점수는 얼마인가?</p>
+</blockquote>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[1, 5, 3],
+ [2, 4, 7],
+ [5, 3, 5]]
+</code></pre></div></div>
+
+<p>행과 열이 중복되지 않아야 한다는 말은 각 행에서 1개 이상의 값은 얻을 수 없다는 말과 같다.</p>
+
+<p>그리고 서로 열끼리도 중복하지 않아야 하기 때문에 다음 문제를 다음 그림과 같이 구조화 하겠다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155937665-c0177b7a-1f5b-4e6b-80fb-07c6d5d478ee.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p>위 그림은 1행 1열의 값 1을 선택했을 때의 탐색 구조의 일부를 나타낸 것이다.</p>
+
+<p>행과 열이 중복되지 않아야 하기 때문에 {2}는 선택할 수 없다.</p>
+
+<p><br /></p>
+
+<p>따라서 깊이 우선 탐색으로 이를 진행하면 첫 번째 해는 다음과 같이 정해진다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155938502-095f0644-4090-4d40-9e4c-99b9888b5a02.png" alt="image" /></p>
+
+<p>처음으로 구한 해 1-4-5를 탐색하여 구한 수는 10이다.</p>
+
+<p>문제 조건에 따라서 <code class="language-plaintext highlighter-rouge">1행 1열, 2행 2열</code>을 선택했기 때문에 3행에서 1열과 2열은 선택할 수 없다.</p>
+
+<p><br /></p>
+
+<p>여기서 10이 최종적인 해인지 아닌지 현재 상태로는 확정할 수 없다.</p>
+
+<ul>
+  <li>가능한 경우가 아직 남아있기 때문</li>
+</ul>
+
+<p><br />
+따라서 백트래킹으로 가능한 모든 해를 구해야만 최종적인 해를 구할 수 있다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155938064-c4c109d5-5de1-453f-a5f1-1e7a67d541b9.png" alt="image" /></p>
+
+<p>1로 백트래킹을 사용하여 7로 진행할 수 있는 해를 구할 수 있다.</p>
+
+<p>이를 반복하여 얻을 수 있는 경우의 수는 다음과 같다.</p>
+
+<ul>
+  <li>{1, 7, 3} = 11</li>
+  <li>{5, 2, 5} = 12</li>
+  <li>{5, 4 , 5} = 14</li>
+  <li>{3, 2, 3} = 8</li>
+  <li>{3, 4, 5} =12</li>
+</ul>
+
+<p>따라서 답은 최소값인 8이 된다.</p>
+
+<p><br /></p>
+
+<h2 id="3-dfs-vs-백트래킹back-tracking">3. DFS vs. 백트래킹(back tracking)</h2>
+
+<p>DFS는 그래프 탐색 방법 중 하나로 그래프 구조에서 모든 정점을 탐색할 수 있는 알고리즘 중에 하나이다.</p>
+
+<p>깊이를 우선순위로 하여 탐색을 진행하기 때문에 재귀 혹은 스택 구조를 활용한다.</p>
+
+<p><br />
+재귀를 이용하여 탐색을 진행한다는 점에서 완전탐색 알고리즘의 재귀 / 백트래킹과 유사하다고 느낄 수 있다.</p>
+
+<p><br /></p>
+
+<p>하지만, 재귀라는 것은 자기 자신의 함수(메소드)를 호출하는 방식이기 때문에 DFS는 재귀 방식을 이용해 수행하는 많은 알고리즘 중에 하나인 것이다.</p>
+
+<p>또한 백트래킹은 재귀를 통해 알고리즘을 풀어 가는 기법으로 가지지기를 통해서 탐색을 하다가 유망하지 않다고 생각이 들면 추가 탐색을 진행하지 않고 뒤로 돌아(Back) 다시 탐색(Tracking)을 진행하는 방식인 것이다.</p>
+
+<p><br /></p>
+
+<p>그래서 DFS와 백트래킹 간에는 이러한 차이점이 있는 것이다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#algorithm" class="page__taxonomy-item p-category" rel="tag">Algorithm</a><span class="sep">, </span>
+    
+      <a href="/tags/#backtracking" class="page__taxonomy-item p-category" rel="tag">BackTracking</a><span class="sep">, </span>
+    
+      <a href="/tags/#data-structure" class="page__taxonomy-item p-category" rel="tag">Data structure</a><span class="sep">, </span>
+    
+      <a href="/tags/#%EB%B0%B1%ED%8A%B8%EB%9E%98%ED%82%B9" class="page__taxonomy-item p-category" rel="tag">백트래킹</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#algorithm" class="page__taxonomy-item p-category" rel="tag">Algorithm</a><span class="sep">, </span>
+    
+      <a href="/categories/#backtracking" class="page__taxonomy-item p-category" rel="tag">BackTracking</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a><span class="sep">, </span>
+    
+      <a href="/categories/#data-structures-and-algorithms-with-java" class="page__taxonomy-item p-category" rel="tag">Data structures and algorithms with Java</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-03-01T00:00:00+09:00">2022-03-01</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BAlgorithm%5D+BackTracking%28%EB%B0%B1%ED%8A%B8%EB%9E%98%ED%82%B9%29%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fbacktracking%2FAlgorithm-BackTracking%28%25EB%25B0%25B1%25ED%258A%25B8%25EB%259E%2598%25ED%2582%25B9%29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fbacktracking%2FAlgorithm-BackTracking%28%25EB%25B0%25B1%25ED%258A%25B8%25EB%259E%2598%25ED%2582%25B9%29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fbacktracking%2FAlgorithm-BackTracking%28%25EB%25B0%25B1%25ED%258A%25B8%25EB%259E%2598%25ED%2582%25B9%29%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/algorithm/bruteforce/Baekjoon-2231%EB%B2%88-%EB%B6%84%ED%95%B4%ED%95%A9/" class="pagination--pager" title="[Baekjoon] 2231번 분해합
+">이전</a>
+    
+    
+      <a href="/algorithm/bruteforce/Baekjoon-2798%EB%B2%88-%EB%B8%94%EB%9E%99%EC%9E%AD/" class="pagination--pager" title="[Baekjoon] 2798번 블랙잭
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/backtracking/Algorithm-BackTracking(%EB%B0%B1%ED%8A%B8%EB%9E%98%ED%82%B9)/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/backtracking/[Algorithm] BackTracking(백트래킹)"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,48 @@
+I"�
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/heap/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Heap-&amp;-Priority-Queue(%ED%9E%99%EA%B3%BC-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90)/" rel="permalink">[자료구조] Heap &amp; Priority Queue(힙과 우선순위 큐)
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 02/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Computer Science
+      ▶Data structures and algorithms with Java
+      ▶Algorithm
+      ▶Heap
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">ㅣ이번 시간에는 Heap 자료구조와 우선순위 큐 (Priority Queue)에 대해서 알아보자.
+</p>
+  </article>
+</div>
+
+:ET

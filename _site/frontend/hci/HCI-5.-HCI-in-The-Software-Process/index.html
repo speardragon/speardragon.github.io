@@ -1,0 +1,2254 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[HCI] 5. HCI in The Software Process | speardragon note</title>
+<meta name="description" content="HCI in the software process">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[HCI] 5. HCI in The Software Process">
+<meta property="og:url" content="http://localhost:4000/frontend/hci/HCI-5.-HCI-in-The-Software-Process/">
+
+
+  <meta property="og:description" content="HCI in the software process">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-26T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/frontend/hci/HCI-5.-HCI-in-The-Software-Process/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#frontend" itemprop="item"><span itemprop="name">Frontend</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#hci" itemprop="item"><span itemprop="name">Hci</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[HCI] 5. HCI in The Software Process</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[HCI] 5. HCI in The Software Process">
+    <meta itemprop="description" content="HCI in the software process">
+    <meta itemprop="datePublished" content="2022-09-26T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/frontend/hci/HCI-5.-HCI-in-The-Software-Process/" class="u-url" itemprop="url">[HCI] 5. HCI in The Software Process
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#hci-in-the-software-process">HCI in the software process</a></li><li><a href="#the-software-development-life-cycle">the Software Development Life-Cycle</a></li><li><a href="#activities-in-the-life-cycle">Activities in the Life Cycle</a></li><li><a href="#verification-and-validation">Verification and validation</a></li><li><a href="#the-waterfall">The Waterfall</a></li><li><a href="#the-life-cycle-for-interactive-systems">The Life Cycle for interactive Systems</a></li><li><a href="#iterative-models-boehm-spiral-model">Iterative Models: Boehm Spiral Model</a></li><li><a href="#boehm-spiral-model">Boehm Spiral Model</a></li><li><a href="#comparison">Comparison</a></li><li><a href="#usability중요">Usability(중요)</a></li><li><a href="#usability-dimensions-vary-in-importance">Usability Dimensions Vary In Importance</a></li><li><a href="#usability-is-just-one-attribute-of-a-system">Usability Is Just One Attribute of a System</a></li><li><a href="#usability-goals">Usability Goals</a></li><li><a href="#creating-usable-systems">Creating usable systems</a></li><li><a href="#creating-usable-systems-1">Creating usable systems</a></li><li><a href="#why-usability-engineering">Why Usability Engineering?</a></li><li><a href="#usability-engineering">Usability Engineering</a></li><li><a href="#part-of-a-usability-spec-for-an-action-cam">Part of a usability spec. for an Action Cam</a></li><li><a href="#iso-usability-standard-9241">ISO usability standard 9241</a></li><li><a href="#some-metrics-from-iso-9241">some metrics from ISO 9241</a></li><li><a href="#usability-engineering-is-a-process">Usability Engineering Is a Process</a></li><li><a href="#usability-engineering-is-a-process-1">Usability Engineering Is a Process</a></li><li><a href="#usability-engineering-is-a-process-2">Usability Engineering Is a Process</a></li><li><a href="#usability-engineering-is-a-process-3">Usability Engineering Is a Process</a></li><li><a href="#principles-of-design--big-picture">Principles of Design – Big Picture</a></li><li><a href="#normans-design-principles-for-usability">Norman’s design principles for usability</a></li><li><a href="#iterative-design-and-prototyping">Iterative design and prototyping</a></li><li><a href="#techniques-for-prototyping">Techniques for prototyping</a></li><li><a href="#design-rationale">Design Rationale</a></li><li><a href="#design-rationale-contd">Design Rationale (cont’d)</a></li><li><a href="#issue-based-information-system-ibis">Issue-based information system (IBIS)</a></li><li><a href="#structure-of-gibis">structure of gIBIS</a></li><li><a href="#design-space-analysis">Design Space Analysis</a></li><li><a href="#the-qoc-notation">the QOC notation</a></li><li><a href="#psychological-design-rationale">Psychological Design Rationale</a></li><li><a href="#summary">Summary</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="hci-in-the-software-process">HCI in the software process</h2>
+
+<ul>
+  <li>Software engineering and the design process for interactive systems</li>
+  <li>Usability engineering</li>
+  <li>Iterative design and prototyping</li>
+  <li>Design rationale</li>
+</ul>
+
+<h2 id="the-software-development-life-cycle">the Software Development Life-Cycle</h2>
+
+<ul>
+  <li>Software engineering is the discipline for understanding the software design process, or life cycle</li>
+  <li>Designing for usability occurs at all stages of the life cycle, not as a single isolated activity</li>
+  <li>Four Essential Phases of any Software Development Process
+    <ul>
+      <li>Requirements Elicitation(끌어내기), Analysis, Specification</li>
+      <li>System Design</li>
+      <li>Program Implementation</li>
+      <li>Test</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="activities-in-the-life-cycle">Activities in the Life Cycle</h2>
+
+<p>폰트와 같은 것도 굉장히 중요할 수 있다.(저작권 문제 등)</p>
+
+<ul>
+  <li><strong>Requirements specification</strong>
+    <ul>
+      <li>designer and customer try capture what the system is expected to provide</li>
+      <li>can be expressed in natural language or more precise languages, such as a task analysis would provide</li>
+    </ul>
+  </li>
+  <li><strong>Architectural design</strong>
+    <ul>
+      <li>high-level description of how the system will provide the services required</li>
+      <li>factor system into major components of the system and how they are interrelated needs to satisfy both functional and nonfunctional requirements</li>
+    </ul>
+  </li>
+  <li><strong>Detailed design</strong>
+    <ul>
+      <li>refinement of architectural components and interrelations to identify modules to be implemented separately</li>
+      <li>the refinement is governed by the non-functional requirements</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="verification-and-validation">Verification and validation</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765085-d638f6cf-cc17-4fdf-b3bf-213dd93c980d.png" alt="image" /></p>
+
+<ul>
+  <li><strong>Verification</strong> : product 제대로 작동하는 지 확인하는 단계
+    <ul>
+      <li>designing the <strong>product</strong> <strong>right</strong></li>
+    </ul>
+  </li>
+  <li><strong>Validation</strong> : requirement를 만족하고 있는지 확인하는
+    <ul>
+      <li>잘못된 입력에 대해서 error를 만들어 내도록 하는</li>
+      <li>designing the <strong>right product</strong></li>
+    </ul>
+  </li>
+  <li>The formality gap
+    <ul>
+      <li>validation will always rely to some extent on subjective means of proof
+        <ul>
+          <li>검증은 항상 주관적인 증거 수단에 어느 정도 의존합니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Management and contractual(계약상) issues
+    <ul>
+      <li>design in commercial and legal contexts such as patents</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-waterfall">The Waterfall</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010002300908.png" alt="image-20221010002300908" /></p>
+
+<p><br /></p>
+
+<h2 id="the-life-cycle-for-interactive-systems">The Life Cycle for interactive Systems</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765108-9433d72f-9386-430e-8dea-4a887ca1756c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="iterative-models-boehm-spiral-model">Iterative Models: Boehm Spiral Model</h2>
+
+<ul>
+  <li>An iterative model developed by Barry Boehm at TRW (1988), now Prof. at USC</li>
+  <li>Iterates cycles of these project phases:
+    <ul>
+      <li>Requirements definition</li>
+      <li>Risk analysis</li>
+      <li>Prototyping</li>
+      <li>Simulate, benchmark</li>
+      <li>Design, implement, test</li>
+      <li>Plan next cycle (if any)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="boehm-spiral-model">Boehm Spiral Model</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765140-e46bbb85-bcdf-4757-b84d-b91bbc231856.png" alt="image" /></p>
+
+<p>바깥으로 나갈 수록 프로젝트의 마지막으로 가는 거임.</p>
+
+<p>프로젝트 덩치가 커지면 커질수록 Spiral model이 더 나은 결과를 만들 확률이 높다.</p>
+
+<ul>
+  <li>수정에 수정을 거치기 때문</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="comparison">Comparison</h2>
+
+<ul>
+  <li>Waterfall Model
+    <ul>
+      <li>Risk factors are not considered</li>
+      <li>The requirements are freeze</li>
+      <li>Is linear sequential model (한 방향으로 쭉 감)</li>
+      <li>Not much costly</li>
+      <li>Communication level is not high</li>
+    </ul>
+  </li>
+  <li>Spiral Model
+    <ul>
+      <li>Risk factors are considered</li>
+      <li>The requirements are not freeze(계속해서 바뀜)</li>
+      <li>Works in loop</li>
+      <li>Costly as Risk factor is covered</li>
+      <li>Better communication between developer and customer</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability중요">Usability(중요)</h2>
+
+<ul>
+  <li>Is it a “good” interface? In what ways?</li>
+  <li>Usability:
+    <ul>
+      <li>How well users can use the system’s functionality
+        <ul>
+          <li>사용자가 시스템의 기능을 얼마나 잘 사용하는지</li>
+        </ul>
+      </li>
+      <li>The official ISO 9241-11 definition of usability is: “the extent to which a product can be used by specified users to achieve specified goals with effectiveness, efficiency and satisfaction in a specified context of use.”</li>
+    </ul>
+  </li>
+  <li>Dimensions of usability (quick look):
+    <ul>
+      <li>Learnability: is it easy to learn?</li>
+      <li>Efficiency: once learned, is it fast to use?</li>
+      <li>Memorability: is it easy to remember what you learned?</li>
+      <li>Errors: are errors few and recoverable?</li>
+      <li>Satisfaction: is it enjoyable to use?</li>
+    </ul>
+  </li>
+</ul>
+
+<p>effectiveness, efficiency, satisfaction 이 세 개는 항상 usability에 포함되는 내용</p>
+
+<p><br /></p>
+
+<h2 id="usability-dimensions-vary-in-importance">Usability Dimensions Vary In Importance</h2>
+
+<ul>
+  <li>So, what are the elements of usability?</li>
+  <li>… It depends on the user (유저의 성향, 상황에 따라 중요도가 달라짐)
+    <ul>
+      <li>Novice users need learnability</li>
+      <li>Infrequent users need memorability</li>
+      <li>Experts need efficiency</li>
+    </ul>
+  </li>
+  <li>But no user is uniformly novice or expert. Users could have
+    <ul>
+      <li>Domain experience</li>
+      <li>Application experience</li>
+      <li>Feature experience</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-is-just-one-attribute-of-a-system">Usability Is Just One Attribute of a System</h2>
+
+<ul>
+  <li>BTW, in developing large systems, development process entails(수반하다) a (often large) team</li>
+  <li>Software designers have a lot to worry about:
+    <ul>
+      <li>Functionality</li>
+      <li>Usability</li>
+      <li>Performance</li>
+      <li>Size</li>
+      <li>Cost</li>
+      <li>Reliability</li>
+      <li>Security</li>
+      <li>Standards</li>
+    </ul>
+  </li>
+  <li>Many design decisions involve tradeoffs among different attributes</li>
+  <li>Which is the essence of the design process</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-goals">Usability Goals</h2>
+
+<ul>
+  <li>In short, goals of increased “usability” of a system are that it is:
+    <ul>
+      <li>Effective to use</li>
+      <li>Efficient to use</li>
+      <li>Safe to use</li>
+      <li>Has good utility</li>
+      <li>Easy to learn</li>
+      <li>Easy to remember how to use</li>
+    </ul>
+  </li>
+  <li>More later …</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="creating-usable-systems">Creating usable systems</h2>
+
+<ul>
+  <li>It aims to achieve</li>
+  <li>Usability (Useful, Usable, Used)
+    <ul>
+      <li>Useful – accomplish what is required ; Effective, Safe</li>
+      <li>Usable – do it easily and naturally ; Efficient</li>
+      <li>Used – make people what to use it ; Enjoyable system</li>
+    </ul>
+  </li>
+  <li>A usable interface has three main outcomes:
+    <ul>
+      <li>Easy for the user to become familiar with and competent in using the user interface during the first contact.</li>
+      <li>Easy for users to achieve their objective through using the interface.</li>
+      <li>Easy to recall the user interface and how to use it on subsequent(후속) visits.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="creating-usable-systems-1">Creating usable systems</h2>
+
+<ul>
+  <li>HCI focuses on user needs by assessing interface design &amp; implementation according to usability criteria.</li>
+  <li>Makes use of new, novel techniques &amp; technologies.</li>
+  <li>It applies usability design principles to achieve more productive &amp; usable systems and more satisfied users.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="why-usability-engineering">Why Usability Engineering?</h2>
+
+<ul>
+  <li>Usability engineering is a structured approach to building systems that meet the needs of users in various environments with varying levels of computer experience.</li>
+  <li>Waterfall models of development do not work
+    <ul>
+      <li>too many unknowns (Dr. Brooks: No Silver Bullet)</li>
+    </ul>
+  </li>
+  <li>Need an iterative discovery-oriented process
+    <ul>
+      <li>but at the same time need to manage it</li>
+    </ul>
+  </li>
+  <li>Demands well-defined process with metrics
+    <ul>
+      <li>specifying usability goals as objectives</li>
+      <li>assessing and redesigning to meet these objectives</li>
+      <li>manage usability as a quality characteristic, much like modularity or nonfunctional requirements</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-engineering">Usability Engineering</h2>
+
+<ul>
+  <li>The ultimate test of usability based on measurement of user experience</li>
+  <li>Usability engineering demands that specific usability measures be made explicit as requirements</li>
+  <li>Usability specification
+    <ul>
+      <li>usability attribute/principle</li>
+      <li>measuring concept</li>
+      <li>measuring method</li>
+      <li>now level/ worst case/ planned level/ best case</li>
+    </ul>
+  </li>
+  <li>Problems
+    <ul>
+      <li>usability specification requires level of detail that may not be possible early in design</li>
+      <li>satisfying a usability specification does not necessarily satisfy usability</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="part-of-a-usability-spec-for-an-action-cam">Part of a usability spec. for an Action Cam</h2>
+
+<blockquote>
+  <p>Attribute: Backward recoverability</p>
+</blockquote>
+
+<ul>
+  <li>Measuring concept
+    <ul>
+      <li>Undo an erroneous(잘못된) programming sequence</li>
+    </ul>
+  </li>
+  <li>Measuring method
+    <ul>
+      <li>Number of explicit user actions to undo current program</li>
+      <li>현재 프로그램을 실행 취소하기 위한 명시적 사용자 작업의 수</li>
+    </ul>
+  </li>
+  <li>Now level
+    <ul>
+      <li>No current product allows such an undo</li>
+    </ul>
+  </li>
+  <li>Worst case
+    <ul>
+      <li>As many actions as it takes to program in mistake</li>
+    </ul>
+  </li>
+  <li>Planned level
+    <ul>
+      <li>A maximum of two explicit user actions</li>
+    </ul>
+  </li>
+  <li>Best case
+    <ul>
+      <li>One explicit cancel action</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765480-22ad0148-8f05-43ec-8d81-cd4d01eb66d7.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="iso-usability-standard-9241">ISO usability standard 9241</h2>
+
+<ul>
+  <li>Adopts traditional usability categories:</li>
+  <li>Effectiveness
+    <ul>
+      <li>can you achieve what you want to?</li>
+    </ul>
+  </li>
+  <li>Efficiency
+    <ul>
+      <li>can you do it without wasting effort?</li>
+    </ul>
+  </li>
+  <li>Satisfaction
+    <ul>
+      <li>do you enjoy the process?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="some-metrics-from-iso-9241">some metrics from ISO 9241</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765531-3167b40a-6273-414b-8f21-9778c2a2c753.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="usability-engineering-is-a-process">Usability Engineering Is a Process</h2>
+
+<ul>
+  <li>… an iterative process
+    <ul>
+      <li>Design</li>
+      <li>Implement</li>
+      <li>Evaluate</li>
+    </ul>
+  </li>
+  <li>Look at the “spiral” model of software engineering, which systematically incorporates iteration and change</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765606-0afaa190-807a-46f6-bd88-ce8ce82c04f4.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="usability-engineering-is-a-process-1">Usability Engineering Is a Process</h2>
+
+<p>DESIGN</p>
+
+<ul>
+  <li>Task analysis
+    <ul>
+      <li>“Know thy user”</li>
+      <li>“Know thy domain”</li>
+    </ul>
+  </li>
+  <li>Design principles
+    <ul>
+      <li>Overarching (대단히 중요한, 무엇보다)</li>
+    </ul>
+  </li>
+  <li>Design guidelines
+    <ul>
+      <li>Avoid obvious mistakes</li>
+      <li>May be vague(모호한) or contradictory(모순된)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-engineering-is-a-process-2">Usability Engineering Is a Process</h2>
+
+<p>IMPLEMENT</p>
+
+<ul>
+  <li>Prototyping
+    <ul>
+      <li>Cheap, throw-away implementations</li>
+      <li>Low-fidelity(낮은 충실함): paper, Wizard of Oz</li>
+      <li>Medium-fidelity: HTML, Visual Basic</li>
+    </ul>
+  </li>
+  <li>GUI implementation techniques
+    <ul>
+      <li>Input/output models</li>
+      <li>Toolkits</li>
+      <li>UI builders</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-engineering-is-a-process-3">Usability Engineering Is a Process</h2>
+
+<p>EVALUATE</p>
+
+<ul>
+  <li>Evaluation tests prototypes, using …
+    <ul>
+      <li>Expert evaluation
+        <ul>
+          <li>Heuristics and walk-throughs</li>
+        </ul>
+      </li>
+      <li>Predictive evaluation
+        <ul>
+          <li>Testing against an engineering model (simulated user)</li>
+        </ul>
+      </li>
+      <li>Empirical evaluation
+        <ul>
+          <li>Watching users do it</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="principles-of-design--big-picture">Principles of Design – Big Picture</h2>
+
+<ul>
+  <li>… of pretty much everything …and enumeration helps</li>
+  <li>What to design
+    <ul>
+      <li>Need to take into account:
+        <ul>
+          <li>Who the users are</li>
+          <li>What activities are being carried out</li>
+          <li>Where the interaction is taking place</li>
+          <li>What goal of interactions is</li>
+        </ul>
+      </li>
+      <li>Need to optimize interactions between users and a product such that they match the user’s activities and needs</li>
+    </ul>
+  </li>
+  <li>Understanding users’ needs
+    <ul>
+      <li>Need to take into account what people are good and bad at</li>
+      <li>Consider what help people in way they currently do things</li>
+      <li>Listen to what people want and get them involved</li>
+      <li>Use tried and tested user-based methods</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="normans-design-principles-for-usability">Norman’s design principles for usability</h2>
+
+<ul>
+  <li>Visibility – The more visible functions are, the more likely users will be able to know what to do next. In contrast, when functions are “out of sight,” it makes them more difficult to find and know how to use.</li>
+  <li>Feedback – Feedback is about sending back information about what action has been done and what has been accomplished, allowing the person to continue with the activity. Various kinds of feedback are available for interaction design-audio, tactile, verbal, and combinations of these.</li>
+  <li>Constraints – The design concept of constraining refers to <strong>determining ways of restricting the kind of user interaction</strong> that can take place at a given moment. There are various ways this can be achieved.</li>
+  <li>Mapping – This refers to the relationship between controls and their effects in the world. Nearly all artifacts need some kind of mapping between controls and effects. An example of a good mapping between control and effect is the up and down arrows used to represent the up and down movement of the cursor, respectively, on a computer keyboard.</li>
+  <li>Consistency – This refers to designing interfaces to have similar operations and use similar elements for achieving similar tasks. In particular, a consistent interface is one that follows rules, such as using the same operation to select all objects. For example, to highlight any graphical object at the interface, you always click the left mouse button.</li>
+  <li>Affordance – is a term used to refer to an attribute of an object that allows people to know how to use it. For example, a mouse button invites clicking by the way it is physically constrained in its plastic shell. When the affordances of a physical object are perceptually obvious it is easy to know how to interact with it.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="iterative-design-and-prototyping">Iterative design and prototyping</h2>
+
+<ul>
+  <li>Iterative design overcomes inherent problems of incomplete requirements
+    <ul>
+      <li>그래서 iterative design이 중요하다.</li>
+    </ul>
+  </li>
+  <li>Prototypes
+    <ul>
+      <li>simulate or animate some features of intended system</li>
+      <li>different types of prototypes
+        <ul>
+          <li>Throw-away: rapid prototypes</li>
+          <li>Incremental: combining prototypes</li>
+          <li>Evolutionary: improving prototypes</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Management issues
+    <ul>
+      <li>time</li>
+      <li>planning</li>
+      <li>non-functional features</li>
+      <li>contracts</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="techniques-for-prototyping">Techniques for prototyping</h2>
+
+<ul>
+  <li>Storyboards
+    <ul>
+      <li>need not be computer-based</li>
+      <li>can be animated</li>
+    </ul>
+  </li>
+  <li>Limited functionality simulations
+    <ul>
+      <li>some part of system functionality provided by designers</li>
+      <li>tools like HTML Editors are common for these</li>
+      <li>Wizard of Oz technique</li>
+      <li>Prototyping tools are also available</li>
+    </ul>
+  </li>
+  <li>Warning about iterative design
+    <ul>
+      <li>design inertia(무력감) – early bad decisions stay bad</li>
+      <li>diagnosing real usability problems in prototypes….
+        <ul>
+          <li>…. and not just the symptoms</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="design-rationale">Design Rationale</h2>
+
+<ul>
+  <li>Design rationale is information that explains why a computer system is the way it is.
+    <ul>
+      <li>the explicit listing of decisions made during a design process, and the reasons why those decisions were made</li>
+    </ul>
+  </li>
+  <li>Benefits of design rationale
+    <ul>
+      <li>communication throughout life cycle</li>
+      <li>reuse of design knowledge across products</li>
+      <li>enforces design discipline</li>
+      <li>presents arguments for design trade-offs</li>
+      <li>organizes potentially large design space</li>
+      <li>capturing contextual information</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="design-rationale-contd">Design Rationale (cont’d)</h2>
+
+<p>Types of DR:</p>
+
+<ul>
+  <li>Process-oriented
+    <ul>
+      <li>preserves order of deliberation and decision-making
+        <ul>
+          <li>심의 및 의사결정 질서를 유지하다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Structure-oriented
+    <ul>
+      <li>emphasizes post hoc structuring of considered design alternatives
+        <ul>
+          <li>고려된 설계 대안들의 사후 구조를 강조한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Two examples:
+    <ul>
+      <li>Issue-based information system (IBIS)</li>
+      <li>Design space analysis</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="issue-based-information-system-ibis">Issue-based information system (IBIS)</h2>
+
+<ul>
+  <li>basis for much of design rationale research</li>
+  <li>process-oriented</li>
+  <li>main elements:
+    <ul>
+      <li>issues
+        <ul>
+          <li>hierarchical structure with one ‘root’ issue</li>
+        </ul>
+      </li>
+      <li>positions
+        <ul>
+          <li>potential resolutions of an issue</li>
+        </ul>
+      </li>
+      <li>arguments
+        <ul>
+          <li>modify the relationship between positions and issues</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>gIBIS is a graphical version</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="structure-of-gibis">structure of gIBIS</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765887-11967d04-333a-48cf-ad10-aea67b36d52b.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="design-space-analysis">Design Space Analysis</h2>
+
+<ul>
+  <li>Structure-oriented</li>
+  <li>QOC – hierarchical structure:
+    <ul>
+      <li><strong>q</strong>uestions (and sub-questions)
+        <ul>
+          <li>represent major issues of a design</li>
+        </ul>
+      </li>
+      <li><strong>o</strong>ptions
+        <ul>
+          <li>provide alternative solutions to the question</li>
+        </ul>
+      </li>
+      <li><strong>c</strong>riteria
+        <ul>
+          <li>the means to assess the options in order to make a choice</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>DRL (Decision Representation Language) – similar to QOC with a larger language and more formal semantics</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-qoc-notation">the QOC notation</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765918-7fa53b49-0278-4be7-a7ae-85306dc36376.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="psychological-design-rationale">Psychological Design Rationale</h2>
+
+<ul>
+  <li>to support task-artefact cycle in which user tasks are affected by the systems they use</li>
+  <li>aims to make explicit consequences of design for users</li>
+  <li>designers identify tasks system will support</li>
+  <li>scenarios are suggested to test task</li>
+  <li>users are observed on system</li>
+  <li>psychological claims of system made explicit</li>
+  <li>negative aspects of design can be used to improve next iteration of design</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li>The software engineering life cycle
+    <ul>
+      <li>distinct activities and the consequences for interactive system design</li>
+    </ul>
+  </li>
+  <li>Usability engineering
+    <ul>
+      <li>making usability measurements explicit as requirements</li>
+    </ul>
+  </li>
+  <li>Iterative design and prototyping
+    <ul>
+      <li>limited functionality simulations and animations</li>
+    </ul>
+  </li>
+  <li>Design rationale
+    <ul>
+      <li>recording design knowledge</li>
+      <li>process vs. structure</li>
+    </ul>
+  </li>
+</ul>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#hci" class="page__taxonomy-item p-category" rel="tag">HCI</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#frontend" class="page__taxonomy-item p-category" rel="tag">FrontEnd</a><span class="sep">, </span>
+    
+      <a href="/categories/#hci" class="page__taxonomy-item p-category" rel="tag">HCI</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-09-26T00:00:00+09:00">2022-09-26</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BHCI%5D+5.+HCI+in+The+Software+Process%20http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-5.-HCI-in-The-Software-Process%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-5.-HCI-in-The-Software-Process%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-5.-HCI-in-The-Software-Process%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/os/OS-Thread/" class="pagination--pager" title="[OS] Thread
+">이전</a>
+    
+    
+      <a href="/os/OS-CPU-Scheduling/" class="pagination--pager" title="[OS] CPU Scheduling
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/frontend/hci/HCI-5.-HCI-in-The-Software-Process/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/frontend/hci/[HCI] 5. HCI in The Software Process"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

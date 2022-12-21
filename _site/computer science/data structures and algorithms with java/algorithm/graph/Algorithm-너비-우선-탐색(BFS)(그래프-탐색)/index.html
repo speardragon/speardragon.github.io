@@ -1,0 +1,1877 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Algorithm] 너비 우선 탐색(BFS)(그래프 탐색) | speardragon note</title>
+<meta name="description" content="이번 시간에는 그래프 탐색 방법 중 너비 우선 탐색(BFS)에 대해서 배워볼 것이다.">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Algorithm] 너비 우선 탐색(BFS)(그래프 탐색)">
+<meta property="og:url" content="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/graph/Algorithm-%EB%84%88%EB%B9%84-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(BFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/">
+
+
+  <meta property="og:description" content="이번 시간에는 그래프 탐색 방법 중 너비 우선 탐색(BFS)에 대해서 배워볼 것이다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-02-19T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/graph/Algorithm-%EB%84%88%EB%B9%84-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(BFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#data-structures-and-algorithms-with-java" itemprop="item"><span itemprop="name">Data structures and algorithms with java</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#algorithm" itemprop="item"><span itemprop="name">Algorithm</span></a>
+          <meta itemprop="position" content="4" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#graph" itemprop="item"><span itemprop="name">Graph</span></a>
+          <meta itemprop="position" content="5" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Algorithm] 너비 우선 탐색(BFS)(그래프 탐색)</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Algorithm] 너비 우선 탐색(BFS)(그래프 탐색)">
+    <meta itemprop="description" content="이번 시간에는 그래프 탐색 방법 중 너비 우선 탐색(BFS)에 대해서 배워볼 것이다.">
+    <meta itemprop="datePublished" content="2022-02-19T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/graph/Algorithm-%EB%84%88%EB%B9%84-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(BFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/" class="u-url" itemprop="url">[Algorithm] 너비 우선 탐색(BFS)(그래프 탐색)
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>이번 시간에는 그래프 탐색 방법 중 너비 우선 탐색(BFS)에 대해서 배워볼 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="그래프-탐색이란"><strong>그래프 탐색이란</strong></h2>
+
+<ul>
+  <li>하나의 정점으로붙 시작하여 차례대로 모든 정점들을 한 번씩 방문하는 것</li>
+  <li>EX) 특정 도시에서 다른 도시로 갈 수 있는 지 없는 지, 전자 회로에서 특정 단자와 단자가 서로 연결 되어 있는 지</li>
+</ul>
+
+<p>그래프는 탐색하는 동안 동일한 정점으로 다시 이동할 수 있는 싸이클이 있을 수 있다. 그래서 동일한 정점이 다시 처리되지 않도록 하려면 처리 후 정점을 방문(visited)했다는 표시를 함으로써 중복 방문을 피하도록 하는 것이 그래프 탐색의 핵심이다.</p>
+
+<p><br /></p>
+
+<p><mark>Queue를 이용하여 구현</mark></p>
+
+<h3 id="bfs-breath-first-search-너비-우선-탐색-">BFS (Breath-First Search, 너비 우선 탐색 )</h3>
+
+<blockquote>
+  <p>DFS는 그래프의 개념이 반드시 선행되어야 하기 때문에 다음 포스트를 먼저 확인하길 바람.</p>
+
+  <blockquote>
+    <p><strong>Tree(트리) 자료구조</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/tree/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Tree,-Binary-Tree(%ED%8A%B8%EB%A6%AC,-%EC%9D%B4%EC%A7%84-%ED%8A%B8%EB%A6%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조</p>
+
+    <p><strong>Graph(그래프) 자료구조</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Graph(%EA%B7%B8%EB%9E%98%ED%94%84)/"><u><span style="color:blue">이곳</span></u></a>을 참조</p>
+  </blockquote>
+</blockquote>
+
+<p><br /></p>
+
+<h4 id="너비-우선-탐색bfs이란"><strong>너비 우선 탐색(BFS)이란</strong></h4>
+
+<p>루트 노드(혹은 임의의 다른 노드)에서부터 시작하여 인접한 노드를 먼저 탐색해 나가는 방법이다.</p>
+
+<p>또한 BFS는 그래프에서 최단 경로를 찾는 정점 기반 알고리즘으로 유명하다.</p>
+
+<p><br /></p>
+
+<p>특징은 다음과 같다.</p>
+
+<ul>
+  <li>시작 정점으로부터 가까운 정점을 먼저 방문하고 멀리 떨어져 있는 정점을 나중에 방문하는 순회 방법이다.</li>
+  <li>즉, 깊이(deep)탐색하기 전에 넓게(wide) 탐색하는 것이다.</li>
+  <li><mark>사용하는 경우</mark>: 두 노드 사이의 <strong>최단 경로</strong> 혹은 <strong>임의의 경로</strong>를 찾고 싶을 때 이 방법을 선택한다.
+    <ul>
+      <li>예를 들어, 지구상의 존재하는 모든 인관관계를 표현한 후 철수와 영희 사이에 존재하는 경로를 찾는 경우</li>
+      <li>깊이 우선 탐색(DFS)의 경우 - 모든 인간 관계를 다 살펴봐야 할 수도 있다.</li>
+      <li>너비 우선 탐색(BFS)의 경우- 철수와 가까운 관계부터 탐색한다.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">너비 우선 탐색(BFS)</code>이 <code class="language-plaintext highlighter-rouge">깊이 우선 탐색(DFS)</code>보다 더 복잡하다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="bfs의-특징">BFS의 특징</h4>
+
+<p>BFS의 특징 몇 가지를 살펴 보도록 하겠습니다.</p>
+
+<ul>
+  <li>직관적이지 않다.
+    <ul>
+      <li>BFS는 시작 노드를 기준으로 거리에 따라 단계별로 탐색하는 것이기 때문에 다소 오해가 발생할 수 있다.</li>
+    </ul>
+  </li>
+  <li>BFS는 재귀적으로 동작하지 않는다.(DFS와 달리)</li>
+  <li>이후 구현에서 다룰 것이지만 반드시 그래프를 탐색하면서 어떤 노드를 방문했었는 지의 여부를 검사해야한다. (구현에서 visited 변수)
+    <ul>
+      <li>무한루프에 빠질 위험이 있기 때문</li>
+    </ul>
+  </li>
+  <li>BFS는 대기순서에 따라 반복적인 방문을 해야하기 때문에 큐(Queue)를 사용하여 구현한다.
+    <ul>
+      <li>다시말해서 <strong>선입선출(FIFO)의 원칙</strong>으로 탐색</li>
+      <li>다양한 방법이 있지만 queue의 형태로 구현하는 것이 바람직함
+        <ul>
+          <li>먼저 들어온 데이터 들을 먼저 탐색하는 방식이기 때문.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>이후에 배울 ‘Prim’, ‘Dijkstra’ Algorithms과 비슷하다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="bfs의-과정">BFS의 과정</h4>
+
+<p>그림을 통해 알아보도록 하겠습니다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/154630160-34ef0e79-d3f4-4c08-ae9f-c312c48a4a46.png" alt="image" style="zoom:50%;" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/154632795-e60767d0-372f-47ac-aa04-9051b1a7a7dc.png" alt="image" /></p>
+
+<ol>
+  <li>시작 노드 A를 방문한다.
+    <ul>
+      <li>시작 정점을 방문하여 방문 표시(visited, 초록색 표시)한 후 해당 노드를 enqueue한다.</li>
+    </ul>
+  </li>
+  <li>큐에서 첫번째 정점을 제거하고 제거된 정점과 <strong>인접한 정점</strong>에 대하여 방문하지 않은 정점을 방문한다.</li>
+</ol>
+
+<ul>
+  <li>큐에서 꺼낸 노드를 방문한다.</li>
+  <li>이 노드와 인접하는 노드들을 <strong>모두</strong> 방문(enqueue)한다.</li>
+  <li>인접한 노드가 없으면 큐의 맨 앞(peek)에서 노드를 꺼낸다(dequeue).</li>
+</ul>
+
+<ol>
+  <li>큐가 소진될 때까지 위 과정을 반복한다.</li>
+</ol>
+
+<p><br /></p>
+
+<p>큐에서 데이터가 빠짐(dequeue)과 동시에 해당 데이터는 초록색이 되고 이와 인접한 노드는 노란색이 되면서 방문(enqueue)을 한 상태가 되고 큐에서 순서대로 데이터를 빼면서(초록색으로 만들면서) 인접 노드들이 큐에 삽입되는(노란색이 되는,  큐에 진입) 과정을 반복하는 것이다. (모든 노드가 초록색이 될 때까지, 큐가 빌 때까지 반복한다.)</p>
+
+<blockquote>
+  <p><strong>방문순서 : A-B-C-D-E-F-G-H</strong></p>
+</blockquote>
+
+<p><br /></p>
+
+<h3 id="bfs-탐색-구현java">BFS 탐색 구현(Java)</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">graph</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GraphAlgorithms</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="nf">bfs</span><span class="o">(</span><span class="nc">IGraph</span> <span class="n">iGraph</span><span class="o">,</span> <span class="kt">int</span> <span class="n">from</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">visited</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+        <span class="nc">Queue</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">queue</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedList</span><span class="o">&lt;&gt;();</span>
+        
+        <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">from</span><span class="o">);</span>
+        <span class="n">visited</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">from</span><span class="o">);</span>
+        <span class="k">while</span> <span class="o">(!</span><span class="n">queue</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">Integer</span> <span class="n">next</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+            <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">next</span><span class="o">);</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">Integer</span> <span class="n">n</span> <span class="o">:</span> <span class="n">iGraph</span><span class="o">.</span><span class="na">getNodes</span><span class="o">(</span><span class="n">next</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">if</span><span class="o">(!</span><span class="n">visited</span><span class="o">.</span><span class="na">contatins</span><span class="o">(</span><span class="n">n</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">n</span><span class="o">);</span>
+                    <span class="n">visited</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">n</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Input parameter: 지난 시간 구현한 그래프(iGraph), 시작 노드(from)</p>
+
+<p>Return: 방문한 노드를 순서대로 저장한 리스트</p>
+
+<ol>
+  <li>처음에 시작할 때는 시작 노드(from)부터 시작한다.
+    <ul>
+      <li>queue에 시작노드를 삽입하고 방문하였기 때문에 visited에도 넣어준다.</li>
+    </ul>
+  </li>
+  <li>큐가 비어있을 때까지 다음을 반복한다.
+    <ul>
+      <li>next변수에 큐의 데이터를 하나씩 빼온다.</li>
+      <li>해당 데이터를 result 변수에 넣어주고</li>
+      <li>next와 인접한 노드들이 0개, 1개 혹은 여러개 일 것이기 때문에 for문으로 이를 하나씩 순회하여 만약 방문하지 않았다면 (visited에 존재하지 않는다면) queue에 삽입하고 visited에도 삽입한다.</li>
+    </ul>
+  </li>
+  <li>큐가 모두 비었다면 어떤 순서로 탐색을 진행했는 지의 결과인 result를 반환하여 마무리한다.</li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th>너비 우선 탐색 과정</th>
+      <th>깊이 우선 탐색 과정</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://user-images.githubusercontent.com/79521972/154641634-65bd2679-21ed-43d2-b8cd-6d828873c440.gif" alt="Animated_BFS" /></td>
+      <td><img src="https://user-images.githubusercontent.com/79521972/154642490-211ab9c7-b333-4107-92a7-a0cc2c806a8e.gif" alt="220px-Depth-First-Search" /></td>
+    </tr>
+    <tr>
+      <td><a href="https://ko.wikipedia.org/wiki/%EB%84%88%EB%B9%84_%EC%9A%B0%EC%84%A0_%ED%83%90%EC%83%89">Wikipedia</a></td>
+      <td><a href="https://ko.wikipedia.org/wiki/%EA%B9%8A%EC%9D%B4_%EC%9A%B0%EC%84%A0_%ED%83%90%EC%83%89">Wikipedia</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h3 id="bfs-사용-예시---최단-경로-문제">BFS 사용 예시 - 최단 경로 문제</h3>
+
+<p>너비 우선 탐색(BFS)는 퍼즐 게임 등을 해결할 때 많이 쓰이는 알고리즘이다. 또한 다익스트라 알고리즘에도 사용되며 이에 대한 포스팅은 다음을 참고하라.</p>
+
+<ul>
+  <li><strong>다익스트라 알고리즘</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/dijkstra/Algorithm-Dijkstra-Algorithm(%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)/"><u><span style="color:blue">이곳</span></u></a>을 참조</li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>최단 경로 문제</strong></p>
+
+<p>최단 경로 문제는 코딩테스트나 여러 문제 사이트에서 난이도 있는 문제이며 단골 문제이기도 하다.</p>
+
+<p>특히, 이는 DFS가 아닌 BFS로 풀어야 문제의 결과를 신속하게 낼 수 있다. 왜냐하면 BFS를 통해 구현하면 모든 정점방문 결과를 최단 경로로 보장이 가능하지만 DFS는 보장할 수 없기 때문이다.</p>
+
+<p>하지만 BFS로 최단 경로 문제를 풀때는 다음과 같은 제약 조건이 있다.</p>
+
+<ul>
+  <li>
+    <p><span style="color:red">가중치가 1이어야 함.</span></p>
+  </li>
+  <li>그 가중치가 구하려는 문제의 답에 해당해야 함
+    <ul>
+      <li>최단 거리면 거리가 가중치</li>
+      <li>최단 시간이면 시간이 가중치</li>
+    </ul>
+  </li>
+  <li>
+    <p>정점과 간선의 수가 너무 많으면 안된다.</p>
+
+    <ul>
+      <li>O(V+E)의 시간 복잡도를 갖는데 이때문에 보통 E가 V보다 많기 때문에 E가 너무 많으면 시간 내에 해결이 안됨</li>
+    </ul>
+  </li>
+</ul>
+
+<p>아래 그림을 보면서 최단 경로 문제를 이해해 보도록 하자.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155872170-748c75dd-dddc-4a5f-b179-d80e367e748a.png" alt="image" /></p>
+
+<p>만약 <span style="color:orange">주황색</span>으로 칠해진 곳에서 출발하여 <span style="color:red">빨간색</span>으로 칠해진 곳으로 가야하는 것이 문제라고 하자.</p>
+
+<p>이때 유일한 경로는 <span style="color:blue">파란 화살표</span>와 <span style="color:red">빨간 화살표</span>가 있을 수 있다.(다른 경로에 비해 대표적인 경로)</p>
+
+<p><br /></p>
+
+<p>이 상황에서 <mark>BFS</mark>로 탐색을 하면 <span style="color:red">빨간 부분</span>과 <span style="color:blue">파란 부분</span>의 인접 정점을 동시에 차례 대로 탐색을 하면서 시작점이 고정이기 때문에 무조건적으로 모든 인접 정점이 최소의 경우로만 이동하는 것이 보장 된다.</p>
+
+<p>그래서 BFS로 탐색 시, 원하는 위치에 도착했다면 추가적인 탐색을 종료하고 바로 결과가 나오는 것이다.</p>
+
+<p><br /></p>
+
+<p>그러나 <mark>DFS</mark>로 탐색을 하면, 상단의  <span style="color:red">빨간색 부분</span>부터 우선 탐색이 이루어질 수 있는데, 하지만 이 경로는 최소 경로라는 것을 보장 받지 못한다. 실제로 최소경로가 아니기도 하다.</p>
+
+<p>보장을 받기 위해서는 이미 방문한 정점에 대해서 미 방문 상태로 전환하고 다른 동일 위치에 도달할 수 있는 경우를 모두 체크해야 하는데, 이는 DFS가 아니라 Broute Force(<del>무차별 대입 방법</del>)</p>
+
+<p>이러한 이유로 최단 경로 문제를 풀 때는 BFS가 상당히 유리하게 작용한다.</p>
+
+<p><br /></p>
+
+<h2 id="심화-bfs-순환cycle-탐지">심화) BFS 순환(Cycle) 탐지</h2>
+
+<ol>
+  <li><mark>방향 그래프(Directed Graph) 순환 탐지 하기 (Cycle Detection)</mark></li>
+</ol>
+
+<p>아래와 같은 방향 그래프에 대해 생각해 보자.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155872937-f2115559-7889-4ccf-aef1-4d08773093eb.png" alt="image" /></p>
+
+<p>BFS를 통해 순환을 탐지하기 위해서는 위상 정렬을 사용할 수 있다.</p>
+
+<ul>
+  <li><strong>Topological 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-Topological-Sorting(%EC%9C%84%EC%83%81-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></li>
+</ul>
+
+<p><br /></p>
+
+<p>방식은 다음과 같다.</p>
+
+<ol>
+  <li>처음에 내차수가 0인 정점을 전부 찾아 각 정점을 큐에 넣는다.</li>
+  <li>큐에서 하나씩 빼서 방문 완료 처리하고 방문 완료 정점의 수를 1만큼 늘린다.</li>
+  <li>해당 정점의 인접 정점의 내차수를 1씩 뺀 다음 인접 정점 중에서 내채수가 0이 되는 것만 큐에 넣는다.</li>
+  <li>큐가 빌 때까지 2, 3번 과정을 반복한다.</li>
+  <li>큐가 비었는데도 전체 정점의 갯수와 방문 완료한 정점의 갯수가 다르면 해당 그래프에는 Cycle이 있는 것이다.</li>
+</ol>
+
+<p><br /></p>
+
+<ol>
+  <li><mark>무방향 그래프 순환 탐지하기</mark></li>
+</ol>
+
+<p>무방향 그래프는 상호 연결되어 있기 때문에 방향 그래프에서 cycle을 탐지했던 것처럼 탐지하면 무조건 cycle이 있는 것으로 탐지된다.</p>
+
+<p><br /></p>
+
+<p>따라서 다른 방법을 사용 해야 한다. 방법은 아래와 같다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li>그래프를 만들고 BFS 탐색 함수를 생성해서 현재 정점 위치와 방문 여부에 대한 배열을 전달한다.</li>
+  <li>현재 탐색 정점을 방문 완료로 표시하고 parent 배열을 따로 생성한 후에 최초 탐색 정점의 parent는 -1로 저장한다.
+    <ul>
+      <li>parent는 현재 노드와 이어진 이전에 탐색된 노드가 저장된 배열이다.</li>
+    </ul>
+  </li>
+  <li>BFS탐색을 위해 큐를 생성하고, 최초 탐색의 수행 정점을 큐에 넣는다.</li>
+  <li>큐가 비어 있지 않은 동안은 반복문을 수행하면서 큐의 정점을 하나씩 빼고 방문되지 않은 인접 정점들을 탐색한다.</li>
+  <li>이 단계가 굉장히 중요한데, 인접 정점이 방문을 한 상태이면서 parent가 현재 정점 값이 아니라면 cycle이 존재하는 것이다.</li>
+</ol>
+
+<p><br /></p>
+
+<p>이해를 위해 다음과 같은 예시를 들어보겠다.</p>
+
+<p><br /></p>
+
+<p>인접 정점의 parent가 현재 정점인 경우를 생각해 보자.</p>
+
+<p>현재를 A, 인접 정점을 B라고 할 때, A를 방문하고 B에서 다시 A를 방문했다면 무방향 그래프에서 상호 인접 정점끼리는 무조건 재탐색 수행을 하고자 하기 때문에 이것을 제외 시켜야 한다.</p>
+
+<p><br /></p>
+
+<p>하지만 만약, 현재 정점이 parent가 아니라면 A → B → A 의 순이 아니라 A → B → ? → ? → A처럼 중간에 다른 정점들을 추가로 탐색 했다는 의미이며, 이는 당연히 cycle이 있는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="너비-우선-탐색-응용">너비 우선 탐색 응용</h2>
+
+<ol>
+  <li>최단 경로 찾기 및 minimum spanning tree</li>
+  <li>P2P 네트워크</li>
+  <li>검색 엔진 Crawling</li>
+  <li>Ford - Fulkerson Algorithm</li>
+  <li>Network Broadcasting</li>
+  <li>Garbage Collection</li>
+  <li>GPS 네비게이션 시스템</li>
+  <li>Social Networking</li>
+</ol>
+
+<p><br /></p>
+
+<p>이 예시들은 모두 인접한 데이터에 대해 우선적으로 찾는 것이 중요한 것들이다.</p>
+
+<h2 id="관련된-문제">관련된 문제</h2>
+
+<p><a href="https://www.acmicpc.net/problem/2667"><u>백준 2667번 단지번호 붙이기</u></a></p>
+
+<p><a href="https://www.acmicpc.net/problem/2468"><u>백준 2468번 ABCDE</u></a></p>
+
+<p><br /></p>
+
+<h2 id="관련된-post">관련된 Post</h2>
+
+<ul>
+  <li><strong>Tree(트리) 자료구조</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/tree/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Tree,-Binary-Tree(%ED%8A%B8%EB%A6%AC,-%EC%9D%B4%EC%A7%84-%ED%8A%B8%EB%A6%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조</li>
+  <li><strong>Graph(그래프) 자료구조</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Graph(%EA%B7%B8%EB%9E%98%ED%94%84)/"><u><span style="color:blue">이곳</span></u></a>을 참조</li>
+  <li><strong>DFS</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-%EA%B9%8A%EC%9D%B4-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(DFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></li>
+</ul>
+
+<p><br /></p>
+
+<p>긴 글 읽어주셔서 감사합니다.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#algorithm" class="page__taxonomy-item p-category" rel="tag">Algorithm</a><span class="sep">, </span>
+    
+      <a href="/tags/#bfs" class="page__taxonomy-item p-category" rel="tag">BFS</a><span class="sep">, </span>
+    
+      <a href="/tags/#data-structure" class="page__taxonomy-item p-category" rel="tag">Data structure</a><span class="sep">, </span>
+    
+      <a href="/tags/#%EB%84%88%EB%B9%84-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89" class="page__taxonomy-item p-category" rel="tag">너비 우선 탐색</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#algorithm" class="page__taxonomy-item p-category" rel="tag">Algorithm</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a><span class="sep">, </span>
+    
+      <a href="/categories/#data-structures-and-algorithms-with-java" class="page__taxonomy-item p-category" rel="tag">Data structures and algorithms with Java</a><span class="sep">, </span>
+    
+      <a href="/categories/#graph" class="page__taxonomy-item p-category" rel="tag">Graph</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-02-19T00:00:00+09:00">2022-02-19</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BAlgorithm%5D+%EB%84%88%EB%B9%84+%EC%9A%B0%EC%84%A0+%ED%83%90%EC%83%89%28BFS%29%28%EA%B7%B8%EB%9E%98%ED%94%84+%ED%83%90%EC%83%89%29%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fgraph%2FAlgorithm-%25EB%2584%2588%25EB%25B9%2584-%25EC%259A%25B0%25EC%2584%25A0-%25ED%2583%2590%25EC%2583%2589%28BFS%29%28%25EA%25B7%25B8%25EB%259E%2598%25ED%2594%2584-%25ED%2583%2590%25EC%2583%2589%29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fgraph%2FAlgorithm-%25EB%2584%2588%25EB%25B9%2584-%25EC%259A%25B0%25EC%2584%25A0-%25ED%2583%2590%25EC%2583%2589%28BFS%29%28%25EA%25B7%25B8%25EB%259E%2598%25ED%2594%2584-%25ED%2583%2590%25EC%2583%2589%29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fgraph%2FAlgorithm-%25EB%2584%2588%25EB%25B9%2584-%25EC%259A%25B0%25EC%2584%25A0-%25ED%2583%2590%25EC%2583%2589%28BFS%29%28%25EA%25B7%25B8%25EB%259E%2598%25ED%2594%2584-%25ED%2583%2590%25EC%2583%2589%29%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/graph/Algorithm-%EA%B9%8A%EC%9D%B4-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(DFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/" class="pagination--pager" title="[Algorithm] 깊이 우선 탐색(DFS)(그래프 탐색)
+">이전</a>
+    
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/dijkstra/Algorithm-Dijkstra-Algorithm(%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)/" class="pagination--pager" title="[Algorithm] Dijkstra Algorithm(다익스트라 알고리즘)
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/graph/Algorithm-%EB%84%88%EB%B9%84-%EC%9A%B0%EC%84%A0-%ED%83%90%EC%83%89(BFS)(%EA%B7%B8%EB%9E%98%ED%94%84-%ED%83%90%EC%83%89)/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/graph/[Algorithm] 너비 우선 탐색(BFS)(그래프 탐색)"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

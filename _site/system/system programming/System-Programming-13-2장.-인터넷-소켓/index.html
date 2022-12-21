@@ -1,0 +1,1945 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[System Programming] 13-2장. 인터넷 소켓 | speardragon note</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[System Programming] 13-2장. 인터넷 소켓">
+<meta property="og:url" content="http://localhost:4000/system/system%20programming/System-Programming-13-2%EC%9E%A5.-%EC%9D%B8%ED%84%B0%EB%84%B7-%EC%86%8C%EC%BC%93/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-05-24T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/system/system%20programming/System-Programming-13-2%EC%9E%A5.-%EC%9D%B8%ED%84%B0%EB%84%B7-%EC%86%8C%EC%BC%93/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system" itemprop="item"><span itemprop="name">System</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system-programming" itemprop="item"><span itemprop="name">System programming</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[System Programming] 13-2장. 인터넷 소켓</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[System Programming] 13-2장. 인터넷 소켓">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-05-24T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/system/system%20programming/System-Programming-13-2%EC%9E%A5.-%EC%9D%B8%ED%84%B0%EB%84%B7-%EC%86%8C%EC%BC%93/" class="u-url" itemprop="url">[System Programming] 13-2장. 인터넷 소켓
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<h1 id="132-인터넷-소켓">13.2 인터넷 소켓</h1>
+
+<h2 id="인터넷-상의-호스트">인터넷 상의 호스트</h2>
+
+<ul>
+  <li>인터넷 상의 호스트는 <strong>32 비트 IP 주소</strong>를 갖는다
+    <ul>
+      <li>예: 203.252.201.8  (4byte로 구성)</li>
+    </ul>
+  </li>
+  <li>IP 주소는 대응하는 도메인 이름을 갖는다.
+    <ul>
+      <li>예: 203.252.201.8 –&gt; www.sookmyung.ac.kr
+        <ul>
+          <li>사람이 읽을 수 있는 문자로 표현 된 주소  -&gt; 도메인 이름</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>32 비트 IP 주소는 저장</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* 인터넷 주소 구조체 */</span>
+<span class="k">struct</span> <span class="n">in_addr</span> <span class="p">{</span>
+ <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">s_addr</span><span class="p">;</span> <span class="c1">// 네트워크 바이트 순서(big-endian)</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="byte-ordering">Byte ordering</h2>
+
+<ul>
+  <li>Two types of byte order
+    <ul>
+      <li>Little endian
+        <ul>
+          <li>the <strong>least significant byte</strong> contains the <strong>lowest</strong> byte address</li>
+          <li>Intel, DEC</li>
+        </ul>
+      </li>
+      <li><strong>Big endian</strong>
+        <ul>
+          <li>the <strong>least significant byte</strong> contains the <strong>highest</strong> byte address</li>
+          <li>IBM, Motorola</li>
+        </ul>
+      </li>
+      <li>Eg. 0xC3E2 : 메모리에 저장하고자 하는 값</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>The byte order for the TCP/IP protocol suite is big endian</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169861981-beb04e6a-f8b7-422f-a83e-2e45779b07ab.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="바이트-정렬-함수">바이트 정렬 함수</h2>
+
+<ul>
+  <li>네트워크 애플리케이션에서 <strong>바이트 정렬 방식</strong>을 고려해야 하는 경우
+    <ul>
+      <li>네트워크 안에는 big-endian을 사용하고 있다.(TCP/IP의 경우)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169862096-405e6df8-edf2-4707-b7b3-58b9e4791097.png" alt="image" /></p>
+
+<ul>
+  <li>프로토콜 구현을 위해 필요한 정보
+    <ul>
+      <li>(a) IP 주소 -&gt; big-endian</li>
+      <li>(b) 포트 번호 -&gt; big-endian</li>
+    </ul>
+  </li>
+  <li>애플리케이션이 주고 받는 데이터
+    <ul>
+      <li>(c) big-endian또는 little-endian으로 통일(CPU가 지원하는 방식에 따라 다름)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169862220-a81e7596-0f0c-4b14-874d-43eee8b7527a.png" alt="image" /></p>
+
+<p>종단 시스템이 호스트 이고 라우터 부분이 네트워크이니까 이들 사이의 연결을 위해선 바이트 정렬 방식의 변환이 필요한 것(by hton, htonl …)</p>
+
+<p><br /></p>
+
+<h2 id="바이트-정렬-함수-1">바이트 정렬 함수</h2>
+
+<ul>
+  <li>바이트 정렬 함수(유닉스 호환)</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">u_short</span> <span class="nf">htons</span> <span class="p">(</span><span class="n">u_short</span> <span class="n">hostshort</span><span class="p">);</span> <span class="c1">// host-to-network-short</span>
+<span class="n">u_long</span> <span class="nf">htonl</span> <span class="p">(</span><span class="n">u_long</span> <span class="n">hostlong</span><span class="p">);</span> <span class="c1">// host-to-netw ork-long</span>
+<span class="n">u_short</span> <span class="nf">ntohs</span> <span class="p">(</span><span class="n">u_short</span> <span class="n">netshort</span><span class="p">);</span> <span class="c1">// network-to-host-short</span>
+<span class="n">u_long</span> <span class="nf">ntohl</span> <span class="p">(</span><span class="n">u_long</span> <span class="n">netlong</span><span class="p">);</span> <span class="c1">// network-to-host-long</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="network-byte-order">Network byte order</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169862339-7b2f1f5e-e081-404a-a155-6eec867d1310.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="바이트-정렬-함수-2">바이트 정렬 함수</h2>
+
+<ul>
+  <li>SOCKADDR_IN 구조체의 바이트 정렬 방식</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169862431-720e8f84-3197-458f-8da0-d08e50ff3fe0.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="dnsdomain-name-system">DNS(Domain Name System)</h2>
+
+<ul>
+  <li>인터넷은 IP 주소와 도메인 이름 사이의 맵핑을 DNS라 부르는 <strong>전세계적인 분산 데이터베이스</strong>에 유지한다.</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* DNS 호스트 엔트리 구조체 */</span>
+<span class="k">struct</span> <span class="n">hostent</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">h_name</span><span class="p">;</span> <span class="c1">// 호스트의 공식 도메인 이름</span>
+    <span class="kt">char</span> <span class="o">**</span><span class="n">h_aliases</span><span class="p">;</span> <span class="c1">// null로 끝나는 도메인 이름의 배열 alias list(도메인 이름 외의 다른이름)</span>
+    <span class="kt">int</span> <span class="n">h_addrtype</span><span class="p">;</span> <span class="c1">// 호스트 주소 타입(AF_INET)</span>
+    <span class="kt">int</span> <span class="n">h_length</span><span class="p">;</span> <span class="c1">// 주소의 길이</span>
+    <span class="kt">char</span> <span class="o">**</span><span class="n">h_addr_list</span><span class="p">;</span> <span class="c1">// null로 끝나는 in_addr 구조체의 배열, for backward compatibility</span>
+<span class="p">};</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="hostent-구조체">hostent 구조체</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169862608-dfd7a1b7-218d-4988-a22a-92881bd3b9a6.png" alt="image" /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">hostent</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">h_name</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">**</span><span class="n">h_aliases</span><span class="p">;</span> <span class="c1">//별도의 이름 (가명)</span>
+    <span class="kt">int</span> <span class="n">h_addrtype</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">h_length</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">**</span><span class="n">h_addr_list</span><span class="p">;</span> <span class="c1">//IP 주소</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="dns-관련-함수">DNS 관련 함수</h2>
+
+<ul>
+  <li>호스트의 <strong>IP 주소</strong> 혹은 <strong>도메인 이름</strong>을 이용하여 DNS로부터 호스트 엔트리를 검색할 수 있다</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* IP 주소(네트워크 바이트 정렬) -&gt; 도메인 이름 */</span>
+<span class="k">struct</span> <span class="n">hostent</span> <span class="o">*</span><span class="nf">gethostbyaddr</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">);</span>
+<span class="c1">//길이가 len이고 주소 타입 type인 호스트 주소 addr에 해당하는 hostent 구조체를 리턴한다.</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* 도메인 이름 -&gt; IP 주소(네트워크 바이트 정렬) */</span><span class="k">struct</span> <span class="n">hostent</span><span class="o">*</span>
+<span class="k">struct</span> <span class="n">hostent</span><span class="o">*</span> <span class="nf">gethostbyname</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">);</span> <span class="c1">// 도메인 이름</span>
+<span class="c1">//도메인 이름에 대응하는 hostent 구조체에 대한 포인터를 리턴한다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="dns-관련-함수-ip-주소-변환-함수">DNS 관련 함수 (IP 주소 변환 함수)</h2>
+
+<ul>
+  <li>in_addr 구조체 형식으로 된 IP 주소를 프린트 할 수 있는 스트링으로 변환
+    <ul>
+      <li>점(.)을 찍어주는 함수</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span><span class="o">*</span> <span class="nf">inet_ntoa</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span> <span class="n">address</span><span class="p">);</span>
+<span class="c1">//IP 주소 address에 대응하는 A.B.C.D 포맷의 스트링을 리턴한다.문자열 형태로 IP 주소를 입력받아 32비트 숫자(네트워크 바이트 정렬)로 리턴</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">unsigned</span> <span class="kt">long</span> <span class="nf">inet_addr</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">string</span><span class="p">);</span> <span class="c1">// network-to-ascii</span>
+<span class="c1">//A.B.C.D 포맷의 IP 주소를 네트워크 바이트 순서로 된 이진 데이터로 변환하여 리턴한다.</span>
+<span class="c1">//32비트 숫자(네트워크 바이트 정렬)로 IP 주소를 입력받아 문자열 형태로 리턴</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="인터넷-소켓">인터넷 소켓</h2>
+
+<ul>
+  <li>인터넷 소켓
+    <ul>
+      <li>서로 다른 호스트에서 실행되는 클라이언트-서버 사이의 통신</li>
+      <li>양방향(2-way) 통신</li>
+      <li>소켓을 식별하기 위해 호스트의 IP 주소와 포트 번호를 사용</li>
+    </ul>
+  </li>
+  <li>인터넷 소켓 연결 예</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169863277-0dfa10b4-166f-4a5c-8511-781e1692e2a6.png" alt="image" /></p>
+
+<ul>
+  <li>인터넷 소켓 통신을 사용하는 SW
+    <ul>
+      <li>웹 브라우저</li>
+      <li>ftp</li>
+      <li>telnet</li>
+      <li>ssh</li>
+    </ul>
+  </li>
+  <li>For server, 잘 알려진 서비스의 포트 번호 (well-known port number)
+    <ul>
+      <li>시간 서버:     13번 포트</li>
+      <li>ftp 서버:        20,21번 포트</li>
+      <li>텔넷 서버:     23번 포트</li>
+      <li>메일 서버:     25번 포트</li>
+      <li>웹 서버:         80번 포트</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="클라이언트-서버-인터넷-소켓-연결-과정">클라이언트-서버 인터넷 소켓 연결 과정</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169863518-86ba78ce-0b39-48f7-8aaf-2762cb0f0632.png" alt="image" /></p>
+
+<p>서버의 IP주소는 같지만 그 호스트 안의 웹서버와 메일 서버가 있는데 이 둘의 포트 번호는 다르다.(다른 프로세스이기 때문)</p>
+
+<p><br /></p>
+
+<h2 id="인터넷-소켓-이름주소">인터넷 소켓 이름(주소)</h2>
+
+<ul>
+  <li>인터넷 소켓 이름(주소)</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">sin_family</span><span class="p">;</span> <span class="c1">// AF_INET</span>
+    <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">sin_port</span><span class="p">;</span> <span class="c1">// 인터넷 소켓의 포트 번호</span>
+    <span class="k">struct</span> <span class="n">in_addr</span> <span class="n">sin_addr</span><span class="p">;</span> <span class="c1">// 32-bit IP 주소</span>
+    <span class="kt">char</span> <span class="n">sin_zero</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span> <span class="c1">// 사용 안 함</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>소켓 이름을 위한 포괄적 구조체</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">sockaddr</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">sa_family</span><span class="p">;</span> <span class="c1">// 프로토콜 패밀리</span>
+    <span class="kt">char</span> <span class="n">sa_data</span><span class="p">[</span><span class="mi">14</span><span class="p">];</span> <span class="c1">// 주소 데이터</span>
+<span class="p">};</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="파일-서버-클라이언트">파일 서버-클라이언트</h2>
+
+<p>TCP 소켓을 통한 양방향 통신하는 법</p>
+
+<ul>
+  <li><strong>서버</strong>
+    <ul>
+      <li><strong>파일 이름을 받아 해당 파일을 찾아 그 내용을 보내 주는 서비스</strong></li>
+      <li>명령 줄 인수로 포트 번호를 받아 해당 소켓을 만든다.</li>
+      <li>이 소켓을 통해 클라이언트로부터 파일 이름을 받아</li>
+      <li>해당 파일을 열고 그 내용을 이 소켓을 통해 클라이언트에게 보낸다.</li>
+    </ul>
+  </li>
+  <li><strong>클라이언트</strong>
+    <ul>
+      <li>명령 줄 인수로 연결할 서버의 이름과 포트 번호를 받아(from 사용자) 해당 서버에 소켓 연결을 한다.</li>
+      <li>이 연결을 통해 서버에 원하는 파일 이름을 보낸 후</li>
+      <li><strong>서버로부터 해당 파일 내용을 받아 사용자에게 출력한다</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fserverc">fserver.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;netdb.h&gt;</span><span class="cp">
+#define DEFAULT_PROTOCOL 0
+#define MAXLINE 100
+</span>
+<span class="cm">/* 파일 서버 프로그램 */</span>
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">listenfd</span><span class="p">,</span> <span class="n">connfd</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">clientlen</span><span class="p">;</span>
+    <span class="kt">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">inmsg</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">],</span> <span class="n">outmsg</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span>
+    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">serveraddr</span><span class="p">,</span> <span class="n">clientaddr</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">hostent</span> <span class="o">*</span><span class="n">hp</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">haddrp</span><span class="p">;</span>
+    <span class="n">signal</span><span class="p">(</span><span class="n">SIGCHLD</span><span class="p">,</span> <span class="n">SIG_IGN</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법: %s &lt;port&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// ascii to integer</span>
+
+    <span class="n">listenfd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="n">DEFAULT_PROTOCOL</span><span class="p">);</span> <span class="c1">//TCP 사용 소켓 만들기</span>
+
+    <span class="n">bzero</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">serveraddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">serveraddr</span><span class="p">));</span> <span class="c1">//memset과 동일 - 메모리 초기화</span>
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">((</span><span class="kt">unsigned</span> <span class="kt">short</span><span class="p">)</span><span class="n">port</span><span class="p">);</span>
+    <span class="n">bind</span><span class="p">(</span><span class="n">listenfd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">serveraddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">serveraddr</span><span class="p">));</span>
+    <span class="n">listen</span><span class="p">(</span><span class="n">listenfd</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">clientlen</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">clientaddr</span><span class="p">);</span>
+        
+        <span class="c1">//연결이 되면 connfd라는 별도의 descriptor에 받는다.</span>
+        <span class="n">connfd</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span><span class="n">listenfd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">clientaddr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">clientlen</span><span class="p">);</span>
+
+        <span class="cm">/* 클라이언트의 도메인 이름과 IP 주소 결정 */</span>
+        <span class="n">hp</span> <span class="o">=</span> <span class="n">gethostbyaddr</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">clientaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="p">,</span> <span class="c1">//dns 호스트 엔트리 구조체</span>
+                           <span class="k">sizeof</span><span class="p">(</span><span class="n">clientaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="p">),</span> <span class="n">AF_INET</span><span class="p">);</span>
+        <span class="n">haddrp</span> <span class="o">=</span> <span class="n">inet_ntoa</span><span class="p">(</span><span class="n">clientaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">);</span><span class="c1">//network to ascii</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"서버: %s (%s) %d에 연결됨</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+               <span class="n">hp</span><span class="o">-&gt;</span><span class="n">h_name</span><span class="p">,</span> <span class="n">haddrp</span><span class="p">,</span> <span class="n">clientaddr</span><span class="p">.</span><span class="n">sin_port</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">fork</span> <span class="p">(</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">readLine</span><span class="p">(</span><span class="n">connfd</span><span class="p">,</span> <span class="n">inmsg</span><span class="p">);</span> <span class="cm">/* 소켓에서 파일 이름을 읽는다 */</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">inmsg</span><span class="p">,</span> <span class="s">"r"</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">fp</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">write</span><span class="p">(</span><span class="n">connfd</span><span class="p">,</span> <span class="s">"해당 파일 없음"</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="cm">/* 파일에서 한 줄씩 읽어 소켓을 통해 보낸다 */</span>
+                <span class="k">while</span><span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">outmsg</span><span class="p">,</span> <span class="n">MAXLINE</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+                    <span class="n">write</span><span class="p">(</span><span class="n">connfd</span><span class="p">,</span> <span class="n">outmsg</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">outmsg</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">close</span><span class="p">(</span><span class="n">connfd</span><span class="p">);</span>
+            <span class="n">exit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="n">close</span><span class="p">(</span><span class="n">connfd</span><span class="p">);</span>
+    <span class="p">}</span> <span class="c1">// while</span>
+<span class="p">}</span> <span class="c1">// main</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>fserver 5000 &amp;
+서버: 203.252.195.220<span class="o">(</span>53482<span class="o">)</span>에 연결됨
+</code></pre></div></div>
+
+<p>소켓을 만들고 연결을 기다리고 연결이 될 때까지는 listenfd를 사용하지만 연결이 되고 나서부터는(data send recv 부터는) 별도의 소켓 디스크립터 connfd를 사용한다.(복사본)</p>
+
+<p><br /></p>
+
+<h2 id="fclientc">fclient.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;netdb.h&gt;</span><span class="cp">
+#define DEFAULT_PROTOCOL 0
+#define MAXLINE 100
+</span>
+<span class="cm">/* 파일 클라이언트 프로그램 */</span>
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">clientFd</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">result</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">host</span><span class="p">,</span> <span class="n">inmsg</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">],</span> <span class="n">outmsg</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span>
+    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">serverAddr</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">hostent</span> <span class="o">*</span><span class="n">hp</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법 : %s &lt;host&gt; &lt;port&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">host</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+    <span class="n">clientFd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="n">DEFAULT_PROTOCOL</span><span class="p">);</span>
+
+    <span class="cm">/* 서버의 IP 주소와 포트 번호를 채운다. */</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">hp</span> <span class="o">=</span> <span class="n">gethostbyname</span><span class="p">(</span><span class="n">host</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"gethostbyname error"</span><span class="p">);</span> <span class="c1">// 호스트 찾기 오류</span>
+    
+    <span class="n">bzero</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">serverAddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">serverAddr</span><span class="p">));</span>
+    <span class="n">serverAddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+    <span class="n">bcopy</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">hp</span><span class="o">-&gt;</span><span class="n">h_addr_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+          <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">serverAddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="p">,</span> <span class="n">hp</span><span class="o">-&gt;</span><span class="n">h_length</span><span class="p">);</span>
+    <span class="n">serverAddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="n">port</span><span class="p">);</span>
+    <span class="k">do</span> <span class="p">{</span> <span class="cm">/* 연결 요청 */</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">clientFd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">serverAddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">serverAddr</span><span class="p">));</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"파일 이름 입력:"</span><span class="p">);</span>
+    <span class="n">scanf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">inmsg</span><span class="p">);</span>
+    <span class="n">write</span><span class="p">(</span><span class="n">clientFd</span><span class="p">,</span><span class="n">inmsg</span><span class="p">,</span><span class="n">strlen</span><span class="p">(</span><span class="n">inmsg</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="cm">/* 소켓으로부터 파일 내용 읽어서 프린트 */</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">readLine</span><span class="p">(</span><span class="n">clientFd</span><span class="p">,</span><span class="n">outmsg</span><span class="p">))</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">outmsg</span><span class="p">);</span>
+    <span class="n">close</span><span class="p">(</span><span class="n">clientFd</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>실행</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>fclient eeinfo.kw.ac.kr 5000
+다운로드할 파일 이름 입력: youtxt
+<span class="nt">----------------</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169865142-65dbb855-6579-419e-9d8b-74b7254468e0.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="클라이언트-서버">클라이언트-서버</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/169865209-5a4ce818-0175-40b4-939a-1e20ddf86f09.png" alt="image" /></p>
+
+<p>소켓을 각자 생성하게 되면 각자 소켓을 갖게 된다.</p>
+
+<p>accept()을 하면 복사본 socket이 하나 만들어짐</p>
+
+<p>fork()를 하면 자식 프로세스가 만들어지고 그러면 parent 입장에서는 더 이상 복사본을 갖고 있지 않아도 되기 때문에 close하고</p>
+
+<p>child 입장에서는 반대로 원본 소켓이 필요 없기 때문에 원본 소켓을 close하여</p>
+
+<p>최종적으로 마지막 형태는 e와 같이 되고 통신은 client의 소켓과 서버의 child 프로세스의 복사본 소켓과 이루어지게 된다.</p>
+
+<p>빨간색의 원본 소켓은 처음 만들어지고 연결 설정을 받아들이는 용도로만 사용되지 실제 데이터를 주고 받지는 않는다.</p>
+
+<p><br /></p>
+
+<h2 id="핵심-개념">핵심 개념</h2>
+
+<ul>
+  <li>소켓은 양방향 통신 방법으로 클라이언트-서버 모델을 기반으로 프로세스 사이의 통신에 매우 적합하다.</li>
+  <li>소켓에는 같은 호스트 내의 프로세스 사이의 통신을 위한 유닉스 소켓과 다른 호스트에 있는 프로세스 사이의 통신을 위한 인터넷 소켓이 있다.</li>
+</ul>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#network" class="page__taxonomy-item p-category" rel="tag">Network</a><span class="sep">, </span>
+    
+      <a href="/tags/#socket" class="page__taxonomy-item p-category" rel="tag">Socket</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#system" class="page__taxonomy-item p-category" rel="tag">System</a><span class="sep">, </span>
+    
+      <a href="/categories/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-05-24T00:00:00+09:00">2022-05-24</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BSystem+Programming%5D+13-2%EC%9E%A5.+%EC%9D%B8%ED%84%B0%EB%84%B7+%EC%86%8C%EC%BC%93%20http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-13-2%25EC%259E%25A5.-%25EC%259D%25B8%25ED%2584%25B0%25EB%2584%25B7-%25EC%2586%258C%25EC%25BC%2593%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-13-2%25EC%259E%25A5.-%25EC%259D%25B8%25ED%2584%25B0%25EB%2584%25B7-%25EC%2586%258C%25EC%25BC%2593%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-13-2%25EC%259E%25A5.-%25EC%259D%25B8%25ED%2584%25B0%25EB%2584%25B7-%25EC%2586%258C%25EC%25BC%2593%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/system/system%20programming/System-Programming-13-1%EC%9E%A5.-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EB%AA%A8%EB%8D%B8/" class="pagination--pager" title="[System Programming] 13-1장. 소켓
+">이전</a>
+    
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Shortest-Path-Algorithms/" class="pagination--pager" title="[자료구조와 알고리즘] Shortest Path Algorithms
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/system/system%20programming/System-Programming-13-2%EC%9E%A5.-%EC%9D%B8%ED%84%B0%EB%84%B7-%EC%86%8C%EC%BC%93/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/system/system%20programming/[System Programming] 13-2장. 인터넷 소켓"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

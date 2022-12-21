@@ -1,0 +1,143 @@
+I"E#<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">시간 제한</th>
+      <th style="text-align: left">메모리 제한</th>
+      <th style="text-align: left">제출</th>
+      <th style="text-align: left">정답</th>
+      <th style="text-align: left">맞힌 사람</th>
+      <th style="text-align: left">정답 비율</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1 초</td>
+      <td style="text-align: left">128 MB</td>
+      <td style="text-align: left">8029</td>
+      <td style="text-align: left">2705</td>
+      <td style="text-align: left">2105</td>
+      <td style="text-align: left">33.810%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="문제">문제</h2>
+
+<p>2와 5로 나누어 떨어지지 않는 정수 n(1 ≤ n ≤ 10000)가 주어졌을 때, 1로만 이루어진 n의 배수를 찾는 프로그램을 작성하시오.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>입력은 여러 개의 테스트 케이스로 이루어져 있다. 각 테스트 케이스는 한 줄로 이루어져 있고, n이 주어진다.</p>
+
+<h2 id="출력">출력</h2>
+
+<p>1로 이루어진 n의 배수 중 가장 작은 수의 자리수를 출력한다.</p>
+
+<h2 id="예제-입력-1">예제 입력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3
+7
+9901
+</code></pre></div></div>
+
+<h2 id="예제-출력-1">예제 출력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3
+6
+12
+</code></pre></div></div>
+
+<h2 id="알고리즘-분류">알고리즘 분류</h2>
+
+<ul>
+  <li><a href="https://www.acmicpc.net/problem/tag/124">수학</a></li>
+  <li><a href="https://speardragon.github.io/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/bruteforce/Algorithm-Brute-Force(%EB%B8%8C%EB%A3%A8%ED%8A%B8-%ED%8F%AC%EC%8A%A4,-%EC%99%84%EC%A0%84-%ED%83%90%EC%83%89)/">브루트포스 알고리즘</a></li>
+  <li><a href="https://www.acmicpc.net/problem/tag/95">정수론</a></li>
+</ul>
+
+<h1 id="문제-풀이">문제 풀이</h1>
+
+<h2 id="풀이-과정">풀이 과정</h2>
+
+<p>문제 자체를 이해하는데 시간이 조금 오래걸렸지만 문제를 이해하고 푸는 것까지는 쉬웠다.</p>
+
+<p>2와 5로 나누어 떨어지지 않는 정수를 입력하였을 때 그 정수의 배수 중에서 1로만 구성된 숫자 중 최솟값을 찾는 문제였다.</p>
+
+<p>여기서 1로만 구성된 숫자란 (1, 11, 111, 1111,….) 와 같은 숫자들을 말하는 것이다.</p>
+
+<p>아래 코드를 보면 알겠지만 첫 번째 풀이 코드는 런타임에러(EOFError) 가 발생하였다. 직접 테스트 케이스를 넣어본 결과 모두 잘 나오는 것을 확인했음에도 저런 에러가 발생한 것은 이번이 처음이라 조금 당황했던 것 같다.</p>
+
+<p>검색을 통해 알아보니 이 문제는 <span style="color:red">입력 갯수가 주어지지 않았기 때문에 while, try를 사용하여 python의 EOF를 처리해 주어야 하는 것이었다.</span></p>
+
+<h2 id="제출-코드-실패">제출 코드: <mark>실패</mark></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">sol</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    
+    <span class="n">one</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">one</span> <span class="o">%</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">one</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">one</span> <span class="o">+=</span> <span class="mi">10</span><span class="o">*</span><span class="n">idx</span>
+            <span class="n">idx</span> <span class="o">*=</span> <span class="mi">10</span>
+            
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">sol</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>1, 11, 111, 1111 과 같은 패턴을 만들면서 입력 받은 정수와 modulo 연산을 통해 0이 나오면 n의 배수인 점을 활용하여 코드를 짰다.</p>
+
+<h2 id="제출-코드-성공1">제출 코드: <mark>성공1</mark></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+        <span class="n">one</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">one</span> <span class="o">%</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">one</span><span class="p">))</span>
+                <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+                <span class="k">break</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">one</span> <span class="o">+=</span> <span class="mi">10</span><span class="o">*</span><span class="n">idx</span>
+                <span class="n">idx</span> <span class="o">*=</span> <span class="mi">10</span>
+
+    <span class="k">except</span> <span class="nb">EOFError</span><span class="p">:</span>
+        <span class="k">break</span>
+</code></pre></div></div>
+
+<h2 id="제출-코드-성공2">제출 코드: <mark>성공2</mark></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+    <span class="k">except</span> <span class="nb">EOFError</span><span class="p">:</span>
+        <span class="k">break</span>
+
+    <span class="n">one</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">one</span> <span class="o">%</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">one</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+            <span class="k">break</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">one</span> <span class="o">+=</span> <span class="mi">10</span><span class="o">*</span><span class="n">idx</span>
+            <span class="n">idx</span> <span class="o">*=</span> <span class="mi">10</span>    
+</code></pre></div></div>
+
+<p>사실 의미는 없지만 try-except  구문을 위 두 가지 방법으로 모두 해 보았고 그 결과 1번 방법이 더 시간이 짧은 것을 확인 할 수 있었다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157186569-ed942e77-2c86-43ff-8beb-7d8cee972693.png" alt="image" /></p>
+
+:ET

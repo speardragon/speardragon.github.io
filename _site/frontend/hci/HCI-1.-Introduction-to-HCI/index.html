@@ -1,0 +1,2029 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[HCI] 1. Introduction to HCI | speardragon note</title>
+<meta name="description" content="1. Introduction to HCI">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[HCI] 1. Introduction to HCI">
+<meta property="og:url" content="http://localhost:4000/frontend/hci/HCI-1.-Introduction-to-HCI/">
+
+
+  <meta property="og:description" content="1. Introduction to HCI">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-07T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/frontend/hci/HCI-1.-Introduction-to-HCI/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#frontend" itemprop="item"><span itemprop="name">Frontend</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#hci" itemprop="item"><span itemprop="name">Hci</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[HCI] 1. Introduction to HCI</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[HCI] 1. Introduction to HCI">
+    <meta itemprop="description" content="1. Introduction to HCI">
+    <meta itemprop="datePublished" content="2022-09-07T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/frontend/hci/HCI-1.-Introduction-to-HCI/" class="u-url" itemprop="url">[HCI] 1. Introduction to HCI
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#1-introduction-to-hci">1. Introduction to HCI</a><ul><li><a href="#hci-in-the-1970s">HCI in the 1970s</a></li><li><a href="#hci-in-the-1980s">HCI in the 1980s</a></li><li><a href="#hci-in-the-1990s">HCI in the 1990s</a></li><li><a href="#context-of-hci-changes-in-computer-use">Context of HCI: Changes in Computer Use</a></li><li><a href="#historical-basis-of-hci">Historical basis of HCI</a></li><li><a href="#basic-interaction-1">Basic Interaction (1)</a></li><li><a href="#basic-interaction-2">Basic Interaction (2)</a></li><li><a href="#basic-interaction-3">Basic Interaction (3)</a></li><li><a href="#applications-1">Applications (1)</a></li><li><a href="#applications-2">Applications (2)</a></li><li><a href="#applications-3">Applications (3)</a></li><li><a href="#up--coming-areas-1">Up &amp; Coming Areas (1)</a></li><li><a href="#up--coming-areas-2">Up &amp; Coming Areas (2)</a></li><li><a href="#up--coming-areas-2-1">Up &amp; Coming Areas (2)</a></li><li><a href="#hci-as-a-business-necessity">HCI as a business necessity</a></li><li><a href="#case-study-1">Case Study (1)</a></li><li><a href="#case-study-2">Case Study (2)</a></li><li><a href="#case-study-3">Case Study (3)</a></li><li><a href="#safety-critical-systems">Safety-critical systems</a></li><li><a href="#user-hostile-example">‘User Hostile’ example</a></li><li><a href="#its-obvious">It’s obvious</a></li><li><a href="#another-example">Another example…</a></li><li><a href="#who-studies-hci">Who studies HCI?</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="1-introduction-to-hci">1. Introduction to HCI</h1>
+
+<p>사람과</p>
+
+<p>그것이 포함된 모든 것을 총괄하는 것이 HCI</p>
+
+<p>실제로는 유저 인터페이스 뿐만 아니라</p>
+
+<p>HCI의 C가 computer에 한정되지 않고 모든 인간이 사용하는 도구로 확장 가능함</p>
+
+<h2 id="hci-in-the-1970s">HCI in the 1970s</h2>
+
+<p>예전에는 생산성이 더 강조되던 시기</p>
+
+<p>그 당시 개발은 waterfall 방식 사용</p>
+
+<ul>
+  <li>유저 - 극단적인 이분법
+    <ul>
+      <li>“자연과 스무고개를 해서 이길 수 없다.”</li>
+    </ul>
+  </li>
+  <li>실험적으로 usability를 연구
+    <ul>
+      <li>특별한 정보를 주지 않는 경우가 많았음</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="hci-in-the-1980s">HCI in the 1980s</h2>
+
+<ul>
+  <li>결과를 보고 하는 것이 아니라 설계를 한다음에 유저에게 확인</li>
+  <li>설계 끝까지 가는 것이 아니라 중간 단계에서 유저와의 interaction을 통해 수정에 수정을 거침
+    <ul>
+      <li>prototyping, mock-ups의 중요성</li>
+      <li>formative evaluation
+        <ul>
+          <li>thinking aloud: 시제품을 유저에게 써보라고 하고 그 때 생각나는 모든 것을 말하기를 요구 후 모든 의견을 취합 및 파악</li>
+          <li>중간 평가의 방법론이 생기기 시작</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Models and theory (vs. guidelines)
+    <ul>
+      <li>the model human processor
+        <ul>
+          <li>Fitts’s Law: 사람이 아이콘을 클릭하는 데 걸리는 시간이나 배치를 효과적으로 하게끔 수식으로 규정해 놓은 것</li>
+          <li>GOMS: 사람이 메뉴를 보고 어떤식으로 움직이는지 모델링 한 것, operation을 어떻게 할 지 모델링</li>
+        </ul>
+      </li>
+      <li>mapping models: syntactic-semantic consistency
+        <ul>
+          <li>syntax: 휴지통에 파일을 버린다</li>
+          <li>semantic: 버리는 걸 휴지통으로 만듦으로써 의미를 알게끔하는.(의미가 통하게)</li>
+        </ul>
+      </li>
+      <li>the active user: prior knowledge, problem solving, and error as primary resources
+        <ul>
+          <li>이미 이전에 좀 써 본 사람들(이전 지식을 가진 사람)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hci-in-the-1990s">HCI in the 1990s</h2>
+
+<ul>
+  <li>UE (usability engineering) is multifaceted, qualitative, field-oriented
+    <ul>
+      <li>어디에서 사용하는 지 고려하기 시작</li>
+      <li>participatory design, contextual design(맥락을 고려한 디자인), ethnographicallyinformed design(어느 나라 사람이 쓸 것인지, 어떤 문화를 가진 사람이 쓸 것인지를 고려한 디자인)</li>
+      <li>drives/integrates system development <strong>lifecycle</strong>
+        <ul>
+          <li>version2, version3, ….</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Conceptual frameworks beyond user models
+    <ul>
+      <li>activity theory, ethnomethodology(민족적인), distributed cognition(개인이 아닌 사회가 갖고 있는 의식, 영향),  grounded theory, design rationale</li>
+      <li>But diminishing role in mainstream discourse (물론 mainstream과 멀어지기 시작)
+        <ul>
+          <li>기술들이 너무 integrated 되어 있어서 신경 쓰지 않아도될 정도가 됨</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>User interface technology too well integrated!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="context-of-hci-changes-in-computer-use">Context of HCI: Changes in Computer Use</h2>
+
+<ul>
+  <li>1960’s - Professional programmers, software psychology
+    <ul>
+      <li>전문성이 짙음</li>
+    </ul>
+  </li>
+  <li>1970’s - Business professionals, <strong>mainframes</strong>, command-line
+    <ul>
+      <li>비지니스에서 사용되기 시작, 굉장히 큰 mainframe과 같은 것이 회사에서 사용되기 시작</li>
+    </ul>
+  </li>
+  <li>1980’s - Large, diverse user groups, the computer for the rest of us
+    <ul>
+      <li>컴퓨터의 보편화</li>
+    </ul>
+  </li>
+  <li>1990’s - World Wide Web and more, information access &amp; overload</li>
+  <li>2000+ - Ubiquitous computing, diversity in task, device, …</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="historical-basis-of-hci">Historical basis of HCI</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907135707161.png" alt="image-20220907135707161" /></p>
+
+<ul>
+  <li>University Research</li>
+  <li>Corporate Research</li>
+  <li>Commercial Products</li>
+</ul>
+
+<p>마우스 연구가 끊긴 것이 마우스를 연구하지 않는다는 것이 아니라 마우스라는 개념으로서 추가적인 integration이 거의 끝난 것</p>
+
+<p><br /></p>
+
+<h2 id="basic-interaction-1">Basic Interaction (1)</h2>
+
+<ul>
+  <li>Graphical Objects
+    <ul>
+      <li>1963 (MIT)
+        <ul>
+          <li>Graphical Objects manipulated by a pointing device (light pen)</li>
+          <li>Objects could be selected, moved, resized, etc.</li>
+        </ul>
+      </li>
+      <li>1966 (Imperial College, London)
+        <ul>
+          <li>Icons, Gesture Recognition, Dynamic Menus, etc.</li>
+        </ul>
+      </li>
+      <li>1970 (XEROX Palo Alto Research Center)
+        <ul>
+          <li>XEROX: 복사기로 유명한 회사, 복사한다는 뜻이기도 함.</li>
+          <li>Object selection and manipulation</li>
+          <li>WYSIWYG
+            <ul>
+              <li>What You See What You Get</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="basic-interaction-2">Basic Interaction (2)</h2>
+
+<ul>
+  <li>Mouse
+    <ul>
+      <li>1965 (Stanford Research Lab [SRI])
+        <ul>
+          <li>Created to be a cheap replacement for light pens</li>
+          <li>light pen이 비쌈 -&gt; 싼 걸로 바꾸고자 했던 것이 mouse</li>
+        </ul>
+      </li>
+      <li>1970
+        <ul>
+          <li>Adopted at Xerox PARC</li>
+        </ul>
+      </li>
+      <li>First appeared commercially as part of
+        <ul>
+          <li>The Xerox Star (1981),</li>
+          <li>The Apple Lisa (1982),</li>
+          <li>The Apple Macintosh (1984).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="basic-interaction-3">Basic Interaction (3)</h2>
+
+<ul>
+  <li>Windows
+    <ul>
+      <li>1968 (Stanford Research  Lab [SRI])</li>
+      <li>1969 - 1974 (Xerox  PARC)
+        <ul>
+          <li>Smalltalk System</li>
+        </ul>
+      </li>
+      <li>1974 (MIT)
+        <ul>
+          <li>EMACS Text Editor - 우리가 사용하는 것과 거의 비슷한 에디터</li>
+        </ul>
+      </li>
+      <li>1981 (Xerox PARC)
+        <ul>
+          <li>The Cedar Window  Manager</li>
+        </ul>
+      </li>
+      <li>1981 Xerox Star</li>
+      <li>1982 Apple Lisa</li>
+      <li>1983 (Carnegie Mellon  University funded by IBM))
+        <ul>
+          <li>Andrew window manager</li>
+        </ul>
+      </li>
+      <li>1984 Apple Macintosh
+        <ul>
+          <li>훨씬 더 자연스럽게</li>
+        </ul>
+      </li>
+      <li>The early versions of the  Star and Microsoft  Windows were tiled, but  eventually they supported  overlapping windows like  the Lisa and Macintosh.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="applications-1">Applications (1)</h2>
+
+<ul>
+  <li>Drawing programs
+    <ul>
+      <li>uses a mouse for graphics (1965)</li>
+      <li>uses a tablet (1971)</li>
+      <li>handling of lines and curves (1975)</li>
+    </ul>
+  </li>
+  <li>Text Editing
+    <ul>
+      <li>first word processor with automatic word wrap, search &amp;  replace, user-definable macros, scrolling text, &amp;  commands to move, copy, and delete characters, words,  or blocks of text (1962)</li>
+      <li>screen editing &amp; formatting of arbitrary-sized strings with  a lightpen (1967)</li>
+      <li>mouse-based editing (1968)</li>
+      <li>first WYSIWYG editor-formatter (1974)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="applications-2">Applications (2)</h2>
+
+<ul>
+  <li>Spreadsheets
+    <ul>
+      <li>Initial spreadsheet was VisiCalc (1977-8) for the Apple II</li>
+    </ul>
+  </li>
+  <li>HyperText
+    <ul>
+      <li>The idea where documents are <strong>linked to related documents</strong> (1945)</li>
+      <li>Ted Nelson coined the term “hypertext” (1965)</li>
+      <li>NLS system was one of the first on-line journals, and it included  full linking of articles (1970)
+        <ul>
+          <li>Online System - NLS</li>
+        </ul>
+      </li>
+      <li>HyperCard from Apple (1988) significantly helped to bring the idea  to a wide audience</li>
+      <li><strong>Tim Berners-Lee</strong> used the hypertext idea to create the World Wide  Web in 1990 at the government-funded European Particle Physics  Laboratory (CERN)
+        <ul>
+          <li>입자 가속기</li>
+        </ul>
+      </li>
+      <li>Mosaic, the first popular hypertext browser for the World-Wide  Web, released in 1993
+        <ul>
+          <li>웹 브라우저</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="applications-3">Applications (3)</h2>
+
+<ul>
+  <li>Computer Aided Design (CAD)
+    <ul>
+      <li>first CAD systems similar to drawing programs (1963)</li>
+      <li>pioneering work on interactive 3D CAD system (1963)
+        <ul>
+          <li>처음 목적이 배나 이런 것들을 위한 것이었기 때문에 3D로 시작</li>
+        </ul>
+      </li>
+      <li>first CAD/CAM (manufacture) system in <strong>industry</strong> was  probably General Motor’s DAC-1 (about 1963)</li>
+    </ul>
+  </li>
+  <li>Video Games
+    <ul>
+      <li>first graphical video game was probably SpaceWar (1962)</li>
+      <li>the first computer joysticks (1962)</li>
+      <li>early computer adventure game was  created (1966)</li>
+      <li>first popular commercial game was  Pong (about 1976).</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="up--coming-areas-1">Up &amp; Coming Areas (1)</h2>
+
+<ul>
+  <li>Gesture Recognition
+    <ul>
+      <li>first pen-based input device used light-pen gestures (1963)</li>
+      <li>first trainable gesture recognizer (1964)</li>
+      <li>a gesture-based text editor using proof-reading symbols (1969)</li>
+      <li>gesture recognition has been used in commercial CAD systems  since the 1970s</li>
+      <li>came to universal notice with the Apple Newton (1992)</li>
+    </ul>
+  </li>
+  <li>Multimedia
+    <ul>
+      <li>컴퓨터에 등장하는 것을 모두 한꺼번에 등장토록 하는(텍스트, 그래픽, 스피치, …)</li>
+      <li>multiple windows with integrated <strong>text and graphics</strong> (1968)</li>
+      <li>Interactive Graphical Documents project was the first  hypermedia system which used raster graphics and text (1979- 1983)</li>
+      <li>Diamond project explored combining multimedia (text,  spreadsheets, graphics, speech) (1982)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="up--coming-areas-2">Up &amp; Coming Areas (2)</h2>
+
+<ul>
+  <li>3-D
+    <ul>
+      <li>first system 3-D CAD system (1963)</li>
+      <li>first interactive 3-D system used for molecular modelling  (1966)</li>
+      <li>the late 60’s and early 70’s saw the flowering of 3D raster  graphics funded by the government</li>
+      <li>the military-industrial flight simulation work of the 60’s - 70’s led the way to making 3-D real-time</li>
+    </ul>
+  </li>
+  <li>Virtual Reality
+    <ul>
+      <li>이 때 당시에 VR 장비가 ATM보다 큰 정도였음</li>
+      <li>original work on VR funded by Air Force (1965-1968)</li>
+      <li>study of force feedback, early research on head-mounted  displays and on the DataGlove (1971)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="up--coming-areas-2-1">Up &amp; Coming Areas (2)</h2>
+
+<ul>
+  <li>Computer Supported Cooperative Work
+    <ul>
+      <li>remote participation of multiple people at various sites  (1968)</li>
+      <li>Electronic mail, still the most widespread multi-user  software, was enabled by the ARPAnet (1969)</li>
+      <li>and by the Ethernet from Xerox PARC (1973)</li>
+      <li>an early computer conferencing system (1975)</li>
+    </ul>
+  </li>
+  <li>Natural language and speech
+    <ul>
+      <li>Speech synthesis</li>
+      <li>Speech recognition</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hci-as-a-business-necessity">HCI as a business necessity</h2>
+
+<ul>
+  <li>Can the users be ignored? (Linux, Windows,…)</li>
+  <li>NO
+    <ul>
+      <li><strong>HCI + Usability engineering</strong> are a crucial business  necessity
+        <ul>
+          <li>피쳐폰만 해도 되는 기능이 꽤 있었는데 인터페이스 하나만 바꾸었더니(스마트폰) 굉장한 혁신을 불러옴</li>
+        </ul>
+      </li>
+      <li>Good Interface &amp; Interaction Design should not be added  after system is built</li>
+      <li>Supporting users is an integral part of the design. To do  this one must consider …
+        <ul>
+          <li>International Standards in HCI and Ergonomics</li>
+          <li>User population is growing (size, diversity, etc.)</li>
+          <li>Expanding awareness amongst users of what can be achieved</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="case-study-1">Case Study (1)</h2>
+
+<ul>
+  <li>A mechanical syringe was once being developed. An  input device had to be created in order to enter the  injected dose</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907143147422.png" alt="image-20220907143147422" /></p>
+
+<p><br /></p>
+
+<h2 id="case-study-2">Case Study (2)</h2>
+
+<ul>
+  <li>A prototype was developed by the manufacturing  company and demonstrated to the hospital staff.  Happily they quickly noticed the potentially <strong>fatal flaw</strong>  in its interface.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907143115489.png" alt="image-20220907143115489" /></p>
+
+<p>키를 잘못누르면 망한다는 인터페이스</p>
+
+<p><br /></p>
+
+<h2 id="case-study-3">Case Study (3)</h2>
+
+<ul>
+  <li>The doses were entered by a numeric keypad: an  accidental keypress and the dose could be out by a  factor of 10! The production version had individual  increment/decrement buttons for each digit</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907143218800.png" alt="image-20220907143218800" /></p>
+
+<p><strong>단순히 편하고 멋진 디자인만이 HCI에서 생각하는 것이 아니라 안전성, 편의성 간의 tradeoff를 생각해 봐서 최적의 인터페이스를 고려해 내는 것이다.</strong></p>
+
+<p><br /></p>
+
+<h2 id="safety-critical-systems">Safety-critical systems</h2>
+
+<ul>
+  <li>Poor designs
+    <ul>
+      <li>Very common in
+        <ul>
+          <li>Safety</li>
+          <li>Life-critical</li>
+        </ul>
+      </li>
+      <li>Which all depend on computer-control</li>
+      <li>We need to understand why these happen?
+        <ul>
+          <li>Disasters</li>
+          <li>Accidents</li>
+          <li>Frustrations</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-hostile-example">‘User Hostile’ example</h2>
+
+<ul>
+  <li>Poor HCI can lead to User Hostile systems rather  than User Friendly ones …
+    <ul>
+      <li>John has a <strong>stereo system</strong> with a matched set of  components made by the same manufacturer: a receiver,  a CD player, and a cassette deck, stacked in that order.  They all have the on/off button on the left side. Every time  John goes to turn off all three components, he presses  the top left button on the receiver, which turns it off; then  he presses the top left button on the CD player, which  turns it off; then, naturally, he presses the top left button  on the cassette deck – <strong>which pops open the cassette  door</strong>.</li>
+    </ul>
+  </li>
+  <li>이런 일이 발생하는 이유는 앰프를 만드는 팀과 카세트를 만드는 팀이 다르다.(회사는 같더라도)</li>
+  <li>stereo 시스템이 있어야 되는 이유는 커다란 스피커를 핸들링 하기 위해서 나온 것이다.(핸드폰 x)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="its-obvious">It’s obvious</h2>
+
+<ul>
+  <li>It seems “obvious” that the manufacturer could have  improved the interface
+    <ul>
+      <li>putting all three buttons in the same location</li>
+    </ul>
+  </li>
+  <li>But it clearly wasn’t obvious to the system’s  designers!!</li>
+  <li>Most actions used to accomplish tasks with an  interface are quite obvious to people who know them,  including, of course, the software designer. But the  actions are often not obvious to the first-time user.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="another-example">Another example…</h2>
+
+<ul>
+  <li>Imagine a first-time user of a computer
+    <ul>
+      <li>he has been shown how to login to the system</li>
+      <li>has done some work</li>
+      <li>is now finished with the computer for the day</li>
+    </ul>
+  </li>
+  <li>Experienced computer users will find it obvious that a  logout command is needed.</li>
+  <li>But it may not occur to first-time users that a special  action is required to end the session.
+    <ul>
+      <li>People don’t “log out” of typewriters or televisions or video  games, so why should they log out of computers?</li>
+    </ul>
+  </li>
+  <li>Learning to predict problems like these by taking the  user’s point of view is a skill that requires practice.
+    <ul>
+      <li>이런 것들은 연습을 요구하는 스킬이잖아?!</li>
+    </ul>
+  </li>
+  <li>엑셀 파일을 x를 눌러 껐는데 저장 여부를 묻는 팝업창이 없다면 UX는 최악일 것이다.</li>
+</ul>
+
+<p><mark>처음 쓰는 유저도 사용할 수 있도록 유도할 수 있는 디자인이 좋은 디자인이다.</mark></p>
+
+<p>만약 예상치 못한 일로 어떤 사용자에게는 큰 일이 벌어진다면 그 사용자는 다시는 사용하지 않을 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="who-studies-hci">Who studies HCI?</h2>
+
+<ul>
+  <li>Multi-discipline field …</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907144418714.png" alt="image-20220907144418714" /></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#hci" class="page__taxonomy-item p-category" rel="tag">HCI</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#frontend" class="page__taxonomy-item p-category" rel="tag">FrontEnd</a><span class="sep">, </span>
+    
+      <a href="/categories/#hci" class="page__taxonomy-item p-category" rel="tag">HCI</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-09-07T00:00:00+09:00">2022-09-07</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BHCI%5D+1.+Introduction+to+HCI%20http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-1.-Introduction-to-HCI%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-1.-Introduction-to-HCI%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-1.-Introduction-to-HCI%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/frontend/hci/HCI-0.-Course-Introduction/" class="pagination--pager" title="[HCI] 0. Course Introduction
+">이전</a>
+    
+    
+      <a href="/os/OS-OS-Structure/" class="pagination--pager" title="[OS] OS Structure
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/frontend/hci/HCI-1.-Introduction-to-HCI/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/frontend/hci/[HCI] 1. Introduction to HCI"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,373 @@
+I"�,<h2 id="interrupts">Interrupts</h2>
+
+<p>CPU가 있으면 CPU가 직접 check 즉, polling하지 않고 IO 자체가 준비가 되면 IO가 interrupt를 걸어서 준비가 됐음을 알린다.</p>
+
+<p>priority를 줄 수도 있음(우선순위를 먼저 처리)</p>
+
+<ul>
+  <li>When a device is ready or error occurs
+    <ul>
+      <li>Controller interrupts CPU</li>
+    </ul>
+  </li>
+  <li>Interrupt is like an <strong>exception</strong>
+    <ul>
+      <li>But not synchronized to instruction execution</li>
+      <li>Can invoke handler between instructions</li>
+      <li>Cause information often identifies the interrupting device</li>
+    </ul>
+  </li>
+  <li><strong>Priority interrupts</strong>
+    <ul>
+      <li>Devices needing more urgent attention get higher priority</li>
+      <li>Can interrupt handler for a lower priority interrupt</li>
+    </ul>
+  </li>
+  <li><mark>Special hardware needed </mark>
+    <ul>
+      <li><strong>Interrupt controller</strong></li>
+      <li>현재 모인 interrupt를 처리해서 CPU에 달린 하나의 interrupt pin으로  보내준다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interrupt-controller">Interrupt controller</h2>
+
+<ul>
+  <li>Example: ARM microcontroller (Cortex M0)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172031965-e7813976-5134-4b85-acb5-9d28537b3cfb.png" alt="image" /></p>
+
+<p>interrupt source들 모아서 CPU에게 알려주고 우선순위, 대기열 등에 의거하여 interrupt를 control 해주는 interrupt controller이 있음</p>
+
+<p><br /></p>
+
+<h2 id="io-data-transfer">I/O Data Transfer</h2>
+
+<ul>
+  <li>Polling and interrupt-driven I/O
+    <ul>
+      <li>CPU transfers data between memory and I/O data registers</li>
+      <li>Time consuming for high-speed devices</li>
+    </ul>
+  </li>
+  <li>
+    <p>CPU가 harddisk에서 데이터는 lw하고 다시 메모리에 저장하는 행동은 너무 시간 소모가 심함.</p>
+  </li>
+  <li><span style="color:red">Direct memory access (DMA) </span>
+    <ul>
+      <li>CPU가 관여하지 않고</li>
+      <li>OS provides starting address in memory</li>
+      <li>I/O controller transfers to/from memory autonomously</li>
+      <li>Controller interrupts on completion or error</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>CPU는 다음과 기능이 있다. (셋 중 어느 기능이라도 없으면 CPU가 아님)</p>
+
+    <ul>
+      <li>
+        <p>Arithmetic and Logical processing</p>
+      </li>
+      <li>
+        <p>Data move(lw/sw)</p>
+      </li>
+      <li>
+        <p>flow control</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>DMA는 위 기능 중에서 다른건 다 못하고 Data move만 가능하도록 만든 것이다.</p>
+  </li>
+  <li>
+    <p>IO에서 메모리, 메모리에서 IO</p>
+  </li>
+</ul>
+
+<p>CPU 는 DMA controller 에게 다음과 같은 정보를 보냅니다.</p>
+
+<p>-Read/Write</p>
+
+<p>-Device address</p>
+
+<p>-Starting address of memory block for data</p>
+
+<p>-Amount of data to be transferred</p>
+
+<p><br /></p>
+
+<h2 id="direct-memory-access-dma">Direct Memory Access (DMA)</h2>
+
+<ul>
+  <li>For high-bandwidth devices (like disks) interrupt-driven I/O would consume a lot of processor cycles
+    <ul>
+      <li>disk와 같은 높은 bandwidth를 가진 기기(interrupt-driven IO)는 수많은 processor cycle을 소비할 것이다.</li>
+    </ul>
+  </li>
+  <li>With DMA, the DMA controller has the ability to transfer large blocks of data <strong>directly</strong> to/from the memory <strong>without involving the processor</strong>
+    <ul>
+      <li>DMA controller는 CPU 없이 memory와 직접적으로 거대 data block을 옮기는 능력이 있다</li>
+    </ul>
+  </li>
+</ul>
+
+<ol>
+  <li>The processor <strong>initiates the DMA transfer</strong> by supplying the I/O device address, the operation to be performed, the memory address destination/source, the number of bytes to transfer
+    <ul>
+      <li>CPU는 IO device adress를 공급함으로써 DMA 전송을 시작한다.</li>
+    </ul>
+  </li>
+  <li>The <strong>DMA controller manages the entire transfer</strong> (possibly  thousand of bytes in length), arbitrating for the bus
+    <ul>
+      <li>DMA controller는 전체의 전송을 관리한다.(가능한 한 1000 bytes 크기) ,bus를 커버하면서</li>
+    </ul>
+  </li>
+  <li>When the DMA transfer is complete, the DMA controller <strong>interrupts the processor</strong> to let it know that the transfer is complete
+    <ul>
+      <li>DMA 전송이 끝나면 DMA controller가 CPU에게 interrupt를 걸어서 다 끝났음을 알린다.</li>
+    </ul>
+  </li>
+</ol>
+
+<ul>
+  <li><strong>There may be multiple DMA devices in one system</strong>
+    <ul>
+      <li>Processor and DMA controllers contend(다투다, 경쟁하다) for bus cycles and for memory</li>
+    </ul>
+  </li>
+</ul>
+
+<p>처음에는 slave처럼 작동하다가 CPU가 bus를 끊으면 마치 master처럼 작동</p>
+
+<p><br /></p>
+
+<h2 id="dma-data-transfer-example">DMA Data transfer (Example)</h2>
+
+<ul>
+  <li>DMA 없이</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171561167-8292ebb2-1252-495a-8767-5a5d8793888e.png" alt="image" /></p>
+
+<ol>
+  <li>CPU transfer (read/write) data between memory and I/O</li>
+  <li>I/O operation is <strong>slow</strong> -&gt; CPU overhead</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171561248-ac76fd20-5533-493a-88bc-5ad9ee1901a9.png" alt="image" /></p>
+
+<ol>
+  <li>CPU <strong>writes</strong> command(r/w), device address, memory address, and count</li>
+  <li>Bus Request and Bus Grant</li>
+  <li>DMA controls data transfer (CPU can still use cache and do other calculation)</li>
+  <li>Once it’s done, send interrupt to CPU</li>
+</ol>
+
+<p>블락 단위로 보낼 수 있는 버퍼가 존재</p>
+
+<ul>
+  <li>
+    <p>DMA가 Bus를 통해서 CPU에게 Request를 보냄</p>
+  </li>
+  <li>
+    <p>CPU가 허락함(Bus Grant)</p>
+  </li>
+  <li>
+    <p>그러면 CPU와 memory의 연결을 끊어 버림</p>
+  </li>
+  <li>
+    <p>그러면 DMA가 master가 돼서 memory를 직접 주거니 받거니 한다.</p>
+  </li>
+  <li>disk가 CPU를 거치지 않고 directly memory에 access 할 수 있게 됐다.</li>
+  <li>전송을 마치면 interrupt를 보냄 -&gt; 다시 CPU가 bus를 잡음</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dma-data-transfer">DMA data Transfer</h2>
+
+<ul>
+  <li>If DMA writes to a memory block that is cached
+    <ul>
+      <li>Cached copy becomes <strong>stale</strong> (탁해진다, 신선하지 않다)</li>
+    </ul>
+  </li>
+  <li>If write-back cache has dirty block, and DMA reads memory block
+    <ul>
+      <li>Reads stale data</li>
+    </ul>
+  </li>
+  <li>Need to ensure <strong>cache coherence</strong>
+    <ul>
+      <li>memory에 있는 데이터가 cache에도 있을 경우에는 memory에서 가져오거나 memory에 write해 봤자 의미가 없다.
+        <ul>
+          <li>cache에는 update 됐는데 memory에는 아직 update되지 않았다면 이 memory 내용을 가져오는 건 좋지 않음 -&gt; cache coherence</li>
+          <li>write 할 때도 memory에만 update하면 안되고 cache에도 update 해주어야 함</li>
+        </ul>
+      </li>
+      <li>OS forces write-backs from cache if they will be used  for DMA (called a <strong>cache flush</strong>)</li>
+      <li>Or use <strong>non-cacheable memory</strong> locations for I/O
+        <ul>
+          <li>cache를 통하지 않고 바로오도록 하는 공간을 따로 마련</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dmavm-interaction">DMA/VM Interaction</h2>
+
+<ul>
+  <li>OS uses virtual addresses for memory
+    <ul>
+      <li>DMA blocks may not be contiguous in physical memory</li>
+    </ul>
+  </li>
+  <li>Should DMA use <strong>virtual addresses</strong>?
+    <ul>
+      <li>DMA controller will have to translate virtual address to physical  address (i.e. need TLB structure)</li>
+    </ul>
+  </li>
+  <li>If DMA uses <strong>physical addresses</strong>
+    <ul>
+      <li>Must constrain all the DMA transfers to stay within a page. (if not,  then it won’t necessarily be contiguous in memory)</li>
+      <li>May need to break transfers into page-sized chunks</li>
+      <li>Or chain multiple transfers</li>
+      <li>Or allocate contiguous physical pages for DMA</li>
+    </ul>
+  </li>
+  <li>
+    <p>Virtual 을 사용할 수도 physical을 사용할 수도 있음.</p>
+  </li>
+  <li>Whichever is used, the OS must cooperate by not  remapping pages while a DMA transfer involving that  page is in progress</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-system-performance">I/O system Performance</h2>
+
+<ul>
+  <li>I/O <strong>performance</strong> depends on
+    <ul>
+      <li>Hardware: CPU, memory, controllers, buses</li>
+      <li>Software: operating system, database management system,  application</li>
+      <li>Workload: request rates and patterns</li>
+    </ul>
+  </li>
+  <li>I/O system design can trade-off between <strong>response time and throughput</strong>
+    <ul>
+      <li>Measurements of throughput often done with constrained  response-time</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-vs-cpu-performance">I/O vs. CPU Performance</h2>
+
+<ul>
+  <li>Amdahl’s Law
+    <ul>
+      <li><strong>Don’t neglect I/O performance</strong> as parallelism increases computer  performance</li>
+    </ul>
+  </li>
+  <li>Example
+    <ul>
+      <li>Benchmark takes 90s CPU time, 10s I/O time
+        <ul>
+          <li>% IO time = 10/100 = 10%</li>
+        </ul>
+      </li>
+      <li>Double the number of CPUs / 2-years
+        <ul>
+          <li>I/O unchanged</li>
+        </ul>
+      </li>
+      <li>CPU time(1/f)은 줄여도 IO time(f)은 줄일 수 없기 때문에 IO time이 차지하는 비율이 점점 커진다.</li>
+      <li>따라서 speed up을 할 수 없는 부분(f)인 I/O가 중요하다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172289474-a58b7cdc-9884-4fdd-a6e8-73b92fa9b753.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="io-system-design">I/O System Design</h2>
+
+<ul>
+  <li>
+    <p>Satisfying <strong>latency</strong> requirements</p>
+
+    <ul>
+      <li>For time-critical operations</li>
+    </ul>
+  </li>
+  <li>
+    <p>Maximizing <strong>throughput</strong></p>
+
+    <ul>
+      <li>
+        <p>Find “weakest link” (lowest-bandwidth component) in  the I/O system</p>
+
+        <ul>
+          <li>Processor and memory system ?</li>
+          <li>Underlying interconnection (i.e. bus?)</li>
+          <li>
+            <p>I/O controllers ?</p>
+          </li>
+          <li>I/O device themselves ?</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Reconfigure the weakest link to meet the bandwidth  and/or latency requirements</p>
+  </li>
+  <li>
+    <p>Balance remaining components in the system</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="concluding-remarks">Concluding Remarks</h2>
+
+<ul>
+  <li>I/O performance measures
+    <ul>
+      <li>Throughput, response time</li>
+      <li>Dependability and cost also important</li>
+    </ul>
+  </li>
+  <li>Buses used to connect CPU, memory, I/O controllers
+    <ul>
+      <li>Polling, interrupts, DMA</li>
+    </ul>
+  </li>
+  <li>I/O benchmarks
+    <ul>
+      <li>TPC, SPECSFS, SPECWeb</li>
+    </ul>
+  </li>
+  <li>RAID
+    <ul>
+      <li>Improves performance and dependability</li>
+    </ul>
+  </li>
+</ul>
+
+<p>disk controller 안에 dma가 들어있다.</p>
+
+:ET

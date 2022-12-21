@@ -1,0 +1,679 @@
+I"�><h2 id="interaction-design-basics">Interaction design basics</h2>
+
+<ul>
+  <li>design:
+    <ul>
+      <li>what it is, interventions, goals, constraints</li>
+    </ul>
+  </li>
+  <li>the design process
+    <ul>
+      <li>what happens when</li>
+    </ul>
+  </li>
+  <li>users
+    <ul>
+      <li>who they are, what they are like …</li>
+    </ul>
+  </li>
+  <li>scenarios
+    <ul>
+      <li>rich stories of design</li>
+    </ul>
+  </li>
+  <li>navigation
+    <ul>
+      <li>finding your way around a system</li>
+    </ul>
+  </li>
+  <li>iteration and prototypes
+    <ul>
+      <li>never get it right first time! 2</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interactions-and-interventions">Interactions and interventions</h2>
+
+<ul>
+  <li>Design interactions not just interfaces
+    <ul>
+      <li>not just the immediate interaction</li>
+      <li>e.g. stapler in office – technology changes interaction style
+        <ul>
+          <li>manual: write, print, staple, write, print, staple, …</li>
+          <li>electric: write, print, write, print, …, staple</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Design interventions not just artefacts
+    <ul>
+      <li>not just the system, but also …
+        <ul>
+          <li>documentation, manuals, tutorials</li>
+          <li>what we say and do as well as what we make</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="what-is-design">What is design?</h2>
+
+<p>Achieving goals within constraints</p>
+
+<ul>
+  <li>Goals - purpose
+    <ul>
+      <li>who is it for, why do they want it</li>
+    </ul>
+  </li>
+  <li>Constraints
+    <ul>
+      <li>materials, platforms</li>
+    </ul>
+  </li>
+  <li>Trade-offs</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="for-humancomputer-interaction">for Human–Computer Interaction</h2>
+
+<p>Understand your materials</p>
+
+<ul>
+  <li>Understand computers
+    <ul>
+      <li>limitations, capacities, tools, platforms</li>
+    </ul>
+  </li>
+  <li>Understand people
+    <ul>
+      <li>psychological, social aspects</li>
+      <li>human error</li>
+    </ul>
+  </li>
+  <li>And their interaction …</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="to-err-is-human">To err is human</h2>
+
+<ul>
+  <li>accident reports ..
+    <ul>
+      <li>aircrash, industrial accident, hospital mistake</li>
+      <li>enquiry … blames … ‘human error’</li>
+    </ul>
+  </li>
+  <li>but …
+    <ul>
+      <li>concrete lintel breaks because too much weight</li>
+      <li>blame ‘lintel error’ ? … no – design error we know how concrete behaves under stress</li>
+    </ul>
+  </li>
+  <li>human ‘error’ is normal
+    <ul>
+      <li>we know how users behave under stress</li>
+      <li>so design for it!</li>
+    </ul>
+  </li>
+  <li>treat the user at least as well as physical materials!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="central-message-">Central message …</h2>
+
+<p><strong>the user</strong></p>
+
+<p><br /></p>
+
+<h2 id="the-process-of-design">The process of design</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766224-2a818d88-1036-4356-b697-ee205db4fe2f.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="steps">Steps…</h2>
+
+<ul>
+  <li>requirements
+    <ul>
+      <li>what is there and what is wanted …</li>
+    </ul>
+  </li>
+  <li>analysis
+    <ul>
+      <li>ordering and understanding</li>
+    </ul>
+  </li>
+  <li>design
+    <ul>
+      <li>what to do and how to decide</li>
+    </ul>
+  </li>
+  <li>iteration and prototyping
+    <ul>
+      <li>getting it right … and finding what is really needed!</li>
+    </ul>
+  </li>
+  <li>implementation and deployment
+    <ul>
+      <li>making it and getting it out there</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="-but-how-can-i-do-it-all--">… but how can I do it all ! !</h2>
+
+<ul>
+  <li>limited time =&gt; design trade-off</li>
+  <li>usability?
+    <ul>
+      <li>finding problems and fixing them?</li>
+      <li>deciding what to fix?</li>
+    </ul>
+  </li>
+  <li>a perfect system is badly designed
+    <ul>
+      <li>too good =&gt; too much effort in design</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-focus">User focus</h2>
+
+<ul>
+  <li>Know your user</li>
+  <li>Persona</li>
+  <li>Cultural probes</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="know-your-user">Know your user</h2>
+
+<ul>
+  <li>Who are they? Probably not like you!
+    <ul>
+      <li>“Know thy user, and YOU are not thy user.” – Arnie Lund</li>
+    </ul>
+  </li>
+  <li>Talk to them – User Interview</li>
+  <li>Watch them</li>
+  <li>Use your imagination</li>
+  <li>you must <strong>understand</strong> the needs of your users</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-interviews">User Interviews</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766325-ac9e90c2-9477-4d4e-a18b-69bb0530fbcb.png" alt="image" /></p>
+
+<ul>
+  <li>User’s task analysis usually focus on:
+    <ul>
+      <li>Who they are (profile);</li>
+      <li>What they do, when and where (context);</li>
+      <li>Why they do it (needs, goals, tasks) ;</li>
+      <li>How they do it (experience);</li>
+      <li>What they like or dislike (frustrations).</li>
+    </ul>
+  </li>
+  <li>Users’ emotions, beliefs, and feelings focus on:
+    <ul>
+      <li>How users feel (about the intended action);</li>
+      <li>What emotions are evoked in the process;</li>
+      <li>Their emotional motivations to complete the intended action;</li>
+      <li>Their barriers that prevent them from taking the intended action;</li>
+      <li>Their values and beliefs related to the intended action;</li>
+      <li>Social or cultural factors that may impact the experience.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="persona">Persona</h2>
+
+<ul>
+  <li>Description of an ‘example’ user
+    <ul>
+      <li>not necessarily a real person</li>
+    </ul>
+  </li>
+  <li>Use as surrogate user
+    <ul>
+      <li>what would Betty think</li>
+    </ul>
+  </li>
+  <li>Details matter
+    <ul>
+      <li>makes her ‘real’</li>
+    </ul>
+  </li>
+  <li>Benefits of Personas
+    <ul>
+      <li>Company wide understanding of who your users are</li>
+      <li>Deep understanding of customer behavior and needs</li>
+      <li>Stop people talking about someone they know as the user(s)</li>
+      <li>More effective, focused conversations and business meetings</li>
+      <li>Better decision making; focused on user needs and goals</li>
+      <li>Greater empathy with the customer</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-persona">Example persona</h2>
+
+<p>Betty is 37 years old, She has been Warehouse Manager for five years and worked for Simpkins Brothers Engineering for twelve years. She didn’t go to university, but has studied in her evenings for a business diploma. She has two children aged 15 and 7 and does not like to work late. She did part of an introductory in-house computer course some years ago, but it was interrupted when she was promoted and could no longer afford to take the time. Her vision is perfect, but her right-hand movement is slightly restricted following an industrial accident 3 years ago. She is enthusiastic about her work and is happy to delegate responsibility and take suggestions from her staff. However, she does feel threatened by the introduction of yet another new computer system (the third in her time at SBE).</p>
+
+<p><br /></p>
+
+<h2 id="cultural-probes">Cultural probes</h2>
+
+<ul>
+  <li>Direct observation
+    <ul>
+      <li>sometimes hard
+        <ul>
+          <li>in the home</li>
+          <li>psychiatric patients, …</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Probe packs
+    <ul>
+      <li>items to prompt responses
+        <ul>
+          <li>e.g. glass to listen at wall, camera, postcard</li>
+        </ul>
+      </li>
+      <li>given to people to open in their own environment they record what is meaningful to them</li>
+    </ul>
+  </li>
+  <li>Used to …
+    <ul>
+      <li>inform interviews, prompt ideas, enculture designers</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scenarios">Scenarios</h2>
+
+<ul>
+  <li>
+    <p>stories for design</p>
+  </li>
+  <li>
+    <p>use and reuse</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scenarios-1">Scenarios</h2>
+
+<ul>
+  <li>Stories for design
+    <ul>
+      <li>communicate with others</li>
+      <li>validate other models</li>
+      <li>understand dynamics</li>
+    </ul>
+  </li>
+  <li>Linearity
+    <ul>
+      <li>time is linear - our lives are linear</li>
+      <li>but don’t show alternatives</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scenarios-is-about">Scenarios is about…</h2>
+
+<ul>
+  <li>What will users want to do?</li>
+  <li>Step-by-step walkthrough
+    <ul>
+      <li>what can they see (sketches, screen shots)</li>
+      <li>what do they do (keyboard, mouse etc.)</li>
+      <li>what are they thinking?</li>
+    </ul>
+  </li>
+  <li>Use and reuse throughout design</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scenario--movie-player">Scenario – movie player</h2>
+
+<p>Brian would like to see the new film “Moments of Significance” and wants to invite Alison, but he knows she doesn’t like “arty” films. He decides to take a look at it to see if she would like it and so connects to one of the movie sharing networks. He uses his work machine as it has a higher bandwidth connection, but feels a bit guilty. He knows he will be getting an illegal copy of the film, but decides it is OK as he is intending to go to the cinema to watch it. After it downloads to his machine he takes out his new personal movie player. He presses the ‘menu’ button and on the small LCD screen he scrolls using the arrow keys to ‘Bluetooth connect’ and presses the select button. On his computer the movie download program now has an icon showing that it has recognized a compatible device and he drags the icon of the film over the icon for the player. On the player the LCD screen says “downloading now”, a percent done indicator and small whirling icon. … … …</p>
+
+<p><br /></p>
+
+<h2 id="also-play-act-">Also play act …</h2>
+
+<ul>
+  <li>
+    <p>Mock-up device</p>
+  </li>
+  <li>
+    <p>Pretend you are doing it</p>
+  </li>
+  <li>
+    <p>Swiss army knife has a touchpad … 21</p>
+  </li>
+  <li>
+    <p><img src="https://user-images.githubusercontent.com/79521972/194766513-0ccc38a0-9aa1-4c1c-816e-2f616b963f15.png" alt="image" /></p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="-explore-the-depths">… Explore the depths</h2>
+
+<ul>
+  <li>Explore interaction
+    <ul>
+      <li>what happens when</li>
+    </ul>
+  </li>
+  <li>Explore cognition
+    <ul>
+      <li>what are the users thinking</li>
+    </ul>
+  </li>
+  <li>Explore architecture
+    <ul>
+      <li>what is happening inside</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="use-scenarios-to-">Use scenarios to ..</h2>
+
+<ul>
+  <li>Communicate with others
+    <ul>
+      <li>designers, clients, users</li>
+    </ul>
+  </li>
+  <li>Validate other models
+    <ul>
+      <li>‘play’ it against other models</li>
+    </ul>
+  </li>
+  <li>Express dynamics
+    <ul>
+      <li>screenshots – appearance</li>
+      <li>scenario – behaviour</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="linearity">Linearity</h2>
+
+<ul>
+  <li>Scenarios - one linear path through system</li>
+  <li>Pros:
+    <ul>
+      <li>life and time are linear</li>
+      <li>easy to understand (stories and narrative are natural)</li>
+      <li>concrete (errors less likely)</li>
+    </ul>
+  </li>
+  <li>Cons:
+    <ul>
+      <li>no choice, no branches, no special conditions</li>
+      <li>miss the unintended</li>
+    </ul>
+  </li>
+  <li>So:
+    <ul>
+      <li>use several scenarios</li>
+      <li>use several methods</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="navigation-design">Navigation design</h2>
+
+<ul>
+  <li>Local structure – single screen</li>
+  <li>Global structure – whole site</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766604-35e44af7-3b75-4577-948c-8e3f5bcfe03c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="levels">Levels</h2>
+
+<ul>
+  <li>Widget choice
+    <ul>
+      <li>menus, buttons etc.</li>
+    </ul>
+  </li>
+  <li>Screen design</li>
+  <li>Application navigation design</li>
+  <li>Environment
+    <ul>
+      <li>other apps, O/S</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-web">the Web…</h2>
+
+<ul>
+  <li>Widget choice</li>
+  <li>Screen design</li>
+  <li>Navigation design</li>
+  <li>
+    <p>Environment</p>
+  </li>
+  <li>Elements and tags
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">&lt;a href="..." &gt;</code></li>
+    </ul>
+  </li>
+  <li>Page design</li>
+  <li>Site structure</li>
+  <li>The web, browser, external links</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="physical-devices">Physical devices</h2>
+
+<ul>
+  <li>Widget choice</li>
+  <li>Screen design</li>
+  <li>Navigation design</li>
+  <li>
+    <p>Environment</p>
+  </li>
+  <li>Controls
+    <ul>
+      <li>buttons, knobs, dials</li>
+    </ul>
+  </li>
+  <li>Physical layout</li>
+  <li>Modes of device</li>
+  <li>The real world</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="think-about-structure">Think about structure</h2>
+
+<ul>
+  <li>Within a screen
+    <ul>
+      <li>later …</li>
+    </ul>
+  </li>
+  <li>Local
+    <ul>
+      <li>looking from this screen out</li>
+    </ul>
+  </li>
+  <li>Global
+    <ul>
+      <li>structure of site, movement between screens</li>
+    </ul>
+  </li>
+  <li>Wider still
+    <ul>
+      <li>relationship with other applications</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="four-golden-rules">Four golden rules</h2>
+
+<ul>
+  <li>Knowing where you are</li>
+  <li>Knowing what you can do</li>
+  <li>Knowing where you are going
+    <ul>
+      <li>or what will happen</li>
+    </ul>
+  </li>
+  <li>Knowing where you’ve been
+    <ul>
+      <li>or what you’ve done</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="where-you-are--breadcrumbs">Where you are – breadcrumbs</h2>
+
+<ul>
+  <li>Breadcrumb Trail shows path through web site hierarchy</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766760-bb08661e-e8a4-48ba-948a-4436902cc804.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="beware-the-big-button-trap">Beware the big button trap</h2>
+
+<ul>
+  <li>Where do they go?
+    <ul>
+      <li>Uninformative labels on buttons; lots of room for extra text!
+        <ul>
+          <li>Try to provide extra text to explain the purpose of each button (e.g. beside the button)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>​	<img src="https://user-images.githubusercontent.com/79521972/194766780-a7fb57b7-95c7-4593-8880-214d20a21785.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="modes">Modes</h2>
+
+<ul>
+  <li>Lock to prevent accidental use …
+    <ul>
+      <li>remove lock : ‘c’ + ‘yes’ to confirm</li>
+      <li>frequent practiced action</li>
+    </ul>
+  </li>
+  <li>If lock forgotten
+    <ul>
+      <li>in pocket ‘yes’ gets pressed</li>
+      <li>goes to phone book</li>
+      <li>in phone book …</li>
+      <li>‘c’ – delete entry</li>
+      <li>‘yes’ – confirm</li>
+      <li>… oops !</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="global">Global</h2>
+
+<ul>
+  <li>Between screens</li>
+  <li>Within the application</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hierarchical-diagrams">Hierarchical diagrams</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766816-64140bcb-dc41-48d6-81ee-bce470e45002.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="hierarchical-diagrams-ctd">Hierarchical diagrams (ctd.)</h2>
+
+<ul>
+  <li>Parts of application
+    <ul>
+      <li>screens or groups of screens</li>
+    </ul>
+  </li>
+  <li>Typically functional separation</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="navigating-hierarchies">Navigating hierarchies</h2>
+
+<ul>
+  <li>Deep is difficult!</li>
+  <li>Misuse of Miller’s 7 ± 2
+    <ul>
+      <li>short term memory, not menu size</li>
+    </ul>
+  </li>
+  <li>Optimal?
+    <ul>
+      <li>many items on each screen</li>
+      <li>but structured within screen</li>
+    </ul>
+  </li>
+</ul>
+:ET

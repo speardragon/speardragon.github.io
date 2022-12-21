@@ -1,0 +1,1932 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Computer Architecture] Cache Design | speardragon note</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Computer Architecture] Cache Design">
+<meta property="og:url" content="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-Cache-Design/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-05-17T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-Cache-Design/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-architecture" itemprop="item"><span itemprop="name">Computer architecture</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Computer Architecture] Cache Design</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Computer Architecture] Cache Design">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-05-17T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-Cache-Design/" class="u-url" itemprop="url">[Computer Architecture] Cache Design
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<p>way는 한 cache(set) address에 들어갈 수 있는 장소가 몇 개가 있느냐?를 나타내는 숫자</p>
+
+<p>애초에 tag를 비교하는 것은 시간이 오래걸려서 fully associative 같은 경우 Tag를 모두 비교하는 것은 매우 비효율적이기 때문에 이를 parallel 하게 모두 비교하자니 hardware 를 너무 무겁게 사용하게 된다.</p>
+
+<p>그래서 이를 위한 특별한 메모리를 사용하는데 그것이 바로 Content addressable Memory(CAM) 이라고 한다.</p>
+
+<p><br />
+direct mapped (b=2)</p>
+
+<ul>
+  <li>block size가 2인 direct mapped</li>
+  <li>
+    <p>한 address를 가져올 때 그것과 인접한 address도 하나 같이 가져오는데 이 둘의 인접해 있을 것이기 때문에 <strong>같은 tag</strong>를 가지고 있을 것이다.</p>
+  </li>
+  <li>그렇기 때문에 별도의 tag 두 개가 필요한 것이 아니라 같은 tag에 두 개의 address가 들어가게 되는 것이다.</li>
+</ul>
+
+<hr />
+
+<p>Q) block size가 크면 pollution data가 들어올 수도 있는데 왜 이렇게 하냐</p>
+
+<p>A) Spatial Locality, 즉, 그 data를 가져왔다는 것은 그 근처의 data를 가져올 가능성이 크기 때문이다.</p>
+
+<p>Q) 교수님 질문있습니다 혹시 2-way와 4-way일때는 tag를 비교하는데 8-way일때만 cam을 이용하는것 인가요 ?</p>
+
+<p>A) b</p>
+
+<hr />
+
+<p>fully associative는 delay가 길어서 cache에서는 사용못하지만 virtual memory에서는 사용한다.</p>
+
+<p><br /></p>
+
+<h2 id="spatial-locality">Spatial Locality?</h2>
+
+<ul>
+  <li>Increase block size:
+    <ul>
+      <li>Block size, b = 4 words</li>
+      <li>C = 8 words</li>
+      <li>Direct mapped (1 block per set)</li>
+      <li>Number of blocks, B = 2 (C/b = 8/4 = 2)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168721989-b4c21b9b-1cbc-4ce7-88c7-1a6ebaeaadbb.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="cache-with-larger-block-size">Cache with Larger Block Size</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168722037-425c9329-baa6-4af5-af77-5c9e59f0b5e7.png" alt="image" /></p>
+
+<p>hit인 경우를 판단하여 Hit일 때 memory address의 값을 읽어 data로 가져온다.</p>
+
+<p><br /></p>
+
+<h2 id="direct-mapped-cache-performance">Direct Mapped Cache Performance</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168724373-ecab6642-edac-4fa4-8a4c-60f5a0206e28.png" alt="image" /></p>
+
+<p>0x4: 000<span style="color:red">0</span><strong>01</strong>00</p>
+
+<p>0xC: 000<span style="color:red">0</span><strong>11</strong>00</p>
+
+<p>0x8: 000<span style="color:red">0</span><strong>10</strong>00</p>
+
+<ul>
+  <li>빨간색 -&gt;  set number (위 그림에서 set이 두 개이기 때문에 1 bit가 필요하다.)</li>
+  <li>bold 체 -&gt; block offset  (위 그림에서 block의 갯수가 4개이기 때문에 2bit가 필요하다.)</li>
+</ul>
+
+<p>한 번 가져올 때 miss가 나는데 (compulsory miss) 그걸 가져올 때 근처에 있는 것을 가져오기 때문에 그 이후에 그 주소를 가져올 때는 compulsory miss가 발생하지 않는다.</p>
+
+<p>Q) 근처에 address를 가져오는데 근처의 기준이 뭐지? tag? 아니면 그 이후꺼를 쭉?</p>
+
+<p>A)</p>
+
+<p><br /></p>
+
+<h2 id="block-size-consideration">Block size Consideration</h2>
+
+<ul>
+  <li>Larger blocks should reduce miss rate
+    <ul>
+      <li>Due to spatial locality</li>
+    </ul>
+  </li>
+  <li>But, in a fixed-sized cache
+    <ul>
+      <li>Larger blocks =&gt; fewer of them
+        <ul>
+          <li>More competition =&gt; increased miss rate</li>
+        </ul>
+      </li>
+      <li>Larger blocks =&gt; pollution</li>
+    </ul>
+  </li>
+  <li>Larger miss penalty
+    <ul>
+      <li>Can override benefit of reduced miss rate</li>
+      <li>Early restart and critical-word-first can help</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="types-of-misses">Types of Misses</h2>
+
+<ul>
+  <li><strong>Compulsory</strong>: first time data accessed</li>
+  <li><strong>Capacity</strong>: cache too small to hold all data of  interest
+    <ul>
+      <li>전제적으로 cache size가 작아서 할 수 없이 생기는 miss</li>
+    </ul>
+  </li>
+  <li><strong>Conflict</strong>: data of interest maps to same  location in cache
+    <ul>
+      <li>n-way를 조금 늘리면 괜찮아지는 miss (용량을 늘리고 tag로 확인)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Miss penalty</strong>: time it takes to retrieve a block from lower level of hierarchy</p>
+
+<p><br /></p>
+
+<h2 id="cache-organization-recap">Cache Organization Recap</h2>
+
+<ul>
+  <li>Capacity: C</li>
+  <li>Block size: b</li>
+  <li>Number of blocks in cache: <strong>B = C/b</strong></li>
+  <li>Number of blocks in a set: N (direct의 경우 1)</li>
+  <li>Number of sets: S = B/N</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168725294-cccc1950-a96f-417b-aaac-3007e4a79145.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h1 id="chapter-8-memory-systems">Chapter 8: Memory Systems</h1>
+
+<h2 id="cache-replacement-policy">Cache Replacement Policy</h2>
+
+<h2 id="replacement-policy">Replacement Policy</h2>
+
+<ul>
+  <li>Cache is too small to hold all data of interest at once</li>
+  <li>If cache full: program accesses data X &amp; evicts data Y</li>
+  <li><strong>Capacity miss</strong> when access Y again</li>
+  <li>How to choose Y to minimize chance of needing it again?
+    <ul>
+      <li><strong>Least recently used (LRU) replacement</strong>: the least  recently used block in a set evicted</li>
+    </ul>
+  </li>
+  <li>cache에 데이터가 다시 들어오게 되는 경우 기존에 있던 것을 버려야 할텐데 무슨 기준으로 버려야 되는가?
+    <ul>
+      <li>LRU(Least recently used) replacement</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Direct mapped: no choice</li>
+  <li>Set associative:
+    <ul>
+      <li>Prefer non-valid entry, if there is one</li>
+      <li>Otherwise, choose among entries in the set Conflict: data of interest maps to same location in cache</li>
+    </ul>
+  </li>
+  <li>Least-recently used (LRU)
+    <ul>
+      <li>Choose the one unused for the longest time
+        <ul>
+          <li>Simple for 2-way, manageable for 4-way, <strong>too hard beyond that</strong></li>
+          <li>2-way나 4-way는 managable 한데 엄청 큰 건 힘듦</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Random
+    <ul>
+      <li>Gives approximately the same performance as LRU for high associativity</li>
+      <li>생각보다 성능이 높음(n이 클 때 거의 LRU와 비슷한 성능)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="lru-replacement">LRU Replacement</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168725967-4a0475b6-c6f0-4cd8-a599-cc71aab047c6.png" alt="image" /></p>
+
+<ul>
+  <li>0x04가 들어오고 0x24가 들어왔기 때문에 더 먼저 쓰인 04번지를 밀어내고 새로 54 번지가 들어오도록 한다.</li>
+  <li>둘 중에 어떤게 더 최근에 쓰였는지 항상 tracking을 해야 함.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cache-misses">Cache Misses</h2>
+
+<ul>
+  <li>☞ The next few slides are excerpts from the book, COD. )</li>
+  <li>On cache hit, CPU proceeds normally</li>
+  <li><strong>On cache miss</strong>
+    <ul>
+      <li>Stall the CPU pipeline
+        <ul>
+          <li>access를 할 수 없기 때문에</li>
+        </ul>
+      </li>
+      <li>Fetch block from <strong>next level</strong> of hierarchy</li>
+      <li>Instruction cache miss
+        <ul>
+          <li>Restart instruction fetch</li>
+        </ul>
+      </li>
+      <li>Data cache miss
+        <ul>
+          <li>Complete data access</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="write-through">Write-Through</h2>
+
+<ul>
+  <li>On data-write hit, could just update the block in cache
+    <ul>
+      <li>cache에는 write이 바로 될 지라도 실질적은 memory에 써지지는 않는다.</li>
+      <li>But then cache and memory would be inconsistent</li>
+    </ul>
+  </li>
+  <li><strong>Write through</strong>: also update memory
+    <ul>
+      <li>cache가 update 될 때마다 memory도 update 하도록 한다!
+        <ul>
+          <li>시간이 엄청 걸릴 것이다 -&gt; buffer로 해결</li>
+        </ul>
+      </li>
+      <li>대신 cache와 memory의 내용이 같게 유지할 수 있다.</li>
+    </ul>
+  </li>
+  <li>But, makes writes take longer
+    <ul>
+      <li>e.g., if base CPI = 1, 10% of instructions are stores, write  to memory takes 100 cycles
+        <ul>
+          <li>Effective CPI = 1 + 0.1×100 = 11</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Solution</strong>: <mark>write buffer</mark>
+    <ul>
+      <li>Holds data waiting to be written to memory</li>
+      <li>CPU continues immediately
+        <ul>
+          <li><strong>Only stalls on write if write buffer is already full</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="write-back">Write-Back</h2>
+
+<ul>
+  <li>Alternative: On data-write hit, just update the block in cache
+    <ul>
+      <li>Keep track of whether each block is dirty</li>
+    </ul>
+  </li>
+  <li>When a dirty block is replaced
+    <ul>
+      <li>Write it back to memory</li>
+      <li>Can use a write buffer to allow replacing block to be read first</li>
+    </ul>
+  </li>
+</ul>
+
+<p>또 다른 방식은 Write-back 방식이다. 이 방식은 블록이 교체될 때만 메모리의 데이터를 업데이트한다. 데이터가 변경됐는지 확인하기 위해 캐시 블록마다 <code class="language-plaintext highlighter-rouge">dirty</code> 비트를 추가해야 하며, 데이터가 변경되었다면 <code class="language-plaintext highlighter-rouge">1</code>로 바꿔준다. 이후 해당 블록이 교체될 때 <code class="language-plaintext highlighter-rouge">dirty</code> 비트가 <code class="language-plaintext highlighter-rouge">1</code>이라면 메모리의 데이터를 변경하는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="write-miss---write-allocation">Write Miss - Write Allocation</h2>
+
+<ul>
+  <li>What should happen on a Write Miss?</li>
+  <li>For, Write-through
+    <ul>
+      <li>Write allocate (or fetch-on-write): fetch the block  followed by write-hit operation</li>
+      <li>Write around (or write-no-allocate): not loaded to  cache, and is written directly to memory
+        <ul>
+          <li>Since programs often write a whole block before reading it (e.g.  initialization)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>For, Write-back
+    <ul>
+      <li>Usually fetch the block</li>
+    </ul>
+  </li>
+</ul>
+
+<p>데이터를 변경할 주소가 캐싱된 상태가 아니라면(Write miss) Write-allocate 방식을 사용한다. 당연한 얘기지만, 미스가 발생하면 해당 데이터를 캐싱하는 것이다. write-allocate를 하지 않는다면 당장은 resource를 아낄 수 있겠지만 캐시의 목적을 달성하지는 못할 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="example-intrinsity-fastmath시험">Example: Intrinsity FastMATH(시험)</h2>
+
+<ul>
+  <li>Embedded MIPS processor
+    <ul>
+      <li>12-stage pipeline</li>
+      <li>Instruction and data access on each cycle</li>
+    </ul>
+  </li>
+  <li>Split cache: separate I-cache and D-cache
+    <ul>
+      <li>Each 16-KB: 256 blocks * 16 Words/block</li>
+      <li>D-cache: write-through or write-back</li>
+    </ul>
+  </li>
+  <li>SPEC2000 miss rate (benchmark program)
+    <ul>
+      <li>I-cache: 0.4%</li>
+      <li>D-cache: 11.4%</li>
+      <li>Weighted average: 3.2%</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-intrinsity-fastmath">Example: Intrinsity FastMATH</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168726950-e68112ea-869e-40fd-aca8-359af5b6aae4.png" alt="image" /></p>
+
+<p>Virtual memory와 합쳐진 processor 구조가 중요함 (추후에 배울 것)</p>
+
+<p><br /></p>
+
+<h2 id="main-memory-supporting-caches">Main Memory Supporting Caches</h2>
+
+<ul>
+  <li>Use DRAMs for main memory
+    <ul>
+      <li>Fixed width (e.g., 1 word)</li>
+      <li>Connected by fixed-width clocked bus
+        <ul>
+          <li><strong>Bus clock</strong> is typically slower than CPU clock</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Example cache block read
+    <ul>
+      <li>Assume, 1 bus cycle for <strong>address transfer</strong></li>
+      <li>15 bus cycles per <strong>DRAM access</strong></li>
+      <li>1 bus cycle per <strong>data transfer</strong></li>
+    </ul>
+  </li>
+  <li>For 4-word block, 1-word-wide DRAM
+    <ul>
+      <li>Miss penalty = 1 + 4×15 + 4×1 = 65 bus cycles</li>
+      <li>Bandwidth = 16 bytes / 65 cycles = 0.25 B/cycle</li>
+    </ul>
+  </li>
+  <li>
+    <p>memory에서 가져오기 위해 address를 전달하는데 한 clock 걸린다고 가정( bus를 통해 전달)</p>
+  </li>
+  <li>
+    <p>DRAM이니까 cell에 가서 메모리를 가져와서 적재하는데 15 bus cycle이 걸림.</p>
+  </li>
+  <li>전달하는데 1 bus cycle</li>
+</ul>
+
+<p>그렇다면 4word(16 byte)를 가져오는데 몇 clock이 걸릴까?</p>
+
+<p>1 + 15 *</p>
+
+<p><br /></p>
+
+<h2 id="increasing-memory-bandwidth">Increasing Memory Bandwidth</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168727455-cc3e1f01-0465-40cd-b158-a4b54eae54b2.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168727464-fac87e10-1db3-4726-bd1e-4002576a8a2b.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>a-&gt;b : bus가 32에서 128로 변화했다하면</p>
+
+    <ul>
+      <li>4-word wide memory
+        <ul>
+          <li>Miss penalty = 1 + 15 + 1 = 17 bus cycles</li>
+          <li>
+            <p>Bandwidth = 16 bytes / 17 cycles = 0.94 B/cycle</p>
+          </li>
+          <li>
+            <p>address가 bus를 통해 오면, 상위 address는 똑같기 때문에 memory bank에 동시에 찾아간다.</p>
+          </li>
+          <li>찾아 가는데는 15clock, 하나씩 보내는데 4clock</li>
+        </ul>
+      </li>
+      <li>4-bank interleaved memory
+        <ul>
+          <li>Miss penalty = 1 + 15 + 4×1 = 20 bus cycles</li>
+          <li>Bandwidth = 16 bytes / 20 cycles = 0.8 B/cycle</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>b의 bus는 128 bit, c의 bus는 32bit</p>
+  </li>
+  <li>
+    <p>c를 쓰는 것이 좋다.</p>
+  </li>
+</ul>
+
+<p>메모리에 접근하는것은
+캐시 하나 존재 &gt; 메모리가 버스로 연결 &gt; 메모리 구조이다.
+이때, bandwidth를 늘리면 한번에 이동가능한 메모리양이 늘어난다. bus를 늘리기 위해서는 구조비용이 많이 들게 된다. 따라서 비용없이 늘리기 위해서는 bank라고 하는 개념이 도입된다.</p>
+
+<p>사실 이해 잘 안 됨</p>
+
+<p>https://parksb.github.io/article/29.html</p>
+
+<p>https://velog.io/@blacklandbird/%EC%BB%B4%ED%93%A8%ED%84%B0%EA%B5%AC%EC%A1%B0-8</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#cache-design" class="page__taxonomy-item p-category" rel="tag">Cache Design</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#computer-architecture" class="page__taxonomy-item p-category" rel="tag">Computer Architecture</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-05-17T00:00:00+09:00">2022-05-17</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BComputer+Architecture%5D+Cache+Design%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-Cache-Design%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-Cache-Design%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-Cache-Design%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Dynamic-Programming/" class="pagination--pager" title="[자료구조와 알고리즘] Dynamic Programming
+">이전</a>
+    
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-Cache-Coherence/" class="pagination--pager" title="[Computer Architecture] Cache Coherence
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-Cache-Design/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/computer%20architecture/[Computer Architecture] Cache Design"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

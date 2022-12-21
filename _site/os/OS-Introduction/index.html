@@ -1,0 +1,2813 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[OS] Introduction | speardragon note</title>
+<meta name="description" content="What is an Operating System?">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[OS] Introduction">
+<meta property="og:url" content="http://localhost:4000/os/OS-Introduction/">
+
+
+  <meta property="og:description" content="What is an Operating System?">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-05T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/os/OS-Introduction/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#os" itemprop="item"><span itemprop="name">Os</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[OS] Introduction</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[OS] Introduction">
+    <meta itemprop="description" content="What is an Operating System?">
+    <meta itemprop="datePublished" content="2022-09-05T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/os/OS-Introduction/" class="u-url" itemprop="url">[OS] Introduction
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          21 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#what-is-an-operating-system">What is an Operating System?</a></li><li><a href="#computer-system-structure">Computer System Structure</a></li><li><a href="#four-components-of-a-computer-system">Four Components of a Computer System</a></li><li><a href="#what-operating-system-do">What Operating System Do</a></li><li><a href="#operating-system-definition">Operating System Definition</a></li><li><a href="#computer-system-organization">Computer System Organization</a></li><li><a href="#computer-system-operation">Computer-System Operation</a></li><li><a href="#computer-startup">Computer Startup</a></li><li><a href="#common-functions-of-interrupts">Common Functions of Interrupts</a></li><li><a href="#interrupt-handling">Interrupt Handling</a></li><li><a href="#interrupt-timeline">Interrupt Timeline</a></li><li><a href="#storage-structure">Storage Structure</a></li><li><a href="#storage-hierarchy">Storage Hierarchy</a></li><li><a href="#storage-device-hierarchy">Storage-Device Hierarchy</a></li><li><a href="#caching">Caching</a></li><li><a href="#io-structure">I/O Structure</a></li><li><a href="#direct-memory-access-structure">Direct Memory Access Structure</a></li><li><a href="#how-a-modern-computer-works">How a Modern Computer Works</a></li><li><a href="#von-neumann-architecture">Von Neumann Architecture</a></li><li><a href="#the-von-neumann-architecture">The Von Neumann Architecture</a></li><li><a href="#instruction-cycle">Instruction Cycle</a></li><li><a href="#computer-system-architecture">Computer-System Architecture</a></li><li><a href="#symmetric-multiprocessing-architecture">Symmetric Multiprocessing Architecture</a></li><li><a href="#a-dual-core-design">A Dual-Core Design</a></li><li><a href="#clustered-systems">Clustered Systems</a></li><li><a href="#clustered-systems-1">Clustered Systems</a></li><li><a href="#distributed-systems">Distributed Systems</a></li><li><a href="#operating-system-structure">Operating System Structure</a></li><li><a href="#memory-layout-for-multiprogrammed-system">Memory Layout for Multiprogrammed System</a></li><li><a href="#operating-system-operations">Operating-System Operations</a></li><li><a href="#transition-from-user-to-kernel-mode">Transition from User to Kernel Mode</a></li><li><a href="#process-management중요">Process Management(중요)</a></li><li><a href="#process-management-activities">Process Management Activities</a></li><li><a href="#memory-management">Memory Management</a></li><li><a href="#storage-management">Storage Management</a></li><li><a href="#mass-storage-management생략">Mass-Storage Management(생략)</a></li><li><a href="#performance-of-various-levels-of-storage">Performance of Various Levels of Storage</a></li><li><a href="#migration-of-data-a-from-disk-to-register">Migration of data “A” from Disk to Register</a></li><li><a href="#io-subsystem">I/O Subsystem</a></li><li><a href="#protection-and-security">Protection and Security</a></li><li><a href="#computing-environments---traditional-computing">Computing Environments - Traditional Computing</a></li><li><a href="#computing-environments---mobile-computing">Computing Environments - Mobile Computing</a></li><li><a href="#computing-environments--distributed-systems">Computing Environments – Distributed Systems</a></li><li><a href="#computing-environments--client-server-computing">Computing Environments – Client-Server Computing</a></li><li><a href="#computing-environments---peer-to-peer-computing">Computing Environments - Peer-to-Peer Computing</a></li><li><a href="#computing-environments---virtualization">Computing Environments - Virtualization</a></li><li><a href="#virtual-machines">Virtual Machines</a></li><li><a href="#computing-environments---virtualization-1">Computing Environments - Virtualization</a></li><li><a href="#vmware-architecture">VMware Architecture</a></li><li><a href="#the-java-virtual-machine">The Java Virtual Machine</a></li><li><a href="#computing-environments--cloud-computing">Computing Environments – Cloud Computing</a></li><li><a href="#computing-environments--real-time-embedded-systems">Computing Environments – Real-Time Embedded Systems</a></li><li><a href="#real-time-systems">Real-Time Systems</a></li><li><a href="#open-source-operating-systems">Open-Source Operating Systems</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="what-is-an-operating-system">What is an Operating System?</h2>
+
+<ul>
+  <li>A program that acts as an intermediary between <strong>a user of a computer</strong> and <strong>the computer hardware</strong></li>
+  <li>Operating system goals:
+    <ul>
+      <li>Execute user programs and make solving user problems <strong>easier</strong></li>
+      <li>Provide an execution environment in which a user can execute programs
+        <ul>
+          <li>Make the computer system convenient to use (convenience)</li>
+          <li>Use the computer hardware in an efficient manner (efficiency)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="computer-system-structure">Computer System Structure</h2>
+
+<ul>
+  <li>Computer system can be divided into four components:
+    <ul>
+      <li><strong>Hardware</strong> – provides basic computing resources
+        <ul>
+          <li>CPU, memory, I/O devices</li>
+        </ul>
+      </li>
+      <li><strong>Operating system</strong>
+        <ul>
+          <li>Controls and coordinates use of hardware among various applications and users</li>
+        </ul>
+      </li>
+      <li><strong>Application programs</strong> – define the ways in which the system resources are used to solve the computing problems of the users
+        <ul>
+          <li>Word processors, compilers, web browsers, database systems, video games</li>
+        </ul>
+      </li>
+      <li><strong>Users</strong>
+        <ul>
+          <li>People, machines, other computers</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>​</p>
+
+<p><br /></p>
+
+<h2 id="four-components-of-a-computer-system">Four Components of a Computer System</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905144132620.png" alt="image-20220905144132620" /></p>
+
+<p><br /></p>
+
+<h2 id="what-operating-system-do">What Operating System Do</h2>
+
+<ul>
+  <li>Depends on the point of view</li>
+  <li>Users want convenience, <strong>ease of use</strong> and <strong>good performance</strong>
+    <ul>
+      <li>Don’t care about <strong>resource utilization</strong></li>
+    </ul>
+  </li>
+  <li>But shared computer such as <strong>mainframe</strong> or <strong>minicomputer</strong> must keep all users happy
+    <ul>
+      <li>한 사용자만 만족시키는 것이 아니라 다른 많은 모든 사람에게 만족할만하도록</li>
+    </ul>
+  </li>
+  <li>Users of dedicate systems such as <strong>workstations</strong> have dedicated resources but frequently use shared resources from <strong>servers</strong></li>
+  <li>Handheld computers are resource poor, optimized for usability and battery life</li>
+  <li>Some computers have little or no user interface, such as embedded computers in devices and automobiles</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="operating-system-definition">Operating System Definition</h2>
+
+<ul>
+  <li>OS is a <strong>resource allocator</strong>
+    <ul>
+      <li>Manages all resources</li>
+      <li>Decides between conflicting requests for efficient and fair resource use</li>
+    </ul>
+  </li>
+  <li>OS is a <strong>control program</strong>
+    <ul>
+      <li>Controls execution of programs to prevent errors and improper use of the computer</li>
+    </ul>
+  </li>
+  <li>“The one program running at all times on the computer” is the <strong>kernel</strong>.</li>
+  <li>Everything else is either
+    <ul>
+      <li>a system program (ships with the operating system) , or</li>
+      <li>an application program.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="computer-system-organization">Computer System Organization</h2>
+
+<ul>
+  <li>Computer-system operation
+    <ul>
+      <li>One or more CPUs, device controllers connect through common bus providing access to shared memory</li>
+      <li>Concurrent execution of CPUs and devices competing for memory cycles (memory controller)</li>
+      <li>mesh, switch 방식으로 하면 효율은 좋겠지만 비싸다 -&gt; 그래서 common bus를 이용
+        <ul>
+          <li>CPU와 controller가 동시에 돌아감</li>
+          <li>bus master가 두 개 이상이면 충돌이 일어남 (근데 CPU 뿐만 아니라 disk controller도 master가 될 수 있기 때문에 bus arbitray가 있어야 함.)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905150720928.png" alt="image-20220905150720928" /></p>
+
+<p><br /></p>
+
+<h2 id="computer-system-operation">Computer-System Operation</h2>
+
+<ul>
+  <li>I/O devices and the CPU can execute concurrently</li>
+  <li>Each device controller is in charge of a particular device type</li>
+  <li>Each device controller has a local buffer</li>
+  <li>CPU moves data from/to main memory to/from local buffers</li>
+  <li>I/O is from the device to local buffer of controller</li>
+  <li>Device controller informs CPU that it has <strong>finished</strong> its operation by causing an <strong>interrupt</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="computer-startup">Computer Startup</h2>
+
+<ul>
+  <li><strong>bootstrap program</strong> is loaded at power-up or reboot
+    <ul>
+      <li>bootstrap program: OS를 탑재시키는 프로그램(ROM에 저장되는 firmware)</li>
+      <li>Typically stored in ROM or EPROM, generally known as <strong>firmware</strong></li>
+      <li>Initializes all aspects of system</li>
+      <li>Loads operating system kernel and starts execution</li>
+    </ul>
+  </li>
+  <li>After OS starts, it waits for the event.
+    <ul>
+      <li>OS는 능동적인 애가 아니라 외부에서 어떠한 서비스 요청이 들어왔을 때 반응하기에 이를 기다린다.</li>
+      <li>Event driven system</li>
+      <li>Occurrence of Event is signaled by (H/W or S/W) interrupt
+        <ul>
+          <li>power failed -&gt; hardware interrupt</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="common-functions-of-interrupts">Common Functions of Interrupts</h2>
+
+<ul>
+  <li>외부에서 요청을 하지 않으면 OS는 일을 하지 않음</li>
+  <li>Interrupt transfers control to the interrupt service routine, through the <strong>interrupt vector</strong>, which contains the addresses of all the interrupt service routines (ISR)</li>
+  <li>Interrupt architecture must save the address of the interrupted instruction - ISR 실행 후 리턴을 위해
+    <ul>
+      <li>반드시 interrupt 됐을 당시 address를 save를 해 놔야 처리 후 다시 돌아갈 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905150851764.png" alt="image-20220905150851764" /></p>
+
+<ul>
+  <li>A <strong>trap</strong> or <strong>exception</strong> is a software-generated interrupt caused either by an error or a user request</li>
+  <li>
+    <p>An operating system is <strong>interrupt driven</strong></p>
+  </li>
+  <li>system call - OS API
+    <ul>
+      <li>사용이 kernel 모드에서 일어남</li>
+    </ul>
+  </li>
+  <li>library 함수(printf와 같은)는 User mode 에서만 사용</li>
+  <li>trap: OS 함수를 호출하기 위해서 발생되는 (software) interrupt
+    <ul>
+      <li>trap마다 번호가 있어 해당하는 trap handler 실행 후 리턴</li>
+    </ul>
+  </li>
+  <li>exception - divide by zero: 프로그램에서 각종 error가 발생할 때의 software interrupt</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interrupt-handling">Interrupt Handling</h2>
+
+<ul>
+  <li>The operating system preserves the state of the CPU by storing registers and the <strong>program counter</strong> (ISR 실행후 리턴시 원래 snapshot 복구)
+    <ul>
+      <li>running snapshot</li>
+    </ul>
+  </li>
+  <li>Determines which type of interrupt has occurred:
+    <ul>
+      <li><strong>polling</strong>
+        <ul>
+          <li>CPU에 interrupt가 걸렸다는 사실만 알려지고 누가 건지는 모름</li>
+          <li>초창기에 사용</li>
+        </ul>
+      </li>
+      <li><strong>vectored</strong> interrupt system
+        <ul>
+          <li>어느 device가 interrupt를 걸면 CPU가 OK라는 응답을 보내고, 다시 device는 ok 사인에 대하여 interrupt vector를 memory에 write하는 것처럼 data bus에 실어 보낸다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Separate segments of code determine what action should be taken for each type of interrupt</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interrupt-timeline">Interrupt Timeline</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905150948572.png" alt="image-20220905150948572" /></p>
+
+<p>I/O device가 IO를 하고 있는 동안에도 CPU 역시 일을 하고 있음.(concurrent)</p>
+
+<p>transfer done 단계에서 interrupt가 있었을 것이고 CPU에서는 ISR이 실행되는 구간이 있음</p>
+
+<p><br /></p>
+
+<h2 id="storage-structure">Storage Structure</h2>
+
+<ul>
+  <li>Main memory – only large storage media that the CPU can access directly
+    <ul>
+      <li><strong>Random access</strong></li>
+      <li>Typically <strong>volatile</strong> (power가 꺼지면 content가 날라감)</li>
+    </ul>
+  </li>
+  <li>Secondary storage(HDD, SDD) – extension of main memory that provides large <strong>nonvolatile</strong> storage capacity</li>
+  <li>Hard disks – rigid metal or glass platters covered with magnetic recording material
+    <ul>
+      <li>Disk surface is logically divided into <strong>tracks</strong>, which are subdivided into <strong>sectors</strong></li>
+      <li>The <strong>disk controller</strong> determines the logical interaction between the device and the computer</li>
+    </ul>
+  </li>
+  <li><strong>Solid-state disks</strong> – faster than hard disks, nonvolatile
+    <ul>
+      <li>Various technologies</li>
+      <li>Becoming more popular</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="storage-hierarchy">Storage Hierarchy</h2>
+
+<ul>
+  <li>Storage systems organized in hierarchy
+    <ul>
+      <li>Speed</li>
+      <li>Cost</li>
+      <li>Volatility</li>
+    </ul>
+  </li>
+  <li><strong>Caching</strong> – copying information into faster storage system; main memory can be viewed as a cache for secondary storage</li>
+  <li><strong>Device Driver</strong> for each device controller to manage I/O
+    <ul>
+      <li>Provides uniform interface between controller and kernel</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="storage-device-hierarchy">Storage-Device Hierarchy</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905151518709.png" alt="image-20220905151518709" /></p>
+
+<p>program을 실행시키기 위해서는 무조건 main memory에 탑재를 시켜야 함.</p>
+
+<p>cache는 각 계층 사이마다 있을 수 있음</p>
+
+<ul>
+  <li>또한 여러 개가 이어져서 사용되기도 함</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="caching">Caching</h2>
+
+<ul>
+  <li>Important principle, performed <strong>at many levels</strong> in a computer (in hardware, operating system, software)</li>
+  <li>Information in use <strong>copied</strong> from slower to faster storage temporarily</li>
+  <li>Faster storage (cache) checked first to determine if information is there
+    <ul>
+      <li>If it is, information used directly from the cache (fast)</li>
+      <li>If not, data copied to cache and used there</li>
+    </ul>
+  </li>
+  <li>Cache smaller than storage being cached
+    <ul>
+      <li><strong>Cache management</strong> is important design problem</li>
+      <li>Cache size and replacement policy(무엇을 버릴지)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-structure">I/O Structure</h2>
+
+<ul>
+  <li>Computer-system consists of one or more CPUs and multiple device controllers connected through a common bus</li>
+  <li>A device controller includes local buffer storage and a set of special purpose registers</li>
+  <li>Device controller is responsible for moving data between the peripheral device it controls and its local buffer storage</li>
+  <li>OS have a <strong>device driver</strong> for each device controller
+    <ul>
+      <li>각 device driver(disk, keyboard…) 마다 대화가 가능한 device controller가 있고 끼리끼리만 대화 가능</li>
+      <li>device driver understands the device controller and provides OS with uniform interface to the device</li>
+    </ul>
+  </li>
+  <li>To start an <strong>Interrupt driven I/O</strong> operation,
+    <ul>
+      <li>device driver loads the registers within device controller (command)</li>
+      <li>device controller understands the commands by examining the contents of registers</li>
+      <li>device controller transfers the data between device and local buffer</li>
+      <li>Once data transfer is complete, device controller informs the device driver using interrupt (data transfer 종료 통보)</li>
+      <li>Device driver returns control to OS, returning data or pointer to the data, status info.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="direct-memory-access-structure">Direct Memory Access Structure</h2>
+
+<p>CPU의 간섭없이 device to/from memory read/write하는 방법</p>
+
+<ul>
+  <li>Used for high-speed I/O devices able to transmit information at close to memory speeds</li>
+  <li>Device controller transfers blocks of data from buffer storage directly to main memory without CPU intervention</li>
+  <li>Only one interrupt is generated per block, rather than the one interrupt per byte</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="how-a-modern-computer-works">How a Modern Computer Works</h2>
+
+<p>중요!!!</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905151927609.png" alt="image-20220905151927609" /></p>
+
+<ul>
+  <li>
+    <p>대부분의 컴퓨터는 이 구조</p>
+  </li>
+  <li>
+    <p>폰노이만 구조를 해치지 않으면서 좀 더 효율적으로 read/write</p>
+  </li>
+  <li>
+    <p>DMA</p>
+
+    <ul>
+      <li>
+        <p>원래는 CPU가 device controller로부터 값을 읽어서 memory에 전달해야 하는데</p>
+      </li>
+      <li>
+        <p>DMA를 통해 device가 CPU는 쉬고 있을 때 어떤 data를 메모리에 가져다 놓겠다고 선언한 후 CPU 몰래 가져다 놓는 방식</p>
+      </li>
+    </ul>
+  </li>
+  <li>가장 먼저 메모리에 탑재를 시켜야 함</li>
+  <li>CPU가 한 번에 하나씩 명령(instruction)을 받아들여서</li>
+  <li>이 때, thread of execution이 여러 개가 될 수 있음 -&gt; parallel processing</li>
+  <li>I/O device + I/O controller</li>
+  <li>CPU는 직접 IO하지 않음(HDD와 같이 엄청 느린 디바이스를 상대할 시간이 없음) -&gt; device controller가 대신 control</li>
+  <li>그 때부터 CPU와 device controller는 parallel하게(각자) 돌아간다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="von-neumann-architecture">Von Neumann Architecture</h2>
+
+<ul>
+  <li>Stored Program concept
+    <ul>
+      <li>Main memory storing programs and data</li>
+      <li>Contents of memory are addressable by location</li>
+      <li>Execution occurs sequentially (unless explicitly specified)</li>
+    </ul>
+  </li>
+  <li>PC - CPU가 갖고 있는 register
+    <ul>
+      <li>다음에 실행할 instruction의 주소를 가지고 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<p>어떤 프로그램도 아래 세 가지를 벗어나지 않음</p>
+
+<ol>
+  <li>sequence</li>
+  <li>iteration</li>
+  <li>selection</li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="the-von-neumann-architecture">The Von Neumann Architecture</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152032735.png" alt="image-20220905152032735" /></p>
+
+<p>내부에서 고정적으로 사용되는 memory -&gt; CPU regiseter</p>
+
+<p><br /></p>
+
+<h2 id="instruction-cycle">Instruction Cycle</h2>
+
+<ul>
+  <li>Two steps:
+    <ul>
+      <li>Fetch</li>
+      <li>Execute</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152102610.png" alt="image-20220905152102610" /></p>
+
+<ul>
+  <li>
+    <p>instruction cycle = 한 문장을 실행하는 한 cycle</p>
+  </li>
+  <li>
+    <p>왜 main memory에 탑재해야 하는가?</p>
+    <ul>
+      <li>CPU internal 메모리는 비싸기 때문에 많은 메모리를 탑재하지 못하고</li>
+      <li>HDD는 속도가 너무 느리기 때문이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>중요!!!</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152112450.png" alt="image-20220905152112450" /></p>
+
+<p><br /></p>
+
+<h2 id="computer-system-architecture">Computer-System Architecture</h2>
+
+<ul>
+  <li><strong>Single-processor systems</strong>
+    <ul>
+      <li>Most systems use a single general-purpose processor</li>
+      <li>Most systems have special-purpose processors as well (device specific)</li>
+    </ul>
+  </li>
+  <li><strong>Multiprocessor systems</strong> growing in use and importance
+    <ul>
+      <li>Also known as <span style="color:red">parallel systems(multi-core)</span>, tightly-coupled systems</li>
+      <li>Tightly-coupled system – processors share memory and a clock; communication usually takes place through the shared memory in close area(제한된 영역 내에서 공유되는)</li>
+      <li>Advantages include:
+        <ul>
+          <li><strong>Increased throughput</strong> (Speedup)</li>
+          <li><strong>Economy of</strong> scale – cost less than multiple single-processor systems</li>
+          <li><strong>Increased reliability</strong> – graceful degradation or fault tolerance (duplication)</li>
+        </ul>
+      </li>
+      <li>Two types:
+        <ul>
+          <li><strong>Asymmetric Multiprocessing</strong></li>
+          <li><strong>Symmetric Multiprocessing</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Symmetric multiprocessing (SMP)
+    <ul>
+      <li>Each processor runs an <strong>identical</strong> copy of the operating system.</li>
+      <li>Many processes can run at once without performance deterioration.</li>
+      <li>Load balancing is important
+        <ul>
+          <li>예를 들어 채점을 두 명이서 나눠서 하는데 한 사람은 만 명에 대한 걸 하고 한 사람은 10명에 대한 채점을 한다면 밸런싱이 맞지 않아 비효율이 발생할 것이기 때문이다.</li>
+        </ul>
+      </li>
+      <li>Most modern operating systems support SMP</li>
+    </ul>
+  </li>
+  <li>Asymmetric multiprocessing
+    <ul>
+      <li>Each processor is assigned a <strong>specific task</strong>; <strong>master</strong> <strong>processor</strong> schedules and allocates work to <strong>slave</strong> <strong>processors</strong>.</li>
+      <li>More common in extremely large systems</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="symmetric-multiprocessing-architecture">Symmetric Multiprocessing Architecture</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152305462.png" alt="image-20220905152305462" /></p>
+
+<p>master-slave 관계가 아닌 동등한 관계</p>
+
+<p>dependent 관계의 CPU들이 같이 일을 함.(memory를 공유하기 때문에)</p>
+
+<p><br /></p>
+
+<h2 id="a-dual-core-design">A Dual-Core Design</h2>
+
+<ul>
+  <li><strong>Memory access model</strong>: <strong>UMA</strong>(uniform memory access ) and <strong>NUMA</strong> architecture variations
+    <ul>
+      <li>Multiprocessing increases computing power by adding CPUs</li>
+      <li>Adding CPUs also increases amount of memory addressable</li>
+      <li>NUMA(non-uniform): 각 CPU가 memory에서 자주쓰는 내용을 가져와서 사용함.</li>
+    </ul>
+  </li>
+  <li>Multi-chip and <strong>multicore</strong></li>
+  <li>Blade server systems
+    <ul>
+      <li>Chassis containing multiple independent multiprocessor systems</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152350693.png" alt="image-20220905152350693" /></p>
+
+<p><br /></p>
+
+<h2 id="clustered-systems">Clustered Systems</h2>
+
+<ul>
+  <li>좀 더 독립성이 부여된 시스템들끼리 모여 있는 경우</li>
+  <li>Another type of multiprocessor system</li>
+  <li>multiple <strong>independent</strong> nodes working together
+    <ul>
+      <li>Each node may be a single-processor system or multi-core system</li>
+      <li><strong>Loosely-coupled system</strong>, closely linked via LAN (Ethernet) or InfiniBand</li>
+      <li>Usually sharing storage via a <strong>storage-area network (SAN)</strong></li>
+      <li>Provides a <strong>high-availability(HA)</strong> service which survives failures
+        <ul>
+          <li><strong>Asymmetric clustering</strong> has one machine in hot-standby mode</li>
+          <li><strong>Symmetric</strong> clustering has multiple nodes running applications, monitoring each other</li>
+        </ul>
+      </li>
+      <li>Some clusters are for <strong>high-performance computing (HPC)</strong>
+        <ul>
+          <li>Applications must be written to use parallelization</li>
+        </ul>
+      </li>
+      <li>Other forms of Clusters
+        <ul>
+          <li>Parallel cluster or clustering over WAN</li>
+          <li>Some have <strong>distributed lock manager (DLM)</strong> to avoid conflicting operations</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="clustered-systems-1">Clustered Systems</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152503816.png" alt="image-20220905152503816" /></p>
+
+<p><br /></p>
+
+<h2 id="distributed-systems">Distributed Systems</h2>
+
+<ul>
+  <li>Distribute the computation among several physical processors.</li>
+  <li><strong>Loosely coupled system</strong> – each processor has its own local memory; processors communicate with one another through various communications lines.</li>
+  <li>Advantages of distributed systems.
+    <ul>
+      <li>Resources Sharing</li>
+      <li>Computation speed up – load sharing</li>
+      <li>Reliability</li>
+      <li>Communications</li>
+    </ul>
+  </li>
+  <li>Requires networking infrastructure.</li>
+  <li>Local area networks (LAN) or Wide area networks (WAN)</li>
+  <li>May be either client-server or peer-to-peer systems.</li>
+</ul>
+
+<hr />
+
+<p>(생략)</p>
+
+<ul>
+  <li>Network Operating System
+    <ul>
+      <li>provides file sharing</li>
+      <li>provides communication scheme</li>
+      <li>runs independently from other computers on the network</li>
+    </ul>
+  </li>
+  <li>Distributed Operating System
+    <ul>
+      <li>less autonomy between computers</li>
+      <li>gives the impression there is a single operating system controlling the network.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="operating-system-structure">Operating System Structure</h2>
+
+<ul>
+  <li><strong>Multiprogramming</strong> (<strong>Batch system</strong>) needed for efficiency (<strong>non-preemptive</strong> multiprogramming)
+    <ul>
+      <li>Single user cannot keep CPU and I/O devices busy at all times</li>
+      <li>Multiprogramming organizes jobs (code and data) so CPU <strong>always</strong> has one to execute</li>
+      <li>A subset of total jobs in system is kept in memory (job pool)</li>
+      <li>One job selected and run via <strong>job scheduling</strong>
+        <ul>
+          <li>job scheduling: 누가 먼저 스케쥴링 될 것인지</li>
+        </ul>
+      </li>
+      <li>When it has to wait (for I/O for example), OS switches to another job</li>
+    </ul>
+  </li>
+  <li><strong>Timesharing</strong> (<strong>multitasking</strong>) is logical extension in which CPU switches jobs so frequently that users can interact with each job while it is running, creating <strong>interactive computing</strong>
+    <ul>
+      <li><strong>Response time</strong> should be &lt; 1 second
+        <ul>
+          <li>good response time!</li>
+        </ul>
+      </li>
+      <li>Each user has at least one program executing in memory =&gt; <strong>process</strong></li>
+      <li>If several jobs ready to run at the same time =&gt; <strong>CPU scheduling</strong></li>
+      <li>If processes don’t fit in memory, <strong>swapping</strong> moves them in and out to run</li>
+      <li><strong>Virtual memory</strong> allows execution of processes not completely in memory</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152750658.png" alt="image-20220905152750658" /></p>
+
+<ul>
+  <li>Non-multiprogramming:
+    <ul>
+      <li>한 프로그램이 끝나고 다른 프로그램이 실행.</li>
+      <li>CPU가 일을 하지 않고 놀고 있는 구간이 존재(CPU Time의 낭비)</li>
+    </ul>
+  </li>
+  <li>Non-preemptive multiprogramming
+    <ul>
+      <li>CPU가 놀고 있는 구간을 활용하여 다른 프로그램을 실행시킴</li>
+      <li>CPU가 쉬지 않고 일을 하여 시스템의 효율이 올라감</li>
+      <li>CPU와 I/O device가 동시에 활용되는 경우가 생길 수 있음</li>
+      <li>I/O를 하지 않는 동안에 CPU를 굉장히 오래 붙잡고 있어도 크게 문제가 되지 않는다.
+        <ul>
+          <li>non preemptive - 강제로 빼앗지 않는</li>
+        </ul>
+      </li>
+      <li><strong>I/O를 하기 위해서 자발적으로 내놓지 않으면 다른 프로그램이 실행될 수 없음</strong></li>
+      <li><strong>pseudo</strong> parallel processing (실제로 둘이 같이 돌지 않기 때문에)</li>
+    </ul>
+  </li>
+  <li>Preemptive multiprogramming - Time Quantum 부여
+    <ul>
+      <li>어떤 프로그램이 CPU에서 실행이 되는데 CPU에서 실행될 수 있는 최대 시간이 바로 <strong>time quantum</strong>이다.</li>
+      <li>time quantum 시간 동안만 CPU를 사용하는 것을 허락한다.</li>
+      <li>I/O를 하지 않아도 CPU를 빼앗아서 동시에 다른 프로그램을 번갈아가면서 실행시킬 수 있음</li>
+      <li>만약 time quantum이 굉장히 커지게 되면 Non-preemptive 에 가까워 짐.</li>
+      <li>만약 time quantum이 굉장히 작아지게 되면 interaction은 굉장히 올라가는 대신에 시스템 성능은 오히려 Non-preemptive 보다 안 좋아 지게 된다.
+        <ul>
+          <li>그래서 적정한 값을 정하는 것이 중요함</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-layout-for-multiprogrammed-system">Memory Layout for Multiprogrammed System</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905152816091.png" alt="image-20220905152816091" /></p>
+
+<ul>
+  <li>어떤 job(program)을 먼저 탑재시킬 지를 정하는 것이 job scheduling</li>
+  <li>탑재된 job들 중에서 누가 먼저 CPU를 차지할 지를 결정하는 것이 CPU scheduling</li>
+  <li>swapping: 탑재된 job들 중에서 별로 시급하지 않은 job의 경우 hard disk job pool에 보내고(swap out) 더 중요한 job을 job pool(swap in)로부터 불러 들인다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="operating-system-operations">Operating-System Operations</h2>
+
+<ul>
+  <li><strong>Interrupt driven</strong> (hardware and software)
+    <ul>
+      <li>Hardware interrupt by one of the devices (외부 디바이스에 의한)</li>
+      <li>Software interrupt (<strong>exception</strong> or <strong>trap</strong>):
+        <ul>
+          <li>exception: Software error (e.g., division by zero)</li>
+          <li>trap: Request for operating system service(시스템 콜을 호출하는 경우)</li>
+        </ul>
+      </li>
+      <li>Other process problems include infinite loop, processes modifying each other or the operating system
+        <ul>
+          <li>정상적으로 실행되는 것처럼 보이지만 무한 루프를 돌고 있는 경우(<strong>interrupt 검출이 되지 않음</strong>)</li>
+          <li>이를 잡아낼 수 있는 tool이 있어야 함(아래와 같이)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Basic tools to Ensure correct operation of computer system
+    <ul>
+      <li>Dual mode - user가 kernel의 권한을 행사하지 못하도록 하는 것</li>
+      <li>Privileged instruction</li>
+      <li>Memory protection
+        <ul>
+          <li>프로그램이 OS 영역을 침범하거나 다른 프로그램을 침범하는 것을 catch하여 interrupt를 걸어 OS에 통보</li>
+        </ul>
+      </li>
+      <li>Timer interrupt – infinite loops
+        <ul>
+          <li>일정 시간이 경과하면 걸리는 interrupt</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Dual-mode</strong> operation allows OS to protect itself and other system components
+    <ul>
+      <li><strong>User mode</strong> and <strong>kernel mode</strong></li>
+      <li><strong>Mode bit</strong> provided by hardware (mode를 판단하기 위한 bit)
+        <ul>
+          <li>Provides ability to distinguish when system is running user code or kernel code</li>
+          <li>Some instructions designated as <strong>privileged</strong>, only executable in kernel mode
+            <ul>
+              <li>일부는 user mode에서 실행되지 않음(시스템에 심각한 문제를 야기하는 것을 방지하기 위함)</li>
+            </ul>
+          </li>
+          <li>System call changes mode to kernel, return from call resets it to user</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Increasingly CPUs support multi-mode operations
+    <ul>
+      <li>i.e. <strong>virtual machine manager</strong> (<strong>VMM</strong>) mode for guest <strong>VMs</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="transition-from-user-to-kernel-mode">Transition from User to Kernel Mode</h2>
+
+<ul>
+  <li>Timer to prevent <u>infinite loop / process hogging resources</u>
+    <ul>
+      <li>Timer is set to interrupt the computer after some time period</li>
+      <li>Keep a counter that is decremented by the physical clock.</li>
+      <li>Operating system set the counter (privileged instruction)</li>
+      <li>When counter zero generate an interrupt -&gt; 프로그램이 무한 루프를 돌고있다고 판단
+        <ul>
+          <li>OS 자원을 낭비, CPU time 낭비</li>
+        </ul>
+      </li>
+      <li>Set up before scheduling process to regain control or <strong>terminate</strong> program that exceeds allotted time
+        <ul>
+          <li>종료 시켜 컴퓨터 자원 회수</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905153023964.png" alt="image-20220905153023964" /></p>
+
+<p><br /></p>
+
+<h2 id="process-management중요">Process Management(중요)</h2>
+
+<p>program definition은 어떤 프로그램의 모양(붕어빵틀) - 실행 파일</p>
+
+<p>program definition이 만들어내는 <strong>instance가</strong> process(msword 창을 두 개 띄우는 경우 ‘하나의 program definition에서 두 개의 process가 생겼다’라고 한다.; 틀로 찍어낸 붕어빵 두 개)</p>
+
+<ul>
+  <li><u>A process is a program in execution</u>. It is a unit of work within the system. Program is a <strong>passive entity</strong>, process is an <strong>active entity</strong>.
+    <ul>
+      <li>프로세스는 실제로 실행되고 있는 상태이기 때문에 active entity인 것.</li>
+      <li>변수 x도 선언 시에 메모리에 할당되는 것이 아니라 프로세스가 실행되면 할당 된다.</li>
+    </ul>
+  </li>
+  <li>Process needs resources to accomplish its task
+    <ul>
+      <li>CPU, memory, I/O, files</li>
+      <li>Initialization data</li>
+    </ul>
+  </li>
+  <li>Process termination requires reclaim of any reusable resources</li>
+  <li><code class="language-plaintext highlighter-rouge">Single-threaded process</code> has one <strong>program counter</strong> specifying location of next instruction to execute
+    <ul>
+      <li>하나의 process에 하나의 program counter</li>
+      <li>program counter가 갖는 값의 궤적이 바로 thread</li>
+      <li>Process executes instructions sequentially, one at a time, until completion</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Multi-threaded process</code> has one program counter per thread</li>
+  <li>Typically system has many processes, some user, some operating system running concurrently on one or more CPUs
+    <ul>
+      <li>Concurrency by multiplexing the CPUs among the processes / threads</li>
+      <li>CPU가 여러개인 경우 -&gt; parallel processing</li>
+      <li>CPU가 하나인 경우 -&gt; pseudo parallel processing
+        <ul>
+          <li>CPU 하나를 공유하면서 차지해야 하기 때문</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="process-management-activities">Process Management Activities</h2>
+
+<p>The operating system is responsible for the following activities in connection with process management:</p>
+
+<ul>
+  <li>Creating and deleting both user and system processes</li>
+  <li>Suspending and resuming processes
+    <ul>
+      <li>프로세스가 계속 실행되는 것이 아니라 I/O를 해야 하기 때문에 I/O가 한 번 실행되고(suspend) 종료될 때(resume)까지 CPU에 의해 실행이 될 수 없다.</li>
+    </ul>
+  </li>
+  <li>Providing mechanisms for process synchronization
+    <ul>
+      <li>동일한 계좌에 대한 동기화</li>
+    </ul>
+  </li>
+  <li>Providing mechanisms for process communication (IPC- inter process ?)</li>
+  <li>Providing mechanisms for deadlock handling
+    <ul>
+      <li>동기화를 하다가 잘못되면 두 프로세스 모두가 실행이 되지 않는 경우(둘 중 어느 프로세스도 이도저도 못하는 상황) 가 발생하는데</li>
+      <li>검출하여 해결하는 것이 process management의 역할</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-management">Memory Management</h2>
+
+<ul>
+  <li>To execute a program all (<strong>or part</strong>) of the instructions must be in memory</li>
+  <li>All (<strong>or part</strong>) of the data <strong>that is needed by the program</strong> must be in memory.</li>
+  <li>Memory management determines what is in memory and when
+    <ul>
+      <li>Optimizing CPU utilization and computer response to users</li>
+    </ul>
+  </li>
+  <li>Memory management activities
+    <ul>
+      <li>Keeping track of which parts of memory are currently being used and by whom</li>
+      <li>Deciding which processes (or parts thereof) and data to move into and out of memory</li>
+      <li>Allocating and deallocating memory space as needed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="storage-management">Storage Management</h2>
+
+<p>secondary memory</p>
+
+<ul>
+  <li>OS provides uniform, logical view of information storage (3차원적 주소를 1차원으로 생각할 수 있도록 해 주는 역할)
+    <ul>
+      <li>Abstracts physical properties to logical storage unit - <strong>file</strong></li>
+      <li>Each medium is controlled by device (i.e., disk drive, tape drive)
+        <ul>
+          <li>Varying properties include access speed, capacity, data-transfer rate, access method (sequential or random)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>File-System management
+    <ul>
+      <li>Files usually organized into directories</li>
+      <li>Access control on most systems to determine who can access what</li>
+      <li>OS activities include
+        <ul>
+          <li>Creating and deleting files and directories</li>
+          <li>Primitives to manipulate files and directories</li>
+          <li>Mapping files onto secondary storage</li>
+          <li>Backup files onto stable (non-volatile) storage media</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mass-storage-management생략">Mass-Storage Management(생략)</h2>
+
+<ul>
+  <li>Usually disks used to store data that does not fit in main memory or data that must be kept for a “long” period of time</li>
+  <li>Proper management is of central importance</li>
+  <li>Entire speed of computer operation hinges on disk subsystem and its algorithms</li>
+  <li>OS activities
+    <ul>
+      <li>Free-space management</li>
+      <li>Storage allocation</li>
+      <li>Disk scheduling</li>
+    </ul>
+  </li>
+  <li>Some storage need not be fast
+    <ul>
+      <li>Tertiary storage includes optical storage, magnetic tape</li>
+      <li>Still must be managed – by OS or applications</li>
+      <li>Varies between WORM (write-once, read-many-times) and RW (read-write)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="performance-of-various-levels-of-storage">Performance of Various Levels of Storage</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905153417612.png" alt="image-20220905153417612" /></p>
+
+<p><br /></p>
+
+<h2 id="migration-of-data-a-from-disk-to-register">Migration of data “A” from Disk to Register</h2>
+
+<ul>
+  <li>Multitasking environments must be careful to use most recent value, no matter where it is stored in the storage hierarchy</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905153448230.png" alt="image-20220905153448230" /></p>
+
+<ul>
+  <li>Multiprocessor environment must provide <strong>cache coherency</strong> in hardware such that all CPUs have the most recent value in their cache
+    <ul>
+      <li>multiprocessing 환경에서 더 어려운 과제 (하지만 중요한 OS의 필수 역할)</li>
+    </ul>
+  </li>
+  <li>Distributed environment situation even more complex
+    <ul>
+      <li>Several copies of a datum can exist</li>
+      <li>Various solutions covered in Chapter 17</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-subsystem">I/O Subsystem</h2>
+
+<ul>
+  <li>One purpose of OS is to <strong>hide peculiarities of hardware</strong> devices from the user</li>
+  <li>I/O subsystem responsible for
+    <ul>
+      <li>Memory management of I/O including <strong>buffering</strong> (storing data temporarily while it is being transferred), <strong>caching</strong> (storing parts of data in faster storage for performance), <strong>spooling</strong> (the overlapping of output of one job with input of other jobs)</li>
+      <li>General device-driver interface</li>
+      <li>Drivers for specific hardware devices</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="protection-and-security">Protection and Security</h2>
+
+<ul>
+  <li><strong>Protection</strong> – any mechanism for controlling access of processes or users to resources defined by the OS</li>
+  <li><strong>Security</strong> – defense of the system against internal and external <strong>attacks</strong>
+    <ul>
+      <li>Huge range, including denial-of-service, worms, viruses, identity theft, theft of service</li>
+    </ul>
+  </li>
+  <li>Systems generally first distinguish among users, to determine who can do what
+    <ul>
+      <li>User identities (<strong>user IDs</strong>, security IDs) include name and associated number, one per user</li>
+      <li>User ID then associated with all files, processes of that user to determine access control</li>
+      <li>Group identifier (<strong>group ID</strong>) allows set of users to be defined and controls managed, then also associated with each process, file</li>
+      <li><strong>Privilege escalation</strong>(단계적 확대) allows user to change to effective ID with more rights</li>
+    </ul>
+  </li>
+</ul>
+
+<p>​</p>
+
+<p><br /></p>
+
+<h2 id="computing-environments---traditional-computing">Computing Environments - Traditional Computing</h2>
+
+<ul>
+  <li>Stand-alone general purpose machines (network가 없던 시절)</li>
+  <li>But blurred as most systems interconnect with others (i.e., the Internet)
+    <ul>
+      <li>Office environment
+        <ul>
+          <li>PCs connected to a network, terminals attached to mainframe or minicomputers providing batch and timesharing</li>
+          <li>Now portals allowing networked and remote systems access to same resources</li>
+        </ul>
+      </li>
+      <li>Home networks
+        <ul>
+          <li>Used to be single system, then modems</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Portals</strong> provide web access to internal systems</li>
+  <li><strong>Network computers</strong> (<strong>thin clients</strong>) are like Web terminals
+    <ul>
+      <li>memory가 굉장히 적은 컴퓨터 (단순한)</li>
+    </ul>
+  </li>
+  <li>Mobile computers interconnect via <strong>wireless networks</strong></li>
+  <li>Networking becoming ubiquitous – even home systems use <strong>firewalls</strong> to protect home computers from Internet attacks</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="computing-environments---mobile-computing">Computing Environments - Mobile Computing</h2>
+
+<ul>
+  <li>Handheld systems
+    <ul>
+      <li>smartphones, tablets, etc</li>
+    </ul>
+  </li>
+  <li>What is the functional difference between them and a “traditional” laptop?
+    <ul>
+      <li>Reduced feature set OS, limited I/O, limited CPU, memory, power</li>
+      <li>Extra feature – more OS features (GPS, gyroscope)</li>
+    </ul>
+  </li>
+  <li>Allows new types of apps like <strong>augmented reality</strong>(AR)</li>
+  <li>Use IEEE 802.11 wireless, or cellular data networks for connectivity</li>
+  <li>Leaders are Apple iOS and Google Android</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="computing-environments--distributed-systems">Computing Environments – Distributed Systems</h2>
+
+<ul>
+  <li>Distributed computiing
+    <ul>
+      <li>Collection of separate, possibly heterogeneous, systems networked together
+        <ul>
+          <li><strong>Network</strong> is a communications path, <strong>TCP/IP</strong> most common
+            <ul>
+              <li><strong>Local Area Network</strong> (<strong>LAN</strong>)</li>
+              <li><strong>Wide Area Network</strong> (<strong>WAN</strong>)</li>
+              <li><strong>Metropolitan Area Network</strong> (<strong>MAN</strong>)</li>
+              <li><strong>Personal Area Network</strong> (<strong>PAN</strong>)</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Network Operating System</strong> provides features between systems across network
+        <ul>
+          <li>Communication scheme allows systems to exchange messages</li>
+          <li>Illusion of a single system</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="computing-environments--client-server-computing">Computing Environments – Client-Server Computing</h2>
+
+<ul>
+  <li>Client-Server Computing
+    <ul>
+      <li>Dumb terminals supplanted by smart PCs</li>
+      <li>Many systems now <strong>servers</strong>, responding to requests generated by <strong>clients</strong>
+        <ul>
+          <li><strong>Compute-server system</strong> provides an interface to client to request services (i.e., database)</li>
+          <li><strong>File-server system</strong> provides interface for clients to store and retrieve files</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905153920835.png" alt="image-20220905153920835" /></p>
+
+<p><br /></p>
+
+<h2 id="computing-environments---peer-to-peer-computing">Computing Environments - Peer-to-Peer Computing</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905153946104.png" alt="image-20220905153946104" /></p>
+
+<ul>
+  <li>Another model of distributed system</li>
+  <li><strong>P2P</strong> does not distinguish clients and servers
+    <ul>
+      <li>Instead all nodes are considered peers</li>
+      <li>May each act as client, server or both</li>
+      <li>Node must join P2P network
+        <ul>
+          <li>Registers its service with central lookup service on network, or</li>
+          <li>Broadcast request for service and respond to requests for service via <strong>discovery protocol</strong></li>
+        </ul>
+      </li>
+      <li>Examples include Napster and Gnutella, <strong>Voice over IP</strong> (<strong>VoIP</strong>) such as Skype</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="computing-environments---virtualization">Computing Environments - Virtualization</h2>
+
+<ul>
+  <li>Allows operating systems to run applications as applications within other OS
+    <ul>
+      <li>Vast and growing industry</li>
+    </ul>
+  </li>
+  <li><strong>Emulation</strong> used when source CPU type different from target type (i.e. PowerPC to Intel x86)
+    <ul>
+      <li>Generally slowest method</li>
+      <li>When computer language not compiled to native code – <strong>Interpretation</strong></li>
+      <li>Every machine-level instruction that runs natively on source system must be translated to equivalent functions of target system</li>
+    </ul>
+  </li>
+  <li><strong>Virtualization</strong> – OS natively compiled for CPU, running <strong>guest</strong> OSes also natively compiled
+    <ul>
+      <li>Consider VMware running WinXP guests, each running applications, all on native WinXP <strong>host</strong> OS</li>
+      <li><strong>VMM</strong> (virtual machine Manager) provides virtualization services</li>
+    </ul>
+  </li>
+  <li>Use cases involve laptops and desktops running multiple OSes for exploration or compatibility
+    <ul>
+      <li>Apple laptop running Mac OS X host, Windows as a guest</li>
+      <li>Developing apps for multiple OSes without having multiple systems</li>
+      <li>QA testing applications without having multiple systems</li>
+      <li>Executing and managing compute environments within data centers</li>
+    </ul>
+  </li>
+  <li>VMM can run natively, in which case they are also the host
+    <ul>
+      <li>There is no general purpose host then (VMware ESX and Citrix XenServer)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="virtual-machines">Virtual Machines</h2>
+
+<ul>
+  <li>A <strong>virtual machine</strong> takes the layered approach to its logical conclusion. It treats hardware and the operating system kernel as though they were all hardware.</li>
+  <li>A virtual machine provides an interface identical to the underlying bare hardware.</li>
+  <li>The operating system <strong>host</strong> creates the illusion that a process has its own processor and (virtual memory).</li>
+  <li>Each <strong>guest</strong> provided with a (virtual) copy of underlying computer.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="computing-environments---virtualization-1">Computing Environments - Virtualization</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905154215993.png" alt="image-20220905154215993" /></p>
+
+<p>virtual machine manager</p>
+
+<ul>
+  <li>가상화를 해 주고 관리하는</li>
+</ul>
+
+<p>여러 개의 실행환경이 생김</p>
+
+<p><br /></p>
+
+<h2 id="vmware-architecture">VMware Architecture</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905154232295.png" alt="image-20220905154232295" /></p>
+
+<p>hardware위에 OS가 있고 그 위에 가상화 layer가 존재하는</p>
+
+<p>application 별로 가상화 종류가 다 다름</p>
+
+<p><br /></p>
+
+<h2 id="the-java-virtual-machine">The Java Virtual Machine</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220905154248006.png" alt="image-20220905154248006" /></p>
+
+<p><br /></p>
+
+<h2 id="computing-environments--cloud-computing">Computing Environments – Cloud Computing</h2>
+
+<ul>
+  <li>Delivers computing, storage, even apps as a service across a network</li>
+  <li><u>Logical extension of virtualization</u> because it uses virtualization as the base for it functionality.
+    <ul>
+      <li>Amazon <strong>EC2</strong> has thousands of servers, millions of virtual machines, petabytes of storage available across the Internet, pay based on usage</li>
+    </ul>
+  </li>
+  <li>Many types
+    <ul>
+      <li><strong>Public cloud</strong> – available via Internet to anyone willing to pay</li>
+      <li><strong>Private cloud</strong> – run by a company for the company’s own use</li>
+      <li><strong>Hybrid cloud</strong> – includes both public and private cloud components</li>
+      <li>Software as a Service (<strong>SaaS</strong>) – one or more applications available via the Internet (i.e., word processor)</li>
+      <li>Platform as a Service (<strong>PaaS</strong>) – software stack ready for application use via the Internet (i.e., a database server)
+        <ul>
+          <li>플랫폼 자체를 서비스로 제공</li>
+        </ul>
+      </li>
+      <li>Infrastructure as a Service (<strong>IaaS</strong>) – servers or storage available over Internet (i.e., storage available for backup use)
+        <ul>
+          <li>Infrastructure를 대여해 주는 서비스</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Cloud computing environments composed of traditional OSes, plus VMMs, plus cloud management tools
+    <ul>
+      <li>Internet connectivity requires <strong>security</strong> like firewalls</li>
+      <li>Load balancers spread traffic across multiple applications</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220913002622262.png" alt="image-20220913002622262" /></p>
+
+<p>load balancer - 적절하게 load를 분배해야 최대 성능을 얻을 수 있음</p>
+
+<p><br /></p>
+
+<h2 id="computing-environments--real-time-embedded-systems">Computing Environments – Real-Time Embedded Systems</h2>
+
+<ul>
+  <li>Real-time embedded systems most prevalent form of computers
+    <ul>
+      <li>Car engine, manufacturing robots, Multimedia systems, network of diverse devices</li>
+      <li><strong>real-time OS</strong>
+        <ul>
+          <li>Reduced feature set OS, limited user interface</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Various embedded systems (보통 임베디드 시스템에 있음, not 범용 컴퓨터)
+    <ul>
+      <li>Some general-purpose computers with standard OS with special-purpose applications</li>
+      <li>Some hardware devices with a special-purpose embedded OS</li>
+      <li>some hardware devices with ASIC that perform tasks without an OS</li>
+    </ul>
+  </li>
+  <li>Real-time OS has well-defined fixed time constraints
+    <ul>
+      <li>Processing <strong>must</strong> be done within constraint</li>
+      <li>Correct operation only if constraints met</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="real-time-systems">Real-Time Systems</h2>
+
+<ul>
+  <li>Often used as a control device in a dedicated application such as controlling scientific experiments, medical imaging systems, industrial control systems, and some display systems.</li>
+  <li>단순히 빠르기만 한 게 real-time os가 아님.</li>
+  <li>Well-defined fixed-time constraints.
+    <ul>
+      <li>time sharing systems : fast response</li>
+      <li>Batch system: no time constraints</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Hard real-time system</code>
+    <ul>
+      <li>Secondary storage limited or absent, data stored in short-term memory, or read-only memory (ROM)</li>
+      <li>Conflicts with time-sharing systems, not supported by general-purpose operating systems.</li>
+      <li>제한된 시간 안에 이벤트 처리가 100% 보장되는 시스템</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Soft real-time system</code>
+    <ul>
+      <li>Limited utility in industrial control or robotics</li>
+      <li>Useful in applications (multimedia, virtual reality) requiring advanced operating-system features.</li>
+      <li>ex. 전화 교환기</li>
+      <li>제한된 시간 안에 이벤트 처리가 100% 보장되지는 않지만 <strong>대부분</strong> 처리는 되는 시스템</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="open-source-operating-systems">Open-Source Operating Systems</h2>
+
+<ul>
+  <li>Operating systems made available in source-code format rather than just binary <strong>closed-source</strong>
+    <ul>
+      <li><strong>Linux</strong>, <strong>Windows</strong></li>
+    </ul>
+  </li>
+  <li>Counter to the <strong>copy protection</strong> and <strong>Digital Rights Management</strong> (<strong>DRM</strong>) movement</li>
+  <li>Started by <strong>Free Software Foundation</strong> (<strong>FSF</strong>), which has “copyleft” <strong>GNU Public License</strong> (<strong>GPL</strong>)</li>
+  <li>Examples include <strong>GNU/Linux</strong> and <strong>BSD UNIX</strong> (including core of <strong>Mac OS X</strong>), and many more</li>
+  <li>Can use VMM like VMware Player (Free on Windows), Virtualbox (open source and free on many platforms - http://www.virtualbox.com)
+    <ul>
+      <li>Use to run guest operating systems for exploration</li>
+    </ul>
+  </li>
+  <li>I recommend to read textbook.</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#os" class="page__taxonomy-item p-category" rel="tag">OS</a><span class="sep">, </span>
+    
+      <a href="/tags/#%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C" class="page__taxonomy-item p-category" rel="tag">운영체제</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#os" class="page__taxonomy-item p-category" rel="tag">OS</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-09-05T00:00:00+09:00">2022-09-05</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BOS%5D+Introduction%20http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Introduction%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Introduction%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Introduction%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/frontend/reactnative/React-Native-%ED%95%A8%EC%88%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%99%80-%EB%A6%AC%EC%95%A1%ED%8A%B8-%ED%9B%85/" class="pagination--pager" title="[React Native] 함수 컴포넌트와 리액트 훅
+">이전</a>
+    
+    
+      <a href="/frontend/hci/HCI-0.-Course-Introduction/" class="pagination--pager" title="[HCI] 0. Course Introduction
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/os/OS-Introduction/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/os/[OS] Introduction"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

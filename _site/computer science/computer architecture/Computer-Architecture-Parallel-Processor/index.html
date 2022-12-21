@@ -1,0 +1,2010 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Computer Architecture] Parallel Processors | speardragon note</title>
+<meta name="description" content="Parallel Processors from Client to Cloud">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Computer Architecture] Parallel Processors">
+<meta property="og:url" content="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-Parallel-Processor/">
+
+
+  <meta property="og:description" content="Parallel Processors from Client to Cloud">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-06-07T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-Parallel-Processor/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-architecture" itemprop="item"><span itemprop="name">Computer architecture</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Computer Architecture] Parallel Processors</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Computer Architecture] Parallel Processors">
+    <meta itemprop="description" content="Parallel Processors from Client to Cloud">
+    <meta itemprop="datePublished" content="2022-06-07T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-Parallel-Processor/" class="u-url" itemprop="url">[Computer Architecture] Parallel Processors
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h1 id="parallel-processors-from-client-to-cloud">Parallel Processors from Client to Cloud</h1>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>여러개 processor에다가 나눠서 각각에서 실행시키도록 한다.</p>
+
+<ul>
+  <li>목표:  <strong>더 높은 성능</strong>을 얻기 위해 여러 컴퓨터를 연결하는 것
+    <ul>
+      <li><strong>Multiprocessors</strong>
+        <ul>
+          <li>여러개 core에서 골고루 task를 실행</li>
+        </ul>
+      </li>
+      <li>Scalability, availability, power efficiency</li>
+    </ul>
+  </li>
+  <li>Task-level (process-level) parallelism
+    <ul>
+      <li>High throughput for independent jobs</li>
+    </ul>
+  </li>
+  <li><strong>Parallel processing program</strong>
+    <ul>
+      <li><strong>Single program run on multiple processors</strong></li>
+    </ul>
+  </li>
+  <li>Multicore microprocessors
+    <ul>
+      <li>Chips with multiple processors (cores)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hardware-and-software">Hardware and Software</h2>
+
+<ul>
+  <li>Hardware
+    <ul>
+      <li>Serial: e.g., Pentium 4</li>
+      <li>Parallel: e.g., quad-core Xeon e5345</li>
+    </ul>
+  </li>
+  <li>Software
+    <ul>
+      <li>Sequential: e.g., matrix multiplication</li>
+      <li>Concurrent: e.g., operating system</li>
+    </ul>
+  </li>
+  <li>Sequential/concurrent software can run on serial/parallel  hardware
+    <ul>
+      <li>Challenge: making effective use of parallel hardware</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="parallel-programming">Parallel Programming</h2>
+
+<p>여러개 multiprocessor를 사용해서 parallel programming</p>
+
+<p>여러 개의 processor에다가 각자 할당된 부분만 실행함.</p>
+
+<ul>
+  <li>Parallel software is the problem</li>
+  <li>Need to get significant performance improvement
+    <ul>
+      <li>Otherwise, just use a faster uniprocessor, since it’s  easier!</li>
+    </ul>
+  </li>
+  <li>Difficulties
+    <ul>
+      <li>Partitioning : task를 나누는 것</li>
+      <li>Coordination : 나눠준 결과를 다 받는 것</li>
+      <li>Communications overhead : 통신</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="amdahls-law">Amdahl’s Law</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172290826-4b6bf839-47d1-4963-9a90-1bdf5747d74a.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="example">Example:</h2>
+
+<p><br /></p>
+
+<h2 id="scaling">Scaling</h2>
+
+<ul>
+  <li>To get good speedup on a multiprocessor while keeping  the problem size fixed is harder than getting good  speedup by increasing the size of the problem.</li>
+  <li>Strong scaling – when speedup can be achieved on a  multiprocessor without increasing the size of the  problem</li>
+  <li>Weak scaling – when speedup is achieved on a  multiprocessor by increasing the size of the problem  proportionally to the increase in the number of  processors</li>
+  <li>Load balancing is another important factor. Just a single  processor with twice the load of the others cuts the  speedup almost in half</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scaling-example">Scaling Example</h2>
+
+<ul>
+  <li>Workload: sum of 10 scalars, and 10 × 10 matrix sum
+    <ul>
+      <li>Speed up from 10 to 100 processors</li>
+    </ul>
+  </li>
+  <li><strong>Single</strong> processor:
+    <ul>
+      <li>Time = (10 + 100) × tadd</li>
+    </ul>
+  </li>
+  <li><strong>10</strong> processors
+    <ul>
+      <li>Time = <strong>10</strong> × tadd + 100/10 × tadd = <strong>20</strong> × tadd</li>
+      <li>Speedup = 110/20 = <strong>5.5</strong> (55% of potential)</li>
+    </ul>
+  </li>
+  <li><strong>100</strong> processors
+    <ul>
+      <li>Time = 10 × tadd + 100/100 × tadd = <strong>11</strong> × tadd</li>
+      <li>Speedup = 110/11 = <strong>10</strong> (10% of potential)</li>
+    </ul>
+  </li>
+  <li>
+    <p>Assumes load can be balanced across  processors</p>
+  </li>
+  <li>걸리는 시간이 110 -&gt; 20 -&gt; 10으로 줄어들었다.
+    <ul>
+      <li>하지만 speedup이 10보다 커질 수는 없다.(bottleneck)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scaling-example-cont">Scaling Example (cont)</h2>
+
+<ul>
+  <li>What if matrix size is 100 × 100?</li>
+  <li>Single processor:</li>
+  <li>Time = (10 + 10000) × tadd</li>
+  <li>10 processors</li>
+  <li>Time = 10 × tadd + 10000/10 × tadd = <strong>1010</strong> × tadd</li>
+  <li>Speedup = 10010/1010 = <strong>9.9</strong> (99% of potential)</li>
+  <li>100 processors</li>
+  <li>Time = 10 × tadd + 10000/100 × tadd = <strong>110</strong> × tadd</li>
+  <li>Speedup = 10010/110 = <strong>91</strong> (91% of potential)</li>
+  <li>
+    <p>Assuming load balanced</p>
+  </li>
+  <li>데이터의 사이즈를 100x100으로 높이니까 91배까지 늘어날 수 있었다.
+    <ul>
+      <li>problem 사이즈를 가변적으로 변화시키는 -&gt; weak scaling</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="strong-vs-weak-scaling">Strong vs Weak Scaling</h2>
+
+<ul>
+  <li><strong>Strong scaling</strong>: problem size fixed
+    <ul>
+      <li>As in example</li>
+      <li><u>Goal is to run the same problem size faster.</u></li>
+    </ul>
+  </li>
+  <li><strong>Weak scaling</strong>: problem size proportional to number of  processors
+    <ul>
+      <li>Goal is to run larger problem in same amount of time.</li>
+      <li>10 processors, 10 × 10 matrix
+        <ul>
+          <li>Time = (10 + 100/10) × tadd = 20 × tadd</li>
+        </ul>
+      </li>
+      <li>100 processors, 32 × 32 matrix
+        <ul>
+          <li>Time = (10 + 1000/100) × tadd = 20 × tadd</li>
+        </ul>
+      </li>
+      <li>Constant performance in this example</li>
+    </ul>
+  </li>
+  <li>Different approaches depending on the applications</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="instruction-and-data-streams">Instruction and Data Streams</h2>
+
+<ul>
+  <li>An alternate classification</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172291613-d89abad6-c05a-4837-a3c2-a256c74fd0ce.png" alt="image" /></p>
+
+<ul>
+  <li>MIMD 중에 special한 MIMD
+    <ul>
+      <li>SPMD: Single Program Multiple Data
+        <ul>
+          <li>A parallel program on a MIMD computer</li>
+          <li>Conditional code for different processors</li>
+          <li>다 똑같은 프로그램이 여러 processor에서 돌고 있다.
+            <ul>
+              <li><strong>프로그램은 같지만 실행되는 부분이 다르다</strong>. -&gt; parallel programming</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="simd">SIMD</h2>
+
+<ul>
+  <li>Operate elementwise on vectors of data
+    <ul>
+      <li>E.g., MMX and SSE instructions in x86
+        <ul>
+          <li>Multiple data elements in 128-bit wide registers</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>All processors execute the same  instruction at the same time
+    <ul>
+      <li>Each with different data address, etc.</li>
+    </ul>
+  </li>
+  <li>Simplifies synchronization</li>
+  <li>Reduced instruction control hardware</li>
+  <li>Works best for highly data-parallel  applications</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="vector-processors">Vector Processors</h2>
+
+<p>SIMD의 특별한 타입</p>
+
+<p>MIPS의 vector</p>
+
+<ul>
+  <li>Highly pipelined function units</li>
+  <li>Stream data from/to vector registers to units
+    <ul>
+      <li>Data collected from memory into registers</li>
+      <li>Results stored from registers to memory</li>
+    </ul>
+  </li>
+  <li>Example: Vector extension to MIPS
+    <ul>
+      <li>32 × 64-element registers (64-bit elements)</li>
+      <li>Vector instructions
+        <ul>
+          <li>lv, sv: load/store vector (전부 데이터를 벡터에 load, store)</li>
+          <li>addv.d: add vectors of double (vector가 한 번만 계산이 일어나는 것이 아니라 pipeline식으로 쭉 전체가 계산된다.)</li>
+          <li>addvs.d: add scalar to each element of vector of double</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Significantly reduces instruction-fetch bandwidth</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-1">Example</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172292573-d956404d-5508-4a18-9c1b-6bd9ed5d5f6f.png" alt="image" /></p>
+
+<ul>
+  <li>2 + 512/8 * 9 = 600번에 가깝게 fetch</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172292666-b981e25a-10d8-4f49-9207-c1202f047a5e.png" alt="image" /></p>
+
+<ul>
+  <li>6번만 하면 됨</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multithreading-and-multiprocessing">Multithreading and Multiprocessing</h2>
+
+<ul>
+  <li>Multithreading and Multiprocessing
+    <ul>
+      <li>하나의 프로세스에서 여러개의</li>
+      <li>여러 개의 프로세스</li>
+      <li>프로세스에서도 여러 개의 thread</li>
+    </ul>
+  </li>
+  <li>Multithreading: the ability of a CPU (or a single core  in a multicore processor) to provide multiple <strong>threads of execution</strong> concurrently, supported by OS</li>
+  <li>Multiprocessing: include multiple complete  processing units in one or more cores</li>
+  <li>As the two techniques are complementary, they are  combined in nearly all modern systems  architectures with multiple multithreading CPUs and  with CPUs with multiple multithreading cores.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hardware-multithreading-on-a-chip">Hardware Multithreading (on a Chip)</h2>
+
+<ul>
+  <li>core 안에 여러 개의 thread를 <strong>동시에</strong> 실행시킬 수 있음
+    <ul>
+      <li>hareware support가 되어야 함(register file 복사품이 여러 개 있어야 함, PC도 마찬가지)</li>
+    </ul>
+  </li>
+  <li>Performing multiple threads of execution <strong>in parallel</strong> (to  <strong>increase the utilization of a single core</strong> by using threadlevel and instruction-level parallelism)
+    <ul>
+      <li>Hardware must support Replicate register files, PC,  etc.</li>
+      <li>And, Fast switching between threads</li>
+    </ul>
+  </li>
+  <li>The threads share the resources of a single or multiple  cores, which include the computing units, the CPU  caches, and the TLB.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172293055-8c8faa26-7d80-473f-95e9-17998311ed43.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="threading-on-a-4-way-super-scalar-processor">Threading on a 4-way Super Scalar Processor</h2>
+
+<p>연산 unit이 여러개 들어있는 superscalarprocessor(동시에 fetch)</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172293326-204aeef4-3c44-4b01-b6f8-54b863a0fdbf.png" alt="image" /></p>
+
+<p>Coarse MT: 할 수 있는 만큼 다 실행하고 다른 thread 대기</p>
+
+<p>Fine MT: clock level에서 실행</p>
+
+<p>SMT: hazard 등의 이유로 비어 있는 공간에 다른 thread를 실행</p>
+
+<p><br /></p>
+
+<h2 id="multicore-or-multiprocessor">Multicore or Multiprocessor</h2>
+
+<ul>
+  <li>Q1 – How do they share data?</li>
+  <li>Q2 – How do they coordinate?</li>
+  <li>Q3 – How scalable is the architecture? How many processors can be supported?</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="shared-memory">Shared memory</h2>
+
+<p>여러 multi processor, 여러 core들이 같은 address의 memory를 동시에 공유</p>
+
+<ul>
+  <li>Q1 – <strong>Single address space</strong> shared by all processors</li>
+  <li>Q2 – Processors coordinate/communicate through <strong>shared variables</strong> in memory (via loads and stores)
+    <ul>
+      <li>Use of shared data must be coordinated via synchronization primitives (locks) that allow access to data to only one processor at a time</li>
+    </ul>
+  </li>
+  <li>They come in two styles
+    <ul>
+      <li>Uniform memory access (UMA) multiprocessors</li>
+      <li>Nonuniform memory access (NUMA) multiprocessors</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-sum-reduction">Example: Sum Reduction</h2>
+
+<ul>
+  <li>Sum 100,000 numbers on 100 processor UMA
+    <ul>
+      <li>각 프로세서마다 1000개 씩</li>
+      <li>Each processor has ID: 0 ≤ Pn ≤ 99</li>
+      <li>Partition 1000 numbers per processor</li>
+      <li>Initial summation on each processor</li>
+    </ul>
+  </li>
+  <li>자기에게 할당된 계산을 각자 계산하고 합침</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172293767-dfe3e39c-96bd-4a07-a506-c2c5d33555b2.png" alt="image" /></p>
+
+<ul>
+  <li>Now need to add these partial sums
+    <ul>
+      <li>Reduction: divide and conquer</li>
+      <li>Half the processors add pairs, then quarter, …</li>
+      <li>Need to synchronize between reduction steps</li>
+    </ul>
+  </li>
+</ul>
+
+<p>계층적으로 계산 결과를 취합하면서 올라감</p>
+
+<p><br /></p>
+
+<h2 id="message-passing-multiprocessorsmpp">Message Passing Multiprocessors(MPP)</h2>
+
+<p>shared memory에서는 공통적인 메모리 하나를 여러 프로세서가 공유(확인)</p>
+
+<p>network을 두고 이를 통해서 나눠져 있음 + send/receive protocol</p>
+
+<ul>
+  <li>Each processor has its own private address space</li>
+  <li>Q1 – Processors share data by explicitly sending and receiving  information (<strong>message passing</strong>)</li>
+  <li>
+    <p>Q2 – Coordination is built into message passing primitives (<strong>message send and message receive</strong>)</p>
+  </li>
+  <li>주고 받는 protocol 때문에 느려질 수 있음</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>Message sending and receiving is much <strong>slower</strong> than addition</p>
+
+    <ul>
+      <li>multi core 방식 같은 경우 SMT 모델을 쓰는 것이 좋고 일반적인 경우는 MPP를 사용한다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>But message passing multiprocessors and much easier to design</p>
+  </li>
+  <li>
+    <p>Don’t have to worry about cache coherency</p>
+  </li>
+  <li>
+    <p>Communication is explicit (vs. implicit communication in SMPs)</p>
+  </li>
+  <li>
+    <p>It is harder to port a sequential program to a message passing multiprocessor since every communication must be identified in advance.</p>
+  </li>
+  <li>
+    <p>With <strong>cache-coherent</strong> shared memory the hardware figures out what data needs to be communicated</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-with-10-processors">Example with 10 processors</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172294289-be06f0e4-9dac-4c38-8d14-3571976452e8.png" alt="image" /></p>
+
+<p>최종적으로 master processor(0번 processor)가 취함</p>
+
+<p><br /></p>
+
+<h2 id="mpt-and-openmp-in-multi-core">MPT and OpenMP in multi-core</h2>
+
+<ul>
+  <li>OpenMP:
+    <ul>
+      <li>Interface to threading</li>
+      <li>The code is annotated with special <strong>#pragma</strong> statements to indicate parallel regions, reductions, synchronization etc.
+        <ul>
+          <li>#pragma 는 여기서 부터 parallel 하게 하겟다는 뜻</li>
+          <li>Needs special compiler flags to turn it on. (e.g. –fopenmp)
+            <ul>
+              <li>thread를 여러개로</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Favored in multi-core CPU</li>
+      <li>The performance was better in terms of scalability by increasing the number of cores used and using small and large data sizes.</li>
+    </ul>
+  </li>
+  <li>MPI
+    <ul>
+      <li>High overhead for communication</li>
+      <li>more dependent on communication because it is the norm for large scale parallel computing that do not use shared memory</li>
+      <li>designed for solving large-scale scientific problems on distributed-memory systems</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mpi">MPI</h2>
+
+<ul>
+  <li>Mpiexec (or mpirun)
+    <ul>
+      <li>Can specify hostfiles: mpiexec –hostfile myhostfile ./a.out</li>
+      <li>Can specify number of processes</li>
+    </ul>
+  </li>
+  <li>mapping MPI processes to Nodes (processors)
+    <ul>
+      <li>reads the number of processes from –np option</li>
+      <li>Determine where the processes will run:
+        <ul>
+          <li>Available hosts (or nodes), specified by a hostfile or by the –host option</li>
+          <li>Scheduling the policy (round-robin or by-slot)</li>
+          <li>Default and maximum numbers of slots available on each host</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cpu-info-example">CPU info (example)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/173186094-4893bd21-2e3f-4f09-a158-547cccc02898.png" alt="image" /></p>
+
+<ul>
+  <li>socket -&gt; cpu가 2개</li>
+  <li>실제로 cpu의 갯수 -&gt; 56개 -&gt; logical core의 개수를 말함</li>
+</ul>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#parallel-processors" class="page__taxonomy-item p-category" rel="tag">Parallel Processors</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#computer-architecture" class="page__taxonomy-item p-category" rel="tag">Computer Architecture</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-06-07T00:00:00+09:00">2022-06-07</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BComputer+Architecture%5D+Parallel+Processors%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-Parallel-Processor%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-Parallel-Processor%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-Parallel-Processor%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-IO-2/" class="pagination--pager" title="[Computer Architecture] I/O - 2
+">이전</a>
+    
+    
+      <a href="/algorithm/search/Baekjoon-1920%EB%B2%88-%EC%88%98-%EC%B0%BE%EA%B8%B0/" class="pagination--pager" title="[Baekjoon] 1920번 수 찾기
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-Parallel-Processor/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/computer%20architecture/[Computer Architecture] Parallel Processor"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

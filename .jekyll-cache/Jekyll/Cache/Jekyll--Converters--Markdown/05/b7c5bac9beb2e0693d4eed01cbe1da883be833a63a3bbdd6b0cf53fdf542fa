@@ -1,0 +1,1659 @@
+I"1<p>[toc]</p>
+
+<h1 id="chapter-4-multithreaded-programming">Chapter 4: Multithreaded Programming</h1>
+
+<ul>
+  <li>Overview</li>
+  <li>Multicore Programming</li>
+  <li>Multithreading Models</li>
+  <li>Thread Libraries</li>
+  <li>Implicit Threading</li>
+  <li>Threading Issues</li>
+  <li>Operating System Examples
+    <ul>
+      <li>Windows XP Threads</li>
+      <li>Linux Threads</li>
+      <li>Java Threads</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="objectives">Objectives</h2>
+
+<ul>
+  <li>To introduce the notion of a thread
+    <ul>
+      <li>a fundamental unit of CPU utilization(CPU 활용의 기본 단위) that forms the basis of multithreaded computer systems</li>
+    </ul>
+  </li>
+  <li>To discuss the APIs for the Pthreads, Win32, and Java thread libraries</li>
+  <li>To explore several strategies that provide implicit threading</li>
+  <li>To examine issues related to multithreaded programming</li>
+  <li>To cover operating system support for threads in Windows and Linux</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="motivation">Motivation</h2>
+
+<ul>
+  <li>Most modern applications are multithreaded
+    <ul>
+      <li>Threads run within application</li>
+    </ul>
+  </li>
+  <li>Many s/w packages that run on modern desktop PCs are <strong>multithreaded</strong>
+    <ul>
+      <li>An application is implemented as a separate process with several threads of control</li>
+      <li>concurrently 실행!!!!!!!</li>
+      <li>A web browser might have one thread display images or text
+        <ul>
+          <li>While another thread retrieves(검색) data from network</li>
+          <li>And another update display</li>
+          <li>Answer a network request</li>
+        </ul>
+      </li>
+      <li>Word processor may have a thread for displaying graphics
+        <ul>
+          <li>Another thread for reading keystrokes</li>
+          <li>Another for performing spelling checking in the background</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Web server
+    <ul>
+      <li>A web server accepts client requests for web pages</li>
+      <li>A busy web server may have several clients concurrently accessing</li>
+    </ul>
+  </li>
+  <li>RPC (Remote Procedure Call)
+    <ul>
+      <li>RPC severs are multithreaded</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="thread---motivation">Thread - motivation</h2>
+
+<ul>
+  <li>Process creation is heavy-weight while <strong>thread creation is light-weight</strong></li>
+  <li>Can simplify code, increase efficiency</li>
+  <li>OS Kernels are also generally multithreaded</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multithreaded-server-architecture">Multithreaded Server Architecture</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926164323666.png" alt="image-20220926164323666" /></p>
+
+<p><br /></p>
+
+<h2 id="threads">Threads</h2>
+
+<ul>
+  <li>Process is an executing program with a single thread of control</li>
+  <li>
+    <p>Modern OS allows for a process to contain multiple threads of control</p>
+  </li>
+  <li>A thread (or lightweight process) is a basic unit of CPU utilization; it consists of:</li>
+  <li>Thread ID, program counter</li>
+  <li>register set</li>
+  <li>stack space</li>
+  <li>A thread shares with its peer threads its: <span style="color:green">(시험)</span></li>
+  <li>code section</li>
+  <li>data section</li>
+  <li>operating-system resources such as open files and signals</li>
+  <li>A traditional or heavyweight process is equal to a task with one thread</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multiple-threads-within-a-task">Multiple Threads within a Task</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926164453069.png" alt="image-20220926164453069" /></p>
+
+<ul>
+  <li>In a multiple threaded task, <strong>while one server thread is blocked and waiting</strong>, a second thread in the same task can run.
+    <ul>
+      <li>Cooperation of multiple threads in same job confers higher throughput and improved performance.</li>
+      <li>Applications that require sharing a common buffer (i.e., producer-consumer) benefit from thread utilization.</li>
+    </ul>
+  </li>
+  <li>Threads provide a mechanism that allows sequential processes to make blocking system calls(ex. syscall) while also achieving parallelism.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="single-and-multithreaded-processes">Single and Multithreaded Processes</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926164515592.png" alt="image-20220926164515381" /></p>
+
+<ul>
+  <li>code, data, files는 여러 프로세스가 생겨도 공유된다.</li>
+  <li>하지만 각 프로세스 별로 실행되는 내용은 다르기 때문에 registers와 stack은 따로 따로 갖게 된다.<span style="color:green">(시험)</span></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="benefits-of-multithreaded-programming">Benefits of multithreaded programming</h2>
+
+<ul>
+  <li><strong>Responsiveness</strong> <span style="color:green">(시험)</span>
+    <ul>
+      <li>Allow a program to continue running even if part of it is blocked or is performing a lengthy operation</li>
+      <li>Multithreaded web browser allow user interaction in one thread while an image is being loaded in another thread</li>
+    </ul>
+  </li>
+  <li><strong>Resource Sharing</strong>
+    <ul>
+      <li>Threads share the memory and resources of the process</li>
+      <li>threads share resources of process, easier than shared memory or message passing
+        <ul>
+          <li>Threads make IPC easier</li>
+        </ul>
+      </li>
+      <li><strong>Code sharing</strong> allows an application to have several threads within same address space</li>
+    </ul>
+  </li>
+  <li><strong>Economy</strong>
+    <ul>
+      <li>Allocating resources for process creation is costly</li>
+      <li>More economical to <strong>create</strong> and <strong>context switch</strong> threads (resource sharing)</li>
+      <li>In solaris 2, creating process is about 30 times slower than is creating a thread, context switching is about 5 times slower</li>
+    </ul>
+  </li>
+  <li><strong>Scalability</strong>
+    <ul>
+      <li>process can take advantage of multiprocessor architectures Utilization of MP Architectures</li>
+      <li>Benefits of multiprogramming can be greatly increased in MP architecture, where each thread may be running in parallel on a different processor</li>
+      <li>A single threaded process can only run on one CPU, no matter how many are available</li>
+      <li>Multithreading on a multi-CPU machine increases concurrency</li>
+      <li>In a single-processor architecture, the CPU moves between each thread as to create an illusion of parallelism, but in reality only one thread is running at a time (pseduo parallel)</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>Thread of control 이 1개라면</p>
+
+<p>①
+  ②
+  ③
+  ④</p>
+
+<p>=&gt; 와 같이 도는데 (1번이 실행되는 동안 아래는 실행이 안 됨)</p>
+
+<p>Thread of control 이 많다면</p>
+
+<p>① ② ③ ④</p>
+
+<p>=&gt; 와 같이 돌 수 있다. (concurrency 보장)</p>
+
+<ul>
+  <li>사용자 입장에서 1번을 실행하면서 다른 2,3,4,번도 실행되는게 눈에 보임</li>
+</ul>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="multicore-programming">Multicore Programming</h2>
+
+<ul>
+  <li>Single CPU -&gt; multi CPU -&gt; multi-core CPU on single CPU chip</li>
+  <li>Each core appears as a separate CPU to OS (4core -&gt; OS가 보기에 4CPU)</li>
+  <li>Multi-threaded programming can provide <strong>Improved concurrency</strong> on multi-core system
+    <ul>
+      <li>Concurrency means <strong>Parallelism</strong>
+        <ul>
+          <li>a system can perform more than one task <strong>simultaneosly</strong></li>
+        </ul>
+      </li>
+      <li>Concurrnecy means pseudo-parallelism
+        <ul>
+          <li>supports more than one task making progress (계속해서 진전이 이루어진다는 점)</li>
+          <li>Single processor / core, (OS)scheduler providing concurrency</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Multicore systems putting <strong>pressure on programmers</strong>, challenges include:
+    <ul>
+      <li>Dividing activities - identify task that can run in parallel on individual core.
+        <ul>
+          <li>Each task should be independent to be executed on parallel</li>
+        </ul>
+      </li>
+      <li>Balance (한 core가 너무 많은 하지 않도록 load를 골고루 분배하는 것)</li>
+      <li>Data splitting</li>
+      <li>Data dependency - when one task depends on data from another, execution of tasks should be synchronized to accommodate data dependency</li>
+      <li>Testing and debugging</li>
+    </ul>
+  </li>
+  <li>
+    <p>Parallelism implies a system can perform more than one task simultaneously</p>
+  </li>
+  <li>Types of parallelism
+    <ul>
+      <li><strong>Data parallelism</strong> - distributes subsets of the same data across multiple cores, same operation on each  <span style="color:green">(시험)</span>
+        <ul>
+          <li>1부터 100을 더하라고 했다면 학생1은 1~10까지 더하고 학생2는 11~20까지 더하는 예와 같음</li>
+          <li>core가 실행하는 프로그램은 같은데 수행하는 데이터가 다르다</li>
+        </ul>
+      </li>
+      <li><strong>Task parallelism</strong> - distributing threads across cores, each thread performing unique operation
+        <ul>
+          <li>같은 데이터에 대해서 다른 task를 수행하는</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>As # of threads grows, so does architectural support for threading
+    <ul>
+      <li>CPUs have cores as well as <strong>hardware threads</strong></li>
+      <li>Consider Oracle SPARC T4 with 8 cores, and 8 hardware threads per core (OS관점 64개 CPU가 있다고 생각)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002180002273.png" alt="image-20221002180002273" /></p>
+
+<p><br /></p>
+
+<h2 id="concurrency-vs-parallelism">Concurrency vs. Parallelism</h2>
+
+<ul>
+  <li>Concurrent execution on single-core system:
+    <ul>
+      <li><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926165019134.png" alt="image-20220926165019134" /></li>
+    </ul>
+  </li>
+  <li>Parallelism on a multi-core system:
+    <ul>
+      <li><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926165044709.png" alt="image-20220926165044709" /></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="amdahls-law">Amdahl’s Law</h2>
+
+<ul>
+  <li>Identifies performance gains from adding additional cores to an application that has both serial and parallel components</li>
+  <li>S is serial portion (병렬 불가능한 것의 비율)</li>
+  <li>1-S is 병렬할 수 있는</li>
+  <li>N processing cores</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926165145703.png" alt="image-20220926165145703" /></p>
+
+<ul>
+  <li>
+    <p>I.e. if application is 75% parallel / 25% serial, moving from 1 to 2 cores results in speedup of 1.6 times, 2.28 times with 4 cores</p>
+  </li>
+  <li>
+    <p>N = 1: speedup = 1</p>
+
+    <ul>
+      <li>No speedup</li>
+    </ul>
+  </li>
+  <li>
+    <p>N = 2: speedup = 1.6</p>
+  </li>
+  <li>
+    <p><strong>As N approaches infinity</strong>, speedup approaches 1 / S</p>
+
+    <ul>
+      <li>if 50% serial, max speedup is 2.0</li>
+    </ul>
+
+    <p><strong>Serial portion of an application has disproportionate effect on performance gained by adding additional cores</strong></p>
+  </li>
+  <li>
+    <p>But does the law take into account contemporary multicore systems?!!!!!!!! <span style="color:green">(시험)</span></p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-threads-and-kernel-threads">User Threads and Kernel Threads</h2>
+
+<ul>
+  <li><strong>User threads</strong> - management done by user-level threads <strong>library</strong>
+    <ul>
+      <li>No kernel support</li>
+    </ul>
+  </li>
+  <li>Three primary thread libraries:
+    <ul>
+      <li>POSIX Pthreads</li>
+      <li>Windows threads</li>
+      <li>Java threads</li>
+    </ul>
+  </li>
+  <li><strong>Kernel threads</strong> - Supported by the Kernel(OS)</li>
+  <li>Examples – virtually all general purpose operating systems, including:
+    <ul>
+      <li>Windows</li>
+      <li>Solaris</li>
+      <li>Linux</li>
+      <li>Tru64 UNIX</li>
+      <li>Mac OS X</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-level-threads">User Level Threads</h2>
+
+<ul>
+  <li>Thread management done by user-level threads library</li>
+  <li>Three primary thread libraries:
+    <ul>
+      <li>POSIX Pthreads</li>
+      <li>Win32 threads</li>
+      <li>Java threads</li>
+    </ul>
+  </li>
+  <li>supported above the kernel, via a set of thread library calls at the user level (Project Andrew from CMU).</li>
+  <li>The library supports for thread creation, scheduling in user space with no kernel support</li>
+  <li>Kernel is unaware of user-level threads, <strong>so fast</strong>
+    <ul>
+      <li>Drawbacks
+        <ul>
+          <li>If the kernel is single threaded, then any user-level thread performing a blocking system call will cause the entire process to block, even if other threads are available to run within the application</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="kernel-threads">Kernel Threads</h2>
+
+<ul>
+  <li>Kernel-supported Threads Supports for threads is provided by OS
+    <ul>
+      <li>The kernel performs thread creation, scheduling in kernel space</li>
+      <li>단점: Generally slower to manage threads than user thread</li>
+      <li>장점: But, if a thread performs a blocking system call, the kernel can schedule another thread for execution</li>
+      <li>In MP environment, the kernel can schedule threads on different processors</li>
+      <li>Examples – virtually all general purpose operating systems, including:
+        <ul>
+          <li>Windows XP/2000, Solaris, Linux, Tru64 UNIX, Mac OS X</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Hybrid approach implements both user-level and kernel-supported threads (Solaris 2).</li>
+  <li>Java thread on JVM</li>
+</ul>
+
+<p><br /></p>
+
+<hr />
+
+<p><strong>User Thread와 Kernel Thread가 다른 점</strong></p>
+
+<ul>
+  <li>User thread는 thread library에 의해 thread가 관리되지만 Kernel thread는 OS에 의해 관리된다.</li>
+  <li>스레드가 blocking system call을 수행할 때 User thread는 전체 process가 block되지만 Kernel thread는 또실행 중인 다른 스레드를 스케줄링 할 수 있다.</li>
+</ul>
+
+<hr />
+
+<h2 id="multithreading-models">Multithreading Models</h2>
+
+<ul>
+  <li>
+    <p>Many systems provide support both user and kernel threads, resulting in different multithreading models</p>
+  </li>
+  <li>Many-to-One</li>
+  <li>One-to-One</li>
+  <li>Many-to-Many</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multithreading-models-1">Multithreading Models</h2>
+
+<h3 id="many-to-one">Many-to-One</h3>
+
+<ul>
+  <li><mark>Many user-level thread mapped to single kernel thread. </mark>
+    <ul>
+      <li>오직 하나의 kernel thread에 맵핑!</li>
+    </ul>
+  </li>
+  <li>Thread management is <strong>done in user space</strong>, so efficient
+    <ul>
+      <li>커널 부담이 없는 것이 장점</li>
+    </ul>
+  </li>
+  <li>Because only one thread can access the kernel at a time, multiple threads are unable to run in parallel on MPs <span style="color:green">(시험)</span>
+    <ul>
+      <li>Multiple threads <strong>may not run in parallel</strong> on muticore system because only one may be in kernel at a time</li>
+      <li>Allows the developer to create as many user threads, however, true concurrency is not gained because kernel can schedule only one thread at a time</li>
+    </ul>
+  </li>
+  <li>Overhead - but entire process will block if a thread makes a blocking system call
+    <ul>
+      <li><strong>One thread blocking causes all to block</strong></li>
+    </ul>
+  </li>
+  <li>Used on systems that do not support kernel threads (user-level thread libraries) – Few systems currently use this model</li>
+  <li>Examples:
+    <ul>
+      <li>Solaris Green Threads</li>
+      <li>GNU Portable Threads</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multithreading-models-many-to-one-model">Multithreading Models: Many-to-One Model</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926165939792.png" alt="image-20220926165939792" /></p>
+
+<ul>
+  <li>4개의 thread 중 어느 thread가 실행되기 위해서 하나의 kernel thread에 할당이 되어야 한다.
+    <ul>
+      <li>그러면 kernel은 하나가 돌든 두개가 돌든 전체의 user thread를 하나의 thread로 간주하게 된다.</li>
+    </ul>
+  </li>
+  <li>kernel thread가 하나의 single thread이면 위의 4개의 user thread 중 하나만 block이 되더라도 나머지가 다 block이 되어 버리게 되는 문제가 있을 수 있다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="one-to-one-model">One-to-one Model</h2>
+
+<ul>
+  <li>
+    <p>many-to-one보다 concurrency가 극대화</p>
+  </li>
+  <li>Each user-level thread maps to kernel thread.</li>
+  <li>Creating a user-level thread creates a kernel thread</li>
+  <li>provides more concurrency than many-to-one model by allowing another thread to run when a thread makes a blocking system call or by allowing multiple threads to run in parallel (concurrently) on <strong>MPs</strong></li>
+  <li>Disadv.
+    <ul>
+      <li>-&gt; creating a user thread requires creating the corresponding kernel thread,
+        <ul>
+          <li>커널의 부담이 크다. user level thread의 갯수만큼 thread of control을 요구한다.</li>
+        </ul>
+      </li>
+      <li>-&gt; Number of threads per process sometimes <strong>restricted</strong> due to overhead
+        <ul>
+          <li>그 갯수를 지원해 주는데 한계가 있기 때문에 mapping이 불가능한 경우가 생길 수 있다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Examples
+    <ul>
+      <li>Windows NT/XP/2000, Linux, Solaris 9 and later, OS/2</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170037770.png" alt="image-20220926170037770" /></p>
+
+<p><br /></p>
+
+<h2 id="many-to-many-model">Many-to-Many Model</h2>
+
+<ul>
+  <li>one-to-one과 many-to-many의 장단점을 섞은 model
+    <ul>
+      <li>ono-to-one을 쓰고 싶은데 여기서 커널의 부담을 줄이는</li>
+    </ul>
+  </li>
+  <li>Allows many user level threads to be mapped <strong>to a smaller or equal number of kernel threads.</strong>
+    <ul>
+      <li>유저의 모든 thread를 받아들이는 것이 아니라 kernel의 입장에서 무리가 가지 않는 수만큼의 thread를 지원.
+        <ul>
+          <li>작거나 같은 숫자만큼만.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Allows the operating system to create a sufficient number of kernel threads.</li>
+  <li>In <code class="language-plaintext highlighter-rouge">many-to-one model</code>, true concurrency is not gained because <strong>kernel</strong> can schedule <strong>only one thread</strong> at a time</li>
+  <li>One-to-one model allows greater concurrency, but, overhead of creating kernel threads can burden the performance of an application</li>
+  <li>Solaris prior to version 9</li>
+  <li>Windows NT/2000 with the ThreadFiber package</li>
+  <li>Solaris 2, IRIX, HP-UX, True64 Unix</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170135415.png" alt="image-20220926170135415" /></p>
+
+<p><br /></p>
+
+<h2 id="two-level-model">Two-level Model</h2>
+
+<ul>
+  <li>many-to-one + one-to-one</li>
+  <li>Similar to M:M, except that it allows a user thread to be <strong>bound</strong> to kernel thread</li>
+  <li>중요한 thread는 100% mapping을 보장시켜주고 나머지 중요하지 않은 thread는 many-to-one으로 mapping</li>
+  <li>Examples
+    <ul>
+      <li>IRIX</li>
+      <li>HP-UX</li>
+      <li>Tru64 UNIX</li>
+      <li>Solaris 8 and earlier</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170218499.png" alt="image-20220926170218499" /></p>
+
+<p><br /></p>
+
+<h2 id="thread-libraries">Thread Libraries</h2>
+
+<ul>
+  <li><strong>Thread library</strong> provides programmer with API for creating and managing threads</li>
+  <li>Two primary ways of implementing
+    <ul>
+      <li>Library entirely in user space</li>
+      <li>Kernel-level library supported by the OS</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="pthreads">Pthreads</h2>
+
+<ul>
+  <li>May be provided either as user-level or kernel-level</li>
+  <li>A POSIX standard (IEEE 1003.1c) API for thread creation and synchronization</li>
+  <li>A specification for thread behavior, not an implementation
+    <ul>
+      <li>API specifies behavior of the thread library, implementation is up to development of the library.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Common in UNIX operating systems (Solaris, Linux, Mac OS X)</p>
+  </li>
+  <li>유저레벨에도 가능, 커널레벨에도 가능</li>
+  <li>pthreads는 인터페이스는 맞추지만, 구현상은 알아서 하라고 하는 것
+  =&gt; 규격. input, output, 와꾸만 맞추는 것</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="pthreads-example">Pthreads Example</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170338801.png" alt="image-20220926170338801" /></p>
+
+<p><br />
+<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170355906.png" alt="image-20220926170355906" /></p>
+
+<ul>
+  <li>
+    <p>pthread_create: fork()와 유사한</p>
+  </li>
+  <li>
+    <p>pthread_join: wait()과 유사한</p>
+  </li>
+  <li>
+    <p>OS가 제공하는 system call과 / 구현을 누가했냐의 차이지 같은 개념이다.</p>
+  </li>
+  <li>pthread_attr : attribute를 표현한 자료구조</li>
+  <li>pthread_attr_init(&amp;attr) =&gt; attribute를 default 값으로 설정해줘</li>
+  <li>pthread_create() : &amp;tid -&gt; 여기에 스레드 아이디 좀 써줘 (받는 것)</li>
+  <li>&amp;attr : 스레드에게 attr 값들을 넘겨주는 것 (주는 것)</li>
+  <li>runner : 함수 -&gt; 실제로 도는 함수</li>
+  <li>argv[1] : 넘겨주는 param</li>
+  <li>pthread_join() : wait()와 기본적으로 같지만, 이건 library가 제공하는 API
+    <ul>
+      <li>wait()는 System call</li>
+    </ul>
+  </li>
+  <li>pthread_exit() : library가 제공하는 API
+    <ul>
+      <li>exit() : System call</li>
+      <li>하는 일은 같다</li>
+    </ul>
+  </li>
+</ul>
+
+<p><span style="color:green">(시험)</span> 코드 돌려보기</p>
+
+<p><br /></p>
+
+<h2 id="pthreads-code-for-joining-10-threads">Pthreads Code for Joining 10 Threads</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170424225.png" alt="image-20220926170424225" /></p>
+
+<p><br /></p>
+
+<h2 id="win32-api-multithreaded-c-program">Win32 API Multithreaded C Program</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170450607.png" alt="image-20220926170450607" /></p>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170506372.png" alt="image-20220926170506372" /></p>
+
+<ul>
+  <li>CreateThread</li>
+  <li>WaitForSingleObject</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="java-threads">Java Threads</h2>
+
+<ul>
+  <li><strong>Most</strong> PL(Programming Language) do not enable programmers to specify <strong>concurrent activities</strong> except Ada
+    <ul>
+      <li>Generally concurrency has been implemented as OS primitives</li>
+      <li>C , C++ programs can perform multithreading by using platform-specific code libraries</li>
+    </ul>
+  </li>
+  <li>Java provide supports at the language level</li>
+  <li>threads are managed by the JVM not by user library or kernel.
+    <ul>
+      <li>자바는 JVM에 의해 관리되기 때문에 kernel이나 library에 종속적이지 않다.</li>
+      <li>그러나 OS에 의해 실행되기 때문에 JVM 자체는 하나의 kernel thread로 mapping 되기 때문에 종속적이다.</li>
+      <li>Typically implemented using the threads model provided by underlying OS</li>
+    </ul>
+  </li>
+  <li>Java threads may be created by:  <span style="color:red">(시험 X)</span>
+    <ul>
+      <li>(1) Extending <strong>Thread class</strong> - creating a new class that is derived from the Thread class, and to override the run method of the Thread class</li>
+      <li>(2) Implementing the <strong>Runnable</strong> interface</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170617522.png" alt="image-20220926170617522" /></p>
+
+<p><br /></p>
+
+<h2 id="multi-threaded-program-for-summation-of-a-non-negative-integer">Multi-threaded program for Summation of a non-negative integer</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Summation</span> <span class="kd">extends</span> <span class="nc">Thread</span>
+<span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">Summation</span> <span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">upper</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span> <span class="o">(</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+        <span class="k">if</span> <span class="o">(</span> <span class="n">upper</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+                <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span> <span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span> <span class="o">(</span><span class="err">“</span><span class="n">the</span> <span class="n">sum</span> <span class="n">of</span> <span class="err">“</span><span class="o">+</span><span class="n">upper</span><span class="o">+</span><span class="err">”</span> <span class="n">is</span> <span class="err">“</span> <span class="o">+</span><span class="n">sum</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">upper</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">Summation</span> <span class="kd">extends</span> <span class="nc">Thread</span>
+<span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">Summation</span> <span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">upper</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span> <span class="o">(</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+        <span class="k">if</span> <span class="o">(</span> <span class="n">upper</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+                <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span> <span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span> <span class="o">(</span><span class="err">“</span><span class="n">the</span> <span class="n">sum</span> <span class="n">of</span> <span class="err">“</span><span class="o">+</span><span class="n">upper</span><span class="o">+</span><span class="err">”</span> <span class="n">is</span> <span class="err">“</span> <span class="o">+</span><span class="n">sum</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">upper</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ThreadTester</span>
+<span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">){</span>
+            <span class="nc">Summation</span> <span class="n">thrd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Summation</span> <span class="o">(</span><span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span> <span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]));</span>
+            <span class="n">thrd</span><span class="o">.</span><span class="na">start</span><span class="o">();</span> <span class="c1">//create thread//</span>
+        <span class="o">}</span>
+        <span class="k">else</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"usage: Summation &lt;integer value&gt;"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>start method
+    <ul>
+      <li>Allocates memory and initializes a new thread in JVM</li>
+      <li>Calls run method, making the thread eligible to be run by JVM</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multiple-threads">Multiple threads</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ThreadTester</span> <span class="o">{</span>
+    <span class="nc">Public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span> <span class="nc">String</span> <span class="o">[</span> <span class="o">]</span> <span class="n">args</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="nc">PrintThread</span> <span class="n">thread1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PrintThread</span> <span class="o">(</span> <span class="err">“</span><span class="n">thread1</span><span class="err">”</span> <span class="o">);</span>
+        <span class="nc">PrintThread</span> <span class="n">thread2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PrintThread</span> <span class="o">(</span> <span class="err">“</span><span class="n">thread2</span><span class="err">”</span> <span class="o">);</span>
+        <span class="nc">PrintThread</span> <span class="n">thread3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PrintThread</span> <span class="o">(</span> <span class="err">“</span><span class="n">thread3</span><span class="err">”</span> <span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span> <span class="o">(</span><span class="s">"starting threads"</span><span class="o">);</span>
+        <span class="n">thread1</span><span class="o">.</span><span class="na">start</span><span class="o">(</span> <span class="o">);</span> <span class="n">thread2</span><span class="o">.</span><span class="na">start</span><span class="o">(</span> <span class="o">);</span> <span class="n">thread3</span><span class="o">.</span><span class="na">start</span><span class="o">(</span> <span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span> <span class="o">(</span><span class="err">“</span><span class="n">threads</span> <span class="n">started</span><span class="o">,</span> <span class="n">main</span> <span class="n">ends</span> <span class="err">\</span><span class="n">n</span><span class="err">”</span> <span class="n">threads</span><span class="err">”</span> <span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">PrintThread</span> <span class="kd">extends</span> <span class="nc">Thread</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">sleepTime</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nf">PrintThread</span> <span class="o">(</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">){</span>
+        <span class="kd">super</span> <span class="o">(</span><span class="n">name</span><span class="o">);</span>
+        <span class="n">sleepTime</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="na">random</span><span class="o">()</span> <span class="o">*</span> <span class="mi">5001</span> <span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span> <span class="o">(</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span><span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span> <span class="o">(</span><span class="n">getName</span><span class="o">()</span> <span class="o">+</span> <span class="err">“</span><span class="n">going</span> <span class="n">to</span> <span class="n">sleep</span> <span class="k">for</span> <span class="err">”</span> <span class="o">+</span> <span class="n">sleepTime</span><span class="o">);</span>
+             <span class="nc">Threads</span><span class="o">.</span><span class="na">sleep</span> <span class="o">(</span><span class="n">sleepTime</span><span class="o">);</span>
+            <span class="o">};</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span> <span class="o">(</span><span class="n">getName</span><span class="o">()</span> <span class="o">+</span> <span class="err">“</span><span class="n">done</span> <span class="n">sleeping</span> <span class="err">”</span> <span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>객체를 여러개 만듦.</p>
+
+<p><br /></p>
+
+<h2 id="java-multithreaded-program-runnable-interface-구현상속">Java Multithreaded Program (Runnable Interface 구현상속)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170848411.png" alt="image-20220926170848411" /></p>
+
+<p><br /></p>
+
+<h2 id="java-multithreaded-program-cont">Java Multithreaded Program (Cont.)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926170909718.png" alt="image-20220926170909718" /></p>
+
+<p><br /></p>
+
+<h2 id="java-thread-states">Java Thread States</h2>
+
+<ul>
+  <li>Blocked : waiting (wait) -&gt; notify, notifyall, T/O interrupt
+    <ul>
+      <li>sleeping (sleep) -&gt; sleep interval expire interupt</li>
+      <li>blocked (io, synch) -&gt; i/o complete, lock acqusition interrupt</li>
+    </ul>
+  </li>
+  <li>Runnable: ready -&gt; running : thread dispatch
+    <ul>
+      <li>running -&gt; ready : quantum expire, yield</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926171356470.png" alt="image-20220926171356470" /></p>
+
+<p><br /></p>
+
+<h2 id="스레드-상태와-생명-주기">스레드 상태와 생명 주기</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926171618924.png" alt="image-20220926171618924" /></p>
+
+<ul>
+  <li>RUNNABLE
+    <ul>
+      <li>준비(process state 중 ready state)</li>
+      <li>실행 중(process state 중 running state)</li>
+    </ul>
+  </li>
+  <li>WAITING과 BLOCK이 구분되어 있음
+    <ul>
+      <li>process에서는 I/O든 interrupt 든 wating으로 묶었음</li>
+    </ul>
+  </li>
+  <li>다른 thread가 notify 메소드를 호출하여 waiting thread를 깨운다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="jvm-host-os">JVM &amp; Host OS</h2>
+
+<ul>
+  <li>JVM is on top of a host OS
+    <ul>
+      <li>Allows the JVM to <strong>hide</strong> the implementation details of underlying OS</li>
+      <li>Provide a consistent, abstract environment that allows java programs to operate on any platform that supports a JVM</li>
+    </ul>
+  </li>
+  <li>JAVA spec. does not specify how java threads are to be mapped to OS
+    <ul>
+      <li>Windows 95/98/NT/2000 use <strong>one-to-one model</strong> - each java thread for a JVM maps to a kernel thread</li>
+      <li>Solaris 2 implements JVM as many-to-one model
+        <ul>
+          <li>With Solaris 2.6, JVM was implemented using many-to-many model</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="linux-thread-states">Linux Thread States</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002200237388.png" alt="image-20221002200237388" /></p>
+
+<p>running 상태에서 일정 시간 이상 머물게 되면 강제로 ready state로 보낸다.(뒷장에서 배울 preemption)</p>
+
+<p><br /></p>
+
+<h2 id="implicit-threading">Implicit Threading</h2>
+
+<ul>
+  <li>
+    <p>스레드의 관리를 컴파일러나 <strong>Run-time library</strong>가 관리를 하고, 어플리케이션 개발자들이 이런 걸 신경 쓰지 않게 하기 위함</p>
+  </li>
+  <li>Growing in popularity as numbers of threads increase, program correctness more difficult with <strong>explicit threads</strong>
+    <ul>
+      <li>버그를 찾는 것이 어려워짐</li>
+      <li>explicit threads: 프로그램을 작성한 사용자가 직접 실행한 thread</li>
+    </ul>
+  </li>
+  <li>Creation and management of threads done <strong>by compilers and run-time libraries rather than programmers</strong>
+    <ul>
+      <li><strong>-&gt; implicit thread</strong></li>
+      <li>개발자들이 따로 명시하지 않아도 사실 스레드가 진행되고 있어서 Implicit Threading임</li>
+    </ul>
+  </li>
+  <li>Three methods explored (아래에서 이에 대한 자세한 설명이 나오는데 이는 시험 X)
+    <ul>
+      <li>Thread Pools</li>
+      <li>OpenMP</li>
+      <li>Grand Central Dispatch</li>
+    </ul>
+  </li>
+  <li>Other methods include Microsoft Threading Building Blocks (TBB), java.util.concurrent package</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="thread-pools">Thread Pools</h2>
+
+<ul>
+  <li>Create a number of threads in a pool where they await work - thread 그릇은 사전에 만들어 놓는 것</li>
+  <li>Advantages:
+    <ul>
+      <li>Usually slightly faster to service a request with an existing thread than create a new thread</li>
+      <li>Allows the number of threads in the application(s) to be bound to the size of the pool</li>
+      <li>Separating <code class="language-plaintext highlighter-rouge">task to be performed from mechanics of creating task</code> allows different strategies for running task
+        <ul>
+          <li>i.e.Tasks could be scheduled to run periodically</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Windows API supports thread pools:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926171943246.png" alt="image-20220926171943246" /></p>
+
+<p><br /></p>
+
+<h2 id="openmp">OpenMP</h2>
+
+<ul>
+  <li>Set of compiler directives and an API for C, C++, FORTRAN</li>
+  <li>Provides support for parallel programming in shared-memory environments</li>
+  <li>Identifies <strong>parallel regions</strong> – blocks of code that can run in parallel</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926172027205.png" alt="image-20220926172027205" /> <img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926172036706.png" alt="image-20220926172036706" style="zoom:67%;" /></p>
+
+<p><br /></p>
+
+<h2 id="grand-central-dispatch">Grand Central Dispatch</h2>
+
+<ul>
+  <li>Apple technology for Mac OS X and iOS operating systems</li>
+  <li>Extensions to C, C++ languages, API, and run-time library</li>
+  <li><strong>Allows identification of parallel sections</strong></li>
+  <li>Manages most of the details of threading</li>
+  <li>Block is in <code class="language-plaintext highlighter-rouge">“^{ }”</code>
+    <ul>
+      <li>ex) <code class="language-plaintext highlighter-rouge">ˆ{ printf("I am a block"); } </code></li>
+    </ul>
+  </li>
+  <li>Blocks placed in dispatch queue
+    <ul>
+      <li>Assigned to available thread in thread pool when removed from queue</li>
+    </ul>
+  </li>
+  <li>Two types of dispatch queues:
+    <ul>
+      <li>serial – blocks removed in FIFO order, queue is per process, called main queue
+        <ul>
+          <li>Programmers can create additional serial queues within program</li>
+        </ul>
+      </li>
+      <li>concurrent – removed in FIFO order but several may be removed at a time</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926172224980.png" alt="image-20220926172224980" /></p>
+
+<p><br /></p>
+
+<h2 id="threading-issues">Threading Issues</h2>
+
+<ul>
+  <li>Semantics of fork() and exec() system calls.
+    <ul>
+      <li>둘이 같은가 다른가?</li>
+    </ul>
+  </li>
+  <li>Thread cancellation.
+    <ul>
+      <li>Asynchronous or deferred</li>
+    </ul>
+  </li>
+  <li>Signal handling
+    <ul>
+      <li>Synchronous and asynchronous</li>
+    </ul>
+  </li>
+  <li>Thread pools</li>
+  <li>Thread specific data
+    <ul>
+      <li>Create Facility needed for data private to thread</li>
+      <li>데이터지만 스레드 간에 공유하지 않는 데이터의 issue</li>
+    </ul>
+  </li>
+  <li>Scheduler activations</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fork-and-exec-system-calls">fork() and exec() system calls</h2>
+
+<ul>
+  <li>In a multithreaded program, the semantics of <strong>fork</strong>, <strong>exec</strong> change</li>
+  <li>Does <strong>fork()</strong> duplicate only the calling thread or all threads?
+    <ul>
+      <li>fork는 프로세스를 만들어내는 것인데 fork를 하는 경우 그 안의 존재하는 <strong>모든 thread를 복제</strong>해야 하는가?</li>
+      <li>If one thread in a program calls fork, does the new process duplicate all threads or is the new process single-threaded ?</li>
+    </ul>
+  </li>
+  <li>Unix has <strong>2 versions</strong>
+    <ul>
+      <li>One that duplicates all threads</li>
+      <li>Another that duplicates only the thread that invoked fork</li>
+    </ul>
+  </li>
+  <li><strong>Exec()</strong> usually works as normal – replace the running process including all threads (process 동작과 거의 동일)
+    <ul>
+      <li>If a thread invokes the exec system call, the program specified in the parameter to exec <strong>will replace the entire process (all threads)</strong></li>
+      <li>코드 자체는 공유되기 때문에</li>
+    </ul>
+  </li>
+  <li>exec()을 호출하냐 안하냐에 따라 달라짐
+    <ul>
+      <li>호출하면 주소공간이 바뀌기 때문에 어차피 바꿀건데 뭐하러 모든 스레드를 복사함?</li>
+      <li>호출하지 않으면 그냥 그대로 모든 스레드를 복제하는 것이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="thread-cancellation-12">Thread cancellation (1/2)</h2>
+
+<ul>
+  <li>
+    <p>abort() 느낌</p>
+  </li>
+  <li>Task of <strong>terminating</strong> a thread before it has completed</li>
+  <li>Ex) multiple threads are concurrently searching through a DB and one thread returns the result.
+    <ul>
+      <li>A thread that is to be cancelled is referred to as target thread</li>
+      <li>예를 들어 DB 검색을 목적으로 멀티스레드를 만들었다면,, DB의 여러 섹션을 스레드마다 검색.
+ =&gt; 한 스레드가 원하는 데이터를 찾았다!! -&gt; 나머지 스레드들을 종료시켜야 한다.
+ ==&gt; 아! 이래서 필요하구나!!</li>
+    </ul>
+  </li>
+  <li>Two general approaches:
+    <ul>
+      <li><strong>Asynchronous cancellation</strong> -&gt; one thread immediately terminates the target thread
+        <ul>
+          <li>자원 반납할 여유도 없이 terminate, 왜 죽는 지도 모르고 즉사</li>
+        </ul>
+      </li>
+      <li><strong>Deferred cancellation</strong> -&gt; the target thread can <strong>periodically check</strong> if it should terminate, allowing the target thread an opportunity to terminate itself in an orderly fashion
+        <ul>
+          <li>Flag checking</li>
+          <li>자원 반납(뒷정리)을 스스로하게 될 여유를 줌.
+            <ul>
+              <li>ex) cleanup routine</li>
+            </ul>
+          </li>
+          <li>target thread가 자신이 주기적으로 내가 죽어야 되나 말아야 되나를 체크
+            <ul>
+              <li>죽어야 된다고 판단 시 스스로 종료</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Pthread code to create and cancel a thread:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926172558722.png" alt="image-20220926172558722" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>Invoking thread cancellation requests cancellation, but actual cancellation <strong>depends on thread state</strong></li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926172643608.png" alt="image-20220926172643608" /></p>
+
+<ul>
+  <li>If thread has cancellation disabled, cancellation <strong>remains pending</strong> until thread enables it</li>
+  <li><strong>Default</strong> type is <strong>deferred</strong> (연기된, 뒷정리를 하고 죽는)
+    <ul>
+      <li>Cancellation only occurs when thread reaches <strong>cancellation point</strong>
+        <ul>
+          <li>반드시 cancellation point가 정의 되어 있어야 함.</li>
+        </ul>
+      </li>
+      <li>I.e. pthread_testcancel()</li>
+      <li>Then <strong>cleanup handler</strong> is invoked</li>
+    </ul>
+  </li>
+  <li>
+    <p>On Linux systems, thread cancellation is handled through signals</p>
+  </li>
+  <li>How about the resources that are allocated to the thread?</li>
+  <li>If a thread was cancelled while in the middle of updating <strong>data it is sharing with other threads</strong>?
+    <ul>
+      <li>With asynchronous cancellation, OS may not free a system-wide resource</li>
+      <li>With synchronous cancellation, cancellation points should be defined</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="signal-handling-13">Signal handling (1/3)</h2>
+
+<ul>
+  <li>
+    <p>A signal is used to <strong>notify</strong> a process that a particular event has occurred</p>
+
+    <ul>
+      <li>A signal is generated by the occurrence of a particular event</li>
+      <li>A generated signal is delivered to a process</li>
+      <li>
+        <p>Once delivered, the signal must be handled by one of two signal handlers:</p>
+
+        <ol>
+          <li>default</li>
+          <li>user-defined</li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Delivery of signal can be done either synchronously or asynchronously</p>
+    <ul>
+      <li><strong>Synch</strong>: illegal memory access, division by zero
+        <ul>
+          <li>signal is delivered <strong>to the same process</strong> that performed the operation <strong>causing the signal</strong></li>
+        </ul>
+      </li>
+      <li><strong>Asynch</strong>: generated by an event <strong>external to a running process</strong>
+        <ul>
+          <li>Terminating a process  ctrl + c</li>
+          <li>Typically asynchronous signals are sent to another process</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="signal-handling-23">Signal handling (2/3)</h2>
+
+<ul>
+  <li>Every signal may be handled by
+    <ul>
+      <li>A default signal handler</li>
+      <li>A user-defined handler (우선 순위가 더 높음)</li>
+    </ul>
+  </li>
+  <li>Every signal has a default signal handler that is run by the kernel</li>
+  <li>The default signal handler is <strong>overridden</strong> by a user-defined signal handler
+    <ul>
+      <li>user defined signal handler가 있다면 ! default 무시 -&gt; user defined 실행</li>
+    </ul>
+  </li>
+  <li>Handling signals in single-threaded programs is straightforward
+    <ul>
+      <li>Signals are always delivered to a process</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="signal-handling-33">Signal handling (3/3)</h2>
+
+<ul>
+  <li>Where then should a signal be delivered for <strong>multi-threaded</strong>?
+    <ul>
+      <li>Deliver the signal to <strong>the thread</strong> to which the signal applies
+        <ul>
+          <li><strong>Synchronous</strong> signal</li>
+          <li>직접적 연결이 있는 thread에 signal 전달하는</li>
+        </ul>
+      </li>
+      <li>Deliver the signal to <strong>every thread</strong> in the process
+        <ul>
+          <li><strong>Asynchronous</strong> signal such as  c</li>
+        </ul>
+      </li>
+      <li>Deliver the signal to <strong>certain threads</strong> in the process
+        <ul>
+          <li>Some unix allows a thread to specify which signals it will accept or and which it will block</li>
+          <li>Delivered only to the first thread found in a process that is not blocking the signal</li>
+        </ul>
+      </li>
+      <li>Assign a specific thread to receive all signals for the process
+        <ul>
+          <li>Solaris 2</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Window 2000 : asynchronous procedure call (APC)
+    <ul>
+      <li>Allows a user thread to specify a function that is to be called when the user thread receives notification of a particular event</li>
+      <li>Similar to asynchronous signal</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="overlapped-모델ii">Overlapped 모델(II)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926174327276.png" alt="image-20220926174327276" /></p>
+
+<p><br /></p>
+
+<h2 id="thread-pools-1">Thread pools</h2>
+
+<ul>
+  <li>Scenario of multithreading a web server
+    <ul>
+      <li>Creating a separate thread is superior to separate process</li>
+      <li>But, it also has problems
+        <ul>
+          <li>Time required to create the thread
+            <ul>
+              <li>프로세스보다(fork()) 시간이 적게 걸리지만 스레드 생성에 시간이 오래 걸림</li>
+            </ul>
+          </li>
+          <li>Unlimited thread creation could exhaust system resources
+            <ul>
+              <li>클라이언트의 요구가 몇 개가 들어올 지 모름</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Create a number of threads at process startup and place them in <strong>pool</strong></li>
+  <li>Advantages:
+    <ul>
+      <li>Usually slightly faster to service a request with an existing thread than create a new thread</li>
+      <li>Allows the number of threads in the application(s) to be bound to the size of the pool</li>
+    </ul>
+  </li>
+  <li>스레드가 할 일을 다 하면 죽는 것이 아니라 다시 thread pool로 돌아가는 것</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="thread-specific-data-thread-local-storage">Thread-specific data (Thread-Local Storage)</h2>
+
+<ul>
+  <li>
+    <p>멀티스레드에서 한 프로세스 내의 모든 스레드는 메모리를 공유한다!! 하지만, 각 스레드는 자기 고유의 데이터가 필요하다.</p>
+  </li>
+  <li>Threads belonging to a process share the data of the process
+    <ul>
+      <li>Benefits of multithreaded programming</li>
+    </ul>
+  </li>
+  <li>However, 때때로, each thread might need its own copy of certain data
+    <ul>
+      <li>Allows each thread to have its own copy of data</li>
+      <li><strong>Thread-local storage (TLS)</strong> allows each thread to have its own copy of data</li>
+      <li>Most thread libraries provide the thread-specific data</li>
+      <li>Win32, Pthreads, Java</li>
+      <li>Useful when you do not have control over the thread creation process (i.e., when using a thread pool)</li>
+    </ul>
+  </li>
+  <li>Different from local variables</li>
+  <li>Local variables visible only during single function invocation
+    <ul>
+      <li>TLS visible across function invocations (함수 호출 ~ 리턴까지); 함수가 종료해도 남아있음</li>
+      <li>Similar to static data in C</li>
+    </ul>
+  </li>
+  <li>TLS is unique to each thread</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scheduler-activations시험">Scheduler Activations<span style="color:green">(시험)</span></h2>
+
+<ul>
+  <li>Both M:M and Two-level models require communication to maintain the appropriate number of kernel threads allocated to the application</li>
+  <li>Typically use an intermediate(중간) data structure between user and kernel threads - <strong>lightweight process (LWP)</strong>
+    <ul>
+      <li>Appears to be a <strong>virtual processor</strong> on which process can schedule user thread to run</li>
+      <li>Each LWP attached to kernel thread</li>
+      <li>How many LWPs to create?</li>
+    </ul>
+  </li>
+  <li>Scheduler activations provide <strong>upcalls</strong> - a communication mechanism from the kernel to the thread library
+    <ul>
+      <li>upcall: 커널에서 스레드 라이브러리에 전달하는 통신 메커니즘
+        <ul>
+          <li>몇 개 필요한지 물어봐서 그 갯수에 해당하는 커널 스레드를 만들거나 회수해 준다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>This communication allows an application to maintain the correct number kernel threads</li>
+  <li>즉, 커널 스레드 개수를 동적으로 control
+    <ul>
+      <li>로드가 적을 때는 개수를 적게, 로드가 많을 때는 개수가 많게</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926175119484.png" alt="image-20220926175119484" /></p>
+
+<p><br /></p>
+
+<h2 id="threads-support-in-solaris-2">Threads Support in Solaris 2</h2>
+
+<ul>
+  <li>Solaris 2 is a version of UNIX with support for threads at the kernel and user levels, symmetric multiprocessing, and real-time scheduling.</li>
+  <li>Implements many-to-many model  Implements the Pthread API, UI threads
+    <ul>
+      <li>User level threads with a library containing APIs for thread creation and management</li>
+      <li>Developers opt for Pthread library</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="threads-support-in-solaris-2-1">Threads Support in Solaris 2</h2>
+
+<ul>
+  <li>LWP – intermediate level between user-level threads and kernel-level threads.
+    <ul>
+      <li>Each process contains at least one LWP</li>
+      <li>Thread library multiplexes user-level threads on the pool of LWPs for the process</li>
+      <li>Only user-level threads currently connected to an LWP accomplish work</li>
+      <li>The rest one are either blocked or waiting for an LWP on which they can run</li>
+    </ul>
+  </li>
+  <li>Kernel-level thread
+    <ul>
+      <li>Each LWP has an kernel-level thread</li>
+      <li>Some kernel-level threads run on the kernel’s behalf and have no associated LWP (a thread to service disk request)</li>
+      <li>The only objects scheduled for CPU</li>
+    </ul>
+  </li>
+  <li>User-level threads may be either bound or unbound</li>
+  <li>A bound thread
+    <ul>
+      <li>permanently attached to an LWP</li>
+      <li>Runs on the LWP, and by request the LWP can be dedicated to a single processor</li>
+      <li>Binding a thread is useful in situations that require quick response time, such as real-time app.</li>
+    </ul>
+  </li>
+  <li>An unbound thread (default)</li>
+  <li>is not permanently attached to an LWP</li>
+  <li>All unbound threads in an application are multiplexed onto the pool of available LWPS for the application</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solaris-2-threads">Solaris 2 Threads</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926175201997.png" alt="image-20220926175201997" /></p>
+
+<p><br /></p>
+
+<h2 id="data-structures-to-implement-threads-on-solaris-2">Data structures to implement threads on Solaris 2</h2>
+
+<ul>
+  <li>Kernel thread:
+    <ul>
+      <li>small data structure and a stack</li>
+      <li>Copy of kernel registers</li>
+      <li>A pointer to LWP to which it is attached</li>
+      <li>A priority</li>
+    </ul>
+  </li>
+  <li>LWP: kernel data structures
+    <ul>
+      <li>register set for the user-level thread it is running</li>
+      <li>accounting and memory information</li>
+      <li>switching between LWPs is relatively slow.</li>
+    </ul>
+  </li>
+  <li>User-level thread: exists in user space
+    <ul>
+      <li>Thread ID, register set including PC and SP</li>
+      <li>Stack, priority for scheduling</li>
+      <li>no kernel involvement means fast switching.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solaris-2-process">Solaris 2 Process</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926175323786.png" alt="image-20220926175323786" /></p>
+
+<p><br /></p>
+
+<h2 id="windows-threads">Windows Threads</h2>
+
+<ul>
+  <li>Windows implements the Windows API – primary API for Win 98, Win NT, Win 2000, Win XP, and Win 7</li>
+  <li>Implements the one-to-one mapping, kernel-level
+    <ul>
+      <li>Each user-level thread maps to an associated kernel thread</li>
+    </ul>
+  </li>
+  <li>Each thread contains
+    <ul>
+      <li>a thread id</li>
+      <li>register set representing state of processor</li>
+      <li>separate user and kernel stacks for when thread runs in user mode or kernel mode</li>
+      <li>private data storage area used by run-time library and dynamic link libraries (DLLs)</li>
+    </ul>
+  </li>
+  <li>The register set, stacks, and private storage area are known as the context of the threads</li>
+  <li>The primary data structures of a thread include:
+    <ul>
+      <li>ETHREAD (executive thread block) – includes pointer to process to which thread belongs and to KTHREAD, in kernel space</li>
+      <li>KTHREAD (kernel thread block) – scheduling and synchronization info, kernel-mode stack, pointer to TEB, in kernel space</li>
+      <li>TEB (thread environment block) - thread id, user-mode stack, thread-local storage, in user space</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="windows-xp-threads-data-structures">Windows XP Threads Data Structures</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926175503446.png" alt="image-20220926175503446" /></p>
+
+<p><br /></p>
+
+<p>윈도우</p>
+
+<h2 id="프로세스와-스레드-12">프로세스와 스레드 (1/2)</h2>
+
+<ul>
+  <li>용어
+    <ul>
+      <li>프로세스(process)
+        <ul>
+          <li>메모리를 비롯한 각종 리소스를 담고 있는 컨테이너(container)로서 정적인 개념</li>
+        </ul>
+      </li>
+      <li>스레드(thread)
+        <ul>
+          <li>실제 CPU 시간을 할당받아 수행되는 실행 단위로서 동적인 개념</li>
+        </ul>
+      </li>
+      <li>주 스레드(<strong>primary thread</strong>)
+        <ul>
+          <li>main() 또는 WinMain() 함수에서 시작되는 스레드로, 프로세스가 시작할 때 생성</li>
+        </ul>
+      </li>
+      <li>컨텍스트 전환(context switch)</li>
+      <li>CPU와 운영체제의 협동으로 이루어지는 스레드 실행 상태의 저장과 복원 작업</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스와-스레드-22">프로세스와 스레드 (2/2)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926175648536.png" alt="image-20220926175648536" /></p>
+
+<p><br /></p>
+
+<h2 id="process와-thread">Process와 Thread</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926175708912.png" alt="image-20220926175708912" /></p>
+
+<ul>
+  <li>thread마다 stack에 대한 정보가 복제된다.
+    <ul>
+      <li>스택만 별도로 복제, 다른 건 공유</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="스레드-생성과-종료-16">스레드 생성과 종료 (1/6)</h2>
+
+<ul>
+  <li>스레드 생성에 필요한 요소
+    <ul>
+      <li>스레드 함수(thread function)의 시작 주소</li>
+      <li>스레드 함수 실행시 사용할 스택 영역의 크기</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="스레드-생성과-종료-26">스레드 생성과 종료 (2/6)</h2>
+
+<ul>
+  <li>프로세스의 주소 공간
+    <ul>
+      <li>두 개의 함수</li>
+      <li>세 개의 스레드</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926175832229.png" alt="image-20220926175832229" /></p>
+
+<ul>
+  <li>main 함수의 thread - primary thread</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="스레드-생성과-종료-36">스레드 생성과 종료 (3/6)</h2>
+
+<ul>
+  <li>CreateThread() 함수 (API)
+    <ul>
+      <li>스레드를 생성한 후 스레드 핸들(thread handle)을 리턴</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926175942111.png" alt="image-20220926175942111" /></p>
+
+<p><br /></p>
+
+<h2 id="스레드-생성과-종료-46">스레드 생성과 종료 (4/6)</h2>
+
+<ul>
+  <li>스레드 함수 정의</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926180010195.png" alt="image-20220926180010195" /></p>
+
+<p><br /></p>
+
+<h2 id="스레드-생성과-종료-56">스레드 생성과 종료 (5/6)</h2>
+
+<ul>
+  <li>
+    <p>스레드 종료 방법 (4가지 경우)</p>
+
+    <p>① 스레드 함수가 리턴</p>
+
+    <p>② 스레드 함수 내에서 ExitThread() 함수를 호출</p>
+
+    <ul>
+      <li>exit()</li>
+    </ul>
+
+    <p>③ TerminateThread() 함수를 호출</p>
+
+    <ul>
+      <li>kill(), abort()</li>
+    </ul>
+
+    <p>④ 주 스레드가 종료하면 모든 스레드가 종료</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="스레드-생성과-종료-66">스레드 생성과 종료 (6/6)</h2>
+
+<ul>
+  <li>스레드 종료 함수</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926180117469.png" alt="image-20220926180117469" /></p>
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;windows.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">Point3D</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="n">DWORD</span> <span class="n">WINAPI</span> <span class="nf">MyThread</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Point3D</span> <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="p">(</span><span class="n">Point3D</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Running another thread: %d, %d, %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+               <span class="n">pt</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">,</span> <span class="n">pt</span><span class="o">-&gt;</span><span class="n">z</span><span class="p">);</span>
+        <span class="n">Sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// 첫 번째 스레드 생성</span>
+    <span class="n">Point3D</span> <span class="n">pt1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">};</span>
+    <span class="n">DWORD</span> <span class="n">ThreadId1</span><span class="p">;</span>
+    <span class="n">HANDLE</span> <span class="n">hThread1</span> <span class="o">=</span> <span class="n">CreateThread</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MyThread</span><span class="p">,</span>
+                                   <span class="p">(</span><span class="n">LPVOID</span><span class="p">)</span><span class="o">&amp;</span><span class="n">pt1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ThreadId1</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">hThread1</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">CloseHandle</span><span class="p">(</span><span class="n">hThread1</span><span class="p">);</span>
+    
+    <span class="c1">// 두 번째 스레드 생성</span>
+    <span class="n">Point3D</span> <span class="n">pt2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">};</span>
+    <span class="n">DWORD</span> <span class="n">ThreadId2</span><span class="p">;</span>
+    <span class="n">HANDLE</span> <span class="n">hThread2</span> <span class="o">=</span> <span class="n">CreateThread</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">MyThread</span><span class="p">,</span>
+                                   <span class="p">(</span><span class="n">LPVOID</span><span class="p">)</span><span class="o">&amp;</span><span class="n">pt2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ThreadId2</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">hThread2</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">CloseHandle</span><span class="p">(</span><span class="n">hThread2</span><span class="p">);</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span> <span class="c1">//무한루프</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Running primary thread...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">Sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>main thread, T1, T2 총 세 thread가 실행 중임</p>
+
+<p><br /></p>
+
+<h2 id="linux-threads">Linux Threads</h2>
+
+<p>thread냐 process냐는 공유정보가 무엇인가에 따라 달라진다.</p>
+
+<ul>
+  <li>Linux refers to them as <strong>tasks</strong> rather than threads</li>
+  <li><code class="language-plaintext highlighter-rouge">struct task_struct</code> points to process data structures (shared or unique)</li>
+  <li>
+    <p>Linux provides a <strong>fork</strong> system call with the traditional functionality of duplicating a process</p>
+  </li>
+  <li><strong>Thread creation is done through clone() system call.</strong>
+    <ul>
+      <li>clone behaves much like fork, except that instead of creating a copy of the calling process, it creates a separate process that shares the address space of the calling process</li>
+      <li>A cloned task behaves like a separate thread</li>
+      <li><strong>clone()</strong> allows a child task to <strong>share the address space of the parent task</strong> (process)</li>
+      <li>In case of clone, Sharing of address space is allowed because of
+        <ul>
+          <li>Rather than storing kernel data for each process’s data structure, it stores pointers to data structures of other process</li>
+        </ul>
+      </li>
+      <li>Linux refers to both of process and thread as tasks</li>
+    </ul>
+  </li>
+  <li>Aside from the cloned process, Linux does not support multithreading, separate data structures.</li>
+  <li>Pthread implementations are available for user-level multithreading</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="linux-threads-1">Linux Threads</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">fork()</code> and <code class="language-plaintext highlighter-rouge">clone()</code> system calls</li>
+  <li>Doesn’t distinguish between process and thread</li>
+  <li>Uses term task rather than thread</li>
+  <li><code class="language-plaintext highlighter-rouge">clone()</code> takes options to determine sharing on process create</li>
+  <li><code class="language-plaintext highlighter-rouge">struct task_struct</code> points to process data structures (shared or unique)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220926180453749.png" alt="image-20220926180453749" /></p>
+:ET

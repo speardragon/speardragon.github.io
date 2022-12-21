@@ -1,0 +1,1032 @@
+I"l<p><br /></p>
+
+<h1 id="9-1-dictionary-and-copy-in-python">9-1. Dictionary and Copy in Python</h1>
+
+<p>AL09-3</p>
+
+<h2 id="python-dictionary">Python Dictionary</h2>
+
+<p>우리가 많이 쓰는 리스트 자료구조는 순서가 있었음.(ordered)</p>
+
+<ul>
+  <li>An <strong>unordered collection</strong> of items: Each item has a <strong>key/value</strong> pair (순서가 없다!!)
+    <ul>
+      <li>Dictionary is mutable and iterable.</li>
+      <li>Keys are unique and must be <strong>immutable</strong>(바뀔 수 없다)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174057-9fd8eb2f-2723-47e7-bdd0-dbef6d5cf48b.png" alt="image" /></p>
+
+<p>마지막줄 뭥미?? -&gt; 튜플이 원소인 리스트를 dict() 함수에 넣으면 dictionary가 생성됨</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'brand'</span><span class="p">:</span> <span class="s">'Ford'</span><span class="p">,</span> <span class="s">'model'</span><span class="p">:</span> <span class="s">'taurus'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>AL09-4</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174070-b626eaf4-b140-4484-bca7-a9177630f0fb.png" alt="image" /></p>
+
+<p>a[‘Key’] vs. a.get(‘Key’)</p>
+
+<ul>
+  <li>
+    <p>내가 찾으려는 data가 기존의 dictionary에 없는 경우</p>
+  </li>
+  <li>key로 접근하는 경우에 오류가 발생한다.</li>
+  <li>get함수로 접근하는 경우 오류가 발생하지 않음
+    <ul>
+      <li>해당 key값을 dictionary를 새로 추가하려면 key를 통해서 대입시키면 할 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>AL09-5</p>
+
+<h2 id="python-set">Python Set</h2>
+
+<ul>
+  <li>An unordered collection of items: Each item is a <strong>key</strong>
+    <ul>
+      <li>Set is <strong>mutable</strong> and <strong>iterable</strong></li>
+      <li><span style="color:red">Each item is unique and must be immutable</span></li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174103-48f19def-6e34-4e66-98e4-28f1808ef37d.png" alt="image" /></p>
+
+<ul>
+  <li>set에 리스트는 못 집어 넣는다.(immutable한 item만 가질 수 있음.)
+    <ul>
+      <li></li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">123</span><span class="p">,</span> <span class="s">"sdf"</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]}</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="n">unhashable</span> <span class="nb">type</span><span class="p">:</span> <span class="s">'list'</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p><strong>set()함수 안에는 list 혹은 tuple, string을 전달할 수 있다.</strong></p>
+  </li>
+  <li>
+    <p>항상 순차적으로(1,2,3) 나오는 것이 아니다. {3,2,1} 이런식으로도 나올 수 있고, {2,1,3} 이런 식으로도 나올 수 있다. 순서가 중요한 것이 아니라 어떤 item들이 들어있는가가 중요한 것</p>
+  </li>
+  <li>
+    <p>unordered collection이기 때문</p>
+  </li>
+</ul>
+
+<hr />
+
+<p>AL09-6</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174112-248e340c-5330-4bab-b22d-c8ec774e3f49.png" alt="image" /></p>
+
+<ul>
+  <li>비어 있는 set을 만드려면 반드시 set()을 사용
+    <ul>
+      <li><mark>a = {} 는 dictionary를 만드는 것이기 때문.</mark></li>
+    </ul>
+  </li>
+  <li>update() 함수를 호출할 때는 반드시 iterable object를 넘겨주어야 함.
+    <ul>
+      <li>list, tuple, set, string, …</li>
+    </ul>
+  </li>
+  <li>discard vs. remove
+    <ul>
+      <li>제거하려는 item이 set에 <strong>없는</strong> 경우 <strong>remove를</strong> 사용 시 <strong>error가</strong> 발생한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">}</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">|</span> <span class="n">b</span> <span class="c1"># == a.union(b) == b.union(a)
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span> <span class="c1"># == a.intersection(b) == b.intersection(a)
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span> <span class="c1"># == a.difference(b) != b.difference(a)
+</span></code></pre></div></div>
+
+<hr />
+
+<p>AL09-7</p>
+
+<p>3 가지 방식의 copy (in python)</p>
+
+<h2 id="copy-assignment-using--operator">Copy: Assignment using ‘=’ operator</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174156-5e4273c4-95c4-42b5-8f8c-f4baa6ab53f2.png" alt="image" /></p>
+
+<ul>
+  <li>b랑 a는 같은 object를 가리키고 있기 때문에 id도 같다.</li>
+  <li>object의 내용을 바꾸면 양쪽이 같이 update 된다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167099432-26145956-1654-4c49-a038-4744608d2d1c.png" alt="image" /></p>
+
+<p>a[2] = 9를 하면 integer object는 immutable이기 때문에 9라는 integer object가 하나 생겨서 2번 index가 그 object를 가리키게 되고 a라는 리스트는 mutable이기 때문에 계속해서 같은 list object를 가리키고 있을 것이다. 따라서 기존의 리스트에 값을 추가하는 것이기 때문에 id는 그대로 일 것이고 b는 a와 같은 객체를 가리키고 있기 때문에 둘을 찍어보면 둘 다 9가 추가된 결과가 출력 될 것이다.</p>
+
+<ul>
+  <li>3은 garbage variable.</li>
+</ul>
+
+<hr />
+
+<p>AL09-8</p>
+
+<h2 id="copy-shallow-copy">Copy: shallow copy</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174184-c1f092a5-340d-4a23-a31d-743a244b0e19.png" alt="image" /></p>
+
+<ul>
+  <li>리스트 object가 copy 되면서 새로운 object가 하나가 별도로 생겨난다.
+    <ul>
+      <li>그러나 그 object 안의 딸려 있는 애들까지 copy하지는 않는다.(no recursion)</li>
+    </ul>
+  </li>
+  <li><strong>그래서 a와 b가 가리키는 object는 다르기 때문에 id가 다르다.</strong></li>
+  <li>마지막 부분을 보면 b[2][0] = 9는 integer object를 바꾸는 것이 아니라 list의 element를 바꾸는 것이기 때문에 mutable한 객체를 바꾸는 것은 별도의 object를 만들지 않고 따라서 a 내용과 공유 하고 있던 리스트의 내용을 바꾼 것이기 때문에 a를 출력해 보아도 b와 <strong>같은 결과가 나오는 것을 볼 수 있다.</strong></li>
+  <li>shallow copy를 이용하는 이유는 memory 절약과 operation의 신속함을 위해서 사용하는 것이다.</li>
+</ul>
+
+<p>다음 그림은 new object를 만드는 방식의 copy 모듈을 사용했을 때의 그림이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171393537-5bbf69e7-2d29-44bc-8da4-c16dd02dbf80.png" alt="image" /></p>
+
+<hr />
+
+<p>AL09-9</p>
+
+<h2 id="copy-deep-copy">Copy: deep copy</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174204-dce8c3ec-7a3b-43e5-89cc-61d8d2f1586a.png" alt="image" /></p>
+
+<ul>
+  <li>recursive copy: 내가 copy할 object를 하나도 빠지지 않게 구석구석 하나하나 모든 것을 copy하는 것
+    <ul>
+      <li>그말인 즉슨, a와 b가 공유하고 있는 객체가 하나도 없다는 것을 말하고 어떤 한 변수의 내용을 바꿨을 때 다른 변수의 내용은 바뀌지 않는 것을 의미한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>정리</strong></p>
+
+<p>Shallow copy : 복사대상은 새로운 공간에 할당되지만 대상안에 있는 요소는 <strong>원본과 동일 대상을 참조</strong>합니다.
+Deep copy : 복사대상 뿐만 아니라 대상안에 있는 요소들도 새로운 공간에 할당됩니다.</p>
+
+<p><br /></p>
+
+<p><strong>case1: mutable 객체 안에 mutable 객체가 포함된 경우</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ori</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">ori</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171394001-c07a1a50-920a-4849-b334-30840707296f.png" alt="image" /></p>
+
+<p><strong>case 2: immutable 객체 안에 mutable 객체가 포함된 경우</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ori</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">ori</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171394188-304e9f50-b7d5-41be-b82a-a0f2752cb664.png" alt="image" /></p>
+
+<p><strong>case 3: immutable 객체 안에 immutable 객체가 포함된 경우</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ori</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">ori</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171394339-e39bf43d-b9d7-4dbd-90f3-b12db53a6765.png" alt="image" /></p>
+
+<p><strong>case 4: mutable 객체 안에 immutable 객체가 포함된 경우</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ori</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">ori</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171394579-38a95bf9-11ff-4d68-9a8b-8c2dd6addd48.png" alt="image" /></p>
+
+<h2 id="요약">요약</h2>
+
+<ol>
+  <li>deep copy target이 mutable 일 경우
+- target : 원본과 같은 참조
+- target의 포함된 객체 중 mutable 객체는 새로운 사본을 생성
+- target의 포함된 객체 중 immutable 객체는 원본과 같은 참조</li>
+  <li>
+    <p>deep copy target이 immutable 일 경우
+- target의 포함된 객체 중 mutable 객체가 있으면 target은 새로운 사본을 생성
+- target의 포함된 객체 중 mutable객체가 없다면 target은 원본과 같은 참조</p>
+  </li>
+  <li>shallow copy target이 mutable 일 경우
+- target : 새로운 사본을 생성
+- target의 포함된 객체 : 원본과 같은 참조</li>
+  <li>shallow copy target이 immutable 일 경우
+- target : 원본과 같은 참조
+- target의 포함된 객체 : 원본과 같은 참조</li>
+  <li>immutable로만 구성된 객체일 경우
+- 수정 불가하므로 새로운 공간을 만들지 않는 것으로 예상하며, =(Assignment)와 같게 동작합니다.
+- deep, shallow copy 동일 함.</li>
+  <li>사용자 class 같은 개념으로 적용됨.</li>
+</ol>
+
+<hr />
+
+<h1 id="9-2-graph-and-its-representations">9-2. Graph and its Representations</h1>
+
+<p>AL09-11</p>
+
+<h2 id="graphs">Graphs</h2>
+
+<p>A graph is a set of <strong>vertices</strong> and <strong>edges</strong> that form connections between the vertices. In a more formal approach, a graph <strong>G</strong> is an ordered pair of a set <strong>V</strong> of vertices and a set <strong>E</strong> of edges, given as G = (V, E) in formal mathematical notation.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174301-7aef4bf2-ffd4-4113-8e3b-4a53b019bcc6.png" alt="image" /></p>
+
+<p>maze를 생각해 봤을 때, 교차 부분을 node로 하고 node끼리 연결한 것을 edge로 하면 이러한 구조를 graph라고 한다.</p>
+
+<ul>
+  <li>
+    <p>sparse graph: 노드 개수에 비해서 link 갯수가 적은 것</p>
+  </li>
+  <li>
+    <p>dense graph: 노드 개수에 비해서 link 갯수가 많은 것</p>
+  </li>
+  <li>
+    <p>sparse와 dense를 나누는 기준은 없음. 그냥 느낌상으로 생각하는 것</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>V = n일 때, 연결할 수 있는 최대 link(edge)의 갯수는 n(n-1)/2 개 이다.</p>
+
+<ul>
+  <li>하나의 노드에서 다른 노드로 연결할 수 있는 link 수는 (n-1)이고 노드가 총 n개 있는데 중복을 1/2를 곱하여 처리하면 n(n-1)/2라는 공식이 나옴.</li>
+</ul>
+
+<hr />
+
+<p>AL09-12</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174454-e8e165ac-f4b7-41e6-b894-21b66e523680.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174459-74fb6a6f-c18c-42b6-a725-1c8e4edfe20a.png" alt="image" /></p>
+
+<p><strong>Definition</strong></p>
+
+<ul>
+  <li>A <strong>path</strong> in a graph is <span style="color:red">a sequence of vertices </span>connected by edges.
+    <ul>
+      <li>특정 노드에서 노드까지의 path의 갯수는 이론상 무한대이다.(왔던 길을 다시 갈수 있다는 가정)</li>
+    </ul>
+  </li>
+  <li>A <strong>simple path</strong> is one with <span style="color:red">no repeated vertices. </span>
+    <ul>
+      <li>한 노드를 두 번 지나지 않는 path.</li>
+    </ul>
+  </li>
+  <li>A <strong>cycle</strong> is a path with at least one edge <span style="color:red">whose first and last vertices are the same.</span>
+    <ul>
+      <li>한 노드에서 출발하여 다시 그 노드로 돌아와서 폐곡선을 만드는 path.</li>
+      <li>한 노드를 여러번 지날 수 있기 때문에 이론상 무한의 갯수를 가짐.</li>
+    </ul>
+  </li>
+  <li>A <strong>simple cycle</strong> is a <span style="color:red">cycle with no repeated edges or vertices</span> (except the requisite repetition of the first and last vertices).
+    <ul>
+      <li>한 노드를 두 번 지나지 않는  cycle.</li>
+    </ul>
+  </li>
+  <li><strong>The length of a path or a cycle</strong> is <span style="color:red">its number of edges.</span></li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>Definition</strong></p>
+
+<ul>
+  <li>A graph is <strong>connected</strong> if there is a path from every vertex to every other vertex in the graph.</li>
+  <li>
+    <p>A graph that is <strong>not connected</strong> consists of a set of connected components, which are maximal connected subgraphs.</p>
+  </li>
+  <li>degree: 한 노드에서 다른 노드로 갈 수 있는 가지의 수
+    <ul>
+      <li>어떤 노드에서 연결된 link의 갯수</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>AL 09-13</p>
+
+<p><strong>Definition</strong></p>
+
+<ul>
+  <li>A <strong>tree</strong> is an <strong>acyclic connected graph</strong>.</li>
+  <li>A disjoint set(서로소 집합) of trees is called a forest.
+    <ul>
+      <li>tree가 모인 구조를 forest라고 한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174597-c3f1e81d-a3f0-4f53-99a6-852633a4c624.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p>For, example, a <strong>graph G</strong> with <strong>V vertices</strong> is a tree if and only if it satisfies any of the following <strong>five conditions</strong>:</p>
+
+<ul>
+  <li>G has V-1 edges and no cycles.</li>
+  <li>G has V-1 edges and is connected.</li>
+  <li>G is connected, but removing any edge disconnects it.</li>
+  <li>G is acyclic, but adding any edge creates a cycle.
+    <ul>
+      <li>어느 두 노드를 연결하면 cycle이 되어 버림.</li>
+    </ul>
+  </li>
+  <li>Exactly one simple path connects each pair of vertices in G.</li>
+</ul>
+
+<blockquote>
+  <p>위 다섯 문장은 다 같은 말이며, 이 중 하나만 만족해도 graph인 것이다.</p>
+</blockquote>
+
+<hr />
+
+<p>AL09-14</p>
+
+<h2 id="directed-graphs">Directed graphs</h2>
+
+<p>In a <strong>directed</strong> graph, the edges provide the information on <strong>the direction of connection</strong> between any two nodes in a graph.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174668-11f2f2b9-0175-4a80-9baf-cad05ff0a92a.png" alt="image" /></p>
+
+<ul>
+  <li>Undirected graph
+    <ul>
+      <li>방향이 없는 graph</li>
+    </ul>
+  </li>
+  <li>In-degree:
+    <ul>
+      <li>해당 노드로 들어오고 있는 link의 갯수</li>
+    </ul>
+  </li>
+  <li>Out-degree:
+    <ul>
+      <li>해당 노드로 나가고 있는 link의 갯수</li>
+    </ul>
+  </li>
+  <li>(directed) path</li>
+  <li>(directed) cycle</li>
+</ul>
+
+<hr />
+
+<p>AL09-15</p>
+
+<h2 id="weighted-graphs">Weighted graphs</h2>
+
+<p>A <strong>weighted graph</strong> is a graph that has <strong>a numeric weight</strong> associated with <strong>the edges</strong> in the graph. It can be either a directed or an undirected graph. This numerical value can possibly be used to indicate distance or cost, depending upon the purpose of the graph.</p>
+
+<ul>
+  <li>directed 이든 undirected 이든 상관 없다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166174753-3aff9138-b8b1-4c9e-b0b0-371d86ba22bd.png" alt="image" /></p>
+
+<p>In this example, <strong>AD</strong> and <strong>ABCD</strong> represent two different paths.</p>
+
+<ul>
+  <li>노드를 무조건 적게 거친다고 좋은 path라고 볼 수 없는 것이다.</li>
+</ul>
+
+<hr />
+
+<p>09-16</p>
+
+<h2 id="graph-representations">Graph representations</h2>
+
+<p>그래프 정보를 파이썬으로 저장하는 방법(표현)</p>
+
+<p>We can choose between two standard ways to represent a graph <strong>G = (V, E)</strong>:</p>
+
+<ul>
+  <li>as a collection of <strong>adjacency lists</strong> or as an <strong>adjacency matrix</strong>.</li>
+</ul>
+
+<p>Either way applies to both directed and undirected graphs.</p>
+
+<p><br /></p>
+
+<ol>
+  <li></li>
+</ol>
+
+<p>The <strong>adjacency-list representation</strong> provides a compact way <span style="color:red">to represent sparse graphs</span></p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>those for which</td>
+          <td>E</td>
+          <td>is much less than</td>
+          <td>V</td>
+          <td><sup>2</sup></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ol>
+  <li></li>
+</ol>
+
+<p>We  may prefer an <strong>adjacency-matrix representation</strong>, however, <span style="color:red">when the graph is dense</span></p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>E</td>
+          <td>is close to</td>
+          <td>V</td>
+          <td><sup>2</sup></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<p>or when we need to be able to tell quickly if there is an edge connecting two given vertices.</p>
+
+<hr />
+
+<p>09-17</p>
+
+<h2 id="adjacency-lists">Adjacency lists</h2>
+
+<p>이웃하고 있는 노드들을 리스트에 저장하여 그래프를 표현하는 방식.</p>
+
+<p>중요한 점은 이웃이라는 wording의 의미가 <span style="color:red">해당 노드로 들어올 수 있는 노드</span>를 의미하는 것이다. 그래서 undirected라면 상관이 없겠지만 directed graph인 경우 이 점을 유의하여야 한다.</p>
+
+<ul>
+  <li><strong>key</strong>: 노드(A, B, C, E, F)</li>
+  <li><strong>value</strong>: key 노드와 이웃하고 있는 노드들의 리스트</li>
+</ul>
+
+<p>따라서 dictionary 자료형을 이용한다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166179708-da9ff856-7b1f-4ebb-a4ba-a88d138d5399.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166179785-5a6bd6ca-bf8a-4d94-98e6-89e37aaf89b6.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">graph</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">graph</span><span class="p">[</span><span class="s">'A'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">]</span>
+<span class="n">graph</span><span class="p">[</span><span class="s">'B'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">'E'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">]</span>
+<span class="n">graph</span><span class="p">[</span><span class="s">'C'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'E'</span><span class="p">,</span> <span class="s">'F'</span><span class="p">]</span>
+<span class="n">graph</span><span class="p">[</span><span class="s">'E'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">]</span>
+<span class="n">graph</span><span class="p">[</span><span class="s">'F'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">'C'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{'A': ['B', 'C'], 'B': ['E', 'C', 'A'], 'C': ['A', 'B', 'E', 'F'], 'E': ['B', 'C'], 'F': ['C']}
+</code></pre></div></div>
+
+<p>dictionary를 통해 필요한 만큼만 딱 저장하기 때문에 메모리상으로 효율적이다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>sparse graph -&gt; link가 적다 -&gt; adjacency (이웃) 이 적다.</li>
+</ul>
+
+<hr />
+
+<p>09-18</p>
+
+<h2 id="adjacency-lists-cont">Adjacency lists-cont.</h2>
+
+<p>노드의 이름이 숫자로 되어있는 경우 굳이 앞에서처럼 dictionary를 사용할 필요없이 list로 할 수 있다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166182955-f693e12d-9ada-49cf-82f6-c022204b2165.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">graph</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">graph</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">graph</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">graph</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">graph</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">graph</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="mi">3</span><span class="p">])</span>
+<span class="c1"># [[0], [2,3], [1,3,4], [1,2,4,5], [2,3], [3]]
+</span></code></pre></div></div>
+
+<ul>
+  <li>처음에 0을 넣은 이유는 graph의 노드 이름이 숫자로 되어있는데 1부터 시작하기 때문에 숫자로 접근하기 위해 list로 구현하여 각 index로 접근할 수 있도록 한 것이다.</li>
+</ul>
+
+<hr />
+
+<p>09-19</p>
+
+<h2 id="adjacency-matrices">Adjacency matrices</h2>
+
+<p>dense(빽빽한) graph에서 효율적인 방법 -&gt; matrix</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166183091-9df1ecd7-98d4-4ee3-b7d4-51a49896a291.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166183261-3a448c09-6b05-44bd-ae5a-a693af4c1500.png" alt="image" /></p>
+
+<ul>
+  <li><strong>undirected graph이기 때문에 diagonal 대칭으로 되어있는 것을 볼 수 있다.</strong>
+    <ul>
+      <li>즉, 연결된 두 노드는 양방향으로 이동가능 하기 때문에 A의 이웃 노드 중 B가 있다고 하면 B의 이웃노드에는 반드시 A 노드가 있다는 것을 알 수 있으며</li>
+      <li>이를 matrix로 표현했을 때 그 matrix는 항상 diagonal symmetry임을 알 수 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[0, 1, 1, 0, 0],
+ [1, 0, 0, 1, 0],
+ [1, 1, 0, 1, 1],
+ [0, 1, 1, 0, 0],
+ [0, 0, 1, 0, 0]]
+</code></pre></div></div>
+
+<hr />
+
+<p>Q) tree에서는 linked list로 했는데 왜 graph는 list를 사용하나요?</p>
+
+<p>A) tree도 필요에 의해 리스트에다가 할 수 있는 것이고 graph도 linked list로 구현할 수 있다. 방법의 차이일 뿐이다.</p>
+
+<hr />
+
+<h1 id="graph-algorithms">Graph Algorithms</h1>
+
+<p>AL09-21</p>
+
+<h2 id="graph-traversals">Graph Traversals</h2>
+
+<p>A graph traversal means to <strong>visit all the vertices</strong> of the graph, while keeping track of which nodes or vertices have already been visited and which ones have not.</p>
+
+<ul>
+  <li>graph traversal: 그래프의 모든 노드를 방문하는 것</li>
+  <li>어느 노드르 방문했는지 기록</li>
+</ul>
+
+<p>A graph traversal algorithm is efficient if it traverses all the nodes of the graph in the minimum possible time.</p>
+
+<p>Graph traversal algorithms are very important in answering many <strong>fundamental problems</strong></p>
+
+<ul>
+  <li>they can be <strong>useful</strong> <strong>to determine how to reach from one vertex to another</strong> in a graph, and which path from the A to B vertices in the graph is <strong>better</strong> than the other paths.</li>
+</ul>
+
+<p>In the next section, we will discuss two important graph traversal algorithms:</p>
+
+<ul>
+  <li>breadth-first search(<strong>BFS</strong>)</li>
+  <li>depth-first search(<strong>DFS</strong>)
+    <ul>
+      <li>graph는 tree와 다르게 left/right child 개념이 있지 않기 때문에 inorder, postorder, preorder가 없다.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>09-22</p>
+
+<h2 id="breadth-first-searchbfs">Breadth-first search(BFS)</h2>
+
+<p>bfs는 queue를 사용한다. -&gt; bbq</p>
+
+<p><strong>Breadth-first traversal</strong> algorithms work breadth-wise in the graph.</p>
+
+<ul>
+  <li>A queue data structure is used to store the information of vertices that are to be visited in the graph.</li>
+</ul>
+
+<p>We begin with the starting node, the <strong>A</strong> node. Firstly, we visit that node, and then we look up all of its neighboring, or adjacent, vertices.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167149687-876e1568-cf10-47f9-b26e-a9733e46305b.png" alt="image" /></p>
+
+<p>위 그래프를 A노드에서 시작하여 BFS로 순회를 하면 다음과 같은 경우의 수들이 나올 수 있다.</p>
+
+<ul>
+  <li>A-E-C-B-D</li>
+  <li>A-C-E-B-D</li>
+  <li>A-B-C-E-D</li>
+</ul>
+
+<p>근데 만약 시험에 ‘순회한 알파벳 순서를 적으시오’ 와 같은 문제가 나온다면 마지막 경우처럼 적어야 한다.</p>
+
+<ul>
+  <li>편리를 위해 알파벳 순서대로</li>
+</ul>
+
+<p><strong>discovered</strong>: queue에 한 번이라도 들어간 노드를 다시 queue에 넣는 것을 방지하기 위해서 discovered 리스트에 저장을 해 둔다.</p>
+
+<p><strong>visit</strong>: 방문한 노드의 순서를 기록 -&gt; 최종 결과</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167163762-314b48bd-3dec-4a7d-8294-b7977189d4dc.png" alt="image" /></p>
+
+<p>되도록 알파벳 순서로 인근한 노드를 큐에 집어넣도록 한다.</p>
+
+<hr />
+
+<p>09-23</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167150198-2814cbed-5491-40a4-82cd-833a03fe7b9d.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># the graph in page 208 
+</span><span class="n">graph1</span> <span class="o">=</span> <span class="p">{</span> 		<span class="c1"># 26
+</span>    <span class="s">'A'</span><span class="p">:</span> <span class="p">[</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'D'</span><span class="p">],</span>
+    <span class="s">'B'</span><span class="p">:</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'F'</span><span class="p">,</span> <span class="s">'E'</span><span class="p">],</span>
+    <span class="s">'C'</span><span class="p">:</span> <span class="p">[</span><span class="s">'F'</span><span class="p">,</span> <span class="s">'H'</span><span class="p">],</span>
+    <span class="s">'D'</span><span class="p">:</span> <span class="p">[</span><span class="s">'F'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">],</span>
+    <span class="s">'E'</span><span class="p">:</span> <span class="p">[</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">],</span>
+    <span class="s">'F'</span><span class="p">:</span> <span class="p">[</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'D'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">],</span>
+    <span class="s">'G'</span><span class="p">:</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'E'</span><span class="p">],</span>
+    <span class="s">'H'</span><span class="p">:</span> <span class="p">[</span><span class="s">'C'</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">ans</span> <span class="o">=</span> <span class="n">breadth_first_search</span><span class="p">(</span><span class="n">graph1</span><span class="p">,</span> <span class="s">'A'</span><span class="p">)</span> 	<span class="c1"># 37
+</span><span class="k">print</span><span class="p">(</span><span class="o">*</span><span class="n">ans</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'-'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>실행 결과</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167150248-04f71442-f442-4790-9057-05fed7fe7cfa.png" alt="image" /></p>
+
+<hr />
+
+<p>09-24</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span> <span class="c1"># 1
+</span>
+
+<span class="k">def</span> <span class="nf">breadth_first_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span> <span class="c1"># 4
+</span>    <span class="c1">#sequence of visited nodes
+</span>    <span class="n">visited</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">discovered</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">root</span><span class="p">])</span>
+    <span class="n">discovered</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># 12 ; queue에 뭐라도 있으면 반복
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="p">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="n">visited</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">undiscovered</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="n">node</span><span class="p">]).</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">discovered</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">undiscovered</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># 17
+</span>            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">undiscovered</span><span class="p">):</span>
+                <span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                <span class="n">discovered</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                     
+	<span class="k">return</span> <span class="n">visited</span> <span class="c1"># 22
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">set(graph[node]).difference(set(discovered))</code> : 한 노드와 인접한 노드 중에서 discovered 된 것은 제외한 것을 undiscovered에 저장한다.</p>
+
+<p>queue에서 뺀 것이 result 리스트에 들어간다.</p>
+
+<p>graph[node] 는 node의 인접 노드들의 정보가 담겨있기 때문에</p>
+
+<hr />
+
+<p>09-25</p>
+
+<h2 id="depth-first-searchdfs">Depth-first search(DFS)</h2>
+
+<p>DFS는 머릿속에 stack을 그리고 생각하면 편하다!</p>
+
+<p>As the name suggests, the DFS algorithm traverses the <strong>depth</strong> of any particular path in the graph before traversing its breadth. As such, child nodes are visited first before sibling nodes. The stack data structure is used to implement the DFS algorithm.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167151072-4f3fac60-dacf-4642-b59a-6f0a288d42f8.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>DFS도 역시 discovered라는 이미 발견된적이 있는지를 저장하는 리스트가 존재한다.</p>
+  </li>
+  <li>인근한 노드 중에서 발견되지 않는 노드를 stack에 추가해 가면서 탐색을 진행한다.
+    <ul>
+      <li>A-B-D-C-E</li>
+    </ul>
+  </li>
+  <li>스택에서 꺼냈다(pop)는 것은 그 노드를 방문한 것이다.</li>
+  <li>알파벳 순서로 하기 위해서 인근한 노드를 stack에 집어 넣을 때는 아래에 더 높은 위치에 있는 알파벳을 넣어야 한다. 즉, 넣을 때는 역순으로 넣는 것이다.</li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167165951-6cab38f4-5cdb-4ca1-8e29-a03c95aec768.png" alt="image" /></p>
+
+<hr />
+
+<p>09-26</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167151677-ce665cea-89ae-45a8-8c60-c827735305e3.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># the graph in page 211
+</span><span class="n">graph2</span> <span class="o">=</span> <span class="p">{</span> <span class="c1"># 23
+</span>    <span class="s">'A'</span><span class="p">:</span> <span class="p">[</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'S'</span><span class="p">],</span>
+    <span class="s">'B'</span><span class="p">:</span> <span class="p">[</span><span class="s">'A'</span><span class="p">],</span>
+    <span class="s">'S'</span><span class="p">:</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">],</span>
+    <span class="s">'D'</span><span class="p">:</span> <span class="p">[</span><span class="s">'C'</span><span class="p">],</span>
+    <span class="s">'G'</span><span class="p">:</span> <span class="p">[</span><span class="s">'S'</span><span class="p">,</span> <span class="s">'F'</span><span class="p">,</span> <span class="s">'H'</span><span class="p">],</span>
+    <span class="s">'H'</span><span class="p">:</span> <span class="p">[</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'E'</span><span class="p">],</span>
+    <span class="s">'E'</span><span class="p">:</span> <span class="p">[</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'H'</span><span class="p">],</span> <span class="c1"># 30
+</span>    <span class="s">'F'</span><span class="p">:</span> <span class="p">[</span><span class="s">'C'</span><span class="p">,</span> <span class="s">'G'</span><span class="p">],</span>
+    <span class="s">'F'</span><span class="p">:</span> <span class="p">[</span><span class="s">'D'</span><span class="p">,</span> <span class="s">'S'</span><span class="p">,</span> <span class="s">'E'</span> <span class="p">,</span><span class="s">'F'</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">ans</span> <span class="o">=</span> <span class="n">depth_first_search</span><span class="p">(</span><span class="n">graph2</span><span class="p">,</span> <span class="s">'A'</span><span class="p">)</span> <span class="c1"># 35
+</span><span class="k">print</span><span class="p">(</span><span class="s">'-'</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">ans</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>실행 결과</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167152000-ec14b78d-89c6-4db9-92cb-acd6df1ab4a0.png" alt="image" /></p>
+
+<hr />
+
+<p>09-27</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">depth_first_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span> <span class="c1"># 1 
+</span>    <span class="c1">#sequence of visited nodes
+</span>    <span class="n">visited</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># nodes which are discovered &amp; stacked
+</span>    <span class="n">discovered</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span><span class="p">]</span>
+    <span class="n">discovered</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    
+    <span class="k">while</span> <span class="n">stack</span><span class="p">:</span> <span class="c1"># 9 ; stack이 비지 않았으면 (= len(stack))
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="n">visited</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">undiscovered</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="n">node</span><span class="p">]).</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">discovered</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="n">undiscovered</span><span class="p">:</span> <span class="c1"># 14
+</span>            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">undiscovered</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+                <span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                <span class="n">discovered</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                
+	<span class="k">return</span> <span class="n">visited</span> <span class="c1"># 19
+</span></code></pre></div></div>
+
+<p>발견되지 않은 노드를 스택에 넣고 discovered에도 넣는데 이때 알파벳 순서대로 스택에서 빼고 싶기 때문에 reverse=True이다.</p>
+
+<hr />
+
+<p>09-28</p>
+
+<h2 id="example-bfs-and-dfs-시험-문제">Example: BFS and DFS (시험 문제)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167152608-9ee626b5-020e-4cd8-b0f1-e3d44647fdcc.png" alt="image" /></p>
+
+<p>For any vertex <strong><em>v</em></strong> reachable from <em>s</em>, the simple path in the <strong>breadth-first</strong> tree from <em>s</em> to <em>v</em> corresponds to a <mark>"shortest path"</mark> from <em>s</em> to <em>v</em> in G, that is, a path containing the smallest number of edges.</p>
+
+<ul>
+  <li>s로부터 도달가능한 임의의 노드 v에 대해, 너비 우선 트리에서 s에서 v로 가는 단순한 path는 G라는 그래프에서 s to v 로 가는 가장 짧은 path 즉, 가장 적은 숫자의 edges를 포함하는 path이다.</li>
+</ul>
+
+<hr />
+
+<p>09-29</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167152996-7446706d-2dd5-4723-b11c-e179189994b1.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/2606">백준 2606번 바이러스</a></p>
+
+<ul>
+  <li>1-2-5-3-6 : BFS
+    <ul>
+      <li>len() - 1 -&gt; answer</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>09-30</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167153079-f397767b-1ed6-4341-9358-593bed0bb39c.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167153108-e161ae3a-7786-4a3b-afee-4084ed69a175.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 정답 코드
+</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+
+<span class="k">def</span> <span class="nf">breadth_first_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+    <span class="n">visited</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">discovered</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">root</span><span class="p">])</span>
+    <span class="n">discovered</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="p">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="n">visited</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">undiscovered</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="n">node</span><span class="p">]).</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">discovered</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">undiscovered</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">undiscovered</span><span class="p">):</span>
+                <span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                <span class="n">discovered</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">visited</span>
+
+
+<span class="n">num_computer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">())</span>
+<span class="n">linked_computer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">())</span>
+<span class="n">_graph</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_computer</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">linked_computer</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">_graph</span><span class="p">[</span><span class="n">a</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">_graph</span><span class="p">[</span><span class="n">b</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">breadth_first_search</span><span class="p">(</span><span class="n">_graph</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<hr />
+
+<p>09-31</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167153198-0921e5c4-a97b-4f70-a787-3d1c5a38b238.png" alt="image" /></p>
+
+<hr />
+
+<p>09-32</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167153250-4ebd5ff5-1378-491c-9187-e7ce31f142c8.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/10026">백준 10026번 적록색약</a></p>
+
+<hr />
+
+<p>09-33</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">depth_first_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span> <span class="c1"># 6
+</span>    <span class="n">stack</span> <span class="o">=</span> <span class="p">[(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)]</span>
+    <span class="n">move</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+    
+    <span class="n">color</span> <span class="o">=</span> <span class="n">graph</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="c1"># 10
+</span>    <span class="n">graph</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="s">'X'</span>
+    
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># 13
+</span>        <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">next_row</span><span class="p">,</span> <span class="n">next_col</span> <span class="o">=</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>
+            <span class="n">next_row</span> <span class="o">+=</span> <span class="n">move</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">next_col</span> <span class="o">+=</span> <span class="n">move</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">check_move</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">next_row</span><span class="p">,</span> <span class="n">next_col</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span> <span class="c1"># 19
+</span>                <span class="k">continue</span>
+            
+			<span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">next_row</span><span class="p">,</span> <span class="n">next_col</span><span class="p">))</span> <span class="c1"># 22
+</span>			<span class="n">graph</span><span class="p">[</span><span class="n">next_row</span><span class="p">][</span><span class="n">next_col</span><span class="p">]</span> <span class="o">=</span> <span class="s">'X'</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>09-34</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">check_move</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span> <span class="c1"># 26
+</span>    <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span> <span class="c1"># 그림 바깥의 영역
+</span>        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">col</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span> <span class="c1"># 그림 바깥의 영역
+</span>        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">graph</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span> <span class="n">color</span><span class="p">:</span> <span class="c1"># 31 ; 색깔이 다르면 skip
+</span>        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">graph</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="s">'X'</span> <span class="c1"># 이미 방문 했으면 skip
+</span>        <span class="k">return</span> <span class="bp">False</span>
+    
+    <span class="k">return</span> <span class="bp">True</span> <span class="c1"># 36
+</span>
+
+<span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span> <span class="c1"># 39
+</span></code></pre></div></div>
+
+<ul>
+  <li>
+    <p>stack을 pop하면 그 노드와 인접한 노드를 stack에 추가해야하는데 이를 상하좌우를 모두 확인해서 그 중 check_move가 false인 경우에 stack에 push하도록 한다.</p>
+  </li>
+  <li>
+    <p>정상인 경우와 적록색약 경우를 나눠서 해야 하기 때문에 새로 만들어진 graph를 정상인 용으로 copy해서 search를 진행하고 다시 적록색약 용도 따로 copy해서 search를 진행해야 하는데 이 때 copy는 deep copy로 진행해야 서로 간섭이 없이 알고리즘 구현이 가능하다.</p>
+  </li>
+</ul>
+
+<p>과제에 알고리즘 설명 및 분석도 포함</p>
+
+<p><br /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 정답 코드
+</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+
+<span class="k">def</span> <span class="nf">depth_first_search</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)]</span>
+    <span class="n">move</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+
+    <span class="n">color</span> <span class="o">=</span> <span class="n">graph</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+    <span class="n">graph</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="s">'X'</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">next_row</span><span class="p">,</span> <span class="n">next_col</span> <span class="o">=</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>
+            <span class="n">next_row</span> <span class="o">+=</span> <span class="n">move</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">next_col</span> <span class="o">+=</span> <span class="n">move</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">check_move</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">next_row</span><span class="p">,</span> <span class="n">next_col</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">next_row</span><span class="p">,</span> <span class="n">next_col</span><span class="p">))</span>
+            <span class="n">graph</span><span class="p">[</span><span class="n">next_row</span><span class="p">][</span><span class="n">next_col</span><span class="p">]</span> <span class="o">=</span> <span class="s">'X'</span>
+
+
+<span class="k">def</span> <span class="nf">check_move</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">col</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">graph</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span> <span class="n">color</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">graph</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="s">'X'</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">())</span>
+
+<span class="n">_graph</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cnt</span><span class="p">,</span> <span class="n">cnt_RG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="c1"># 일반인의 구역 카운트와 색맹의 구역 카운트
+</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+    <span class="n">_graph</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">()))</span>
+<span class="c1"># 혹은 graph = [[] for _ in range(size)] 
+</span>    
+<span class="c1"># original 그래프 구역을 표시하는 과정에서 훼손될 여지가 있기 때문에 deepcopy
+</span><span class="n">non_RG_blind</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">_graph</span><span class="p">)</span>
+<span class="n">RG_blind</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">_graph</span><span class="p">)</span>
+
+<span class="c1"># 색맹의 그래프 전처리 -&gt; Green 을 Red로 변환
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">RG_blind</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">'G'</span><span class="p">:</span>
+            <span class="n">RG_blind</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s">'R'</span>
+
+<span class="c1"># 구역 카운트 부분 -&gt; 이건 색맹과 일반인이 똑같지만 둘이 다른 그래프를 사용하기 때문에 구별하여 구현
+</span>            
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">non_RG_blind</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">'X'</span><span class="p">:</span> <span class="c1"># 방문하지 않은 노드라면
+</span>            <span class="n">depth_first_search</span><span class="p">(</span><span class="n">non_RG_blind</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="c1"># dfs 적용하여 한 구역을 X 처리
+</span>            <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># dfs가 완료되면 한 구역(R or G or B)이 X가 될 것이므로 카운트 1 증가
+</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">RG_blind</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">'X'</span><span class="p">:</span>
+            <span class="n">depth_first_search</span><span class="p">(</span><span class="n">RG_blind</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            <span class="n">cnt_RG</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">cnt_RG</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+:ET

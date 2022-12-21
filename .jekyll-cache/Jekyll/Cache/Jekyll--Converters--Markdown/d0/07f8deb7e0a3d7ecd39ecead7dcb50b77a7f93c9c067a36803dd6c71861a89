@@ -1,0 +1,902 @@
+I"�]<h2 id="what-is-interaction">What is interaction?</h2>
+
+<ul>
+  <li>communication
+    <ul>
+      <li>user &lt;-&gt; system</li>
+      <li>이를 어떻게 모델링 할 수 있는지?</li>
+    </ul>
+  </li>
+  <li>interaction models
+    <ul>
+      <li>translations between user and system</li>
+    </ul>
+  </li>
+  <li>ergonomics
+    <ul>
+      <li>physical characteristics of interaction</li>
+    </ul>
+  </li>
+  <li>interaction styles
+    <ul>
+      <li>the nature of user/system dialog</li>
+    </ul>
+  </li>
+  <li>context
+    <ul>
+      <li>social, organizational, motivational</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="1-models-of-interaction-some-terms-of-interaction">1. Models of interaction: Some terms of interaction</h2>
+
+<ul>
+  <li><strong>domain</strong> – the area of work under study
+    <ul>
+      <li>e.g. graphic design</li>
+    </ul>
+  </li>
+  <li><strong>goal</strong> – what you want to achieve; <strong>or</strong> final result to be achieved
+    <ul>
+      <li>e.g. create a solid red triangle</li>
+    </ul>
+  </li>
+  <li><strong>task</strong>– how you go about doing it; structured set of related activities undertaken in a sequence – ultimately in terms of operations or actions
+    <ul>
+      <li>e.g. … select fill tool, click over triangle</li>
+    </ul>
+  </li>
+  <li>goal과 task가 사용될 때는 마구 섞여서 사용된다.(context를 파악해야 함)</li>
+  <li>note …
+    <ul>
+      <li>use of terms differs a lot especially task/goal !!!</li>
+      <li>system’s language vs. user’s language</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="donald-normans-model">Donald Norman’s model</h2>
+
+<ul>
+  <li>
+    <p>Seven stages</p>
+
+    <ol>
+      <li>
+        <p>user establishes the goal</p>
+      </li>
+      <li>formulates intention</li>
+      <li>specifies actions at interface</li>
+      <li>executes action</li>
+      <li>perceives system state</li>
+      <li>interprets system state</li>
+      <li>evaluates system state with respect to goal</li>
+    </ol>
+  </li>
+  <li>
+    <p>Norman’s model concentrates on user’s view of the interface</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="executionevaluation-loop">Execution/evaluation loop</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909223702146.png" alt="image-20220909223702146" /></p>
+
+<p><br /></p>
+
+<h2 id="using-normans-model">Using Norman’s model</h2>
+
+<ul>
+  <li>Some systems are harder to use than others</li>
+  <li>Gulf of Execution
+    <ul>
+      <li>Gap btw: user’s formulation of actions ≠ actions allowed by the system</li>
+    </ul>
+  </li>
+  <li>Gulf of Evaluation
+    <ul>
+      <li>Gap btw: user’s expectation of changed system state ≠ actual presentation of this state</li>
+      <li>실제와 유저가 생각했던 것과 다를 때</li>
+    </ul>
+  </li>
+  <li>Gulf of Execution Example: VCR problem</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909223815585.png" alt="image-20220909223815585" /></p>
+
+<p><br /></p>
+
+<h2 id="abowd-and-beale-framework">Abowd and Beale framework</h2>
+
+<ul>
+  <li>extension of Norman…</li>
+  <li>their interaction framework has 4 parts
+    <ul>
+      <li>user</li>
+      <li>input</li>
+      <li>system</li>
+      <li>output</li>
+    </ul>
+  </li>
+  <li>each has its own unique language interaction =&gt; translation between languages</li>
+  <li>problems in interaction = problems in translation</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909223905796.png" alt="image-20220909223905796" /></p>
+
+<p><br /></p>
+
+<h2 id="using-abowd--beales-model">Using Abowd &amp; Beale’s model</h2>
+
+<ul>
+  <li>
+    <p>user intentions</p>
+
+    <p>-&gt; translated into actions at the interface</p>
+
+    <p>​	-&gt;translated into alterations of system state</p>
+
+    <p>​		-&gt; reflected in the output display</p>
+
+    <p>​			-&gt; interpreted by the user</p>
+  </li>
+  <li>
+    <p>general framework for understanding interaction</p>
+
+    <ul>
+      <li>not restricted to electronic computer systems</li>
+      <li>identifies all major components involved in interaction</li>
+      <li>allows comparative assessment of systems</li>
+      <li>an abstraction</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ergonomics-physical-aspects-of-interfaces">Ergonomics (Physical aspects of Interfaces)</h2>
+
+<ul>
+  <li>Study of the physical characteristics of interaction</li>
+  <li>Also known as human factors – but this can also be used to mean much of HCI!</li>
+  <li>Ergonomics is good at defining standards and guidelines for constraining the way we design certain aspects of systems</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ergonomics---examples">Ergonomics - examples</h2>
+
+<ul>
+  <li>arrangement of controls and displays
+    <ul>
+      <li>e.g. controls grouped according to function or frequency of use, or sequentially</li>
+    </ul>
+  </li>
+  <li>surrounding environment
+    <ul>
+      <li>e.g. seating arrangements adaptable to cope with all sizes of user</li>
+    </ul>
+  </li>
+  <li>health issues
+    <ul>
+      <li>e.g. physical position, environmental conditions (temperature, humidity), lighting, noise,</li>
+    </ul>
+  </li>
+  <li>use of colour
+    <ul>
+      <li>e.g. use of red for warning, green for okay, awareness of colour-blindness etc.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ergonomics-industrial-interfaces">Ergonomics (Industrial interfaces)</h2>
+
+<ul>
+  <li>Office interface vs. industrial interface?</li>
+  <li>Context matters!</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>office</th>
+      <th>industrial</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>type of data</td>
+      <td>textual</td>
+      <td>numeric</td>
+    </tr>
+    <tr>
+      <td>rate of change</td>
+      <td>slow</td>
+      <td>fast</td>
+    </tr>
+    <tr>
+      <td>environment</td>
+      <td>clean</td>
+      <td>dirty</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>… the oil-soaked mouse vs. the touchpad</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="indirect-manipulation">Indirect manipulation</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224214572.png" alt="image-20220909224214572" /></p>
+
+<ul>
+  <li>office – direct manipulation
+    <ul>
+      <li>user interacts with artificial world</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224233871.png" alt="image-20220909224233871" /></p>
+
+<ul>
+  <li>industrial – indirect manipulation
+    <ul>
+      <li>user interacts with real world through interface</li>
+    </ul>
+  </li>
+  <li>issues ..
+    <ul>
+      <li>feedback</li>
+      <li>delays</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="2-common-interaction-styles-command-line-interface">2. Common interaction styles: Command line interface</h2>
+
+<ul>
+  <li>Way of expressing instructions to the computer directly
+    <ul>
+      <li>function keys, single characters, short abbreviations, whole words, or a combination</li>
+    </ul>
+  </li>
+  <li>suitable for repetitive tasks</li>
+  <li>better for expert users than novices</li>
+  <li>offers direct access to system functionality</li>
+  <li>command names/abbr. should be meaningful!</li>
+  <li>Typical example: the Unix system</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224317777.png" alt="image-20220909224317777" /></p>
+
+<p><br /></p>
+
+<h2 id="query-interfaces">Query interfaces</h2>
+
+<p><img src="C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20220909224339752.png" alt="image-20220909224339752" /></p>
+
+<ul>
+  <li>Question/answer interfaces
+    <ul>
+      <li>user led through interaction via series of questions</li>
+      <li>suitable for novice users but restricted functionality</li>
+      <li>often used in information systems</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224408320.png" alt="image-20220909224408320" /></p>
+
+<ul>
+  <li>Query languages (e.g. SQL)
+    <ul>
+      <li>used to retrieve information from database</li>
+      <li>requires understanding of database structure and language syntax, hence requires some expertise</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="form-fills">Form-fills</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224429864.png" alt="image-20220909224429864" /></p>
+
+<ul>
+  <li>Primarily for data entry or data retrieval</li>
+  <li>Screen like paper form.</li>
+  <li>Data put in relevant place</li>
+  <li>Requires
+    <ul>
+      <li>good design</li>
+      <li>obvious correction facilities</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="spreadsheets">Spreadsheets</h2>
+
+<ul>
+  <li>first spreadsheet VisiCalc, followed by Lotus 1-2-3, MS Excel most common today</li>
+  <li>sophisticated variation of form-filling.
+    <ul>
+      <li><strong>grid of cells</strong> contain a value or a formula</li>
+      <li>formula can involve values of other cells
+        <ul>
+          <li>e.g. sum of all cells in this column</li>
+        </ul>
+      </li>
+      <li>user can enter and alter data spreadsheet maintains consistency</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="wimp-interface">WIMP Interface</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224524728.png" alt="image-20220909224524728" /></p>
+
+<ul>
+  <li><strong>W</strong>indows, <strong>I</strong>cons, Menus, <strong>P</strong>ointers
+    <ul>
+      <li>default style for majority of interactive computer systems, especially PCs and desktop machines</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224547069.png" alt="image-20220909224547069" /></p>
+
+<ul>
+  <li>Before WIMP: <strong>Command Line Interface (CLI)</strong>
+    <ul>
+      <li>Needed to know each command’s keyword</li>
+      <li>Needed to know the syntax for each comman</li>
+      <li>Eg. Copy source_file destination_file</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="problems-with-cli">Problems With CLI</h2>
+
+<ul>
+  <li>People found it hard to use
+    <ul>
+      <li>Forgot command names</li>
+      <li>Would transpose command parameters (옵션이 많음)</li>
+      <li>Novices would be overwhelmed (‘blank screen’)</li>
+    </ul>
+  </li>
+  <li><strong>Cognitive analysis</strong>
+    <ul>
+      <li>Many of the problems can be traced to recall vs. recognition memory
+        <ul>
+          <li>recall보다 recognition이 많아지도록 구성</li>
+        </ul>
+      </li>
+      <li>Commands and syntax had to be recalled (quite hard)</li>
+      <li>Almost no recall cues are provided</li>
+      <li>Can expect even experts to make mistakes</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-wimp">Solution: WIMP</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224633098.png" alt="image-20220909224633098" /></p>
+
+<ul>
+  <li>
+    <p>Xerox invented the Windows Icons Mouse and Pointer (WIMP) interface</p>
+  </li>
+  <li>
+    <p>Very few commands (mouse buttons), bring up options</p>
+    <ul>
+      <li>Visual metaphor</li>
+      <li>Contextually appropriate commands are brought up</li>
+      <li>Drag &amp; Drop ‘removes’ parameters</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="why-wimp-works">Why WIMP works</h2>
+
+<ul>
+  <li>Uses recognition rather than recall
+    <ul>
+      <li>Icons show available commands</li>
+      <li>Menus give complete list of available commands</li>
+    </ul>
+  </li>
+  <li>Visual metaphor removes abstract syntax
+    <ul>
+      <li>No longer remember order of commands or positions in path trees</li>
+      <li>Can ‘see’ where things are, move them from place to place</li>
+    </ul>
+  </li>
+  <li>Reduced likelyhood of making syntax errors</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="windows-icons-pointers">Windows, Icons, Pointers</h2>
+
+<ul>
+  <li>Windows: Areas of the screen that behave as if they were independent
+    <ul>
+      <li>can contain text or graphics</li>
+      <li>can be moved or resized or overlapped</li>
+    </ul>
+  </li>
+  <li>Icons: Small picture or image to represent some object in the interface
+    <ul>
+      <li>can be many, various, highly stylized, and realistic representations.</li>
+    </ul>
+  </li>
+  <li>Pointers: WIMP style relies on pointing and selecting things
+    <ul>
+      <li>minimal typing</li>
+      <li>wide variety of graphical images</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="and-menus">and Menus</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224825209.png" alt="image-20220909224825209" /></p>
+
+<ul>
+  <li>Set of options displayed on the screen</li>
+  <li>Options visible
+    <ul>
+      <li>less recall - easier to use</li>
+      <li>rely on recognition so names should be meaningful</li>
+    </ul>
+  </li>
+  <li>Selection by:
+    <ul>
+      <li>numbers, letters, arrow keys, mouse</li>
+      <li>combination (e.g. mouse plus accelerators)</li>
+    </ul>
+  </li>
+  <li>Often options hierarchically grouped
+    <ul>
+      <li>sensible grouping is needed</li>
+    </ul>
+  </li>
+  <li>problem – take a lot of screen space solution – pop-up: menu appears when needed</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="kinds-of-menus">Kinds of Menus</h2>
+
+<ul>
+  <li>Menu bar at top of screen, menu drags down
+    <ul>
+      <li>pull-down menu - mouse hold and drag down menu, and remains available as long as the user holds it open</li>
+      <li>drop-down menu - mouse click reveals menu</li>
+      <li>fall-down menus - mouse just moves over bar!</li>
+    </ul>
+  </li>
+  <li>Contextual menu appears where you are
+    <ul>
+      <li>pop-up menus - actions for selected object
+        <ul>
+          <li>우클릭</li>
+        </ul>
+      </li>
+      <li>pie menus - arranged in a circle
+        <ul>
+          <li>easier to select item (larger target area)</li>
+          <li>Quicker (same distance to any option) … but not widely used!</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909224925360.png" alt="image-20220909224925360" /></p>
+
+<p><br /></p>
+
+<h2 id="menus-extras">Menus extras</h2>
+
+<ul>
+  <li>Cascading menus
+    <ul>
+      <li>hierarchical menu structure</li>
+      <li>menu selection opens new menu</li>
+      <li>and so in ad infinitum</li>
+    </ul>
+  </li>
+  <li>Keyboard accelerators
+    <ul>
+      <li>key combinations - same effect as menu item</li>
+      <li>two kinds
+        <ul>
+          <li>active when menu open – usually first letter</li>
+          <li>active when menu closed – usually Ctrl + letter</li>
+        </ul>
+      </li>
+      <li>usually different with different applications!!!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="3-menus-design-issues-buttons--dialogue-boxes">3. Menus design issues: Buttons &amp; Dialogue boxes</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909225053446.png" alt="image-20220909225053446" /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909225102566.png" alt="image-20220909225102566" /></p>
+
+<ul>
+  <li>individual and isolated regions within a display that can be selected to invoke an action</li>
+  <li>Special kinds</li>
+  <li>radio buttons
+    <ul>
+      <li>set of mutually exclusive choices</li>
+    </ul>
+  </li>
+  <li>check boxes
+    <ul>
+      <li>set of non-exclusive choices</li>
+    </ul>
+  </li>
+  <li>Dialogue boxes (그림 4)
+    <ul>
+      <li>information windows that pop up to inform of an important event or request information.</li>
+      <li>e.g: when saving a file, a dialogue box is displayed to get the filename and location. Once the file is saved, the box disappears.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="toolbars">Toolbars</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909225154429.png" alt="image-20220909225154429" /></p>
+
+<ul>
+  <li>long lines of icons … … but what do they do?
+    <ul>
+      <li>fast access to common actions</li>
+      <li>often customizable:
+        <ul>
+          <li>choose which toolbars to see</li>
+          <li>choose what options are on it</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Palettes and tear-off menus</li>
+  <li>Problem: menu not there when you want it</li>
+  <li>Solution:
+    <ul>
+      <li>palettes – little windows of actions, shown/hidden via menu option. e.g. available shapes in drawing package tear-off and pin-up menus – menu ‘tears off’ to become palette</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="look-and--feel">Look and … feel</h2>
+
+<ul>
+  <li>WIMP systems have the same elements:
+    <ul>
+      <li>windows, icons., menus, pointers, buttons, etc.</li>
+    </ul>
+  </li>
+  <li>but different window systems … behave differently
+    <ul>
+      <li>e.g. MacOS vs Windows menus</li>
+    </ul>
+  </li>
+  <li>appearance + behaviour = look and feel
+    <ul>
+      <li>easy to focus on look</li>
+      <li>what about feel?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="4-consideration-in-interaction-error-and-repair">4. Consideration in Interaction Error and repair</h2>
+
+<ul>
+  <li>can’t always avoid errors … … but we can put them right</li>
+  <li>Human errors: Slip &amp; Mistake
+    <ul>
+      <li>incorrect action vs misunderstanding!</li>
+    </ul>
+  </li>
+  <li>make it easy to detect errors … then the user can repair them</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909225310830.png" alt="image-20220909225310830" /></p>
+
+<p><br /></p>
+
+<h2 id="initiative">Initiative</h2>
+
+<ul>
+  <li>who has the initiative?
+    <ul>
+      <li>old question–answer – computer</li>
+      <li>WIMP interface – user</li>
+    </ul>
+  </li>
+  <li>WIMP exceptions …
+    <ul>
+      <li>pre-emptive parts of the interface</li>
+    </ul>
+  </li>
+  <li>modal dialog boxes
+    <ul>
+      <li>come and won’t go away!
+        <ul>
+          <li>튀어나와서 안 없어지는</li>
+        </ul>
+      </li>
+      <li>good for errors, essential steps</li>
+      <li>but use with care</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909225352653.png" alt="image-20220909225352653" /></p>
+
+<p><br /></p>
+
+<h2 id="context--experience">Context &amp; Experience</h2>
+
+<ul>
+  <li>Interaction affected by <strong>social</strong> and <strong>organizational</strong> context
+    <ul>
+      <li>By other people: desire to impress, competition, fear of failure</li>
+      <li>By motivation: fear, allegiance, ambition, self-satisfaction</li>
+      <li>Inadequate systems cause frustration and lack of motivation</li>
+    </ul>
+  </li>
+  <li>Experience, engagement and fun
+    <ul>
+      <li>Virtues of WINP design
+        <ul>
+          <li>designing experience</li>
+          <li>physical engagement</li>
+          <li>managing value</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="experience">Experience?</h2>
+
+<ul>
+  <li>home, entertainment, shopping
+    <ul>
+      <li>not enough that people can use a system</li>
+      <li><strong>they must want to use it</strong>!</li>
+      <li>사용할 수 있는 것이 목적이 아니라 유저가 사용하고 싶어해야 한다.</li>
+    </ul>
+  </li>
+  <li>psychology of experience
+    <ul>
+      <li>Flow: The Psychology of Optimal Experience (Prof. Csikszentimihalyi)
+        <ul>
+          <li>완전한 몰입</li>
+        </ul>
+      </li>
+      <li>A state in which people are so involved in an activity that nothing else seems to matter</li>
+      <li><strong>balance between anxiety and boredom</strong>: optimal challenge, sense of control</li>
+    </ul>
+  </li>
+  <li>education
+    <ul>
+      <li>zone of proximal development</li>
+      <li>things you can just do with help</li>
+    </ul>
+  </li>
+  <li>wider …
+    <ul>
+      <li>literary analysis, film studies, drama</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="physical-design-constraints">Physical Design Constraints</h2>
+
+<ul>
+  <li>constraints are often contradictory … need trade-offs</li>
+  <li><strong>CONSTRAINTS</strong>:
+    <ul>
+      <li>ergonomic – minimum button size</li>
+      <li>physical – high-voltage switches are big</li>
+      <li>legal and safety – high cooker controls</li>
+      <li>context and environment – easy to clean</li>
+      <li>aesthetic – must look good</li>
+      <li>economic – … and not cost too much!</li>
+    </ul>
+  </li>
+  <li>within categories:
+    <ul>
+      <li>e.g. safety – cooker controls</li>
+      <li>front panel – safer for adult</li>
+      <li>rear panel – safer for child</li>
+    </ul>
+  </li>
+  <li>between categories
+    <ul>
+      <li>e.g. ergonomics vs. physical – earphone remote
+        <ul>
+          <li>ergonomics – controls need to be bigger</li>
+          <li>physical – no room!</li>
+          <li>solution – multifunction controls &amp; reduced functionality</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909225622949.png" alt="image-20220909225622949" /></p>
+
+<p><br /></p>
+
+<h2 id="fluidity">Fluidity</h2>
+
+<ul>
+  <li>do external physical aspects reflect logical effect?</li>
+  <li>related to affordance</li>
+  <li>logical state revealed in physical state?
+    <ul>
+      <li>e.g. on/off buttons</li>
+    </ul>
+  </li>
+  <li>inverse actions inverse effects?
+    <ul>
+      <li>e.g. arrow buttons, twist controls</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="managing-value">Managing value</h2>
+
+<p>people use something</p>
+
+<p><strong>ONLY IF</strong></p>
+
+<p>​	it has perceived value</p>
+
+<p><strong>AND</strong></p>
+
+<p>​	value exceeds cost</p>
+
+<p><strong>BUT NOTE</strong></p>
+
+<ul>
+  <li>
+    <p>exceptions (e.g. habit)</p>
+  </li>
+  <li>
+    <p>value <strong>NOT</strong> necessarily personal gain or money</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="weighing-up-value">Weighing up value</h2>
+
+<ul>
+  <li>value
+    <ul>
+      <li>helps me get my work done</li>
+      <li>fun</li>
+      <li>good for others</li>
+    </ul>
+  </li>
+  <li>cost
+    <ul>
+      <li>download time</li>
+      <li>money £, $, €</li>
+      <li>learning effort</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Discounted future</strong></p>
+
+<ul>
+  <li>in economics Net Present Value:
+    <ul>
+      <li>discount by (1+rate)<sup>years to wait </sup></li>
+    </ul>
+  </li>
+  <li>in life people heavily discount
+    <ul>
+      <li>future value and future cost</li>
+      <li>hence resistance to learning</li>
+      <li>need low barriers and high perceived present value</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="value-and-organisational-design">Value and organisational design</h2>
+
+<ul>
+  <li>coercion
+    <ul>
+      <li>tell people what to do!</li>
+      <li>value = keep your job</li>
+    </ul>
+  </li>
+  <li>enculturation
+    <ul>
+      <li>explain corporate values</li>
+      <li>establish support (e.g share options)</li>
+    </ul>
+  </li>
+  <li>emergence
+    <ul>
+      <li>design process so that individuals value -&gt; organisational value</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="general-lesson-">General lesson …</h2>
+
+<p>if you want someone to do something …</p>
+
+<ul>
+  <li>
+    <p>make it easy for them!</p>
+  </li>
+  <li>
+    <p>understand their values</p>
+  </li>
+</ul>
+:ET

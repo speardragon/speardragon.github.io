@@ -1,0 +1,1097 @@
+I"ݯ<p>[toc]</p>
+
+<h1 id="chapter-7-synchronization-examples">Chapter 7: Synchronization Examples</h1>
+
+<ul>
+  <li>Classic Problems of Synchronization
+    <ul>
+      <li>the bounded-buffer synchronization problem</li>
+      <li>the readers-writers synchronization problem</li>
+      <li>The dining-philosophers synchronization problems</li>
+    </ul>
+  </li>
+  <li>Synchronization within the <strong>Kernel</strong></li>
+  <li>the tools used by Linux and Windows to solve synchronization problems.</li>
+  <li>POSIX Synchronization</li>
+  <li>Synchronization in Java</li>
+  <li>Alternative Approaches</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="classical-problems-of-synchronization">Classical Problems of Synchronization</h2>
+
+<ul>
+  <li>Classical problems used to test newly-proposed synchronization  schemes
+    <ul>
+      <li>Bounded-Buffer Problem</li>
+      <li>Readers and Writers Problem</li>
+      <li>Dining-Philosophers Problem</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer-problem">Bounded-Buffer Problem</h2>
+
+<ul>
+  <li><strong>n</strong> buffers, each can hold one item
+    <ul>
+      <li>producer와 consumer간의 shared buffer</li>
+      <li>in, out index로 조절 - full, empty 판단
+        <ul>
+          <li>혹은 count 변수로</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Semaphore <strong>mutex</strong> initialized to the value 1  - binary semaphore
+    <ul>
+      <li>critical section의 진입 -&gt; 0으로 초기화하면 영원히 못들어감!</li>
+      <li>binary semaphore</li>
+    </ul>
+  </li>
+  <li>Semaphore <strong>full</strong> initialized to the value 0
+    <ul>
+      <li><mark>차있는 slot의 갯수</mark></li>
+      <li>count semaphore -&gt; 0~n</li>
+    </ul>
+  </li>
+  <li>Semaphore <strong>empty</strong> initialized to the value n
+    <ul>
+      <li>비어있는 slot의 갯수</li>
+      <li>count semaphore -&gt; 0~n</li>
+    </ul>
+  </li>
+  <li>semaphore
+    <ul>
+      <li>개발자, hardware의 도움이 아닌 OS의 도움!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer-problem-cont">Bounded Buffer Problem (Cont.)</h2>
+
+<ul>
+  <li>The structure of the producer process</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002214616833.png" alt="image-20221002214616833" /></p>
+
+<ul>
+  <li>
+    <p>common buffer에 삽입하는 부분이 CS임 (add next …)</p>
+  </li>
+  <li>produce가 CS에 들어가면 consumer는 못 들어감</li>
+  <li>wait(empty) - 빈 slot이 없으면 대기(block)
+    <ul>
+      <li>empty의 값이 0에서 1로 바뀔 때까지</li>
+      <li>empty의 값이 있기를 기다림 -&gt; 빈 slot이 있기를 기다림</li>
+    </ul>
+  </li>
+  <li>wait(mutex)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer-problem-cont-1">Bounded Buffer Problem (Cont.)</h2>
+
+<ul>
+  <li>The structure of the consumer process</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002214648618.png" alt="image-20221002214648618" /></p>
+
+<ul>
+  <li>꺼내오려는데 꺼내올 것이 없으면 대기해야 하기 때문에 wait(full) 값이 0이면 wait한다.</li>
+  <li>full의 값이 있기를 기다림</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="readers-writers-problem">Readers-Writers Problem</h2>
+
+<ul>
+  <li>A data set is shared among a number of concurrent processes
+    <ul>
+      <li><strong>Readers</strong> – only read the data set; they do not perform any updates
+        <ul>
+          <li>읽기만 하는 process</li>
+          <li>여러개가 동시에 있어도 OK</li>
+        </ul>
+      </li>
+      <li><strong>Writers</strong> – can both read and write
+        <ul>
+          <li>읽기도 하고 쓰기도 하는 프로세스</li>
+          <li>오직 한 process만 가능</li>
+        </ul>
+      </li>
+      <li>readers와 writers가 동시에 있는 것도 불가능
+        <ul>
+          <li>즉 writer가 있으면 무조건 걔만 딱 하나 있어야 함.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Determine need for mutex based on nature of processes
+    <ul>
+      <li>Readers : allow multiple readers can read data simultaneously</li>
+      <li>Writers : Only one single writer can access the shared data at the same time
+        <ul>
+          <li>restrict to 1 at a time (mutex)</li>
+          <li>Also writers should have exclusive access to data
+            <ul>
+              <li>Should not have reader reading while writer is writing</li>
+              <li>Readers in CS should block writers from entering CS</li>
+              <li>Writers in CS should block readers and other writers from entering  CS</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Several variations of how readers and writers are considered – all involve some  form of priorities</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="readers-writers-problem-cont">Readers-Writers Problem (Cont.)</h2>
+
+<ul>
+  <li>
+    <p>Shared Data</p>
+
+    <ul>
+      <li>
+        <p>Data set</p>
+      </li>
+      <li>
+        <p>Semaphore <strong>rw_mutex</strong> initialized to 1   // rw_mutex functions as a mutex semaphore</p>
+
+        <p>​																	// for writers. used by first or last reader</p>
+
+        <p>​																	// that enters or exists cs</p>
+
+        <ul>
+          <li>1) writers끼리 경쟁</li>
+          <li>
+            <ol>
+              <li>reader vs. writer</li>
+            </ol>
+          </li>
+          <li>writer가 경쟁하는 것은 first reader
+            <ul>
+              <li>첫번째 reader가 들어가면 그 다음 reader는 계속 들어가지기 때문에</li>
+            </ul>
+          </li>
+          <li>진입제어 용</li>
+        </ul>
+      </li>
+      <li>
+        <p>Semaphore <strong>mutex</strong> initialized to 1         // mutex is used to ensure mutex when</p>
+
+        <p>​																	// read_count is updated</p>
+
+        <ul>
+          <li>read_count가 바뀔 때 atomic 함을 보장해 주기 위해</li>
+        </ul>
+      </li>
+      <li>
+        <p>Integer <strong>read_count</strong> initialized to 0</p>
+
+        <ul>
+          <li>critical section에 진입을 시도하는 reader process의 갯수</li>
+          <li>read_count 값을 바꾸는 과정이 atomic하지 않는다.</li>
+          <li>그래서 mutex로 감싸서 atomic operation을 보장한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>The structure of a writer process</p>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215006472.png" alt="image-20221002215006472" /></p>
+
+<ul>
+  <li>rw_mutex 값을 1로 초기화
+    <ul>
+      <li>critical section을 빠져나오면서 signal(rw_mutex)를 통해 rw_mutex 값이 0에서 1로 바뀌어야지 다른 것들이 들어갈 수 있게 됨.</li>
+    </ul>
+  </li>
+  <li>queue를 통해 FCFS 보장</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="readers-writers-problem-cont-1">Readers-Writers Problem (Cont.)</h2>
+
+<ul>
+  <li>The structure of a reader process</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215037719.png" alt="image-20221002215037719" /></p>
+
+<ul>
+  <li>reader가 하나 들어가면 read_count값을 하나 증가시킨다.</li>
+  <li>mutex는 read_count 변수를 update할 때 atomic operation를 보장하기 위해서이므로 wait(mutex) 후에read_count 값을 바꿀 수 있다.</li>
+  <li>read_count == 0
+    <ul>
+      <li>CS에 존재하는 reader가 없다.</li>
+      <li>CS를 빠져 나오는 reader가 0</li>
+      <li>signal(rw_mutex) -&gt; 0</li>
+      <li>이제 writer가 들어갈 수 있음</li>
+    </ul>
+  </li>
+  <li>read_count 가 2를 넘어서면 rw_mutex 값을 바꾸지 않기 때문에 계속 들어갈 수 있음</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="readers-writers-problem-variations">Readers-Writers Problem Variations</h2>
+
+<ul>
+  <li>The solution in previous slide can result in a situation where a writer process never writes. It is referred to as the “<strong>First reader-writer</strong>” problem.</li>
+  <li>First variation - <strong>Reader’s priority</strong>(reader에게 유리함)
+    <ul>
+      <li>만약 최초의 CS 진입 경쟁을 할 때 reader가 이겨서 reader가 들어갔다면 그 후에 reader는 계속 들어갈 수 있지만 writer는 못들어감(rw_mutex 값은 read_count가 ==0 일 때만 변경 되기 때문에 )</li>
+      <li><u>no reader kept waiting unless writer has permission to use shared object</u></li>
+      <li>No reader should wait simply because a writer is ready</li>
+      <li>Readers obtain access to CS when needed</li>
+      <li>Only block if writer has access to CS</li>
+      <li>Writers may starve
+        <ul>
+          <li>-&gt; 근데 writer에게 유리하게 코드를 바꿀 수 있음</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Second variation - <strong>Writer’s priority</strong>
+    <ul>
+      <li>writer와 reader가 경쟁하면 무조건 writer에게 우선순위</li>
+      <li><u>once writer is ready, it performs the write ASAP</u>
+        <ul>
+          <li>writer님이 들어가고 싶어하십니다! -&gt; reader들은 못들어감</li>
+        </ul>
+      </li>
+      <li>If a writer is waiting to access a object, no new readers may start reading</li>
+      <li>Readers may starve</li>
+    </ul>
+  </li>
+  <li>Both may have starvation leading to even more variations</li>
+  <li>Problem is solved on some systems by <strong>kernel</strong> providing <strong>reader-writer locks</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dining-philosophers-problem">Dining-Philosophers Problem</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215159971.png" alt="image-20221002215159971" /></p>
+
+<ul>
+  <li>Philosophers spend their lives alternating <strong>thinking</strong> and <strong>eating</strong></li>
+  <li>Don’t interact with their neighbors, occasionally try to pick up 2  chopsticks (one at a time) to eat from bowl
+    <ul>
+      <li>Need both to eat, then release both when done
+        <ul>
+          <li>젓가락 두 개를 모두 집어야 식사 가능 -&gt; 식사 후에 젓가락 내려놓기 가능</li>
+          <li>한 번에 하나의 젓가락만 집을 수 있음</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>In the case of 5 philosophers
+    <ul>
+      <li>Shared data
+        <ul>
+          <li>Bowl of rice (data set)</li>
+          <li>Semaphore chopstick [5] initialized to 1
+            <ul>
+              <li>binary semaphore</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-with-condition-variables">Monitor with condition variables</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215244131.png" alt="image-20221002215244131" /></p>
+
+<ul>
+  <li>
+    <p>2개 이상의 process가 monitor 안에서 실행되면 동기화 자체에 문제가 생긴다.</p>
+  </li>
+  <li>initialization code: monitor가 만들어질 때 딱 한 번 실행됨
+    <ul>
+      <li>shared data 초기화</li>
+    </ul>
+  </li>
+  <li>
+    <p>사용 중인 모니터에 접근하기를 원해서 대기 중인 프로세스들은 <strong>entry queue</strong>에서 대기한다.</p>
+  </li>
+  <li>
+    <p>해당 condition을 기다리는 프로세스들은 condition queue에서 대기한다.</p>
+  </li>
+  <li>next queue의 역할?
+    <ul>
+      <li>다른 프로세스가 모니터 내부에 있어서 잠시 대기하는 큐</li>
+      <li>모니터 내부 작업 중에 잠시 프로세스가 대기하는 큐</li>
+    </ul>
+  </li>
+  <li>제일 우선순위 높은 ; next queue, entry queue, 새로들어온 애
+    <ul>
+      <li>condition queue는 next queue나 entry queue와는 비교 대상이 아님
+        <ul>
+          <li>condition이 만족해야만 깨어날 수 있기 때문</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dining-philosophers-problem-algorithm">Dining-Philosophers Problem Algorithm</h2>
+
+<ul>
+  <li>
+    <p>Semaphore Solution</p>
+  </li>
+  <li>
+    <p>The structure of Philosopher i :</p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">){</span> 
+    <span class="n">wait</span> <span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">);</span>
+    <span class="n">wait</span> <span class="p">(</span><span class="n">chopStick</span><span class="p">[</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span> <span class="p">);</span>
+      
+    <span class="cm">/* eat for awhile - critical section*/</span>
+      
+    <span class="n">signal</span> <span class="p">(</span><span class="n">chopstick</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">);</span>
+    <span class="n">signal</span> <span class="p">(</span><span class="n">chopstick</span><span class="p">[</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span> <span class="p">);</span>
+      
+    <span class="cm">/* think for awhile */</span>
+      
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>What is the problem with this algorithm?</p>
+
+    <ul>
+      <li>모든 다섯명의 철학자가 첫 코드를 실행했다고 했을 때 -&gt; 모두가 젓가락 하나씩을 집으려고 할 때
+        <ul>
+          <li>그 다음 코드를 실행하지 못할 것이기 때문에 deadlock 발생 (코드가 진행이 안 됨)</li>
+        </ul>
+      </li>
+      <li>deadlock이 발생하지 않도록 semaphore로 해결할 수도 있음</li>
+    </ul>
+  </li>
+  <li>간단한 솔루션 -&gt; semaphore 사용
+    <ul>
+      <li>철학자는 그 semaphore에 wait()연산을 실행하여 젓가락을 집으려고 시도</li>
+      <li>signal()연산을 수행하여 자신의 젓가락을 내려 놓음</li>
+    </ul>
+  </li>
+  <li>공유 데이터: 밥그릇 (데이터 셋)
+    <ul>
+      <li>1로 초기화된 semaphore -&gt; chopstick[5]</li>
+    </ul>
+  </li>
+  <li>인접한 두 철학자가 동시에 식사하지 않음을 권장
+    <ul>
+      <li>그러나 모두가 동시에 자신의 왼쪽 젓가락을 집는다면?? -&gt; deadlock 발생!</li>
+      <li>해제가 되려면 누군가는 오른쪽 젓가락을 집어야 되는데 아무도 해제가 될 상황이 없기 때문.</li>
+    </ul>
+  </li>
+  <li>해결안 1)
+    <ul>
+      <li>최대 4명의 철학자들만이 테이블에 동시에 앉을 수 있도록 함</li>
+    </ul>
+  </li>
+  <li>해결안 2)
+    <ul>
+      <li>한 철학자가 젓가락 두 개를 모두 집을 수 있을 때만 젓가락을 집도록 허용</li>
+    </ul>
+  </li>
+  <li>해결안 3)
+    <ul>
+      <li>비대칭 해결안 사용. 홀수 번호의 철학자는 왼쪽 젓가락부터, 짝수 번호의 철학자는 짝수 젓가락부터 집을 수 있다는 rule 적용</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-solution-to-dining-philoshophers">Monitor Solution to Dining Philoshophers</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">monitor</span> <span class="n">DiningPhilosophers</span>
+<span class="p">{</span> 
+    <span class="k">enum</span> <span class="p">{</span> <span class="n">THINKING</span><span class="p">;</span> <span class="n">HUNGRY</span><span class="p">,</span> <span class="n">EATING</span><span class="p">)</span> <span class="n">state</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="p">;</span>
+          <span class="n">condition</span> <span class="n">self</span> <span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+          <span class="kt">void</span> <span class="n">pickup</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// wait에 해당하는 부분</span>
+              <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">HUNGRY</span><span class="p">;</span>
+              <span class="n">test</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// 왼쪽 오른쪽 젓가락 확보를 위한 작업</span>
+              <span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">EATING</span><span class="p">)</span> <span class="n">self</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">wait</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="kt">void</span> <span class="n">putdown</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//signal에 해당하는 부분</span>
+              <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">THINKING</span><span class="p">;</span>
+              
+              <span class="c1">// test left and right neighbors - 내 좌우 사람들 중 나때문에 못먹던 사람 깨우기</span>
+              <span class="n">test</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">);</span>
+              <span class="n">test</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">);</span>
+          <span class="p">}</span>
+          <span class="kt">void</span> <span class="n">test</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// private 함수(내부용)</span>
+              <span class="k">if</span> <span class="p">((</span><span class="n">state</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="n">EATING</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="c1">// 나의 왼쪽 철학자가 먹지 않고 있으면서</span>
+                  <span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">HUNGRY</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="c1">// 내가 HUNGRY 상태 이면서</span>
+                  <span class="p">(</span><span class="n">state</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="n">EATING</span><span class="p">)</span> <span class="p">)</span>  <span class="c1">// 나의 오른쪽 철학자가 먹지 않고 있을 때!</span>
+              <span class="p">{</span> 
+                  <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">EATING</span> <span class="p">;</span>
+                  <span class="n">self</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">signal</span> <span class="p">()</span> <span class="p">;</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+          <span class="n">initialization_code</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// 생성자</span>
+              <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                  <span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">THINKING</span><span class="p">;</span> <span class="c1">// CS 진입을 시도하지 않은 상태로 초기화</span>
+          <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>monitor instance (앞에 class가 붙었으면 class instance였을 것임)</li>
+  <li>EATING 상태 - CS에 진입한 상태</li>
+  <li>HUNGRY 상태 - CS에 진입하려는 상태
+    <ul>
+      <li>젓가락 확보를 위해 경쟁하고 있는</li>
+    </ul>
+  </li>
+  <li>test 함수
+    <ul>
+      <li>내가 밥을 먹으면 내 옆의 철학자는 eating으로 바뀌지 않고 self.wait으로 condition queue에 들어가지기 때문에 즉, wait하고 있기 때문에 마지막에 self[i].signal을 해 주어 깨워준다.</li>
+      <li>깨어나면 pickup을 넘어갈 수 있기 때문에 critical section인 EAT에 도달할 수 있는 것이다.</li>
+    </ul>
+  </li>
+  <li>pickup()
+    <ul>
+      <li>진입을 시도하기 때문에 HUNGRY로 상태를 바꿈.</li>
+      <li>상태가 EATING이 아니면 self[i].wait
+        <ul>
+          <li>condition 변수 - self[i].wait</li>
+        </ul>
+      </li>
+      <li>다른 사람이 self[i].signal을 해야 살아남</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-to-dining-philosophers-cont">Solution to Dining Philosophers (Cont.)</h2>
+
+<ul>
+  <li>Each philosopher “i” invokes the operations pickup() and  putdown() in the following sequence:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002215440221.png" alt="image-20221002215440221" /></p>
+
+<ul>
+  <li>No deadlock, but starvation is possible
+    <ul>
+      <li>도착 순서에 의해서 젓가락을 잡을 수 있는 것이 아니기 때문에 일찍 hungry해도 eating하지 못할 수 있다.</li>
+    </ul>
+  </li>
+  <li>mutex 보장
+    <ul>
+      <li>옆사람하고 나하고 동시에 젓가락을 잡는 경우가 생기지 않음</li>
+    </ul>
+  </li>
+  <li>progress
+    <ul>
+      <li>CS밖에 있는 process 때문에 CS에 못들어가는 일이 발생하지 않음</li>
+    </ul>
+  </li>
+  <li>bounded waiting
+    <ul>
+      <li>실패를 하더라도 어느정도 시간 안에 들어가는 것이 보장</li>
+    </ul>
+  </li>
+  <li>위 세가지 조건 모두 만족! by OS</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="a-monitor-to-allocate-single-resource">A monitor to allocate single resource</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Monitor</span> <span class="n">ResourceAllocation</span> <span class="p">{</span>
+    <span class="n">boolean</span> <span class="n">busy</span><span class="p">;</span> 
+    <span class="n">condition</span> <span class="n">x</span><span class="p">;</span> 
+    <span class="kt">void</span> <span class="n">acquire</span> <span class="p">(</span><span class="kt">int</span> <span class="n">time</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">busy</span><span class="p">)</span> <span class="c1">//resource가 하나밖에 없는데 이미 할당되어져 있는 경우</span>
+            <span class="n">x</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">time</span><span class="p">);</span>
+        <span class="n">busy</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">release</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">busy</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">signal</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">busy</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ResourceAlocation</span> <span class="n">R</span><span class="p">;</span>
+
+<span class="n">R</span><span class="p">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+	<span class="n">access</span> <span class="n">the</span> <span class="n">resource</span> <span class="c1">//자원 사용 가능</span>
+<span class="n">R</span><span class="p">.</span><span class="n">release</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="synchronization-examples---나-같으면-안-낼-듯">Synchronization Examples - 나 같으면 안 낼 듯…</h2>
+
+<ul>
+  <li>Solaris</li>
+  <li>Windows</li>
+  <li>Linux</li>
+  <li>Pthread</li>
+  <li>Java</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solaris-synchronization---xxxx">Solaris Synchronization - XXXX</h2>
+
+<ul>
+  <li>Implements a variety of locks to support multitasking, multithreading  (including real-time threads), and multiprocessing</li>
+  <li>Uses <strong>adaptive mutexes</strong> for efficiency when protecting data from short  code segments
+    <ul>
+      <li>Starts as a standard semaphore spin-lock - 기본적으로는 spinlock</li>
+      <li>If lock held, and by a thread running on another CPU, spins</li>
+      <li>If lock held by <strong>non-run-state thread</strong>, <strong>block</strong> and sleep <strong>waiting</strong> for signal of  lock being released
+        <ul>
+          <li>이게 금방 풀릴 것 같지 않으면 일반적인 semaphore로 동작!</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Uses <strong>condition variables</strong> and <strong>readers-writers locks</strong> when longer  sections of code need access to data</li>
+  <li>Uses <strong>turnstiles</strong> to order the list of threads waiting to acquire either an  adaptive mutex or reader-writer lock
+    <ul>
+      <li>Turnstiles(회전문) are per-lock-holding-thread, not per-object</li>
+      <li>먼저 들어온 사람이 먼저 lock 획득</li>
+    </ul>
+  </li>
+  <li>Priority-inheritance per-turnstile gives the running thread the highest of the priorities of the threads in its turnstile
+    <ul>
+      <li>어떤 lock에 대해 소유권의 우선순위가 높은 프로세스가 있는데 현재 lock을 소유하고 있는 프로세스는 그것보다 우선순위가 낮을 때 이 우선순위가 낮은 프로세스가 release를 해야 우선순위가 높은 프로세스가 사용하므로
+        <ul>
+          <li>높은 우선순위의 프로세스의 우선순위를 낮은 우선순위의 프로세스에게 잠시 빌려준다!
+            <ul>
+              <li>너 이거 빌려줄테니까 빨리 끝내라 !</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Uses readers-writers locks when longer sections of code need access  to data</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="kernel-synchronization---windows--xxxx">Kernel Synchronization - Windows -XXXX</h2>
+
+<ul>
+  <li>Uses interrupt masks to protect access to global resources on  <strong>uniprocessor systems</strong></li>
+  <li>Uses <strong>spinlocks</strong> on multiprocessor systems
+    <ul>
+      <li>Spinlocking-thread will never be preempted</li>
+    </ul>
+  </li>
+  <li>Also provides <strong>dispatcher objects</strong> user-land which may act mutexes, semaphores, events, and timers
+    <ul>
+      <li>The kernel defines a set of object types called kernel dispatcher  objects, or just dispatcher objects.</li>
+      <li>Dispatcher objects include timer objects, event objects,  semaphore objects, mutex objects, and thread objects.</li>
+      <li><strong>Events</strong>
+        <ul>
+          <li>An event acts much like a condition variable</li>
+        </ul>
+      </li>
+      <li>Timers notify one or more thread when time expired</li>
+      <li>Dispatcher objects either <strong>signaled-state</strong> (object available) or <strong>non-signaled state</strong> (thread will block)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Every kernel-defined dispatcher object type has a state that is  either set to Signaled or set to Not-Signaled.</li>
+  <li>Mutex dispatcher object</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220101063.png" alt="image-20221002220101063" /></p>
+
+<p>어떤 thread가 lock을 획득하면 nonsignaled로 바뀌고 release하면 다시 signaled 상태로 바뀐다.</p>
+
+<p><br /></p>
+
+<h2 id="linux-synchronization-xxxx">Linux Synchronization-XXXX</h2>
+
+<ul>
+  <li>Linux:
+    <ul>
+      <li>Prior to kernel Version 2.6, Linux was a non-preemptive kernel
+        <ul>
+          <li>disables interrupts to implement short critical sections</li>
+        </ul>
+      </li>
+      <li>Version 2.6 and later, fully preemptive
+        <ul>
+          <li>A task can be preempted when it is running in kernel</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Linux provides:
+    <ul>
+      <li>atomic integers</li>
+      <li>spinlocks</li>
+      <li>semaphores</li>
+      <li>reader-writer versions of both (spinlock, semaphores)</li>
+    </ul>
+  </li>
+  <li>On single-CPU system, spinlocks replaced by <strong>enabling and  disabling kernel preemption</strong></li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>atomic variables</p>
+  </li>
+  <li>
+    <p><strong>atomic_t</strong> is the type for atomic integer (data type)</p>
+  </li>
+  <li>
+    <p>Simplest synchronization tool within Linux kernel</p>
+  </li>
+  <li>
+    <p>All math operations using atomic integers are performed without interruption</p>
+  </li>
+  <li>
+    <p>Atomic operations do not need the overhead of locking mechanism</p>
+  </li>
+  <li>
+    <p>atomic_t counter;</p>
+  </li>
+  <li>
+    <p>int value</p>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220244235.png" alt="image-20221002220244235" /></p>
+
+<p><br /></p>
+
+<h2 id="mutex_lock-spin_lock">mutex_lock, spin_lock</h2>
+
+<ul>
+  <li>
+    <p>Mutex lock is used to protect critical sections within kernel</p>
+
+    <p>​	mutex_lock()</p>
+
+    <p>critical section // sleep is possible</p>
+
+    <p>​	mutex_unlock()</p>
+  </li>
+  <li>
+    <p>Reader-writer version</p>
+  </li>
+  <li>
+    <p>Spin lock &amp; semaphore are used for locking in the kernel</p>
+
+    <ul>
+      <li>On SMP machine, spinlock is a fundamental locking mechanism</li>
+      <li>On single-CPU system, spinlocks is not inappropriate
+        <ul>
+          <li>enabling and disabling kernel preemption</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220430057.png" alt="image-20221002220430057" /></p>
+
+<p><br /></p>
+
+<h2 id="pthread-posix-synchronization">Pthread (POSIX) Synchronization</h2>
+
+<p>이거는 user level에서의 synchronization 문제 해결하는 tool</p>
+
+<ul>
+  <li>Pthreads API is OS-independent <strong>user level threads</strong></li>
+  <li>Widely used on UNIX, Linux, and macOS</li>
+  <li>It provides:
+    <ul>
+      <li>mutex locks</li>
+      <li>Semaphore (named, unnamed)</li>
+      <li>condition variable</li>
+    </ul>
+  </li>
+  <li>Non-portable extensions include:
+    <ul>
+      <li>read-write locks</li>
+      <li>spinlocks</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="posix-mutex-locks">POSIX Mutex Locks</h2>
+
+<ul>
+  <li>Fundamental synchronization tool used with Pthreads</li>
+  <li>Creating and initializing the lock</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220547561.png" alt="image-20221002220547561" /></p>
+
+<ul>
+  <li>Acquiring and releasing the lock</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220601230.png" alt="image-20221002220601230" /></p>
+
+<p><br /></p>
+
+<h2 id="posix-semaphores">POSIX Semaphores</h2>
+
+<ul>
+  <li>POSIX provides two versions – <strong>named</strong> and <strong>unnamed</strong>.</li>
+  <li>Named semaphores can be used by unrelated processes, unnamed  cannot.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="posix-named-semaphores">POSIX Named Semaphores</h2>
+
+<ul>
+  <li>Creating an initializing the semaphore:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220656274.png" alt="image-20221002220656274" /></p>
+
+<ul>
+  <li>Another process can access the semaphore by referring to its name SEM.</li>
+  <li>Acquiring and releasing the semaphore:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220712037.png" alt="image-20221002220712037" /></p>
+
+<p><br /></p>
+
+<h2 id="posix-unnamed-semaphores">POSIX Unnamed Semaphores</h2>
+
+<ul>
+  <li>Creating an initializing the semaphore:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220736432.png" alt="image-20221002220736432" /></p>
+
+<ul>
+  <li>Acquiring and releasing the semaphore:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220749296.png" alt="image-20221002220749296" /></p>
+
+<p><br /></p>
+
+<h2 id="posix-condition-variables">POSIX Condition Variables</h2>
+
+<ul>
+  <li>Since POSIX is typically used in C/C++ and these languages do not  provide a monitor, <strong>POSIX condition variables</strong> are associated with a <strong>POSIX mutex lock</strong> to provide mutual exclusion: Creating and initializing  the condition variable:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220813118.png" alt="image-20221002220813118" /></p>
+
+<p><br /></p>
+
+<h2 id="posix-condition-variables-1">POSIX Condition Variables</h2>
+
+<ul>
+  <li>Thread waiting for the condition a == b to become true:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220839484.png" alt="image-20221002220839484" /></p>
+
+<ul>
+  <li>Thread signaling another thread waiting on the condition variable:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220851449.png" alt="image-20221002220851449" /></p>
+
+<p><br /></p>
+
+<h2 id="monitor-with-condition-variables-1">Monitor with condition variables</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002220914354.png" alt="image-20221002220914354" /></p>
+
+<ul>
+  <li>여러 operation들(method)이 있는데 어떤 프로세스가 해당 메소드를 실행할 때는 오로지 한 개씩만 실행이 가능하도록 제어해야 한다.</li>
+  <li>Java에서는 named condition variables이 없고 오직 하나의 unnamed condition variable만이 있다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="java-synchronization---여기부터-쭉-xxxx">Java Synchronization - 여기부터 쭉 XXXX</h2>
+
+<ul>
+  <li>Java provides rich set of synchronization features:
+    <ul>
+      <li>Java monitors</li>
+      <li>Reentrant locks</li>
+      <li>Semaphores</li>
+      <li>Condition variables</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="java-monitors">Java Monitors</h2>
+
+<ul>
+  <li>Concurrency mechanism for thread synchronization</li>
+  <li>Every Java object has associated with it a <strong>single lock.</strong></li>
+  <li>If a method is declared as synchronized, a calling thread <strong>must own the lock</strong> for the object. (single thread can be active in a monitor)</li>
+  <li>If the lock is owned by another thread, the calling thread must wait for  the lock until it is released. (entry Q)</li>
+  <li>Locks are released when the owning thread exits the synchronized method.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---java-synchronization">Bounded Buffer - Java Synchronization</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221030098.png" alt="image-20221002221030098" /></p>
+
+<p><br /></p>
+
+<h2 id="java-synchronization">Java Synchronization</h2>
+
+<ul>
+  <li>A thread that tries to acquire an unavailable lock is placed in the  object’s entry set: (entry Queue)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221058784.png" alt="image-20221002221058784" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>Similarly, each object also has a wait set. (condition Queue)</li>
+  <li>When a thread calls wait():
+    <ol>
+      <li>It releases the lock for the object</li>
+      <li>The state of the thread is set to blocked</li>
+      <li>The thread is placed in the wait set for the object</li>
+    </ol>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221134732.png" alt="image-20221002221134732" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>A thread typically calls wait() when it is waiting for a condition to  become true.</p>
+  </li>
+  <li>
+    <p>How does a thread get notified?</p>
+  </li>
+  <li>
+    <p>When a thread calls notify(): signal()이랑 동일</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. An arbitrary thread T is selected from the wait set 
+</code></pre></div>    </div>
+
+    <ol>
+      <li>
+        <p>T is moved from the wait set to the entry set</p>
+      </li>
+      <li>
+        <p>Set the state of T from blocked to runnable.</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>T can now compete for the lock to check if the condition it was waiting  for is now true</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---java-synchronization-1">Bounded Buffer - Java Synchronization</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221326154.png" alt="image-20221002221326154" /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221334049.png" alt="image-20221002221334049" /></p>
+
+<p>notify()를 바깥으로 뺀 이유는 try안에 있으면 wait() 실행 중에 error 발생시 catch로 넘어가서 nofity()를 실행하지 못하는 경우가 있을 수 있기 때문이다.</p>
+
+<p><br /></p>
+
+<h2 id="java-reentrant-locks">Java Reentrant Locks</h2>
+
+<ul>
+  <li>Similar to mutex locks</li>
+  <li>The finally clause ensures the lock will be released in case an  exception occurs in the try block.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221438670.png" alt="image-20221002221438670" /></p>
+
+<p><br /></p>
+
+<h2 id="java-semaphores">Java Semaphores</h2>
+
+<ul>
+  <li>Constructor:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221508302.png" alt="image-20221002221508302" /></p>
+
+<ul>
+  <li>Usage:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221520120.png" alt="image-20221002221520120" /></p>
+
+<p><br /></p>
+
+<h2 id="java-condition-variables">Java Condition Variables</h2>
+
+<ul>
+  <li>
+    <p>condition variables provide similar functionality to wait() &amp; notify()</p>
+  </li>
+  <li>
+    <p>To provide mutual exclusion, a condition variable is associated with an  ReentrantLock. (java’s syncronized)</p>
+  </li>
+  <li>
+    <p>Creating a condition variable by first first creating a ReentrantLock:  and invoking its newCondition() method of ReentrantLock:</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221555261.png" alt="image-20221002221555261" /></p>
+  </li>
+  <li>
+    <p>A thread waits by calling the <strong>await()</strong> method, and signals by calling  the <strong>signal()</strong> method of condition variable.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-with-condition-variables-2">Monitor with condition variables</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221616890.png" alt="image-20221002221616890" /></p>
+
+<p><br /></p>
+
+<h2 id="java-condition-variables-1">Java Condition Variables</h2>
+
+<ul>
+  <li>Example: Five threads numbered 0 .. 4</li>
+  <li>Shared variable <strong>turn</strong> indicating which thread’s turn it is.</li>
+  <li>Thread calls <strong>doWork()</strong> when it wishes to do some work.
+    <ul>
+      <li>But it may only do work if it is their turn.</li>
+    </ul>
+  </li>
+  <li>If not their turn, wait</li>
+  <li>If their turn, do some work for awhile ……</li>
+  <li>When completed, notify the thread whose turn is next.</li>
+  <li>Necessary data structures:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221700820.png" alt="image-20221002221700820" /></p>
+
+<p><br /></p>
+
+<h2 id="java-condition-variables-2">Java Condition Variables</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221735544.png" alt="image-20221002221735544" /></p>
+
+<p><br /></p>
+
+<h2 id="alternative-approaches">Alternative Approaches</h2>
+
+<ul>
+  <li>Transactional Memory</li>
+  <li>OpenMP</li>
+  <li>Functional Programming Languages</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="transactional-memory">Transactional Memory</h2>
+
+<ul>
+  <li>Consider a function update() that <strong>must be called atomically</strong>. One option is  to use mutex locks:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221916655.png" alt="image-20221002221916655" /></p>
+
+<ul>
+  <li>Synchronization mechanism such as semaphores, mutex locks has <strong>deadlock</strong> and scalability problem, as the number of threads increases</li>
+  <li>A memory transaction is a sequence of read-write operations to  memory that are performed atomically. A transaction can be completed  by adding atomic{S} which ensure statements in S are executed  atomically:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002221936000.png" alt="image-20221002221936000" /></p>
+
+<ul>
+  <li>Software transaction memory
+    <ul>
+      <li>Implemented in software</li>
+    </ul>
+  </li>
+  <li>Hardware transaction memory</li>
+  <li>Growth of multicore systems and emphasis on concurrent and parallel  programming have prompted significant research in this area.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="openmp">OpenMP</h2>
+
+<ul>
+  <li>OpenMP is a set of compiler directives and API that support parallel  progamming.</li>
+  <li>#pragma omp parallel</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002222021494.png" alt="image-20221002222021494" /></p>
+
+<ul>
+  <li>The code contained within the #pragma omp critical directive is  treated as a critical section and performed <strong>atomically</strong>.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="functional-programming-languages">Functional Programming Languages</h2>
+
+<ul>
+  <li>Imperative (procedure-oriented) language: C, C++, Java</li>
+  <li>Functional programming languages offer a different paradigm  than procedural languages in that they do not maintain state.</li>
+  <li>Variables are treated as immutable and cannot change state  once they have been assigned a value.</li>
+  <li>There is increasing interest in functional languages such as  Erlang and Scala for their approach in handling data races.</li>
+</ul>
+:ET

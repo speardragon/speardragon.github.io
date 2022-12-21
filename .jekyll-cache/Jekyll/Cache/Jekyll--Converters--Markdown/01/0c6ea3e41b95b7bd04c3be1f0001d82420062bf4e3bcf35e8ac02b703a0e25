@@ -1,0 +1,501 @@
+I"9<h2 id="the-human">the human</h2>
+
+<ul>
+  <li>Information I/O …
+    <ul>
+      <li>visual, auditory, haptic, movement</li>
+    </ul>
+  </li>
+  <li>Information stored in <strong>memory</strong>
+    <ul>
+      <li>sensory, short-term, long-term</li>
+    </ul>
+  </li>
+  <li>Information processed and applied
+    <ul>
+      <li>reasoning, problem solving, skill, error</li>
+    </ul>
+  </li>
+  <li>Emotion influences human capabilities</li>
+  <li>Each person is different</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="vision">Vision</h2>
+
+<ul>
+  <li>Two stages in vision
+    <ul>
+      <li>Physical reception of stimulus (입력을 받아들이는 감각)
+        <ul>
+          <li>Eyes</li>
+          <li>Ears</li>
+          <li>Fingers</li>
+        </ul>
+      </li>
+      <li>Processing and interpretation of stimulus (카메라로 사진을 찍고 나서의 처리과정과 같은 과정)
+        <ul>
+          <li>Perception</li>
+          <li>Memory</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-eye---physical-reception">The Eye - physical reception</h2>
+
+<ul>
+  <li>Mechanism for <strong>receiving light</strong> and transforming it into <strong>electrical energy</strong></li>
+  <li>Light reflects from objects</li>
+  <li>Images are focused <strong>upside-down on retina</strong></li>
+  <li>Retina contains rods(모든 종류의 파장이 가능해서 강조를 파악) for low light vision and cones(특정 주파수를 통해 wavelength에 의해서 가능한 cell) for colour vision</li>
+  <li>Ganglion cells (brain!) detect pattern and movement</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220914092108054.png" alt="image-20220914092108054" /></p>
+
+<p><br /></p>
+
+<h2 id="interpreting-the-signal">Interpreting the signal</h2>
+
+<ul>
+  <li><strong>Size and depth</strong>
+    <ul>
+      <li>Visual angle indicates how much of view object occupies (relates to size and <strong>distance</strong> from eye)</li>
+      <li>Visual acuity is ability to perceive detail (limited)</li>
+      <li>Familiar objects perceived as constant size (in spite of changes in visual angle when far away)
+        <ul>
+          <li>책상을 예로 우리의 시각에서는 사다리꼴처럼 보이지만 뇌에서는 이를 직사각형으로 인식하거나 아무리 멀리 있어도 그 크기를 가늠할 수 있는 것이다.</li>
+        </ul>
+      </li>
+      <li>Cues like <strong>overlapping</strong> help perception of size and depth</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interpreting-the-signal-cont">Interpreting the signal (cont)</h2>
+
+<ul>
+  <li>Brightness
+    <ul>
+      <li>Subjective reaction to levels of light</li>
+      <li>Affected by luminance of object</li>
+      <li>Measured by just noticeable difference</li>
+      <li>Visual acuity increases with luminance as does flicker(깜빡깜빡)</li>
+    </ul>
+  </li>
+  <li>Color
+    <ul>
+      <li>Made up of hue, intensity, saturation</li>
+      <li>Cones sensitive to colour wavelengths</li>
+      <li>Blue acuity is lowest (파란색의 명암이 구분이 제일 힘듬; 그린 &gt; 레드 &gt; 블루)
+        <ul>
+          <li>acuity: 명확히 보고 듣고 생각하는 능력</li>
+        </ul>
+      </li>
+      <li>8% males and 1% females colour blind</li>
+    </ul>
+  </li>
+  <li>The visual system compensates for:
+    <ul>
+      <li>Movement</li>
+      <li>Changes in luminance.</li>
+    </ul>
+  </li>
+  <li>Context is used to resolve ambiguity</li>
+  <li>Optical illusions(왜곡) sometimes occur due to overcompensation</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="optical-illusions">Optical Illusions</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214055962.png" alt="image-20220909214055962" /></p>
+
+<p><br /></p>
+
+<h2 id="reading">Reading</h2>
+
+<ul>
+  <li>Several stages:
+    <ul>
+      <li>Visual pattern perceived</li>
+      <li>Decoded using internal representation of language</li>
+      <li>Interpreted using knowledge of syntax(문법), semantics(의미), pragmatics(맥락)</li>
+    </ul>
+  </li>
+  <li>Reading involves saccades(홱 스킵하면서 읽는) and fixations(가만히 있는)</li>
+  <li>Perception occurs during fixations</li>
+  <li>Word shape is important to recognition</li>
+  <li>Negative contrast improves reading from computer screen</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hearing">Hearing</h2>
+
+<ul>
+  <li>Provides information about environment: <strong>distances</strong>, <strong>directions</strong>, <strong>objects</strong> etc.</li>
+  <li>Physical apparatus:
+    <ul>
+      <li>Outer ear: protects inner and amplifies sound</li>
+      <li>Middle ear: transmits sound waves as vibrations to inner ear</li>
+      <li>Inner ear: chemical transmitters are released and cause impulses in auditory nerve</li>
+    </ul>
+  </li>
+  <li>Sound
+    <ul>
+      <li>Pitch: sound frequency (높낮이)</li>
+      <li>Loudness: amplitude (크기)</li>
+      <li>Timbre: type or quality (음색)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220914093741301.png" alt="image-20220914093741301" /></p>
+
+<ul>
+  <li>Humans can hear frequencies from 20Hz to 15kHz
+    <ul>
+      <li>Less accurate distinguishing high frequencies than low.</li>
+    </ul>
+  </li>
+  <li>Auditory system filters sounds
+    <ul>
+      <li>Can attend to sounds over background noise.</li>
+      <li>For example, the cocktail party phenomenon(웅성웅성하고 시끄러운 상황에서 대화를 하고 있는 상대의 말소리만 catch하는 능력).</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="touch">Touch</h2>
+
+<ul>
+  <li>Provides important feedback about environment.</li>
+  <li>May be key sense for someone who is visually impaired.</li>
+  <li>Stimulus received via receptors in the skin:
+    <ul>
+      <li>Thermoreceptors: heat and cold</li>
+      <li>Nociceptors: pain</li>
+      <li>Mechanoreceptors: pressure (some instant, some continuous)</li>
+    </ul>
+  </li>
+  <li>Some areas more sensitive than others e.g. fingers.</li>
+  <li>Kinesthesis - awareness of body position
+    <ul>
+      <li>눈을 감고도 내가 어떤 자세를 취하고 있는지를 인식하고 있는 것.</li>
+    </ul>
+  </li>
+  <li>Affects comfort and performance.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="movement">Movement</h2>
+
+<ul>
+  <li>Time taken to respond to stimulus:
+    <ul>
+      <li>reaction time + movement time</li>
+    </ul>
+  </li>
+  <li>Movement time dependent on age, fitness etc.</li>
+  <li>Reaction time - dependent on stimulus type:
+    <ul>
+      <li>visual ~ 200ms</li>
+      <li>auditory ~ 150 ms</li>
+      <li>pain ~ 700ms</li>
+    </ul>
+  </li>
+  <li>Increasing reaction time decreases accuracy in the unskilled operator but not in the skilled operator.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="movement-cont">Movement (cont)</h2>
+
+<ul>
+  <li><strong>Fitts’ Law</strong> describes the time taken to hit a screen target
+    <ul>
+      <li>Shannon formulation (Dr. Scott MacKenzie)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214350846.png" alt="image-20220909214350846" /></p>
+
+<ul>
+  <li>where:
+    <ul>
+      <li>a and b are empirically determined constants</li>
+      <li>Mt is movement time</li>
+      <li>D is Distance</li>
+      <li>W is Width of target</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>targets as large as possible distances as small as possible</p>
+</blockquote>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214424220.png" alt="image-20220909214424220" /></p>
+
+<p><br /></p>
+
+<h2 id="memory">Memory</h2>
+
+<ul>
+  <li>There are three types of memory function:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214441994.png" alt="image-20220909214441994" /></p>
+
+<ul>
+  <li>Selection of stimuli governed by level of arousal.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="sensory-memory">Sensory Memory</h2>
+
+<ul>
+  <li>Buffers for stimuli received through senses
+    <ul>
+      <li>Iconic memory: visual stimuli</li>
+      <li>Echoic memory: aural stimuli</li>
+      <li>Haptic memory: tactile stimuli</li>
+    </ul>
+  </li>
+  <li>Examples
+    <ul>
+      <li>Sparkler trail</li>
+      <li>Someone else’s name called in public</li>
+    </ul>
+  </li>
+  <li>Continuously overwritten</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214522817.png" alt="image-20220909214522817" /></p>
+
+<p><br /></p>
+
+<h2 id="short-term-memory-stm">Short-term Memory (STM)</h2>
+
+<ul>
+  <li>Scratch-pad for temporary recall
+    <ul>
+      <li>Rapid access ~ 70ms</li>
+      <li>Rapid decay ~ 20s to 30s</li>
+      <li>Limited capacity – 7 ± 2 chunks</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="examples">Examples</h2>
+
+<p>212348278493202</p>
+
+<p>0121 414 2626</p>
+
+<p>HEC ATR ANU PTH ETR EET</p>
+
+<p><br /></p>
+
+<h2 id="long-term-memory-ltm">Long-term Memory (LTM)</h2>
+
+<ul>
+  <li>Repository for all our knowledge
+    <ul>
+      <li>Slow access ~ 1 to 10 seconds</li>
+      <li>Slow decay, if any (사라지지 않을지도 모름)
+        <ul>
+          <li>연구 중에는 실제로 사라지지 않지만 해당 기억과 연결하는 시냅스가 끊어져서 기억이 안 나는 것일 수도 있다.</li>
+        </ul>
+      </li>
+      <li>Huge or unlimited capacity</li>
+    </ul>
+  </li>
+  <li>Two types
+    <ul>
+      <li>Explicit memories are declarative memories, include all of the memories that are available in consciousness
+        <ul>
+          <li>Episodic memory &amp; Semantic memory</li>
+        </ul>
+      </li>
+      <li>Implicit memories are those that are mostly unconscious
+        <ul>
+          <li>Procedural memory &amp; Emotional memory</li>
+          <li>의식적으로 기억하지 않는, 글씨 쓸 때 펜을 어떻게 잡고 있고 어떻게 쓰고 있는지 생각 안 하는 것처럼</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="long-term-memory-cont">Long-term Memory (cont.)</h2>
+
+<ul>
+  <li>Explicit memories
+    <ul>
+      <li>Episodic: serial memory of events (일어났던 사건을 기억하는)</li>
+      <li>Semantic: structured memory of facts, concepts, skills (역할을 기억하는)</li>
+      <li>Semantic LTM derived from episodic LTM</li>
+    </ul>
+  </li>
+  <li>Implicit memories
+    <ul>
+      <li><strong>Procedural</strong>: the use of objects or movements of the body, such as how exactly to use a pencil or ride a bicycle</li>
+      <li><strong>Emotional</strong>: the memory for events that evoke a particularly strong emotion</li>
+    </ul>
+  </li>
+  <li>Semantic memory structure
+    <ul>
+      <li>Provides access to information</li>
+      <li>Represents relationships between bits of information</li>
+      <li>Supports inference</li>
+    </ul>
+  </li>
+  <li>Model: Semantic Network
+    <ul>
+      <li>Inheritance – child nodes inherit properties of parent nodes</li>
+      <li>Explicit relationships between bits of information</li>
+      <li>Supports inference through inheritance</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ltm---semantic-network">LTM - Semantic Network</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214748129.png" alt="image-20220909214748129" /></p>
+
+<p><br /></p>
+
+<h2 id="models-of-ltm---frames">Models of LTM - Frames</h2>
+
+<ul>
+  <li>Information organized in data structures</li>
+  <li>Slots in structure instantiated with values for instance of data</li>
+  <li>Type–subtype relationships</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214813922.png" alt="image-20220909214813922" /></p>
+
+<p><br /></p>
+
+<h2 id="models-of-ltm---scripts">Models of LTM - Scripts</h2>
+
+<ul>
+  <li>Model of stereotypical information required to interpret situation</li>
+  <li>Script has elements that can be instantiated with values for context</li>
+  <li>수의사를 만나러 가는 스크립트</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214834542.png" alt="image-20220909214834542" /></p>
+
+<p><br /></p>
+
+<h2 id="models-of-ltm---production-rules">Models of LTM - Production Rules</h2>
+
+<ul>
+  <li>Representation of procedural knowledge.</li>
+  <li>Condition/action rules
+    <ul>
+      <li>if condition is matched</li>
+      <li>then use rule to determine action</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909214906571.png" alt="image-20220909214906571" /></p>
+
+<p><br /></p>
+
+<h2 id="ltm---storage-of-information">LTM - Storage of information</h2>
+
+<ul>
+  <li>Rehearsal
+    <ul>
+      <li>Information moves from STM to LTM</li>
+    </ul>
+  </li>
+  <li>Total time hypothesis
+    <ul>
+      <li>Amount retained proportional to rehearsal time</li>
+    </ul>
+  </li>
+  <li>Distribution of practice effect
+    <ul>
+      <li>Optimized by spreading learning over time</li>
+    </ul>
+  </li>
+  <li>Structure, meaning and familiarity
+    <ul>
+      <li>Information easier to remember</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ltm---forgetting">LTM - Forgetting</h2>
+
+<ul>
+  <li>Decay
+    <ul>
+      <li>Information is lost gradually but very slowly</li>
+    </ul>
+  </li>
+  <li>Interference
+    <ul>
+      <li>New information replaces old: retroactive interference</li>
+      <li>Old may interfere with new: proactive inhibition</li>
+    </ul>
+  </li>
+  <li>So may not forget at all memory is selective …</li>
+  <li>Affected by emotion
+    <ul>
+      <li>Can subconsciously ‘choose’ to forget</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ltm---retrieval">LTM - Retrieval</h2>
+
+<ul>
+  <li>Recall
+    <ul>
+      <li>Information reproduced from memory can be assisted by cues, e.g. categories, imagery</li>
+    </ul>
+  </li>
+  <li>Recognition
+    <ul>
+      <li>Information gives knowledge that it has been seen before</li>
+      <li>Less complex than recall - information is <strong>cue</strong>*(recall과의 차이)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="types-of-human-memory-by-luke-mastin">Types of Human Memory: by Luke Mastin</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909215048207.png" alt="image-20220909215048207" /></p>
+
+:ET

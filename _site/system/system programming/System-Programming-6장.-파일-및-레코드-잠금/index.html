@@ -1,0 +1,2170 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[System Programming] 6장. 파일 및 레코드 잠금 | speardragon note</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[System Programming] 6장. 파일 및 레코드 잠금">
+<meta property="og:url" content="http://localhost:4000/system/system%20programming/System-Programming-6%EC%9E%A5.-%ED%8C%8C%EC%9D%BC-%EB%B0%8F-%EB%A0%88%EC%BD%94%EB%93%9C-%EC%9E%A0%EA%B8%88/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-04-13T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/system/system%20programming/System-Programming-6%EC%9E%A5.-%ED%8C%8C%EC%9D%BC-%EB%B0%8F-%EB%A0%88%EC%BD%94%EB%93%9C-%EC%9E%A0%EA%B8%88/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system" itemprop="item"><span itemprop="name">System</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system-programming" itemprop="item"><span itemprop="name">System programming</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[System Programming] 6장. 파일 및 레코드 잠금</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[System Programming] 6장. 파일 및 레코드 잠금">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-04-13T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/system/system%20programming/System-Programming-6%EC%9E%A5.-%ED%8C%8C%EC%9D%BC-%EB%B0%8F-%EB%A0%88%EC%BD%94%EB%93%9C-%EC%9E%A0%EA%B8%88/" class="u-url" itemprop="url">[System Programming] 6장. 파일 및 레코드 잠금
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<h1 id="6장-파일-및-레코드-잠금">6장. 파일 및 레코드 잠금</h1>
+
+<h2 id="프로세스간-통신ipc과-동기화synchronization">프로세스간 통신(IPC)과 동기화(Synchronization)</h2>
+
+<ul>
+  <li>Signal
+    <ul>
+      <li>Event notification</li>
+    </ul>
+  </li>
+  <li>Pipe
+    <ul>
+      <li>프로세스 간 데이터 전송용 FIFO</li>
+    </ul>
+  </li>
+  <li>Socket
+    <ul>
+      <li>프로토콜 스택을 이용한 데이터 전송</li>
+    </ul>
+  </li>
+  <li>File Locking
+    <ul>
+      <li>다른 프로세스에 의한 파일 읽기/갱신 방지 목적의 파일 잠금</li>
+    </ul>
+  </li>
+  <li>Message Queue
+    <ul>
+      <li>메시지 단위로 데이터 전달</li>
+    </ul>
+  </li>
+  <li>Semaphore
+    <ul>
+      <li><strong>동기화</strong></li>
+    </ul>
+  </li>
+  <li>Shared Memory
+    <ul>
+      <li>메모리 공유</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="파일-및-레코드-잠금의-원리">파일 및 레코드 잠금의 원리</h2>
+
+<ul>
+  <li>어떻게 프로세스 사이에 데이터를 주고받을 수 있을까? (두 개의 ms word 창이 띄워진 것을 생각해 보자.)
+    <ul>
+      <li>한 프로세스가 파일에 쓴 내용을 다른 프로세스가 읽음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163096953-0a604ef1-3e5a-41e5-b721-1409f2770e93.png" alt="image" /></p>
+
+<ul>
+  <li>문제점
+    <ul>
+      <li>한 프로세스가 파일 내용을 수정하는 동안에 다른 프로세스가 그 파일을 읽는 경우</li>
+      <li>두 개의 프로세스가 하나의 파일에 동시에 접근하여 데이터를 쓰는 경우</li>
+    </ul>
+  </li>
+</ul>
+
+<p>이 두 프로세스 간 indepenent하게 동작하도록 한다. 그치만 어떤 경우에는 정보 교환이 가능하게 해야 할 경우도 있을 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="잠금-lock">잠금 (lock)</h2>
+
+<ul>
+  <li>파일 혹은 레코드(파일의 일부 영역) 잠금</li>
+  <li>한 프로세스가 그 영역을 읽거나 수정할 때 다른 프로세스의 접근을 제한</li>
+  <li><strong>잠금된 영역에 한 번에 하나의 프로세스만 접근</strong></li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163097039-1b01059d-baaf-472b-8307-7dc6daa5040d.png" alt="image" /></p>
+
+<ul>
+  <li>특히 레코드에 쓰기(혹은 수정)를 할 경우 대상 레코드에 대해 잠금을 해서 다른 프로세스가 접근하지 못하게 해야 한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="잠금이-필요한-예">잠금이 필요한 예</h3>
+
+<ul>
+  <li>잠금이 없는 경우</li>
+</ul>
+
+<p>(1) 프로세스 A가 잔액을 읽는다: 잔액 100만원</p>
+
+<p>(2) 프로세스 B가 잔액을 읽는다: 잔액 100만원</p>
+
+<p>(3) 프로세스 B가 잔액에 입금액을 더하여 레코드를 수정한다: 잔액 120만원</p>
+
+<p>(4) 프로세스A가 잔액에 입금액을 더하여 레코드를 수정한다: 잔액 110만원</p>
+
+<ul>
+  <li>잠금 사용</li>
+</ul>
+
+<p>(1) 프로세스A가 레코드에 잠금을 하고 잔액을 읽는다: 잔액 100만원</p>
+
+<p>(2) 프로세스A가 잔액에 입금액을 더하여 레코드를 수정하고 잠금 을 푼다: 잔액 110만원</p>
+
+<p>(3) 프로세스 B가 레코드에 잠금을 하고 잔액을 읽는다: 잔액 110만원</p>
+
+<p>(4) 프로세스 B가 잔액에 입금액을 더하여 레코드를 수정하고 잠금 을 푼다: 잔액 130만원</p>
+
+<p><br /></p>
+
+<h2 id="잠금-구현">잠금 구현</h2>
+
+<ul>
+  <li>flock() 함수
+    <ul>
+      <li>전체 파일을 잠근다.</li>
+      <li>Concurrency 제약 (수정하고 있지 않은 부분까지 읽지 못하는 문제가 발생)
+        <ul>
+          <li>concurrency: 두 개 이상의 프로세스가 동시에 실행되는 것</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>잠금의 종류
+    <ul>
+      <li>공유 잠금</li>
+      <li>전용 잠금</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163097208-dfbdf14c-0b6c-46b8-857a-738911df71fa.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>fcntl() 함수
+    <ul>
+      <li>파일 및 레코드 잠금을 구현할 수 있다.</li>
+    </ul>
+  </li>
+  <li>잠금의 종류
+    <ul>
+      <li>F_RDLCK : 여러 프로세스가 공유 가능한 읽기 잠금 (공유잠금에 해당) <strong>(시험)</strong></li>
+      <li>F_WRLCK : 한 프로세스만 가질 수 있는 배타적인 쓰기 잠금(전용 잠금에 해당)</li>
+      <li>데이터를 읽기 전에 transaction은 읽기 잠금을 설정한다. 데이터를 쓰기 전에는 쓰기 잠금을 설정한다.</li>
+      <li>읽기 잠금은 쓰기 잠금과 충돌을 일으키며, 쓰기 잠금은 읽기 잠금 및 쓰기 잠금과 충돌을 일으킨다.</li>
+      <li>트랜잭션은 같은 데이터 항목에 대하여 다른 트랜잭션과 충돌을 일으키는 잠금이 없을 경우에만 잠금을 설정할 수 있다.
+        <ul>
+          <li>트랜잭션은 데이터 항목 x에서 쓰기 잠금이 없는 경우에만 x에서 읽기 잠금을 설정할 수 있다.</li>
+          <li>트랜잭션은 데이터 항목 x에서 읽기 잠금과 쓰기 잠금이 없는 경우에만 x에서 쓰기 잠금을 설정할 수 있다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163097415-da6a5348-fd69-4cd2-8c53-95d8401405d0.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="flock">flock()</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/file.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">flock</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">operation</span><span class="p">);</span>
+<span class="c1">//전체 파일을 잠근다. 성공하면 0, 실패하면 -1을 리턴</span>
+</code></pre></div></div>
+
+<ul>
+  <li>fd는 대상이 되는 파일 디스크립터</li>
+  <li>Operation
+    <ul>
+      <li>LOCK_SH : fd가 참조하는 파일에 공유 잠금 설정</li>
+      <li>LOCK_EX : fd가 참조하는 파일에 전용 잠금 설정</li>
+      <li>LOCK_UN : fd가 참조하는 파일의 잠금을 해제</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="fcntl">fcntl()</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="c1"> // primitive system data types</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="c1"> // symbolic constants</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="c1"> // file control</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">fcntl</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">flock</span> <span class="o">*</span><span class="n">lock</span><span class="p">);</span>
+<span class="c1">//cmd에 따라 잠금 검사 혹은 잠금 설정을 한다. 성공하면 0 실패하면 -1을 리턴</span>
+</code></pre></div></div>
+
+<ul>
+  <li>fd는 대상이 되는 파일 디스크립터</li>
+  <li>cmd
+    <ul>
+      <li>F_GETLK : 잠금 검사(fd가 현재 잠금이 걸려있는지의 여부)</li>
+      <li>F_SETLK : 잠금 설정 혹은 해제</li>
+      <li>F_SETLKW: 잠금 설정(블로킹 버전) 혹은 해제</li>
+    </ul>
+  </li>
+  <li>flock 구조체
+    <ul>
+      <li>잠금 종류, 프로세스 ID, 잠금 위치 등에 관한 정보를 담는 구조체</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="flock-구조체">flock 구조체</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">flock</span> <span class="p">{</span>
+ <span class="kt">short</span> <span class="n">l_type</span><span class="p">;</span> <span class="c1">// 잠금 종류: F_RDLCK, F_WRLCK, F_UNLCK</span>
+ <span class="kt">off_t</span> <span class="n">l_start</span><span class="p">;</span> <span class="c1">// 잠금 시작 위치: 바이트 오프셋</span>
+ <span class="kt">short</span> <span class="n">l_whence</span><span class="p">;</span> <span class="c1">// 기준 위치: SEEK_SET, SEEK_CUR, SEEK_END</span>
+ <span class="kt">off_t</span> <span class="n">l_len</span><span class="p">;</span> <span class="c1">// 잠금 길이: 바이트 수 (0이면 파일끝까지)</span>
+ <span class="n">pid_t</span> <span class="n">l_pid</span><span class="p">;</span> <span class="c1">// 프로세스 번호</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163097646-af89051b-1f59-4c07-af33-095f601410a4.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="cmd">cmd</h3>
+
+<ul>
+  <li>F_GETLK : 잠금 검사
+    <ul>
+      <li>Flock 구조체 lock에 지정된 잠금 설정이 가능한지 검사</li>
+      <li><strong>요청된 잠금 설정을 불가하게 하는 기존의 잠금이 있다면</strong> 기존의 잠금 정보가 lock 구조체에 담겨짐
+        <ul>
+          <li>‘기존의 담겨있는 잠금이 ~~이기 때문에 해당 잠금 설정을 불허한다.’</li>
+          <li>short l_type;   // 잠금 종류: F_RDLCK, F_WRLCK (- RDLCK 이나 WRLCK이 걸려있어 잠금 설정을 할 수 없다.)</li>
+        </ul>
+      </li>
+      <li><strong>기존의 잠금이 없다면</strong> l_type 이 F_UNLCK 으로 설정됨(잠금이 걸려있지 않다는 의미)</li>
+    </ul>
+  </li>
+  <li>F_SETLK : 잠금 설정
+    <ul>
+      <li>l_type이 <strong>F_RDLCK</strong> 혹은 <strong>F_WRLCK</strong>으로 설정됨 (잠금 요청)</li>
+      <li>요청 불허 시, 전역변수 errno가 EAGAIN으로 세팅</li>
+    </ul>
+  </li>
+  <li>F_SETLK : 잠금 설정
+    <ul>
+      <li>l_type이 F_UNLCK으로 설정됨 (잠금 해제 요청)</li>
+    </ul>
+  </li>
+  <li>F_SETLKW: 잠금 설정(블로킹 버전) 혹은 해제
+    <ul>
+      <li><mark>요청된 잠금 설정을 불가하게 하는 기존의 잠금이 있다면, 잠금이 가능할 때까지 블럭된 상태를 유지한다.</mark></li>
+      <li>즉 잠금에 성공할 때까지 함수가 호출된 곳으로 리턴하지 않다가 잠금이 되고 나서야 돌아가는 것을 말한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>(넌블럭킹은 승인이 거절되면 일단 리턴하고 그 이유만 보는 것이다.)</p>
+
+<p><br /></p>
+
+<h1 id="62-잠금-예제-및-잠금-함수">6.2 잠금 예제 및 잠금 함수</h1>
+
+<h2 id="잠금-예제">잠금 예제</h2>
+
+<ul>
+  <li>학생 레코드를 질의하는 프로그램: rdlock.c</li>
+  <li>학생 레코드를 수정하는 프로그램: wrlock.c</li>
+  <li>핵심 idea
+    <ul>
+      <li><strong>수정 프로그램에서 어떤 레코드를 수정하는 중에는</strong> 질의 프로그램에서 <strong>그 레코드를 읽을 수 없도록</strong> 레코드 <strong>잠금</strong>을 이용하여 제한한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="rdlockc-시험">rdlock.c <strong>(시험)</strong></h2>
+
+<ul>
+  <li>검색할 학번을 입력 받는다.</li>
+  <li>해당 레코드를 읽기 전에 그 레코드에 대해 읽기 잠금 (F_RDLCK)을 한다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">fcntl(fd, F_SETLKW, &amp;lock); </code></li>
+    </ul>
+  </li>
+  <li>해당 레코드 영역에 대해 잠금을 한 후에 레코드를 읽는다.</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"student.h"</span><span class="cp">
+</span>
+<span class="cm">/* 잠금을 이용한 학생 데이터베이스 질의 프로그램 */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">id</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="n">record</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">flock</span> <span class="n">lock</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법 : %s 파일</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDONLY</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">검색할 학생의 학번 입력:"</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_type</span> <span class="o">=</span> <span class="n">F_RDLCK</span><span class="p">;</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_whence</span> <span class="o">=</span> <span class="n">SEEK_SET</span><span class="p">;</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">id</span><span class="o">-</span><span class="n">START_ID</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">);</span> <span class="c1">//학생의 고유 위치</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETLKW</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lock</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* 읽기 잠금 (블락킹 모드)*/</span>
+            <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="n">id</span><span class="o">-</span><span class="n">START_ID</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_SET</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"이름:%s</span><span class="se">\t</span><span class="s"> 학번:%d</span><span class="se">\t</span><span class="s"> 점수:%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
+                   <span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"레코드 %d 없음</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">id</span><span class="p">);</span>
+
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_type</span> <span class="o">=</span> <span class="n">F_UNLCK</span><span class="p">;</span>
+        <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETLK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span> <span class="cm">/* 잠금 해제 (넌 블락킹;해제는 무조건 되기 때문에)*/</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">검색할 학생의 학번 입력:"</span><span class="p">);</span>
+    <span class="p">}</span> 
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>rdlock stdb1
+검색할 학생의 학번 입력: 140010
+<span class="nt">--</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="wrlockc">wrlock.c</h2>
+
+<ul>
+  <li>
+    <p>수정할 학번을 입력 받는다.</p>
+  </li>
+  <li>해당 레코드를 읽기 전에 그 레코드에 쓰기 잠금(F_WRLCK)을 한다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">fcntl(fd, F_SETLKW, &amp;lock); </code></li>
+    </ul>
+  </li>
+  <li>해당 레코드 영역에 대해 잠금을 한 후에 레코드를 수정한다.</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"student.h"</span><span class="cp">
+</span>
+<span class="cm">/* 잠금을 이용한 학생 데이터베이스 수정 프로그램 */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">id</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="n">record</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">flock</span> <span class="n">lock</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법 : %s 파일 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">수정할 학생의 학번 입력:"</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_type</span> <span class="o">=</span> <span class="n">F_WRLCK</span><span class="p">;</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_whence</span> <span class="o">=</span> <span class="n">SEEK_SET</span><span class="p">;</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">id</span><span class="o">-</span><span class="n">START_ID</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETLKW</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lock</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* 쓰기 잠금(blocking version) */</span>
+            <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+        <span class="p">}</span>
+		
+        <span class="c1">//읽기 전에 파일 잠금</span>
+        <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="p">(</span><span class="n">id</span><span class="o">-</span><span class="n">START_ID</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_SET</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"이름:%s</span><span class="se">\t</span><span class="s"> 학번:%d</span><span class="se">\t</span><span class="s"> 점수:%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                   <span class="n">record</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"레코드 %d 없음</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">id</span><span class="p">);</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"새로운 점수: "</span><span class="p">);</span>
+        <span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">);</span>
+        <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="o">-</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_CUR</span><span class="p">);</span><span class="c1">//학생 정보의 처음 위치로 돌아감</span>
+        <span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">));</span>
+
+        <span class="n">lock</span><span class="p">.</span><span class="n">l_type</span> <span class="o">=</span> <span class="n">F_UNLCK</span><span class="p">;</span>
+        <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETLK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span> <span class="cm">/* 잠금 해제(넌 블락킹) */</span> 
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">수정할 학생의 학번 입력:"</span><span class="p">);</span> 
+    <span class="p">}</span> 
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>wrlock test.db
+수정할 학생의 학번 입력 : 140010
+이름:홍길동 학번:140010 점수:90
+새로운 점수:
+<span class="nt">---</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="non-blocking-version">Non-blocking version</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETLK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lock</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">==</span> <span class="n">EAGAIN</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">try</span><span class="o">++</span> <span class="o">&lt;</span> <span class="n">MAX</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// MAX 번 만큼 실행 도전!</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%s다시 시도</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">arv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">//안되면 종료!</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">perror</span><span class="p">(</span><span class="n">agv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>blocking version은 쓰기 설정이 요구되었으면 반영될 때까지 무한정 기다리는데 반해서</p>
+
+<p>non-blocking version은 바로바로 return이 되기 때문에 errno 체크를 통해서 다시 한 번 설정할지 말지를 사용자가 결정하게 된다.</p>
+
+<p><br /></p>
+
+<h2 id="잠금-함수">잠금 함수</h2>
+
+<p>fcntl()함수는 구조체를 사용하고 있기 때문에 번거로운 단점이 있다. 그래서 lockf는 구조체를 사용하지 않고 len이라는 변수로 기준점은 항상 현재 파일 위치로 정해 놓고 len 길이만 조절하여 파일에 접근한다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">lockf</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">len</span><span class="p">);</span>
+<span class="cm">/*
+cmd에 따라 잠금 설정, 잠금 검사 혹은 잠금 해제 한다.
+잠금 영역은 현재 파일 위치부터 len 길이 만큼이다.
+len이 0이면 현재 파일 위치부터 파일끝까지임.
+성공하면 0 실패하면 –1을 반환한다. 
+*/</span>
+</code></pre></div></div>
+
+<ul>
+  <li>cmd
+    <ul>
+      <li>F_LOCK : 지정된 영역에 대해 잠금을 설정한다. 이미 잠금이 설정되어 있으면 잠금이 해제될 때까지 기다렸다가 잠금을 한다. :블락킹</li>
+      <li>F_TLOCK : 지정된 영역에 대해 잠금을 설정한다. 이미 잠금이 설정되어 있으면 기다리지 않고 오류(-1)를 반환한다.  : 넌블락킹</li>
+      <li>F_TEST : 지정된 영역이 잠금 되어 있는지 검사한다. 잠금이 설정되어 있지 않으면 0을 반환하고 잠금이 설정되어 있으면 –1을 반환한다.</li>
+      <li>F_ULOCK : 지정된 영역의 잠금을 해제한다.</li>
+    </ul>
+  </li>
+  <li>잠금과 해제가 분리되어 있음</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="wrlockfc">wrlockf.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"student.h"</span><span class="cp">
+</span>
+<span class="cm">/* 잠금 함수를 이용한 학생 데이터베이스 수정 프로그램 */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">id</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="n">record</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법 : %s file</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">수정할 학생의 학번 입력:"</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="p">(</span><span class="n">id</span><span class="o">-</span><span class="n">START_ID</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_SET</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">lockf</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_LOCK</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 쓰기 잠금; 블락킹</span>
+            <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">((</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"이름:%s</span><span class="se">\t</span><span class="s"> 학번:%d</span><span class="se">\t</span><span class="s"> 점수:%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                   <span class="n">record</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"레코드 %d 없음</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">id</span><span class="p">);</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"새로운 점수: "</span><span class="p">);</span>
+        <span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">);</span>
+        <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="o">-</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_CUR</span><span class="p">);</span>
+        <span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">));</span>
+
+        <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="p">(</span><span class="n">id</span><span class="o">-</span><span class="n">START_ID</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_SET</span><span class="p">);</span>
+        <span class="n">lockf</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_ULOCK</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">));</span> <span class="c1">// 잠금 해제</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">수정할 학생의 학번 입력:"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="63-권고-잠금과-강제-잠금">6.3 권고 잠금과 강제 잠금</h1>
+
+<h2 id="권고-잠금과-강제-잠금">권고 잠금과 강제 잠금</h2>
+
+<ul>
+  <li><strong>권고 잠금</strong> (advisory locking)
+    <ul>
+      <li>지금까지 살펴본 잠금: 잠금을 할 수 있지만 강제되지는 않음.</li>
+      <li>즉 이미 잠금 된 파일의 영역에 대해서도 잠금 규칙을 무시하고 읽거나 쓰는 것이 가능</li>
+      <li>모든 관련 프로세스들이 자발적으로 잠금 규칙을 준수해야만 이 기능이 가능한 것.</li>
+    </ul>
+  </li>
+  <li>**강제 잠금 **(mandatory locking)
+    <ul>
+      <li>이미 잠금 된 파일 영역에 대해 잠금 규칙을 무시하고 읽거나 쓰는 것이 불가능</li>
+      <li><strong>커널이</strong> 잠금 규칙을 <strong>강제</strong>하므로 시스템의 부하가 증가</li>
+      <li>System V 계열에서 제공됨.</li>
+      <li>Linux의 경우 파일 시스템을 마운트할 때 <code class="language-plaintext highlighter-rouge">-o mand</code> 옵션을 사용 해서 마운트 해야 제공됨</li>
+    </ul>
+  </li>
+</ul>
+
+<p>default는 권고 잠금이다.(강제 잠금을 원하면 위와 같이 옵션을 명시)</p>
+
+<p><br /></p>
+
+<h2 id="강제-잠금">강제 잠금</h2>
+
+<ul>
+  <li>강제 잠금을 하는 방법
+    <ul>
+      <li>해당 파일에 대해 set-<strong>group</strong>-ID 비트를 설정하고</li>
+      <li><strong>group</strong>-execute 비트를 끄면 된다 (3번째 ‘x’ 위치에 S가 들어간다. )</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">chmod </span>2644 mandatory.txt <span class="o">(</span>set-group-ID 비트 설정<span class="o">)</span>  <span class="c"># group은 4: read만 가능하도록 하였음</span>
+<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> mandatory.txt 
+<span class="nt">-rw-r-Sr--</span> 1 chang faculty 160 1월 31일 11:48 stdb1
+</code></pre></div></div>
+
+<ul>
+  <li>강제 잠금 규칙</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163098865-5d3c7ed8-4c2c-42de-b18e-ac0a0609d30c.png" alt="image" /></p>
+
+<p>넌 블락킹은 바로 리턴되고 오류 넘버를 리턴</p>
+
+<p>대상 영역의 현재 잠금 상태가 읽기 잠금 일 때 넌 블로킹이든 블로킹이든 읽기 잠금 요청은 허락된다.</p>
+
+<p><br /></p>
+
+<h2 id="강제-잠금을-하는-방법">강제 잠금을 하는 방법</h2>
+
+<ul>
+  <li>special bits
+    <ul>
+      <li>#define S_ISUID 0004000 /* set uid on execution */</li>
+      <li>#define <span style="color:red">S_ISGID 0002000</span> /* set group id on execution */</li>
+      <li>#define S_ISVTX 0001000 /* save text(sticky bit) */</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163098960-65984e6d-4181-4971-9db5-ea4e45b09d68.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="file_lockc">file_lock.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="k">struct</span> <span class="n">flock</span> <span class="n">lock</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">c</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법: %s 파일</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+                <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>    
+    <span class="p">}</span>
+    <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_WRONLY</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"파일 열기 실패 </span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">lock</span><span class="p">.</span><span class="n">l_type</span> <span class="o">=</span> <span class="n">F_WRLCK</span><span class="p">;</span>
+    <span class="n">lock</span><span class="p">.</span><span class="n">l_start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">lock</span><span class="p">.</span><span class="n">l_whence</span> <span class="o">=</span> <span class="n">SEEK_SET</span><span class="p">;</span>
+    <span class="n">lock</span><span class="p">.</span><span class="n">l_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//파일 전체</span>
+    <span class="n">lock</span><span class="p">.</span><span class="n">l_pid</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETLKW</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 파일 잠금 성공하면</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="실행">실행</h2>
+
+<ul>
+  <li>강제 잠금 설정</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>file_lock mandatory.txt  <span class="c">#강제 잠금 설정이 되어 있기 때문에 블락 되어 있음</span>
+ - 	
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="o">&gt;&gt;</span> mandatory.txt
+- 							<span class="c"># 잠금 해제 때 까지 블록</span>
+							<span class="c"># ls 명령어가 종료되지 않음</span>
+</code></pre></div></div>
+
+<p>강제 잠금을 이미 한 상태에서 쓰기 잠금을 요청하기 때문에 프롬프트가 나오지 않는 것이다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>강제 잠금 미설정 (권고 잠금)</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>file_lock advisory.txt
+<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="o">&gt;&gt;</span> advisory.txt
+<span class="nv">$ </span>						<span class="c"># 잠금 여부에 관계 없이 ls 명령어 결과가 advisory.txt에 저장됨</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="핵심-개념">핵심 개념</h2>
+
+<ul>
+  <li>한 레코드 혹은 파일에 대한
+    <ul>
+      <li>읽기 잠금은 여러 프로세스가 공유할 수 있지만</li>
+      <li>쓰기 잠금은 공유한 수 없으며 한 프로세스만 가질 수 있다.</li>
+    </ul>
+  </li>
+  <li>fcntl() 시스템 호출을 이용하여 지정된 영역에 대해 잠금 검사, 잠금 설정 혹은 잠금 해제를 할 수 있다.</li>
+  <li>lockf() 함수를 이용하여 지정된 영역에 대해 잠금 검사, 잠금 설정 혹은 잠금 해제를 할 수 있다
+    <ul>
+      <li>두 개가 다른 점은 fcntl은 lock 정보를 담는 구조체로 파일 잠금을 하는 것이지만 lockf는 len이라는 파일의 길이로 파일 잠금을 어디를 해야할지는 정하는 것이 다르다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#file" class="page__taxonomy-item p-category" rel="tag">File</a><span class="sep">, </span>
+    
+      <a href="/tags/#locking" class="page__taxonomy-item p-category" rel="tag">Locking</a><span class="sep">, </span>
+    
+      <a href="/tags/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#system" class="page__taxonomy-item p-category" rel="tag">System</a><span class="sep">, </span>
+    
+      <a href="/categories/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-04-13T00:00:00+09:00">2022-04-13</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BSystem+Programming%5D+6%EC%9E%A5.+%ED%8C%8C%EC%9D%BC+%EB%B0%8F+%EB%A0%88%EC%BD%94%EB%93%9C+%EC%9E%A0%EA%B8%88%20http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-6%25EC%259E%25A5.-%25ED%258C%258C%25EC%259D%25BC-%25EB%25B0%258F-%25EB%25A0%2588%25EC%25BD%2594%25EB%2593%259C-%25EC%259E%25A0%25EA%25B8%2588%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-6%25EC%259E%25A5.-%25ED%258C%258C%25EC%259D%25BC-%25EB%25B0%258F-%25EB%25A0%2588%25EC%25BD%2594%25EB%2593%259C-%25EC%259E%25A0%25EA%25B8%2588%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-6%25EC%259E%25A5.-%25ED%258C%258C%25EC%259D%25BC-%25EB%25B0%258F-%25EB%25A0%2588%25EC%25BD%2594%25EB%2593%259C-%25EC%259E%25A0%25EA%25B8%2588%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-Single-Cycle-MIPS-microarchitecture-control/" class="pagination--pager" title="[Computer Architecture] Single Cycle MIPS microarchitecture - control
+">이전</a>
+    
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-Multi-cylcle-MIPS/" class="pagination--pager" title="[Computer Architecture] Multi-cylcle MIPS
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/system/system%20programming/System-Programming-6%EC%9E%A5.-%ED%8C%8C%EC%9D%BC-%EB%B0%8F-%EB%A0%88%EC%BD%94%EB%93%9C-%EC%9E%A0%EA%B8%88/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/system/system%20programming/[System Programming] 6장. 파일 및 레코드 잠금"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

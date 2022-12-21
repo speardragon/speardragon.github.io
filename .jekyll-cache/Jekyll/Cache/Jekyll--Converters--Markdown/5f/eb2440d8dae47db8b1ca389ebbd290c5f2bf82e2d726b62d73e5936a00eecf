@@ -1,0 +1,1109 @@
+I"�<p><br /></p>
+
+<h2 id="set-user-id-실행파일-review">set-user-id 실행파일 (Review)</h2>
+
+<ul>
+  <li>특별한 실행권한 set-user-id(set user ID upon execution)
+    <ul>
+      <li>set-user-id 설정된 실행파일을 실행하면</li>
+      <li>이 프로세스의 유효 사용자 ID는 그 실행파일의 소유자로 바뀜.
+        <ul>
+          <li>프로세스의 실제 사용자 ID (real user ID)는 그 프로세스를 실행한 원래 사용자의 사용자 ID로 설정된다.</li>
+          <li>예를 들어 chang이라는 사용자 ID로 로그인하여 어떤 프로그램을 실행 시키면 그 프로세스의 실제 사용자 ID는 chang이 된다.
+            <ul>
+              <li>effective ID는 chang이 아니라 그 파일의 소유자</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>이 프로세스는 실행되는 동안 그 파일의 소유자 권한을 갖게 됨.</li>
+    </ul>
+  </li>
+  <li>예 : /usr/bin/passwd 명령어 실행 파일
+    <ul>
+      <li>set-user-id 실행권한이 설정된 실행파일이며 소유자는 root</li>
+      <li>일반 사용자가 쉘에서 이 파일을 실행하게 되면, 이 프로세스의 유효 사용자 ID는 root가 됨.</li>
+      <li>/etc/passwd처럼 root만 수정할 수 있는 파일의 접근 및 수정 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="set-user-id-and-set-group-id-review">Set-user-ID and set-group-ID (Review)</h2>
+
+<ul>
+  <li>passwd program를 이용하여 password를 바꿀 경우
+    <ul>
+      <li>passwd program을 실행하는 도중 잠정적으로 root의 권한을 부여받음.
+        <ul>
+          <li>Real user ID of passwd program: user 새로운 프로세스 생성 시 부모의 사용자 ID와 그룹 ID를 그대로 물려 받음</li>
+          <li>Effective user ID of passwd program: root</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168040951-edbf54bf-3a4a-4c73-bede-202150cce55c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h1 id="91-프로세스-생성">9.1 프로세스 생성</h1>
+
+<h2 id="프로세스-생성">프로세스 생성</h2>
+
+<ul>
+  <li>fork() 시스템 호출
+    <ul>
+      <li>부모 프로세스를 똑같이 복제하여 새로운 자식 프로세스를 생성</li>
+      <li>자기복제(自己複製)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="n">pid_t</span> <span class="nf">fork</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>새로운 자식 프로세스를 생성한다.</li>
+  <li>It is called once but returns twice.</li>
+  <li>자식 프로세스에게는 0을 리턴하고 부모 프로세스에게는 자식 프로 세스 ID를 리턴한다</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>The child is a copy of parent.</p>
+
+    <ul>
+      <li>
+        <p>Child gets a copy of the parent‘s data, heap, and stack.</p>
+      </li>
+      <li>Parent and child often share the text segment.
+        <ul>
+          <li>실행 중에 코드는 수정되지 않기 때문에</li>
+        </ul>
+      </li>
+      <li>data, heap, stack은 공유하지 않는다.
+        <ul>
+          <li>global 변수는 data 영역이기 때문에 이를 공유하지 않는 것</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168041237-acd87a67-ab92-40f4-839f-7fc8a6819b9f.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>부모 프로세스의 pid에는 자식 프로세스의 pid인 15066이 들어가고 자식 프로세스의 pid에는 0의 값이 들어가게 된다.</p>
+  </li>
+  <li>
+    <p>PC값도 부모 프로세스가 갖던 값과 동일한 값을 갖게 된다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스-주소공간">프로세스 주소공간</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168041327-27db91ef-096d-4a90-9973-1afe1776f776.png" alt="image" /></p>
+
+<p>변수는 선언과 동시에 초기화를 보통 하는데 그렇지 않은 부분도 있다. -&gt; bss: generally 0으로 초기화</p>
+
+<p>heap 구역은 동적 변수가 들어가는 곳</p>
+
+<p>정적 변수는 컴파일 될 때 생성된다.</p>
+
+<p><br /></p>
+
+<h2 id="프로세스-생성-1">프로세스 생성</h2>
+
+<ul>
+  <li>fork()는 한 번 호출되지만 두 번 리턴한다.
+    <ul>
+      <li>자식 프로세스에게는 0을 리턴하고</li>
+      <li>부모 프로세스에게는 자식 프로세스 ID를 리턴한다.</li>
+      <li>부모 프로세스와 자식 프로세스는 병행적(concurrently)으로 각각 fork() 이후 문장의 실행을 계속한다.</li>
+      <li>즉, thread control이 두 개 이상이 된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fork1c">fork1.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cm">/* 자식 프로세스를 생성한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">pid</span><span class="p">;</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 프로세스 시작 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+     <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 프로세스 : 리턴값 %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">pid</span><span class="p">);</span> <span class="c1">//두 번 실행</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>fork1
+<span class="o">[</span>15065] 프로세스 시작
+<span class="o">[</span>15065] 프로세스 : 반환값 15066
+<span class="o">[</span>15066] 프로세스 : 반환값 0
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="부모-프로세스와-자식-프로세스-구분">부모 프로세스와 자식 프로세스 구분</h2>
+
+<ul>
+  <li>fork() 호출 후에 리턴값이 다르므로 이 리턴값을 이용하여</li>
+  <li>부모 프로세스와 자식 프로세스를 구별하고</li>
+  <li>서로 다른 일을 하도록 할 수 있다.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pid = fork();
+if ( pid == 0 )
+{ 자식 프로세스의 실행 코드 }
+else
+{ 부모 프로세스의 실행 코드 }
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="fork2c">fork2.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cm">/* 부모 프로세스가 자식 프로세스를 생성하고 서로 다른 메시지를 프린트 */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> 
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">pid</span><span class="p">;</span> 
+     <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 자식 프로세스</span>
+         <span class="n">printf</span><span class="p">(</span><span class="s">"[Child] : Hello, world pid=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+     <span class="p">}</span>
+     <span class="k">else</span> <span class="p">{</span> <span class="c1">// 부모 프로세스</span>
+         <span class="n">printf</span><span class="p">(</span><span class="s">"[Parent] : Hello, world pid=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>fork2
+<span class="o">[</span>Parent] : Hello, world <span class="nv">pid</span><span class="o">=</span>15799
+<span class="o">[</span>Child] : Hello, world <span class="nv">pid</span><span class="o">=</span>15800
+</code></pre></div></div>
+
+<p>parent와 chile의 실행 순서는 중요하지 않음</p>
+
+<p><br /></p>
+
+<h2 id="fork3c-두-개의-자식-프로세스-생성">fork3.c: 두 개의 자식 프로세스 생성</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cm">/* 부모 프로세스가 두 개의 자식 프로세스를 생성한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span> 
+    <span class="kt">int</span> <span class="n">pid1</span><span class="p">,</span> <span class="n">pid2</span><span class="p">;</span>
+    <span class="n">pid1</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[Child 1] : Hello, world ! pid=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="c1">//child process 종료</span>
+    <span class="p">}</span>
+    <span class="n">pid2</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[Child 2] : Hello, world ! pid=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>fork3
+<span class="o">[</span>Child1] : Hello, world! <span class="nv">pid</span><span class="o">=</span>15741
+<span class="o">[</span>Child2] : Hello, world! <span class="nv">pid</span><span class="o">=</span>15742
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="fork">fork()</h2>
+
+<p>13페이지</p>
+
+<ul>
+  <li>Example</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="n">glob</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span> <span class="cm">/* external variable in initialized data */</span>
+<span class="kt">char</span> <span class="n">buf</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"a write to stdout</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">var</span><span class="p">;</span> <span class="cm">/* automatic variable on the stack */</span> <span class="c1">//uninitialized data</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    
+    <span class="n">var</span> <span class="o">=</span> <span class="mi">88</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">write</span><span class="p">(</span><span class="n">STDOUT_FILENO</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">err_sys</span><span class="p">(</span><span class="s">"write error"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"before fork</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span> <span class="cm">/* we don't flush stdout */</span>
+    
+    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">err_sys</span><span class="p">(</span><span class="s">"fork error"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* child */</span>
+        <span class="n">glob</span><span class="o">++</span><span class="p">;</span> <span class="cm">/* modify variables */</span>
+        <span class="n">var</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="cm">/* parent */</span>
+    <span class="p">}</span>
+    
+    <span class="n">printf</span><span class="p">(</span><span class="s">"pid = %d, glob = %d, var = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">glob</span><span class="p">,</span> <span class="n">var</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>실행</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+a write to stdout
+before fork
+pid <span class="o">=</span> 430, glob <span class="o">=</span> 7, var <span class="o">=</span> 89
+pid <span class="o">=</span> 429, glob <span class="o">=</span> 6, var <span class="o">=</span> 88
+<span class="nv">$ </span>./a.out <span class="o">&gt;</span> temp.out
+<span class="nv">$ </span><span class="nb">cat </span>temp.out
+a write to stdout
+before fork
+pid <span class="o">=</span> 432, glob <span class="o">=</span> 7, var <span class="o">=</span> 89
+before fork
+pid <span class="o">=</span> 431, glob <span class="o">=</span> 6, var <span class="o">=</span> 88
+<span class="err">$</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>We never know if the child starts executing before the parent or vice versa. - It depends on the process scheduling algorithm.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h2 id="fork-1">fork()</h2>
+
+<ul>
+  <li>Information <strong>shared</strong> by child and parent.
+    <ul>
+      <li>real-uid(gid), effective-uid(gid)</li>
+      <li>controlling terminal</li>
+      <li>current working directory, root directory</li>
+      <li>signal handlers : 이벤트 발생 통지 수단</li>
+      <li>environment</li>
+      <li>resource limits</li>
+    </ul>
+  </li>
+  <li><strong>differences</strong> between child and parent.
+    <ul>
+      <li>the return value from fork.</li>
+      <li>PID and PPID</li>
+      <li>child‘s resource utilizations are set to 0.</li>
+      <li>pending signals - signal handler는 공유되지만 signal 그 자체는 공유 x</li>
+    </ul>
+  </li>
+  <li>Two main reasons for fork to fail
+    <ul>
+      <li>if there are already too many processes in the system.</li>
+      <li>if the total number of processes for this real user ID exceeds the system‘s limit.</li>
+    </ul>
+  </li>
+  <li>Two uses for fork (왜 fork를 하는가?)
+    <ul>
+      <li>A process wants to duplicate itself.
+        <ul>
+          <li>Parent and child can each execute different sections of code at the same time.</li>
+          <li>Common for <strong>network servers.</strong></li>
+        </ul>
+      </li>
+      <li>A process wants to execute a different program.
+        <ul>
+          <li>Common for shells.</li>
+          <li>Child does exec() right after it returns from fork().</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="쉘의-구조-revisit">쉘의 구조 (revisit)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">While</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">display</span> <span class="n">prompt</span>
+    <span class="n">read</span> <span class="n">command</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="c1">// Get command or execution file</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">then</span> <span class="p">{</span> <span class="c1">// Execute command or execution file</span>
+		<span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span> <span class="c1">// fork a child, wait for a child to finish</span>
+		<span class="n">exit</span><span class="p">()</span>
+	<span class="p">}</span>
+	<span class="k">else</span>
+		<span class="n">execve</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">parmas</span><span class="p">)</span> <span class="c1">// 자식 프로세스</span>
+	<span class="p">}</span> <span class="c1">// 입력된 명령어를 실행</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span>
+<span class="nb">.</span> .. /etc
+/home /usr /dev
+<span class="nv">$ </span>a.out
+….
+<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>while(true){
+	display prompt
+	read command(command, params)
+	if (fork()!=0) then {
+		wait(&amp;status);
+		exit()
+	}
+	else
+		exec(command, params)
+}
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="sigchld">SIGCHLD</h2>
+
+<ul>
+  <li>When a process terminates, the kernel sends the signal SIGCHLD to the parent.
+    <ul>
+      <li>By default, this signal is ignored, and no action is taken by the parent.</li>
+    </ul>
+  </li>
+  <li>Processes can elect to handle this signal, however, via the signal( ) or sigaction( ) system calls</li>
+  <li>The SIGCHLD signal may be generated and dispatched at any time, as a child‘s termination is <strong>asynchronous</strong> with respect to its parent.
+    <ul>
+      <li>따라서 발생 시점 예측 불가.</li>
+    </ul>
+  </li>
+  <li>But often, the parent wants to learn more about its child‘s termination, or even explicitly wait for the event‘s occurrence.</li>
+  <li>This is possible with the <strong>wait</strong> system calls</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="wait-and-waitpid">wait() and waitpid()</h2>
+
+<ul>
+  <li>A process that calls wait() or waitpid()
+    <ul>
+      <li>Block, if all of its children are still running.</li>
+      <li>Return immediately if a child has terminated.</li>
+      <li>Return immediately with an error, if it doesn’t have any child processes.(부모 프로세스가 child 프로세스를 생성하지 않았을 때)
+        <ul>
+          <li>fork를 하지 않고 wait -&gt; 즉시 return</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168042761-9c5f5129-89a4-41d8-9aa4-eca3704d3c21.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="프로세스-기다리기-wait">프로세스 기다리기: wait()</h2>
+
+<ul>
+  <li>자식 프로세스 중의 하나가 끝날 때까지 기다린다.
+    <ul>
+      <li>끝난 자식 프로세스의 종료 코드가 status에 저장되며</li>
+      <li>끝난 자식 프로세스의 번호를 리턴한다. 오류시 -1 리턴</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span><span class="n">pid_t</span> <span class="nf">wait</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">status</span><span class="p">);</span>
+<span class="n">pid_t</span> <span class="nf">waitpid</span><span class="p">(</span><span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">statloc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">options</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168042879-498d3d6d-22ac-447b-b392-156d249516ff.png" alt="image" /></p>
+
+<p>파란색 선은 block하고 있다는 뜻</p>
+
+<p><br /></p>
+
+<h2 id="wait">wait()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span>
+<span class="n">pid_t</span> <span class="nf">wait</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">statloc</span><span class="p">);</span>
+ 		<span class="n">Both</span> <span class="k">return</span><span class="o">:</span> <span class="n">process</span> <span class="n">ID</span> <span class="k">if</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="p">(</span><span class="n">see</span> <span class="n">later</span><span class="p">),</span> <span class="n">or</span> <span class="o">-</span><span class="mi">1</span> <span class="n">on</span> <span class="n">error</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>wait()
+    <ul>
+      <li>If a child has already terminated and is a zombie, wait <strong>returns immediately</strong> with that child’s status.</li>
+      <li>Otherwise, it blocks the caller until a child terminates.</li>
+      <li>If the caller blocks and has multiple children, wait returns when one terminates.</li>
+    </ul>
+  </li>
+  <li>statloc argument
+    <ul>
+      <li>Pointer to integer</li>
+      <li>Store termination <strong>status</strong> (in case of normal termination) in the location pointed to by staloc.
+        <ul>
+          <li>And <strong>signal number</strong> (abnormal termination)
+            <ul>
+              <li>왜 비정상 종료가 되었는지를 나타내는 정보</li>
+            </ul>
+          </li>
+          <li>And if core file was created</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="forkwaitc">forkwait.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="c1"> …</span><span class="cp">
+</span><span class="cm">/* 부모 프로세스가 자식 프로세스를 생성하고 끝나기를 기다린다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">pid</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">status</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 부모 프로세스 시작 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(</span> <span class="p">));</span> 
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스 시작 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(</span> <span class="p">));</span> 
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">child</span> <span class="o">=</span> <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span> <span class="c1">// 자식 프로세스가 끝나기를 기다린다.</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스 %d 종료 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">child</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\t</span><span class="s">종료 코드 %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">status</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">);</span> <span class="c1">//종료코드값은 4바이트 중 3번째 바이트임 -&gt; 8 shift</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>forkwait
+<span class="o">[</span>15943] 부모 프로세스 시작
+<span class="o">[</span>15944] 자식 프로세스 시작
+<span class="o">[</span>15943] 자식 프로세스 15944 종료
+종료코드 1
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="macros-for-interpreting-the-termination-status">macros for interpreting the termination status</h2>
+
+<p>termination status를 해석하기 위한 매크로 함수 - WIF</p>
+
+<ul>
+  <li>If not NULL, the status pointer contains additional information about the child (how the process terminated)</li>
+  <li>#include  &lt;sys/wait.h&gt;</li>
+  <li>WIFEXITED (status);
+    <ul>
+      <li>returns true if the child process terminated <strong>normally</strong></li>
+      <li>정상적으로 종료한 경우에 참(<strong>TRUE</strong>) 값을 리턴</li>
+      <li>WEXITSATUS(status)
+        <ul>
+          <li>WIFEXITED()가 True이면 exit 함수의 인자에서 하위 8 비트 값을 리턴</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>WIFSIGNALED (status);
+    <ul>
+      <li>returns <strong>true</strong> if a signal that it <strong>did not catch</strong> caused the child process‘ termination (abnormal)</li>
+      <li>WTERMSIG(status) : if WIFSIGNALED is True, <strong>fetch the signal numbe</strong>r that caused the termination.</li>
+    </ul>
+  </li>
+  <li>WIFSTOPPED (status);
+    <ul>
+      <li>Child 프로세스가 실행이 <strong>일시 중단</strong>된 경우에 참 값을 리턴</li>
+      <li>WSTOPSIG(status)
+        <ul>
+          <li>if WIFSTOPPED is True, Child 프로세스의 실행을 일시 중단시킨 시그널 번호를 리턴</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>WIFCONTINUED (status);
+    <ul>
+      <li>return true if the process was continued, and is currently being traced via the ptrace( ) system call\</li>
+      <li>중요 x</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>A process that calls wait or waitpid can
+    <ul>
+      <li><strong>block</strong> (if all of its children are <strong>still running</strong>), or
+        <ul>
+          <li>wait() is called at any random point in time</li>
+        </ul>
+      </li>
+      <li><strong>return</strong> immediately with the termination status of a child, (SIGCHLD-asynchronous notification) or
+        <ul>
+          <li>예를 들어 zombie process 같은 경우</li>
+        </ul>
+      </li>
+      <li>return immediately with an error (<strong>if it doesn‘t have any child processes</strong>) errno value:</li>
+      <li><strong>ECHILD</strong> - The calling process does not have any children.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="wait-macros-for-interpreting-the-termination-status">wait(): macros for interpreting the termination status</h2>
+
+<ul>
+  <li>Example</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">pr_exit</span><span class="p">(</span><span class="kt">int</span> <span class="n">status</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">WIFEXITED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="c1">//case 1</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"normal termination, exit status = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WEXITSTATUS</span><span class="p">(</span><span class="n">status</span><span class="p">));</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">WIFSIGNALED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="c1">// case 2</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"abnormal termination, signal number = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WTERMSIG</span><span class="p">(</span><span class="n">status</span><span class="p">));</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">WIFSTOPPED</span><span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="c1">// case 3</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"child stopped, signal number = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WSTOPSIG</span><span class="p">(</span><span class="n">status</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"fork error"</span><span class="p">);</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/* child */</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pid</span><span class="p">)</span> <span class="cm">/* wait for child */</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"wait error"</span><span class="p">);</span>
+    <span class="n">pr_exit</span><span class="p">(</span><span class="n">status</span><span class="p">);</span> <span class="cm">/* and print its status */</span> <span class="c1">// case 1 실행</span>
+    
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"fork error"</span><span class="p">);</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/* child */</span>
+        <span class="n">abort</span><span class="p">();</span> <span class="cm">/* generates SIGABRT */</span> <span class="c1">// 비정상 종료</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pid</span><span class="p">)</span> <span class="cm">/* wait for child */</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"wait error"</span><span class="p">);</span>
+    <span class="n">pr_exit</span><span class="p">(</span><span class="n">status</span><span class="p">);</span> <span class="cm">/* and print its status */</span> <span class="c1">//case 2 실행</span>
+    
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"fork error"</span><span class="p">);</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="cm">/* child */</span>
+        <span class="n">status</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* divide by 0 generates SIGFPE */</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pid</span><span class="p">)</span> <span class="cm">/* wait for child */</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"wait error"</span><span class="p">);</span>
+    <span class="n">pr_exit</span><span class="p">(</span><span class="n">status</span><span class="p">);</span> <span class="cm">/* and print its status */</span> <span class="c1">// case2 실행</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>실행</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+normal termination, <span class="nb">exit </span>status <span class="o">=</span> 7
+abnormal termination, signal number <span class="o">=</span> 6
+abnormal termination, signal number <span class="o">=</span> 8
+<span class="err">$</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Each signal number is defined in &lt;signal.h&gt;
+SIGABRT: 6
+SIGFPE: 8
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="waitc">wait.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">void</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fork</span> <span class="p">(</span> <span class="p">))</span> <span class="c1">//child</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">wait</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span> <span class="c1">//parent</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">//error</span>
+        <span class="n">perror</span> <span class="p">(</span><span class="s">"wait"</span><span class="p">);</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">"pid=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">WIFEXITED</span> <span class="p">(</span><span class="n">status</span><span class="p">))</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s">"Normal termination with exit status=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WEXITSTATUS</span> <span class="p">(</span><span class="n">status</span><span class="p">));</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">WIFSIGNALED</span> <span class="p">(</span><span class="n">status</span><span class="p">))</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s">"Killed by signal=%d%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WTERMSIG</span> <span class="p">(</span><span class="n">status</span><span class="p">),</span> <span class="n">WCOREDUMP</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">?</span> <span class="s">"(dumped core)"</span> <span class="o">:</span> <span class="s">""</span><span class="p">);</span>
+    
+	<span class="k">if</span> <span class="p">(</span><span class="n">WIFSTOPPED</span> <span class="p">(</span><span class="n">status</span><span class="p">))</span>
+		<span class="n">printf</span> <span class="p">(</span><span class="s">"Stopped by signal=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WSTOPSIG</span> <span class="p">(</span><span class="n">status</span><span class="p">));</span>
+    
+	<span class="k">if</span> <span class="p">(</span><span class="n">WIFCONTINUED</span> <span class="p">(</span><span class="n">status</span><span class="p">))</span>
+		<span class="n">printf</span> <span class="p">(</span><span class="s">"Continued</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./wait
+<span class="nv">pid</span><span class="o">=</span>8529
+Normal termination with <span class="nb">exit </span><span class="nv">status</span><span class="o">=</span>1
+</code></pre></div></div>
+
+<p><br /></p>
+
+<ul>
+  <li>If, instead of having the child return, we have it call abort( ), which sends itself the SIGABRT signal, we will instead see something resembling the following:</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./wait
+<span class="nv">pid</span><span class="o">=</span>8678
+Killed by <span class="nv">signal</span><span class="o">=</span>6
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="waiting-for-a-specific-process">Waiting for a Specific Process</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span><span class="n">pid_t</span> <span class="nf">waitpid</span> <span class="p">(</span><span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">status</span><span class="p">,</span> <span class="kt">int</span> <span class="n">options</span><span class="p">);</span>
+	<span class="k">return</span><span class="o">:</span> <span class="n">process</span> <span class="n">ID</span> <span class="k">if</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="p">(</span><span class="n">see</span> <span class="n">later</span><span class="p">),</span> <span class="n">or</span> <span class="o">-</span><span class="mi">1</span> <span class="n">on</span> <span class="n">error</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Why waitpid() is required?
+    <ul>
+      <li>a process has multiple children, and does not wish to wait for all of them, but <strong>rather for a specific child process</strong></li>
+      <li>wait() returns on termination of any of the children.</li>
+    </ul>
+  </li>
+  <li>One solution would be to make multiple invocations of wait( ), each time noting the return value
+    <ul>
+      <li>wait() 여러번 호출하면서 자기가 생성한 것이 맞는지 확인 -&gt; 번거로움</li>
+    </ul>
+  </li>
+  <li>If you know the pid of the process you want to wait for, you can use the waitpid( ) system call</li>
+  <li>The waitpid( ) call is a more <strong>powerful</strong> version of wait( ). Its additional parameters allow for fine-tuning
+    <ul>
+      <li>Provides some controls with <strong>options</strong> argument</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="pid_t-waitpidpid_t-pid-int-statloc-int-options">pid_t waitpid(pid_t pid, int *statloc, int options);</h2>
+
+<ul>
+  <li>The pid parameter specifies exactly which process or processes to wait for.</li>
+  <li>pid == -1
+    <ul>
+      <li>Wait for <strong>any child process</strong>. This is the same behavior as wait( ).</li>
+    </ul>
+  </li>
+  <li>pid &gt; 0
+    <ul>
+      <li>Wait for any child process whose pid is exactly the value provided. For example, passing 500 waits for the child process with pid 500</li>
+      <li>pid가 500인 프로세스가 종료되었을 때만 깨워달라</li>
+    </ul>
+  </li>
+  <li>pid == 0
+    <ul>
+      <li>Wait for any child process that belongs to the same process group as the calling process.</li>
+      <li>나하고 같은 process group인 경우이기만 하면 어떤 child process든지 종료되면 깨워달라</li>
+    </ul>
+  </li>
+  <li>pid &lt; -1
+    <ul>
+      <li>Wait for any child process whose process group ID is equal to the <strong>absolute value</strong> of this value.
+        <ul>
+          <li>For example, passing -500 waits for any process in process group 500.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="waitpid-option-parameter">waitpid option parameter</h3>
+
+<ul>
+  <li>The status parameter works identically to the sole parameter to wait( )</li>
+  <li>option - &gt; <strong>부모 프로세스의 대기 방법</strong></li>
+  <li><strong>WNOHANG</strong>
+    <ul>
+      <li><strong>Do not block</strong>, but <strong>return</strong> immediately <strong>if no matching child process has already terminated</strong> (or stopped or continued)
+        <ul>
+          <li>if a child specified by pid is not terminated.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>WUNTRACED</strong>
+    <ul>
+      <li>Do not block if a child specified by pid has stopped.</li>
+      <li>If set, WIFSTOPPED is set, even if the calling process is not tracing the child process.</li>
+      <li>실행을 중단한 자식 프로세스의 상태값을 리턴</li>
+      <li>This flag allows for the implementation of more general job control, as in a shell.</li>
+    </ul>
+  </li>
+  <li>WCONTINUED
+    <ul>
+      <li>If set, WIFCONTINUED is set even if the calling process is <strong>not tracing</strong> the child process.</li>
+      <li>수행중인 자식 프로세스의 상태값 리턴</li>
+      <li>As with WUNTRACED, this flag is useful for implementing a shell</li>
+    </ul>
+  </li>
+  <li>wait (&amp;status);
+    <ul>
+      <li>is identical to waitpid (-1, &amp;status, 0);</li>
+      <li>0 -&gt; no option</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="wait-and-waitpid-1">wait() and waitpid()</h2>
+
+<ul>
+  <li>Example</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h"</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">err_sys</span><span class="p">(</span><span class="s">"fork error"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* first child */</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">err_sys</span><span class="p">(</span><span class="s">"fork error"</span><span class="p">);</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="cm">/* parent from second fork == first child */</span>
+        <span class="cm">/* We're the second child; our parent becomes init. */</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"second child, parent pid = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getppid</span><span class="p">());</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">pid</span><span class="p">)</span> <span class="cm">/* wait for first child */</span>
+        <span class="n">err_sys</span><span class="p">(</span><span class="s">"waitpid error"</span><span class="p">);</span>
+    <span class="cm">/*
+ * We're the parent (the original process); we continue executing,
+ * knowing that we're not the parent of the second child.
+ */</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+<span class="nv">$ </span>second child, parent pid <span class="o">=</span> 1
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="pid-1742인-자식프로세스를-wait-waitpid-자식이-종료-안된-경우-즉시-리턴">PID 1742인 자식프로세스를 wait (waitpid) 자식이 종료 안된 경우 즉시 리턴</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+<span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+<span class="n">pid</span> <span class="o">=</span> <span class="n">waitpid</span> <span class="p">(</span><span class="mi">1742</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">,</span> <span class="n">WNOHANG</span><span class="p">);</span> <span class="c1">// 바로 리턴 (종료를 하지 않더라도)</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">perror</span> <span class="p">(</span><span class="s">"waitpid"</span><span class="p">);</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">"pid=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">pid</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">WIFEXITED</span> <span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="c1">// status check macro function</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s">"Normal termination with exit status=%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WEXITSTATUS</span> <span class="p">(</span><span class="n">status</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">WIFSIGNALED</span> <span class="p">(</span><span class="n">status</span><span class="p">))</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s">"Killed by signal=%d%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">WTERMSIG</span> <span class="p">(</span><span class="n">status</span><span class="p">),</span> <span class="n">WCOREDUMP</span> <span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">?</span> <span class="s">" (dumped core)"</span> <span class="o">:</span> <span class="s">""</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="zombies">Zombies</h2>
+
+<ul>
+  <li>부모 프로세스가 wait()이나 waitpid()를 호출하기 이전에 자식 프로세스가 이미 종료가 돼버린 프로세스를 zombie process라고 한다.
+    <ul>
+      <li>사실상 가비지 개념으로 봐도 된다.</li>
+    </ul>
+  </li>
+  <li>a process that has terminated, but that has not yet been waited upon by its parent is called a “zombie”
+    <ul>
+      <li>좀비 프로세스는 프로세스 테이블에만 존재</li>
+    </ul>
+  </li>
+  <li>Zombie processes continue to consume system resources</li>
+  <li>wait() returns immediately with that child‘s status</li>
+  <li>These resources remain so that parent processes that want to <strong>check up</strong> on the status of their children can obtain <strong>information</strong> relating to the <strong>life</strong> and <strong>termination of those processes</strong>.</li>
+  <li>Once the parent does so, the kernel <strong>cleans up</strong> the process for good and the zombie ceases(stop) to exist.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="waitpidc">waitpid.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span><span class="err">…</span>
+<span class="cm">/* 부모 프로세스가 자식 프로세스를 생성하고 끝나기를 기다린다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">pid1</span><span class="p">,</span> <span class="n">pid2</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">status</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 부모 프로세스 시작 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(</span> <span class="p">));</span>
+    <span class="n">pid1</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스[1] 시작 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(</span> <span class="p">));</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스[1] 종료 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(</span> <span class="p">));</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">pid2</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span> <span class="c1">// 자식 프로세스가 돌고 있는 도중에도 이를 실행</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스 [2] 시작 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(</span> <span class="p">));</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스 [2] 종료 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(</span> <span class="p">));</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// 자식 프로세스 #1의 종료를 기다린다.</span>
+    <span class="n">child</span> <span class="o">=</span> <span class="n">waitpid</span><span class="p">(</span><span class="n">pid1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">//option 0: 자식프로세스가 종료할때까지 wait</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스 [1] %d 종료 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(</span> <span class="p">),</span> <span class="n">child</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\t</span><span class="s">종료 코드 %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">status</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>waitpid
+<span class="o">[</span>16840] 부모 프로세스 시작
+<span class="o">[</span>16841] 자식 프로세스[1] 시작
+<span class="o">[</span>16842] 자식 프로세스[2] 시작
+<span class="o">[</span>16841] 자식 프로세스[1] 종료
+<span class="o">[</span>16840] 자식 프로세스[1] 16841 종료
+종료코드 1
+<span class="o">[</span>16842] 자식 프로세스[2] 종료
+</code></pre></div></div>
+
+<p>sleep이 영향을 미친다.</p>
+
+<p><br /></p>
+
+<h2 id="fork-후에-파일-공유">fork() 후에 파일 공유</h2>
+
+<ul>
+  <li>자식은 부모의 fd 테이블을 복사한다.
+    <ul>
+      <li>부모와 자식이 <strong>같은 파일 디스크립터를 공유</strong> (FD table, U area 복사)</li>
+      <li>같은 파일 오프셋을 공유</li>
+      <li>부모와 자식으로부터 출력이 서로 <strong>섞이게 됨</strong></li>
+    </ul>
+  </li>
+  <li>자식에게 상속되지 않는 성질
+    <ul>
+      <li>fork()의 반환값
+        <ul>
+          <li>리턴을 두 번 함</li>
+        </ul>
+      </li>
+      <li>프로세스 ID</li>
+      <li>부모 프로세스가 설정한 프로세스 잠금, 파일 잠금</li>
+      <li>설정된 알람과 시그널</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fork-2">fork()</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168189002-751ff4cb-edf9-4626-861f-da0f4cf94b17.png" alt="image" /></p>
+
+<p>자식 프로세스가 생성되면 동일한 내용의 file descriptor를 그대로 복사하고 open file table 뒷단은 모두 공유하게 된다.(같은 곳을 가리킴)</p>
+
+<ul>
+  <li>per process table</li>
+</ul>
+
+<p>같은 open file entry를 공유하기 때문에 파일 오프셋이 공유되어 둘이 같이 파일을 작성하면 부모와 자식으로부터 출력이 서로 섞일 수 있음</p>
+
+<p><br /></p>
+
+<h2 id="copy-on-write">Copy-on-write</h2>
+
+<p>fork() 의 효율성을 높이기 위한 방법</p>
+
+<ul>
+  <li>Copy-on-write is a <strong>lazy optimization strategy</strong> designed to mitigate the overhead of duplicating resources.
+    <ul>
+      <li>자식의 duplication을 가능한한 지연</li>
+    </ul>
+  </li>
+  <li>The premise is simple:
+    <ul>
+      <li>if multiple consumers request <strong>read access</strong> to their own copies of a resource, <strong>duplicate</strong> copies of the resource need not be made. Instead, each consumer <strong>can be handed a pointer</strong> to the <strong>same resource</strong>. (처음부터 fork하면 바로 copy하지 않도록 -&gt; 같은 resource로 포인트로 hand)</li>
+    </ul>
+  </li>
+  <li>So long as no consumer attempts to modify its “copy” of the resource, the illusion of exclusive access to the resource remains, and the overhead of a copy is avoided.
+    <ul>
+      <li>자기 만의 resource를 가진다고 착각</li>
+    </ul>
+  </li>
+  <li>If a consumer does attempt to <strong>modify</strong> its copy of the resource, at that point, the resource is transparently duplicated, and the copy is given to the modifying consumer</li>
+  <li>modify가 일어나지 않은 경우에는 한 개의 copy만 가지고 공유하도록 하다가 만약 두 프로세스 중에서 한 프로세스가 modify 하게 되면 그제서야 비로소 lazy하게 뒤늦게 copy를 만들어준다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fork-3">fork()</h2>
+
+<p><strong>Copy on write</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168189249-70076eb1-83c5-40e6-83d2-c388cdc87bfd.png" alt="image" /></p>
+
+<ul>
+  <li>After parent process write a page C.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168189298-84a8013c-2960-49dd-879d-d50f0b87ef3e.png" alt="image" /></p>
+
+<p>read만 하면 포인터를 공유</p>
+
+<p>c만 modify를 하고자 하면 별도의 copy본을 만들어 각자 다른 것을 가리키게 하는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="vfork">Vfork()</h2>
+
+<ul>
+  <li>Creates a new process <strong>only to exec a new program</strong>
+    <ul>
+      <li>완전히 새로운 program을 실행시키기 위한 목적으로만 사용</li>
+      <li>No copy of parent’s address space for child (not needed!)</li>
+      <li>Before exec, child runs in “address space of parent”
+        <ul>
+          <li>주소 공간을 달리하지 않고 parent의 주소 공간에서 실행</li>
+        </ul>
+      </li>
+      <li>Efficient in paged virtual memory</li>
+    </ul>
+  </li>
+  <li><strong>Child runs first</strong>
+    <ul>
+      <li>Parent waits until child exec or exit (block)
+        <ul>
+          <li>Then the parent resume</li>
+        </ul>
+      </li>
+      <li>The deadlock(block된 상태) possibility if the child wait for something from the parent
+        <ul>
+          <li>부모의 자원을 필요로하는 경우 -&gt; deadlock 발생 가능 -&gt; 굉장히 복잡한 동기화 기술로 해결</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="vfork-1">vfork()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="n">pid_t</span> <span class="nf">vfork</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 	<span class="c1">//Returns: 0 in child, process ID of child in parent, -1 on error </span>
+</code></pre></div></div>
+
+<ul>
+  <li>same calling sequence and same return values as fork().</li>
+  <li>intended to create a new process when the purpose of the new process is to exec() a new program.
+    <ul>
+      <li>Does not copy the address space of parent into the child.</li>
+      <li>The child calls exec() or exit() right after the vfork().</li>
+      <li>The child runs <strong>in the address space of the parent</strong>. (exec() 전까지는)</li>
+      <li>Provides an efficiency.
+        <ul>
+          <li>exec이 바로 호출되는 경우에 효율적임</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>vfork() guarantees that the child runs first.</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Example</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h“
+int glob = 6; /* external variable in initialized data */
+int main(void)
+{
+    int var; /* automatic variable on the stack */
+    pid_t pid;
+    var = 88;
+    
+    printf("</span><span class="c1">before vfork\n"); /* we don't flush stdio */</span><span class="cp">
+</span>    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">vfork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">err_sys</span><span class="p">(</span><span class="s">"vfork error"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* child */</span>
+        <span class="n">glob</span><span class="o">++</span><span class="p">;</span> <span class="cm">/* modify parent's variables */</span>
+        <span class="n">var</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="cm">/* child terminates */</span>
+    <span class="p">}</span>
+    <span class="cm">/*
+ * Parent continues here.
+ */</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"pid = %d, glob = %d, var = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">glob</span><span class="p">,</span> <span class="n">var</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>실행 (13 페이지 fork 경우와의 차이점)</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+before vfork
+pid <span class="o">=</span> 29039, glob <span class="o">=</span> 7, var <span class="o">=</span> 89
+<span class="err">$</span>
+</code></pre></div></div>
+
+<p>vfork는 자식 프로세스를 즉시 복제하지 않고 exec()을하기 전까지는 자식 프로세스가 부모 프로세스의 주소 공간에서 실행된다. 따라서 자식 프로세스가 변수(var, glob)을 증가  시켰는데 자식과 부모 프로세스가 glob, var 변수에 대해 별도로 copy를 가지고 있는 것이 아니라 부모 프로세스가 갖고 있는 것을 공유하는 것이기 때문에 부모가 증가시키지 않았더라도 자식이 증가시킨 것 때문에 부모가 출력하는 내용에 이것이 반영되어 나타나게 된 것이다.</p>
+
+<p>고로 이 점이 fork() 와의 차이점이라고 할 수 있다.</p>
+:ET

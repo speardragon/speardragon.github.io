@@ -1,0 +1,589 @@
+I";B<h2 id="addressing-modes">Addressing Modes</h2>
+
+<h3 id="how-do-we-address-the-operandsin-mips">How do we address the operands?(In MIPS)</h3>
+
+<ul>
+  <li>Register Only</li>
+  <li>Immediate</li>
+  <li>Base Addressing</li>
+  <li>PC-Relative</li>
+  <li>Pseudo Direct</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="register-only">Register Only</h4>
+
+<ul>
+  <li>Operands found in registers
+    <ul>
+      <li>Example: add $s0, $t2, $t3</li>
+      <li>Example: sub $t8, $s1, $0</li>
+    </ul>
+  </li>
+  <li>Immediate
+    <ul>
+      <li>16-bit immediate used as an operand
+        <ul>
+          <li>Example:addi $s4, $t5, -73</li>
+          <li>Example: ori $t3, $t7 0xFF</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="base-addressing">Base Addressing</h4>
+
+<ul>
+  <li>
+    <p>Address of operand is:
+base address + sign-extended immediate</p>
+  </li>
+  <li>Example: lw $s4, 72($0)
+    <ul>
+      <li>$0은 data memory의 address</li>
+      <li>address = $0 + 72</li>
+    </ul>
+  </li>
+  <li>Example: sw $t2, -25($t1)
+    <ul>
+      <li>address = $t1 - 25</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="pc-relative-addressing">PC-Relative Addressing</h4>
+
+<ul>
+  <li>
+    <p>Program memory</p>
+  </li>
+  <li>
+    <p>우리는 label을 그냥 사용하면 되지만 예를 들어 <code class="language-plaintext highlighter-rouge">else:</code> 로 가야할 때 PC에서 얼마만큼 떨어진 곳으로 가야 하는 지를 알아야 한다.</p>
+  </li>
+  <li>
+    <p>Program memory address</p>
+  </li>
+</ul>
+
+<pre><code class="language-assembly">0x10 		beq $t0, $0, else
+0x14 		addi $v0, $0, 1 
+0x18 		addi $sp, $sp, i
+0x1C 		jr $ra
+0x20 	else: addi $a0, $a0, -1
+0x24 		jal factorial
+</code></pre>
+
+<p>위와 같은 경우에 beq에서 $t0와 $0가 같으면 else로 jump하는데 이 때 4칸을 뛰어야 한다.</p>
+
+<p>그런데 PC에서는 미리 다음 주소로 이동하기 위해 값을 다음으로 지정해 놓고 있기 때문에 3칸만 뛰어도 되는 것이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160977970-16c48d2c-21c1-443a-a33e-a0ab07071f3e.png" alt="image" /></p>
+
+<p>BTA(Branch Target Address) = <strong>(PC + 4)</strong> + (Imm«2)</p>
+
+<ul>
+  <li>4를 더한 것은 PC가 다음으로 이동하기 위해 미리 한 칸 가 있는 것이고 imm(3)에 left shift를 2번하면 x4의 효과가 있기 때문에 한 것이다.(따라서 (PC+4) + 12)</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="pseudo-direct-addressing">Pseudo-direct Addressing</h4>
+
+<pre><code class="language-assembly">0x0040005C 			jal sum
+...
+0x004000A0 		sum: add $v0, $a0, $a1
+</code></pre>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160978342-d67ec7d4-8e9e-47f4-85c7-73f1a4f2cf4e.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>26bit밖에 없는데 32bit를 만들어야 하는 경우</p>
+
+    <ul>
+      <li>
+        <p>JTA(Jump Target Address)</p>
+      </li>
+      <li>
+        <p>맨 뒤에 2 비트를 0으로 채움</p>
+      </li>
+      <li>
+        <p>맨 앞의 4bit(한 바이트)는 PC에서 그대로 가져온다.</p>
+      </li>
+      <li>
+        <p>J타입은 원래 어디로 jump 할 지를 바로 정해주는 direct addressing인데 여기서 32bit를 만들기 위해 앞의 4bit는 PC에서 왔기 때문에 Pseudo-direct addressing이라고 한다.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="how-to-compile--run-a-program">How to Compile &amp; Run a Program</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160979034-7ab2fc1e-6ee8-4ccd-b08a-34796fa17d98.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="what-is-stored-in-memory">What is Stored in Memory?</h2>
+
+<ul>
+  <li>
+    <p>Instructions (also called text)</p>
+  </li>
+  <li>
+    <p>Data</p>
+
+    <ul>
+      <li>
+        <p>Global/static: allocated before program begins</p>
+      </li>
+      <li>
+        <p>Dynamic: allocated within program</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>How big is memory?</p>
+
+    <ul>
+      <li>At most 2<sup>32</sup> = 4 gigabytes (4 GB)</li>
+      <li>From address 0x00000000 to 0xFFFFFFFF</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mips-memory-map">MIPS Memory Map</h2>
+
+<ul>
+  <li>Text segment: 256MB</li>
+  <li>Global data segment: 64 KB,  accessed by $gp</li>
+  <li>$gp does not change during  execution (unlike $sp)</li>
+  <li>Reserved: I/O 영역(위) 과 OS(아래)가 사용하는 공간</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160979282-13099d79-9ddb-4521-8d72-b11e222e5945.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="example-risc-v-memory-map">Example RISC-V Memory Map</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160979433-a915096d-d612-4091-93f7-e34e9d0af372.png" alt="image" /></p>
+
+<p>address는 다르지만 기본적인 구조는 매우 유사함(MIPS와)</p>
+
+<p><br /></p>
+
+<h2 id="example-program-c-code">Example Program: C Code</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="c1">// global variables</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">sum</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="example-program-compiling">Example Program: compiling</h2>
+
+<pre><code class="language-assembly">.data
+f:
+g:
+y:
+.text
+main:
+    addi $sp, $sp, -4 	# stack frame
+    sw $ra, 0($sp) 		# store $ra
+    addi $a0, $0, 2 	# $a0 = 2
+    sw $a0, f 			# f = 2 ; label을 그냥 그대로 써도 됨
+    addi $a1, $0, 3 	# $a1 = 3
+    sw $a1, g 			# g = 3
+    jal sum 			# call sum
+    sw $v0, y 			# y = sum()
+    lw $ra, 0($sp) 		# restore $ra
+    addi $sp, $sp, 4 	# restore $sp
+    jr $ra 				# return to OS
+sum:
+    add $v0, $a0, $a1 	# $v0 = a + b
+    jr $ra 				# return
+</code></pre>
+
+<h2 id="example-program-symbol-table">Example Program: Symbol Table</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160980280-e573b6b8-50e7-429f-b04c-7eb950f0d6c8.png" alt="image" /></p>
+
+<p>f,g,y : data memory</p>
+
+<p>main, sum: program memory(text memory)</p>
+
+<p><br /></p>
+
+<h2 id="example-program-linking-executable">Example Program: linking (Executable)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160980322-7696a025-98a3-43e9-99e4-0c55e10ca64a.png" alt="image" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">sw $a0, 0x8000($gp)</code>가 의미하는 것:</p>
+
+<p>global pointer는 memory의 global data 공간을 가리키고 있는데 이 공간에서 0x8000만큼 떨어진 곳으로 store하라는 것인데 0x8000은 맨 앞의 8이 이진수로 ‘1000’을 나타내고 이는 -8이기 때문에  -8000을 의미하는 것이기 때문에 0x10008000에 있던 $gp 가 0x10000000으로 가서 f를 저장하고 g를 저장할 때는 0x8004만큼 움직이면 -7996을 의미하는 것이기 때문에 f를 저장한 곳보다 4만큼 위의 공간에 저장하는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="example-program-loading-in-memory">Example Program: loading (in memory)</h2>
+
+<ul>
+  <li>OS loads the program from  storage</li>
+  <li>OS sets $gp=0x10008000,  and $sp= 0x7ffffffc, and  jump to the beginning of  the program  (jal 0x00400000).</li>
+  <li>Reserved area: memory-mapped I/O, interrupt  vector</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160980658-918b2b67-6204-4b85-a643-4e82a61f1797.png" alt="image" /></p>
+
+<hr />
+
+<h2 id="lab-1-mips-assembly-programming">Lab 1: MIPS Assembly Programming</h2>
+
+<p>MIPS을 해보는 것처럼 실행할 수 있는 runtime simulator인 MARS로 구동시킬 것임</p>
+
+<hr />
+
+<h2 id="odds--ends-misc">Odds &amp; Ends (Misc.)</h2>
+
+<ul>
+  <li>Pseudo-instructions
+    <ul>
+      <li>Not a part of ISA, but commonly used</li>
+      <li>assembler가 진짜 instruction으로 바꿔줌</li>
+    </ul>
+  </li>
+  <li>Exceptions(interrupt)
+    <ul>
+      <li>Unscheduled function call(예기치 않은 function call)</li>
+      <li>Exception handler is at 0x80000180</li>
+    </ul>
+  </li>
+  <li>Signed and unsigned instructions</li>
+  <li>Floating-point instructions</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="pseudoinstruction">Pseudoinstruction</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160982585-ed6ec6eb-d2b8-42b3-92b4-cef838e9e948.png" alt="image" /></p>
+
+<ul>
+  <li>li $s0, 0x1234AA77 (load immediate) : 32bit를 immediate로 쓸 때에는 두 과정으로 나누어 준다.
+    <ul>
+      <li>lui / ori</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="exception">Exception</h3>
+
+<ul>
+  <li>Unscheduled function call to exception handler</li>
+  <li>Caused by:
+    <ul>
+      <li>Hardware, also called an <strong>interrupt</strong>, e.g., keyboard</li>
+      <li>Software, also called <strong>traps</strong>, e.g., undefined instruction</li>
+    </ul>
+  </li>
+  <li>When exception occurs, the processor:</li>
+  <li>Records the cause of the exception (원인을 저장)</li>
+  <li>Jumps to exception handler (at instruction address  0x80000180)</li>
+  <li>Returns to program</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="exception-registers">Exception Registers</h3>
+
+<ul>
+  <li>
+    <p>Not part of register clk</p>
+
+    <ul>
+      <li>
+        <p>Cause: <strong>Records</strong> <strong>cause</strong> of exception</p>
+      </li>
+      <li>
+        <p>EPC (Exception PC): Records PC where exception occurred</p>
+        <ul>
+          <li><strong>exception handler에서 다 처리한 후 다시 돌아올 자리</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>EPC and Cause: part of Coprocessor 0</p>
+  </li>
+  <li>
+    <p>Move from Coprocessor 0</p>
+
+    <ul>
+      <li>mfc0 $t0, EPC</li>
+      <li>Moves contents of EPC into $t0</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="exception-causes">Exception Causes</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984004-e9bbc166-237c-488b-b997-fc29c2e264d6.png" alt="image" /></p>
+
+<h2 id="exception-flow">Exception Flow</h2>
+
+<ul>
+  <li>Processor saves cause and exception PC in <strong>Cause</strong> and <strong>EPC</strong></li>
+  <li>Processor jumps to exception handler (0x80000180)</li>
+  <li>Exception handler:
+    <ul>
+      <li>Saves registers on stack
+        <ul>
+          <li>내가 사용할 register 저장(어떤 register가 문제인지 모르기 때문에)</li>
+        </ul>
+      </li>
+      <li>Reads <strong>Cause</strong> register
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">mfc0 $k0, Cause </code></li>
+        </ul>
+      </li>
+      <li>Handles exception</li>
+      <li>Restores registers</li>
+      <li><strong>Returns</strong> to program</li>
+      <li>mfc0 $k0, EPC <code class="language-plaintext highlighter-rouge">//$k0, $k1 reserved by OS jr $k0</code></li>
+      <li>jr $k0</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="exception-example">Exception Example</h2>
+
+<ul>
+  <li>Example: read one input from a keyborad (assum interrupt is enabled)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984184-03d27317-ab2e-4f1f-b7d7-bdb48ddfdfdd.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161664669-86bff572-4fde-4ddb-8d54-8076b44d0fe5.png" alt="image" style="zoom:50%;" /></p>
+
+<p>$k0-$k1 : OS temporaries</p>
+
+<p><br /></p>
+
+<h2 id="signed--unsigned-instructions">Signed &amp; Unsigned Instructions</h2>
+
+<ul>
+  <li>Addition and subtraction</li>
+  <li>Multiplication and division</li>
+  <li>Set less than</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="addition--subtraction">Addition &amp; Subtraction</h2>
+
+<ul>
+  <li>Signed: add, addi, sub
+    <ul>
+      <li>Same operation as unsigned versions</li>
+      <li>But processor takes exception on overflow</li>
+    </ul>
+  </li>
+  <li>Unsigned: addu, addiu, subu
+    <ul>
+      <li>Doesn’t take exception on overflow</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Note: addiu sign-extends the immediate (two versions are identical except exception is triggered.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h2 id="mul">Mul</h2>
+
+<ul>
+  <li>Signed: mult, div</li>
+  <li>Unsigned: multu, divu</li>
+</ul>
+
+<p>ex) 0xFFFF_FFFF * 0xFFFF_FFFF</p>
+
+<p>=&gt; 0xFFFFFFFE00000001   (unsigned)</p>
+
+<p>=&gt; 0x0000000000000001 (signed)</p>
+
+<p><br /></p>
+
+<h2 id="set-less-than">Set Less Than</h2>
+
+<ul>
+  <li>Signed: slt, slti</li>
+  <li>Unsigned: sltu, sltiu</li>
+</ul>
+
+<blockquote>
+  <p>Note: sltiu sign-extends the immediate before comparing it to the register.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h2 id="loads">Loads</h2>
+
+<ul>
+  <li>Signed:
+    <ul>
+      <li>Sign-extends to create 32-bit value to load into register</li>
+      <li>Load halfword: lh</li>
+      <li>Load byte: lb</li>
+    </ul>
+  </li>
+  <li>Unsigned:
+    <ul>
+      <li>Zero-extends to create 32-bit value</li>
+      <li>Load halfword unsigned: lhu</li>
+      <li>Load byte: lbu</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="floating-point-coprocessoror-accelerator">Floating-Point Coprocessor(or Accelerator)</h2>
+
+<p>별로 중요하지 않음, 내부가 중요함</p>
+
+<p><br /></p>
+
+<h2 id="example-design">Example design</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984525-2c2b69ae-5eea-413e-9ea5-878d9abf25a3.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="floating-point-instructions">Floating-Point Instructions</h2>
+
+<ul>
+  <li>Floating-point coprocessor(Coprocessor 1)</li>
+  <li>32 32-bit floating-pointer registers($f0-$f31)</li>
+  <li>Double-precision values held in two floating point registers
+    <ul>
+      <li>e.g., $f0 and $f1,$f2 and $f3, etc.</li>
+      <li>Double-precision floating point registers: $f0, $f2, $f4, etc.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984582-8e09efe1-7f7a-4061-9545-7074a12b1297.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="f-type-instruction-format">F-Type Instruction Format</h2>
+
+<ul>
+  <li>Opcode = 17 (010001<sub>2</sub>)</li>
+  <li>Single-precision:
+    <ul>
+      <li>cop = 16 (010000<sub>2</sub>)</li>
+      <li>add.s , sub.s, div.s, neg.s, abs.s, etc.</li>
+    </ul>
+  </li>
+  <li>Double-precision:
+    <ul>
+      <li>cop = 17 (010001<sub>2</sub>)</li>
+      <li>add.d, sub.d, div.d, neg.d, abs.d, etc.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="floating-point-branches">Floating-Point Branches</h2>
+
+<ul>
+  <li>Set/clear condition flag: fpcond
+    <ul>
+      <li>Equality: c.seq.s, c.seq.d</li>
+      <li>Less than: c.lt.s, c.lt.d</li>
+      <li>Less than or equal: c.le.s, c.le.d</li>
+    </ul>
+  </li>
+  <li>Conditional branch
+    <ul>
+      <li>bclf: branches if fpcond is FALSE</li>
+      <li>bclt: branches if fpcond is TRUE</li>
+    </ul>
+  </li>
+  <li>Loads and stores
+    <ul>
+      <li>lwc1: lwc1 $ft1, 42($s1)  ; load coprocessor 1</li>
+      <li>swc1: swc1 $fs2, 17($sp)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="arm--mips-instruction-set">ARM &amp; MIPS instruction set</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984760-2ad592ce-a197-49b9-8dfb-01f4abbeed12.png" alt="image" /></p>
+
+<p>난이도: MIPS &lt; RISC-V &lt; ARM</p>
+
+<p>ARM은 복잡, MIPS은 비교적 쉬움, 이 사이에 있는 것이 RISC-V</p>
+
+<hr />
+
+<p>Q)</p>
+
+<p>A)handling하는 방식이 processor마다 조금씩 다를 수 있다.</p>
+
+<p>Q)floating point /single, double</p>
+
+<p>A)</p>
+
+<p>범위가 틀린 것</p>
+
+<p>single precision</p>
+
+<ul>
+  <li>32 bit</li>
+  <li>float a;</li>
+</ul>
+
+<p>double precision</p>
+
+<ul>
+  <li>64bit</li>
+  <li>double b;</li>
+</ul>
+
+<p>Q)unsigned에서는 overflow가 일어나지 않는데 이를 어떻게 처리하는 것인가?</p>
+
+<p>A)있을 수 있으나 무시하여 발생하지 않도록 설계하는 것이다.</p>
+
+<hr />
+
+:ET

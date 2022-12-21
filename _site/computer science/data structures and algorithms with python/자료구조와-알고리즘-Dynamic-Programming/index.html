@@ -1,0 +1,2305 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[자료구조와 알고리즘] Dynamic Programming | speardragon note</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[자료구조와 알고리즘] Dynamic Programming">
+<meta property="og:url" content="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Dynamic-Programming/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-05-16T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Dynamic-Programming/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#data-structures-and-algorithms-with-python" itemprop="item"><span itemprop="name">Data structures and algorithms with python</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[자료구조와 알고리즘] Dynamic Programming</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[자료구조와 알고리즘] Dynamic Programming">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-05-16T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Dynamic-Programming/" class="u-url" itemprop="url">[자료구조와 알고리즘] Dynamic Programming
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          13 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<h1 id="11-dynamic-programming">11. Dynamic Programming</h1>
+
+<p>greedy algorithm과 dynamic programming은 굉장히 많이 쓰이는 알고리즘이다.</p>
+
+<hr />
+
+<p>11-2</p>
+
+<h2 id="fibonacci-series">Fibonacci series</h2>
+
+<p>Let’s consider and example to understand how dynamic programming works. We use the Fibonacci series to illustrate</p>
+
+<p>The sequence of numbers
+<img src="https://user-images.githubusercontent.com/79521972/168503404-9961b12a-10f9-48ce-a26d-331fbdfb3d14.png" alt="image" /></p>
+
+<p>that are defined by the formula</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168503427-c3af3aa6-15bf-4c8d-9ba3-88f5c36158f2.png" alt="image" /></p>
+
+<p>are known as the fibonacci numbers</p>
+
+<ul>
+  <li>0 번째와 1 번째 값은 0과 1로 항상 정해져 있는 값이다.</li>
+</ul>
+
+<hr />
+
+<p>11-3</p>
+
+<h2 id="recursive-implementation">Recursive implementation</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span> <span class="c1"># 1
+</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="c1"># 5 
+</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    
+    
+<span class="k">print</span><span class="p">(</span><span class="n">fibonacci</span><span class="p">(</span><span class="mi">36</span><span class="p">))</span> <span class="c1"># 12
+</span><span class="k">print</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>14930352
+8.691221952438354
+</code></pre></div></div>
+
+<hr />
+
+<p>11-4</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168503542-8cb82ca0-76b5-4267-a9a9-8973195a8b30.png" alt="image" /></p>
+
+<p>똑같은 계산 과정이 반복이 돼서(중복적으로) 일어나게 된다.</p>
+
+<p>위 그림은 7에 대한 fibonacci 결과를 tree로 나타낸 것인데 36에 대한 fibonacci 결과를 tree로 그린다면 굉장히 크고 중복이 수도 없이 많은 구조를 확인할 수 있을 것이고 이는 확실히 좋지 않은 성능을 야기한다는 것을 알 수 있을 것이다.</p>
+
+<hr />
+
+<p>11-5</p>
+
+<h2 id="dynamic-programming">Dynamic Programming</h2>
+
+<p>Dynamic programming, like the divide-and-conquer method, <mark>solves problems by combining the solutions to subproblems.</mark> (“Programming” in this context refers to a tabular method, not to writing compter code.)</p>
+
+<ul>
+  <li>tabular method: 테이블에 기록하는 방식</li>
+</ul>
+
+<p><strong>Divide-and-conquer algorithms</strong> <code class="language-plaintext highlighter-rouge">partition</code> the problem into disjoint subproblems, <code class="language-plaintext highlighter-rouge">solve</code> the subproblems recursively, and then <code class="language-plaintext highlighter-rouge">combine</code> their solutions to solve the original problem.
+In contrast, <strong>dynamic programming</strong> applies <span style="color:red">when the subproblems overlap</span></p>
+
+<ul>
+  <li>that is, when subproblems share subsubproblems.</li>
+</ul>
+
+<p>In this context, a divide-and-conquer algorithm does more work than necessary, repeatedly solving the common subsubproblems. <mark>A dynamic-programming algorithm solves each subsubproblem just once and then saves its answer in a table</mark>, thereby avoiding the work of recomputing the answer every time it solves each subsubproblem.</p>
+
+<ul>
+  <li>작은 size의 문제를 딱 한 번만 풀고 그 푼 결과를 table에 저장해 두는 것이다.
+    <ul>
+      <li>나중에 그 문제가 또 중복되어 나왔을 때 사용하기 위해서</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>하노이 문제의 경우 divide-and-conquer 로 풀었었는데 그 문제에서 나눠졌던 subproblem 들에 대해서 중복된 문제가 하나도 없었다.</p>
+
+<p>즉, 주어진 문제를 subproblem으로 나누었을 때 중복이 없다면 divide-and-conquer라면
+중복이 굉장히 많이 나온다면 dynamic programming 이다.</p>
+
+<hr />
+
+<p>11-6</p>
+
+<p>Dynamic programming thus <strong>uses additional memory to save computation time</strong>;</p>
+
+<ul>
+  <li>it serves an example of a <strong>time-memory trade-off</strong>.</li>
+</ul>
+
+<p>The savings may be dramatic: an exponential-time solution may be transformed into a polynomial-time solution.</p>
+
+<p>There are usually two equivalent ways to implement a dynamic-programming approach.</p>
+
+<p><mark>The first approach is top-down with memoization.</mark> In this approach, we write the procedure recursively in a natural manner, but modified to save the result to each subproblem (usually in an array or hash table). The procedure now first checks to see whether it has previously solved this subproblem.</p>
+
+<p>If so, it returns the saved value, saving further computation at this level; if not, the procedure computes the value in the usual manner. We say that the recursive procedure has been memoized;</p>
+
+<ul>
+  <li>it “remembers” what results it has computed previously.</li>
+</ul>
+
+<p><br />
+한 size의 문제를 조금씩 줄여나간다.</p>
+
+<ul>
+  <li>f(n) - &gt; f(n-1) -&gt; f(n-2) -&gt; …
+    <ul>
+      <li>recursion</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>11-7</p>
+
+<h2 id="top-down-with-memoization">top-down with memoization</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">fibonacci_td</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="c1"># 5
+</span>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    
+    <span class="k">if</span> <span class="n">_memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c1"># 9 ; 존재하지 않으면 memo!
+</span>        <span class="n">_memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">fibonacci_td</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci_td</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">_memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+
+
+<span class="n">_memo</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">50</span> <span class="c1"># 15
+</span><span class="k">print</span><span class="p">(</span><span class="n">fibonacci_td</span><span class="p">(</span><span class="mi">36</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>The numbers grow exponentially, so the array is small - for example, F<sub>46</sub> = 1836311903 is the largest Fibonacci number that can be represented as a 32-bit integer</p>
+
+<ul>
+  <li>32-bit integer로 저장할 수 있는 최대 fibonacci 수는 46이다.</li>
+  <li>그 이상은 long long 데이터 타입을 사용해야 한다.(파이썬은 상관 없음)</li>
+</ul>
+
+<p>list에 저장되어 있는지를 확인하여</p>
+
+<ul>
+  <li>만약 저장되어 있지 않다면: 더 작은 size의 문제를 subproblem을 나눠서 memo에 저장하고</li>
+  <li>만약 저장되어 있다면 해당 인덱스의 memo 되어있는 값을 반환
+    <ul>
+      <li>이러면 재귀를 타지 않아도 그냥 바로 리턴이 가능하다.</li>
+    </ul>
+  </li>
+  <li>실행 결과</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>14930352
+0.0
+</code></pre></div></div>
+
+<hr />
+
+<p>11-8</p>
+
+<p><mark>The second approach is the bottom-up method.</mark> This approach typically depends on some natural notion of the “size” of a subproblem, such that solving any paricular subproblem depends only on solving “smaller” subproblems. We sort the subproblems by size and solve them in size order, smallest first.</p>
+
+<p>When solving a particular subproblem, we have already solved all of the smaller subproblems its solution depends upon, and we have saved their solutions.</p>
+
+<ul>
+  <li>제일 작은 size인 f(1)부터 시작하여 f(2), f(3), … 이런 식으로 차근차근 올라가면서 푸는 방법이다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">fibonacci_bu</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="c1"># 5
+</span>    <span class="n">memo</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># base case
+</span>    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">memo</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">memo</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">memo</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">])</span>
+        
+    <span class="k">return</span> <span class="n">memo</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># 11
+</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">fibonacci_bu</span><span class="p">(</span><span class="mi">36</span><span class="p">))</span> <span class="c1"># 14
+</span></code></pre></div></div>
+
+<p>리스트의 마지막에 담긴 값이 최종 결과임</p>
+
+<hr />
+
+<p>11-9</p>
+
+<h2 id="top-down-vs-bottom-up">top-down vs. bottom-up</h2>
+
+<p>뭐가 더 좋은 방법일까? -&gt; 결론부터 얘기 하자면 문제에 따라 다르다.(case by case)</p>
+
+<p>그러나 일반적으로 특징을 비교해 보자면 아래 글과 같다.</p>
+
+<p>Indeed, we can use the <strong>bottom-up</strong> approach <strong>any time that we use the top-down approach</strong>, although we need to take care to ensure that we compute the function values in an appropriate order, so that each value that we need has been computed when we need it.</p>
+
+<p>In top-down dynamic programming, we save known values; in bottom-up dynamic programming, we precompute them. <strong>We generally prefer top-down to bottom-up dynamic programming, because</strong></p>
+
+<p>bottom up 보다 top down을 선호한다.</p>
+
+<ul>
+  <li>It is a mechanical transformation of a natural problem solution.
+    <ul>
+      <li>좀 더 자연스러운 문제 해결 가능</li>
+    </ul>
+  </li>
+  <li>The order of computing the subproblems takes care of itself.
+    <ul>
+      <li>계산 순서를 스스로 알아서 해결</li>
+    </ul>
+  </li>
+  <li>We may not need to compute answer to all the subproblems.
+    <ul>
+      <li>모든 subproblem에 대한 답을 계산할 필요가 없다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>주어진 size의 문제를 더 작은 size의 문제로 나누는 것 -&gt; recurrence equation</p>
+
+<hr />
+
+<p>11-10</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168504697-5cddf421-4bf6-432f-ba2c-79e343ff0c27.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/2748">https://www.acmicpc.net/problem/2748</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">fibonacci_td</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+
+    <span class="k">if</span> <span class="n">_memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">_memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">fibonacci_td</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci_td</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+
+
+<span class="n">_n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_memo</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">91</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fibonacci_td</span><span class="p">(</span><span class="n">_n</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<hr />
+
+<p>11-11</p>
+
+<h2 id="151-rod-cutting">15.1 Rod cutting</h2>
+
+<p>Serling Enterprises(철강 회사) buys long steel rods and cuts them into shorter rods, which it then sells. Each cut is free. The management of Serling Enterprises want to know the best way to cut up the rods.</p>
+
+<p>The rod-cutting problem is the following. Given a rod of length n inches 
+and a table of prices pi for i = 1, 2, …., n, determine the <mark>maximum revenue r<sub>n</sub></mark> obtainable by cutting up the rod and selling hte pieces.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168504861-a767d9d3-a0f1-4695-9403-6afa5829d3a4.png" alt="image" /></p>
+
+<p>철봉의 길이에 따라 시장 가격이 정해져 있다. 그렇다면 철강회사에서 철봉을 어떻게 잘라야 돈을 많이 벌까?</p>
+
+<hr />
+
+<p>11-12</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168504887-6619a606-b0f4-4659-b32d-fa1e51b0b112.png" alt="image" /></p>
+
+<p>위 그림과 같이 어떻게 나눠서 파느냐에 따라 받을 수 있는 가격이 다 다르다.</p>
+
+<p>그렇다면 n인치의 철봉이 주어졌을 때 어떻게 나눠서 팔아야 할지를 알아보자.</p>
+
+<p>이러한 문제 구조를 Optimization Problem이라고 한다.</p>
+
+<ul>
+  <li>그리고 optimization 문제는 대부분 DP로 해결한다.</li>
+</ul>
+
+<hr />
+
+<p>11-13</p>
+
+<p>More generally, we can frame the values rn for n &gt;= 1 in terms of optimal revenues from shorter rods:</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168504950-864d8a40-dbe7-4f7f-8184-b61bb55994e8.png" alt="image" /></p>
+
+<ul>
+  <li>r<sub>n</sub>: n인치에서 얻을 수 있는 최대 수익</li>
+  <li>p<sub>n</sub>: 시장 가격</li>
+  <li>총 n가지 경우에 대해 조사를 해서 최대값을 구한다.</li>
+  <li>r<sub>1</sub>+r<sub>n-1</sub> 은 사실상 p<sub>1</sub>+r<sub>n-1</sub> 과 같다.
+    <ul>
+      <li>그래서 앞에 더해지는 rn을 모두 pn으로 대치하여 하는 것이 더 편하다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>In a related, but slightly simpler, way to arrange a recursive structure for the rod-cutting problem, we view a decomposition as consisting of a first piece of length i cut off the left-hand end, and then a right-hand remainder of length n - i. Only the remainder, and not the first piece, may be further divided. We thus obtain the following simpler version of equation (15.1):</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168505091-16374575-d984-43aa-ba39-7ec3cfedd609.png" alt="image" /></p>
+
+<p>p[i] + cut_rod(length - i)</p>
+
+<p>예를 들어, 4인치 나무인 경우</p>
+
+<p>r4 -&gt;</p>
+
+<ul>
+  <li>p1 + r3</li>
+  <li>p2 + r2</li>
+  <li>p3 + r1</li>
+  <li>p4</li>
+</ul>
+
+<p>중에서 가장 큰 값을 구하는 것이다.</p>
+
+<hr />
+
+<p>11-14</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">math</span> <span class="c1"># 1
+</span>
+
+<span class="k">def</span> <span class="nf">cut_rod</span><span class="p">(</span><span class="n">length</span><span class="p">):</span> <span class="c1"># 4 
+</span>    <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># r_0
+</span>        <span class="k">return</span> <span class="mi">0</span>
+    
+    <span class="n">max_revenue</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="p">.</span><span class="n">inf</span> <span class="c1"># -infinity
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># 9
+</span>        <span class="n">revenue</span> <span class="o">=</span> <span class="n">_price</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">cut_rod</span><span class="p">(</span><span class="n">length</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> 
+        <span class="k">if</span> <span class="n">revenue</span> <span class="o">&gt;</span> <span class="n">max_revenue</span><span class="p">:</span>
+            <span class="n">max_revenue</span> <span class="o">=</span> <span class="n">revenue</span> <span class="c1"># 가장 큰 값을 저장하는 logic
+</span>            
+    <span class="k">return</span> <span class="n">max_revenue</span>
+
+
+<span class="n">_price</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span> <span class="c1"># 17
+</span><span class="n">_length</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cut_rod</span><span class="p">(</span><span class="n">_length</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>22
+</code></pre></div></div>
+
+<hr />
+
+<p>11-15</p>
+
+<p><strong>Why is CUT-ROD so inefficient?</strong> The problem is that CUT-ROD calls itself recursively over and over again with the same parameter values;</p>
+
+<ul>
+  <li>it solves the same subproblems repeatedly. -&gt; 굉장히 비효율적인 계산이 된다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168517940-278d7008-2267-4aa8-afe2-4a4da2e58256.png" alt="image" /></p>
+
+<p>그렇기 때문에 이를 top-down 방식의 DP와 bottom-up 방식의 DP로 바꾸어보자.</p>
+
+<hr />
+
+<p>11-16</p>
+
+<h2 id="top-down-with-memoization-1">top-down with memoization</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">cut_rod_td</span><span class="p">(</span><span class="n">length</span><span class="p">):</span> <span class="c1"># 4
+</span>    <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    
+    <span class="k">if</span> <span class="n">_memo</span><span class="p">[</span><span class="n">length</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c1"># 8
+</span>        <span class="n">max_revenue</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="p">.</span><span class="n">inf</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">revenue</span> <span class="o">=</span> <span class="n">_price</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">cut_rod_td</span><span class="p">(</span><span class="n">length</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="c1"># 11
+</span>            <span class="k">if</span> <span class="n">revenue</span> <span class="o">&gt;</span> <span class="n">max_revenue</span><span class="p">:</span>
+                <span class="n">max_revenue</span> <span class="o">-</span> <span class="n">revenue</span>
+        <span class="c1"># save r_i
+</span>        <span class="n">_memo</span><span class="p">[</span><span class="n">length</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_revenue</span>
+        
+    <span class="k">return</span> <span class="n">_memo</span><span class="p">[</span><span class="n">length</span><span class="p">]</span> <span class="c1"># 17
+</span>
+
+<span class="n">_price</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span> <span class="c1"># 20
+</span><span class="n">_memo</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">11</span>
+<span class="n">_length</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cut_rod_td</span><span class="p">(</span><span class="n">_length</span><span class="p">))</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>11-17</p>
+
+<h2 id="bottom-up-method">bottom-up method</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">cut_rod_bu</span><span class="p">(</span><span class="n">length</span><span class="p">):</span><span class="c1"># 4 
+</span>    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">max_revenue</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="p">.</span><span class="n">inf</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">revenue</span> <span class="o">=</span> <span class="n">_price</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">_memo</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">]</span> <span class="c1"># 9; memo를 활용함
+</span>            <span class="k">if</span> <span class="n">max_revenue</span> <span class="o">&lt;</span> <span class="n">revenue</span><span class="p">:</span>
+                <span class="n">max_revenue</span> <span class="o">=</span> <span class="n">revenue</span>
+        <span class="c1"># save r_i
+</span>        <span class="n">_memo</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_revenue</span> <span class="c1"># 13 
+</span>        
+    <span class="k">return</span> <span class="n">_memo</span><span class="p">[</span><span class="n">length</span><span class="p">]</span> <span class="c1"># _memo[-1]
+</span>
+
+<span class="n">_price</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span> <span class="c1"># 18
+</span><span class="n">_memo</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">11</span>
+<span class="n">_length</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cut_rod_bu</span><span class="p">(</span><span class="n">_length</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>i=1: p1</p>
+
+<p>i=2: p1+ r1</p>
+
+<p>​		p2+r0</p>
+
+<hr />
+
+<p>11-18</p>
+
+<h2 id="153-elements-of-dynamic-programming">15.3 Elements of dynamic programming</h2>
+
+<ul>
+  <li>We typically <strong>apply</strong> dynamic programming to <strong>optimization problems</strong>
+    <ul>
+      <li>n size 문제를 더 작은 size의 문제로 나눈다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168519662-d5fd7824-3d7e-4639-8367-7948afbede0c.png" alt="image" /></p>
+
+<ul>
+  <li>n인치 짜리 철봉이 주어졌을 때 가질 수 있는 최대 가격 -&gt; rn</li>
+  <li>pi: i인치로 나누어서 팔았을 때의 가격</li>
+  <li>
+    <p>rn-i: (남은 부분)n-i인치에서 가질 수 있는 최대 가격(recursion)</p>
+  </li>
+  <li><strong>Two key ingredients</strong> that an optimization problem must have to apply dynamic programming:</li>
+</ul>
+
+<ol>
+  <li><strong>Optimal substructure</strong>
+    <ul>
+      <li>divide-and-conquer에서와의 똑같은 특성</li>
+      <li>An optimal solution contains optimal solutions to <strong>subproblems</strong></li>
+    </ul>
+  </li>
+  <li><strong>Overlapping subproblems</strong>
+    <ul>
+      <li>divide-and-conquer와 구분을 짓는 차이점</li>
+      <li>Finding the solution involves solving the same subproblem multiple times</li>
+      <li>A divide-and-conquer approach always generating new subproblems</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<p>11-19</p>
+
+<p>We typically apply dynamic programming to <strong>optimization problems</strong>. <mark>Such problems can have many possible solutions.</mark> Each solution has a value, and we wish to find a solution with the optimal (minumum or maximum) value. We call such a solution an optimal solution to the problem, as opposed to the <strong>optimal solution</strong>, since there may be several solutions that achieve <strong>the optimal value</strong>.</p>
+
+<ul>
+  <li>optimal value로 부터 optimal solution을 만들어나간다.</li>
+</ul>
+
+<p>When developing a dynamic-programming algorithm, we flow a sequence of <strong>four steps</strong>:</p>
+
+<ol>
+  <li>Characterize the structure of an optimal solution.</li>
+  <li>Recursively define the value of an optimal solution.</li>
+  <li>Compute the value of and optimal solution</li>
+  <li>Construct an optimal solution from computed information.</li>
+</ol>
+
+<p>Steps 1-3 form the basis of a dynamic-programming solution to a problem. If we need only the value of an optimal solution, and not the solution itself, then we can omit step 4.</p>
+
+<hr />
+
+<p>11-20</p>
+
+<h2 id="reconstructing-a-solution">Reconstructing a solution</h2>
+
+<p>11-17page를 수정한 코드</p>
+
+<p>Here is an <strong>extended version</strong> of BOTTOM-UP-CUT-ROD that computes, for each rod size j, not only the maximum revenue r<sub>j</sub>, but also s<sub>j</sub>, the optimal size of the first piece to cut off:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>			<span class="k">if</span> <span class="n">max_revenue</span> <span class="o">&lt;</span> <span class="n">revenue</span><span class="p">:</span> <span class="c1"># 10
+</span>        		<span class="n">max_revenue</span> <span class="o">=</span> <span class="n">revenue</span>
+            	<span class="n">_first</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span> <span class="c1"># 앞에거(j)를 얼마만큼 잘라야지 revenue를 얻을 수 있는지를 저장
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_memo</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">11</span> <span class="c1"># 20
+</span><span class="n">_first</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">11</span>
+<span class="n">_length</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cut_rod_bu</span><span class="p">(</span><span class="n">_length</span><span class="p">))</span> <span class="c1"># 23
+</span><span class="k">while</span> <span class="n">_length</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">_first</span><span class="p">[</span><span class="n">_length</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+    <span class="n">_length</span> <span class="o">-=</span> <span class="n">_first</span><span class="p">[</span><span class="n">_length</span><span class="p">]</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>12, 21번 line이 새로 추가됨</p>
+  </li>
+  <li>
+    <p>_first: 10인치 짜리 optimal value를 달성하기 위해서 앞에거(j)를 얼마만큼(몇 인치로) 잘라야지 revenue를 얻을 수 있는지에 대해 앞에 값을 기록하는 용도 (r4의 경우 p2니까 2를 기록)</p>
+  </li>
+  <li>
+    <p>코드 돌려볼 것!!!!!!!!!</p>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># length 8
+22 
+2 6 
+
+#length 4
+10
+2 2 
+
+#length 6
+17
+6 
+
+#length 10
+30
+10 
+</code></pre></div></div>
+
+<p>length 6은 6 혼자 파는 게 제일 비싸니까 legnth 8에서 6이 쓰였구나!</p>
+
+<hr />
+
+<p>11-21</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168520429-c4b15bc3-4476-4503-b976-eccf6a971072.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/1932">https://www.acmicpc.net/problem/1932</a></p>
+
+<hr />
+
+<p>11-22</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168520466-1525764a-6524-4ef3-ba3e-33aa3ee4af3b.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168976111-49a8837a-9c3c-4740-8659-4b8d367e05e1.png" alt="image" /></p>
+
+<p>optimal structure</p>
+
+<p>maxV(0, 0)에서 얻을 수 있는 최대값</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172112001-304fa604-0393-4d37-846f-db8331e3986c.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="p">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'bj1932_in.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">triangle</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">triangle</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">triangle</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">triangle</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+            <span class="n">triangle</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">triangle</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">triangle</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">triangle</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">triangle</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">triangle</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">triangle</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[7], [3, 8], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]] # origina triangle
+[[7], [10, 15], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]]
+[[7], [10, 15], [18, 16, 15], [2, 7, 4, 4], [4, 5, 2, 6, 5]]
+[[7], [10, 15], [18, 16, 15], [20, 25, 20, 19], [4, 5, 2, 6, 5]]
+[[7], [10, 15], [18, 16, 15], [20, 25, 20, 19], [24, 30, 27, 26, 24]]
+30
+</code></pre></div></div>
+
+<p>j = 0인 경우는 삼각형의 한 줄에서 가장 왼쪽에 있는 값이기 때문에 바로 위의 줄의 j = 0 값과 더한 값으로 치환한다.</p>
+
+<p>j == i인 경우 즉, 삼각형의 한 줄에서 가장 오른쪽에 있는 값이기 때문에 바로 위의 줄의 j = i 값과 더한 값으로 치환한다.</p>
+
+<p>위 두 경우가 아니라면 왼쪽 branch와 오른쪽 branch가 겹치는 경우인데 이 때는 두 값에 max를 취해 주면 된다.</p>
+
+<hr />
+
+<p>11-23</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">max_path</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span> <span class="c1"># 5
+</span>    <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="n">_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># 제일 밑에 줄인 경우는 그냥 그 자리의 값이 결과값임
+</span>        <span class="k">return</span> <span class="n">_triangle</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+    
+    <span class="n">path_left</span> <span class="o">=</span> <span class="n">_triangle</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_path</span><span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="c1"># 9
+</span>    <span class="n">path_right</span> <span class="o">=</span> <span class="n">_triangle</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_path</span><span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">path_left</span><span class="p">,</span> <span class="n">path_right</span><span class="p">)</span>
+
+
+<span class="n">_triangle</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># 15
+</span><span class="n">_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_size</span><span class="p">):</span>
+    <span class="n">_triangle</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())))</span> <span class="c1"># 18
+</span>    
+<span class="k">print</span><span class="p">(</span><span class="n">max_path</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168520638-9dc137d7-4607-4c73-b3ce-9abd6fe35493.png" alt="image" /></p>
+
+<ul>
+  <li>한 줄 내려갈 때마다 중복 많아서 백준에 제출하면 시간초과 발생
+    <ul>
+      <li>so, DP로 변경해야 함.</li>
+    </ul>
+  </li>
+  <li>Top down의 경우 triangle과 크기가 완전히 똑같은 memo list 하나를 만들고 max_path 함수를 호출했을 때 memo에 저장되어 있는지를 확인 후 저장이 안되어 있다면 함수를 실행하도록 하고 저장이 되어 있다면 그냥 그 값을 리턴하도록 한다.</li>
+  <li>Bottom up의 경우 loop를 사용하여 밑에서부터 위로 계산하면서 올라가면 된다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="p">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'bj1932_in.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">max_path</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="n">_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_triangle</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">_memo</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">path_left</span> <span class="o">=</span> <span class="n">_triangle</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_path</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+        <span class="n">path_right</span> <span class="o">=</span> <span class="n">_triangle</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_path</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">_memo</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">path_left</span><span class="p">,</span> <span class="n">path_right</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_memo</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+
+
+<span class="n">_triangle</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">_memo</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_size</span><span class="p">):</span>
+    <span class="n">_triangle</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())))</span>
+
+<span class="n">_memo</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_size</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="n">max_path</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">_memo</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>30
+[[30], [23, 21], [20, 13, 10], [7, 12, 10, 10], [None, None, None, None, None]]
+</code></pre></div></div>
+
+<hr />
+
+<p>11-24</p>
+
+<h2 id="0-1-knapsack-problem">0-1 Knapsack problem</h2>
+
+<p>The <strong>0-1 knapsack problem</strong> is the following. A thief robbing a store finds n items. The <em>i</em>-th item is worth v<sub>i</sub> dollars and weighs w<sub>i</sub> pounds, where v<sub>i</sub> and w<sub>i</sub> are integers. The thief wants to take as valuable a load as possible, but he can carry at most W pounds in his knapsack, for some integer W. Which items should he take?</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168520845-99c2122c-af74-467f-8aee-f6524079ac88.png" alt="image" /></p>
+
+<ul>
+  <li>objective function: 무언가를 최대화(maximize) 해야하는 함수</li>
+  <li>constraint: 최대화 할 때의 조건
+    <ul>
+      <li>물건을 담으면 1 / 안 담으면 0</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>11-25</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168520896-ba378f1f-0178-438b-8e5d-1aa97f5e4d9c.png" alt="image" /></p>
+
+<hr />
+
+<p>11-26</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168520917-cfa3fa1d-b85d-47b7-b79f-83bbc32da83a.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/12865">https://www.acmicpc.net/problem/12865</a></p>
+
+<hr />
+
+<p>11-27</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168521024-e60e76d4-63a6-4a73-a16d-b8e67444b91a.png" alt="image" /></p>
+
+<ul>
+  <li>maxV(7,0) - 여유공간 7, 고려하는 물건 0 번째 = V0 + maxV(1, 1)</li>
+  <li>max(7,1)</li>
+  <li>위 둘 중에 max가 정답</li>
+</ul>
+
+<hr />
+
+<p>11-28</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">knapsack</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span> <span class="c1"># 5
+</span>    <span class="c1"># capacity: current capacity of the knapsack, [0.._capacity]
+</span>    <span class="c1"># item: index of the item to be considered, [0..number-1]
+</span>    <span class="c1"># _number: number of items -&gt; W
+</span>    <span class="c1"># _capacity: capacity of the knapsack -&gt; W
+</span>    <span class="c1"># _weight: weight list of the items -&gt; Wi
+</span>    <span class="c1"># _value: value list of the items -&gt; Vi
+</span>    
+    <span class="k">if</span> <span class="n">capacity</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">&gt;=</span> <span class="n">_number</span><span class="p">:</span> <span class="c1"># 13
+</span>        <span class="k">return</span> <span class="mi">0</span>
+    
+    <span class="k">if</span> <span class="n">_weight</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">capacity</span><span class="p">:</span> <span class="c1"># 16
+</span>        <span class="k">return</span> <span class="n">knapsack</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">with_the_item</span> <span class="o">=</span> <span class="n">_value</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">+</span> <span class="n">knapsack</span><span class="p">(</span><span class="n">capacity</span> <span class="o">-</span> <span class="n">_weight</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">item</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 19
+</span>    <span class="n">without_the_item</span> <span class="o">=</span> <span class="n">knapsack</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">with_the_item</span><span class="p">,</span> <span class="n">without_the_item</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>knapsack(-capacity, 0)</li>
+  <li><img src="https://user-images.githubusercontent.com/79521972/169052588-9662382e-3fa3-435f-8aee-1af68fc02c58.png" alt="image" /></li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168521280-1c569835-402d-4e3b-a4ff-7111ba655705.png" alt="image" /></p>
+
+<ul>
+  <li>Top down으로 바꾼다. -&gt; memo를 딕셔너리로 만들어서 한 노드(튜플)을 key로 해서 값을 계속 저장해서 재귀 호출을 하는데 memo안에 존재하는 지를 먼저 파악해서 그걸 토대로 다음 행동을 결정하면서 진행한다.
+    <ul>
+      <li>저장해야 하는 key 수가 그렇게 많지 않음</li>
+    </ul>
+  </li>
+  <li>bottom up으로 하면 어디서 부터 올라가야 될 지를 알 수가 없기 때문에 이차원 리스트의 사이즈가 WxN 만큼으로 다 채워져야 하기 때문에 불필요한 계산을 많이하여 실행 속도가 굉장히 오래 걸린다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172128274-35d340e4-d961-4d67-900f-e3b2cf93422f.png" alt="image" /></p>
+
+<p>따라서 왼쪽으로 가서 물건을 집어 넣으면 capcity에서 물건의 weight 만큼 뺀 후 다음 아이템에 대해 knapsack 함수를 재귀 호출을 진행한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">knapsack</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>  <span class="c1"># 5
+</span>    <span class="c1"># capacity: current capacity of the knapsack, [0.._capacity]
+</span>    <span class="c1"># item: index of the item to be considered, [0..number-1]
+</span>    <span class="c1"># _number: number of items -&gt; N
+</span>    <span class="c1"># _capacity: capacity of the knapsack -&gt; W
+</span>    <span class="c1"># _weight: weight list of the items -&gt; wi
+</span>    <span class="c1"># _value: value list of the items -&gt; vi
+</span>
+    <span class="k">if</span> <span class="n">capacity</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">&gt;=</span> <span class="n">_number</span><span class="p">:</span>  <span class="c1"># 13
+</span>        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">_memo</span><span class="p">.</span><span class="n">get</span><span class="p">((</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_weight</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">capacity</span><span class="p">:</span>  <span class="c1"># 16 ; 넣고 싶어도 못넣는 경우
+</span>            <span class="k">return</span> <span class="n">knapsack</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># 만약 현재 item이 용량을 넘어서면 다음 item 보기
+</span>
+        <span class="n">with_the_item</span> <span class="o">=</span> <span class="n">_value</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">+</span> <span class="n">knapsack</span><span class="p">(</span><span class="n">capacity</span> <span class="o">-</span> <span class="n">_weight</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="n">item</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 19
+</span>        <span class="n">without_the_item</span> <span class="o">=</span> <span class="n">knapsack</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">_memo</span><span class="p">[(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">with_the_item</span><span class="p">,</span> <span class="n">without_the_item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_memo</span><span class="p">[(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">item</span><span class="p">)]</span>
+
+
+<span class="n">sys</span><span class="p">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'bj12865_in.txt'</span><span class="p">)</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span>
+
+<span class="n">_number</span><span class="p">,</span> <span class="n">_capacity</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span> <span class="c1"># n: 갯수, k: 버틸 수 있는 무게
+</span>
+<span class="n">_memo</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">_weight</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">_value</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_number</span><span class="p">):</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">_weight</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">_value</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">knapsack</span><span class="p">(</span><span class="n">_capacity</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">_memo</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>14
+{(3, 2): 6, (7, 3): 12, (7, 2): 12, (7, 1): 14, (7, 0): 14}
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#dynamic-programming" class="page__taxonomy-item p-category" rel="tag">Dynamic Programming</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a><span class="sep">, </span>
+    
+      <a href="/categories/#data-structures-and-algorithms-with-python" class="page__taxonomy-item p-category" rel="tag">Data structures and algorithms with Python</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-05-16T00:00:00+09:00">2022-05-16</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5B%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80+%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%5D+Dynamic+Programming%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520python%2F%25EC%259E%2590%25EB%25A3%258C%25EA%25B5%25AC%25EC%25A1%25B0%25EC%2599%2580-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598-Dynamic-Programming%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520python%2F%25EC%259E%2590%25EB%25A3%258C%25EA%25B5%25AC%25EC%25A1%25B0%25EC%2599%2580-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598-Dynamic-Programming%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520python%2F%25EC%259E%2590%25EB%25A3%258C%25EA%25B5%25AC%25EC%25A1%25B0%25EC%2599%2580-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598-Dynamic-Programming%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/system/system%20programming/System-Programming-9-3%EC%9E%A5.-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%B6%80%ED%8C%85/" class="pagination--pager" title="[System Programming] 9-3장. 시스템 부팅
+">이전</a>
+    
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-Cache-Design/" class="pagination--pager" title="[Computer Architecture] Cache Design
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Dynamic-Programming/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/data%20structures%20and%20algorithms%20with%20python/[자료구조와 알고리즘] Dynamic Programming"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

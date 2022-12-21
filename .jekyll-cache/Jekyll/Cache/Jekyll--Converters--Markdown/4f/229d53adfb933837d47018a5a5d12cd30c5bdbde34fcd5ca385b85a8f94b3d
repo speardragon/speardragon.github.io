@@ -1,0 +1,438 @@
+I"	><h2 id="review">Review)</h2>
+
+<p>instruction: 컴퓨터가 알아듣도록 컴퓨터에게 내리는 명령, 기계가 알아듣도록 하는 기본 function</p>
+
+<ul>
+  <li>turn left, turn right, …(기본적인 동작부터 복잡한 동작까지 있음)</li>
+  <li>이것이 명령어</li>
+</ul>
+
+<p>hareware: processor가 어떻게 만들어져있는지</p>
+
+<p>instruction set (spec,스펙): 하드웨어가 어떻게 만들어져 있는지</p>
+
+<p>Instruction Set Architecture(ISA): Hardware와 Software의 bridge 역할</p>
+
+<p>microarchitecture</p>
+
+<p><br /></p>
+
+<p>RISC-V 새로 나옴, Open source로 공개 되어 있다.</p>
+
+<ul>
+  <li>원하는만큼 processor를 만들 수 있다.</li>
+</ul>
+
+<p>우리 수업에서는 MIPS를 사용할 것임</p>
+
+<hr />
+
+<p><br /></p>
+
+<p><strong>목차</strong></p>
+
+<ol>
+  <li>Performance(중요)
+    <ul>
+      <li>하드웨어가 얼마나 잘 만들어져 있는지, 잘 만든다는 게 무엇일까?</li>
+    </ul>
+  </li>
+  <li>Instruction Set</li>
+  <li>1에 대한 Micro Architecture(Hardware)</li>
+  <li>Memory</li>
+  <li>I/O</li>
+  <li>Parallel-computer</li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="computer-architecture">Computer Architecture</h2>
+
+<ul>
+  <li>
+    <h4 id="what-is-computer-architeture">What is Computer Architeture?</h4>
+
+    <ul>
+      <li><span style="color:blue">a set of rules</span> starting how software and hardware join together and interact to make them work</li>
+      <li><span style="color:blue">Structure and behavior</span> of the computer as seen by the user(programmer)</li>
+      <li><span style="color:blue">specification</span> describing how hardware and software technologies interact to create a computer platform of system.(spec이라고도 함.)</li>
+    </ul>
+  </li>
+  <li>
+    <h4 id="three-categories-of-computer-architecture">Three categories of computer architecture</h4>
+
+    <ul>
+      <li><strong>lSA</strong> (instrsuction set architecture)</li>
+      <li><strong>Microarchitecture</strong> (computer organization): tells how ISA are implemeted(하드웨어)</li>
+      <li><strong>System design</strong>: includes all of the other hareware components(DMA, virtualization, multiprocessing, GPU, memory controller, etc.)</li>
+    </ul>
+  </li>
+  <li>
+    <h4 id="cisc-and-risc">CISC and RISC</h4>
+
+    <p>복잡하고 간단한 명령들이 나열되어 있음</p>
+
+    <ul>
+      <li>CISC (complex instruction set architecture)
+        <ul>
+          <li>many complex instructions(fewer lines of code, less memory, but take longer to complete instructions)</li>
+          <li>자주 쓰이는 것이 있고 자주 쓰이지 않는 것이 공존하여 굉장히 복잡한 것</li>
+          <li>ex) x86</li>
+        </ul>
+      </li>
+      <li>RISC (reduced  instruction set architecture)
+        <ul>
+          <li>keep hardware as simple and fast as possible(complex instrcutions can be performed with simpler instruction)</li>
+          <li>자주 쓰이지 않는 것은 만들지 않고 자주(많이) 쓰이는 것들로만 구성한 것</li>
+          <li>그럼 자주 쓰이지 않는 것은 어떻게 만들까?</li>
+          <li>이미 있는 간단한 instruction들을 합쳐서 복잡한 것을 만드는 개념</li>
+          <li>ex) ARM, MIPS, RISC -V</li>
+          <li>명령어들이 x86에 비해 set이 훨씬 작음</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <h4 id="von-neumann-architecture-and-harvard-architecture">Von Neumann architecture and Harvard architecture</h4>
+
+    <ul>
+      <li><strong>Von Neumann</strong> : <code class="language-plaintext highlighter-rouge">instructions</code> and <code class="language-plaintext highlighter-rouge">data</code> are both loaded into the same memory unit</li>
+      <li><strong>Harvard</strong> : keeps intructions and data in seperate memories (separated buses)</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// data 부분(선언(declare) 부분)</span>
+<span class="kt">int</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span>
+
+<span class="c1">//program 부분(text, code)</span>
+<span class="n">main</span><span class="p">()</span>
+<span class="p">...</span>
+<span class="n">a</span><span class="o">=</span><span class="n">b</span><span class="o">+</span><span class="n">c</span><span class="p">;</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+<ul>
+  <li>위 코드가 컴퓨터에서는 어떻게 실행될까?</li>
+  <li>CPU를 통해 +, -, *, /, and, or 등의 연산을 하고 싶음 -&gt; ALU에서 연산</li>
+  <li>폰노이만 구조는 data와 프로그램이 한 구조에 있음</li>
+  <li><strong>메모리는 세 부분으로 나뉘어짐</strong>(데이터가 선언될때 메모리가 필요함)
+    <ul>
+      <li>맨 위 : fff…f 번지, stack memory
+        <ul>
+          <li>스택 = temporary
+            <ul>
+              <li>즉, 임시로 잠깐 저장할 때 사용하는 공간</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>중간: data memory
+        <ul>
+          <li>데이터가 들어가는 자리.</li>
+          <li>컴파일이 되면, a, b, c, 방을 잡아준다.(선언 부분, 어디에 잡아줄 지는 compiler가 결정)</li>
+        </ul>
+      </li>
+      <li>맨 아래: 0 번지, program memory
+        <ul>
+          <li>프로그램이 들어있음</li>
+          <li>instruction set이 들어있는 곳</li>
+          <li>instruction에 따라서 수행할 연산을 program counter가 decode하여 전달해줌</li>
+          <li>컴파일러에 의해 high level language에서 컴퓨터가 알아듣는 assembly language로 변환된 후 이곳(program memory)으로 들어온다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>b와 c를 연산하고 싶기 때문에 이를 ALU에 연결하고 싶으나 RISC는 이를 직접 바로 연결하지 못하고, register file(여러개의 register를 모아둔 곳) 을 거쳐서 ALU로 넘겨준다. 또한 이 결과는 다시 register file을 거쳐서 memory로 들어간다.</p>
+
+<ul>
+  <li>
+    <p>load: memory의 데이터를 register로 가져오는 행위</p>
+  </li>
+  <li>
+    <p>store: register에서 ALU로 보내 연산을 마친 결과 데이터를 다시 memory로 보낸다.</p>
+  </li>
+</ul>
+
+<p><br />
+CISC는 다양한 방법을 제공하지만 RISC는 무조건 register를 통해서 들어가야 한다. 그래서 RISC를 load-store architecture라고도 한다.</p>
+
+<p><br /></p>
+
+<p>컴파일러가 high-level언어를 machine이 이해하는 language로 변환 아래와 같이</p>
+
+<pre><code class="language-assembly">load b -&gt; rf1 #register file_1
+load c -&gt; rf3
+addf rf1 + rf3 -&gt; rf5
+store rf5 -&gt; a
+</code></pre>
+
+<p>위처럼 하나하나의 <strong>instruction</strong>으로 바꿔준다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158312148-c799a509-16ff-472d-afa3-6b2fda80db8f.png" alt="image" /></p>
+
+<ul>
+  <li>data path (register file + ALU)
+    <ul>
+      <li>data memory에 있던 data가 register로 들어가고(load 과정) ALU로 가서 연산 결과를 다시 register로 보내서 이를 다시 data memory로 전달함(store 과정)</li>
+    </ul>
+  </li>
+  <li>control(Instruction Register + Decoder)
+    <ul>
+      <li>instruction을 하나씩 control 부분의 IR(Instruction Register)에 가져와서 무슨 명령어인지 분석을 진행한다.</li>
+      <li>근데 instruction을 하나씩 가져오려면 그것들의 위치를 알아야 하는데 이 위치를 알도록해 주는 게 Program Counter(PC)이다.
+        <ul>
+          <li>주소는 4씩 차지하는 공간이기 때문에 4씩 늘려가면서 접근하면 instruction 주소에 하나하나씩 접근할 수 있는 것이다.</li>
+        </ul>
+      </li>
+      <li>program memory에서 instruction들을 <strong>가져오는</strong> 행위를 <code class="language-plaintext highlighter-rouge">fetch</code>라 한다.</li>
+    </ul>
+  </li>
+  <li>그래서 load와 fetch는 둘 다 memory에서 CPU로 object를 가져오는 행위로 같아보이지만 그것이 data memory냐 program memory냐에 따라 다르다.</li>
+  <li>CPU와 memory 사이에 cache라는 것이 존재
+    <ul>
+      <li>cache는 cpu chip 안에 들어있음</li>
+      <li>data용 cache와 instruction용 cache가 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<hr />
+
+<h2 id="classes-of-computer">Classes of Computer</h2>
+
+<ul>
+  <li><strong>Personal computers</strong>
+    <ul>
+      <li>General purpose, variety of software</li>
+      <li>Subject to cost/performance tradeoff</li>
+    </ul>
+  </li>
+  <li><strong>Server computers</strong>
+    <ul>
+      <li>Network based(Google server, storage server,…)</li>
+      <li>High capacity, performance, reliability</li>
+      <li>Range from small servers to building sized</li>
+    </ul>
+  </li>
+  <li><strong>Super computers</strong>
+    <ul>
+      <li>기상청에서 슈퍼컴퓨터 사용</li>
+      <li>Type of server</li>
+      <li>High-end scientific and engineering calculations</li>
+      <li>Highest capability but represent a small fraction of the overall computer market</li>
+    </ul>
+  </li>
+  <li><strong>Embedded computer</strong>(휴대폰, 냉장고 등에 들어있는 프로세서)
+    <ul>
+      <li>
+        <p>Hidden as components of systems</p>
+      </li>
+      <li>
+        <p>Stringent(순) <mark>power / performance / cost constraints</mark></p>
+
+        <ul>
+          <li>배터리로 동작하기 때문에 power가 매우 중요</li>
+          <li>ARM processor가 power가 좋기 때문에 전세계적으로 사용하는 것</li>
+          <li>cost와 size는 직결</li>
+          <li>power ∝ V<sub>dd</sub><sup>2</sup> * f * C<sub>L</sub></li>
+          <li>컴퓨터 구조에서는 cost, power는 다루지 않을 것임(중요하긴 하지만 out of range)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="what--we-will-study-from-cod">What  We Will Study (from COD)</h2>
+
+<ul>
+  <li>How programs are translated into the <strong>machine language</strong>
+    <ul>
+      <li>And how the hardware executes them</li>
+    </ul>
+  </li>
+  <li>The hardware/software interface</li>
+  <li><span style="color:red">What determines program <strong>performance</strong></span>
+    <ul>
+      <li>And how it can be improved</li>
+    </ul>
+  </li>
+  <li>How hardware designers <strong>improve</strong> performance</li>
+  <li>What is <strong>parallel processing</strong> (from COD)</li>
+</ul>
+
+<p>power는 굉장히 중요하지만 hardware적 측면이 강한 부분으로 이곳에서는 다루지 않을 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="performancefrom-cod">Performance(from COD)</h2>
+
+<p><mark>컴퓨터 구조에서 제일 중요하게 다뤄질 부분</mark></p>
+
+<p><br /></p>
+
+<p>아래는 performance를 결정하는 중요한 요인들이다.</p>
+
+<ul>
+  <li>performance is defined <code class="language-plaintext highlighter-rouge">1/실행시간(execution time)</code>
+    <ul>
+      <li>즉, speed와 관련된 것</li>
+    </ul>
+  </li>
+  <li><strong>Algorithm</strong>
+    <ul>
+      <li>Sorting(퀵 정렬, 버블 정렬,…) , Graph 등…</li>
+      <li>Determines # of operations executed</li>
+    </ul>
+  </li>
+  <li><strong>Programming language, compiler, architecture</strong>
+    <ul>
+      <li>Determine # of machine instructions executed per operation</li>
+    </ul>
+  </li>
+  <li><strong>Processor and memory system</strong>
+    <ul>
+      <li>Determine how fast instructions are executed</li>
+    </ul>
+  </li>
+  <li><strong>I/O system(including OS)</strong>
+    <ul>
+      <li>Determines how fast I/O operations are executed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="seven-great-ideasfrom-cod">Seven Great Ideas(from COD)</h2>
+
+<p>high speed CPU를 이룰 수 있던 motivation은 무엇일까?</p>
+
+<ul>
+  <li>
+    <p>Use <strong>abstraction</strong> to simplify design</p>
+  </li>
+  <li>Make the <strong>common case fast</strong>
+    <ul>
+      <li>많이 사용되는 것들을 가장 빠르게 하는 것이 key idea</li>
+    </ul>
+  </li>
+  <li>Performance via <strong>parallelism</strong>
+    <ul>
+      <li>부족하면 여러개를 이어붙여서 사용하는 것</li>
+    </ul>
+  </li>
+  <li>Performance via <strong>pipelining</strong>
+    <ul>
+      <li>나중에 배움</li>
+    </ul>
+  </li>
+  <li>Performance via <strong>prediction</strong>
+    <ul>
+      <li>다음 가져올 데이터를 미리 예측하여 미리 가져오는 것</li>
+    </ul>
+  </li>
+  <li><strong>Hierarchy</strong> of memories
+    <ul>
+      <li>하드디스크, main memory, cache memory, cpu</li>
+    </ul>
+  </li>
+  <li><strong>Dependability</strong> via redundancy(중복성, 여분)
+    <ul>
+      <li>데이터의 speed도 중요하지만 서버가 날라가면 큰일 나기 때문에 서버에 있는 컴퓨터들은 보통 하드디스크를 하나만 쓰지 않고 여러개 나눠 사용한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="levels-of-program-code-from-cod">Levels of Program Code (from COD)</h2>
+
+<p>Compiler에 의해 language를 machine이 알아듣도록 계속 변환 시킴</p>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p><strong>High-level language</strong></p>
+
+    <ul>
+      <li>
+        <p>Level of abstraction closer to problem domain</p>
+      </li>
+      <li>
+        <p>Provides for productivity and portabiltiy</p>
+      </li>
+      <li>
+        <p>compiler에 의해 assembly language로 변환해 줌</p>
+      </li>
+      <li>
+        <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">swap</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">temp</span><span class="p">;</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
+    <span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">v</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Assembly lanuage</strong></p>
+
+    <ul>
+      <li>
+        <p>Textual representation of instrcutions</p>
+      </li>
+      <li>
+        <p>compiler에 의해 machine language(Hardware representation)으로 변환해 줌</p>
+      </li>
+      <li>
+        <pre><code class="language-assembly">swap:
+	muli $2, $5.4
+	add $2, $4.$2
+	lw $15, 0($2)
+	lw $16, 4($2)
+	sw $16, 0($2)
+	sw $15, 4($2)
+	jr $31
+</code></pre>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Hardware representation</strong></p>
+
+    <ul>
+      <li>
+        <p>Binary digits(bits)</p>
+      </li>
+      <li>
+        <p>Encoded instructions and data</p>
+      </li>
+      <li>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00000000000000000000011010100000100000000000100110
+101000000000000001111111000000000001111111000001
+010100000000000111111101010010
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+:ET

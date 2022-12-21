@@ -1,0 +1,99 @@
+I"<p><br /></p>
+
+<h2 id="acm-호텔">ACM 호텔</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>시간 제한</th>
+      <th>메모리 제한</th>
+      <th>정답 비율</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1 초</td>
+      <td>256 MB</td>
+      <td>33.585%</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="문제">문제</h2>
+
+<p>ACM 호텔 매니저 지우는 손님이 도착하는 대로 빈 방을 배정하고 있다. 고객 설문조사에 따르면 손님들은 호텔 정문으로부터 걸어서 가장 짧은 거리에 있는 방을 선호한다고 한다. 여러분은 지우를 도와 줄 프로그램을 작성하고자 한다. 즉 설문조사 결과 대로 호텔 정문으로부터 걷는 거리가 가장 짧도록 방을 배정하는 프로그램을 작성하고자 한다.</p>
+
+<p>문제를 단순화하기 위해서 호텔은 직사각형 모양이라고 가정하자. 각 층에 W 개의 방이 있는 H 층 건물이라고 가정하자 (1 ≤ H, W ≤ 99). 그리고 엘리베이터는 가장 왼쪽에 있다고 가정하자(그림 1 참고). 이런 형태의 호텔을 H × W 형태 호텔이라고 부른다. 호텔 정문은 일층 엘리베이터 바로 앞에 있는데, 정문에서 엘리베이터까지의 거리는 무시한다. 또 모든 인접한 두 방 사이의 거리는 같은 거리(거리 1)라고 가정하고 호텔의 정면 쪽에만 방이 있다고 가정한다.</p>
+
+<p><img src="https://www.acmicpc.net/upload/images2/elevator.png" alt="img" /></p>
+
+<p>그림 1. H = 6 이고 W = 12 인 H × W 호텔을 간략하게 나타낸 그림</p>
+
+<h3 id="입력">입력</h3>
+
+<hr />
+
+<p>프로그램은 표준 입력에서 입력 데이터를 받는다. 프로그램의 입력은 T 개의 테스트 데이터로 이루어져 있는데 T 는 입력의 맨 첫 줄에 주어진다. 각 테스트 데이터는 한 행으로서 H, W, N, 세 정수를 포함하고 있으며 각각 호텔의 층 수, 각 층의 방 수, 몇 번째 손님인지를 나타낸다(1 ≤ H, W ≤ 99, 1 ≤ N ≤ H × W).</p>
+
+<h3 id="출력">출력</h3>
+
+<hr />
+
+<p>프로그램은 표준 출력에 출력한다. 각 테스트 데이터마다 정확히 한 행을 출력하는데, 내용은 N 번째 손님에게 배정되어야 하는 방 번호를 출력한다.</p>
+
+<h3 id="예제-입력-1">예제 입력 1</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
+6 12 10
+30 50 72
+</code></pre></div></div>
+
+<h3 id="예제-출력-1">예제 출력 1</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>402
+1203
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="풀이">풀이</h2>
+
+<p>이 문제는 백준 단계별 풀이의 기본수학 1 카테고리에 있는 문제로서 수학, 구현, 사칙연산의 알고리즘을 사용하여 푸는 문제입니다.<br /></p>
+
+<p>저는 몇 번째 손님인지를 나타내는 ‘n’을 방의 층수를 의미하는 ‘h’로 나눗셈을 진행하면 결과로 나오는 몫과 나머지가 해당 손님의 방의 호수와 층수를 모두 구할 수 있을 것이라 생각하였습니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_case</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span> 
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">test_case</span><span class="p">):</span>
+    <span class="n">input_</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+    <span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">input_</span><span class="p">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">mok</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">h</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">n</span> <span class="o">%</span> <span class="n">h</span>
+
+    <span class="k">if</span> <span class="n">rest</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">h</span><span class="o">+</span><span class="n">mok</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mok</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">rest</span><span class="o">+</span><span class="n">mok</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>먼저 몇 번의 case를 확인할 지를 받아야 하기 때문에 test_case를 정수형태로 입력 받아 이 수많큼 for문으로 반복합니다.</p>
+  </li>
+  <li>
+    <p>반복문 안의 내용</p>
+    <ul>
+      <li>입력을 띄어쓰기를 기준으로 세 정수를 받는다. 이를 띄어쓰기를 기준으로 다시 나누어 정수화 과정을 진행하여 각각의 변수 h,w,n(순서대로 층수, 호수, 손님 번호)에 저장합니다.</li>
+      <li>손님의 번호와 건물의 층 수를 나누었을 때 딱 떨어지는 경우는 건물의 꼭대기 임을 쉽게 확인할 수 있었고 그렇지 않은 경우에는 몫(호수)이 원하는 값보다 1만큼 더 적기 때문에 이를 따로 if문으로 구별하였습니다.</li>
+      <li>나눈 몫과 나머지를 변수 mok, rest에 각각 저장하였습니다.</li>
+      <li>만약 나머지가 0이라면 꼭대기층에 있는 것이므로 높이는 입력받은 높이 그대로를 사용하고 호수는 몫을 그대로 사용하여 값을 산출할 수 있었습니다.</li>
+      <li>만약 나머지가 값이 존재한다면 나눈 몫에 1을 더해준 것이 호수가 되고 나머지가 그대로 층수가 되어 값을 산출할 수 있었습니다.</li>
+    </ul>
+  </li>
+</ul>
+
+:ET

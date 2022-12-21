@@ -1,0 +1,3199 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[OS] Process Concept | speardragon note</title>
+<meta name="description" content="일부 내용은 시험에서 제외됨 (시험기간 직전에 알려줌)">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[OS] Process Concept">
+<meta property="og:url" content="http://localhost:4000/os/OS-Process-Concept/">
+
+
+  <meta property="og:description" content="일부 내용은 시험에서 제외됨 (시험기간 직전에 알려줌)">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-19T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/os/OS-Process-Concept/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#os" itemprop="item"><span itemprop="name">Os</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[OS] Process Concept</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[OS] Process Concept">
+    <meta itemprop="description" content="일부 내용은 시험에서 제외됨 (시험기간 직전에 알려줌)">
+    <meta itemprop="datePublished" content="2022-09-19T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/os/OS-Process-Concept/" class="u-url" itemprop="url">[OS] Process Concept
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          23 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#chapter-3-process-concept">Chapter 3: Process Concept</a><ul><li><a href="#process-concept">Process Concept</a></li><li><a href="#the-multiple-parts-section-of-a-process">The Multiple Parts (section) of a Process</a></li><li><a href="#process-in-memory">Process in Memory</a></li><li><a href="#process-concept-1">Process Concept</a></li><li><a href="#process-state">Process State</a></li><li><a href="#diagram-of-process-state">Diagram of Process State</a></li><li><a href="#process-control-block-pcb">Process Control Block (PCB)</a></li><li><a href="#cpu-switch-from-process-to-process">CPU Switch From Process to Process</a></li><li><a href="#threads">Threads</a></li><li><a href="#process-representation-in-linux">Process Representation in Linux</a></li><li><a href="#process-scheduling">Process Scheduling</a></li><li><a href="#ready-queue-and-various-io-device-queues">Ready Queue And Various I/O Device Queues</a></li><li><a href="#representation-of-process-scheduling">Representation of Process Scheduling</a></li><li><a href="#schedulers">Schedulers</a></li><li><a href="#addition-of-medium-term-scheduling">Addition of Medium Term Scheduling</a></li><li><a href="#multitasking-in-mobile-systems">Multitasking in Mobile Systems</a></li><li><a href="#context-switch">Context Switch</a></li><li><a href="#operations-on-processes매우-중요">Operations on Processes(매우 중요)</a></li><li><a href="#process-creation">Process Creation</a></li><li><a href="#a-tree-of-processes-in-linux">A tree of Processes in Linux</a></li><li><a href="#process-creation-cont">Process Creation (Cont.)</a></li><li><a href="#c-program-forking-separate-process">C Program Forking Separate Process</a></li><li><a href="#creating-a-separate-process-via-windows-api">Creating a Separate Process via Windows API</a></li><li><a href="#process-creation-cont-1">Process Creation (Cont.)</a></li><li><a href="#process-termination">Process Termination</a></li><li><a href="#multiprocess-architecture---chrome-browser">Multiprocess Architecture - Chrome Browser</a></li><li><a href="#interprocess-communicationipc">Interprocess Communication(IPC)</a></li><li><a href="#communications-models">Communications Models</a></li><li><a href="#producer-consumer-problem-sm-shared-memory">Producer-Consumer Problem (SM; shared memory)</a></li><li><a href="#bounded-buffer---shared-memory-solution">Bounded-Buffer - Shared-Memory Solution</a></li><li><a href="#bounded-buffer---producer">Bounded-Buffer - Producer</a></li><li><a href="#bounded-buffer---consumer">Bounded Buffer - Consumer</a></li><li><a href="#interprocess-communication---shared-memory">Interprocess Communication - Shared Memory</a></li><li><a href="#interprocess-communication--message-passing">Interprocess Communication – Message Passing</a></li><li><a href="#message-passing-cont">Message Passing (Cont.)</a></li><li><a href="#naming-direct-communication">Naming Direct Communication</a></li><li><a href="#direct-communication">Direct Communication</a></li><li><a href="#naming-indirect-communication">Naming Indirect Communication</a></li><li><a href="#indirect-communication-continued">Indirect Communication (Continued)</a></li><li><a href="#synchronization">Synchronization</a></li><li><a href="#buffering">Buffering</a></li><li><a href="#examples-of-ipc-systems---posix">Examples of IPC Systems - POSIX</a></li><li><a href="#ipc-posix-producer">IPC POSIX Producer</a></li><li><a href="#ipc-posix-consumer">IPC POSIX Consumer</a></li><li><a href="#an-example-of-ipc-mach">An example of IPC: Mach</a></li><li><a href="#examples-of-ipc-systems---windows-xp생략">Examples of IPC Systems - Windows XP(생략)</a></li><li><a href="#local-procedure-calls-in-windows-xp생략">Local Procedure Calls in Windows XP(생략)</a></li><li><a href="#communications-in-client-server-systems">Communications in Client-Server Systems</a></li><li><a href="#sockets">Sockets</a></li><li><a href="#socket-communication">Socket Communication</a></li><li><a href="#date-client">Date Client</a></li><li><a href="#date-server">Date Server</a></li><li><a href="#remote-procedure-callsrpc">Remote Procedure Calls(RPC)</a></li><li><a href="#execution-of-rpc">Execution of RPC</a></li><li><a href="#pipes">Pipes</a></li><li><a href="#ordinary-pipes시험">Ordinary Pipes(시험)</a></li><li><a href="#ordinary-pipes">Ordinary Pipes</a></li><li><a href="#ordinary-pipe-in-unix">Ordinary pipe in UNIX</a></li><li><a href="#named-pipes">Named Pipes</a></li><li><a href="#remote-method-invocationrmi">Remote Method Invocation(RMI)</a></li><li><a href="#rpc-vs-rmi">RPC vs. RMI</a></li><li><a href="#marshalling-parameters">Marshalling Parameters</a></li><li><a href="#concurrency">Concurrency</a></li><li><a href="#connectionless-iterative-server">Connectionless iterative server</a></li><li><a href="#connection-oriented-concurrent-server">Connection-oriented concurrent server</a></li><li><a href="#programs-and-processes">Programs and processes</a></li><li><a href="#a-program-that-prints-its-own-processid">A Program that prints its own processid</a></li><li><a href="#a-program-with-one-parent-and-one-child">A program with one parent and one child</a></li><li><a href="#a-program-with-two-fork-functions">A program with two fork functions</a></li><li><a href="#the-output-of-the-program-in-figure-1512">The output of the program in Figure 15.12</a></li><li><a href="#a-program-that-prints-the-processids-of-the-parent-and-the-child">A program that prints the processids of the parent and the child</a></li><li><a href="#example-of-a-server-program-with-parent-and-child-processes">Example of a server program with parent and child processes</a></li><li><a href="#tcp-서버-함수-18">TCP 서버 함수 (1/8)</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>일부 내용은 시험에서 제외됨 (시험기간 직전에 알려줌)</p>
+
+<h1 id="chapter-3-process-concept">Chapter 3: Process Concept</h1>
+
+<ul>
+  <li>Process Concept</li>
+  <li>Process Scheduling</li>
+  <li>Operation on Processes</li>
+  <li>Inter-process Communication</li>
+  <li>Examples of IPC Systems</li>
+  <li>Communication in Client-Server Systems</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="process-concept">Process Concept</h2>
+
+<ul>
+  <li>An operating system executes a variety of programs:
+    <ul>
+      <li>Batch system – jobs</li>
+      <li>Time-shared systems – user programs or tasks</li>
+    </ul>
+  </li>
+  <li>Textbook uses the terms <strong>job</strong> and <strong>process</strong> almost interchangeably.</li>
+  <li>Process – a program in execution; process execution must progress in sequential fashion.</li>
+  <li>A process includes:
+    <ul>
+      <li><strong>Resources</strong>: timers, pending signals, open files, network connections, hardware, and IPC mechanisms</li>
+      <li><strong>state, and a virtualized processor</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-multiple-parts-section-of-a-process">The Multiple Parts (section) of a Process</h2>
+
+<ul>
+  <li><strong>Each process has following memory sections</strong>
+    <ul>
+      <li><strong>Text section</strong>
+        <ul>
+          <li>The program code(기계어로 번역된) &amp; read-only data such as constant variables</li>
+          <li>Current activity including <strong>program counter</strong>, processor registers</li>
+        </ul>
+      </li>
+      <li><strong>Stack section</strong> containing temporary data
+        <ul>
+          <li>Function parameters, return addresses, local variables</li>
+        </ul>
+      </li>
+      <li><strong>Data section</strong> containing global variables
+        <ul>
+          <li>함수 밖에서 선언된 변수, static 변수</li>
+        </ul>
+      </li>
+      <li><strong>Heap section</strong> containing memory dynamically allocated during run time</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="process-in-memory">Process in Memory</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234751229.png" alt="image-20220907234751229" /></p>
+
+<ul>
+  <li>program definition에서 하나의 process가 만들어진 모습 - process 주소 공간
+    <ul>
+      <li>process 마다 만들어 지는 것! (protection 가능)</li>
+    </ul>
+  </li>
+  <li>text(code)는 program definition이 들어있는데 이를 그대로 탑재 - read only
+    <ul>
+      <li>그러나 모두 다 탑재하는 것은 비효율적이기 때문에 여러 process가 공유한다.</li>
+    </ul>
+  </li>
+  <li>data: 함수 밖에서 선언한 변수가 저장되는 공간 or static 변수</li>
+  <li>stack: local 함수 변수</li>
+  <li>heap: 동적 메모리 할당</li>
+</ul>
+
+<p>유일하게 공유되는 부분은 text 부분!</p>
+
+<p>다른 프로세스의 정보를 읽거나 수정하기 위해서는 커뮤니케이션이 이루어져야 함.(MPP or Shared memory)</p>
+
+<p><br /></p>
+
+<h2 id="process-concept-1">Process Concept</h2>
+
+<ul>
+  <li>Program is <strong>passive</strong> entity stored on disk (<strong>executable file</strong>), process is <strong>active</strong>
+    <ul>
+      <li>Program becomes process when executable file loaded into memory</li>
+    </ul>
+  </li>
+  <li>Execution of program started via GUI mouse clicks, command line entry of its name, etc</li>
+  <li>One program can be several processes
+    <ul>
+      <li>Consider multiple users executing the same program</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="process-state">Process State</h2>
+
+<ul>
+  <li>As a process executes, it changes state
+    <ul>
+      <li>new: The process is being created.</li>
+      <li>running: Instructions are being executed.</li>
+      <li>waiting: The process is waiting for some event to occur.
+        <ul>
+          <li>I/O completion, Signal</li>
+        </ul>
+      </li>
+      <li>ready: The process is waiting to be assigned to a process.</li>
+      <li>terminated: The process has finished execution.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="diagram-of-process-state">Diagram of Process State</h2>
+
+<p><mark>매우 중요한 그림과 설명</mark></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234908196.png" alt="image-20220907234908196" /></p>
+
+<ul>
+  <li>new: process 주소 공간을 만듬(할당)
+    <ul>
+      <li>PCB도 만듦.</li>
+    </ul>
+  </li>
+  <li>ready: 탑재가 종료되면 admitted 되어 CPU를 할당 받아야 하는데 다른 실행되어야 하는 프로그램들도 있기 때문에 줄(queue)을 서야 한다.
+    <ul>
+      <li>갯수 제한이 없음</li>
+      <li>running으로 가는 걸 결정하는 것: short term scheduler</li>
+    </ul>
+  </li>
+  <li>running: <strong>CPU scheduling</strong> or priority
+    <ul>
+      <li>오로지 하나의 process만 가능(core가 하나이기 때문에)</li>
+      <li>프로세스가 interrupt가 걸린 경우 ready queue로 이동하게 됨</li>
+    </ul>
+  </li>
+  <li>waiting: I/O 혹은 event wait을 하는 경우, waiting을 하고나서 바로 실행 불가(다른 프로그램이 기다리고 있기 때문),
+    <ul>
+      <li>갯수 제한이 없음</li>
+      <li>resume을 기다림</li>
+      <li>event: read, printf, sleep, recv</li>
+    </ul>
+  </li>
+  <li>terminated: 모든 자원 반납(process 주소공간, 무수히 많은 자원)
+    <ul>
+      <li>exit() 호출</li>
+      <li>마지막 문장 실행</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="process-control-block-pcb">Process Control Block (PCB)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002134206650.png" alt="image-20221002134206650" /></p>
+
+<p>Information associated with each process.</p>
+
+<ul>
+  <li>
+    <p>new state에서 만들어짐</p>
+  </li>
+  <li>Process state – running, waiting, etc</li>
+  <li>Program counter – location of instruction to next execute</li>
+  <li>CPU registers – contents of all process-centric registers</li>
+  <li>CPU scheduling information
+    <ul>
+      <li>Priority, pointers to scheduling queues</li>
+    </ul>
+  </li>
+  <li>Memory-management information
+    <ul>
+      <li>memory allocated to the process</li>
+      <li>Value of base, limit registers, page table</li>
+    </ul>
+  </li>
+  <li>Accounting information - CPU used, clock time elapsed since start, time limits</li>
+  <li>I/O status information
+    <ul>
+      <li>I/O devices allocated to process, list of open files</li>
+    </ul>
+  </li>
+  <li>저장을 하는 이유: process가 running 상태에 있다가 다른 상태에 가고나서 다시 돌아올 때 실행을 잠시 중단 했던 시점의 snapshot 정보(original)를 복원하기 위한 목적</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cpu-switch-from-process-to-process">CPU Switch From Process to Process</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907235102206.png" alt="image-20220907235102206" /></p>
+
+<ul>
+  <li>P0가 실행되다가 interrupt나 system call을 실행한 경우 PCB0에 해당 프로세스와 관련된 정보를 모두 저장한다.</li>
+  <li>ready state에 있던 process 중 P1이 실행을 시작한다.
+    <ul>
+      <li>시작하면서 PCB1에 저장되었던 process 정보를 복원한다.</li>
+    </ul>
+  </li>
+  <li>idle -&gt; suspend</li>
+  <li>executing -&gt; resume</li>
+  <li>suspend 되는 시점에서의 정보 -&gt; running snapshot을 PCB에 저장</li>
+  <li>이 중 상당부분은 context switching overhead 때문에 사용되지 못함.
+    <ul>
+      <li>이 overhead를 해결하기 위해 나온 개념이 thread</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="threads">Threads</h2>
+
+<ul>
+  <li>So far, process has a single <strong>thread of execution</strong></li>
+  <li>Consider having multiple program counters per process
+    <ul>
+      <li>Multiple locations can execute at once
+        <ul>
+          <li><strong>Multiple threads of control</strong> -&gt; <strong>threads</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Must then have storage for thread details, multiple program counters in PCB</li>
+  <li>See next chapter</li>
+  <li>어떤 프로그램에 프로그램 궤적이 여러 개가 있다면??</li>
+  <li>이 각각의 궤적을 thread라고 부른다!!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="process-representation-in-linux">Process Representation in Linux</h2>
+
+<ul>
+  <li>Represented by the C structure</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// task_struct</span>
+<span class="n">pid</span> <span class="n">t</span> <span class="n">pid</span><span class="p">;</span> <span class="cm">/* process identifier */</span>
+<span class="kt">long</span> <span class="n">state</span><span class="p">;</span> <span class="cm">/* state of the process */</span>
+<span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">time</span> <span class="n">slice</span> <span class="cm">/* scheduling information */</span>
+<span class="k">struct</span> <span class="n">task</span> <span class="k">struct</span> <span class="o">*</span><span class="n">parent</span><span class="p">;</span> <span class="cm">/* this process’s parent */</span>
+<span class="k">struct</span> <span class="n">list</span> <span class="n">head</span> <span class="n">children</span><span class="p">;</span> <span class="cm">/* this process’s children */</span>
+<span class="k">struct</span> <span class="n">files</span> <span class="k">struct</span> <span class="o">*</span><span class="n">files</span><span class="p">;</span> <span class="cm">/* list of open files */</span>
+<span class="k">struct</span> <span class="n">mm</span> <span class="k">struct</span> <span class="o">*</span><span class="n">mm</span><span class="p">;</span> <span class="cm">/* address space of this pro */</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907235228970.png" alt="image-20220907235228970" /></p>
+
+<p><br /></p>
+
+<h2 id="process-scheduling">Process Scheduling</h2>
+
+<ul>
+  <li>Maximize CPU use, quickly switch processes onto CPU for time sharing <span style="color:green">시험</span></li>
+  <li><strong>Process scheduler</strong> selects among available processes for next execution on CPU</li>
+  <li>Maintains scheduling queues of processes
+    <ul>
+      <li><strong>Job queue</strong> – set of all processes in the system
+        <ul>
+          <li>HDD에서 main memory로 탑재를 기다리는 프로그램들의 줄</li>
+        </ul>
+      </li>
+      <li><strong>Ready queue</strong> – set of all processes residing in main memory, ready and waiting to execute</li>
+      <li><strong>Device queues</strong> – set of processes waiting for an I/O device</li>
+      <li>Processes migrate among the various queues</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ready-queue-and-various-io-device-queues">Ready Queue And Various I/O Device Queues</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907235341626.png" alt="image-20220907235341626" /></p>
+
+<p><br /></p>
+
+<h2 id="representation-of-process-scheduling">Representation of Process Scheduling</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907235401030.png" alt="image-20220907235401030" /></p>
+
+<p><br /></p>
+
+<h2 id="schedulers">Schedulers</h2>
+
+<ul>
+  <li><strong>Long-term scheduler</strong> (or job scheduler)
+    <ul>
+      <li>selects which processes should be brought into the ready queue.</li>
+      <li>Long-term scheduler is invoked <strong>infrequently</strong> (seconds, minutes) =&gt; (may be slow)</li>
+      <li>The long-term scheduler controls the <strong>degree of multiprogramming</strong> <span style="color:green">(시험)</span>
+        <ul>
+          <li>If too many jobs with a lot of I/O,
+            <ul>
+              <li>CPU utilization may be low,</li>
+              <li>processes mainly blocked</li>
+            </ul>
+          </li>
+          <li>If too many jobs which are mainly computation
+            <ul>
+              <li>Low utilization of I/O devices</li>
+            </ul>
+          </li>
+          <li>그래서 I/O와 CPU 사용을 적절히 융화하는 것이 long tern scheduler의 일</li>
+        </ul>
+      </li>
+      <li>Processes can be described as either:
+        <ul>
+          <li>I/O-bound process(I/O를 많이 하는 process) – spends more time doing I/O than computations, many short CPU bursts.</li>
+          <li>CPU-bound process(CPU 사용을 많이 하는 process) – spends more time doing computations; few very long CPU bursts.</li>
+        </ul>
+      </li>
+      <li>Long-term scheduler strives for good <strong>process mix</strong></li>
+    </ul>
+  </li>
+  <li><strong>Short-term</strong> scheduler (or CPU scheduler)
+    <ul>
+      <li>selects which <strong>ready process</strong> should be executed next and allocates CPU <span style="color:green"><span style="color:green">(시험)</span></span></li>
+      <li>Sometimes the only scheduler in a system</li>
+      <li>Short-term scheduler is invoked <strong>very frequently</strong> (milliseconds)
+        <ul>
+          <li>=&gt; (must be fast).</li>
+          <li>multi-programming 환경이기 때문에 매우 빈번하게 실행됨.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="addition-of-medium-term-scheduling">Addition of Medium Term Scheduling</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907235624346.png" alt="image-20220907235624346" /></p>
+
+<ul>
+  <li>
+    <p>swap 하는 기능이 추가됨</p>
+  </li>
+  <li>
+    <p>부분적으로 실행되는 process를 하드디스크로 보내버림</p>
+  </li>
+  <li><strong>Medium-term scheduler</strong> <u>can be added if degree of multiple programming needs to decrease</u>
+    <ul>
+      <li>degree of multiple programming이 높으면 throughput이 좋아지지만 너무 많아지면 오히려 낮아지는데 context switching overhead 가 너무 자주 일어나기 때문이다
+        <ul>
+          <li>So, Sometimes system load needs to be readjusted</li>
+        </ul>
+      </li>
+      <li><strong>Remove process from memory, store on disk, bring back in from disk to continue execution: swapping</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p>Some systems do not have</p>
+  </li>
+  <li>시스템 load가 줄어들 때까지 메모리에서 프로세스를 harddisk에 저장을 하고 죽인다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multitasking-in-mobile-systems">Multitasking in Mobile Systems</h2>
+
+<ul>
+  <li>Some mobile systems (e.g., early version of iOS) allow only one process to run, <strong>others suspended</strong></li>
+  <li>Due to screen real estate, user interface limits iOS provides for a
+    <ul>
+      <li>Single <strong>foreground</strong> process- controlled via user interface(ui)</li>
+      <li>Multiple <strong>background</strong> processes– in memory, running, but not on the display, and with limits</li>
+      <li>Limits include single, short task, receiving notification of events, specific long-running tasks like audio playback</li>
+    </ul>
+  </li>
+  <li>Android runs foreground and background, with fewer limits
+    <ul>
+      <li>Background process uses a <strong>service</strong> to perform tasks</li>
+      <li>Service can keep running even if background process is suspended</li>
+      <li>Service has no user interface, small memory use</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="context-switch">Context Switch</h2>
+
+<ul>
+  <li>When CPU switches to another process, the system must 1) <strong>save the state of the old process</strong> and 2) load the <strong>saved state</strong> for the new process via a <strong>context switch</strong> &amp; 3) restart new process</li>
+  <li><strong>Context</strong> of a process represented in the PCB</li>
+  <li>Context-switch time is overhead; the system does no useful work while switching
+    <ul>
+      <li>The more complex the OS and the PCB -&gt; the longer the context switch</li>
+    </ul>
+  </li>
+  <li>Time dependent on hardware support
+    <ul>
+      <li>Some hardware provides multiple sets of registers per CPU -&gt; <strong>multiple contexts loaded at once</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="operations-on-processes매우-중요">Operations on Processes(매우 중요)</h2>
+
+<ul>
+  <li>System must provide mechanisms for
+    <ul>
+      <li>process <strong>creation</strong>,</li>
+      <li>Process <strong>termination</strong>,</li>
+      <li>and so on as detailed next</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="process-creation">Process Creation</h2>
+
+<ul>
+  <li><strong>Parent</strong> process create <strong>children</strong> processes, which, in turn create other processes, forming a tree of processes</li>
+  <li>Generally, process identified and managed via a <strong>process identifier (pid)</strong></li>
+  <li>Resource sharing options - design issue
+    <ul>
+      <li>Parent and children share <strong>all</strong> resources.
+        <ul>
+          <li>부모 자식 간은 모든 자원을 공유한다.</li>
+        </ul>
+      </li>
+      <li>Children share <strong>subset</strong> of parent’s resources.</li>
+      <li>Parent and child share <strong>no</strong> resources.</li>
+    </ul>
+  </li>
+  <li>Execution options
+    <ul>
+      <li>Parent and children execute concurrently.</li>
+      <li>Parent waits until children terminate</li>
+    </ul>
+  </li>
+  <li>모든 프로세스는 init process의 자손이다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="a-tree-of-processes-in-linux">A tree of Processes in Linux</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220908000144448.png" alt="image-20220908000144448" /></p>
+
+<p><br /></p>
+
+<h2 id="process-creation-cont">Process Creation (Cont.)</h2>
+
+<ul>
+  <li>Address space
+    <ul>
+      <li>Child duplicate of parent.</li>
+      <li>Child has a program(new program) loaded into it.</li>
+    </ul>
+  </li>
+  <li>UNIX examples
+    <ul>
+      <li><strong>fork</strong> system call creates new process</li>
+      <li><strong>exec</strong> system call used after a <strong>fork</strong> to <code class="language-plaintext highlighter-rouge">replace the process’ memory space with a new program.</code>
+        <ul>
+          <li>프로세스의 메모리 공간을 새로운 프로그램으로 대치한다.</li>
+        </ul>
+      </li>
+      <li>m = fork()
+        <ul>
+          <li>m값은 parent도 받고 child도 받는데 그 값은 다르다.
+            <ul>
+              <li>child한테는 0을, parent 한테는 child의 pid</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (fork() != 0) /* parent code */ 
+	{ code to be executed by parent} 
+else 
+	{ exec(code image) }
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220908000403071.png" alt="image-20220908000403071" /></p>
+
+<p><br /></p>
+
+<h2 id="c-program-forking-separate-process">C Program Forking Separate Process</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;studio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    
+    <span class="cm">/* fork another process */</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span> <span class="c1">// thread control이 두 개가 됨</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* error occurred */</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Fork Failed"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* child process */</span>
+        <span class="n">execlp</span><span class="p">(</span><span class="s">"/bin/ls"</span><span class="p">,</span> <span class="s">"ls"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span> <span class="cm">/* parent process */</span>
+        <span class="cm">/* parent will wait for the child */</span>
+        <span class="n">wait</span> <span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s">"Child Complete"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="creating-a-separate-process-via-windows-api">Creating a Separate Process via Windows API</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220908000502407.png" alt="image-20220908000502407" /></p>
+
+<p><br /></p>
+
+<h2 id="process-creation-cont-1">Process Creation (Cont.)</h2>
+
+<ul>
+  <li><strong>Shell</strong> : process which is command interpreter
+    <ul>
+      <li>Get command</li>
+      <li>Execute command (fork a child, wait for a child to finish)</li>
+      <li>Go back to get command</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">While</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">display</span> <span class="n">prompt</span>
+     <span class="n">read</span> <span class="n">command</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">then</span><span class="p">{</span> <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span> <span class="n">exit</span><span class="p">()</span> <span class="p">}</span>
+     <span class="k">else</span> <span class="p">{</span> <span class="n">execve</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">parmas</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>shell이든 일반적인 프로그램에서 fork를 하든 동작원리는 같다.</p>
+
+<p><br /></p>
+
+<h2 id="process-termination">Process Termination</h2>
+
+<ul>
+  <li>Process executes <strong>last statement</strong> and then asks the operating system to delete it using the <strong>exit()</strong> system call.
+    <ul>
+      <li>Returns status data from child to parent (via <strong>wait()</strong>)</li>
+      <li>Process’ resources are <strong>deallocated</strong> by operating system</li>
+    </ul>
+  </li>
+  <li>Parent may terminate the execution of children processes using the <strong>abort()</strong> (비정상 종료)system call. Some reasons for doing so:
+    <ul>
+      <li>abort()의 인자로 강제 종료 시킬 프로세스를 적는다.</li>
+      <li>다른 프로세스가 나를 종료시키려 할 때 쓰는 것이 abort</li>
+      <li>Child has <strong>exceeded</strong> allocated resources</li>
+      <li>Task assigned to child is <strong>no longer required</strong></li>
+      <li>The parent is <strong>exiting</strong>
+        <ul>
+          <li>operating systems does not allow a child to continue if its parent terminates
+            <ul>
+              <li><span style="color:red">부모 프로세스가 종료되면 그 아래 자손 프로세스들은 모두 종료된다.</span></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Some operating systems do not allow child to exists if its parent has terminated. If a process terminates, then all its children must also be terminated.
+    <ul>
+      <li><strong>cascading termination</strong>. All children, grandchildren, etc. are terminated.
+        <ul>
+          <li>모든 자손이 종료</li>
+        </ul>
+      </li>
+      <li>The termination is initiated by the operating system.</li>
+    </ul>
+  </li>
+  <li>The parent process may wait for termination of a child process by using the wait() system call. The call returns status information and the pid of the terminated process
+    <ul>
+      <li>pid = wait(&amp;status);
+        <ul>
+          <li>status: child process가 종료된 이유</li>
+          <li>pid: 종료되어진 child process의 pid</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>정상적인 방법으로 종료하지 못하는 프로세스<span style="color:green">(시험)</span></p>
+
+<ul>
+  <li>If no parent waiting (did not invoke wait()) process is a <strong>zombie</strong>
+    <ul>
+      <li>만약 child process가 exit() 시스템콜로 종료했는데 parent process가 wait()으로 child process의 종료를 기다리지 않는 경우</li>
+      <li>이 때 종료되지 않은 child process를 zombie process라고 함.</li>
+      <li><span style="color:red">만약 child process가 exit() 시스템 콜을 호출하여 종료했는데 parent process가 이를 wait()으로 child process의 종료를 기다리지 않으면 이때 이 child process는 zombie process가 된다.</span></li>
+      <li>이미 좀비 상태에서 kill 하면 명령어가 통하지 않는데, 부모 프로세스를 kill 함으로써?</li>
+    </ul>
+  </li>
+  <li>If parent terminated without invoking wait , process is an <strong>orphan(고아)</strong>
+    <ul>
+      <li>parent가 wait()을 호출하지 않고 그냥 종료해 버린 경우</li>
+      <li>wait()을 하지 않으면 parent가 자식이 종료되지 않았는데 그냥 종료되어 버릴 수 있는 것!</li>
+      <li><span style="color:red">parnet process가 child process가 아직 종료되지 않았는데 wait() 호출하지도 않고 그냥 종료되면 이때 child process는 orphan process가 된다.</span></li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>정리</strong></p>
+
+<ul>
+  <li>부모 프로세스가 자식 프로세스보다 먼저 종료되면 orphan process</li>
+  <li>자식 프로세스가 종료되었지만 부모 프로세스가 자식 프로세스의 종료를 회수하지 않는 경우 자식 프로세스는 zombie process</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multiprocess-architecture---chrome-browser">Multiprocess Architecture - Chrome Browser</h2>
+
+<ul>
+  <li>Many web browsers ran as <strong>single process</strong> (some still do)
+    <ul>
+      <li>If one web site causes trouble, entire browser can hang or crash
+        <ul>
+          <li>한 사이트에 문제가 생긴 것이 다른 모든 사이트에 영향을 줌</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Google Chrome Browser is multiprocess with <strong>3 categories</strong>
+    <ul>
+      <li><strong>Browser process</strong> manages user interface, disk and network I/O</li>
+      <li><strong>Renderer process</strong> renders web pages, deals with HTML, Javascript, new one for each website opened
+        <ul>
+          <li>Runs in sandbox restricting disk and network I/O, minimizing effect of security exploits</li>
+          <li>Sandbox: a virtual container in which untrusted programs can be safely run</li>
+        </ul>
+      </li>
+      <li><strong>Plug-in process</strong> for each type of plug-in (ex: QuickTime….)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220908000853304.png" alt="image-20220908000853304" /></p>
+
+<p><br /></p>
+
+<h2 id="interprocess-communicationipc">Interprocess Communication(IPC)</h2>
+
+<ul>
+  <li>Processes within a system may be <strong>independent</strong> or <strong>cooperating</strong></li>
+  <li><strong>Independent</strong> process cannot affect or be affected by the execution of another process</li>
+  <li><strong>Cooperating process</strong> can affect or be affected by the execution of another process , including <strong>sharing data</strong>
+    <ul>
+      <li>공유데이터처럼 영향을 끼치거나 받는 프로세스</li>
+    </ul>
+  </li>
+  <li><strong>Reasons</strong> for cooperating processes:
+    <ul>
+      <li>Information sharing</li>
+      <li>Computation speedup</li>
+      <li>Modularity</li>
+      <li>Convenience</li>
+    </ul>
+  </li>
+  <li>Cooperating processes need <strong>interprocess communication (IPC)</strong></li>
+  <li><strong>Two models</strong> of IPC
+    <ul>
+      <li>Shared memory</li>
+      <li>Message passing</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="communications-models">Communications Models</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220908001020013.png" alt="image-20220908001020013" /></p>
+
+<ul>
+  <li>
+    <p>shared memory</p>
+
+    <ul>
+      <li>
+        <p>process가 공유하는 메모리가 있음</p>
+      </li>
+      <li>
+        <p>shared memory가 만들어질 때는 OS의 도움을 받지만 그 이후는 OS의 도움을 받지 않는다.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>MPP</p>
+    <ul>
+      <li><strong>메세지를 보낼 때마다 OS의 도움을 받는다.</strong></li>
+      <li>kernel에 메세지를 보내고 이를 읽고의 과정</li>
+      <li>send</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="producer-consumer-problem-sm-shared-memory">Producer-Consumer Problem (SM; shared memory)</h2>
+
+<p><strong>example</strong></p>
+
+<ul>
+  <li>Paradigm for cooperating processes, <strong>producer process</strong> produces information that is consumed by a <strong>consumer process</strong>.
+    <ul>
+      <li><u>unbounded-buffer</u> places no practical limit on the size of the buffer.
+        <ul>
+          <li>consumer may have to wait for new items, but the producer can always produce new items</li>
+        </ul>
+      </li>
+      <li><u>bounded-buffer</u> assumes that there is a fixed buffer size.
+        <ul>
+          <li>consumer must wait if the buffer is empty</li>
+          <li>producer must wait if the buffer is full</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---shared-memory-solution">Bounded-Buffer - Shared-Memory Solution</h2>
+
+<ul>
+  <li>Shared data</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define BUFFER_SIZE 10
+</span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="p">.</span> <span class="p">.</span> <span class="p">.</span>
+<span class="p">}</span> <span class="n">item</span><span class="p">;</span>
+<span class="n">item</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+
+<span class="c1">// 배열 slot의 index</span>
+<span class="kt">int</span> <span class="n">in</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Solution is correct, but can only use BUFFER_SIZE-1 elements
+    <ul>
+      <li>버퍼에 저장할 공간이 실제로 하나가 남아있다 하더라도 이에 저장하게 되면 empty와 full을 구분할 수 없기 때문에 실제 버퍼 사이즈보다 하나 적게 사용가능하다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---producer">Bounded-Buffer - Producer</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">item</span> <span class="n">next_produced</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* produce an item in next produced */</span>
+    <span class="k">while</span> <span class="p">(((</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span> <span class="o">==</span> <span class="n">out</span><span class="p">)</span> <span class="c1">// is buffer full?</span>
+        <span class="p">;</span> <span class="cm">/* do nothing */</span>
+    <span class="n">buffer</span><span class="p">[</span><span class="n">in</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_produced</span><span class="p">;</span>
+    <span class="n">in</span> <span class="o">=</span> <span class="p">(</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>in == out은 buffer가 비어있다는 것을 의미함.</li>
+  <li>in과 out은 적어도 두 칸 이상 차이가 나야지 buffer에 내용을 넣을 수 있음.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---consumer">Bounded Buffer - Consumer</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">item</span> <span class="n">next_consumed</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">in</span> <span class="o">==</span> <span class="n">out</span><span class="p">)</span>
+        <span class="p">;</span> <span class="cm">/* do nothing */</span>
+    <span class="n">next_consumed</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">[</span><span class="n">out</span><span class="p">];</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span>
+    <span class="cm">/* consume the item in next consumed */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>in: 새로운 데이터를 쓸 위치</li>
+  <li>out: consumer에서 데이터를 가져올(꺼내올) 위치</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interprocess-communication---shared-memory">Interprocess Communication - Shared Memory</h2>
+
+<ul>
+  <li>An area of memory shared among the processes that wish to communicate</li>
+  <li>The communication is under the <code class="language-plaintext highlighter-rouge">control of the user processes</code> <strong>not the operating system</strong>
+    <ul>
+      <li>OS가 아니라 user process의 control 하에 통신이 이루어짐</li>
+    </ul>
+  </li>
+  <li>Major issue is to provide mechanism that will allow the user processes <strong>synchronize</strong> their actions when they access shared memory.</li>
+  <li>IPC using SM requires communicating processes to establish a region of shared memory</li>
+  <li>shared memory resides in the address space of the process creating the shared memory segment</li>
+  <li>Other processes that wish to communicate using this SM segment <strong>must attach it to their address space</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interprocess-communication--message-passing">Interprocess Communication – Message Passing</h2>
+
+<ul>
+  <li>Mechanism for processes to <strong>communicate</strong> and to <strong>synchronize</strong> their actions.
+    <ul>
+      <li>processes communicate with each other without resorting(의지) to shared variables.</li>
+      <li>Useful in a distributed environment</li>
+    </ul>
+  </li>
+  <li>Message passing facility provides two operations:
+    <ul>
+      <li>send(message) - message size fixed or variable</li>
+      <li>receive(message)</li>
+    </ul>
+  </li>
+  <li>The message size is either fixed or variable
+    <ul>
+      <li>Using <strong>fixed-sized message</strong>, implementation of OS is simple, application programming is difficult</li>
+      <li>Using <strong>variable-sized message</strong>, implementation of OS is complex, application programming is simple</li>
+    </ul>
+  </li>
+  <li>send(), receie()</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="message-passing-cont">Message Passing (Cont.)</h2>
+
+<ul>
+  <li>If P and Q wish to communicate, they need to:
+    <ul>
+      <li>establish a <strong>communication link</strong> between them</li>
+      <li>exchange messages via send/receive</li>
+    </ul>
+  </li>
+  <li>Implementation issues:
+    <ul>
+      <li>How are links established?</li>
+      <li>Can a link be associated with more than two processes?</li>
+      <li>How many links can there be between every pair of communicating processes?</li>
+      <li>What is the capacity of a link?</li>
+      <li>Is the size of a message that the link can accommodate fixed or variable?</li>
+      <li>Is a link unidirectional or bi-directional?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Implementation of communication link
+    <ul>
+      <li>Physical:
+        <ul>
+          <li>Shared memory</li>
+          <li>Hardware bus</li>
+          <li>Network</li>
+        </ul>
+      </li>
+      <li>Logical:
+        <ul>
+          <li>Direct or indirect (<strong>Naming</strong>)
+            <ul>
+              <li>수신자를 명확히 할 것인가 불명확히 할 것인가</li>
+            </ul>
+          </li>
+          <li>Symmetric or asymmetric communication (<strong>Symmetry</strong>)</li>
+          <li>Synchronous or asynchronous (<strong>Synchronization</strong>)
+            <ul>
+              <li>async - 상대방의 수신여부와 상관없이 막 보내는</li>
+            </ul>
+          </li>
+          <li>Automatic or explicit buffering (<strong>Buffering</strong>)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="naming-direct-communication">Naming Direct Communication</h2>
+
+<ul>
+  <li>Processes must name each other <strong>explicitly</strong>:
+    <ul>
+      <li><strong>send</strong> (P, message) - send a message to process P</li>
+      <li><strong>receive</strong> (Q, message) - receive a message from process Q</li>
+    </ul>
+  </li>
+  <li>Properties of communication link
+    <ul>
+      <li>Links are established <strong>automatically</strong>.</li>
+      <li>A link is associated with exactly <strong>one pair</strong> of communicating processes.</li>
+      <li>Between each pair there exists exactly one link.</li>
+      <li>The link may be <strong>uni</strong>directional, but is usually <strong>bi</strong>-directional.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909204018656.png" alt="image-20220909204018656" /></p>
+
+<ul>
+  <li>Shared memory와 달리 message passing은 OS가 synchronize 문제를 책임지고 해결해야 함.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="direct-communication">Direct Communication</h2>
+
+<ul>
+  <li>Exhibits <strong>symmetry</strong> in addressing
+    <ul>
+      <li><strong>Both</strong> the sender and the receiver processes <strong>must name</strong> the other to communicate</li>
+    </ul>
+  </li>
+  <li>A variant (<strong>Asymmetry</strong>)
+    <ul>
+      <li>Only the sender names the recipient; recipient is not required to name the sender</li>
+      <li><strong>send</strong> (P, message) : send a message to process P</li>
+      <li><strong>receive</strong>(id, message) : receive a message from any process; id is set to the name of the process with which communication has taken place
+        <ul>
+          <li>어떤 프로세스가 보냈는지 해당 프로세스의 id가 담긴다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="naming-indirect-communication">Naming Indirect Communication</h2>
+
+<ul>
+  <li>Messages are directed and received from mailboxes (also referred to as ports).
+    <ul>
+      <li>Send(A, msg), receive(A, msg)
+        <ul>
+          <li>A는 pid가 아닌 mailbox의 ID</li>
+        </ul>
+      </li>
+      <li><strong>Each mailbox has a unique id</strong>.</li>
+      <li>A process can communicate with some other process via a number of different mail boxes</li>
+      <li>Processes can communicate <strong>only if they share a mailbox</strong>.</li>
+    </ul>
+  </li>
+  <li>Properties of communication link
+    <ul>
+      <li>Link established only if processes share a common mailbox</li>
+      <li>A link may be associated with more than two processes.</li>
+      <li>Each pair of processes may share several communication links.</li>
+      <li>Link may be unidirectional or bi-directional.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>프로세스가 메시지를 보내는데, 메시지를 받을 수신자를 따로 명시하지 않는다.</p>
+
+<p><br /></p>
+
+<h2 id="indirect-communication-continued">Indirect Communication (Continued)</h2>
+
+<ul>
+  <li>Operations
+    <ul>
+      <li>create a new mailbox (port)</li>
+      <li>send and receive messages through mailbox</li>
+      <li>destroy a mailbox</li>
+    </ul>
+  </li>
+  <li>Primitives are defined as:
+    <ul>
+      <li><strong>send</strong>(A, message) – send a message to mailbox A</li>
+      <li><strong>receive</strong>(A, message) – receive a message from mailbox A</li>
+    </ul>
+  </li>
+  <li>Mailbox owned <strong>by process</strong>
+    <ul>
+      <li>Mailbox is part of address space of the process</li>
+      <li>Owner can only receive messages, user can only send messages</li>
+    </ul>
+  </li>
+  <li>Mailbox owned <strong>by kernel</strong>
+    <ul>
+      <li>Mailbox is not attached(종속) to any particular process</li>
+      <li>Ownership can be passed to other processes</li>
+      <li>Operations of mailbox
+        <ul>
+          <li>create a new mailbox (owner)</li>
+          <li>send (owner) and receive (user) messages through mailbox</li>
+          <li>destroy a mailbox</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Mailbox sharing
+    <ul>
+      <li>P1 , P2 , and P3 share mailbox A.</li>
+      <li>P1 , sends; P2 and P3 receive.</li>
+      <li><strong>Who gets the message?</strong></li>
+    </ul>
+  </li>
+  <li>Solutions
+    <ul>
+      <li>Allow a link to be associated with at most two processes.</li>
+      <li>Allow only one process at a time to execute a receive operation.</li>
+      <li>Allow the system to select arbitrarily the receiver. Sender is notified who the receiver was.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="synchronization">Synchronization</h2>
+
+<ul>
+  <li>Message passing may be either blocking or non-blocking.</li>
+  <li><strong>Blocking</strong> is considered <strong>synchronous</strong>
+    <ul>
+      <li>Blocking <strong>send</strong> has the sender block(waiting) until the message is received
+        <ul>
+          <li>내가 원하는 프로세스가 메시지를 받을때까지 Block 되어 있는 것</li>
+        </ul>
+      </li>
+      <li>Blocking <strong>receive</strong> has the receiver block until a message is available
+        <ul>
+          <li>어떠한 메시지가 도착 할 때까지 Block 되어 있는 것</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Non-blocking</strong> is considered <strong>asynchronous</strong>
+    <ul>
+      <li>Non-blocking send has the sender send the message and continue</li>
+      <li>Non-blocking receive has the receiver receive a valid message or null message
+        <ul>
+          <li>메세지가 안 왔으면 그냥 널메세지를 받았다고 하고 리턴</li>
+          <li>제대로 수신이 되었는 지를 사용자가 확인해야 함.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>send and receive primitives may be either blocking or non-blocking.
+    <ul>
+      <li>Blocking send</li>
+      <li>Nonblocking send</li>
+      <li>Blocking receive</li>
+      <li>Nonblocking receive</li>
+    </ul>
+  </li>
+  <li>When both the send and receive are blocking -&gt; rendezvous scheme(랑데뷰 sheme)
+    <ul>
+      <li>end, receive 는 꼭 먼저 호출한 것이 끝나야 그 다음 것을 send or receive 할 수 있다.</li>
+    </ul>
+  </li>
+  <li>Producer-consumer becomes trivial</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">message</span> <span class="n">next</span> <span class="n">produced</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+ <span class="cm">/* produce an item in next produced */</span>
+ <span class="n">send</span><span class="p">(</span><span class="n">next</span> <span class="n">produced</span><span class="p">);</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">message</span> <span class="n">next</span> <span class="n">consumed</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+ <span class="n">receive</span><span class="p">(</span><span class="n">next</span> <span class="n">consumed</span><span class="p">);</span>
+ <span class="cm">/* consume the item in next consumed */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>non-blocking의 경우 위 코드로 동작하지 않음 (자동으로 확인하여 기다리는(blocking) 기능이 있기 때문)</p>
+
+<p>non blocking은 가득찼는지를 확인하는 코드를 부수적으로 요구</p>
+
+<p><br /></p>
+
+<h2 id="buffering">Buffering</h2>
+
+<ul>
+  <li>Queue of messages attached to the link; implemented in one of three ways.</li>
+</ul>
+
+<ol>
+  <li>
+    <p>Zero capacity – 0 messages Sender must wait for receiver (rendezvous, synchronous).</p>
+  </li>
+  <li>
+    <p>Bounded capacity – finite length of n messages Sender must wait if link full. (Asynchronous)</p>
+  </li>
+  <li>
+    <p>Unbounded capacity – infinite length Sender never waits.</p>
+  </li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th>Process P</th>
+      <th>Process Q</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Send(Q, msg)</td>
+      <td>receive(P, msg)</td>
+    </tr>
+    <tr>
+      <td>Receive(Q, msg)</td>
+      <td>send(P, ACK)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h2 id="examples-of-ipc-systems---posix">Examples of IPC Systems - POSIX</h2>
+
+<ul>
+  <li>POSIX provides both of Message Passing and Shared Memory</li>
+  <li>POSIX Shared Memory</li>
+  <li>POSIX SM is organized using <strong>memory-mapped file</strong>, which associate the region of SM with a file
+    <ul>
+      <li>Process first creates shared memory segment
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">shm_fd = shm_open(name, O CREAT | O RDRW, 0666);</code></li>
+        </ul>
+      </li>
+      <li>Also used to open an existing segment to share it</li>
+      <li>Set the size of the object
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">ftruncate(shm_fd, 4096);</code></li>
+        </ul>
+      </li>
+      <li><strong>Establish a memory-mapped file containg</strong> shared memory segment using <code class="language-plaintext highlighter-rouge">mmap( ) </code></li>
+      <li>Now the process could write to the shared memory
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">sprintf(shared memory, "Writing to shared memory");</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ipc-posix-producer">IPC POSIX Producer</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909205059261.png" alt="image-20220909205059261" /></p>
+
+<p><br /></p>
+
+<h2 id="ipc-posix-consumer">IPC POSIX Consumer</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909205123387.png" alt="image-20220909205123387" /></p>
+
+<p><br /></p>
+
+<h2 id="an-example-of-ipc-mach">An example of IPC: Mach</h2>
+
+<p>MPP 예</p>
+
+<ul>
+  <li>
+    <p>Mach developed at CMU</p>
+  </li>
+  <li>
+    <p>Task : similar to multi-threaded-process</p>
+  </li>
+  <li>
+    <p>Most communication (system call or intertask information) is done by message using mailbox</p>
+
+    <ul>
+      <li>Even system calls are messages</li>
+      <li>Each task gets two mailboxes at creation- Kernel and Notify
+        <ul>
+          <li>Kernel mailbox: kernel communicate with task through this</li>
+          <li>Notify mailbox : kernel sends notification of event occurrence</li>
+        </ul>
+      </li>
+      <li>Only <strong>three system calls</strong> needed for message transfer
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">msg_send(), msg_receive(), </code></li>
+          <li><code class="language-plaintext highlighter-rouge">msg_rpc()</code>: sends a message and waits for exactly one return message from the sender</li>
+        </ul>
+      </li>
+      <li>Mailboxes needed for commuication, created via
+        <ul>
+          <li>port_allocate()</li>
+        </ul>
+      </li>
+      <li>Send and receive are flexible, for example four options if mailbox full:
+        <ul>
+          <li>Wait indefinitely</li>
+          <li>Wait at most n milliseconds</li>
+          <li>Return immediately</li>
+          <li>Temporarily cache a message</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="examples-of-ipc-systems---windows-xp생략">Examples of IPC Systems - Windows XP(생략)</h2>
+
+<ul>
+  <li>Message-passing centric via <strong>local procedure call (LPC)</strong> facility
+    <ul>
+      <li>Only works between processes on the same system</li>
+      <li>Uses ports (like mailboxes) to establish and maintain communication channels</li>
+      <li>Communication works as follows:
+        <ul>
+          <li>The client opens a handle to the subsystem’s <strong>connection port</strong> object.</li>
+          <li>The client sends a connection request.</li>
+          <li>The server creates two <strong>private communication ports</strong> and returns the handle to one of them to the client.</li>
+          <li>The client and server use the corresponding port handle to send messages or callbacks and to listen for replies.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="local-procedure-calls-in-windows-xp생략">Local Procedure Calls in Windows XP(생략)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909205521746.png" alt="image-20220909205521746" /></p>
+
+<p><br /></p>
+
+<p>분산 어플리케이션의 예 client server model</p>
+
+<h2 id="communications-in-client-server-systems">Communications in Client-Server Systems</h2>
+
+<ul>
+  <li>Sockets – low level form of communication between distributed processes</li>
+  <li>Remote Procedure Calls (RPC)</li>
+  <li>Pipes</li>
+  <li>Remote Method Invocation (Java)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="sockets">Sockets</h2>
+
+<ul>
+  <li>A socket is defined as an <strong>endpoint</strong> for communication.</li>
+  <li>Concatenation of IP address and port number</li>
+  <li>The socket 161.25.19.8:1625 refers to port 1625 on host 161.25.19.8</li>
+  <li>Communication consists between a <strong>pair of sockets.</strong></li>
+  <li>Three types of sockets
+    <ul>
+      <li><strong>Connection-oriented (TCP)</strong></li>
+      <li><strong>Connectionless (UDP)</strong></li>
+      <li>MulticastSocket class– data can be sent to multiple recipients</li>
+    </ul>
+  </li>
+  <li>All ports below 1024 are well known, used for standard services</li>
+  <li>Special IP address 127.0.0.1 (<strong>loopback</strong>) to refer to system on which process is running</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="socket-communication">Socket Communication</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909205747581.png" alt="image-20220909205747581" /></p>
+
+<ul>
+  <li>Communication using socket is considered a <strong>low-level form</strong> of communication between distributed processes</li>
+  <li>Socket allows only an <strong>unstructured stream of bytes</strong> to be exchanged</li>
+  <li>It is the responsibility of server/client to impose a structure on the data</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="date-client">Date Client</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DateClient</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span> <span class="c1">// this could be changed to an IP name or address other than the localhost</span>
+            <span class="nc">Socket</span> <span class="n">sock</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Socket</span><span class="o">(</span><span class="s">"127.0.0.1"</span><span class="o">,</span><span class="mi">6013</span><span class="o">);</span>
+            <span class="nc">InputStream</span> <span class="n">in</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+            <span class="nc">BufferedReader</span> <span class="n">bin</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">InputStreamReader</span><span class="o">(</span><span class="n">in</span><span class="o">));</span>
+            <span class="nc">String</span> <span class="n">line</span><span class="o">;</span>
+            <span class="k">while</span><span class="o">(</span> <span class="o">(</span><span class="n">line</span> <span class="o">=</span> <span class="n">bin</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
+            <span class="n">sock</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">ioe</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="date-server">Date Server</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DateServer</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">ServerSocket</span> <span class="n">sock</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ServerSocket</span><span class="o">(</span><span class="mi">6013</span><span class="o">);</span> <span class="c1">// now listen for connections</span>
+            <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">Socket</span> <span class="n">client</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
+                <span class="c1">// we have a connection</span>
+                <span class="nc">PrintWriter</span> <span class="n">pout</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PrintWriter</span><span class="o">(</span><span class="n">client</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">(),</span> <span class="kc">true</span><span class="o">);</span>
+                <span class="c1">// write the Date to the socket</span>
+                <span class="n">pout</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+                <span class="n">client</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">ioe</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="remote-procedure-callsrpc">Remote Procedure Calls(RPC)</h2>
+
+<ul>
+  <li>Remote procedure call (RPC) abstracts procedure calls between processes on networked systems.
+    <ul>
+      <li>Again uses ports for service differentiation</li>
+      <li><strong>Messages</strong> exchanged are well structured(unlikely port) and are not no longer just packets of data</li>
+      <li>Each message is addressed to an <strong>RPC daemon</strong> listening to a <strong>port</strong> on the remote system
+        <ul>
+          <li>RPC daemon이 계속해서 port를 들여다 봐서 메세지가 왔는지를 확인한다.</li>
+        </ul>
+      </li>
+      <li>Each message contains an <strong>id</strong>.
+        <ul>
+          <li>Specifying the function to execute, and parameters</li>
+        </ul>
+      </li>
+      <li>The function is executed as requested, and any out is sent back in a separate message
+        <ul>
+          <li>RPC message를 보낸 process에게 다시 응답.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Port</strong> – used to service differentiation</p>
+  </li>
+  <li><strong>Stubs</strong> – client-side proxy for the actual procedure on the server.
+    <ul>
+      <li>서버로부터 받은 메세지를 클라이언트 측에 가공해서 주는 역할</li>
+      <li>RPC마다 하나씩 존재</li>
+      <li>Separate stub for each separate remote procedure</li>
+      <li>The client-side stub locates the server and <strong>marshalls</strong>(전송 format으로 바꿔주는 역할) the parameters.</li>
+      <li>The server-side stub receives this message, <strong>unpacks the marshalled</strong>(local function 형태로 바꿈) parameters, and performs the procedure on the server.</li>
+      <li>On Windows, stub code compile from specification written in <strong>Microsoft Interface Definition Language (MIDL)</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p>Data representation handled via <strong>External Data Representation (XDL)</strong> format to account for different architectures</p>
+
+    <ul>
+      <li><strong>Big-endian</strong> and <strong>little-endian</strong> (marshalling, unmarshalling)</li>
+    </ul>
+  </li>
+  <li>
+    <p>Semantics of RPC</p>
+
+    <ul>
+      <li>
+        <p>Remote communication has more failure scenarios than local</p>
+      </li>
+      <li>
+        <p>Messages can be delivered <strong>exactly once</strong> rather than <strong>at most once</strong></p>
+        <ul>
+          <li>정확히 한번을 보낼 수 있다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>OS typically provides a rendezvous (or <strong>matchmaker</strong>) service to connect client and server</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="execution-of-rpc">Execution of RPC</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210100852.png" alt="image-20220909210100852" /></p>
+
+<ul>
+  <li>client가 server 쪽의 함수를 호출하려고 하는 경우
+    <ul>
+      <li>procedure X에게 RPC를 보내달라고 요구</li>
+      <li>kernel에서 matchmaker에게 메세지를 보냄
+        <ul>
+          <li>X라는 procedure의 port번호를 알려줘!</li>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>from: client</td>
+                  <td>to: server</td>
+                  <td>port: matchmaker</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+      <li>matchmaker가 port P(RPC X)를 찾아서 kernel(사용자)에게 다시 보냄
+        <ul>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>from: server</td>
+                  <td>to: client</td>
+                  <td>port: kernel</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+      <li>RPC의 포트번호를 알았으니 kernel은 RPC에게 메세지를 보낸다.
+        <ul>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>from: client</td>
+                  <td>to: server</td>
+                  <td>port: port P</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+      <li>RPC daemon이 port를 listen하고 있다가 메세지가 오면 이를 받는다.</li>
+      <li>daemon process가 X 함수를 실행한 결과를 message에 담아서 보내게 된다.
+        <ul>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>from: RPC</td>
+                  <td>to: client</td>
+                  <td>port: kernel</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="pipes">Pipes</h2>
+
+<ul>
+  <li>Acts as a conduit allowing two processes to communicate</li>
+  <li><strong>Issues</strong>
+    <ul>
+      <li>Is communication unidirectional or bidirectional?</li>
+      <li>In the case of two-way communication, is it half or full-duplex?</li>
+      <li>Must there exist a relationship (i.e. parent-child) between the communicating processes?</li>
+      <li>Can the pipes be used over a network?</li>
+    </ul>
+  </li>
+  <li>Ordinary pipes – cannot be accessed from outside the process that created it.
+    <ul>
+      <li>Typically, a parent process creates a pipe and uses it to communicate with a child process that it created. (same machime)</li>
+    </ul>
+  </li>
+  <li>Named pipes – can be accessed <strong>without a parent-child relationship</strong>.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ordinary-pipes시험">Ordinary Pipes<span style="color:green">(시험)</span></h2>
+
+<ul>
+  <li>Ordinary Pipes allow communication in standard producer-consumer style</li>
+  <li>Producer writes to one end (the <strong>write-end</strong> of the pipe)</li>
+  <li>Consumer reads from the other end (the <strong>read-end</strong> of the pipe)</li>
+  <li>Ordinary pipes are therefore <strong>unidirectional</strong></li>
+  <li>If two way communication is required, two pipes must be used</li>
+  <li><strong>Require parent-child relationship</strong> between communicating processes
+    <ul>
+      <li>Is used to communicate with a child process that it creates via fork()</li>
+    </ul>
+  </li>
+  <li>Windows calls these <strong>anonymous pipes</strong></li>
+  <li>See Unix and Windows code samples in textbook</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ordinary-pipes">Ordinary Pipes</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Pipe</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">[]</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Creates a pipe</li>
+  <li>fd[0] is the read-end of pipe, fd[1] is write-end</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210445086.png" alt="image-20220909210445086" /></p>
+
+<p><br /></p>
+
+<h2 id="ordinary-pipe-in-unix">Ordinary pipe in UNIX</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210516531.png" alt="image-20220909210516531" /></p>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210602247.png" alt="image-20220909210602247" /></p>
+
+<p><br /></p>
+
+<h2 id="named-pipes">Named Pipes</h2>
+
+<ul>
+  <li>Named Pipes are more <strong>powerful</strong> than ordinary pipes</li>
+  <li>Communication is bidirectional, half-duplex
+    <ul>
+      <li>For full-<strong>diplex</strong>, two <strong>named</strong> pipes are required</li>
+      <li>Can be used in a single machine</li>
+    </ul>
+  </li>
+  <li>No parent-child relationship is necessary between the communicating processes</li>
+  <li>Several processes can use the named pipe for communication</li>
+  <li>Provided on both UNIX and Windows systems</li>
+  <li>Named Pipe of Window provides full duplex, intra or inter machine communication</li>
+  <li>makefifo(), open(), read(), write(), close() for Unix</li>
+  <li>CreateNamedPipe(), ConnectNamed Pipe(), ReadFile(), WriteFile()</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="remote-method-invocationrmi">Remote Method Invocation(RMI)</h2>
+
+<ul>
+  <li>Remote Method Invocation (RMI) is a Java mechanism similar to RPCs.</li>
+  <li>RMI allows a Java program on one machine to invoke a method on a remote object.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210741721.png" alt="image-20220909210741721" /></p>
+
+<p><br /></p>
+
+<h2 id="rpc-vs-rmi">RPC vs. RMI</h2>
+
+<ul>
+  <li>RPC support procedural programming; only remote procedures or functions are called</li>
+  <li>RMI is object-based; supports invocation of methods on remote objects</li>
+  <li>Parameters to remote procedures are ordinary data structures in RPC</li>
+  <li>Possible to pass objects as parameters to remote methods in RMI</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="marshalling-parameters">Marshalling Parameters</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210827672.png" alt="image-20220909210827672" /></p>
+
+<p><br /></p>
+
+<h2 id="concurrency">Concurrency</h2>
+
+<ul>
+  <li>Concurrency in Clients
+    <ul>
+      <li>Clients can be run on a machine either iteratively (running them one by one) or</li>
+      <li>Concurrently (more than two clients can run at the same time)</li>
+      <li>Iterative running means</li>
+    </ul>
+  </li>
+  <li>Concurrency in Servers
+    <ul>
+      <li>Iterative server</li>
+      <li>Concurrent server</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="connectionless-iterative-server">Connectionless iterative server</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909210929495.png" alt="image-20220909210929495" /></p>
+
+<p>ephemeral: 일시적인</p>
+
+<p><br /></p>
+
+<h2 id="connection-oriented-concurrent-server">Connection-oriented concurrent server</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211000015.png" alt="image-20220909211000015" /></p>
+
+<ul>
+  <li>
+    <p>TCP 사용</p>
+  </li>
+  <li>
+    <p>child process는 well-known port가 필요없음</p>
+    <ul>
+      <li>well-known port는 서버에 접속 하는 데만 필요하기 때문에</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="programs-and-processes">Programs and processes</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211018635.png" alt="image-20220909211018635" /></p>
+
+<p>서로는 독립적인 process이기 때문에 정보를 공유하기 위해서는 IPC mechanism를 사용해야 함.</p>
+
+<p><br /></p>
+
+<h2 id="a-program-that-prints-its-own-processid">A Program that prints its own processid</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211132736.png" alt="image-20220909211132736" /></p>
+
+<p><br /></p>
+
+<h2 id="a-program-with-one-parent-and-one-child">A program with one parent and one child</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211334384.png" alt="image-20220909211334384" /></p>
+
+<p><br /></p>
+
+<h2 id="a-program-with-two-fork-functions">A program with two fork functions</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211450970.png" alt="image-20220909211450970" /></p>
+
+<p>fork()를 한 번 하면 두 갈래가 되고 또 한번 fork()를 하면 각 갈래에서 두 갈래씩 나오기 때문에 총 4갈래로 나눠짐.</p>
+
+<p><br /></p>
+
+<h2 id="the-output-of-the-program-in-figure-1512">The output of the program in Figure 15.12</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211623606.png" alt="image-20220909211623606" /></p>
+
+<p><br /></p>
+
+<h2 id="a-program-that-prints-the-processids-of-the-parent-and-the-child">A program that prints the processids of the parent and the child</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211643635.png" alt="image-20220909211643635" /></p>
+
+<p><br /></p>
+
+<h2 id="example-of-a-server-program-with-parent-and-child-processes">Example of a server program with parent and child processes</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211707582.png" alt="image-20220909211707582" /></p>
+
+<p><br /></p>
+
+<h2 id="tcp-서버-함수-18">TCP 서버 함수 (1/8)</h2>
+
+<ul>
+  <li>TCP 서버 함수</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211740525.png" alt="image-20220909211740525" /></p>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909211811550.png" alt="image-20220909211811550" /></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#os" class="page__taxonomy-item p-category" rel="tag">OS</a><span class="sep">, </span>
+    
+      <a href="/tags/#%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C" class="page__taxonomy-item p-category" rel="tag">운영체제</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#os" class="page__taxonomy-item p-category" rel="tag">OS</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-09-19T00:00:00+09:00">2022-09-19</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BOS%5D+Process+Concept%20http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Process-Concept%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Process-Concept%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Process-Concept%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/frontend/hci/HCI-2.-Human-2/" class="pagination--pager" title="[HCI] 2. Human 2
+">이전</a>
+    
+    
+      <a href="/frontend/hci/HCI-3.-Computer/" class="pagination--pager" title="[HCI] 3. Computer
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/os/OS-Process-Concept/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/os/[OS] Process Concept"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

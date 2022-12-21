@@ -1,0 +1,737 @@
+I"V<h2 id="hci-in-the-software-process">HCI in the software process</h2>
+
+<ul>
+  <li>Software engineering and the design process for interactive systems</li>
+  <li>Usability engineering</li>
+  <li>Iterative design and prototyping</li>
+  <li>Design rationale</li>
+</ul>
+
+<h2 id="the-software-deelopment-life-cycle">the Software Deelopment Life-Cycle</h2>
+
+<ul>
+  <li>Software engineering is the discipline for understanding the software design process, or life cycle</li>
+  <li>Designing for usability occurs at all stages of the life cycle, not as a single isolated activity</li>
+  <li>Four Essential Phases of any Software Development Process
+    <ul>
+      <li>Requirements Elicitation, Analysis, Specification</li>
+      <li>System Design</li>
+      <li>Program Implementation</li>
+      <li>Test</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="activities-in-the-life-cycle">Activities in the Life Cycle</h2>
+
+<p>폰트와 같은 것도 굉장히 중요할 수 있다.(저작권 문제 등)</p>
+
+<ul>
+  <li>Requirements specification
+    <ul>
+      <li>designer and customer try capture what the system is expected to provide</li>
+      <li>can be expressed in natural language or more precise languages, such as a task analysis would provide</li>
+    </ul>
+  </li>
+  <li>Architectural design
+    <ul>
+      <li>high-level description of how the system will provide the services required</li>
+      <li>factor system into major components of the system and how they are interrelated needs to satisfy both functional and nonfunctional requirements</li>
+    </ul>
+  </li>
+  <li>Detailed design
+    <ul>
+      <li>refinement of architectural components and interrelations to identify modules to be implemented separately</li>
+      <li>the refinement is governed by the non-functional requirements</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="verification-and-validation">Verification and validation</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765085-d638f6cf-cc17-4fdf-b3bf-213dd93c980d.png" alt="image" /></p>
+
+<ul>
+  <li>Verification : product 제대로 작동하는 지 확인하는 단계
+    <ul>
+      <li>designing the product right</li>
+    </ul>
+  </li>
+  <li>Validation : requirement를 만족하고 있는지 확인하는
+    <ul>
+      <li>잘못된 입력에 대해서 error를 만들어 내도록 하는</li>
+      <li>designing the right product</li>
+    </ul>
+  </li>
+  <li>The formality gap
+    <ul>
+      <li>validation will always rely to some extent on subjective means of proof</li>
+    </ul>
+  </li>
+  <li>Management and contractual issues
+    <ul>
+      <li>design in commercial and legal contexts such as patents</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-waterfall">The Waterfall</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010002300908.png" alt="image-20221010002300908" /></p>
+
+<p><br /></p>
+
+<h2 id="the-life-cycle-for-interactive-systems">The Life Cycle for interactive Systems</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765108-9433d72f-9386-430e-8dea-4a887ca1756c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="iterative-models-boehm-spiral-model">Iterative Models: Boehm Spiral Model</h2>
+
+<ul>
+  <li>An iterative model developed by Barry Boehm at TRW (1988), now Prof. at USC</li>
+  <li>Iterates cycles of these project phases:
+    <ul>
+      <li>Requirements definition</li>
+      <li>Risk analysis</li>
+      <li>Prototyping</li>
+      <li>Simulate, benchmark</li>
+      <li>Design, implement, test</li>
+      <li>Plan next cycle (if any)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="boehm-spiral-model">Boehm Spiral Model</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765140-e46bbb85-bcdf-4757-b84d-b91bbc231856.png" alt="image" /></p>
+
+<p>바깥으로 나갈 수록 프로젝트의 마지막으로 가는 거임.</p>
+
+<p>프로젝트 덩치가 커지면 커질수록 Spiral model이 더 나은 결과를 만들 확률이 높다.</p>
+
+<p><br /></p>
+
+<h2 id="comparison">Comparison</h2>
+
+<ul>
+  <li>Waterfall Model
+    <ul>
+      <li>Risk factors are not considered</li>
+      <li>The requirements are freeze</li>
+      <li>Is linear sequential model</li>
+      <li>Not much costly</li>
+      <li>Communication level is not high</li>
+    </ul>
+  </li>
+  <li>Spiral Model
+    <ul>
+      <li>Risk factors are considered</li>
+      <li>The requirements are not freeze</li>
+      <li>Works in loop</li>
+      <li>Costly as Risk factor is covered</li>
+      <li>Better communication between developer and customer</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability중요">Usability(중요)</h2>
+
+<ul>
+  <li>Is it a “good” interface? In what ways?</li>
+  <li>Usability:
+    <ul>
+      <li>How well users can use the system’s functionality</li>
+      <li>The official ISO 9241-11 definition of usability is: “the extent to which a product can be used by specified users to achieve specified goals with effectiveness, efficiency and satisfaction in a specified context of use.”</li>
+    </ul>
+  </li>
+  <li>Dimensions of usability (quick look):
+    <ul>
+      <li>Learnability: is it easy to learn?</li>
+      <li>Efficiency: once learned, is it fast to use?</li>
+      <li>Memorability: is it easy to remember what you learned?</li>
+      <li>Errors: are errors few and recoverable?</li>
+      <li>Satisfaction: is it enjoyable to use?</li>
+    </ul>
+  </li>
+</ul>
+
+<p>effectiveness, efficiency, satisfaction 이 세 개는 항상 usability에 포함되는 내용</p>
+
+<p><br /></p>
+
+<h2 id="usability-dimensions-vary-in-importance">Usability Dimensions Vary In Importance</h2>
+
+<ul>
+  <li>So, what are the elements of usability?</li>
+  <li>… It depends on the user
+    <ul>
+      <li>Novice users need learnability</li>
+      <li>Infrequent users need memorability</li>
+      <li>Experts need efficiency</li>
+    </ul>
+  </li>
+  <li>But no user is uniformly novice or expert. Users could have
+    <ul>
+      <li>Domain experience</li>
+      <li>Application experience</li>
+      <li>Feature experience</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-is-just-one-attribute-of-a-system">Usability Is Just One Attribute of a System</h2>
+
+<ul>
+  <li>BTW, in developing large systems, development process entails a (often large) team</li>
+  <li>Software designers have a lot to worry about:
+    <ul>
+      <li>Functionality</li>
+      <li>Usability</li>
+      <li>Performance</li>
+      <li>Size</li>
+      <li>Cost</li>
+      <li>Reliability</li>
+      <li>Security</li>
+      <li>Standards</li>
+    </ul>
+  </li>
+  <li>Many design decisions involve tradeoffs among different attributes</li>
+  <li>Which is the essence of the design process</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-goals">Usability Goals</h2>
+
+<ul>
+  <li>In short, goals of increased “usability” of a system are that it is:
+    <ul>
+      <li>Effective to use</li>
+      <li>Efficient to use</li>
+      <li>Safe to use</li>
+      <li>Has good utility</li>
+      <li>Easy to learn</li>
+      <li>Easy to remember how to use</li>
+    </ul>
+  </li>
+  <li>More later …</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="creating-usable-systems">Creating usable systems</h2>
+
+<ul>
+  <li>It aims to achieve</li>
+  <li>Usability (Useful, Usable, Used)
+    <ul>
+      <li>Useful – accomplish what is required ; Effective, Safe</li>
+      <li>Usable – do it easily and naturally ; Efficient</li>
+      <li>Used – make people what to use it ; Enjoyable system</li>
+    </ul>
+  </li>
+  <li>A usable interface has three main outcomes:
+    <ul>
+      <li>Easy for the user to become familiar with and competent in using the user interface during the first contact.</li>
+      <li>Easy for users to achieve their objective through using the interface.</li>
+      <li>Easy to recall the user interface and how to use it on subsequent visits.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="creating-usable-systems-1">Creating usable systems</h2>
+
+<ul>
+  <li>HCI focuses on user needs by assessing interface design &amp; implementation according to usability criteria.</li>
+  <li>Makes use of new, novel techniques &amp; technologies.</li>
+  <li>It applies usability design principles to achieve more productive &amp; usable systems and more satisfied users.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="why-usability-engineering">Why Usability Engineering?</h2>
+
+<ul>
+  <li>Usability engineering is a structured approach to building systems that meet the needs of users in various environments with varying levels of computer experience.</li>
+  <li>Waterfall models of development do not work
+    <ul>
+      <li>too many unknowns (Dr. Brooks: No Silver Bullet)</li>
+    </ul>
+  </li>
+  <li>Need an iterative discovery-oriented process
+    <ul>
+      <li>but at the same time need to manage it</li>
+    </ul>
+  </li>
+  <li>Demands well-defined process with metrics
+    <ul>
+      <li>specifying usability goals as objectives</li>
+      <li>assessing and redesigning to meet these objectives</li>
+      <li>manage usability as a quality characteristic, much like modularity or nonfunctional requirements</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-engineering">Usability Engineering</h2>
+
+<ul>
+  <li>The ultimate test of usability based on measurement of user experience</li>
+  <li>Usability engineering demands that specific usability measures be made explicit as requirements</li>
+  <li>Usability specification
+    <ul>
+      <li>usability attribute/principle</li>
+      <li>measuring concept</li>
+      <li>measuring method</li>
+      <li>now level/ worst case/ planned level/ best case</li>
+    </ul>
+  </li>
+  <li>Problems
+    <ul>
+      <li>usability specification requires level of detail that may not be possible early in design</li>
+      <li>satisfying a usability specification does not necessarily satisfy usability</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="part-of-a-usability-spec-for-an-action-cam">Part of a usability spec. for an Action Cam</h2>
+
+<blockquote>
+  <p>Attribute: Backward recoverability</p>
+</blockquote>
+
+<ul>
+  <li>Measuring concept
+    <ul>
+      <li>Undo an erroneous programming sequence</li>
+    </ul>
+  </li>
+  <li>Measuring method
+    <ul>
+      <li>Number of explicit user actions to undo current program</li>
+    </ul>
+  </li>
+  <li>Now level
+    <ul>
+      <li>No current product allows such an undo</li>
+    </ul>
+  </li>
+  <li>Worst case
+    <ul>
+      <li>As many actions as it takes to program in mistake</li>
+    </ul>
+  </li>
+  <li>Planned level
+    <ul>
+      <li>A maximum of two explicit user actions</li>
+    </ul>
+  </li>
+  <li>Best case
+    <ul>
+      <li>One explicit cancel action</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765480-22ad0148-8f05-43ec-8d81-cd4d01eb66d7.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="iso-usability-standard-9241">ISO usability standard 9241</h2>
+
+<ul>
+  <li>Adopts traditional usability categories:</li>
+  <li>Effectiveness
+    <ul>
+      <li>can you achieve what you want to?</li>
+    </ul>
+  </li>
+  <li>Efficiency
+    <ul>
+      <li>can you do it without wasting effort?</li>
+    </ul>
+  </li>
+  <li>Satisfaction
+    <ul>
+      <li>do you enjoy the process?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="some-metrics-from-iso-9241">some metrics from ISO 9241</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765531-3167b40a-6273-414b-8f21-9778c2a2c753.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="usability-engineering-is-a-process">Usability Engineering Is a Process</h2>
+
+<ul>
+  <li>… an iterative process
+    <ul>
+      <li>Design</li>
+      <li>Implement</li>
+      <li>Evaluate</li>
+    </ul>
+  </li>
+  <li>Look at the “spiral” model of software engineering, which systematically incorporates iteration and change</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765606-0afaa190-807a-46f6-bd88-ce8ce82c04f4.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="usability-engineering-is-a-process-1">Usability Engineering Is a Process</h2>
+
+<p>DESIGN</p>
+
+<ul>
+  <li>Task analysis
+    <ul>
+      <li>“Know thy user”</li>
+      <li>“Know thy domain”</li>
+    </ul>
+  </li>
+  <li>Design principles
+    <ul>
+      <li>Overarching</li>
+    </ul>
+  </li>
+  <li>Design guidelines
+    <ul>
+      <li>Avoid obvious mistakes</li>
+      <li>May be vague or contradictory</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-engineering-is-a-process-2">Usability Engineering Is a Process</h2>
+
+<p>IMPLEMENT</p>
+
+<ul>
+  <li>Prototyping
+    <ul>
+      <li>Cheap, throw-away implementations</li>
+      <li>Low-fidelity: paper, Wizard of Oz</li>
+      <li>Medium-fidelity: HTML, Visual Basic</li>
+    </ul>
+  </li>
+  <li>GUI implementation techniques
+    <ul>
+      <li>Input/output models</li>
+      <li>Toolkits</li>
+      <li>UI builders</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="usability-engineering-is-a-process-3">Usability Engineering Is a Process</h2>
+
+<p>EVALUATE</p>
+
+<ul>
+  <li>Evaluation tests prototypes, using …
+    <ul>
+      <li>Expert evaluation
+        <ul>
+          <li>Heuristics and walk-throughs</li>
+        </ul>
+      </li>
+      <li>Predictive evaluation
+        <ul>
+          <li>Testing against an engineering model (simulated user)</li>
+        </ul>
+      </li>
+      <li>Empirical evaluation
+        <ul>
+          <li>Watching users do it</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="principles-of-design--big-picture">Principles of Design – Big Picture</h2>
+
+<ul>
+  <li>… of pretty much everything …and enumeration helps</li>
+  <li>What to design
+    <ul>
+      <li>Need to take into account:
+        <ul>
+          <li>Who the users are</li>
+          <li>What activities are being carried out</li>
+          <li>Where the interaction is taking place</li>
+          <li>What goal of interactions is</li>
+        </ul>
+      </li>
+      <li>Need to optimize interactions between users and a product such that they match the user’s activities and needs</li>
+    </ul>
+  </li>
+  <li>Understanding users’ needs
+    <ul>
+      <li>Need to take into account what people are good and bad at</li>
+      <li>Consider what help people in way they currently do things</li>
+      <li>Listen to what people want and get them involved</li>
+      <li>Use tried and tested user-based methods</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="normans-design-principles-for-usability">Norman’s design principles for usability</h2>
+
+<ul>
+  <li>Visibility – The more visible functions are, the more likely users will be able to know what to do next. In contrast, when functions are “out of sight,” it makes them more difficult to find and know how to use.</li>
+  <li>Feedback – Feedback is about sending back information about what action has been done and what has been accomplished, allowing the person to continue with the activity. Various kinds of feedback are available for interaction design-audio, tactile, verbal, and combinations of these.</li>
+  <li>Constraints – The design concept of constraining refers to determining ways of restricting the kind of user interaction that can take place at a given moment. There are various ways this can be achieved.</li>
+  <li>Mapping – This refers to the relationship between controls and their effects in the world. Nearly all artifacts need some kind of mapping between controls and effects. An example of a good mapping between control and effect is the up and down arrows used to represent the up and down movement of the cursor, respectively, on a computer keyboard.</li>
+  <li>Consistency – This refers to designing interfaces to have similar operations and use similar elements for achieving similar tasks. In particular, a consistent interface is one that follows rules, such as using the same operation to select all objects. For example, to highlight any graphical object at the interface, you always click the left mouse button.</li>
+  <li>Affordance – is a term used to refer to an attribute of an object that allows people to know how to use it. For example, a mouse button invites clicking by the way it is physically constrained in its plastic shell. When the affordances of a physical object are perceptually obvious it is easy to know how to interact with it.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="iterative-design-and-prototyping">Iterative design and prototyping</h2>
+
+<ul>
+  <li>Iterative design overcomes inherent problems of incomplete requirements</li>
+  <li>Prototypes
+    <ul>
+      <li>simulate or animate some features of intended system</li>
+      <li>different types of prototypes
+        <ul>
+          <li>Throw-away: rapid prototypes</li>
+          <li>Incremental: combining prototypes</li>
+          <li>Evolutionary: improving prototypes</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Management issues
+    <ul>
+      <li>time</li>
+      <li>planning</li>
+      <li>non-functional features</li>
+      <li>contracts</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="techniques-for-prototyping">Techniques for prototyping</h2>
+
+<ul>
+  <li>Storyboards
+    <ul>
+      <li>need not be computer-based</li>
+      <li>can be animated</li>
+    </ul>
+  </li>
+  <li>Limited functionality simulations
+    <ul>
+      <li>some part of system functionality provided by designers</li>
+      <li>tools like HTML Editors are common for these</li>
+      <li>Wizard of Oz technique</li>
+      <li>Prototyping tools are also available</li>
+    </ul>
+  </li>
+  <li>Warning about iterative design
+    <ul>
+      <li>design inertia – early bad decisions stay bad</li>
+      <li>diagnosing real usability problems in prototypes….
+        <ul>
+          <li>…. and not just the symptoms</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="design-rationale">Design Rationale</h2>
+
+<ul>
+  <li>Design rationale is information that explains why a computer system is the way it is.
+    <ul>
+      <li>the explicit listing of decisions made during a design process, and the reasons why those decisions were made</li>
+    </ul>
+  </li>
+  <li>Benefits of design rationale
+    <ul>
+      <li>communication throughout life cycle</li>
+      <li>reuse of design knowledge across products</li>
+      <li>enforces design discipline</li>
+      <li>presents arguments for design trade-offs</li>
+      <li>organizes potentially large design space</li>
+      <li>capturing contextual information</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="design-rationale-contd">Design Rationale (cont’d)</h2>
+
+<p>Types of DR:</p>
+
+<ul>
+  <li>Process-oriented
+    <ul>
+      <li>preserves order of deliberation and decision-making</li>
+    </ul>
+  </li>
+  <li>Structure-oriented
+    <ul>
+      <li>emphasizes post hoc structuring of considered design alternatives</li>
+    </ul>
+  </li>
+  <li>Two examples:
+    <ul>
+      <li>Issue-based information system (IBIS)</li>
+      <li>Design space analysis</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="issue-based-information-system-ibis">Issue-based information system (IBIS)</h2>
+
+<ul>
+  <li>basis for much of design rationale research</li>
+  <li>process-oriented</li>
+  <li>main elements:
+    <ul>
+      <li>issues
+        <ul>
+          <li>hierarchical structure with one ‘root’ issue</li>
+        </ul>
+      </li>
+      <li>positions
+        <ul>
+          <li>potential resolutions of an issue</li>
+        </ul>
+      </li>
+      <li>arguments
+        <ul>
+          <li>modify the relationship between positions and issues</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>gIBIS is a graphical version</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="structure-of-gibis">structure of gIBIS</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765887-11967d04-333a-48cf-ad10-aea67b36d52b.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="design-space-analysis">Design Space Analysis</h2>
+
+<ul>
+  <li>Structure-oriented</li>
+  <li>QOC – hierarchical structure:
+    <ul>
+      <li>questions (and sub-questions)
+        <ul>
+          <li>represent major issues of a design</li>
+        </ul>
+      </li>
+      <li>options
+        <ul>
+          <li>provide alternative solutions to the question</li>
+        </ul>
+      </li>
+      <li>criteria
+        <ul>
+          <li>the means to assess the options in order to make a choice</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>DRL (Decision Representation Language) – similar to QOC with a larger language and more formal semantics</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-qoc-notation">the QOC notation</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194765918-7fa53b49-0278-4be7-a7ae-85306dc36376.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="psychological-design-rationale">Psychological Design Rationale</h2>
+
+<ul>
+  <li>to support task-artefact cycle in which user tasks are affected by the systems they use</li>
+  <li>aims to make explicit consequences of design for users</li>
+  <li>designers identify tasks system will support</li>
+  <li>scenarios are suggested to test task</li>
+  <li>users are observed on system</li>
+  <li>psychological claims of system made explicit</li>
+  <li>negative aspects of design can be used to improve next iteration of design</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li>The software engineering life cycle
+    <ul>
+      <li>distinct activities and the consequences for interactive system design</li>
+    </ul>
+  </li>
+  <li>Usability engineering
+    <ul>
+      <li>making usability measurements explicit as requirements</li>
+    </ul>
+  </li>
+  <li>Iterative design and prototyping
+    <ul>
+      <li>limited functionality simulations and animations</li>
+    </ul>
+  </li>
+  <li>Design rationale
+    <ul>
+      <li>recording design knowledge</li>
+      <li>process vs. structure</li>
+    </ul>
+  </li>
+</ul>
+
+:ET

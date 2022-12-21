@@ -1,0 +1,228 @@
+I"�
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/bruteforce/Baekjoon-2798%EB%B2%88-%EB%B8%94%EB%9E%99%EC%9E%AD/" rel="permalink">[Baekjoon] 2798번 블랙잭
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 03/03/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Algorithm
+      ▶BruteForce
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  
+    
+      시간 제한
+      메모리 제한
+      정답 비율
+    
+  
+  
+    
+      1 초
+      128 MB
+      46.180%
+    
+  
+
+</p>
+  </article>
+</div>
+
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/bruteforce/Baekjoon-2231%EB%B2%88-%EB%B6%84%ED%95%B4%ED%95%A9/" rel="permalink">[Baekjoon] 2231번 분해합
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 03/01/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Algorithm
+      ▶BruteForce
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  
+    
+      시간 제한
+      메모리 제한
+      정답 비율
+    
+  
+  
+    
+      2 초
+      192 MB
+      45.864%
+    
+  
+
+</p>
+  </article>
+</div>
+
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/bruteforce/Algorithm-Brute-Force(%EB%B8%8C%EB%A3%A8%ED%8A%B8-%ED%8F%AC%EC%8A%A4,-%EC%99%84%EC%A0%84-%ED%83%90%EC%83%89)/" rel="permalink">[Algorithm] Brute Force(브루트 포스, 완전 탐색)
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 02/27/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Computer Science
+      ▶Data structures and algorithms with Java
+      ▶Algorithm
+      ▶BruteForce
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">이번 시간에는 완전 탐색(브루트 포스)에 대해서 배워보도록 할 것이다.
+</p>
+  </article>
+</div>
+
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/math/bruteforce/baekjoon-4375%EB%B2%88-1/" rel="permalink">[Baekjoon] 4375번 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 03/08/2020 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Algorithm
+      ▶Math
+      ▶BruteForce
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  
+    
+      시간 제한
+      메모리 제한
+      제출
+      정답
+      맞힌 사람
+      정답 비율
+    
+  
+  
+    
+      1 초
+      128 MB
+      8029
+      2705
+      2105
+      33....</p>
+  </article>
+</div>
+
+:ET

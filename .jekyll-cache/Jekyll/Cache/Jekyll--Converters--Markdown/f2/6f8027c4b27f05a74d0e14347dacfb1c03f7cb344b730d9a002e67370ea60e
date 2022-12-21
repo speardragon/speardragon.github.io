@@ -1,0 +1,92 @@
+I"�
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/stack/Baekjoon-9012%EB%B2%88-%EA%B4%84%ED%98%B8/" rel="permalink">[Baekjoon] 9012번 괄호
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 02/13/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Algorithm
+      ▶Stack
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/stack/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Stack(%EC%8A%A4%ED%83%9D)/" rel="permalink">[자료구조] Stack(스택)
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 02/10/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Computer Science
+      ▶Data structures and algorithms with Java
+      ▶Algorithm
+      ▶Stack
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">이번 시간에는 Stack 자료구조에 대해서 배워 볼 것이다.
+</p>
+  </article>
+</div>
+
+:ET

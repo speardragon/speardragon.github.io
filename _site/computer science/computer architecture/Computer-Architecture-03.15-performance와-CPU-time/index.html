@@ -1,0 +1,1952 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Computer Architecture] 03.15 performance와 CPU time | speardragon note</title>
+<meta name="description" content="Review)">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Computer Architecture] 03.15 performance와 CPU time">
+<meta property="og:url" content="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-03.15-performance%EC%99%80-CPU-time/">
+
+
+  <meta property="og:description" content="Review)">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-15T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-03.15-performance%EC%99%80-CPU-time/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-architecture" itemprop="item"><span itemprop="name">Computer architecture</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Computer Architecture] 03.15 performance와 CPU time</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Computer Architecture] 03.15 performance와 CPU time">
+    <meta itemprop="description" content="Review)">
+    <meta itemprop="datePublished" content="2022-03-15T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-03.15-performance%EC%99%80-CPU-time/" class="u-url" itemprop="url">[Computer Architecture] 03.15 performance와 CPU time
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h3 id="review">Review)</h3>
+
+<ul>
+  <li>
+    <p>performance(speed):clock frequency</p>
+  </li>
+  <li>
+    <p>area(cost):</p>
+
+    <ul>
+      <li>
+        <p>이는 design에서 줄이는 part가 있고 공정(fab)에서 줄이는 part가 있는데 데이터가 많이 들어간다고 해서 문제가 되지 않는다.</p>
+      </li>
+      <li>
+        <p>더 중요한 문제는 fab, 즉 어떤 공정을 쓰느냐</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>power(energy) = power ∝ V<sub>dd</sub><sup>2</sup> * f * C<sub>L</sub></p>
+  </li>
+</ul>
+
+<p>위 3가지의 tradeoff를 잘 고려하여야 함</p>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>perf</strong>(speed) = 1 / exec_time</li>
+  <li>latency(exec_time)라고도 하고
+    <ul>
+      <li>throughput라고도 하지만</li>
+      <li>당분간은 exec_time으로 정의를 할 것이다.</li>
+    </ul>
+  </li>
+  <li>exec_time(Time to execute a program) = sec/prog (프로그램당 몇초가 걸리는가)</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Exec_Time(sec/prog) = (# of instruction / prog ) * (# of clocks/inst) * (sec/clock)
+    <ul>
+      <li>위 식을 약분하여 sec/prog가 나온다.</li>
+      <li>sec/clock = 1 / clock frequency(얼마나 빠른 clock을 쓸 수 있는가)</li>
+      <li>
+        <ol>
+          <li>프로그램당 얼마나 많은 instruction을 포함하는가?</li>
+          <li>instruction 당 몇 개의 clocks을 지나는가?(CPI, Clocks Per Instruction)
+	-multi-cylce에서는 average 개념 도입
+	- (avg) CPI</li>
+          <li>한 클락당 몇 초인가? = Tc</li>
+        </ol>
+      </li>
+      <li>따라서
+        <ul>
+          <li>Exec_time = 1번 x 2번 x 3번</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>avg.CPI?(Clock per instruction)
+    <ul>
+      <li>instruction이 add를 수행하는데는 1clk이 소모되고 multiply를 수행하는데는 10clk이 사용된다하면 이 CPU의 CPI는 무엇인가? 라고 했을 때 대답하기 애매하기 때문에 이를 평균내서 말하는 것이다.</li>
+      <li>IPC = 1/CPI</li>
+      <li>요즘은 한 클락안에  parallel로 여러 instuction을 수행하기 때문에 IPC를 고려하는 경우도 많아지지만 우리 수업에서는 CPI를 고려하도록 할 것이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>MIPS(RISC) 같은 것은 instruction수가 많고(단순한 명령어로 수행하기 때문에),</p>
+
+<p>x86(CISC) 같은 것은 instruction수가 적은데(복잡한 명령어로 수행하는데) 둘 중 instruction수가 많은 RISC가 무조건 더 비효율적인가? -&gt; 아니다.</p>
+
+<p>오히려 간단한 명령어로 구성된 RISC가 더 빠른 성능을 보일 수 있다.</p>
+
+<p><br /></p>
+
+<p>clock frequency를 결정하는 것은 중간의 combinational logic인데 이것이 CISC는 복잡하게 되어 있기 때문에 짧은 clock을 쓰는 것이 어려울 수도 있는 것이다.</p>
+
+<hr />
+
+<h1 id="교재">교재</h1>
+
+<h2 id="response-time-and-troughput">Response Time and Troughput</h2>
+
+<ul>
+  <li>Response time(당분간은 이것으로 생각한다.)
+    <ul>
+      <li>How long it takes to do a task</li>
+    </ul>
+  </li>
+  <li>Throughput
+    <ul>
+      <li>Total work done per unit time
+        <ul>
+          <li>e.g., tasks/transactions/… per hour</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>How are response time and throughput affected by
+    <ul>
+      <li>Replacing the processor with a faster version?</li>
+      <li>Adding more processors?</li>
+    </ul>
+  </li>
+  <li>We’ll <strong>focus on response time</strong> for now…</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="relative-performance">Relative Performance</h2>
+
+<ul>
+  <li>define Performance = 1/Execution Time</li>
+  <li>
+    <p>“X is <em>n</em> time faster than Y”</p>
+
+    <ul>
+      <li>Performance<sub>X</sub>/Performance<sub>Y</sub> = Execution time<sub>Y</sub>/Execution time<sub>X</sub> = <em>n</em></li>
+    </ul>
+  </li>
+  <li>
+    <p>Example: time taken to run a program</p>
+
+    <ul>
+      <li>10s on A, 15s on B</li>
+      <li>Execution TimeB/Execution TimeA= 15s / 10s = 1.5</li>
+    </ul>
+  </li>
+  <li>So A is 1.5 times faster than B(B가 1.5배 더 빠르다.)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="measuring-execution-time">Measuring Execution Time</h2>
+
+<ul>
+  <li>Elapsed time(경과 시간)
+    <ul>
+      <li>Total response time, including <strong>all aspects</strong>
+        <ul>
+          <li>Processing, I/O, OS overhead, idle time</li>
+        </ul>
+      </li>
+      <li>Determines system performance</li>
+      <li>모든 것을 고려한 시간</li>
+    </ul>
+  </li>
+  <li>CPU time
+    <ul>
+      <li>Time spent processing a given job
+        <ul>
+          <li>Discounts I/O time, other job’s shares</li>
+        </ul>
+      </li>
+      <li>Comprises <span style="color:red">user CPU time</span> and system CPU time</li>
+      <li>Different programs are affected differently by CPU and system performance</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cpu-clocking">CPU Clocking</h2>
+
+<ul>
+  <li>Operation of digital hardware governed by a constant-rate clock</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158715602-0fd0f678-0377-4cd1-a38d-ddcf88239488.png" alt="image" /></p>
+
+<ul>
+  <li><strong>Clock period(clock cycle time)</strong>: duration of a cycle
+    <ul>
+      <li>e.g., 250ps = 0.25ns = 250x10<sup>-12</sup>s</li>
+    </ul>
+  </li>
+  <li><strong>Clock frequency (rate)</strong> : cycles per second
+    <ul>
+      <li>e.g, 4.00GHz = 4000MHz = 4.0 x 10<sup>9</sup>Hz</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cpu-time">CPU Time</h2>
+
+<p>CPU를 설계할 것이기 때문에 이 CPU만 사용하는 데 걸리는 시간이 중요함.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158300858-290102a8-594b-430c-b085-21b77fd908fb.png" alt="image" /></p>
+
+<ul>
+  <li>Performance improved by(성능 향상을 위해선)
+    <ul>
+      <li>Reducing number of clock cycles(얘는 조절하기 힘듦)</li>
+      <li>Increasing clock rate (combinational logic으로 조절)</li>
+      <li>Hardware designer must often trade off clock rate against cycle count</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="instruction-count-and-cpi"><mark>Instruction Count and CPI</mark></h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158301278-236494f8-8c3e-4c6b-852a-c9e39c60114a.png" alt="image" /></p>
+
+<ul>
+  <li>Instruction Count for a program
+    <ul>
+      <li>Determined by<code class="language-plaintext highlighter-rouge">program(programming language)</code>, <code class="language-plaintext highlighter-rouge">ISA(CISC or RISC)</code> and <code class="language-plaintext highlighter-rouge">compiler</code></li>
+    </ul>
+  </li>
+  <li>Clock Rate = 1/Clock Cycle Time</li>
+  <li>Average cycles per instruction (CPI)
+    <ul>
+      <li>Determined by CPU hardware</li>
+      <li>If different instructions have different CPI
+        <ul>
+          <li><strong>Average CPI</strong> affected by instruction mix</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>한 프로그램당 몇 초가 걸리는 지가 나옴</li>
+</ul>
+
+<h4 id="cpi-in-more-detail">CPI in More Detail</h4>
+
+<ul>
+  <li>If different instruction classes take different numbers of cycles
+    <ul>
+      <li>여러 instruction이 제각기의 cycle수를 갖는다면? -&gt; 평균으로 구함</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158716885-7be5a851-9b13-476e-b047-7566c2df738f.png" alt="image" /></p>
+
+<ul>
+  <li>Weighted average CPI</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158716918-0bdc614f-be3d-4c0b-8cb5-553b0ec68afb.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p><mark>이 부분 작년 시험에 나왔음.</mark></p>
+
+<ul>
+  <li>CPU Time 의 각 term(3 가지) 에 대해 설명을 하고 각 term이 무엇에 dependent한지</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="performance-summary">Performance Summary</h2>
+
+<p>cf) perf = 1/CPU_Time</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158715771-4d21ac98-ef24-447e-90c6-543b6807d1a4.png" alt="image" /></p>
+
+<p>CPU Time = Instructions term x CPI x clock cycle time(T<sub>c</sub>)</p>
+
+<ul>
+  <li>Performance depends on
+    <ul>
+      <li><strong>Algorithm</strong>: affects IC(Instruction Count), possibly CPI</li>
+      <li><strong>Programming language</strong>: affects IC, CPI</li>
+      <li><strong>Compiler</strong>: affects IC, CPI</li>
+      <li><strong>instruction set architecture</strong>: affects IC, CPI, T<sub>c</sub>, 세가지 전부에 영향을 준다.(그 만큼 중요)</li>
+      <li><strong>Semiconductor</strong>
+        <ul>
+          <li>반도체 기술도 T<sub>c</sub>에 영향을 주고 CPI에도 영향을 줄 수 있다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="pitfall함정-mips-as-a-performance-metric">Pitfall(함정): MIPS as a Performance Metric</h2>
+
+<ul>
+  <li>MIPS: Million of instructions per Second</li>
+  <li>Doesn’t account for
+    <ul>
+      <li>Differences in ISA between computers</li>
+      <li>Differences in complexity between instructions</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158718908-c5f905b4-7977-45ae-abe5-346aee1aca4e.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>CPI varies between programs on a given CPU</p>
+  </li>
+  <li>
+    <p>50 MIPS vs. 100MIPS -&gt; 어떤 명령어(복잡도)를 실행하느냐에 따라 뭐가 더 좋은지가 달라짐</p>
+    <ul>
+      <li>그래서 MIPS만 가지고 성능을 논하기는 힘들다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="power-trends">Power Trends</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158719232-92a0191d-fd0d-4ed2-a19f-5a2441b06bb5.png" alt="image" /></p>
+
+<ul>
+  <li>clock rate이 더 이상 오르지 않는 이유는 이를 올릴 수는 있는데 계속 올리다 보면 f는 power에 비례하기 때문에 power가 너무 커져 감당할 수 없느 열이 발생할 수 있기 때문이다.</li>
+  <li>How could clock rate grow by a factor of 1000 while power grew by only a factor of 30?</li>
+  <li>In CMOS IC technology(Dynamic power)</li>
+  <li>==Power = Capacitive load x Voltage<sup>2</sup> x Frequency==
+    <ul>
+      <li>power는 30배 증가하고 frequency는 1000배가 늘었지만 제곱하여 비례하는 voltage의 경우 5V에서 1V로 줄었기 때문에 clock rate에 비해 power가 크게 늘어나지 않은 것이다.</li>
+    </ul>
+  </li>
+  <li>clock frequency(f)를 늘리고 싶은데 power때문에 못늘리고 있는 상황
+    <ul>
+      <li>그러면 Vdd를 줄이면 되지 않나? -&gt; 이미 5V에서 0.8V까지 줄어든 상황, 거의 한계이다.</li>
+      <li>그래서 지금 현재 power는 f와 직결되어 있다고 봐도 무방하다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="reducing-power">Reducing Power</h2>
+
+<ul>
+  <li>Suppose a new CPU has
+    <ul>
+      <li>85% of capacitive load of old CPU</li>
+      <li>15% voltage and 15% frequency reduction</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158719818-86fea2a8-6d7a-47b1-b3fc-38ef54111a52.png" alt="image" /></p>
+
+<ul>
+  <li><strong>The power wall</strong>
+    <ul>
+      <li>We can’t reduce voltage further</li>
+      <li>We can’t remove more that</li>
+    </ul>
+  </li>
+  <li>==How else can we improve performance?==
+    <ul>
+      <li>Multi-core로 해결할 수 있다!</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="uniprocessor-performance">Uniprocessor Performance</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158720138-7414657a-1ed6-47da-ada0-6b51130741de.png" alt="image" /></p>
+
+<ul>
+  <li>growth limited by <strong>power</strong>, instruction-level parallelism, long memory latency
+    <ul>
+      <li>power 때문에 많이 늘어나지 못함</li>
+    </ul>
+  </li>
+  <li>하지만 게임, 프로그램 등으로 성능 향상은 반드시 이루어 져야 한다.
+    <ul>
+      <li>그래서 multi-core가 나타나기 시작</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="multiprocessors">Multiprocessors</h3>
+
+<ul>
+  <li>
+    <p>프로세서가 여러개</p>
+  </li>
+  <li>Multi-core microprocessors
+    <ul>
+      <li>More than one processor per chip</li>
+    </ul>
+  </li>
+  <li>multi-core라고 해도 한 processor가 실행될 때 나머지 processors는 놀고 있다. 그래서,</li>
+  <li>Requires explicitly <span style="color:red">parallel programming</span>
+    <ul>
+      <li>Compare with instruction level parallelism
+        <ul>
+          <li>Hardware executes multiple instructions at once</li>
+          <li>Hidden from the programmer</li>
+        </ul>
+      </li>
+      <li>Hard to do
+        <ul>
+          <li>Programming for performance</li>
+          <li>Load balancing</li>
+          <li>Optimizing communication and synchronization</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="amdahls-law">Amdahl’s Law</h2>
+
+<p>어떤 100초가 걸리는 프로그램이 있다. 이 중 80%는 parallel process를 할 수 있고 20%는 못한다. 근데 10초만에 끝내고 싶다고 해도 parallel processing이 되지 않는 20% 때문에 불가능할 것이다. 때문에 이 20%가 중요한 것이다. 이를 수식으로 표현하면 다음과 같다.</p>
+
+<ul>
+  <li>Improving an aspect of a computer and expecting proportional improvement in overall performance</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158305000-51d5727e-9885-4290-acdc-2b7f123c8e40.png" alt="image" /></p>
+
+<p>T<sub>affected</sub> : parallelize 가능한 것(parallelizable)   -&gt; 1-f</p>
+
+<p>T<sub>unaffected</sub> : parallelize 불가능한 것(unparallelizable)  -&gt; f</p>
+
+<p>n: 프로세서 개수</p>
+
+<ul>
+  <li>
+    <p>T<sub>n</sub> = (1-f)/n + f</p>
+  </li>
+  <li>
+    <p>Example: multiply accounts for 80s/100s</p>
+    <ul>
+      <li>How much improvement in multiply performance to get 5x overall?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158721884-27213f48-a119-4e9d-b088-ee578cb7ca2c.png" alt="image" /></p>
+
+<ul>
+  <li>Corollary(추론): make the common case fast!</li>
+</ul>
+
+<p><br /></p>
+
+<p>그래서 T<sub>unaffected</sub>가 굉장히 중요한 factor라는 것을 나타낸 것이 Amdahl’s Law이다.</p>
+
+<ul>
+  <li>T<sub>unaffected</sub>가 bottleneck</li>
+</ul>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#computer-architecture" class="page__taxonomy-item p-category" rel="tag">Computer Architecture</a><span class="sep">, </span>
+    
+      <a href="/tags/#cpu-time" class="page__taxonomy-item p-category" rel="tag">CPU time</a><span class="sep">, </span>
+    
+      <a href="/tags/#latency" class="page__taxonomy-item p-category" rel="tag">Latency</a><span class="sep">, </span>
+    
+      <a href="/tags/#performance" class="page__taxonomy-item p-category" rel="tag">Performance</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#computer-architecture" class="page__taxonomy-item p-category" rel="tag">Computer Architecture</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-03-15T00:00:00+09:00">2022-03-15</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BComputer+Architecture%5D+03.15+performance%EC%99%80+CPU+time%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-03.15-performance%25EC%2599%2580-CPU-time%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-03.15-performance%25EC%2599%2580-CPU-time%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-03.15-performance%25EC%2599%2580-CPU-time%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Searching-and-Complexity/" class="pagination--pager" title="[자료구조와 알고리즘] Searching and Complexity
+">이전</a>
+    
+    
+      <a href="/system/system%20programming/System-Programming-3%EC%9E%A5.-C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%ED%99%98%EA%B2%BD/" class="pagination--pager" title="[System Programming] 3장. C 프로그래밍 환경
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-03.15-performance%EC%99%80-CPU-time/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/computer%20architecture/[Computer Architecture] 03.15 performance와 CPU time"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

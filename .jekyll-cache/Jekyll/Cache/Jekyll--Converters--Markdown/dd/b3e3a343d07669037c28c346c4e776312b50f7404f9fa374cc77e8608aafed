@@ -1,0 +1,1237 @@
+I">�<h1 id="chapter-6-synchronization-tools">Chapter 6: Synchronization Tools</h1>
+
+<ul>
+  <li>Background</li>
+  <li>The Critical-Section Problem</li>
+  <li>Peterson’s Solution</li>
+  <li>Synchronization Hardware</li>
+  <li>Mutex Locks</li>
+  <li>Semaphores</li>
+  <li>Classical Problems of Synchronization</li>
+  <li>Monitors</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="objectives">Objectives</h2>
+
+<ul>
+  <li>To present the concept of process synchronization.</li>
+  <li>To introduce the critical-section problem, whose solutions can be used to ensure the consistency of shared data</li>
+  <li>To present both software and hardware solutions of the critical-section problem</li>
+  <li>To examine several classical process-synchronization problems</li>
+  <li>To explore several tools that are used to solve process synchronization problems</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="background">Background</h2>
+
+<ul>
+  <li>Processes can execute concurrently or in parallel
+    <ul>
+      <li>CPU scheduler switches between processes to provide concurrent  execution</li>
+      <li>May be interrupted at any time, partially completing execution at any  point in its instruction stream
+        <ul>
+          <li>Processing core may be assigned to execute instructions of another process (concurrent execution)</li>
+        </ul>
+      </li>
+      <li>Two instruction streams (different processes) execute  simultaneously on separating processing cores (parallel execution)</li>
+    </ul>
+  </li>
+  <li>Concurrent access to shared data may result in data inconsistency</li>
+  <li>Maintaining data consistency requires mechanisms to ensure the orderly  execution of cooperating processes</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cooperating-processes">Cooperating Processes</h2>
+
+<ul>
+  <li>Independent process cannot affect or be affected by the execution of  another process.</li>
+  <li>Cooperating process can affect or be affected by the execution of another  process
+    <ul>
+      <li>Directly share a logical address space (code and data)</li>
+      <li>Share data through shared memory or message passing</li>
+    </ul>
+  </li>
+  <li>Advantages of process cooperation
+    <ul>
+      <li>Information sharing</li>
+      <li>Computation speed-up</li>
+      <li>Modularity</li>
+      <li>Convenience</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="producer-consumer-problem">Producer-Consumer Problem</h2>
+
+<ul>
+  <li>Illustration of the problem:
+    <ul>
+      <li>Suppose that we wanted to provide a solution to the consumer-producer problem that fills all the buffers.</li>
+      <li>We can do so by having an integer counter that keeps track of the  number of full buffers.</li>
+      <li>Initially, counter is set to 0. It is incremented by the producer after it  produces a new buffer and is decremented by the consumer after it  consumes a buffer.</li>
+    </ul>
+  </li>
+  <li>Paradigm for cooperating processes, producer process produces  information that is consumed by a consumer process.
+    <ul>
+      <li>unbounded-buffer places no practical limit on the size of the buffer.</li>
+      <li>bounded-buffer assumes that there is a fixed buffer size.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ch-3-bounded-buffer-shared-memory-solution">Ch 3 Bounded-Buffer Shared-Memory Solution</h2>
+
+<ul>
+  <li>
+    <p>Shared data</p>
+
+    <ul>
+      <li>
+        <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define BUFFER_SIZE 10
+</span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="p">.</span> <span class="p">.</span> <span class="p">.</span>
+<span class="p">}</span> <span class="n">item</span><span class="p">;</span>
+<span class="n">item</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">in</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>if in=out, buffer is empty</p>
+  </li>
+  <li>
+    <p>if (in+1) mod n = out, buffer is full</p>
+  </li>
+  <li>
+    <p>Solution is correct, but can only use BUFFER_SIZE-1 elements</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---producer">Bounded-Buffer - Producer</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="cm">/* produce an item in next produced */</span> 
+    <span class="k">while</span> <span class="p">(((</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span> <span class="o">==</span> <span class="n">out</span><span class="p">)</span> 
+        <span class="p">;</span> <span class="cm">/* do nothing */</span> 
+    <span class="n">buffer</span><span class="p">[</span><span class="n">in</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_produced</span><span class="p">;</span> 
+    <span class="n">in</span> <span class="o">=</span> <span class="p">(</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---consumer">Bounded Buffer - Consumer</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">item</span> <span class="n">next_consumed</span><span class="p">;</span> 
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">in</span> <span class="o">==</span> <span class="n">out</span><span class="p">)</span> 
+        <span class="p">;</span> <span class="cm">/* do nothing */</span>
+    <span class="n">next_consumed</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">[</span><span class="n">out</span><span class="p">];</span> 
+    <span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span>
+    <span class="cm">/* consume the item in next consumed */</span> 
+<span class="p">}</span> 
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="producer-counter">Producer (counter)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* produce an item in next produced */</span> 
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">counter</span> <span class="o">==</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span> <span class="p">;</span> 
+    	<span class="cm">/* do nothing */</span> 
+    <span class="n">buffer</span><span class="p">[</span><span class="n">in</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_produced</span><span class="p">;</span> 
+    <span class="n">in</span> <span class="o">=</span> <span class="p">(</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span> 
+    <span class="n">counter</span><span class="o">++</span><span class="p">;</span> 
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="consumer-counter">Consumer (counter)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> 
+        <span class="p">;</span> <span class="cm">/* do nothing */</span> 
+    <span class="n">next_consumed</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">[</span><span class="n">out</span><span class="p">];</span> 
+    <span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span> 
+    <span class="n">counter</span><span class="o">--</span><span class="p">;</span> 
+    <span class="cm">/* consume the item in next consumed */</span> 
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="race-condition">Race Condition</h2>
+
+<ul>
+  <li>
+    <p>counter++ could be implemented in machine language as:</p>
+
+    <p>register1 = counter</p>
+
+    <p>register1 = register1 + 1</p>
+
+    <p>counter = register1</p>
+  </li>
+  <li>
+    <p>counter– could be implemented in machine language as:</p>
+
+    <p>register2 = counter</p>
+
+    <p>register2 = register2 - 1</p>
+
+    <p>counter = register2</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="race-condition-1">Race Condition</h2>
+
+<ul>
+  <li>
+    <p>If both the producer and consumer attempt to update the buffer  concurrently, the assembly language statements may get interleaved.</p>
+  </li>
+  <li>
+    <p>Interleaving depends upon how the producer and consumer processes  are scheduled.</p>
+  </li>
+  <li>
+    <p>Assume <strong>counter</strong> is initially 5. One interleaving of statements is:</p>
+
+    <p>producer: register1 = counter (register1 = 5) 
+producer: register1 = register1 + 1 (register1 = 6) 
+consumer: register2 = counter (register2 = 5) 
+consumer: register2 = register2 – 1 (register2 = 4) 
+producer: counter = register1 (counter = 6) 
+consumer: counter = register2 (counter = 4)</p>
+  </li>
+  <li>
+    <p>The value of count may be either 4 or 6, where the correct result  should be 5.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>More than one process accessing a shared variable</p>
+
+    <ul>
+      <li>Timing factors (interrupts) can cause incorrect results
+        <ul>
+          <li>Intermediate results are used</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>The statements:</p>
+
+    <ul>
+      <li>
+        <p>counter := counter + 1;</p>
+      </li>
+      <li>
+        <p>counter := counter - 1;</p>
+
+        <p>must be executed atomically.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Atomic operation means an operation that completes in its entirety  without interruption.</p>
+  </li>
+  <li>
+    <p><strong>Race condition</strong>: The situation where several processes access – and  manipulate shared data concurrently. The final value of the shared data  depends upon which process finishes last.</p>
+  </li>
+  <li>
+    <p>To prevent race conditions, concurrent processes must be  <strong>synchronized</strong>.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="critical-section-problem">Critical Section Problem</h2>
+
+<ul>
+  <li>Consider system of n processes {p0 , p1 , … pn-1 }</li>
+  <li>n processes all competing to use some shared data</li>
+  <li>Each process has critical section segment of code
+    <ul>
+      <li>Process may be changing common variables, updating table, writing file,  etc</li>
+      <li>When one process in critical section, no other may be in its critical section</li>
+    </ul>
+  </li>
+  <li>Critical section problem is to design protocol to solve this
+    <ul>
+      <li>ensure that when one process is executing in its critical section, no other  process is allowed to execute in its critical section.</li>
+    </ul>
+  </li>
+  <li>Each process must ask permission to enter critical section in <strong>entry section</strong>,  may follow critical section with <strong>exit section</strong>, then <strong>remainder section</strong></li>
+  <li>Especially challenging with preemptive kernels</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="critical-section">Critical Section</h2>
+
+<ul>
+  <li>Structure of process P<sub>i</sub></li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002203915957.png" alt="image-20221002203915957" /></p>
+
+<p><br /></p>
+
+<h2 id="solution-to-critical-section-problem">Solution to Critical-Section Problem</h2>
+
+<ol>
+  <li>
+    <p>Mutual Exclusion. If process Pi is executing in its critical section, then no  other processes can be executing in their critical sections.</p>
+  </li>
+  <li>
+    <p>Progress.</p>
+
+    <ol>
+      <li>A process outside of its CS can not block another process from entering  its own CS</li>
+      <li>If no process is executing in its critical section and there exist some  processes that wish to enter their critical section, then the selection of the  processes that will enter the critical section next cannot be postponed  indefinitely.</li>
+    </ol>
+  </li>
+  <li>
+    <p><strong>Bounded Waiting</strong>. A bound must exist on the number of times that other  processes are allowed to enter their critical sections after a process has made  a request to enter its critical section and before that request is granted.</p>
+
+    <ul>
+      <li>
+        <p>Assume that each process executes at a nonzero speed</p>
+      </li>
+      <li>
+        <p>No assumption concerning relative speed of the n processes.</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="critical-section-handling-in-os">Critical-Section Handling in OS</h2>
+
+<ul>
+  <li>Two approaches depending on if kernel is preemptive or non-preemptive
+    <ul>
+      <li>Preemptive – allows preemption of process when running in  kernel mode</li>
+      <li>Non-preemptive – runs until exits kernel mode, blocks, or  voluntarily yields CPU
+        <ul>
+          <li>Essentially free of race conditions in kernel mode</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="algorithm-for-process-pi">Algorithm for Process Pi</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204108801.png" alt="image-20221002204108801" /></p>
+
+<p><br /></p>
+
+<h2 id="initial-attempt-1-to-solve-problem">Initial Attempt 1 to Solve Problem</h2>
+
+<ul>
+  <li>Only 2 processes, Pi and Pj</li>
+  <li>turn - i =&gt; Pi can enter its critical section</li>
+  <li>initially turn = i</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204145030.png" alt="image-20221002204145030" /></p>
+
+<ul>
+  <li>Satisfies mutual exclusion, but not progress (strict alternation)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="initial-attempt-2-to-solve-problem">Initial Attempt 2 to Solve Problem</h2>
+
+<ul>
+  <li>initially flag [i] = flag [j] = false. • flag [i] = true</li>
+  <li>Pi ready to enter its critical section</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204223532.png" alt="image-20221002204223532" /></p>
+
+<ul>
+  <li>Satisfies mutual exclusion, but not progress requirement.</li>
+  <li>If switch 2 statements in entry section, then no mutual exclusion</li>
+</ul>
+
+<p><br /></p>
+
+<p>1) MTX requirement is met</p>
+
+<p>2) Progress Requirement is not met</p>
+
+<p>T0: Pi sets flag[i] = true</p>
+
+<p>T1: Pj sets flag[j] = true</p>
+
+<p>both processes are looping forever</p>
+
+<p>3) Bounded-waiting Requirement ?</p>
+
+<p><br /></p>
+
+<h2 id="petersons-solution">Peterson’s Solution</h2>
+
+<ul>
+  <li>Good algorithmic description of solving the problem</li>
+  <li>Two process solution</li>
+  <li>Assume that the LOAD and STORE machine-language instructions  are atomic; that is, cannot be interrupted</li>
+  <li>The two processes share two variables:
+    <ul>
+      <li>int turn;</li>
+      <li>Boolean flag[2]</li>
+      <li>initially flag [0] = flag [1] = false</li>
+    </ul>
+  </li>
+  <li>The variable turn indicates whose turn it is to enter the critical  section</li>
+  <li>The flag array is used to indicate if a process is ready to enter the  critical section. flag[i] = true implies that process Pi is ready ready enter its critical section!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="algorithm-for-process-pi-1">Algorithm for Process Pi</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204443244.png" alt="image-20221002204443244" /></p>
+
+<ul>
+  <li>Combined shared variables of initial attempts 1 and 2.</li>
+  <li>Meets all three requirements; solves the critical-section problem for two  processes.</li>
+  <li>Problem: does not generalize well
+    <ul>
+      <li>Very difficult to expand to more than 2 processes</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="petersons-solution-cont">Peterson’s Solution (Cont.)</h2>
+
+<ul>
+  <li>
+    <p>to enter the CS, process Pi first sets flag[i] to be true and then sets turn to  value j , thereby asserting that if the other process wishes to enter CS it  can do so.</p>
+  </li>
+  <li>
+    <p>Provable that the three CS requirement are met:</p>
+
+    <ol>
+      <li>
+        <p>Mutual exclusion is preserved 
+Pi enters CS only if: 
+either <code class="language-plaintext highlighter-rouge">flag[j] = false or turn = i </code></p>
+      </li>
+      <li>
+        <p>Progress requirement is satisfied</p>
+      </li>
+      <li>
+        <p>Bounded-waiting requirement is met</p>
+
+        <p>Pi will enter CS (progress) after at most one entry by Pj</p>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multiple-process-solution-bakery-algorithm">Multiple-Process Solution: Bakery Algorithm</h2>
+
+<p>Critical section for n processes</p>
+
+<ul>
+  <li>Before entering its critical section, process receives a number.  Holder of the smallest number enters the critical section.</li>
+  <li>If processes Pi and Pj receive the same number, if i &lt; j, then Pi is  served first; else Pj is served next .</li>
+  <li>The numbering scheme always generates numbers in increasing  order of enumeration; i.e., 1,2,3,3,3,3,4,5…</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bakery-algorithm-cont">Bakery Algorithm (Cont.)</h2>
+
+<ul>
+  <li>
+    <p>Notation &lt;= lexicographical order (ticket #, process id #)</p>
+
+    <ul>
+      <li>(a,b) &lt; (c,d) if a &lt; c or if a = c and b &lt; d</li>
+      <li>max (a<sub>0</sub> ,…, a<sub>n-1</sub> ) is a number, k, such that k &gt;= a<sub>i</sub> for i - 0,…, n – 1</li>
+    </ul>
+  </li>
+  <li>
+    <p>Shared data</p>
+
+    <p><strong>var</strong> choosing: <strong>array</strong> [0..n – 1] <strong>of</strong> boolean; 
+		number: <strong>array</strong> [0..n – 1] <strong>of</strong> integer,</p>
+
+    <p>Data structures are initialized to false and 0 respectively</p>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204837783.png" alt="image-20221002204837783" /></p>
+
+<p><br /></p>
+
+<p>1) MTX requirement is met 
+   consider Pi in its CS and Pk trying to enter CS. 
+   when Pk executes the second while statement for j==1, it finds  that</p>
+<ul>
+  <li>number[j] ≠ 0</li>
+  <li>(number[j], j) &lt; (number[i], i) 
+2) Progress Requirement is met
+3) Bounded-waiting Requirement - ensures fairness - process enters CS on FCFS basis</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="synchronization-hardware">Synchronization Hardware</h2>
+
+<ul>
+  <li>Many systems provide hardware support for implementing the critical  section code.</li>
+  <li>All solutions below based on idea of locking
+    <ul>
+      <li>Protecting critical regions via locks</li>
+    </ul>
+  </li>
+  <li>Uniprocessors – could disable interrupts
+    <ul>
+      <li>Currently running code would execute without preemption</li>
+      <li>Generally too inefficient on multiprocessor systems
+        <ul>
+          <li>Operating systems using this not broadly scalable</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Modern machines provide special atomic hardware instructions
+    <ul>
+      <li>Atomic = non-interruptable</li>
+      <li>Either test memory word and set value</li>
+      <li>Or swap contents of two memory words</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-to-critical-section-problem-using-locks">Solution to Critical-section Problem Using Locks</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205101587.png" alt="image-20221002205101587" /></p>
+
+<p><br /></p>
+
+<h2 id="test_and_set-instruction">test_and_set Instruction</h2>
+
+<ul>
+  <li>
+    <p>Test and modify the content of a word atomically.</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205126651.png" alt="image-20221002205126651" /></p>
+  </li>
+  <li>Executed atomically (Non-interruptible)</li>
+  <li>Returns the original value of passed parameter (lock)</li>
+  <li>Set the new value of passed parameter to “TRUE”.</li>
+  <li>If multiple processes attempting to execute instruction, first successful  process will have value false returned to it</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-using-test_and_set">Solution using test_and_set()</h2>
+
+<ul>
+  <li>
+    <p>Shared Boolean variable lock, initialized to FALSE</p>
+  </li>
+  <li>
+    <p>Solution:</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205221103.png" alt="image-20221002205221103" /></p>
+  </li>
+  <li>It works fine</li>
+  <li>Problem:
+    <ul>
+      <li>fairness (starvation) – no bounded waiting</li>
+      <li>Waste CPU cycle
+        <ul>
+          <li>CPU cycles to check test&amp;set routine</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="compare_and_swap-instruction">compare_and_swap Instruction</h2>
+
+<p>Definition:</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205311507.png" alt="image-20221002205311507" /></p>
+
+<ul>
+  <li>Executed atomically</li>
+  <li>Returns the original value of passed parameter “value”</li>
+  <li>Set the variable “value” the value of the passed parameter “new_value” but  only if “value” ==“expected”. That is, the swap takes place only under this  condition.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-using-compare_and_swap">Solution using compare_and_swap</h2>
+
+<ul>
+  <li>Shared integer “lock” initialized to 0;</li>
+  <li>Solution:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205409806.png" alt="image-20221002205409806" /></p>
+
+<ul>
+  <li>Problem:
+    <ul>
+      <li>fairness (starvation) – no bounded waiting</li>
+      <li>Waste CPU cycle</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-waiting-mutual-exclusion-with-test_and_set">Bounded-Waiting Mutual Exclusion with Test_and_Set</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205506699.png" alt="image-20221002205506699" /></p>
+
+<ul>
+  <li>Shared data (initialized to false):</li>
+  <li>boolean lock;</li>
+  <li>boolean waiting[n];</li>
+  <li>Satisfies all the CS requirements</li>
+</ul>
+
+<ol>
+  <li>
+    <p>MTX</p>
+
+    <ul>
+      <li>
+        <p>Pi can enter CS only if either  waiting[i] == false or key == false</p>
+      </li>
+      <li>Value of key can become false only if  testAndSet is ececuted</li>
+      <li>waiting[i] can become false only if  another process leaves CS</li>
+      <li>-&gt; Only one waiting[i] can become  false</li>
+    </ul>
+  </li>
+  <li>
+    <p>Progress Requirement</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205639849.png" alt="image-20221002205639849" /></p>
+  </li>
+</ol>
+
+<ul>
+  <li>a process exiting CS either sets lock to false, or sets  waiting[j] to false to allow a process that is waiting to enter  CS to proceed</li>
+</ul>
+
+<ol>
+  <li>
+    <p>Bounded-waiting Requirement</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205716160.png" alt="image-20221002205716160" /></p>
+  </li>
+</ol>
+
+<ul>
+  <li>any process waiting to enter CS will do so within n-1 times</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mutex-locks">Mutex Locks</h2>
+
+<ul>
+  <li>Previous solutions are complicated and generally inaccessible to  application programmers</li>
+  <li>OS designers build software tools to solve critical section problem</li>
+  <li>Simplest is mutex lock</li>
+  <li>Product critical regions with it by first acquire() a lock then release() it
+    <ul>
+      <li>Boolean variable indicating if lock is available or not</li>
+    </ul>
+  </li>
+  <li>Calls to acquire() and release() must be atomic
+    <ul>
+      <li>Usually implemented via hardware atomic instructions</li>
+    </ul>
+  </li>
+  <li>But this solution requires <strong>busy waiting</strong>
+    <ul>
+      <li>This lock therefore called a <strong>spinlock</strong></li>
+      <li>Good locking mechanism used in multiprocessor system when lock is held for a short duration (duration of less than 2 context switches)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="acquire-and-release">acquire() and release()</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205926375.png" alt="image-20221002205926375" /></p>
+
+<p><br /></p>
+
+<h2 id="semaphore">Semaphore</h2>
+
+<ul>
+  <li>
+    <p>Synchronization tool that provides more sophisticated ways (than Mutex locks) for  process to synchronize their activities.</p>
+  </li>
+  <li>
+    <p>Each process must perform operations on semaphore before entering its own CS</p>
+
+    <ul>
+      <li>Spinlock : no context switch required</li>
+      <li>When locks are expected to be held for short times, spinlocks are useful</li>
+    </ul>
+  </li>
+  <li>
+    <p>Semaphore S – integer variable</p>
+  </li>
+  <li>
+    <p>Can only be accessed via two indivisible (atomic) operations</p>
+
+    <ul>
+      <li><strong>wait()</strong> and <strong>signal()</strong>
+        <ul>
+          <li>Originally called <strong>P()</strong> and <strong>V()</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Definition of the <strong>wait() operation</strong></p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">wait</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">while</span> <span class="p">(</span><span class="n">S</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// busy wait</span>
+    <span class="n">S</span><span class="o">--</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Definition of the signal() operation</p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">signal</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">S</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semaphore-usage">Semaphore Usage</h2>
+
+<ul>
+  <li>
+    <p>Counting semaphore – integer value can range over an unrestricted domain</p>
+  </li>
+  <li>
+    <p>Binary semaphore – integer value can range only between 0 and 1</p>
+
+    <ul>
+      <li>Same as a mutex lock</li>
+    </ul>
+  </li>
+  <li>
+    <p>Can solve various synchronization problems</p>
+
+    <ul>
+      <li>
+        <p>semaphore “mutex” initialized to 1</p>
+
+        <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002210231403.png" alt="image-20221002210231403" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Consider P<sub>1</sub> and P<sub>2</sub> that require S<sub>1</sub> to happen before S<sub>2</sub></p>
+
+    <p>Create a semaphore “synch” initialized to 0</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002210337294.png" alt="image-20221002210337294" /></p>
+  </li>
+  <li>
+    <p>Can implement a counting semaphore S as a binary semaphore</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semaphore-implementation">Semaphore Implementation</h2>
+
+<ul>
+  <li>Must guarantee that no two processes can execute the wait() and  signal() on the same semaphore at the same time</li>
+  <li>Thus, the implementation becomes the critical section problem where  the wait and signal code are placed in the critical section
+    <ul>
+      <li>Could now have busy waiting in critical section implementation
+        <ul>
+          <li>But implementation code is short</li>
+          <li>Little busy waiting if critical section rarely occupied</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Note that applications may spend lots of time in critical sections and  therefore this is not a good solution</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semaphore-implementation-with-no-busy-waiting">Semaphore Implementation with no Busy waiting</h2>
+
+<ul>
+  <li>With each semaphore there is an associated waiting queue</li>
+  <li>Each entry in a waiting queue has two data items:
+    <ul>
+      <li>value (of type integer)</li>
+      <li>pointer to next record in the list</li>
+    </ul>
+  </li>
+  <li>Two operations:
+    <ul>
+      <li><strong>block</strong> – place the process invoking the operation on the  appropriate waiting queue</li>
+      <li><strong>wakeup</strong> – remove one of processes in the waiting queue  and place it in the ready queue</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">process</span> <span class="o">*</span><span class="n">list</span><span class="p">;</span> <span class="o">/*</span> <span class="n">list</span> <span class="n">of</span> <span class="n">process</span><span class="p">(</span><span class="n">waitlist</span><span class="p">)</span> <span class="o">/*</span>
+<span class="p">}</span> <span class="n">semaphore</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="implementation-with-no-busy-waiting-cont">Implementation with no Busy waiting (Cont.)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">wait</span><span class="p">(</span><span class="n">semaphore</span> <span class="o">*</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">--</span><span class="p">;</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">add</span> <span class="n">this</span> <span class="n">process</span> <span class="n">to</span> <span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span> 
+        <span class="n">block</span><span class="p">();</span> 
+    <span class="p">}</span> 
+<span class="p">}</span>
+<span class="n">signal</span><span class="p">(</span><span class="n">semaphore</span> <span class="o">*</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">remove</span> <span class="n">a</span> <span class="n">process</span> <span class="n">P</span> <span class="n">from</span> <span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span> 
+        <span class="n">wakeup</span><span class="p">(</span><span class="n">P</span><span class="p">);</span> <span class="cm">/* place P onto ready queue */</span>
+    <span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="semaphore-as-general-synchronization-tool">Semaphore as General Synchronization Tool</h2>
+
+<ul>
+  <li>Execute B in Pj only after A executed in Pi</li>
+  <li>Use semaphore flag initialized to 0</li>
+  <li>Code:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002210808139.png" alt="image-20221002210808139" /></p>
+
+<p><br /></p>
+
+<h2 id="two-types-of-semaphores">Two Types of Semaphores</h2>
+
+<ul>
+  <li>Counting semaphore - integer value can range over an  unrestricted domain.</li>
+  <li>Binary semaphore – integer value can range only between 0  and 1; can be simpler to implement.</li>
+  <li>Can implement a counting semaphore S as a binary semaphore.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="implementing-s-as-a-binary-semaphore">Implementing S as a Binary Semaphore</h2>
+
+<ul>
+  <li>
+    <p>Data structures:</p>
+
+    <p>var S1: binary-semaphore;</p>
+
+    <p>S2: binary-semaphore;</p>
+
+    <p>C: integer;</p>
+  </li>
+  <li>
+    <p>Initialization:</p>
+
+    <p>S1 = 1</p>
+
+    <p>S2 = 0</p>
+
+    <p>C = initial value of semaphore S</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="implementing-s-cont">Implementing S (Cont.)</h2>
+
+<ul>
+  <li>wait operation</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211023675.png" alt="image-20221002211023675" /></p>
+
+<ul>
+  <li>signal operation</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211037875.png" alt="image-20221002211037875" /></p>
+
+<p><br /></p>
+
+<h2 id="problems-with-semaphores">Problems with Semaphores</h2>
+
+<ul>
+  <li>Incorrect use of semaphore operations:
+    <ul>
+      <li>signal (mutex) …. wait (mutex)</li>
+      <li>wait (mutex) … wait (mutex)</li>
+      <li>Omitting of wait (mutex) or signal (mutex) (or both)</li>
+    </ul>
+  </li>
+  <li>Deadlock and starvation are possible.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitors">Monitors</h2>
+
+<ul>
+  <li>A high-level abstraction that provides a convenient and effective mechanism for  process synchronization</li>
+  <li>Abstract data type, internal variables only accessible by code within the procedure
+    <ul>
+      <li>Ensure mutex at higher level, within monitor
+        <ul>
+          <li>Only one process at a time can be executing within monitor</li>
+        </ul>
+      </li>
+      <li>Encapsulates data, procedures to manipulate data into one module</li>
+    </ul>
+  </li>
+  <li>Only one process may be active within the monitor at a time</li>
+  <li>But not powerful enough to model some synchronization schemes</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211222031.png" alt="image-20221002211222031" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>A high-level abstraction that provides a convenient and effective  mechanism for process synchronization</li>
+  <li>Abstract data type, internal variables only accessible by code within the  procedure</li>
+  <li>Only one process may be active within the monitor at a time</li>
+  <li>But not powerful enough to model some synchronization schemes</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211258316.png" alt="image-20221002211258316" /></p>
+
+<p><br /></p>
+
+<h2 id="monitors-continued">Monitors (continued)</h2>
+
+<ul>
+  <li>Initialization code is executed when monitor is declared</li>
+  <li>Monitor procedures can only access variables declared within  monitor, procedures
+    <ul>
+      <li>Variables within monitor can not be accesses outside of monitor</li>
+      <li>Only access to monitor is via calls to its procedures labeled entry</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="schematic-view-of-a-monitor">Schematic view of a monitor</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211359527.png" alt="image-20221002211359527" /></p>
+
+<p><br /></p>
+
+<h2 id="monitors-continued-1">Monitors (continued)</h2>
+
+<ul>
+  <li>
+    <p>To allow a process to wait within the monitor, a condition variable must  be declared, as</p>
+
+    <p>​		condition x, y;</p>
+
+    <ul>
+      <li>Associated with each condition is a queue</li>
+    </ul>
+  </li>
+  <li>
+    <p>Two operations are allowed on a condition variable:</p>
+  </li>
+  <li>
+    <p>Processes placed onto / removed from queue via wait and signal</p>
+
+    <ul>
+      <li>x.wait() – means that the process that invokes this operation is  suspended until another process invokes x.signal()</li>
+      <li>x.signal() – resumes exactly one suspended process (if any) that invoked x.wait()
+        <ul>
+          <li>If no x.wait() on the variable, then it has no effect on the  variable</li>
+          <li>If no process is suspended, then the signal operation has no  effect.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-with-condition-variables">Monitor with condition variables</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211530941.png" alt="image-20221002211530941" /></p>
+
+<p><br /></p>
+
+<h2 id="monitors-continued-2">Monitors (continued)</h2>
+
+<ul>
+  <li>Suppose that, when the x.signal is invoked by a process P, there is a  suspended process Q associated with condition x</li>
+  <li>If the suspended process Q is allowed to resume its execution, the  signaling process P must wait, otherwise, both P and Q will be active  simultaneously within the monitor</li>
+  <li>2 possibilities
+    <ul>
+      <li>Signal and wait – P either waits until Q leaves the monitor, or  waits for another condition</li>
+      <li>Signal and continue - Q either waits until P leaves the monitor, or  waits for another condition</li>
+      <li>Both have pros and cons – language implementer can decide</li>
+      <li>Monitors implemented in Concurrent Pascal compromise
+        <ul>
+          <li>P executing signal immediately leaves the monitor, Q is resumed</li>
+        </ul>
+      </li>
+      <li>Implemented in other languages including Mesa, C#, Java</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation-using-semaphores">Monitor Implementation Using Semaphores</h2>
+
+<ul>
+  <li>Variables</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211654825.png" alt="image-20221002211654825" /></p>
+
+<ul>
+  <li>Each procedure F will be replaced by</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211711850.png" alt="image-20221002211711850" /></p>
+
+<ul>
+  <li>Mutual exclusion within a monitor is ensured by mutex semaphore</li>
+  <li>Signaling process must wait until the resumed process either leaves or waits
+    <ul>
+      <li>Next semaphore on which signaling processes may suspend themselves</li>
+      <li>Next-count counts the number of processes suspended on next</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation---condition-variables">Monitor Implementation - Condition Variables</h2>
+
+<ul>
+  <li>For each condition variable x, we have:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211754045.png" alt="image-20221002211754045" /></p>
+
+<ul>
+  <li>The operation x.wait can be implemented as:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211807215.png" alt="image-20221002211807215" /></p>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation-cont">Monitor Implementation (Cont.)</h2>
+
+<ul>
+  <li>The operation x.signal can be implemented as:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211833560.png" alt="image-20221002211833560" /></p>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation-cont-1">Monitor Implementation (Cont.)</h2>
+
+<ul>
+  <li>Resuming Processes within a Monitor
+    <ul>
+      <li>If several processes queued on condition x, and x.signal()  executed, which should be resumed?</li>
+      <li>FCFS frequently not adequate</li>
+    </ul>
+  </li>
+  <li>Condition operation with priority (process resumption order)
+    <ul>
+      <li>Conditional-wait construct: x.wait(c);</li>
+      <li>c – integer expression evaluated when the wait operation is  executed.</li>
+      <li>value of c (priority number) stored with the name of the process  that is suspended.</li>
+      <li>when x.signal is executed, process with smallest associated  priority number is resumed next.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="single-resource-allocation">Single Resource allocation</h2>
+
+<ul>
+  <li>Allocate a single resource among competing processes using  priority numbers that specify the maximum time a process plans  to use the resource</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212138116.png" alt="image-20221002212138116" /></p>
+
+<ul>
+  <li>Where R is an instance of type ResourceAllocator</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="a-monitor-to-allocate-single-resource">A Monitor to Allocate Single Resource</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212250416.png" alt="image-20221002212250416" /></p>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation-cont-2">Monitor Implementation (Cont.)</h2>
+
+<ul>
+  <li>Check to establish correctness of system:
+    <ul>
+      <li>User processes must always make their calls on the monitor in a  correct sequence.</li>
+      <li>Must ensure that an uncooperative process does not ignore the  mutual-exclusion gateway provided by the monitor, and try to  access the shared resource directly, without using the access  protocols.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="liveness">Liveness</h2>
+
+<ul>
+  <li>Deadlock – two or more processes are waiting indefinitely for an event that can  be caused by only one of the waiting processes.</li>
+  <li>Let S and Q be two semaphores initialized to 1</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212403259.png" alt="image-20221002212403259" /></p>
+
+<ul>
+  <li>Starvation – indefinite blocking.
+    <ul>
+      <li>A process may never be removed from the semaphore queue in which it  is suspended.</li>
+    </ul>
+  </li>
+  <li>Priority Inversion – Scheduling problem when lower-priority process holds a  lock needed by higher-priority process
+    <ul>
+      <li>Solved via priority-inheritance protocol</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="atomic-transactions">Atomic Transactions</h2>
+
+<ul>
+  <li>System Model</li>
+  <li>Log-based Recovery</li>
+  <li>Checkpointing</li>
+  <li>Concurrent Atomic Transactions</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="system-model">System Model</h2>
+
+<ul>
+  <li>Assures that operations happen as a single logical unit of work, in its  entirety, or not at all</li>
+  <li>Related to field of database systems</li>
+  <li>Challenge is assuring atomicity despite computer system failures</li>
+  <li><strong>Transaction</strong> - collection of instructions or operations that performs  single logical function
+    <ul>
+      <li>Here we are concerned with changes to stable storage – disk</li>
+      <li>Transaction is series of <strong>read</strong> and <strong>write</strong> operations</li>
+      <li>Terminated by <strong>commit</strong> (transaction successful) or abort (transaction failed) operation</li>
+      <li>Aborted transaction must be <strong>rolled back</strong> to undo any changes it  performed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="types-of-storage-media">Types of Storage Media</h2>
+
+<ul>
+  <li>
+    <p>Volatile storage – information stored here does not survive system  crashes</p>
+
+    <ul>
+      <li>Example: main memory, cache</li>
+    </ul>
+  </li>
+  <li>
+    <p>Nonvolatile storage – Information usually survives crashes</p>
+
+    <ul>
+      <li>Example: disk and tape</li>
+    </ul>
+  </li>
+  <li>
+    <p>Stable storage – Information never lost</p>
+
+    <ul>
+      <li>Not actually possible, so approximated via replication or RAID to  devices with independent failure modes</li>
+    </ul>
+
+    <p>Goal is to assure transaction atomicity where failures cause loss of  information on volatile storag</p>
+  </li>
+</ul>
+
+<p><br /></p>
+:ET

@@ -1,0 +1,875 @@
+I"��<p><br /></p>
+
+<h2 id="프로그램-실행">프로그램 실행</h2>
+
+<ul>
+  <li>fork() 후
+    <ul>
+      <li>프로세스 이미지가 변경하는 것은 아니기 때문에 자식 프로세스는 부모 프로세스와 똑같은 코드 실행</li>
+    </ul>
+  </li>
+  <li>자식 프로세스에게 새 프로그램 실행
+    <ul>
+      <li>exec() 시스템 호출 사용</li>
+      <li>프로세스 내의 프로그램을 새 프로그램으로 대치 (원래는 부모 프로그램이 깔려있었다면)</li>
+      <li><strong>PID는 변경되지 않음</strong>
+        <ul>
+          <li><mark>단지 프로세스 내에 탑재되는 프로그램만 교체가 되는 것이다.</mark></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>보통 fork() 후에 exec( ) 호출
+    <ul>
+      <li>When a process calls one of the exec functions, the process is <strong>completely replaced</strong> by the new program.</li>
+      <li>New program starts executing at its main() function.</li>
+      <li>exec() merely replaces the current process(text, data) with a brand new program from disk.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="forkexec">fork/exec</h2>
+
+<ul>
+  <li>보통 fork() 호출 후에 exec() 호출
+    <ul>
+      <li>새로 실행할 프로그램에 대한 정보를 arguments로 전달한다</li>
+    </ul>
+  </li>
+  <li>exec() 호출이 성공하면
+    <ul>
+      <li>자식 프로세스는 새로운 프로그램을 실행하게 되고</li>
+      <li>부모는 계속해서 다음 코드를 실행하게 된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">){</span>
+ <span class="n">exec</span><span class="p">(</span> <span class="n">arguments</span> <span class="p">);</span>
+ <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 부모 계속 실행</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="프로그램-실행-exec">프로그램 실행: exec()</h2>
+
+<ul>
+  <li>프로세스가 exec() 호출을 하면,
+    <ul>
+      <li>그 프로세스 내의 프로그램은 완전히 새로운 프로그램으로 대치</li>
+      <li>자기대치(自己代置)</li>
+      <li>새 프로그램의 main()부터 실행이 시작된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168190101-dd456e03-e5bc-4710-b646-05f20827d768.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>exec() 호출이 성공하면 리턴할 곳이 없어진다.
+    <ul>
+      <li>부모 프로세스와의 connection이 끊어졌기 때문에 리턴값을 받을 수 없음</li>
+    </ul>
+  </li>
+  <li>성공한 exec() 호출은 <strong>절대 리턴하지 않는다.</strong>
+    <ul>
+      <li>실패한 경우에만 리턴함. (새로운 프로그램을 실행하지 않았기 때문)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="n">execl</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg0</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg1</span><span class="p">,</span> <span class="p">...</span> <span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argn</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span>
+<span class="kt">int</span> <span class="n">execv</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">path</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="kt">int</span> <span class="n">execlp</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">file</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg0</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">arg1</span><span class="p">,</span> <span class="p">...</span> <span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argn</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span>
+<span class="kt">int</span> <span class="n">execvp</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">file</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+</code></pre></div></div>
+
+<p>path: absolute path</p>
+
+<p>file: current working directory 기준으로 한 파일</p>
+
+<p>호출한 프로세스의 코드, 데이터, 힙, 스택 등을 path가 나타내는 새로운 프로그램으로 대치한 후 새 프로그램을 실행한다. 성공한 exec( ) 호출은 리턴하지 않으며 실패하면 -1을 리턴한다.</p>
+
+<p><br /></p>
+
+<h2 id="exec">exec()</h2>
+
+<ul>
+  <li>pathname(filename) argument
+    <ul>
+      <li>pathname(filename) of a file to be executed.</li>
+      <li>execl, execv, execle, execve take a pathname argument.</li>
+      <li>execl<strong>p</strong>, execv<strong>p</strong> take a filename argument.
+        <ul>
+          <li>If <strong>filename</strong> contains a ‘/’, it is taken as a pathname.</li>
+          <li><strong>Otherwise</strong>, the executable file is searched for in the directories specified by <strong>PATH</strong>. E.g. PATH=/bin:/usr/bin:/usr/local/bin/:.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Argument list
+    <ul>
+      <li>arg0, arg1, …, argn in the execl, execlp, and execle.</li>
+      <li>The list of arguments is terminated by a NULL pointer. (인자의 끝을 알리기 위한 용도)
+        <ul>
+          <li>execl(“/bin/ls”, “ls”, -“al”, 0);</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Argument vector
+    <ul>
+      <li>list와 사실상 동일하나 넘겨주는 방식의 차이가 존재</li>
+      <li>*argv[] in execv, execve and execvp.</li>
+      <li>The array of pointers is terminated by a NULL pointer.
+        <ul>
+          <li>char *argv[3] = {“ls”, -“al”, 0};</li>
+          <li>execv(“/bin/ls”, argv);</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Environment variable
+    <ul>
+      <li>*envp[] in execv<strong>e</strong> and execl<strong>e</strong></li>
+      <li>A pointer to an array of pointers to the <strong>environment strings</strong>.</li>
+      <li>The other functions use the environ variable.
+        <ul>
+          <li>char *env[2] = {“TERM=vt100”, 0};</li>
+          <li>execle(““/bin/ls”, “ls”, 0, env);</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Differences among the six exec functions(family)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168190446-3283c968-5890-4b59-bdec-ea1a53cda589.png" alt="image" /></p>
+
+<p>경로 이름으로 전달 vs. 파일 이름으로 전달</p>
+
+<p><br /></p>
+
+<ul>
+  <li>execve is a system call.
+    <ul>
+      <li>execl, execv, execle, execlp, execvp are library functions.</li>
+      <li>Relationship of the six exec functions.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168190481-d126cd2c-afcb-48bf-bc85-fe3df22969ea.png" alt="image" /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">execl</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">arg0</span><span class="p">,</span> <span class="p">...</span> <span class="cm">/* (char *)0 */</span> <span class="p">);</span>
+<span class="kt">int</span> <span class="nf">execv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">argv</span> <span class="p">[]);</span>
+<span class="kt">int</span> <span class="nf">execle</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">arg0</span><span class="p">,</span> <span class="err">…</span> <span class="cm">/* (char *)0,
+ char *const envp[] */</span> <span class="p">);</span>
+<span class="kt">int</span> <span class="nf">execve</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">argv</span><span class="p">[],</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">envp</span> <span class="p">[]);</span>
+<span class="kt">int</span> <span class="nf">execlp</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">arg0</span><span class="p">,</span> <span class="p">...</span> <span class="cm">/* (char *)0 */</span> <span class="p">);</span>
+<span class="kt">int</span> <span class="nf">execvp</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">argv</span> <span class="p">[]);</span>
+ 			<span class="n">All</span> <span class="n">six</span> <span class="k">return</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span> <span class="n">on</span> <span class="n">error</span><span class="p">,</span> <span class="n">no</span> <span class="k">return</span> <span class="n">on</span> <span class="n">success</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="execute1c">execute1.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cm">/* 자식 프로세스를 생성하여 echo 명령어를 실행한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"부모 프로세스 시작</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">(</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">execl</span><span class="p">(</span><span class="s">"/bin/echo"</span><span class="p">,</span> <span class="s">"echo"</span><span class="p">,</span> <span class="s">"hello"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span> <span class="c1">// 자식 주소 공간 변경</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">"첫 번째 실패"</span><span class="p">);</span> <span class="c1">// exec 성공 시 실행 안됨</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// exec 성공 시 실행 안됨</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"부모 프로세스 끝</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>execute1
+부모 프로세스 시작
+hello
+부모 프로세스 끝
+</code></pre></div></div>
+
+<p>exec()이 성공했단 의미는 자식 프로세스의 공간이 echo 프로그램(echo.c)으로 대치되었기 때문에 그 아래 문장은 모두 없어진다는 뜻이다.</p>
+
+<p><br /></p>
+
+<h2 id="execute2c">execute2.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> …</span><span class="cp">
+</span><span class="cm">/* 세 개의 자식 프로세스를 생성하여 각각
+다른 명령어를 실행한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"부모 프로세스 시작</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">(</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">execl</span><span class="p">(</span><span class="s">"/bin/echo"</span><span class="p">,</span> <span class="s">"echo"</span><span class="p">,</span> <span class="s">"hello"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">"첫 번째 실패"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">(</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">execl</span><span class="p">(</span><span class="s">"/bin/date"</span><span class="p">,</span> <span class="s">"date"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span> <span class="c1">// argument 없음</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">"두 번째 실패"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">(</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">execl</span><span class="p">(</span><span class="s">"/bin/ls"</span><span class="p">,</span><span class="s">"ls"</span><span class="p">,</span> <span class="s">"-l"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span> <span class="c1">// argument 1개</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">"세 번째 실패"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"부모 프로세스 끝</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>execute2
+부모 프로세스 시작
+부모 프로세스 끝
+hello
+2014년 4월 22일 화요일 오후 08시 43분 47초
+총 50
+<span class="nt">-rwxr-xr-x</span> 1 chang faculty 24296 4월 16일 13:37 execute2
+<span class="nt">-rw-r--r--</span> 1 chang faculty 556 4월 14일 13:17 execute2.c
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="execute3c">execute3.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> …</span><span class="cp">
+</span><span class="cm">/* 명령줄 인수로 받은 명령을 실행시킨다. */</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">child</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">status</span><span class="p">;</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">(</span> <span class="p">);</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 자식 프로세스</span>
+        <span class="n">execvp</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// 부모 프로세스의 argument을 다시 전달</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"%s:실행 불가</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> 
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">// 부모 프로세스 </span>
+        <span class="n">child</span> <span class="o">=</span> <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스 %d 종료 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">pid</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\t</span><span class="s">종료 코드 %d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">status</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>execute3 <span class="nb">wc </span>you.txt
+25 68 556 you.txt
+<span class="o">[</span>26470] 자식 프로세스 26471 종료
+종료 코드 0
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168190749-2a32586c-1aef-43e5-b8f4-3aa1d89494b9.png" alt="image" /></p>
+
+<p>자식 프로세스의 종료는 exec() 호출이 되면 그 안에서 되는 것임</p>
+
+<p><br /></p>
+
+<h2 id="exec-1">exec()</h2>
+
+<ul>
+  <li>Example</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h"</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span><span class="kt">char</span> <span class="o">*</span><span class="n">env_init</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"USER=unknown"</span><span class="p">,</span> <span class="s">"PATH=/tmp"</span><span class="p">,</span> <span class="nb">NULL</span> <span class="p">};</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">err_sys</span><span class="p">(</span><span class="s">"fork error"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* specify pathname, specify environment */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">execle</span><span class="p">(</span><span class="s">"/home/sar/bin/echoall"</span><span class="p">,</span> <span class="s">"echoall"</span><span class="p">,</span> <span class="s">"myarg1"</span><span class="p">,</span>
+                   <span class="s">"MY ARG2"</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">,</span> <span class="n">env_init</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">err_sys</span><span class="p">(</span><span class="s">"execle error"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">err_sys</span><span class="p">(</span><span class="s">"wait error"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">err_sys</span><span class="p">(</span><span class="s">"fork error"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* specify filename, inherit environment */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">execlp</span><span class="p">(</span><span class="s">"echoall"</span><span class="p">,</span> <span class="s">"echoall"</span><span class="p">,</span> <span class="s">"only 1 arg"</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="c1">//환경변수로 찾아감</span>
+            <span class="n">err_sys</span><span class="p">(</span><span class="s">"execlp error"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<ul>
+  <li>자식이 실행하는 echoall 프로그램</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h"</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">**</span><span class="n">ptr</span><span class="p">;</span>
+    <span class="k">extern</span> <span class="kt">char</span> <span class="o">**</span><span class="n">environ</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="cm">/* echo all command-line args */</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"argv[%d]: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="n">ptr</span> <span class="o">=</span> <span class="n">environ</span><span class="p">;</span> <span class="o">*</span><span class="n">ptr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">ptr</span><span class="o">++</span><span class="p">)</span> <span class="cm">/* and all env strings */</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">ptr</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+argv[0]: echoall
+argv[1]: myarg1
+argv[2]: MY ARG2
+<span class="nv">USER</span><span class="o">=</span>unknown
+<span class="nv">PATH</span><span class="o">=</span>/tmp
+<span class="nv">$ </span>argv[0]: echoall
+argv[1]: only 1 arg
+<span class="nv">USER</span><span class="o">=</span>sar
+<span class="nv">LOGNAME</span><span class="o">=</span>sar
+<span class="nv">SHELL</span><span class="o">=</span>/bin/bash
+…
+<span class="nv">HOME</span><span class="o">=</span>/home/sar
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="system">system()</h2>
+
+<ul>
+  <li>fork()와 wait()을 합친 시스템 콜</li>
+  <li>Both ANSI C and POSIX define an interface that couples spawning a new process</li>
+  <li>and waiting for its termination
+    <ul>
+      <li>think of it as <strong>synchronous process creation</strong>.</li>
+    </ul>
+  </li>
+  <li>If a process is spawning a child only to immediately wait for its termination, it makes sense to use this interface
+    <ul>
+      <li>바로 wait하는 경우 굳이 생성(fork)과 wait를 분리할 필요가 없어짐 -&gt; 하나의 system()으로 대체</li>
+    </ul>
+  </li>
+  <li>It is common to use system( ) to run a simple utility or shell script, often with the explicit goal of simply obtaining its return value</li>
+</ul>
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">system</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmdstring</span><span class="p">);</span>
+<span class="c1">//이 함수는 /bin/sh –c cmdstring를 호출하여 cmdstring에 지정된 명령어를</span>
+<span class="c1">//실행하며, 명령어가 끝난 후 명령어의 종료코드를 반환한다.</span>
+</code></pre></div></div>
+
+<ul>
+  <li>자식 프로세스를 생성하고 /bin/sh 로 하여금 지정된 명령어(cmdstring)를 실행시킨다(exec)
+    <ul>
+      <li>system(“date &gt; file”);</li>
+    </ul>
+  </li>
+  <li>system() 함수 구현
+    <ul>
+      <li>fork(), exec(), waitpid() 시스템 호출을 이용</li>
+    </ul>
+  </li>
+  <li>반환값
+    <ul>
+      <li>명령어의 종료코드</li>
+      <li>-1 with errno: fork() 혹은 waitpid() 실패</li>
+      <li>127 : exec() 실패</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="system-함수-구현">system() 함수 구현</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="c1"> /* system.c */</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">system</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmdstring</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span> <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cmdstring</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="cm">/* 명령어가 NULL인 경우 */</span>
+        <span class="k">return</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="cm">/* 프로세스 생성 실패 */</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* 자식 */</span>
+        <span class="n">execl</span><span class="p">(</span><span class="s">"/bin/sh"</span><span class="p">,</span> <span class="s">"sh"</span><span class="p">,</span> <span class="s">"-c"</span><span class="p">,</span> <span class="n">cmdstring</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">_exit</span><span class="p">(</span><span class="mi">127</span><span class="p">);</span>  <span class="cm">/* execl 실패 */</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="cm">/* 부모 */</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">EINTR</span><span class="p">)</span> <span class="p">{</span> 	<span class="cm">/* 오류 원인 시스템변수 errno로 전달 */</span>
+ 				<span class="n">status</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> 		<span class="cm">/* waitpid()로부터 EINTR외의 오류 */</span>
+                <span class="k">break</span><span class="p">;</span> 				<span class="cm">/* EINTR은 시스템 호출중 인터럽트에 의해 수행이 중단된 오류*/</span>
+            <span class="p">}</span>               		<span class="cm">/*수행이 중단된 오류*/</span>
+    <span class="p">}</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">status</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="implementing-system">Implementing system()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* * my_system - synchronously spawns and waits for the command
+* "/bin/sh -c &lt;cmd&gt;".
+* Returns -1 on error of any sort, or the exit code from the
+* launched process. Does not block or ignore any signals. */</span>
+<span class="kt">int</span> <span class="nf">my_system</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmd</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span> <span class="p">(</span> <span class="p">);</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+        <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s">"sh"</span><span class="p">;</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s">"-c"</span><span class="p">;</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd</span><span class="p">;</span> <span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="n">execv</span> <span class="p">(</span><span class="s">"/bin/sh"</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+        <span class="n">exit</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// exec에 성공하면 이 줄은 실행 안 함</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">waitpid</span> <span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">WIFEXITED</span> <span class="p">(</span><span class="n">status</span><span class="p">))</span> <span class="c1">//정상 종료한 경우</span>
+        <span class="k">return</span> <span class="n">WEXITSTATUS</span> <span class="p">(</span><span class="n">status</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>앞에서는 list를 통해 전달을 했다면 이 예제는 포인터를 통해 전달했다는 차이가 있다.</p>
+
+<p><br /></p>
+
+<h2 id="syscallc">syscall.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">status</span> <span class="o">=</span> <span class="n">system</span><span class="p">(</span><span class="s">"date"</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"system() 오류"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"종료코드 %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WEXITSTATUS</span><span class="p">(</span><span class="n">status</span><span class="p">));</span>
+    
+    <span class="k">if</span> <span class="p">((</span><span class="n">status</span> <span class="o">=</span> <span class="n">system</span><span class="p">(</span><span class="s">"hello"</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"system() 오류"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"종료코드 %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WEXITSTATUS</span><span class="p">(</span><span class="n">status</span><span class="p">));</span>
+    
+    <span class="k">if</span> <span class="p">((</span><span class="n">status</span> <span class="o">=</span> <span class="n">system</span><span class="p">(</span><span class="s">"who; exit 44"</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"system() 오류"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"종료코드 %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">WEXITSTATUS</span><span class="p">(</span><span class="n">status</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>syscall
+2014. 03. 07 <span class="o">(</span>금<span class="o">)</span> 11:20:38 KST
+종료코드 0
+sh: hello: <span class="nb">command </span>not found
+종료코드 127
+chang <span class="nb">tty </span>2014-03-18 10:58 <span class="o">(</span>:0<span class="o">)</span>
+….
+종료코드 44
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="93-입출력-재지정">9.3 입출력 재지정</h1>
+
+<h2 id="입출력-재지정-2장-리눅스-사용-참조">입출력 재지정 (2장 리눅스 사용 참조)</h2>
+
+<ul>
+  <li>명령어의 표준 출력이 파일에 저장
+    <ul>
+      <li>$ 명령어 &gt; 파일</li>
+    </ul>
+  </li>
+  <li>출력 재지정 기능 구현
+    <ul>
+      <li>파일 디스크립터 fd를 표준출력(1)에 dup2()</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>fd = open(argv[1], O_CREAT</td>
+              <td>O_TRUNC</td>
+              <td>O_WRONLY, 0600);</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>// argv[1]이 나타내는 파일을 쓰기전용으로 열고, 기존 내용은 모두 지움.</li>
+          <li>// 파일이 없으면 새로 생성하고 사용권한은 0600으로 함.</li>
+        </ul>
+      </li>
+      <li>dup2(fd, 1);</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="c1"> //4장 파일 입출력 참조</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">dup</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">);</span>
+<span class="c1">//oldfd에 대한 복제본인 새로운 파일 디스크립터를 생성하여 반환한다. 실패시 -1 반환</span>
+<span class="kt">int</span> <span class="nf">dup2</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">newfd</span><span class="p">);</span>
+<span class="c1">//oldfd을 newfd에 복제하고 복제된 새로운 파일 디스크립터를 반환한다. 실패시 -1 반환</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="redirect1c">redirect1.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span><span class="err">…</span>
+<span class="cm">/* 표준 출력을 파일에 재지정하는 프로그램 */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">status</span><span class="p">;</span>
+    <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_CREAT</span><span class="o">|</span><span class="n">O_TRUNC</span><span class="o">|</span><span class="n">O_WRONLY</span><span class="p">,</span> <span class="mo">0600</span><span class="p">);</span>
+    <span class="n">dup2</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="cm">/* 파일을 표준출력에 복제 */</span>
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Hello stdout !</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span> 
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">"Hello stderr !</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span> <span class="c1">//표준오류를 통해 출력</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>redirect1 out
+Hello stderr <span class="o">!</span>
+<span class="nv">$ </span><span class="nb">cat </span>out
+Hello stdout <span class="o">!</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="redirect2c">redirect2.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span>
+<span class="cm">/* 자식 프로세스의 표준 출력을 파일에 재지정한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">child</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">status</span><span class="p">;</span>
+
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">(</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">O_CREAT</span> <span class="o">|</span> <span class="n">O_TRUNC</span><span class="o">|</span> <span class="n">O_WRONLY</span><span class="p">,</span> <span class="mo">0600</span><span class="p">);</span>
+        <span class="n">dup2</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// 파일을 표준출력에 복제</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+        <span class="n">execvp</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"%s:실행 불가</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[%d] 자식 프로세스 %d 종료 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">child</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>redirect2 out <span class="nb">wc </span>you.txt
+<span class="o">[</span>26882] 자식 프로세스 26883 종료
+<span class="nv">$ </span><span class="nb">cat </span>out
+ 25 68 556 you.txt
+ 줄 단어 문자수
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="94-프로세스-그룹">9.4 프로세스 그룹</h1>
+
+<h2 id="process-groups">Process groups</h2>
+
+<ul>
+  <li>A collection of one or more processes.
+    <ul>
+      <li>프로세스 그룹은 여러 프로세스들의 집합이다</li>
+    </ul>
+  </li>
+  <li>Usually associated with the <strong>same job</strong>.
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>when a shell starts up a <strong>pipeline</strong> (e.g., when a user enters ls</td>
+              <td>more),</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>all the commands in the pipeline go into the same process group</li>
+    </ul>
+  </li>
+  <li><img src="https://user-images.githubusercontent.com/79521972/168475528-c116719c-4456-4bf3-8ee5-9969040a5c58.png" alt="image" /></li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Each process is owned by a <strong>user</strong> and a <strong>group</strong></li>
+  <li>Each process is also part of a <strong>process group</strong>, which simply expresses its relationship to other processes, and must <strong>not be confused with the aforementioned user/group concept</strong>
+    <ul>
+      <li>“userid라는 유저 아이디를 가진 유저가 만든 프로세스 그룹”과 혼동 노노</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스-그룹">프로세스 그룹</h2>
+
+<ul>
+  <li>보통 부모 프로세스(그룹 리더)가 생성하는 자손 프로세스들은 부모와 같은 프로세스 그룹에 속한다.</li>
+  <li>프로세스 그룹은 signal 전달 등을 위해 사용됨.
+    <ul>
+      <li>The notion of a process group makes it easy
+        <ul>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>to send signals to processes in the pipeline (e.g., $ ls</td>
+                  <td>more)</td>
+                </tr>
+              </tbody>
+            </table>
+            <ul>
+              <li>multicast로 효율적으로 보내기 위함</li>
+            </ul>
+          </li>
+          <li>to receive signals from the same terminal</li>
+          <li>get information on an entire pipeline</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>From the perspective of a user, a process group is closely related to a job</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168193418-f6b5560e-e661-425a-a888-b266b488e8a1.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="process-groups-1">Process groups</h2>
+
+<ul>
+  <li>Process group ID
+    <ul>
+      <li>Each process group has a unique <strong>PGID.</strong></li>
+      <li>Each process group can have the <strong>process group leader</strong>, whose PID equals its PGID.
+        <ul>
+          <li>프로세스 그룹 리더: Process GID = PID (리더의 PID)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>The process group <strong>exists</strong>, as long as there is at least one process in the group, <strong>regardless whether the group leader terminates or not.</strong>
+    <ul>
+      <li>리더가 없어도 프로세스 그룹 존재 O</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ps <span class="nt">-o</span> pid,ppid,pgid,comm | <span class="nb">cat
+ </span>PID 	PPID 	PGID 	COMMAND
+27463 	27462 	27463 	bash
+27554 	27463 	27554 	ps
+27555 	27463 	27554 	<span class="nb">cat</span>
+<span class="err">$</span>
+</code></pre></div></div>
+
+<p>ps와 cat은 하나의 job을 형성하니까 동일 process group id를 갖고 shell(bash)는 별도의 process</p>
+
+<p><br /></p>
+
+<h2 id="프로세스-그룹-1">프로세스 그룹</h2>
+
+<ul>
+  <li>프로세스 IDs
+    <ul>
+      <li>프로세스 ID(PID)</li>
+      <li>프로세스 그룹 ID(GID)</li>
+      <li>각 프로세스는 하나의 프로세스 그룹에 속함.</li>
+      <li>각 프로세스는 자신이 속한 프로세스 그룹 ID를 가지며 fork() 시 물려받는다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="n">pid_t</span> <span class="nf">getpgrp</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="c1">// 호출한 프로세스의 프로세스 그룹 ID를 반환한다.</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="n">pid_t</span> <span class="nf">getpgid</span><span class="p">(</span><span class="n">pid_t</span> <span class="n">pid</span><span class="p">);</span>
+ 	<span class="n">Returns</span><span class="o">:</span> <span class="n">process</span> <span class="n">group</span> <span class="n">ID</span> <span class="k">if</span> <span class="n">OK</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="n">on</span> <span class="n">error</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Return the process group ID of the process with pid.</p>
+
+    <ul>
+      <li>
+        <p>주어진 pid가 속한 프로세스 그룹의 PGID</p>
+      </li>
+      <li>
+        <p>If pid is 0, return the process group ID of the calling process.</p>
+        <ul>
+          <li>getpgid(0); is equivalent to getpgrp();</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스-그룹-pgrp1c">프로세스 그룹: pgrp1.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">pid</span><span class="p">,</span> <span class="n">gid</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"PARENT: PID = %d GID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">getpgrp</span><span class="p">());</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 자식 프로세스</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"CHILD: PID = %d GID = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">getpgrp</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pgrp1
+PARENT: PID <span class="o">=</span> 17768 GID <span class="o">=</span> 17768
+CHILD: PID <span class="o">=</span> 17769 GID <span class="o">=</span> 17768
+</code></pre></div></div>
+
+<p>parent process와 child process는 동일 process group에 속한다.</p>
+
+<p>parent는 프로세스 그룹의 리더이지만</p>
+
+<p>child는 리더는 아니다 (PID와 GID가 다르기 때문)</p>
+
+<p><br /></p>
+
+<h2 id="프로세스-그룹-2">프로세스 그룹</h2>
+
+<ul>
+  <li>프로세스 그룹 만들기
+    <ul>
+      <li>A process can create a new process group and become leader</li>
+      <li>int setpgid(pid_t pid, pid_t pgid);</li>
+    </ul>
+  </li>
+  <li>프로세스 그룹 소멸
+    <ul>
+      <li>the last process terminates OR
+        <ul>
+          <li>프로세스 그룹에 속한 프로세스가 다 종료하여 아무것도 없을 때</li>
+        </ul>
+      </li>
+      <li>joins another process group
+        <ul>
+          <li>그룹을 떠났을 때</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">setpgid</span><span class="p">(</span><span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span> <span class="n">pid_t</span> <span class="n">pgid</span><span class="p">);</span>
+<span class="c1">//프로세스 pid의 프로세스 그룹 ID를 pgid로 설정한다.</span>
+<span class="c1">//성공하면 0을 실패하면 -1를 반환한다.</span>
+</code></pre></div></div>
+
+<ul>
+  <li>새로운 프로세스 그룹을 생성하거나 다른 그룹에 멤버로 참여
+    <ul>
+      <li>pid == pgid  -&gt;  pid가 새로운 그룹을 만듦과 동시에 새로운 그룹 리더가 됨.</li>
+      <li>pid != pgid  -&gt;  다른 그룹의 멤버가 됨.</li>
+      <li>pid == 0 -&gt;  호출자의 PID 사용</li>
+      <li>pgid == 0  -&gt;  새로운 그룹 리더가 됨</li>
+    </ul>
+  </li>
+  <li>호출자가 새로운 프로세스 그룹을 생성하고 그룹의 리더가 된다.
+    <ul>
+      <li>setpgid(getpid(), getpid());</li>
+      <li>setpgid(0,0);</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스-그룹-pgrp2c">프로세스 그룹: pgrp2.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">pid</span><span class="p">,</span> <span class="n">gid</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"PARENT: PID = %d GID = %d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">getpgrp</span><span class="p">());</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">setpgid</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"CHILD: PID = %d GID = %d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">getpgrp</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pgrp2
+PARENT: PID <span class="o">=</span> 17768 GID <span class="o">=</span> 17768
+CHILD: PID <span class="o">=</span> 17769 GID <span class="o">=</span> 17769
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="프로세스-그룹-사용">프로세스 그룹 사용</h2>
+
+<ul>
+  <li>프로세스 그룹 내의 모든 프로세스에 시그널을 보낼 때 사용
+    <ul>
+      <li>$ kill –9 pid          // 9번 시그널 SIGKILL -&gt; pid에게 보냄</li>
+      <li>$ kill –9 0             // 현재 속한 프로세스 그룹 내의 모든 프로세스에게 시그널을 보내 종료 시킴</li>
+      <li>$ kill –9 –pid        // –pid 는 프로세스 그룹 pid에 속한 모든 프로세스에게 시그널을 보내 종료 시킴</li>
+    </ul>
+  </li>
+  <li>pid_t waitpid(pid_t pid, int *status, int options);
+    <ul>
+      <li>pid == -1 : 임의의 자식 프로세스가 종료하기를 기다린다.</li>
+      <li>pid &gt; 0 : 자식 프로세스 pid가 종료하기를 기다린다.</li>
+      <li>pid == 0 : 호출자와 같은 프로세스 그룹 내의 어떤(아무) 자식 프로세스가 종료하기를 기다린다.</li>
+      <li>pid &lt; -1 : pid의 절대값과 같은 프로세스 그룹 내의 어떤 자식 프로세스가 종료하기를 기다린다.</li>
+    </ul>
+  </li>
+</ul>
+
+:ET

@@ -1,0 +1,175 @@
+I".<p><br /></p>
+
+<h1 id="괄호">괄호</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>시간 제한</th>
+      <th>메모리 제한</th>
+      <th>정답 비율</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1초</td>
+      <td>128MB</td>
+      <td>43.801%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="문제">문제</h2>
+
+<p>괄호 문자열(Parenthesis String, PS)은 두 개의 괄호 기호인 ‘(’ 와 ‘)’ 만으로 구성되어 있는 문자열이다. 그 중에서 괄호의 모양이 바르게 구성된 문자열을 올바른 괄호 문자열(Valid PS, VPS)이라고 부른다. 한 쌍의 괄호 기호로 된 “( )” 문자열은 기본 VPS 이라고 부른다. 만일 x 가 VPS 라면 이것을 하나의 괄호에 넣은 새로운 문자열 “(x)”도 VPS 가 된다. 그리고 두 VPS x 와 y를 접합(concatenation)시킨 새로운 문자열 xy도 VPS 가 된다. 예를 들어 “(())()”와 “((()))” 는 VPS 이지만 “(()(”, “(())()))” , 그리고 “(()” 는 모두 VPS 가 아닌 문자열이다.</p>
+
+<p>여러분은 입력으로 주어진 괄호 문자열이 VPS 인지 아닌지를 판단해서 그 결과를 YES 와 NO 로 나타내어야 한다.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>입력 데이터는 표준 입력을 사용한다. 입력은 T개의 테스트 데이터로 주어진다. 입력의 첫 번째 줄에는 입력 데이터의 수를 나타내는 정수 T가 주어진다. 각 테스트 데이터의 첫째 줄에는 괄호 문자열이 한 줄에 주어진다. 하나의 괄호 문자열의 길이는 2 이상 50 이하이다.</p>
+
+<h2 id="출력">출력</h2>
+
+<p>출력은 표준 출력을 사용한다. 만일 입력 괄호 문자열이 올바른 괄호 문자열(VPS)이면 “YES”, 아니면 “NO”를 한 줄에 하나씩 차례대로 출력해야 한다.</p>
+
+<h2 id="예제-입력-1">예제 입력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6
+(())())
+(((()())()
+(()())((()))
+((()()(()))(((())))()
+()()()()(()()())()
+(()((())()(
+</code></pre></div></div>
+
+<h2 id="예제-출력-1">예제 출력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NO
+NO
+YES
+NO
+YES
+NO
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="문제-풀이">문제 풀이</h1>
+
+<p><strong>알고리즘 분류</strong></p>
+
+<ul>
+  <li><strong>Stack</strong></li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>풀이 과정</strong></p>
+
+<p>이번 문제는 스택의 구조로 쉽게 풀 수 있는 문제입니다. 괄호에는 몇 가지 반드시 지켜져야 하는 규칙이 존재합니다.</p>
+
+<ol>
+  <li>괄호의 시작은 반드시 열린 괄호로 시작한다.</li>
+  <li>열린 괄호를 반드시 닫힌 괄호로 닫아야 한다.</li>
+</ol>
+
+<p>이는 스택에 입각하여 열린 괄호가 나오면 스택에 데이터를 삽입(push)하고, 닫힌 괄호가 나오면 스택의 데이터를 삭제함(pop)으로써 구현합니다.</p>
+
+<p>괄호 문제를 스택으로 푸는 이유는 스택이 LIFO구조 이기 때문입니다. LIFO 구조는 나중에 들어간 데이터가 먼저 나오는 구조로 여러 개의 열린 괄호가 들어갔을 때 가장 최근에 들어온 괄호부터 닫아 주어야 하기 때문입니다.</p>
+
+<p>그러나 풀던 와중 한 가지 빠트린 부분이 있었습니다. 바로 중간에 빈 스택일 때 닫힌 괄호가 들어가는 걸 처리해 주는 부분인데 해당 경우를 if로 처리하여 print(“NO”)를 하여 다음 test case로 가야하는데 안의 for문에서 이를 처리한 것이기 때문에 내부 for문을 빠져나오게 되어 ‘NO’라는 문구를 두 번 띄우게 되는 문제가 있었습니다.</p>
+
+<p>이를 해결한 코드는 아래에서 설명하겠습니다.</p>
+
+<h3 id="전체-코드">전체 코드</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">'''
+1. 스택의 구조를 이용한 문제
+2. 열린괄호가 들어가면 push
+3. 닫힌괄호는 pop
+4. 다 끝났을 때 스택이 비어있으면 ok
+5. 다 끝났을 때 스택에 데이터가 남아있으면 No
+6. 중간에 빈 스택에 닫힌 괄호가 들어가면 No
+7. 스택이 비어있지 않으면 pop
+'''</span>
+
+<span class="n">test_case</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">test_case</span><span class="p">):</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s">''</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="s">')'</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s">'NO'</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s">'('</span><span class="p">:</span>
+            
+            <span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s">')'</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="s">'NO'</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"YES"</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s">'NO'</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>핵심 코드 설명</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="s">''</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="s">')'</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s">'NO'</span>
+</code></pre></div></div>
+
+<p>위해서 말했던 문제를 해결하기 위하여 result라는 변수를 따로 지정하여 이곳에 변수를 담아놓고 마지막에 스택이 비어있는 지를 확인함과 동시에 result 변수가 ‘NO’가 아니라면  ‘YES’ 를, 스택이 비어있지 않다면  ‘NO’를 대입하고 result를 출력하는 것으로 해결하였습니다.</p>
+
+<p><br /></p>
+
+<p>하지만 이렇게 풀면 복잡하기 때문에 따로 logic만을 담당하는 메소드를 만들어 이 메소드에서 과정을 진행 후 return을 하면 해결할 수 있습니다.</p>
+
+<p>해당 풀이는 다음과 같습니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">solution</span><span class="p">():</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="s">')'</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"NO"</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s">'('</span><span class="p">:</span>
+            
+            <span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s">')'</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"YES"</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"NO"</span><span class="p">)</span>
+        <span class="k">return</span>
+
+<span class="n">test_case</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">test_case</span><span class="p">):</span>
+    <span class="n">solution</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>result라는 변수가 줄었고 코드의 논리(logic)이 훨씬 간단해 진 것을 보실 수 있습니다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153754089-2d191f02-cfd2-4e15-8871-ea4302efb9e5.png" alt="image" /></p>
+
+<p>실제 백준 judge의 결과입니다. 위의 것이 메소드로 정의하여 수정한 풀이입니다. 여기서 보시면 아시겠지만 코드의 길이는 거의 절반 가까이 줄어들었지만 시간은 조금 더 느린 것을 보실 수 있습니다. 물론 ms 단위이기 때문에 크게 차이는 없지만 나중에는 시간 초과로 실패할 수도 있으니 여러 방법을 생각해 보면 좋을 것 같습니다.</p>
+:ET

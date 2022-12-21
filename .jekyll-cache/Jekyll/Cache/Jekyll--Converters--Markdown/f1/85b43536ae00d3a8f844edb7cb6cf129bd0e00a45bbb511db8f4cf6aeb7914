@@ -1,0 +1,122 @@
+I"/<p><br /></p>
+
+<h2 id="multicycle-processor-performance">Multicycle Processor Performance</h2>
+
+<ul>
+  <li>Instructions take different number of cycles
+    <ul>
+      <li>3 cycles: beq, j</li>
+      <li>4 cycles: R-Type, sw, addi</li>
+      <li>5 cycles: lw</li>
+    </ul>
+  </li>
+  <li>CPI is weighted average</li>
+  <li>SPECINT2000 benchmark:
+    <ul>
+      <li>25% loads</li>
+      <li>10% stores</li>
+      <li>11% branches</li>
+      <li>2% jumps</li>
+      <li>52% R-type</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Average CPI</strong> = (0.11 + 0.02)(3) + (0.52 + 0.10)(4) + (0.25)(5) = 4.12</p>
+
+<p><br /></p>
+
+<p>Multicycle critical path: <strong>Tc</strong> = t<sub>pcq_ALUout</sub> + t<sub>mux </sub>+ max(t<sub>ALU</sub> + t<sub>mux</sub>, t<sub>mem</sub>) + t<sub>setup</sub></p>
+
+<ul>
+  <li>write 는 read보다 조금 걸리고</li>
+  <li>register file은 memory보다 조금 걸린다.(빠르다)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163916051-6231ccba-5a19-4015-8045-957effb91092.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="multicycle--performance-example">Multicycle  Performance Example</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163916368-89f5b8ae-f402-4aae-840e-a70ea3fda7c7.png" alt="image" /></p>
+
+<p><strong>Tc</strong> = t<sub>pcq_ALUout</sub> + t<sub>mux </sub>+ max(t<sub>ALU</sub> + t<sub>mux</sub>, t<sub>mem</sub>) + t<sub>setup</sub></p>
+
+<p>= Tc = t<sub>pcq_ALUout</sub> + t<sub>mux </sub>+ t<sub>mem</sub> + t<sub>setup</sub></p>
+
+<p>=  [30 + 25 + 250 + 20] ps</p>
+
+<p>= 325 ps</p>
+
+<p><br /></p>
+
+<h2 id="중요한-의제시험에-나옴">중요한 의제(시험에 나옴)</h2>
+
+<p>For a program with 100 billion instructions executing on a multicycle  MIPS processor</p>
+
+<ul>
+  <li>CPI = 4.12</li>
+  <li>Tc = 325 ps
+    <ul>
+      <li>single에서는 925ps 였는데 clock cycle을 1/5 한 것 치고는 너무 길다.</li>
+      <li>그 이유는?</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Execution Time</p>
+
+<p>= (# instructions) × CPI × Tc</p>
+
+<p>= (100 × 109 )(4.12)(325 × 10-12)</p>
+
+<p>= 133.9 seconds</p>
+
+<p>This is slower than the single-cycle processor (92.5 seconds). Why?</p>
+
+<ol>
+  <li>제일 많이 걸리는 게 clock cycle을 정하는데 clock을 정확히 이분하게 나누지 않았다.
+    <ul>
+      <li>Not even balenced</li>
+      <li>Not all steps same length</li>
+    </ul>
+  </li>
+  <li>
+    <p>자르다보면 다음 cycle에 계산하기 위해 저장하기 위한 register(f/f)가 중간중간에 들어가는데 register에서는 t<sub>pcq</sub>, t<sub>setup</sub> 이라는 overhead로 인해 clock이 정확하게 5배 빨라지지 못하는 것이다.</p>
+
+    <ul>
+      <li>
+        <p>Sequencing overhead for each stop(t<sub>pcq</sub>+ t<sub>setup</sub> = 50 ps)</p>
+      </li>
+      <li>
+        <p>그래서 CPI에서 손해본 것을 clock cylce에서 감당할 수 없었다.</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>Q) 어떻게 이분하게 쪼개는가</p>
+
+<p>A) mips는 data memory 때문에 unbalence가 발생</p>
+
+<p><br /></p>
+
+<h2 id="review-single-cycle-processor">Review: Single-Cycle Processor</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/164953152-b0c467aa-821c-4e85-8013-0a2a29ae2a88.png" alt="image" /></p>
+
+<h2 id="review-multicycle-processor">Review: Multicycle Processor</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163917275-c1874daa-15e7-4cf3-ba73-958731324b8c.png" alt="image" /></p>
+
+<ul>
+  <li>장점
+    <ul>
+      <li>resource sharing(memory, ALU)</li>
+      <li>faster clock</li>
+    </ul>
+  </li>
+</ul>
+
+:ET

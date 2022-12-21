@@ -1,0 +1,1947 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[HCI] 7. Development Methodology | speardragon note</title>
+<meta name="description" content="HCI Development Methodology">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[HCI] 7. Development Methodology">
+<meta property="og:url" content="http://localhost:4000/frontend/hci/HCI-7.-Development-Methodology/">
+
+
+  <meta property="og:description" content="HCI Development Methodology">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-10-10T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/frontend/hci/HCI-7.-Development-Methodology/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#frontend" itemprop="item"><span itemprop="name">Frontend</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#hci" itemprop="item"><span itemprop="name">Hci</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[HCI] 7. Development Methodology</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[HCI] 7. Development Methodology">
+    <meta itemprop="description" content="HCI Development Methodology">
+    <meta itemprop="datePublished" content="2022-10-10T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/frontend/hci/HCI-7.-Development-Methodology/" class="u-url" itemprop="url">[HCI] 7. Development Methodology
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#hci-development-methodology">HCI Development Methodology</a></li><li><a href="#hci-methodology">HCI Methodology</a></li><li><a href="#the-role-of-hci-development-in-sdlc">The Role of HCI Development in SDLC</a></li><li><a href="#the-role-of-hci-development-in-sdlc-1">The Role of HCI Development in SDLC</a></li><li><a href="#the-role-of-hci-development-in-sdlc-2">The Role of HCI Development in SDLC</a></li><li><a href="#the-human-centered-sdlc-model-hcsdlc">The Human-Centered SDLC Model: HCSDLC</a></li><li><a href="#the-human-centered-sdlc-model-hcsdlc-1">The Human-Centered SDLC Model: HCSDLC</a></li><li><a href="#the-hci-development-methodology">The HCI Development Methodology</a></li><li><a href="#philosophy-strategies-principles-and-guidelines">Philosophy, Strategies, Principles and Guidelines</a></li><li><a href="#philosophy-strategies-principles-and-guidelines-1">Philosophy, Strategies, Principles and Guidelines</a></li><li><a href="#the-project-selection-and-planning-phase">The Project Selection and Planning Phase</a></li><li><a href="#the-project-selection-and-planning-phase-1">The Project Selection and Planning Phase</a></li><li><a href="#the-interaction-analysis-phase">The Interaction Analysis Phase</a></li><li><a href="#requirement-determination-and-user-acceptance-test">Requirement Determination and User-Acceptance Test</a></li><li><a href="#requirement-determination-and-user-acceptance-test-1">Requirement Determination and User-Acceptance Test</a></li><li><a href="#context-analysis">Context Analysis</a></li><li><a href="#user-analysis">User Analysis</a></li><li><a href="#task-analysis">Task analysis</a></li><li><a href="#evaluation-metrics">Evaluation Metrics</a></li><li><a href="#alternative-generation-and-selection">Alternative Generation and Selection</a></li><li><a href="#the-interaction-design-phase">The Interaction Design Phase</a><ul><li><a href="#the-interaction-design-phase-1">The Interaction Design Phase</a></li><li><a href="#the-interaction-design-phase-2">The Interaction Design Phase</a></li><li><a href="#the-interaction-design-phase-3">The Interaction Design Phase</a></li><li><a href="#the-interaction-design-phase-4">The Interaction Design Phase</a></li></ul></li><li><a href="#formative-evaluations">Formative Evaluations</a></li><li><a href="#the-implementation-phase">The Implementation Phase</a></li><li><a href="#documenting-hci-development-activities-and-deliverables">Documenting HCI Development Activities and Deliverables</a></li><li><a href="#documenting-hci-development-activities-and--deliverables-cont">Documenting HCI Development Activities and  Deliverables (cont)</a></li><li><a href="#applying-the-hci-development-methodology-e-gourmet-example">Applying the HCI Development Methodology: e-Gourmet example</a></li><li><a href="#applying-the-hci-development-methodology-e-gourmet-example-1">Applying the HCI Development Methodology: e-Gourmet example</a></li><li><a href="#applying-the-hci-development-methodology-e-gourmet-example-2">Applying the HCI Development Methodology: e-Gourmet example</a></li><li><a href="#applying-the-hci-development-methodology-e-gourmet-example-3">Applying the HCI Development Methodology: e-Gourmet example</a></li><li><a href="#applying-the-hci-development-methodology-e-gourmet-example-4">Applying the HCI Development Methodology: e-Gourmet example</a></li><li><a href="#applying-the-hci-development-methodology-e-gourmet-example-5">Applying the HCI Development Methodology: e-Gourmet example</a></li><li><a href="#summary">Summary</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="hci-development-methodology">HCI Development Methodology</h2>
+
+<ul>
+  <li>Roadmap</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142539478.png" alt="image-20221010142539478" /></p>
+
+<p><br /></p>
+
+<h2 id="hci-methodology">HCI Methodology</h2>
+
+<ul>
+  <li>
+    <p><strong>System Development Methodology:</strong></p>
+
+    <p>a standardized development process that defines 
+<strong>a set of activities,</strong> 
+<strong>methods and techniques,</strong> 
+<strong>best practices,</strong> 
+<strong>deliverables,</strong> 
+<strong>and automated tools</strong>
+that systems developers and project managers are to use to develop and continuously improve information systems</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-role-of-hci-development-in-sdlc">The Role of HCI Development in SDLC</h2>
+
+<ul>
+  <li><strong>System Development Philosophy:</strong>
+follow formal scientific and engineering practice, yet make room for a strong <strong>creative</strong> element.</li>
+  <li>The general principles of user-centered systems development include</li>
+  <li>(1) involving users as much as possible</li>
+  <li>(2) integrating knowledge and expertise from different disciplines</li>
+  <li>(3) encouraging high interactivity</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-role-of-hci-development-in-sdlc-1">The Role of HCI Development in SDLC</h2>
+
+<ul>
+  <li>Systems Development Life Cycle (SDLC):
+a commonly used methodology for information systems development that breaks the whole systems development process into manageable phases.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142633259.png" alt="image-20221010142633259" /></p>
+
+<p><br /></p>
+
+<h2 id="the-role-of-hci-development-in-sdlc-2">The Role of HCI Development in SDLC</h2>
+
+<ul>
+  <li><strong>Iteration through each of the phases</strong> and back to the previous phases is key to creating successful systems. Figure below illustrates the importance of iteration.
+    <ul>
+      <li>small iteration</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142655496.png" alt="image-20221010142655496" /></p>
+
+<p><br /></p>
+
+<h2 id="the-human-centered-sdlc-model-hcsdlc">The Human-Centered SDLC Model: HCSDLC</h2>
+
+<ul>
+  <li>HCSDLC:
+a human centered systems development methodology where <strong>organizational needs</strong> and <strong>human needs</strong> are considered together <strong>throughout the systems development life cycle.</strong></li>
+  <li>The next slide depicts the HCSDLC. The left side (a) is a typical SDLC model while the right side (b) is the HCSDLC model that covers both SA&amp;D (System Analysis &amp; Design) and HCI concerns and activities.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-human-centered-sdlc-model-hcsdlc-1">The Human-Centered SDLC Model: HCSDLC</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142723257.png" alt="image-20221010142723257" /></p>
+
+<p>노란 박스 오른쪽 부분은 사람(user)을 위해 고려되는 부분</p>
+
+<p><br /></p>
+
+<h2 id="the-hci-development-methodology">The HCI Development Methodology</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010210213035.png" alt="image-20221010210213035" /></p>
+
+<p><br /></p>
+
+<h2 id="philosophy-strategies-principles-and-guidelines">Philosophy, Strategies, Principles and Guidelines</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142740312.png" alt="image-20221010142740312" /></p>
+
+<p><br /></p>
+
+<h2 id="philosophy-strategies-principles-and-guidelines-1">Philosophy, Strategies, Principles and Guidelines</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142749772.png" alt="image-20221010142749772" /></p>
+
+<ul>
+  <li>metaphors가 중요함
+    <ul>
+      <li>기억에 의존하지 않고 직관적으로 사용할 수 있도록</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-project-selection-and-planning-phase">The Project Selection and Planning Phase</h2>
+
+<ul>
+  <li><strong>Project selection and planning:</strong>
+    <ul>
+      <li>the first phase in SDLC where an <strong>organization’s total information systems</strong> needs are analyzed and arranged, a potential information systems project is identified, and an argument for continuing or not continuing with the project is presented.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-project-selection-and-planning-phase-1">The Project Selection and Planning Phase</h2>
+
+<ul>
+  <li>One important activity during project planning is to assess project <strong>feasibility</strong>(실현가능성). This is also called a <strong>feasibility study</strong>. Most feasibility factors fall into the following six categories:
+    <ul>
+      <li>Economic or cost-benefit analysis</li>
+      <li>Operational</li>
+      <li>Technical</li>
+      <li>Schedule</li>
+      <li>Legal and contractual</li>
+      <li>Political</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-interaction-analysis-phase">The Interaction Analysis Phase</h2>
+
+<ul>
+  <li><strong>Analysis</strong>: studies the current system and proposes alternative systems.
+    <ul>
+      <li>From the HCI perspective, requirement determination is still one of the most important activities, and alternative generation and selection are also necessary before subsequent design is conducted.</li>
+      <li>In addition, HCI analysis includes user-acceptance tests on the system requirements</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="requirement-determination-and-user-acceptance-test">Requirement Determination and User-Acceptance Test</h2>
+
+<ul>
+  <li><strong>User acceptance test</strong>:
+    <ul>
+      <li>a test during the analysis stage using simple mock-ups to test the likelihood of the system’s functionalities being accepted by its potential users.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="requirement-determination-and-user-acceptance-test-1">Requirement Determination and User-Acceptance Test</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010143019937.png" alt="image-20221010143019937" /></p>
+
+<p><br /></p>
+
+<h2 id="context-analysis">Context Analysis</h2>
+
+<ul>
+  <li><strong>Context analysis</strong> includes understanding the <code class="language-plaintext highlighter-rouge">technical</code>, <code class="language-plaintext highlighter-rouge">environmental</code> and <code class="language-plaintext highlighter-rouge">social settings</code> where the information systems will be used.</li>
+  <li>There are four aspects in Context Analysis:
+    <ul>
+      <li>physical context,</li>
+      <li>technical context,</li>
+      <li>organizational context, and</li>
+      <li>social and cultural context.</li>
+    </ul>
+  </li>
+  <li>Physical context:
+    <ul>
+      <li>Where are the tasks carried out?</li>
+      <li>What <strong>entities</strong> and <strong>resources</strong> are implicated(연루되다) in task operation?</li>
+      <li>What physical <strong>structures</strong> and <strong>entities</strong> are necessary to understand observed task action?</li>
+    </ul>
+  </li>
+  <li>Technical context:
+    <ul>
+      <li>What are the technology infrastructure, <strong>platforms</strong>, <strong>hardware</strong> and system software, network/wireless connections?</li>
+      <li>For example, an E-commerce website may be designed to only allow people with certain browser versions to access. The website may also be designed to allow small screen devices such as PDAs or mobile phones access.</li>
+    </ul>
+  </li>
+  <li>Organizational context:
+    <ul>
+      <li>What is the larger system into which this information system is embedded?</li>
+      <li>What are the interactions with other entities in the organization?</li>
+      <li>What are the organizational policies or practices that may affect the individual’s attitude and behavior towards using the system?</li>
+    </ul>
+  </li>
+  <li>Social and cultural context:
+    <ul>
+      <li>What are the social or cultural factors that may affect user attitudes and eventual use of the information system?</li>
+      <li>Any information system is always part of a larger social system.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-analysis">User Analysis</h2>
+
+<ul>
+  <li>User Analysis:
+<strong>identifies</strong> the <strong>target users</strong> of the system and their characteristics.
+    <ul>
+      <li>Demographic data</li>
+      <li>Traits and intelligence</li>
+      <li>Job or task related factors</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="task-analysis">Task analysis</h2>
+
+<ul>
+  <li>Task Analysis:
+studies what and how users think and feel when they do things to achieve their goals.</li>
+  <li>Possible points of analysis in task analysis
+    <ul>
+      <li>User goals and use cases</li>
+      <li>Cognitive, affective, and behavioural analysis of user tasks</li>
+      <li>Workflow analysis</li>
+      <li>General work distribution between users and the website/machine <img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010143203606.png" alt="image-20221010143203606" /></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="evaluation-metrics">Evaluation Metrics</h2>
+
+<ul>
+  <li>Evaluation Metrics:
+specifies the expected human-computer interaction goals of the system being designed. There are four types of HCI goals.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010143219218.png" alt="image-20221010143219218" /></p>
+
+<p>usefulness</p>
+
+<p>Usability</p>
+
+<p>Organizational</p>
+
+<p>Holistic: 만족스러운</p>
+
+<p><br /></p>
+
+<h2 id="alternative-generation-and-selection">Alternative Generation and Selection</h2>
+
+<ul>
+  <li>Although SA&amp;D emphasizes <strong>functionality</strong> in selecting design strategies, the approach of generating and selecting best alternatives can also be applied to HCI design strategies. The deliverables(성과물) include
+    <ul>
+      <li>(1) three substantially different design strategies (low, middle, and high range)</li>
+      <li>(2) a design strategy judged most likely to lead to the most desirable system
+        <ul>
+          <li>가장 바람직한 시스템으로 이어질 가능성이 가장 높은 것으로 판단되는 설계 전략</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-interaction-design-phase">The Interaction Design Phase</h2>
+
+<ul>
+  <li><strong>Design</strong>:
+to create or construct the system according to the analysis results.</li>
+  <li>Interface specification includes semantic understanding of the information needs to support HCI analysis results, and syntactical and lexical decisions including metaphor, media, dialogue, and presentation designs.
+    <ul>
+      <li>인터페이스 사양에는 HCI 분석 결과를 지원하기 위한 정보 필요성에 대한 의미론적 이해와 은유, 미디어, 대화 및 프레젠테이션 설계를 포함한 구문 및 어휘적 결정이 포함된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="the-interaction-design-phase-1">The Interaction Design Phase</h3>
+
+<ul>
+  <li>Metaphor and visualization design helps the user develop a mental model of the system.
+    <ul>
+      <li>It is concerned with finding or inventing <strong>metaphors</strong> or <strong>analogies</strong> that are appropriate for users to understand the entire system or part of it.</li>
+      <li>There are well accepted metaphors for certain tasks, such as a <strong>shopping cart</strong> for holding items before checking out in the E-Commerce context,</li>
+      <li>and light bulbs for online help or daily tips in productivity software packages.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="the-interaction-design-phase-2">The Interaction Design Phase</h3>
+
+<ul>
+  <li><strong>Media design</strong> is concerned with selecting appropriate media types for meeting the specific information presentation needs and human experience needs.
+    <ul>
+      <li>Popular media types include text, static images (e.g., painting, drawing or photos), dynamic images (e.g., video clips and animations), and sound.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="the-interaction-design-phase-3">The Interaction Design Phase</h3>
+
+<ul>
+  <li>Dialogue design focuses on how information is provided to and captured from users during a specific task.
+    <ul>
+      <li>Dialogues are <strong>analogous</strong> to a conversation between two people.</li>
+      <li>Many existing <strong>interaction</strong> styles, such as menus, form-fill-ins,natural languages, dialog boxes, and direct manipulation, can be used.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="the-interaction-design-phase-4">The Interaction Design Phase</h3>
+
+<ul>
+  <li>Presentation design
+    <ul>
+      <li>maximize <strong>visibility</strong>;</li>
+      <li>minimize search time;</li>
+      <li>provide structure and sequence of display; (grouping)</li>
+      <li>focus user attention on key data</li>
+      <li>comprehended;</li>
+      <li>provide only <strong>relevant</strong> information; and</li>
+      <li>don’t overload user’s working memory(short-term memory).</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="formative-evaluations">Formative Evaluations</h2>
+
+<ul>
+  <li><strong>Formative evaluations</strong> identify defects in designs, thus informing design iterations and refinements.
+    <ul>
+      <li>A number of different formative evaluations can occur several times during the design stage to form final decisions.</li>
+      <li>In fact, it is strongly recommended that <strong>formative evaluations</strong> occur during <strong>the entire HCI development life cycle</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-implementation-phase">The Implementation Phase</h2>
+
+<ul>
+  <li>HCI development in this phase includes
+    <ul>
+      <li>(1) prototyping,</li>
+      <li>(2) formative evaluations to fine-tune the system,</li>
+      <li>(3) summative evaluation before system release and</li>
+      <li>(4) use evaluation after the system is installed and being used by targeted users for a period of time.
+        <ul>
+          <li>시스템 설치 후 일정 기간 대상 사용자가 사용 후 평가 사용</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="documenting-hci-development-activities-and-deliverables">Documenting HCI Development Activities and Deliverables</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010213418268.png" alt="image-20221010213418268" /></p>
+
+<p><br /></p>
+
+<h2 id="documenting-hci-development-activities-and--deliverables-cont">Documenting HCI Development Activities and  Deliverables (cont)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010213427844.png" alt="image-20221010213427844" /></p>
+
+<p>계속되는 evaluation</p>
+
+<p><br /></p>
+
+<h2 id="applying-the-hci-development-methodology-e-gourmet-example">Applying the HCI Development Methodology: e-Gourmet example</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010213436531.png" alt="image-20221010213436531" /></p>
+
+<p><br /></p>
+
+<h2 id="applying-the-hci-development-methodology-e-gourmet-example-1">Applying the HCI Development Methodology: e-Gourmet example</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010213443961.png" alt="image-20221010213443961" /></p>
+
+<p>case 5: 다른 사람들에게 site를 추천하는 방법</p>
+
+<p><br /></p>
+
+<h2 id="applying-the-hci-development-methodology-e-gourmet-example-2">Applying the HCI Development Methodology: e-Gourmet example</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010213451023.png" alt="image-20221010213451023" /></p>
+
+<p><br /></p>
+
+<h2 id="applying-the-hci-development-methodology-e-gourmet-example-3">Applying the HCI Development Methodology: e-Gourmet example</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010213458060.png" alt="image-20221010213458060" /></p>
+
+<p><br /></p>
+
+<h2 id="applying-the-hci-development-methodology-e-gourmet-example-4">Applying the HCI Development Methodology: e-Gourmet example</h2>
+
+<ul>
+  <li>Figure below depicts two possible designs for the top level layout, media selection and presentation design considerations that should help users develop appropriate mental models of the website.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010143601196.png" alt="image-20221010143601196" /></p>
+
+<p><br /></p>
+
+<h2 id="applying-the-hci-development-methodology-e-gourmet-example-5">Applying the HCI Development Methodology: e-Gourmet example</h2>
+
+<ul>
+  <li>The Figure shows two possible designs for supporting this task.</li>
+  <li>The (b) design allows a user to easily navigate the website, (menu가 많으면 navigation이 쉬워짐)</li>
+  <li>while the (a) design requires the user to go back to the previous page in order to go to other places of the website. (왔다갔다를 많이 하면 overload 유도)</li>
+  <li>Such a small difference in design can cause a big difference in user’s experience in using the website. Having the navigation bar on the page is the result of a workflow analysis during task analysis.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li>This chapter posits the HCI development in the overall system development life cycle by presenting the human-centered SDLC (HCSDLC) model first, and then emphasizes the HCI development aspect.</li>
+  <li>HCSDLC is an integrated methodology that emphasizes humancenterednessand considers HCI issues together with SA&amp;D issues throughout the entire system development life cycle.</li>
+  <li>The HCI part of the HCSDLC methodology can be used alone to concentrate on the HCI development of an information system.</li>
+  <li>In this chapter, we provide very detailed materials on HCI development methodology.</li>
+  <li>A HCI Development Report template is used to summarize the activities and deliverables of the methodology.</li>
+  <li>Examples are also used to illustrate how to apply the methodology.</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#hci" class="page__taxonomy-item p-category" rel="tag">HCI</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#frontend" class="page__taxonomy-item p-category" rel="tag">FrontEnd</a><span class="sep">, </span>
+    
+      <a href="/categories/#hci" class="page__taxonomy-item p-category" rel="tag">HCI</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-10-10T00:00:00+09:00">2022-10-10</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BHCI%5D+7.+Development+Methodology%20http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-7.-Development-Methodology%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-7.-Development-Methodology%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-7.-Development-Methodology%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/frontend/hci/HCI-6.-Interaction-Design-Basics-3/" class="pagination--pager" title="[HCI] 6. Interaction Design Basics 3
+">이전</a>
+    
+    
+      <a href="/frontend/hci/HCI-8.-Evaluation-Techniques/" class="pagination--pager" title="[HCI] 8. Evaluation Techniques
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/frontend/hci/HCI-7.-Development-Methodology/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/frontend/hci/[HCI] 7. Development Methodology"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,76 @@
+I"<h1 id="aop-basic-ch1-bmi-계산기">AOP Basic CH1 BMI 계산기</h1>
+
+<p>가장 첫 번째 프로젝트로 BMI 계산기를 만드는 프로젝트를 진행해 보도록 하겠습니다.</p>
+
+<h2 id="관련-내용">관련 내용</h2>
+
+<ul>
+  <li><strong>layout을</strong> 그리는 법
+    <ul>
+      <li><strong>LinearLayout</strong> 사용하기</li>
+      <li><strong>TextView</strong> 속성 및 사용 방법</li>
+      <li><strong>EditText</strong> 속성 및 사용 방법</li>
+      <li><strong>Button</strong> 사용 방법</li>
+    </ul>
+  </li>
+  <li><strong>Layout</strong> 과 <strong>Kotlin</strong> 코드를 함께 사용해 보기</li>
+  <li><strong>버그</strong> 수정해 보기</li>
+  <li><strong>Activity에</strong> 대해 알아보기</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="kotlin-문법">Kotlin 문법</h3>
+
+<p>When 분기문</p>
+
+<p>람다함수</p>
+
+<p><br /></p>
+
+<h3 id="bmi-계산법">BMI 계산법</h3>
+
+<p>공식 = 몸무게(kg) / (키(m) * 키(m))</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">분류</th>
+      <th style="text-align: center">수치</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">저체중</td>
+      <td style="text-align: center">&lt; 18.5</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">정상</td>
+      <td style="text-align: center">18.5 ~ 22.9</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">과체중</td>
+      <td style="text-align: center">23.0 이상</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">위험체중</td>
+      <td style="text-align: center">23.0 ~ 24.9</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1단계 비만</td>
+      <td style="text-align: center">25.0 ~ 29.9</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2단계 비만</td>
+      <td style="text-align: center">30.0 ~ 34.9</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">고도비만</td>
+      <td style="text-align: center">35.0 이상</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+:ET

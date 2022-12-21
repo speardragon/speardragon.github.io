@@ -1,0 +1,625 @@
+I"�G<h2 id="thinking">Thinking</h2>
+
+<ul>
+  <li>Reasoning(추론) - 앞 뒤를 생각해서 이건 이렇게 될 것 같아! 처럼 추측하는 행위
+    <ul>
+      <li>deduction, induction, abduction</li>
+    </ul>
+  </li>
+  <li>Problem solving - reasoning과는 달리 답이 없는 상태에서 답을 찾아내려고 하는 방식</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="deductive-reasoning">Deductive Reasoning</h2>
+
+<ul>
+  <li>Deduction(연역): If A, then B
+    <ul>
+      <li>Derive logically necessary conclusion from given premises(전제).
+        <ul>
+          <li>e.g. If it is Friday then she will go to work</li>
+          <li>It is Friday</li>
+          <li>Therefore she will go to work.</li>
+        </ul>
+      </li>
+      <li>Logical conclusion <strong>not necessarily true</strong>:
+        <ul>
+          <li>e.g. If it is raining then the ground is dry</li>
+          <li>It is raining</li>
+          <li>Therefore the ground is dry</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>꼭 옳다는 것을 의미하는 것은 아님(잘못될 수도 있음)
+    <ul>
+      <li>전제가 틀려있을 수도 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="deduction-cont">Deduction (cont.)</h2>
+
+<ul>
+  <li>
+    <p>When truth and logical validity clash …</p>
+
+    <ul>
+      <li>조건이 불충분할 수 있다.</li>
+      <li>e.g. Some people are babies</li>
+      <li>Some babies cry</li>
+      <li>Inference(추론) - Some people cry</li>
+      <li>some 때문에 전체적으로 맞는 경우가 아니라 부분적으로 맞는 경우가 된다.(불충분)</li>
+    </ul>
+
+    <p>Correct?</p>
+  </li>
+  <li>
+    <p>People bring world knowledge to bear</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="inductive-reasoning귀납적-추론">Inductive Reasoning(귀납적 추론)</h2>
+
+<ul>
+  <li>Induction: <strong>Generalizing</strong> from previous cases to learn about new ones
+    <ul>
+      <li>Generalize from cases seen to cases unseen
+        <ul>
+          <li>case들을 모아 일반화시키는 방식</li>
+          <li>e.g. All elephants we have seen have trunks, therefore all elephants have trunks.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Unreliable:
+    <ul>
+      <li>Can only prove false, not true – checking all elephants (?)</li>
+      <li>하나만 잘못된 것을 찾으면 바로 틀린 논제가 되어버림
+        <ul>
+          <li>그래서 이를 증명하려면 모든 경우를 확인해야 함.</li>
+        </ul>
+      </li>
+      <li>… but useful!
+        <ul>
+          <li>하지만 효율적임!</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Humans not good at using negative evidence</strong>
+    <ul>
+      <li>e.g. Wason’s cards.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="wasons-cards">Wason’s cards</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909215413187.png" alt="image-20220909215413187" /></p>
+
+<blockquote>
+  <p>If a card has a vowel(모음) on one side, it has an even number on the other</p>
+</blockquote>
+
+<p>Is this true?</p>
+
+<p>How many cards do you need to turn over to find out?</p>
+
+<p>…. and which cards?</p>
+
+<ul>
+  <li>E를 뒤집으면 반드시 짝수가 있어야 하지만 4를 뒤집었을 땐 모음이 없어도 된다.(조건을 잘 읽으면…)
+    <ul>
+      <li>그런데 사람들은 4뒤에는 모음이 있어야 된다고 착각</li>
+    </ul>
+  </li>
+  <li>이것이 negative evidence!</li>
+  <li>조건문이 앞에 것이 뒤에 것을 보장하지만 뒤에 것이 앞에 것을 보장하지 않는다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="abductive-reasoning가설-유도적-추론">Abductive Reasoning(가설 유도적 추론)</h2>
+
+<ul>
+  <li>Abduction: Reasoning from a <strong>fact back to the action</strong> or state that caused it
+    <ul>
+      <li>Reasoning from event to cause
+        <ul>
+          <li>e.g. Sam drives fast when drunk.</li>
+          <li>If I see Sam driving fast, assume drunk.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Unreliable</strong>:
+    <ul>
+      <li>Can lead to false explanations(가설이기 때문에)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>정말 모르겠을 때 추론하는 방법</p>
+
+<p><br /></p>
+
+<h2 id="reasoning">Reasoning</h2>
+
+<ul>
+  <li><strong>Deductive reasoning</strong> is valid
+    <ul>
+      <li>Deductive inference guarantees if the premises are true so it the conclusion</li>
+    </ul>
+  </li>
+  <li>Inductive and abductive reasoning are unreliable
+    <ul>
+      <li>Cannot guarantee true conclusions even with true premises(전제)</li>
+      <li>Inductive reasoning: conclusion merely likely</li>
+      <li>Abductive reasoning: taking your best shot</li>
+    </ul>
+  </li>
+  <li>Deductive reasoning is limited to application of rules to examples</li>
+  <li>Inductive and abductive reasoning are important for generating hypotheses</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="reasoning-cont">Reasoning (cont.)</h2>
+
+<ul>
+  <li>Humans rely on inductive and abductive inference, as well as deduction</li>
+  <li>Humans regulate inherent unreliability of these reasoning modes
+    <ul>
+      <li>Using contextual knowledge</li>
+      <li>Using belief revision</li>
+    </ul>
+  </li>
+  <li>Computers rely primarily on deductive inference
+    <ul>
+      <li>Although some AI techniques use induction and abduction</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="reasoning-to-problem-solving">Reasoning to Problem-Solving</h2>
+
+<ul>
+  <li>Where reasoning involves inference about a familiar problem domain</li>
+  <li><strong>Problem solving</strong> refers to the ability to design solutions to problems in <strong>unfamiliar problem domains</strong></li>
+  <li>Humans use at least three types of problem-solving techniques
+    <ul>
+      <li>Heuristics (해 보고 판단하는 것)</li>
+      <li>Analogy(유추) and metaphor(비유)</li>
+      <li>Learning</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="problem-solving-techniques">Problem-Solving Techniques</h2>
+
+<ul>
+  <li><strong>Heuristics</strong>: using informed trial and error based on rules of thumb
+    <ul>
+      <li>사람이 대충 정해서 하겠다.(사바사)</li>
+      <li>E.g. Chess openings (develop your pieces, gain control of the center of the board)</li>
+    </ul>
+  </li>
+  <li>Analogy and metaphor: adapting solutions from one problem domain to another
+    <ul>
+      <li>E.g <strong>Object-orientation</strong> (treating software modules as physical objects)</li>
+    </ul>
+  </li>
+  <li><strong>Learning</strong>: improving performance by <strong>acquiring skills</strong> over time with repeated exposure to a problem
+    <ul>
+      <li>E.g. Multiply 1496 by 20</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="how-problem-solving-works">How Problem-Solving works</h2>
+
+<ul>
+  <li>Process of finding solution to unfamiliar task using knowledge
+    <ul>
+      <li>Storage in LTM, then application of knowledge</li>
+    </ul>
+  </li>
+  <li><strong>Observation</strong>:
+    <ul>
+      <li>People are more <strong>heuristic than algorithmic</strong> - 사람들은 algorithmic보단 heuristic을 더 좋아함.
+        <ul>
+          <li>Try a few quick shots rather than plan because resources are simply not available</li>
+        </ul>
+      </li>
+      <li>People often choose <strong>suboptimal</strong> strategies for <strong>low priority</strong> problems
+        <ul>
+          <li>우선순위가 낮다고 생각될 수록 대충함</li>
+        </ul>
+      </li>
+      <li>People learn better strategies with practice
+        <ul>
+          <li>연습하면 더 좋아짐</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Several theories.
+    <ul>
+      <li>Gestalt</li>
+      <li>Problem Space Theory</li>
+      <li>Analogy</li>
+      <li>Skill Acquisition</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="gestalt-theory">Gestalt Theory</h2>
+
+<ul>
+  <li>means “unified whole”</li>
+  <li>Problem solving both productive and reproductive</li>
+  <li>Productive draws on insight and restructuring of problem</li>
+  <li>Attractive but not enough evidence to explain <strong>`insight’</strong> etc.</li>
+  <li>Move away from behaviourism and led towards information processing theories</li>
+  <li>Principles:
+    <ul>
+      <li>Similarity</li>
+      <li>Continuation</li>
+      <li>Closure</li>
+      <li>Proximity (근처에 있는 것일수록)</li>
+      <li>Figure and Ground(foreground, background에 따라서)</li>
+    </ul>
+  </li>
+  <li>전혀 상관없어 보이는 도형일지라도 모이면 무슨 의미인지 알 수 있다.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909215821382.png" alt="image-20220909215821382" /></p>
+
+<p><br /></p>
+
+<h2 id="problem-space-theory">Problem Space Theory</h2>
+
+<ul>
+  <li><strong>Problem space</strong> comprises <strong>problem states</strong>
+    <ul>
+      <li>문제를 단계적으로 해석</li>
+      <li>state들을 내가 원하는 쪽으로 몰고 감.</li>
+    </ul>
+  </li>
+  <li>Problem-solving involves generating states using legal operators</li>
+  <li>Heuristics may be employed to select operators
+    <ul>
+      <li>e.g. means-ends analysis</li>
+      <li>수단을 통해 목적을 달성하도록 하는 것</li>
+    </ul>
+  </li>
+  <li>Operates within human information processing system
+    <ul>
+      <li>e.g. STM limits etc.</li>
+      <li>short term memory가 관여</li>
+    </ul>
+  </li>
+  <li>Largely applied to problem-solving in well-defined areas
+    <ul>
+      <li>e.g. puzzles rather than knowledge intensive areas</li>
+    </ul>
+  </li>
+</ul>
+
+<p>​</p>
+
+<p><br /></p>
+
+<h2 id="other-problem-solving-issues">Other Problem Solving Issues</h2>
+
+<ul>
+  <li>Analogy
+    <ul>
+      <li>Analogical mapping:
+        <ul>
+          <li>Novel problems in new domain?</li>
+          <li>Use knowledge of similar problem from similar domain</li>
+        </ul>
+      </li>
+      <li>Analogical mapping difficult if domains are semantically different</li>
+    </ul>
+  </li>
+  <li>Skill Acquisition
+    <ul>
+      <li><strong>Skilled activity</strong> characterized by <strong>chunking</strong></li>
+      <li>Lot of information is chunked to optimize STM</li>
+      <li>Conceptual rather than superficial grouping of problems</li>
+      <li>Information is structured more effectively</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mental-models">Mental Models</h2>
+
+<ul>
+  <li>How do we understand how the world works?
+    <ul>
+      <li>More than simple memory</li>
+      <li>Includes expectations of behaviour</li>
+    </ul>
+  </li>
+  <li>I throw a ball at my friend, and she catches it
+    <ul>
+      <li>How did I know how hard to throw it?</li>
+      <li>How did she know where to stand to catch it?</li>
+    </ul>
+  </li>
+  <li>We have an understanding of the mechanics of the world
+    <ul>
+      <li>How objects interact, the relationships between them</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="what-is-a-mental-model">What is a mental model?</h2>
+
+<ul>
+  <li>A cognitive structure that encodes how an aspect of the world operates</li>
+  <li>Includes information about which object classes interact with which other classes</li>
+  <li>Also includes information about how objects interact, and how interactions change properties</li>
+  <li>Malleable structures which are strengthened by successful application</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mental-model-example">Mental model example</h2>
+
+<p>The circle is above and to the right of the square</p>
+
+<ul>
+  <li>We can ask questions about this situation
+    <ul>
+      <li>Which object is to the left?</li>
+      <li>Which object is at the bottom?</li>
+      <li>Would the circle balance on the square?</li>
+    </ul>
+  </li>
+  <li>By creating a mental model, these questions are simple to answer
+    <ul>
+      <li>Add in knowledge we already have</li>
+      <li>You can simply ‘see’ the answer</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="how-we-use-mental-models">How we use mental models</h2>
+
+<ul>
+  <li>We use mental models to generate predictions
+    <ul>
+      <li>Predict where the ball will land</li>
+    </ul>
+  </li>
+  <li>Expertise is generally associated with mental models closer to reality
+    <ul>
+      <li>An expert cricket player understands ball physics better</li>
+      <li>But mental models are always unconscious (‘knowing’ doesn’t help)</li>
+    </ul>
+  </li>
+  <li>Mental models are not based on accurate physics
+    <ul>
+      <li>Can lead to incorrect predictions</li>
+      <li>Based on experience, etc.</li>
+      <li>Change as they are used</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="expanding-mental-models">Expanding mental models</h2>
+
+<ul>
+  <li>HCI researchers have expanded the idea
+    <ul>
+      <li>Includes a <strong>user’s understanding</strong> of the workings of a computing device</li>
+      <li>Expectations of menu structures, where files are stored, etc.</li>
+    </ul>
+  </li>
+  <li>In HCI understanding user’s mental models is important
+    <ul>
+      <li>Understand <strong>how learning a system works</strong></li>
+      <li>Reduce <strong>stress/workload</strong> by supporting user’s mental models</li>
+      <li>Tailor systems to fit how users perceive the system</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mental-models-and-user-interfaces">Mental models and user-interfaces</h2>
+
+<ul>
+  <li>Any interface requires a mental model to use
+    <ul>
+      <li>What to expect when typing, clicking, etc</li>
+      <li>How to interpret the consequences of actions (e.g. link new window with clicking of the icon)</li>
+    </ul>
+  </li>
+  <li>Mental models are important when interface has little feedback
+    <ul>
+      <li>Difficult to recognize results</li>
+      <li>Few cues to evaluate the new state of the system</li>
+      <li>Problems with impoverished devices</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="errors-and-mental-models">Errors and Mental Models</h2>
+
+<ul>
+  <li>
+    <p>Types of Error</p>
+
+    <ul>
+      <li>
+        <p>Slips</p>
+
+        <ul>
+          <li>
+            <p>Right intention, but failed to do it right</p>
+          </li>
+          <li>
+            <p>Causes: poor physical skill, inattention etc.</p>
+          </li>
+          <li>
+            <p>Change to aspect of skilled behaviour can cause slip</p>
+          </li>
+          <li>
+            <p>잘못누른 것이기 때문에 설명으로 해결되지 않음</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Mistakes</p>
+    <ul>
+      <li>Wrong intention</li>
+      <li>Cause: incorrect understanding
+        <ul>
+          <li>humans create mental models to explain behaviour.</li>
+          <li>if wrong (different from actual system) errors can occur</li>
+        </ul>
+      </li>
+      <li>처음부터 이해를 잘못한 것.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="emotion">Emotion</h2>
+
+<ul>
+  <li>Various theories of how emotion works
+    <ul>
+      <li>James-Lange: emotion is our interpretation of a physiological response to a stimuli
+        <ul>
+          <li>자극에 대해서 신체적 반응이 나타내는 것</li>
+        </ul>
+      </li>
+      <li>Cannon: emotion is a psychological response to a stimuli
+        <ul>
+          <li>심리적으로 나타나는 것</li>
+        </ul>
+      </li>
+      <li>Schachter-Singer: emotion is the result of our evaluation of our physiological responses, in the light of the whole situation we are in
+        <ul>
+          <li>개가 짖으면 어떤 반응이 보여질 텐데 나중에 가서 ‘아 이게 공포였구나’를 느끼는 것이 감정이다.(?)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Emotion</strong> clearly involves both cognitive and physical responses to <strong>stimuli</strong></li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909220704859.png" alt="image-20220909220704859" /></p>
+
+<p><br /></p>
+
+<h2 id="emotion-cont">Emotion (cont.)</h2>
+
+<ul>
+  <li>The biological response to physical stimuli is called affect</li>
+  <li>Affect influences how we respond to situations
+    <ul>
+      <li>positive -&gt; creative problem-solving</li>
+      <li>negative -&gt; narrow thinking</li>
+      <li>“Negative affect can make it harder to do even easy tasks; positive affect can make it easier to do difficult tasks” - Donald Norman</li>
+    </ul>
+  </li>
+  <li>Implications for interface design
+    <ul>
+      <li>Stress will increase the difficulty of problem-solving</li>
+      <li>Relaxed users will be more forgiving of shortcomings in design</li>
+      <li>Aesthetically pleasing and rewarding interfaces will increase positive affect
+        <ul>
+          <li>interface의 효율 뿐 아니라 보기 좋은 것 -&gt; positive affect를 주기 때문에</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="individual-differences">Individual Differences</h2>
+
+<ul>
+  <li>Long term
+    <ul>
+      <li>sex, physical and intellectual abilities</li>
+    </ul>
+  </li>
+  <li>Short term
+    <ul>
+      <li>effect of stress or fatigue(피로도; 지속적인)</li>
+    </ul>
+  </li>
+  <li>Changing
+    <ul>
+      <li>age</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Ask yourself: 
+will design decision exclude section of user population?</p>
+
+<p><br /></p>
+
+<h2 id="psychology-vs-design-of-interactive-system">Psychology vs. Design of Interactive System</h2>
+
+<ul>
+  <li>Some direct applications
+    <ul>
+      <li>e.g. blue acuity is poor
+        <ul>
+          <li>blue should not be used for important detail</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>눈에 띄면서 자세한 걸 원하면 그린</li>
+  <li>눈에 확실히 띄게 하려면 레드</li>
+  <li>블루는 자세한 걸 나타날 때 맹점을 보임</li>
+  <li>However, correct application generally requires <strong>understanding of context in psychology</strong>, and an understanding of <strong>specific experimental conditions</strong></li>
+  <li>A lot of knowledge has been distilled in
+    <ul>
+      <li>guidelines</li>
+      <li>cognitive models</li>
+      <li>experimental and analytic evaluation techniques</li>
+    </ul>
+  </li>
+</ul>
+:ET

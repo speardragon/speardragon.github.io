@@ -1,0 +1,910 @@
+I"r�<p><br /></p>
+
+<h1 id="81-쉘과-프로세스">8.1 쉘과 프로세스</h1>
+
+<h2 id="쉘shell이란-무엇인가">쉘(Shell)이란 무엇인가?</h2>
+
+<ul>
+  <li>쉘의 역할
+    <ul>
+      <li>쉘은 사용자와 운영체제 사이에 창구 역할을 하는 소프트웨어
+        <ul>
+          <li>interface 역할</li>
+        </ul>
+      </li>
+      <li>명령어 처리기(command processor)</li>
+      <li>사용자로부터 명령어를 입력받아 이를 처리한다</li>
+      <li>명령어(프로그램)가 프로세스가 됨.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167346442-00facc52-347b-42d8-9208-7fa7d685af12.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="쉘shell의-종류">쉘(Shell)의 종류</h2>
+
+<ul>
+  <li>Bourne shell
+    <ul>
+      <li>유닉스용 최초의 쉘</li>
+    </ul>
+  </li>
+  <li>C shell</li>
+  <li>Korn shell</li>
+  <li>bash shell
+    <ul>
+      <li>리눅스의 기본 쉘</li>
+      <li>Bourne shell을 기반으로 개발</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="쉘의-진행-절차">쉘의 진행 절차</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167346426-23e33a98-4629-487b-be3d-c008fc649516.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="시작-파일">시작 파일</h2>
+
+<ul>
+  <li>환경변수와 같은 사용자의 사용환경을 초기화하는데 사용</li>
+  <li>시작 파일의 위치 (bash)
+    <ul>
+      <li>시스템 : /etc/profile               /etc/bashrc</li>
+      <li>사용자 : ~/. bash_profile       ~/. bashrc</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="쉘의-구조">쉘의 구조</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">While</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">display</span> <span class="n">prompt</span>
+     <span class="n">read</span> <span class="n">command</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="c1">// Get command or execution file</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">then</span> <span class="p">{</span> <span class="c1">// Execute command or execution file</span>
+         <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span> <span class="c1">// fork a child, wait for a child to finish</span>
+         <span class="n">exit</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+        <span class="n">execve</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">parmas</span><span class="p">)</span> <span class="c1">// 자식 프로세스</span>
+<span class="p">}</span> <span class="c1">// 입력된 명령어를 실행</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span>
+<span class="nb">.</span> 	.. 	/etc
+/home 	/usr 	/dev
+<span class="nv">$ </span>a.out
+….
+<span class="err">$</span>
+</code></pre></div></div>
+
+<p>child의 fork의 return 값은 0</p>
+
+<p>쉘 명령어를 실행하기 위해서 shell process 자체가 실행하는 것이 아니라 child process를 만들어 child process가 실행하는 것이다.</p>
+
+<p>초기에 fork를 하면 parent와 완전히 똑같은 프로세스가 실행되는데</p>
+
+<p>자식 프로세스는 execve() 시스템 콜을 통해 자식 프로세스의 이미지가 그 전 이미지는 지워버리고 새로운 프로세스 이미지를 갖게 된다.</p>
+
+<p><br /></p>
+
+<h2 id="shell-복합-명령어">Shell 복합 명령어</h2>
+
+<ul>
+  <li><strong>명령어 열(command sequence)</strong>
+    <ul>
+      <li>$ 명령어1; … ; 명령어n</li>
+      <li>$ date; who; pwd</li>
+    </ul>
+  </li>
+  <li><strong>명령어 그룹(command group)</strong>
+    <ul>
+      <li>그룹 내 <strong>모든 명령어들이</strong> stdin, stdout, stderr <strong>공유</strong></li>
+      <li>$ (명령어1; … ; 명령어n)</li>
+      <li>$ date; who; pwd &gt; out1.txt // pwd의 결과만 out1.txt로 출력</li>
+      <li>$ (date; who; pwd) &gt; out2.txt // date, who, pwd 의 결과가 모두 out2.txt로 출력</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="전면-처리-vs-후면-처리">전면 처리 vs 후면 처리</h2>
+
+<ul>
+  <li><strong>전면 처리</strong>
+    <ul>
+      <li>명령어를 입력하면 명령어가 전면에서 실행되며 명령어 실행이 끝날 때 까지 쉘이 기다려 준다.
+        <ul>
+          <li>전면 -&gt; 사용자가 모니터로 볼 수 있다는 것을 의미.</li>
+        </ul>
+      </li>
+      <li>stdin, stdout을 이용한 입출력 가능</li>
+      <li>한 명령어씩만 수행 가능</li>
+      <li>Ctrl-C 입력으로 강제 종료 가능,</li>
+      <li>Ctrl-Z 입력으로 실행 중단 가능, 중단된 명령어는 fg 명령어에 의해 다시 전면 처리 계속됨</li>
+    </ul>
+  </li>
+  <li><strong>후면 처리</strong>
+    <ul>
+      <li>명령어들을 후면에서 처리하고 젂면에서는 다른 작업을 할 수 있으면 동 시에 여러 작업을 수행할 수 있다.</li>
+      <li>$ 명령어 &amp;</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="후면-처리-예">후면 처리 예</h2>
+
+<ul>
+  <li>$ (sleep 100; echo done) &amp; // 2 개의 후면 작업 생성 
+[1] 8320</li>
+  <li>$ find . -name test.c -print &amp; 
+[2] 8325</li>
+  <li>$ jobs // 후면 작업 리스트 
+[1] + Running ( sleep 100; echo done )
+[2] - Running find . -name test.c –print</li>
+  <li><strong>$ fg %작업번호 // 후면 작업을 전면 작업으로 전환</strong> 
+$ fg %1 
+( sleep 100; echo done )
+    <ul>
+      <li>fg %job_num</li>
+    </ul>
+  </li>
+  <li>후면처리 입출력 : 프린트 결과 뒤섞임 방지 목적 
+$ find . -name test.c -print &gt; find.txt &amp; // 출력 재 지정, 프린트 결과 뒤섞임 방지 목적 (전면과 뒤섞이지 않도록)
+$ find . -name test.c -print | mail chang &amp; 
+$ wc &lt; inputfile &amp; // 후면 프로세스의 입력 재 지정을 통한 입력 처리</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스process">프로세스(process)</h2>
+
+<ul>
+  <li>실행 중인 프로그램을 <strong>프로세스</strong>(process)라고 부른다.</li>
+  <li>각 프로세스는 유일한 프로세스 번호 PID를 갖는다.</li>
+  <li>ps 명령어를 사용하여 나의 프로세스들을 볼 수 있다.</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ps <span class="c"># 자신의 프로세스들의 실행 상태 출력</span>
+PID TTY TIME CMD
+8695 pts/3 00:00:00 csh
+8720 pts/3 00:00:00 ps
+<span class="nv">$ </span>ps u <span class="c">#자세한 정보 출력,</span>
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+chang 8695 0.0 0.0 5252 1728 pts/3 Ss 11:12 0:00 <span class="nt">-csh</span>
+chang 8793 0.0 0.0 4252 940 pts/3 R+ 11:15 0:00 ps u
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="프로세스-상태-ps">프로세스 상태: ps</h2>
+
+<ul>
+  <li>
+    <p>ps [-옵션] 명령어</p>
+  </li>
+  <li>현재 존재하는 프로세스들의 실행 상태를 <strong>요약해서</strong> 출력
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PID TTY TIME CMD
+25435 pts/3 00:00:00 csh
+25461 pts/3 00:00:00 ps
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>$ ps -aux (BSD 유닉스)</p>
+  </li>
+  <li>- a: 모든 사용자의 프로세스를 출력</li>
+  <li>- u: 프로세스에 대한 좀 더 자세한 정보를 출력</li>
+  <li>
+    <p>- x: 더 이상 제어 터미널을 갖지 않은 프로세스들도 함께 출력</p>
+  </li>
+  <li>$ ps -ef (시스템 V)</li>
+  <li>- e: 모든 사용자 프로세스 정보를 출력</li>
+  <li>- f: 프로세스에 대한 좀 더 자세한 정보를 출력</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ps-aux">ps aux</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ps <span class="nt">-aux</span> //시스템 내의 모든 프로세스 정보 출력
+Or
+<span class="nv">$ </span>ps <span class="nt">-ef</span>
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+root 1 0.0 0.0 2064 652 ? Ss 2011 0:27 init <span class="o">[</span>5]
+root 2 0.0 0.0 0 0 ? S&lt; 2011 0:01 <span class="o">[</span>migration/0]
+root 3 0.0 0.0 0 0 ? SN 2011 0:00 <span class="o">[</span>ksoftirqd/0]
+root 4 0.0 0.0 0 0 ? S&lt; 2011 0:00 <span class="o">[</span>watchdog/0]
+...
+root 8692 0.0 0.1 9980 2772 ? Ss 11:12 0:00 sshd: chang <span class="o">[</span><span class="nb">pr
+</span>chang 8694 0.0 0.0 9980 1564 ? R 11:12 0:00 sshd: chang@pts
+chang 8695 0.0 0.0 5252 1728 pts/3 Ss 11:12 0:00 <span class="nt">-csh</span>
+chang 8976 0.0 0.0 4252 940 pts/3 R+ 11:24 0:00 ps aux
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="프로세스process-1">프로세스(process)</h2>
+
+<ul>
+  <li>processes are <strong>the most fundamental abstraction</strong> in a Unix system, after files.</li>
+  <li>As object code in execution
+    <ul>
+      <li>active, alive, running programs</li>
+      <li>processes are more than just assembly language;
+        <ul>
+          <li>they consist of data, resources, state, and a virtualized computer</li>
+        </ul>
+      </li>
+      <li>program image + environment
+        <ul>
+          <li>text(code) /data / stack / heap segment</li>
+          <li>kernel data structure(PCB), address space, open files, …</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="process">Process</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* test_program.c */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">glob_var</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">test_func</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">local_var</span><span class="p">,</span> <span class="o">*</span><span class="n">buf</span><span class="p">;</span>
+
+    <span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mo">000</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+    <span class="err">…</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">local_var</span><span class="p">;</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"value of a = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span>
+    <span class="n">test_func</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gcc –o test_program test_program.c
+</code></pre></div></div>
+
+<p>만들어지는 test_program 실행 파일을 program definition이라고 하고 이것을 실행시켰을 때 나오는 instance를 process라고 한다.</p>
+
+<p><br /></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./test_program
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167347246-2c9123b1-7edd-43d1-9a36-7bfcfbcd5003.png" alt="image" /></p>
+
+<ul>
+  <li>* bss: Block Started by Symbol</li>
+  <li>PCB: Process Control Block</li>
+  <li>프로그램(or definition): 하드디스크에 program image로 저장 되어 있음\</li>
+  <li>프로세스:
+    <ul>
+      <li>빨간 부분이 프로그램이 컴파일할 때 만들어지는 부분이고 stack과 heap 영역은 program에도 존재하긴 하지만 실제 내용이 만들어지는 것은 process화 된 이후이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="sleep">sleep</h2>
+
+<p>shell 명령어에서의 (sleep, wait, kill) vs. 시스템 콜에서의 (sleep, wait, kill)</p>
+
+<ul>
+  <li>둘 간의 차이는 shell 명령어는 prompt 창에서 실행을 시키지만 시스템 콜은 프로그램 안에서 실행시킨다.</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>sleep 명령어
+    <ul>
+      <li>지정된 시간만큼 실행을 중지한다</li>
+    </ul>
+  </li>
+  <li>
+    <p>`	$ sleep 초 `</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">$ (echo 시작; sleep 5; echo 끝)</code></li>
+</ul>
+
+<p>sleep 명령을 하면 WAITING 상태가 되어 CPU 사용을 잡아먹지 않는다.</p>
+
+<ul>
+  <li>그래서 이 때 다른 프로그램 실행을 할 수 있게 된다.</li>
+</ul>
+
+<p>멀티 프로그래밍이 지원되지 않았으면 프로세스라는 개념이 없었을 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="kill">kill</h2>
+
+<ul>
+  <li>kill 명령어
+    <ul>
+      <li>수행중인 프로세스에 시그널 보냄</li>
+      <li>시그널 미명시시 현재 실행중인 프로세스를 강제로 종료 
+$ kill [-시그널] 프로세스번호 
+$ kill [-시그널] %작업번호</li>
+      <li>시그널을 기재하지 않은 경우 -&gt; 현재 실행 중인 이 프로세스를 강제로 종료를 요구하는 것</li>
+    </ul>
+  </li>
+  <li>$ (echo 시작; sleep 5; echo 끝) &amp; 
+1230 
+$ kill 1230</li>
+  <li>$ (sleep 100; echo done) &amp; 
+[1] 8320</li>
+</ul>
+
+<p>​		$ kill 8320 
+​		$ kill %1 
+​		[1] Terminated ( sleep 100; echo done )</p>
+
+<h2 id="wait">wait</h2>
+
+<p>$ wait [프로세스번호]</p>
+
+<ul>
+  <li>
+    <p>해당 프로세스 번호를 갖는 자식 프로세스가 종료될 때까지 기다린다. 쉘은 중지</p>
+  </li>
+  <li>
+    <p>프로세스 번호를 지정하지 않으면 모든 자식 프로세스를 기다린다.</p>
+  </li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="o">(</span><span class="nb">sleep </span>10<span class="p">;</span> <span class="nb">echo </span>1번 끝<span class="o">)</span> &amp;
+1231
+<span class="nv">$ </span><span class="nb">echo </span>2번 끝<span class="p">;</span> <span class="nb">wait </span>1231<span class="p">;</span> <span class="nb">echo </span>3번 끝 <span class="c"># 1231 프로세스가 종료될 때까지 3번 끝 x</span>
+2번 끝
+1번 끝
+3번 끝
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="o">(</span><span class="nb">sleep </span>10<span class="p">;</span> <span class="nb">echo </span>1번 끝<span class="o">)</span> &amp;
+<span class="nv">$ </span><span class="o">(</span><span class="nb">sleep </span>10<span class="p">;</span> <span class="nb">echo </span>2번 끝<span class="o">)</span> &amp;
+<span class="nv">$ </span><span class="nb">echo </span>3번 끝<span class="p">;</span> <span class="nb">wait</span><span class="p">;</span> <span class="nb">echo </span>4번 끝 <span class="c"># wait -&gt; 모든 자식 프로세스 기다리고 4번 끝</span>
+3번 끝
+1번 끝
+2번 끝
+4번 끝
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="exit">exit</h2>
+
+<ul>
+  <li>exit
+    <ul>
+      <li>쉘을 종료하고 종료코드(exit code)을 부모 프로세스에 전달
+<code class="language-plaintext highlighter-rouge">$ exit [종료코드]</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h1 id="82-프로그램-시작">8.2 프로그램 시작</h1>
+
+<h2 id="프로그램-실행-시작중요">프로그램 실행 시작(중요)</h2>
+
+<ul>
+  <li><strong>프로그램을 실행시키는 방법</strong>
+    <ul>
+      <li>쉘 프롬트에서 실행 할 프로그램을 <strong>지정</strong>하여 실행 (쉘에서 명령어 치는 것)
+        <ul>
+          <li>쉘 명령어 이름 혹은 사용자가 작성한 프로그램의 실행 파일 이름</li>
+        </ul>
+      </li>
+      <li>실행 중인 <strong>프로그램 안에서</strong> <strong>exec 시스템을 호출</strong>하여 다른 프로그램 실행
+        <ul>
+          <li>C 시작 루틴에 명령줄 인수(command-line arguments)와 환경 변수를 (environment variables) 전달하고 프로그램을 실행시킨다.</li>
+        </ul>
+      </li>
+      <li>근본적으로는 위 두 가지 방법이 같은 방식</li>
+    </ul>
+  </li>
+  <li>C 시작 루틴(start-up routine)
+    <ul>
+      <li>C 프로그램을 compile 하면, C 프로그램 코드와 C 시작 루틴을 포함하는 실행파일 생성</li>
+      <li>Started by the kernel (by the exec system call)</li>
+      <li>main 함수를 호출하면서 명령줄 인수, 환경 변수를 전달</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">exit</span><span class="p">(</span> <span class="n">main</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>실행이 끝나면 반환 값을 받아 exit 한다.</p>
+
+<p><br /></p>
+
+<h2 id="쉘의-구조-1">쉘의 구조</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">While</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">display</span> <span class="n">prompt</span>
+    <span class="n">read</span> <span class="n">command</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="c1">// Get command or execution file</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">then</span> <span class="p">{</span> <span class="c1">//Shell process</span>
+        <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span> 		<span class="c1">// Execute command or execution file</span>
+        <span class="n">exit</span><span class="p">()</span> 				<span class="c1">// fork a child, wait for a child to finish</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    	<span class="n">execve</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">parmas</span><span class="p">)</span> <span class="c1">// fork()에 의해서 생성된 자식 프로세스</span>
+<span class="p">}</span> 								<span class="c1">// 입력된 명령어를 실행</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span>
+<span class="nb">.</span> .. /etc
+/home /usr /dev
+<span class="nv">$ </span>a.out
+….
+<span class="err">$</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="프로그램-실행-시작중요-1">프로그램 실행 시작(중요**)</h2>
+
+<p><span style="color:red"> 그림 그릴 줄 알아야 함.</span></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167347783-f0c19d8f-502e-4071-8dec-7172ef1560c2.png" alt="image" /></p>
+
+<p>main 함수의 종료 코드는 parent process의 wait()으로 전달됨</p>
+
+<p><br /></p>
+
+<h2 id="명령줄-인수환경-변수">명령줄 인수/환경 변수</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]);</span>
+<span class="c1">//argc : 명령줄 인수의 개수</span>
+<span class="c1">//argv[] : 명령줄 인수 리스트를 나타내는 포인터 배열</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167347832-452a4ba7-6998-4e97-bddd-4357bc2da3c6.png" alt="image" /></p>
+
+<p>환경 변수의 경우에 parent process가 자식 process를 생성하는 경우에 그대로 상속이 되는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="argsc">args.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cm">/* 모든 명령줄 인수를 출력한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="cm">/* 모든 명령줄 인수 출력 */</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"argv[%d]: %s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$args</span> hello world
+argv[0]:args
+argv[1]:hello
+argv[2]:world
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="환경-변수">환경 변수</h2>
+
+<ul>
+  <li>프로세스가 실행되는 기본 환경을 설정하는 변수</li>
+  <li>로그인 명, 로그인 쉘, 터미널에 설정된 언어, 경로명 등</li>
+  <li>환경변수는 “환경변수=값”의 형태로 구성되며 관례적으로 대문자로 사용</li>
+  <li>현재 쉘의 환경 설정을 보려면 env 명령을 사용</li>
+  <li><strong>부모 프로세스에서 자식 프로세스로 전달된다</strong></li>
+  <li>.login 또는 .cshrc 파일에서 환경 변수를 설정한다</li>
+  <li>각 문자열은 ‘\0’로 끝난다</li>
+  <li>환경 변수 리스트의 마지막은 NULL 포인터</li>
+  <li><strong>argv 와 같은 구조</strong>
+    <ul>
+      <li>다른 점은?
+        <ul>
+          <li>생각해 보고 적어보기</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="environc">environ.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cm">/* 전역변수 environ 을 이용해 모든 환경 변수를 출력한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">**</span><span class="n">ptr</span><span class="p">;</span> <span class="c1">// local variable, 이중 포인터 </span>
+    <span class="k">extern</span> <span class="kt">char</span> <span class="o">**</span><span class="n">environ</span><span class="p">;</span> <span class="c1">// 전역 변수</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="n">ptr</span> <span class="o">=</span> <span class="n">environ</span><span class="p">;</span> <span class="o">*</span><span class="n">ptr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">ptr</span><span class="o">++</span><span class="p">)</span> <span class="cm">/* 모든 환경 변수 값 출력*/</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">ptr</span><span class="p">);</span>
+
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>environ
+HOME <span class="o">=</span> /usr/dddd/ggg
+PATH <span class="o">=</span> …
+………
+</code></pre></div></div>
+
+<p>ptr로 실제 내용을 얻고 싶은데 단일 포인터를 사용하면 실제 내용이 들어있는 주소가 들어있기 때문에 그 주소 안의 내용을 얻기 위해서는 이중 포인터가 필요한 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="환경-변수-접근">환경 변수 접근</h2>
+
+<ul>
+  <li>getenv() 시스템 호출을 사용하여 환경 변수를 하나씩 접근하 는 것도 가능하다.</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">char</span> <span class="o">*</span><span class="nf">getenv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
+<span class="c1">// 환경 변수 name 값의 포인터를 반환한다. 해당 변수가 없으면 NULL을 반환한다.</span>
+<span class="c1">// 실패하면 NULL 포인터를 리턴</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="printenvc">printenv.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="cm">/* 환경 변수를 3개 프릮트한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+     <span class="kt">char</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+    
+     <span class="n">ptr</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s">"HOME"</span><span class="p">);</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"HOME = %s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ptr</span><span class="p">);</span>
+    
+     <span class="n">ptr</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s">"SHELL"</span><span class="p">);</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"SHELL = %s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ptr</span><span class="p">);</span> 
+    
+     <span class="n">ptr</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s">"PATH"</span><span class="p">);</span> 
+     <span class="n">printf</span><span class="p">(</span><span class="s">"PATH = %s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ptr</span><span class="p">);</span> 
+    
+     <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">printenv
+ </span>HOME <span class="o">=</span>
+ ptr <span class="o">=</span> /bin/bash
+ PATH <span class="o">=</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="환경-변수-설정">환경 변수 설정</h2>
+
+<ul>
+  <li>putenv(), setenv()를 사용하여 특정 환경 변수를 설정한다.</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">putenv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
+<span class="c1">// name=value 형태의 스트링을 받아서 이를 환경 변수 리스트에 넣어준다.</span>
+<span class="c1">// name이 이미 존재하면 원래 값을 새로운 값으로 대체한다.</span>
+<span class="kt">int</span> <span class="nf">setenv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">value</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rewrite</span><span class="p">);</span>
+<span class="c1">// 환경 변수 name의 값을 value로 설정한다. name이 이미 존재하는 경우에는</span>
+<span class="c1">// rewrite 값이 0이 아니면 원래 값을 새로운 값으로 대체하고 rewrite 값이 0이면 그대로 둔다.</span>
+<span class="kt">int</span> <span class="nf">unsetenv</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
+<span class="c1">// 환경 변수 name의 값을 지운다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="83-프로그램-종료">8.3 프로그램 종료</h1>
+
+<h2 id="프로그램-종료-process-termination">프로그램 종료 (Process termination)</h2>
+
+<ul>
+  <li><strong>정상 종료</strong>(normal termination)
+    <ul>
+      <li>main() 실행을 마치고 리턴하면 <strong>C 시작 루틴</strong>은 이 리턴값을 가지 고 exit()을 호출</li>
+      <li>프로그램 내에서 직접 exit()을 호출</li>
+      <li>프로그램 내에서 직접 _exit()을 호출</li>
+    </ul>
+  </li>
+  <li>비정상 종료(abnormal termination)
+    <ul>
+      <li><strong>abort() 시스템 콜 호출</strong>
+        <ul>
+          <li>프로세스에 SIGABRT 시그널을 보내어 프로세스를 비정상적으로 종료시킴</li>
+        </ul>
+      </li>
+      <li>시그널 수신에 의한 종료</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로그램-종료">프로그램 종료</h2>
+
+<ul>
+  <li><strong>exit()</strong>
+    <ul>
+      <li>Cleanup processing 을 수행하고 정상적으로 종료한다
+        <ul>
+          <li>(open 되어졌던 )모든 열려진 스트림을 닫고(fclose),</li>
+          <li>출력 버퍼의 내용을 디스크에 쓰는(fflush), 메모리 회수(반납) 등의 뒷정리 후 프로세스를 정상적으로 종료</li>
+        </ul>
+      </li>
+      <li>종료 코드(exit code)를 부모 프로세스에게 전달한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">exit</span><span class="p">(</span><span class="kt">int</span> <span class="n">status</span><span class="p">);</span>
+<span class="c1">//뒷정리를 한 후 프로세스를 정상적으로 종료시킨다. return to the kernel</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>_exit()</strong></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">_exit</span><span class="p">(</span><span class="kt">int</span> <span class="n">status</span><span class="p">);</span>
+<span class="c1">//뒷정리를 하지 않고 프로세스를 즉시 (정상)종료시킨다.</span>
+<span class="c1">//return to the kernel immediately</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="c-프로그램-시작-및-종료중요">C 프로그램 시작 및 종료(중요)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167348475-2c718100-13af-4221-b31c-bce4cf0284d8.png" alt="image" /></p>
+
+<ul>
+  <li>내가 짠 main 함수, 사용자 정의 함수와 더불어 C start-up routine이 더해서 실행 파일이 만들어 진다.</li>
+  <li>main 함수가 리턴할 때도 C start-up routine을 거쳐서 exit()이 실행되어 종료 될 수 있고,</li>
+  <li>user function이나 main function 내에서도 exit() 을 호출하여 종료될 수도 있다.</li>
+  <li>‘does not return’ means
+    <ul>
+      <li>exit(main())은 리턴하는 것이 아니라 그냥 kernel로 넘어가는 것이다.</li>
+      <li>왜냐하면 execve() 시스템 호출을 통해서 process image를 완전히 바꿔버렸기 때문에 return 할 곳(원래자기를 불렀던 프로세스) 이 없어졌기 때문이다.</li>
+    </ul>
+  </li>
+  <li>exit handler: 사용자가 정의한 exit handler</li>
+  <li>standard I/O cleanup까지 완료한 후 최종적으로 _exit() 호출</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="쉘의-구조-revisit">쉘의 구조 (revisit)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">While</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">display</span> <span class="n">prompt</span>
+    <span class="n">read</span> <span class="n">command</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="c1">// Get command (ex. ls)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fork</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">then</span> <span class="p">{</span> <span class="c1">// Shell process (부모 프로세스)</span>
+        <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span> <span class="c1">// Execute command (자식 프로세스가 종료될 때까지 wait)</span>
+        <span class="n">exit</span><span class="p">()</span> <span class="c1">// fork a child, wait for a child to finish</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    	<span class="n">execve</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">parmas</span><span class="p">)</span> <span class="c1">// 자식 프로세스</span>
+<span class="p">}</span> 								<span class="c1">// 입력된 명령어 프로그램 실행</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span>
+<span class="nb">.</span> .. /etc
+/home /usr /dev
+<span class="err">$</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="프로그램-실행-시작-revisit">프로그램 실행 시작 (revisit)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167991038-8b396c8a-c0f7-4120-902e-298a5e466ea2.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="atexit">atexit()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">atexit</span><span class="p">(</span><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="kt">void</span><span class="p">));</span>
+	<span class="c1">//returns: 0 if OK, nonzero on error</span>
+</code></pre></div></div>
+
+<ul>
+  <li>exit 처리기를 등록한다.
+    <ul>
+      <li>프로세스당 32개까지</li>
+    </ul>
+  </li>
+  <li>func
+    <ul>
+      <li>exit 처리기</li>
+      <li>함수 포인터(이름)</li>
+    </ul>
+  </li>
+  <li>exit()는 exit handler 들을 등록된 역순으로 호출한다.
+    <ul>
+      <li>맨 마지막에 등록된 handler 순으로 실행</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="exit-처리기-예">exit 처리기 예</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">my_exit1</span><span class="p">(</span><span class="kt">void</span><span class="p">),</span>
+<span class="n">my_exit2</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">atexit</span><span class="p">(</span><span class="n">exit_handler1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"exit_handler1 등록할 수 없음"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">atexit</span><span class="p">(</span><span class="n">exit_handler2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"exit_handler2 등록할 수 없음"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"main 끝 </span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">exit_handler1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"첫 번째 exit 처리기</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">exit_handler2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"두 번째 exit 처리기</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>atexit
+main 끝
+두 번째 <span class="nb">exit </span>처리기
+첫 번째 <span class="nb">exit </span>처리기
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="termination-status--exit-status">Termination status  (Exit status)</h2>
+
+<ul>
+  <li>Terminating process notify its parent how it terminated.
+    <ul>
+      <li>프로세스가 종료될 때는 parent process에게 어떠한 <strong>이유로</strong> 종료되었는지를 통보하게 된다.</li>
+    </ul>
+  </li>
+  <li><strong>normal termination</strong>
+    <ul>
+      <li>pass an <strong>exit status</strong> as argument to exit() or _exit().</li>
+      <li>return value from main()
+        <ul>
+          <li>exit( main( argc, argv) );</li>
+          <li>void exit(int status);       void _exit(int status);</li>
+        </ul>
+      </li>
+      <li>exit status is converted into a <strong>termination status</strong>.</li>
+    </ul>
+  </li>
+  <li><strong>abnormal termination</strong>
+    <ul>
+      <li>Kernel generates a <strong>termination status</strong>(종료 이유) to indicate the reason for the abnormal termination.</li>
+    </ul>
+  </li>
+  <li>The parent of the terminated process can obtain the termination status from <strong>wait()</strong> or <strong>waitpid()</strong>.
+    <ul>
+      <li>wait(): 자식 프로세스 종료</li>
+      <li>waitpid(): 특정 프로세스 종료</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="termination-status-exit-status">Termination status (Exit status)</h2>
+
+<ul>
+  <li>Exit status:
+    <ul>
+      <li>argument of exit( ), _exit( )</li>
+      <li>the return value from main( ): exit(main( ))</li>
+      <li>UNIX shell 에 의해서 사용됨</li>
+    </ul>
+  </li>
+  <li>Termination status:
+    <ul>
+      <li>Normal termination:
+        <ul>
+          <li>Exit status : Termination status</li>
+        </ul>
+      </li>
+      <li>Abnormal termination:
+        <ul>
+          <li><strong>kernel</strong> indicates reason : Termination status</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="exit---termination-status">exit() - Termination status</h2>
+
+<ul>
+  <li>Child terminates
+    <ul>
+      <li>Kernel sends SIGCHLD signal to parent</li>
+    </ul>
+  </li>
+  <li>Parent wait() or waitpid()
+    <ul>
+      <li>parent can obtain the termination status of the child</li>
+      <li>wait() fetch the termination status of child <strong>when receiving SIGCHLD signal</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="exit---termination-status-1">exit() - Termination status</h2>
+
+<ul>
+  <li><strong>zombie state</strong>
+    <ul>
+      <li>Kernel has to keep some information (자식 process에 관한 정보)
+        <ul>
+          <li>PID, termination status, and CPU usage time</li>
+          <li>This information is available when parent calls wait().</li>
+        </ul>
+      </li>
+      <li>the process that has terminated, but whose parent has not yet waited for it, is called a <strong>zombie</strong>.
+        <ul>
+          <li>자식 process가 종료가 되었는데 이 프로세스의 parent process가 <strong>wait system call을 호출하지 않은 경우</strong>에 종료된 process를 <strong>zombie process</strong>라고 한다.</li>
+          <li>If no parent waiting (did not invoke <strong>wait()</strong>) process is a <strong>zombie</strong></li>
+        </ul>
+      </li>
+      <li>If parent terminated without invoking <strong>wait</strong> , process is an <strong>orphan</strong></li>
+    </ul>
+  </li>
+  <li>If the parent terminates before the child?
+    <ul>
+      <li>init process becomes the parent of the child (orphaned) process.</li>
+      <li>init process: 모든 process의 조상 process</li>
+    </ul>
+  </li>
+  <li>If an orphaned process is terminated?
+    <ul>
+      <li>init calls wait() to fetch the termination status.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+:ET

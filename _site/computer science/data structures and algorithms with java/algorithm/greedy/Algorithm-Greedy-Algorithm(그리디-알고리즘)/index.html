@@ -1,0 +1,1766 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Algorithm] Greedy Algorithm(그리디 알고리즘) | speardragon note</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Algorithm] Greedy Algorithm(그리디 알고리즘)">
+<meta property="og:url" content="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/greedy/Algorithm-Greedy-Algorithm(%EA%B7%B8%EB%A6%AC%EB%94%94-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-02-22T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/greedy/Algorithm-Greedy-Algorithm(%EA%B7%B8%EB%A6%AC%EB%94%94-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#data-structures-and-algorithms-with-java" itemprop="item"><span itemprop="name">Data structures and algorithms with java</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#algorithm" itemprop="item"><span itemprop="name">Algorithm</span></a>
+          <meta itemprop="position" content="4" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#greedy" itemprop="item"><span itemprop="name">Greedy</span></a>
+          <meta itemprop="position" content="5" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Algorithm] Greedy Algorithm(그리디 알고리즘)</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Algorithm] Greedy Algorithm(그리디 알고리즘)">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-02-22T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/greedy/Algorithm-Greedy-Algorithm(%EA%B7%B8%EB%A6%AC%EB%94%94-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)/" class="u-url" itemprop="url">[Algorithm] Greedy Algorithm(그리디 알고리즘)
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<h2 id="greedy-algorithm탐욕-알고리즘">Greedy Algorithm(탐욕 알고리즘)</h2>
+
+<p>이번 시간에는 그리디 알고리즘에 대해서 배워 볼 것이다.</p>
+
+<p><br /></p>
+
+<h4 id="그리디탐욕-알고리즘이란">그리디(탐욕) 알고리즘이란?</h4>
+
+<ul>
+  <li>
+    <p>단어에서 알 수 있듯이 ‘Greedy’라는 단어가 ‘탐욕스러운’, ‘욕심 많은’ 이라는 뜻을 내포하고 있다.</p>
+  </li>
+  <li>그래서 말 그래도 <code class="language-plaintext highlighter-rouge">선택의 순간마다 당장 눈 앞에 보이는 최적의 상황만을 쫓아 최종 답에 도달</code>하는 알고리즘이다.</li>
+  <li>최적해를 구하는 데 사용되는 <code class="language-plaintext highlighter-rouge">근사적인</code> 방법이다.</li>
+  <li>여러 경우 중 하나를 결정해야 할 때마다 그 순간에 최적이라고 생각이 드는 것을 선택해 나가는 방식이다.</li>
+  <li><span style="color:blue">매 선택에서 현재 당장 최적인 값이다.</span></li>
+</ul>
+
+<p>그렇지만 <mark>그리디 알고리즘은 전체에서 최적값을 언제나 구할 수는 없다.</mark></p>
+
+<p>다음과 같은 그래프를 보자.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/154899733-b7b71e9f-a089-43e2-a63d-fdcd415fc7a8.png" alt="image" /></p>
+
+<p>A에서 출발하여 E에 가야한다고 할 때 경우의 수는 다음과 같다.</p>
+
+<ol>
+  <li>먼저 B or C or D 중에서 가야할 길을 찾는다.
+    <ul>
+      <li>가장 걸리는 시간이 짧은 C경로로 간다.</li>
+    </ul>
+  </li>
+  <li>그리디 알고리즘은 이 최적의 선택으로 끝까지 쭉 진행하기 때문에 다른 경로는 고려하지 않는다.</li>
+  <li>그 후 바로 E에 도착하여 총 <strong>41시간</strong>이 소모 되었다.
+    <ul>
+      <li>하지만 A-C-E로 갈 때 보다 A-B-E로 갈 때 뒤의 소모 되는 시간이 <strong>더 적어</strong> 시간 소모가 더 적은데</li>
+      <li>최초의 선택에서 최적의 선택은 했지만 <strong>전체 문제</strong>를 봤을 때 최적의 값은 구하지 못하게 된 것이다.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>이와 같은 그리디 알고리즘의 단점이 존재할 수 있는데 그럼에도 불구하고 그리디 알고리즘은 <strong>속도가 매우 빨라</strong> 간단한 문제에서 그 힘을 발휘할 수 있다.</p>
+
+<p><br /></p>
+
+<p>하지만 항상 최적해가 되지 않는다는 제약에 의해 아래와 같은 특수한 조건이 만족되어야 한다.</p>
+
+<ol>
+  <li><span style="color: red">탐욕 선택 속성(Greedy Choice Property)</span>
+    <ul>
+      <li>이전의 선택이 이후의 선택에 영향을 주지 않는다.</li>
+    </ul>
+  </li>
+  <li><span style="color: red">최적 부분 구조(Optimal Substructure)</span>
+    <ul>
+      <li>문제에 대한 최종 해결 방법은 부분 문제에 대한 최적 문제 해결 방법으로 구성 된다.</li>
+      <li>즉, 부분 문제의 최적결과가 전체에도 그대로 적용될 수 있어야 하는 것이다.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<p>이러한 조건이 성립하지 않는 경우 그리디 알고리즘의 최적해는 구할 수 없고 만약 이 조건을 만족한다면 어떤 특별한 구조가 있는 문제에 대해서 이 그리디 알고리즘이 언제나 최적해를 찾아낼 수 있는데 이 구조를 매트로이드라 한다.</p>
+
+<p><br /></p>
+
+<p>위의 2번 조건은 뒤에서 배울 Dynamic Programming의 2번 조건과 동일한 조건인데 이에 대해 간단히 설명하자면 다음과 같다.</p>
+
+<ul>
+  <li>
+    <p>DP의 경우, 문제가 Overlapping되기 때문에 다음에 풀 문제가 이전의 작은 문제의 결과에 영향을 받게 된다. 즉, 다시말해서 동일한 형식의 문제만 점점 커지는 것일 뿐, 이전의 경우에 영향을 받는다는 것이다.</p>
+  </li>
+  <li>
+    <p><span style="color:blue">하지만 그리디 알고리즘은 이와 달리 영향을 받아서는 안 된다.</span> 왜냐하면 그래야지 다른 경우의 결과와는 상관없는 최적해를 구할 수 있기 때문이다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>정리</strong></p>
+
+<blockquote>
+  <p>따라서 그리디 알고리즘은 항상 최적의 결과를 도출하는 것은 아니지만, 어느 정도 최적의 근사한 값을 빠르게 도출해낼 수 있다는 장점이 있다. 이 장점으로 인해 그리디 알고리즘은 <u>근사 알고리즘</u>으로 사용할 수 있다.</p>
+</blockquote>
+
+<blockquote>
+  <p>그리디 알고리즘을 적용해도 언제나 최적의 해를 구할 수 있는 문제(매트로이드)가 있고, 이러한 문제에 탐욕 알고리즘을 사용해서 빠른 계산 속도로 답을 구할 수 있다.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h3 id="그리디-알고리즘의-예시">그리디 알고리즘의 예시</h3>
+
+<h4 id="action-selection-문제">Action Selection 문제</h4>
+
+<p>그리디 알고리즘의 가장 대표적인 예시 중 하나인 <code class="language-plaintext highlighter-rouge">활동 선택(Action Selection) 문제</code>에 대해 살펴보자.</p>
+
+<p>활동 선택 문제는 <span style="color: red">N개의 활동에 대해 각 활동에는 시작 시간 및 종료 시간이 있을 때, 한 사람이 최대한 많이 할 수 있는 활동(Acticity)의 수를 구하는 문제</span>이다.</p>
+
+<p>즉, 쉽게 말해서 각각의 활동(Activity)에는 시간이 소모되므로 하나를 선택했다면 그 동안에는 해당 시간에 다른 활동을 할 수 없다. 이 때 가장 많은 활동에 참여하기 위한 방법을 찾아내는 것이다.</p>
+
+<p>아래 표를 보면서 이해해 봅시다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/154902519-a4d09832-314e-4ddd-9c9d-7c0f0582f8ff.png" alt="image" /></p>
+
+<p>위에서 설명한 각 활동과 그것들의 시작/ 종료 시간이 설정 되어 있음을 알 수 있다. 이 문제는 이때 최대한 많은 활동을 해야 하므로 언제 시작하든지 간에 <span style="color: blue">전체에서 가장 종료 시간이 빠른 것부터 선택해야 한다.</span></p>
+
+<p>어차피 시작 시간은 항상 종료 시간 이전일 것이기 때문에 고려하지 않아도 된다.</p>
+
+<p>그래서 <span style="color: purple">종료 시간을 기준으로 먼저 정렬</span>한 뒤, <span style="color: red">제일 먼저 끝나는 활동을 무조건 선택</span>하고 끝났을 때, <span style="color: red">바로 다음에 선택할 수 있는 활동</span>을 찾아 수행하는 방식을 <strong>반복</strong>하여 해결할 수 있다.</p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/154902909-bb8fbb4d-12ed-4788-ad75-27dbd64b2cb7.png" alt="image" /></p>
+
+<ol>
+  <li>먼저 종료 시간 기준으로 정렬 후 제일 먼저 끝나는 D 활동을 선택한다.</li>
+  <li>D 활동이 종료하면 바로 다음 활동 가능한 C 활동을 선택한다.</li>
+  <li>C 활동 종료 후 B 활동을 시작 할 수 없으므로 건너 뛰고 활동이 가능한 시간인 A 활동을 선택한다.</li>
+  <li>A 활동도 종료하면 그 다음으로 활동 가능한 F를 선택하여 마무리 된다.</li>
+</ol>
+
+<p><br /></p>
+
+<h3 id="코드로-구현"><mark>코드로 구현</mark></h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="c1">// 활동 정보를 List에 저장하고 정렬한다.</span>
+        <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Action</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Action</span><span class="o">(</span><span class="s">"A"</span><span class="o">,</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">8</span><span class="o">));</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Action</span><span class="o">(</span><span class="s">"B"</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">7</span><span class="o">));</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Action</span><span class="o">(</span><span class="s">"C"</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">6</span><span class="o">));</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Action</span><span class="o">(</span><span class="s">"D"</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">));</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Action</span><span class="o">(</span><span class="s">"E"</span><span class="o">,</span> <span class="mi">6</span><span class="o">,</span> <span class="mi">9</span><span class="o">));</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Action</span><span class="o">(</span><span class="s">"F"</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">11</span><span class="o">));</span>
+        <span class="nc">Collections</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+        
+        <span class="c1">// Greedy 알고리즘 수행 후, 결과 출력</span>
+        <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Action</span><span class="o">&gt;</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">greedy</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>
+        <span class="k">for</span><span class="o">(</span><span class="nc">Action</span> <span class="n">act</span> <span class="o">:</span> <span class="n">ans</span><span class="o">){</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">act</span><span class="o">.</span><span class="na">name</span> <span class="o">+</span> <span class="s">", "</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Greedy 알고리즘을 통해 선택된 활동들을 반환한다.</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Action</span><span class="o">&gt;</span> <span class="nf">greedy</span><span class="o">(</span><span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Action</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">){</span>
+        <span class="kt">int</span> <span class="n">time</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Action</span><span class="o">&gt;</span> <span class="n">ans</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+
+        <span class="k">for</span><span class="o">(</span><span class="nc">Action</span> <span class="n">act</span> <span class="o">:</span> <span class="n">list</span><span class="o">){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">time</span> <span class="o">&lt;=</span> <span class="n">act</span><span class="o">.</span><span class="na">startTime</span><span class="o">){</span>
+                <span class="n">time</span> <span class="o">=</span> <span class="n">act</span><span class="o">.</span><span class="na">endTime</span><span class="o">;</span>
+                <span class="n">ans</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">act</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">ans</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// 활동 정보를 가진 Class로 Comparable을 구현하여 종료 시간 기준 오름차순으로 정렬함.</span>
+<span class="kd">class</span> <span class="nc">Action</span> <span class="kd">implements</span> <span class="nc">Comparable</span><span class="o">&lt;</span><span class="nc">Action</span><span class="o">&gt;{</span>
+    <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">startTime</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">endTime</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Action</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">int</span> <span class="n">startTime</span><span class="o">,</span> <span class="kt">int</span> <span class="n">endTime</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">startTime</span> <span class="o">=</span> <span class="n">startTime</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">endTime</span> <span class="o">=</span> <span class="n">endTime</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compareTo</span><span class="o">(</span><span class="nc">Action</span> <span class="n">a</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">endTime</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="na">endTime</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><mark>결과</mark></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>D, C, A, F, 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="예시-2---거스름돈-문제">예시 2 - 거스름돈 문제</h3>
+
+<p>이번엔 그리디 알고리즘의 유명한 예시인 거스름돈 문제에 대해서 보도록 하자.</p>
+
+<p>이번엔 돈을 낸 뒤, 거스름돈을 최소 개수의 동전 지폐의 조합으로 주는 경우, 그 개수를 구하는 문제이다.</p>
+
+<p>예를 들어,</p>
+
+<ul>
+  <li>누군가 <strong><u>2,730원 어치의 물건을 사고 5,000원을 냈다고 가정</u></strong>하면 <strong><u>거스름돈은 총 2,270원</u></strong> 일 것이다.</li>
+  <li>이때, 지폐와 동전 종류가 아래와 같을 때, 최소의 개수로 거스름돈을 주는 경우는 어떤 경우일까?
+    <ul>
+      <li>지폐 및 동전의 종류: 1,000원, 500원, 100원, 50원, 10원</li>
+      <li>정답: 1,000원 2개 / 100원 2개 / 50원 1개 / 10원 2개</li>
+      <li>총 7개</li>
+    </ul>
+  </li>
+</ul>
+
+<p>이는 MSD(Most Significant Digit)으로 풀어낸 것으로 가장 중요한 단위를 먼저 계산하는 것을 의미한다. 위의 경우에서 자신보다 더 큰 지폐 혹은 동전으로 거스름 돈을 준다면 나머지는 무조건 더 적은 개수로 반환하는 것이 가능하기 때문에 이를 사용할 수 있다.</p>
+
+<p><br /></p>
+
+<p>따라서, <strong>이전의 선택과 관련없이</strong> <span style="color: red">현재 상태에서 최선의 결과를 선택하여 전체에서 최적의 결과를 낼 수 있게 된다.</span></p>
+
+<p>하지만 만약 거스름돈이 120원을 줘야하는 상황에서 거스름돈으로 줄 수 있는 동전의 종류가 다음과 같다면 어떨까?</p>
+
+<ul>
+  <li>동전의 종류: 50원, 40원, 10원</li>
+</ul>
+
+<p><br /></p>
+
+<p>이를 MSD 원리로 풀게 되면 <span style="color: blue">50원 2개 / 10원 2개</span>로 총 <span style="color: blue">4개</span>가 나오게 된다.</p>
+
+<p><br /></p>
+
+<p>그런데 사실 이 문제는 40원짜리 3개를 거슬러 주면 더 적은 개수로 거스름돈을 줄 수 있다.</p>
+
+<p>이러한 문제가 발생한 이유는 40원은 자신보다 큰 동전(50원)의 약수가 아니기 때문에 50원은 40원을 대체해 더 적은 숫자로 반환하는 경우라고 보장할 수 없게 된다.</p>
+
+<p><br /></p>
+
+<blockquote>
+  <p>이처럼, 그리디 알고리즘으로 해결할 수 있으려면 조건을 충분히 만족하는 지를 검증할 수 있어야 한다.</p>
+</blockquote>
+
+<h2 id="관련된-문제">관련된 문제</h2>
+
+<p><a href="https://www.acmicpc.net/problem/5585"><u>백준 5585번 거스름</u>돈</a></p>
+
+<p><a href="https://www.acmicpc.net/problem/11047"><u>백준 11047번 동전</u></a></p>
+
+<p><a href="https://www.acmicpc.net/problem/11000"><u>백준 11000번 강의실 배정</u></a></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#algorithm" class="page__taxonomy-item p-category" rel="tag">Algorithm</a><span class="sep">, </span>
+    
+      <a href="/tags/#data-structure" class="page__taxonomy-item p-category" rel="tag">Data structure</a><span class="sep">, </span>
+    
+      <a href="/tags/#greedy" class="page__taxonomy-item p-category" rel="tag">Greedy</a><span class="sep">, </span>
+    
+      <a href="/tags/#%EA%B7%B8%EB%A6%AC%EB%94%94-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98" class="page__taxonomy-item p-category" rel="tag">그리디 알고리즘</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#algorithm" class="page__taxonomy-item p-category" rel="tag">Algorithm</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a><span class="sep">, </span>
+    
+      <a href="/categories/#data-structures-and-algorithms-with-java" class="page__taxonomy-item p-category" rel="tag">Data structures and algorithms with Java</a><span class="sep">, </span>
+    
+      <a href="/categories/#greedy" class="page__taxonomy-item p-category" rel="tag">Greedy</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-02-22T00:00:00+09:00">2022-02-22</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BAlgorithm%5D+Greedy+Algorithm%28%EA%B7%B8%EB%A6%AC%EB%94%94+%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%29%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fgreedy%2FAlgorithm-Greedy-Algorithm%28%25EA%25B7%25B8%25EB%25A6%25AC%25EB%2594%2594-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598%29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fgreedy%2FAlgorithm-Greedy-Algorithm%28%25EA%25B7%25B8%25EB%25A6%25AC%25EB%2594%2594-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598%29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fgreedy%2FAlgorithm-Greedy-Algorithm%28%25EA%25B7%25B8%25EB%25A6%25AC%25EB%2594%2594-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598%29%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/algorithm/hash/Baekjoon-1920%EB%B2%88-%EC%88%98-%EC%B0%BE%EA%B8%B0/" class="pagination--pager" title="[Baekjoon] 1920번 수 찾기
+">이전</a>
+    
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/graph/Algorithm-Topological-Sorting(%EC%9C%84%EC%83%81-%EC%A0%95%EB%A0%AC)/" class="pagination--pager" title="[Algorithm] Topological Sorting(위상 정렬)
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/greedy/Algorithm-Greedy-Algorithm(%EA%B7%B8%EB%A6%AC%EB%94%94-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/greedy/[Algorithm] Greedy Algorithm(그리디 알고리즘)"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

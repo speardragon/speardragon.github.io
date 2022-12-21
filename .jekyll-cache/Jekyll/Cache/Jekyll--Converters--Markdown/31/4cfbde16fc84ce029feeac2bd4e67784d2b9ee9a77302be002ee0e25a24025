@@ -1,0 +1,831 @@
+I"8�<h2 id="what-is-directory">What is Directory</h2>
+
+<ul>
+  <li>A kind of <strong>file</strong> used to organize
+    <ul>
+      <li>regular, pipe, special files and other directory <strong>as directory entries</strong>
+        <ul>
+          <li>directory entry로 관리</li>
+        </ul>
+      </li>
+      <li>format imposed by Unix/Linux</li>
+    </ul>
+  </li>
+  <li><strong>file names</strong> are contained only in <strong>directory entries</strong>
+    <ul>
+      <li>i-노드에는 file 이름이 없음</li>
+    </ul>
+  </li>
+  <li>permissions
+    <ul>
+      <li>r: readable</li>
+      <li>w: writable</li>
+      <li>x: searchable
+        <ul>
+          <li>파일에서는 실행이 검색 가능으로 대치</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162351770-e763fafc-47a9-4f1e-aa28-b6274963c47f.png" alt="image" /></p>
+
+<p>directory entry -&gt; DIR 구조체</p>
+
+<p><br /></p>
+
+<h2 id="filedirectory-access-permissions">File/Directory access permissions</h2>
+
+<p><span style="color:red">시험 내용</span></p>
+
+<ul>
+  <li>Read
+    <ul>
+      <li>file: file data를 읽을 수 있는가?(copy 가능?)</li>
+      <li>Directory: file list를 read할 수 있는가?(ls 가능?)</li>
+    </ul>
+  </li>
+  <li>write
+    <ul>
+      <li>File: file data를 수정할 수 있는가?</li>
+      <li>Directory: directory의 file을 생성, 삭제할 수 있는가?
+        <ul>
+          <li><strong>Does not mean that we can write to the directory itself.</strong></li>
+          <li>write() 시스템콜을 이용해 디렉터리 엔트리 수정, 추가하는 것 <span style="color:red">불허</span></li>
+          <li>We <strong>need</strong> some <strong>APIs</strong> that can deal with directory itself.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>execute
+    <ul>
+      <li>File: file을 실행할 수 있는가?</li>
+      <li>Directory: 이동할 수 있는가?(cd 가능?)</li>
+    </ul>
+  </li>
+  <li>디렉토리에 <strong>write</strong> 권한과 <strong>execute</strong> 권한이 동시에 있어야 한다.
+    <ul>
+      <li>그 디렉토리에 파일을 생성할 수 있고</li>
+      <li>그 디렉토리의 파일을 삭제할 수 있다</li>
+    </ul>
+  </li>
+  <li><strong>삭제할 때는 그 파일에 대한 read권한은 없어도 됨</strong> <strong>(시험)</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="inode와-directory-관계">Inode와 directory 관계</h2>
+
+<p><span style="color:red">시험</span></p>
+
+<ul>
+  <li>/home/obama/test.c</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162352105-cbff72f0-2678-4835-95e1-008fcec01e5e.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>root directory의 i-노드를 찾아간다. -&gt; 2 (In Linux)</p>
+  </li>
+  <li>2번 노드를 찾아가면 그것이 루트 디렉토리의 i-노드 이다.
+    <ul>
+      <li>파일에서는 0번이었는데 디렉토리에서는 2번 노드</li>
+    </ul>
+  </li>
+  <li>i-노드에는 UID, GID, Type, 권한, <strong>블록 포인터</strong> 등이 들어있고 그 중에서 블록 포인터를 들어가 보면 그곳에 directory entry (file name + i-node)가 존재한다.</li>
+  <li>directory data block에는 접근을 원하는 파일의 i-노드 정보가 담겨 있고 그 i-노드를 찾아 들어가 그 안의 블록포인터 정보를 보고 이러한 일련의 과정을 반복하여 원하는 위치의 data block에 접근하는 것이다.</li>
+</ul>
+
+<p>위와 같은 일련의 과정을 반복하여 test.c 파일의 블록 포인터를 찾아갈 수 있게된다.</p>
+
+<p><br /></p>
+
+<h2 id="디렉터리-구현">디렉터리 구현</h2>
+
+<ul>
+  <li>디렉터리 내에는 무엇이 저장되어 있을까?
+    <ul>
+      <li>디렉터리 엔트리들(directory entry)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">dirent</span> <span class="p">{</span>
+    <span class="n">ino_t</span> <span class="n">d_ino</span><span class="p">;</span> <span class="c1">// i-노드 번호</span>
+    <span class="kt">char</span> <span class="n">d_name</span><span class="p">[</span><span class="n">NAME_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span> <span class="c1">//파일 이름, null-terminated</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162352280-8be44692-e58a-4b0e-a9d7-fec74d259f59.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="open-directory">Open directory</h2>
+
+<ul>
+  <li>opendir()
+    <ul>
+      <li>디렉터리 열기 위한 함수</li>
+      <li>DIR 포인터(열린 디렉터리를 가리키는 포인터) 리턴
+        <ul>
+          <li>즉, DIR 구조체의 시작 주소를 리턴</li>
+        </ul>
+      </li>
+      <li>DIR: 열린 디렉토리 정보를 저장하는 구조체
+        <ul>
+          <li>represents a <strong>directory stream</strong>(directory entry들이 나열된 것)</li>
+          <li>Defined in <dirent.h></dirent.h></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="cp">
+</span><span class="kt">DIR</span> <span class="o">*</span><span class="nf">opendir</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">);</span>
+<span class="c1">//path 디렉터리를 열고 성공하면 DIR 구조체 포인터를, 실패하면 NULL을 리턴</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="read-directory">Read directory</h2>
+
+<ul>
+  <li>readdir()
+    <ul>
+      <li>디렉터리 읽기 함수.</li>
+      <li>하나의 디렉터리 <strong>엔트리 정보 읽음</strong>, <mark>읽기권한 필요 </mark></li>
+      <li>On the first call, the first directory entry is read into dirent.</li>
+      <li>On completion, <strong>the directory pointer is moved</strong> onto the <strong>next entry</strong> in the directory.</li>
+      <li>If the end of the directory is reached, NULL is returned.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">dirent</span> <span class="o">*</span><span class="nf">readdir</span><span class="p">(</span><span class="kt">DIR</span> <span class="o">*</span><span class="n">dp</span><span class="p">);</span>
+ <span class="c1">//한 번에 디렉터리 엔트리를 하나씩 읽어서 리턴한다.</span>
+ <span class="c1">//디렉토리의 current file position은 읽을 때마다 읽은 디렉터리 엔트리 (구조체 dirent) 크기 만큼 이동한다</span>
+
+ <span class="c1">//Returns: pointer if OK, NULL at end of directory or error</span>
+</code></pre></div></div>
+
+<p>parameter: directory stream의 주소</p>
+
+<p>return: 특정 directory entry의 주소</p>
+
+<p><br /></p>
+
+<h2 id="close-directories">Close directories</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">closedir</span><span class="p">(</span><span class="kt">DIR</span> <span class="o">*</span><span class="n">dp</span><span class="p">);</span>
+<span class="c1">// Returns: 0 if OK, -1 on error </span>
+</code></pre></div></div>
+
+<ul>
+  <li>Open a directory / Close an open directory
+    <ul>
+      <li>DIR: represents a <strong>directory stream</strong>
+        <ul>
+          <li>Defined in <dirent.h></dirent.h></li>
+          <li>Similar to FILE type in the standard I/O library.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>closedir()
+    <ul>
+      <li>디렉토리 파일을 닫는다.</li>
+      <li>리턴 값: 성공하면 0, 실패하면 -1</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="rewind-directories">Rewind directories</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">rewinddir</span><span class="p">(</span><span class="kt">DIR</span> <span class="o">*</span><span class="n">dp</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>readdir() 시스템 콜로 directory entry를 읽다보면 directory stream을 가리키는 포인터가 계속 이동할 것인데 이 포인터를 다시 처음 위치로 되돌리고 싶을 때 사용하는 system call</li>
+  <li>If you want to read from the beginning of directory, use rewinddir.
+    <ul>
+      <li>처음부터 다시 읽고 싶을 때</li>
+      <li>디렉토리 파일의 current file position을 처음 (first entry of the directory) 으로 옮긴다</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>Q) 구조체 포인터를 쓰는 이유</p>
+
+<p>A) 포인터와 참조는 Call by Reference 용도로 많이 씁니다. 구조체도 별다를 것 없이 Call by Reference 로 값을 참조하는게 더 효율적인 경우, 혹은 필요한 경우에 포인터와 참조를 사용하는 것입니다.</p>
+
+<p>즉, 구조체의 멤버 변수의 수정을 요할 때 사용한다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="reading-directoriesexample">Reading directories(example)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="cp">
+</span>
+<span class="n">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">pathname</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span> 		<span class="c1">//문자 배열 선언</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> 		<span class="c1">//실행 파일 이름만 주어진 경우, input argument가 없는 경우</span>
+    	<span class="n">strcpy</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="err">“</span><span class="p">.</span><span class="err">”</span><span class="p">);</span> <span class="c1">//대상 경로를 현재 디렉토리로 할 것이다.</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="err">“</span><span class="n">Too</span> <span class="n">many</span> <span class="n">parameter</span><span class="err">…\</span><span class="n">n</span><span class="err">”</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span> <span class="c1">//argc = 2</span>
+    	<span class="n">strcpy</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">//인자를 pathname 변수에 저장</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">my_double_ls</span><span class="p">(</span><span class="n">pathname</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+    	<span class="n">printf</span><span class="p">(</span><span class="s">"Could not open the directory</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">my_double_ls</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">dirent</span> <span class="o">*</span><span class="n">d</span><span class="p">;</span>
+    <span class="kt">DIR</span> <span class="o">*</span><span class="n">dp</span><span class="p">;</span> <span class="c1">//디렉토리 스트림 포인터</span>
+    
+    <span class="k">if</span> <span class="p">((</span><span class="n">dp</span> <span class="o">=</span> <span class="n">opendir</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="c1">//opendir() 시스템콜 호출</span>
+    	<span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">d</span> <span class="o">=</span> <span class="n">readdir</span><span class="p">(</span><span class="n">dp</span><span class="p">))</span> <span class="p">{</span> <span class="c1">//readdir의 포인터는 자동을 이동한다.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">d_ino</span> <span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
+        	<span class="n">printf</span> <span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">rewinddir</span><span class="p">(</span><span class="n">dp</span><span class="p">);</span> <span class="c1">//첫 directory entry로 이동</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">d</span> <span class="o">=</span> <span class="n">readdir</span><span class="p">(</span><span class="n">dp</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">d_ino</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        	<span class="n">printf</span> <span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">closedir</span><span class="p">(</span><span class="n">dp</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>실행</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls </span>temp_dir/
+abc bookmark fred
+<span class="nv">$ </span>./a.out temp_dir/
+fred
+abc
+bookmark
+..
+<span class="nb">.</span>		//rewind 이후
+fred
+abc
+bookmark
+..
+<span class="nb">.</span>
+<span class="err">$</span>
+</code></pre></div></div>
+
+<p>출력에 나오는 ‘.’과 ‘..’은 각각 current directory와 parent directory를 의미한다.</p>
+
+<p><br /></p>
+
+<h2 id="reading-directories---list1c">Reading directories - list1.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="c1"> // primitive system data types</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="c1"> // file status</span><span class="cp">
+#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="c1"> // directory entries</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="cm">/* 디렉터리 내의 파일 이름들을 리스트한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">DIR</span> <span class="o">*</span><span class="n">dp</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">dir</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">dirent</span> <span class="o">*</span><span class="n">d</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">stat</span> <span class="n">st</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="n">BUFSIZ</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    	<span class="n">dir</span> <span class="o">=</span> <span class="s">"."</span><span class="p">;</span> <span class="c1">// 인자가 없는 경우 현재 디렉터리를 대상으로</span>
+    <span class="k">else</span> <span class="n">dir</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">dp</span> <span class="o">=</span> <span class="n">opendir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="c1">// 디렉터리 열기</span>
+    	<span class="n">perror</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">((</span><span class="n">d</span> <span class="o">=</span> <span class="n">readdir</span><span class="p">(</span><span class="n">dp</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="c1">// 각 디렉터리 엔트리에 대해</span>
+    	<span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span> <span class="c1">// 파일 이름 프린트</span>
+
+    <span class="n">closedir</span><span class="p">(</span><span class="n">dp</span><span class="p">);</span> 
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> 
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>list1
+ <span class="nb">.</span>
+ ..
+ file1
+ file2
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="파일-이름크기-출력">파일 이름/크기 출력</h2>
+
+<ul>
+  <li>디렉터리 내에 있는 파일 이름과 해당 파일의 크기(블록의 수)를 출력하도록 확장</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">((</span><span class="n">d</span> <span class="o">=</span> <span class="n">readdir</span><span class="p">(</span><span class="n">dp</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span> 		<span class="c1">//디렉터리 내의 각 파일</span>
+    <span class="n">sprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">"%s/%s"</span><span class="p">,</span> <span class="n">dir</span><span class="p">,</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span> <span class="c1">// 파일경로명 만들기 ;ex) home/etc</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">lstat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">st</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> 				<span class="c1">// 파일 상태 정보 st에 가져오기</span>
+    	<span class="n">perror</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%5d %s"</span><span class="p">,</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">st_blocks</span><span class="p">,</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span> <span class="c1">// 블록 수, 파일 이름 출력</span>
+    <span class="n">putchar</span><span class="p">(</span><span class="sc">'\n'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="st_mode-구조체">st_mode 구조체</h2>
+
+<ul>
+  <li>lstat() 시스템 호출
+    <ul>
+      <li>파일 타입과 사용권한 정보는 st-&gt;st_mode 필드에 함께 저장됨.</li>
+    </ul>
+  </li>
+  <li>st_mode 필드
+    <ul>
+      <li>4비트: 파일 타입</li>
+      <li>3비트: 특수용도</li>
+      <li>9비트: 사용권한
+        <ul>
+          <li>3비트: 파일 소유자의 사용권한</li>
+          <li>3비트: 그룹의 사용권한</li>
+          <li>3비트: 기타 사용자의 사용권한</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162353174-26f3ab1e-278d-4b11-9954-825cf99763b6.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="디렉터리-리스트-예">디렉터리 리스트: 예</h2>
+
+<ul>
+  <li>list2.c
+    <ul>
+      <li>ls –l 명령어처럼 파일의 <strong>모든 상태 정보</strong>를 프린트</li>
+    </ul>
+  </li>
+  <li>프로그램 구성(함수 구성)
+    <ul>
+      <li>main() : 메인 프로그램</li>
+      <li>printStat() : 파일 상태 정보 프린트</li>
+      <li>type() : 파일 타입 리턴</li>
+      <li>perm() : 파일 사용권한 리턴</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="list2c">list2.c</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;dirent.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;pwd.h&gt;</span><span class="c1"> // password file</span><span class="cp">
+#include</span> <span class="cpf">&lt;grp.h&gt;</span><span class="c1"> // group file (</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="kt">char</span> <span class="nf">type</span><span class="p">(</span><span class="n">mode_t</span><span class="p">);</span> <span class="c1">// 함수 원형</span>
+<span class="kt">char</span> <span class="o">*</span><span class="nf">perm</span><span class="p">(</span><span class="n">mode_t</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">printStat</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">struct</span> <span class="n">stat</span><span class="o">*</span><span class="p">);</span>
+
+<span class="cm">/* 디렉터리 내용을 자세히 리스트한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">DIR</span> <span class="o">*</span><span class="n">dp</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">dir</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">stat</span> <span class="n">st</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">dirent</span> <span class="o">*</span><span class="n">d</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="n">BUFSIZ</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span> <span class="mi">103</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    	<span class="n">dir</span> <span class="o">=</span> <span class="s">"."</span><span class="p">;</span> <span class="c1">//current directory를 대상으로 지정</span>
+    <span class="k">else</span> <span class="n">dir</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="c1">//인자값을 대상으로 지정</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">dp</span> <span class="o">=</span> <span class="n">opendir</span><span class="p">(</span><span class="n">dir</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="c1">// 디렉터리 열기</span>
+    	<span class="n">perror</span><span class="p">(</span><span class="n">dir</span><span class="p">);</span>
+
+    <span class="c1">//list1.c 로부터 수정된 부분!!!</span>
+    <span class="k">while</span> <span class="p">((</span><span class="n">d</span> <span class="o">=</span> <span class="n">readdir</span><span class="p">(</span><span class="n">dp</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 디렉터리의 각 파일에 대해</span>
+        <span class="n">sprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">"%s/%s"</span><span class="p">,</span> <span class="n">dir</span><span class="p">,</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">);</span> <span class="c1">// 파일경로명 만들기</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">lstat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">st</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 파일 상태 정보 가져오기</span>
+        	<span class="n">perror</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+        
+        <span class="n">printStat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">d_name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">st</span><span class="p">);</span> <span class="c1">// 상태 정보 출력</span>
+        <span class="n">putchar</span><span class="p">(</span><span class="sc">'\n'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">closedir</span><span class="p">(</span><span class="n">dp</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* 파일 상태 정보를 출력 */</span>
+<span class="kt">void</span> <span class="nf">printStat</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">file</span><span class="p">,</span> <span class="k">struct</span> <span class="n">stat</span> <span class="o">*</span><span class="n">st</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%5d "</span><span class="p">,</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">st_blocks</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%c%s "</span><span class="p">,</span> <span class="n">type</span><span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">st_mode</span><span class="p">),</span> <span class="n">perm</span><span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">st_mode</span><span class="p">));</span> <span class="c1">//type:d나 - 같은 , perm:rwx같은</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%3d "</span><span class="p">,</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">st_nlink</span><span class="p">);</span> <span class="c1">//링크의 갯수</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%s %s "</span><span class="p">,</span> <span class="n">getpwuid</span><span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">st_uid</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">,</span> <span class="n">getgrgid</span><span class="p">(</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">st_gid</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">gr_name</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%9d "</span><span class="p">,</span> <span class="n">st</span><span class="o">-&gt;</span><span class="n">st_size</span><span class="p">);</span> <span class="c1">//바이트 단위의 크기</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%.12s "</span><span class="p">,</span> <span class="n">ctime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">st</span><span class="o">-&gt;</span><span class="n">st_mtime</span><span class="p">)</span><span class="o">+</span><span class="mi">4</span><span class="p">);</span> <span class="c1">//요일 정보를 빼기 위해 +4를 하였음</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">file</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* 파일 타입을 리턴 by 매크로함수*/</span>
+<span class="kt">char</span> <span class="nf">type</span><span class="p">(</span><span class="n">mode_t</span> <span class="n">mode</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S_ISREG</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="sc">'-'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S_ISDIR</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="sc">'d'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S_ISCHR</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="sc">'c'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S_ISBLK</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="sc">'b'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S_ISLNK</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="sc">'l'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S_ISFIFO</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="sc">'p'</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">S_ISSOCK</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="sc">'s'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* 파일 사용권한을 리턴 */</span>
+<span class="kt">char</span><span class="o">*</span> <span class="nf">perm</span><span class="p">(</span><span class="n">mode_t</span> <span class="n">mode</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">static</span> <span class="kt">char</span> <span class="n">perms</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="s">"---------"</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">S_IRUSR</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">))</span>
+            <span class="n">perms</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'r'</span><span class="p">;</span>  <span class="c1">//binary to character</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">S_IWUSR</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">))</span>
+            <span class="n">perms</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'w'</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">S_IXUSR</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="p">))</span>
+            <span class="n">perms</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'x'</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+	<span class="k">return</span><span class="p">(</span><span class="n">perms</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="char-permmode_t-mode-함수">char *perm(mode_t mode) 함수</h3>
+
+<ul>
+  <li>
+    <p>소유자가 읽기 권한이 있는 경우</p>
+
+    <p>0000 000 100 000 000   -&gt; 4+3+9</p>
+  </li>
+  <li>
+    <p>S_IRUSR 00400</p>
+
+    <p>0000 000 100 000 000</p>
+  </li>
+  <li>
+    <p>mode &amp; (S_IRUSR » i*3)</p>
+    <ul>
+      <li>0000 000 100 000 000 -&gt; mode</li>
+      <li>0000 000 100 000 000 -&gt; S_IRUSR</li>
+      <li>0000 000 001 000 000 -&gt; S_IRUSR » i*3</li>
+    </ul>
+  </li>
+</ul>
+
+<p>그래서  서로 해당하는 mode끼리 and 연산을 통하면 해당 자리에는 1이 나오기 때문에 이를 이용한 것이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162353174-26f3ab1e-278d-4b11-9954-825cf99763b6.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="st_mode">st_mode</h3>
+
+<ul>
+  <li>permission bits/sys/stat.h</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define S_IRUSR 00400 </span><span class="cm">/* read permission: owner */</span><span class="cp">
+#define S_IWUSR 00200 </span><span class="cm">/* write permission: owner */</span><span class="cp">
+#define S_IXUSR 00100 </span><span class="cm">/* execute permission: owner */</span><span class="cp">
+</span>
+<span class="cp">#define S_IRGRP 00040 </span><span class="cm">/* read permission: group */</span><span class="cp">
+#define S_IWGRP 00020 </span><span class="cm">/* write permission: group */</span><span class="cp">
+#define S_IXGRP 00010 </span><span class="cm">/* execute permission: group */</span><span class="cp">
+</span>
+<span class="cp">#define S_IROTH 00004 </span><span class="cm">/* read permission: other */</span><span class="cp">
+#define S_IWOTH 00002 </span><span class="cm">/* write permission: other */</span><span class="cp">
+#define S_IXOTH 00001 </span><span class="cm">/* execute permission: other */</span><span class="cp">
+</span></code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$list2</span>
+8 drw-r--r-- 2 chang faculty 4096 4월 16일 13:37 <span class="nb">.</span>
+8 drw-r--r-- 2 chang faculty 4096 3월 26일 10:37 ..
+2 <span class="nt">-rw-r--r--</span> 2 chang faculty 2088 4월 16일 13:37 you.txt
+2 <span class="nt">-rw-r--r--</span> 2 chang faculty 2088 4월 16일 13:37 my.txt
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="getpwuid">getpwuid</h3>
+
+<p>get password user id</p>
+
+<ul>
+  <li>사용자 id와 일치하는 엔트리를 /etc/pswd 파일에서 찾아 그 엔트리에 대한 포인터를 반환</li>
+  <li>이 엔트리의 pw_name 필드가 사용자 이름을 가지고 있음</li>
+  <li>uid는 integer 값</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;pwd.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">passwd</span> <span class="o">*</span><span class="nf">getpwuid</span><span class="p">(</span><span class="n">uid_t</span> <span class="n">uid</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">passwd</span><span class="p">{</span> 			<span class="cm">/* pwd.h */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_name</span><span class="p">;</span> 		<span class="cm">/* Username. 결과적으로 이것을 가져오게 됨*/</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_passwd</span><span class="p">;</span> 	<span class="cm">/* Password. */</span>
+    <span class="n">uid_t</span> <span class="n">pw_uid</span><span class="p">;</span> 		<span class="cm">/* User ID. 이것을 확인하여 일치하면 이 구조체의 포인터를 반환*/</span>
+    <span class="n">gid_t</span> <span class="n">pw_gid</span><span class="p">;</span> 		<span class="cm">/* Group ID. */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_gecos</span><span class="p">;</span> 	<span class="cm">/* Real name. */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_dir</span><span class="p">;</span> 		<span class="cm">/* Home directory. */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_shell</span><span class="p">;</span> 	<span class="cm">/* Shell program. */</span>
+<span class="p">};</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="getgrgid">getgrgid</h3>
+
+<ul>
+  <li>getgrgid: 그룹 id로 그룹 정보 제공</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;grp.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">group</span> <span class="o">*</span><span class="nf">getgrgid</span><span class="p">(</span><span class="n">gid_t</span> <span class="n">gid</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="ctime">ctime()</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">utimbuf</span> <span class="p">{</span>
+    <span class="kt">time_t</span> <span class="n">actime</span><span class="p">;</span> <span class="cm">/* access time */</span>
+    <span class="kt">time_t</span> <span class="n">modtime</span><span class="p">;</span> <span class="cm">/* modification time */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>char *ctime(const time_t *timep);</li>
+  <li>ctime()
+    <ul>
+      <li>time_t 타입의 calendar time을 받아 “Wen Nov 18 18:53:20” 과 같은 형식의 문자열을 리턴</li>
+    </ul>
+  </li>
+  <li>calendar time은1970-1-1 00:00 부터 현재까지의 경과 시간을 초로 환산한 값</li>
+  <li>코드에서는 (요일+공백)을 생략하고 프린트하기위해 +4를 한 것임
+    <ul>
+      <li>ctime(&amp;st-&gt;st_mtime)+4);로 호출하였음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="디렉터리-만들기">디렉터리 만들기</h2>
+
+<ul>
+  <li>mkdir() 시스템 호출
+    <ul>
+      <li>path가 나타내는 새로운 디렉터리를 만든다.</li>
+      <li>”.”와 “..” 파일은 자동적으로 만들어진다.
+        <ul>
+          <li>”.”은 이 디렉토리 파일의 i-node를,</li>
+          <li>”..”은 부모 디렉토리 파일의 i-node를 가르킨다</li>
+        </ul>
+      </li>
+      <li>디렉터리 쓰기권한이 있어도 write 함수로 쓸 수는 없다.
+        <ul>
+          <li>mkdir, rmdir 를 사용해야 함(간접적으로)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">mkdir</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">);</span> <span class="c1">//위치, permission 정보</span>
+<span class="c1">//새로운 디렉터리 만들기에 성공하면 0, 실패하면 -1을 리턴한다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="디렉터리-삭제">디렉터리 삭제</h2>
+
+<ul>
+  <li>rmdir() 시스템 호출
+    <ul>
+      <li>path가 나타내는 디렉터리가 비어 있으면 삭제한다.</li>
+      <li>An empty directory is one that contains entries <strong>only</strong> for <strong>dot</strong> and <strong>dot-dot</strong>.
+        <ul>
+          <li>디렉토리 파일의 link count를 감소 시킴</li>
+          <li>link count가 0이 되면 삭제됨(0이 아니라는 것은 또 다른 entry가 존재한다는 것)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">rmdir</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">);</span>
+<span class="c1">//디렉터리가 비어 있으면 삭제한다. 성공하면 0, 실패하면 -1을 리턴</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="chdir-and-fchdir">chdir() and fchdir()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">chdir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">fchdir</span><span class="p">(</span><span class="kt">int</span> <span class="n">filedes</span><span class="p">);</span>
+<span class="c1">// Both return: 0 if OK, -1 on error </span>
+</code></pre></div></div>
+
+<ul>
+  <li>Change the current working directory. (like ‘cd’)
+    <ul>
+      <li>Specify the new current working directory either as a pathname or file descriptor</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>Example</strong></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h"</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">chdir</span><span class="p">(</span><span class="s">"/tmp"</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    	<span class="n">err_sys</span><span class="p">(</span><span class="s">"chdir failed"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"chdir to /tmp succeeded</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">$ gcc -o mycd chdir.c</code></li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li><mark>**실행**</mark>(<span style="color:red">이거 중요</span>)</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">pwd</span>
+/usr/lib
+<span class="nv">$ </span>mycd
+chdir to /tmp succeeded
+<span class="nv">$ </span><span class="nb">pwd</span>
+/usr/lib
+<span class="err">$</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Current working directory of shell didn’t change after mycd.</li>
+  <li>Each program is run in a separate process
+    <ul>
+      <li>-&gt; current working directory of shell is <strong>unaffected</strong> by chdir in mycd.</li>
+      <li><span style="color:blue">mycd를 실행시키면 별도의 mycd의 프로세스로 실행되기 때문에 shell command의 process에는 영향을 끼치지 않는 것이다!!!</span></li>
+      <li>실행 파일을 실행시키면 shell command와는 별도의 프로세스가 실행되어 그 안에서 디렉토리를 바꾸는 것이기 때문에 실제 shell command 상에서는 바뀌지 않는다.</li>
+    </ul>
+  </li>
+  <li>Note that “cd” is a <span style="color:red">built-in shell command!</span></li>
+</ul>
+
+<p>어찌 보면 당연한 건데 헷갈릴 수 있는 부분이다.</p>
+
+<p><br /></p>
+
+<h2 id="getcwd">getcwd()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="kt">char</span> <span class="o">*</span><span class="nf">getcwd</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">);</span>
+<span class="c1">//Returns: buf if OK, NULL on error</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Obtain the current working directory.
+    <ul>
+      <li>Copies an <strong>absolute pathname</strong> of the current working directory to the array pointed to by <em>buf</em> of length, <em>size</em>.</li>
+      <li>size must be large enough to accommodate
+        <ul>
+          <li>the absolute pathname + a terminating null byte(‘/0’)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>example</strong></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#define SIZE 200
+</span><span class="kt">void</span> <span class="nf">my_pwd</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">my_pwd</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">my_pwd</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">dirname</span><span class="p">[</span><span class="n">SIZE</span><span class="p">];</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">getcwd</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">)</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"getcwd error"</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">dirname</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>실행</strong></li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+/home/obama/test
+<span class="err">$</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="디렉터리-구현-1">디렉터리 구현</h2>
+
+<ul>
+  <li>그림 5.1의 파일 시스템 구조를 보자.
+    <ul>
+      <li>디렉터리를 위한 구조는 따로 없다.</li>
+    </ul>
+  </li>
+  <li>파일 시스템 내에서 디렉터리를 어떻게 구현할 수 있을까?
+    <ul>
+      <li>디렉터리도 일종의 파일로 다른 파일처럼 구현된다.</li>
+      <li>디렉터리도 다른 파일처럼 하나의 i-노드로 표현된다.</li>
+      <li>디렉터리의 내용은 디렉터리 엔트리(파일이름, i-노드 번호)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162354595-990e76ad-bdcb-42d7-96a6-4060347186c7.png" alt="image" /></p>
+
+<p>2번에는 /(root directory)의 정보가 담겨져 있다.</p>
+
+<p>그런 다음 4번 노드를 찾아가면 usr의 i-노드 정보가 있는데 블록포인터를 보고 202번 블락 번호의 내용으로 들어가 test.c의 i-노드 번호인 6번을 또 타고 들어가 204번 블럭을 찾아 들어간다.</p>
+
+<p>directory entry는 file일 수도 directory일 수도 있다.</p>
+
+:ET

@@ -1,0 +1,67 @@
+I"L<h1 id="chapter-4">Chapter 4</h1>
+
+<h2 id="computer-systems-abstraction">Computer systems Abstraction</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161673342-499c3aac-93a2-4210-8c59-95d18345ed8e.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>HDL을 할 때는 RTL level에서 함</p>
+  </li>
+  <li>
+    <p>RTL level: register에 담아놨다가 사용</p>
+  </li>
+  <li>
+    <p>HDL -&gt; gate level : synthesis</p>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161673627-d11b3b14-434a-451f-b566-a31f4c79547b.png" alt="image" /></p>
+
+<p>synthesizable한 것에 대해서 simulation.</p>
+
+<p>전체 feature는 simulation을 위한 것.</p>
+
+<p>우리가 관심을 가질 내용은 synthesis보다는 processor를 설계하는 것.(modeling simulation)</p>
+
+<p><br /></p>
+
+<h2 id="hdl-to-gates">HDL to Gates</h2>
+
+<ul>
+  <li>Simulation
+    <ul>
+      <li>Inputs applied to circuit</li>
+      <li>Outputs checked for correctness</li>
+      <li>Millions of dollars saved by debugging in simulation instead of hardware</li>
+    </ul>
+  </li>
+  <li>Synthesis
+    <ul>
+      <li>Transforms HDL code</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="blocking-vs-nonblocking-assignment">Blocking vs. Nonblocking Assignment</h2>
+
+<ul>
+  <li>&lt;= is nonblocking assignment
+    <ul>
+      <li>Occurs simultaneously with others</li>
+    </ul>
+  </li>
+  <li>= is blocking assignment
+    <ul>
+      <li>Occurs in order it appears in file</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="testbenches">Testbenches</h2>
+
+<ul>
+  <li>HDL that tests another module: device under test (dut)</li>
+</ul>
+
+:ET

@@ -1,0 +1,641 @@
+I"��<h1 id="linked-list-adts">Linked List ADTs</h1>
+
+<p>Linked List를 ADT로 만들어 볼 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="singly-linked-lists">Singly linked lists</h2>
+
+<p><mark>중요한 컨셉</mark></p>
+
+<ul>
+  <li>head node란 리스트에서 가장 앞에 있는 노드를 말하고 그 노드를 가리키는 포인터로 head라는 변수가 존재하는 것이다.
+    <ul>
+      <li>head 변수가 가리키고 있는 노드가 head!</li>
+    </ul>
+  </li>
+</ul>
+
+<p>singly linked list는 두 연속적인 node들 사이의 하나의 pointer만을 가진 리스트를 말한다. 단방향으로만 이동될 수 있다.</p>
+
+<ul>
+  <li>한 노드가 다른 노드를 가리킴</li>
+  <li>각 노드마다 데이터가 들어있음</li>
+  <li>포인터는 다음 노드를 가리킴</li>
+</ul>
+
+<p>즉, 리스트의 첫 번째 node에서부터 마지막 node로 갈 수 있지만 last node에서 first node로 갈 수는 없는 것이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161469856-2a2ee571-ba87-4c8c-9e25-699c91a70f05.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>Singly linekd list ADT includes the following operations:
+    <ul>
+      <li>insert()</li>
+      <li>delete()</li>
+      <li>traverse()</li>
+    </ul>
+  </li>
+</ul>
+
+<p>우리가 Linked List를 ADT로 만들면 위와 같은 함수를 사용하여 데이터 관리를 할 수 있다.</p>
+
+<p><br /></p>
+
+<h3 id="array-vs-linked-list">Array vs. Linked List</h3>
+
+<p><strong>Array</strong></p>
+
+<ul>
+  <li>read, write이 빠르다.(O(1))
+    <ul>
+      <li>index가 있기 때문에 random access가 가능하기 때문</li>
+    </ul>
+  </li>
+  <li>insert, delete가 느리다.
+    <ul>
+      <li>삽입 위치를 비워두고 한 칸씩 밀어야 되기 때문에</li>
+      <li>O(n)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>Linked List</strong></p>
+
+<ul>
+  <li>read, write할 때에 head node부터 시작하여 원하는 노드를 찾아야 하기 때문에 느리다.
+    <ul>
+      <li>O(n)</li>
+    </ul>
+  </li>
+  <li>insert, delete가 빠르다.(찾는 과정 미포함)
+    <ul>
+      <li>O(1)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="pointer-structures">Pointer structures</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>우리는 일반적으로 s가 <code class="language-plaintext highlighter-rouge">set type</code>의 변수라고 말할 것이다. 즉, s는 set이다. 그러나 이는 엄격히 따지면 맞지 않는 말이다.</p>
+
+<p>변수 s는 오히려 set에 대한 reference(a safe pointer)라고 말할 수 있다. set contructor(생성자)는 메모리 안 어딘가에 set을 하나 만들고나서 그 set이 만들어진 memory location을 return한다. 이것은 s에 저장되는 것이다. python은 우리로부터 이러한 complexity(복잡한 내부사정)를 숨긴다.</p>
+
+<p>우리는 이 때문에 s는 set이고 모든 것이 잘 수행된다고 안전하게 가정할 수 있는 것이다.</p>
+
+<p><br /></p>
+
+<p>pointer structure들에 대한 몇가지 이점들이 존재한다.</p>
+
+<ul>
+  <li>우선적으로, 그 이점은 sequential storage space(순차적인 저장 공간)을 요구하지 않는다는 것에 있다.</li>
+  <li>두 번째로는 작은 데서 시작할 수 있고 당신이 구조체에 더 많은 node를 추가하면서 임의로 확장할 수 있다.</li>
+</ul>
+
+<p>그러나 pointer가 가진 이러한 유연성은 cost로 다가온다. 우리는 주소를 저장하기 위한 추가적인 공간을 필요로하기 때문이다.</p>
+
+<p>예를 들어, 만약 integer 타입의 리스트를 가지고 있다면, 각 노드는 integer를 저장하면서 공간을 채울 것이다.</p>
+
+<ul>
+  <li>물론 next node에 대한 pointer를 저장하기 위한 추가적인 integer도 저장된다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="node-class">Node class</h2>
+
+<p>node의 단순한 형태은 next node와의 연결 하나만을 가지는 node이다.</p>
+
+<p>우리가 pointer에 대해 알고있듯이, string은 사실 노드에 저장되는 것이 아니라 오히려 실제 string에 대한 pointer가 있는 것이다.</p>
+
+<p>다음 diagram에 두 개의 node를 가진 example 을 생각해 보자.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161470940-7e5d3193-b2ce-4fa6-8c1b-77eb7ea3979d.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span> <span class="c1">#data는 local variable
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>  <span class="c1"># self.data는 instance variable
+</span>        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+        
+<span class="n">a</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">'eggs'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="singly-linked-list-class">Singly linked list class</h2>
+
+<p>list는 node와는 구별되는 컨셉이다. 우리는 우리의 list를 이해하기 위해 매우 단순한 class를 만드는 것으로부터 시작할 것이다.</p>
+
+<p>우리는 첫 번째 노드에서 첫 번째 노드에 대한 reference를 유지하는 constructor(생성자)부터 시작한다.(즉, 다음 코드에서 head)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SinglyLinkedList</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        
+<span class="n">words</span> <span class="o">=</span> <span class="n">SinglyLinkedList</span><span class="p">()</span> <span class="c1"># words.head -&gt; None
+</span></code></pre></div></div>
+
+<p>어떤 linked list에 접근하기 위해서는 그 리스트의 head node가 제일 중요하다. 모든 접근은 head node로 부터 시작한다.</p>
+
+<p><br /></p>
+
+<h3 id="insertprev_node-data">Insert(prev_node, data)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># insert as a non-head node
+</span>        <span class="k">if</span> <span class="n">prev_node</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span>
+            <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="c1"># insert as the head node (empty or not)
+</span>    	<span class="k">else</span><span class="p">:</span>
+        	<span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+        	<span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">node</span>
+        
+       
+<span class="n">words</span> <span class="o">=</span> <span class="n">SinglyLinkedList</span><span class="p">()</span> <span class="c1"># words.head -&gt; None
+</span><span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">"eggs"</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">,</span> <span class="s">"ham"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>노드 instance 생성</li>
+  <li>크기를 1 증가</li>
+  <li>중간에 삽입하는 경우
+    <ul>
+      <li>prev_node의 next pointer가 가리키는 값(None)을 node의 next pointer가 가리키게 한다.</li>
+      <li>prev_node의 next pointer가 생성한 node를 가리키게 한다.</li>
+    </ul>
+  </li>
+  <li>리스트의 맨 앞에 삽입하는 경우(빈 리스트이거나 맨 앞에 삽입)
+    <ul>
+      <li>prev_node가 None인 경우</li>
+      <li>node의 next pointer가 head(None)를 가리키게 하고</li>
+      <li>head가 node를 가리키게 한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161471913-3e5c39a1-a7a5-4ea6-bd2d-c081d1952d6b.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161471948-875094c6-6b5e-488a-9f42-61a93049d85f.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="traverse">Traverse()</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">traverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+        <span class="k">while</span> <span class="n">current</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">current</span><span class="p">.</span><span class="n">data</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="nb">next</span>
+            
+            
+<span class="n">words</span> <span class="o">=</span> <span class="n">SinglyLinkedList</span><span class="p">()</span> <span class="c1"># words.head -&gt; None
+</span><span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">"eggs"</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">,</span> <span class="s">"ham"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">.</span><span class="n">traverse</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161563411-6f33c3dc-7dca-4be4-8a15-a55f13e3cec2.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="function-returns-yield">Function returns: yield</h3>
+
+<p>yield는 return은 반환하면 해당 함수가 종료하기 때문에 종료되지 않게 하고 싶을 때 사용하는 키워드이다.</p>
+
+<ul>
+  <li><strong>yield</strong>는 요구에 의해 one by one으로(하나씩) 반환한다.
+    <ul>
+      <li>Generator functions</li>
+      <li>good for time and memory</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">simple_generator</span><span class="p">():</span>
+    	<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">simple_generator</span><span class="p">():</span>
+    	<span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>        
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="deleteprev_node">Delete(prev_node)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+        
+        <span class="c1">#delete a non-head node
+</span>        <span class="k">if</span> <span class="n">prev_node</span><span class="p">:</span>
+            <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span><span class="p">.</span><span class="nb">next</span>
+            
+        <span class="c1"># delete the head node
+</span>    	<span class="k">else</span><span class="p">:</span>
+        	<span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="nb">next</span>
+        
+        
+<span class="n">words</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161564028-758021ec-7931-41a6-aaf9-69f13aca8fec.png" alt="image" /></p>
+
+<p><br /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+        
+        <span class="c1">#delete a non-head node
+</span>        <span class="k">if</span> <span class="n">prev_node</span><span class="p">:</span>
+            <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span><span class="p">.</span><span class="nb">next</span>
+            
+        <span class="c1"># delete the head node
+</span>    	<span class="k">else</span><span class="p">:</span>
+        	<span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="nb">next</span>
+        
+        
+<span class="n">words</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161927621-5c6e6365-0468-4b54-9cc0-9c6d6092d7ca.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="전체-코드">전체 코드</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SinglyLinkedList</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="p">...</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># insert as a non-head node
+</span>        <span class="k">if</span> <span class="n">prev_node</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span>
+            <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="c1"># insert as the head node (empty or not)
+</span>    <span class="k">else</span><span class="p">:</span>
+        <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">node</span>
+        
+    <span class="k">def</span> <span class="nf">traverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+        <span class="k">while</span> <span class="n">current</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">current</span><span class="p">.</span><span class="n">data</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="nb">next</span>
+            
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+        
+        <span class="c1">#delete a non-head node
+</span>        <span class="k">if</span> <span class="n">prev_node</span><span class="p">:</span>
+            <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span><span class="p">.</span><span class="nb">next</span>
+            
+        <span class="c1"># delete the head node
+</span>    	<span class="k">else</span><span class="p">:</span>
+        	<span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="nb">next</span>
+        
+<span class="n">words</span> <span class="o">=</span> <span class="n">SinglyLinkedList</span><span class="p">()</span> <span class="c1"># words.head -&gt; None
+</span><span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">"eggs"</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">,</span> <span class="s">"ham"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">.</span><span class="n">traverse</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="doubly-linked-lists">Doubly linked lists</h2>
+
+<p>Doubly linked list는 양방향으로 traverse 될 수 있다. Doubly linked list에서 한 노드는 쉽게 그것의 이전 노드를 해당 노드의 track을 유지하는 변수를 가지지 않고도 필요에 의해 언제들지 참조할 수 있다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161928656-3666f92c-31f7-4bd1-9326-93d636610a5a.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">next</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">prev</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="nb">next</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="circular-lists">Circular lists</h2>
+
+<p>맨 마지막 노드가 NULL을 가리키는 것이 아니라 맨 처음 노드를 가리킴.</p>
+
+<ul>
+  <li>Circular singly linked list</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161928942-6610dd5c-35ed-4de4-8c00-0ea95af5e308.png" alt="image" /></p>
+
+<ul>
+  <li>Circular doubly linked list</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161928968-fe595dfe-60a5-4f99-b1af-16f6f43b2150.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="insertprev_node-data-1">insert(prev_node, data)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CircularList</span><span class="p">:</span> 	<span class="c1">#Circular Singly Linked List
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">None</span>
+		<span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1">#list is not empty
+</span>        <span class="k">if</span> <span class="n">prev_node</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span>
+            <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="c1">#list is empty
+</span>    	<span class="k">else</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span> <span class="c1"># 자기 자신을 가리킴
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">node</span>
+            
+<span class="n">words</span> <span class="o">=</span> <span class="n">CircularList</span><span class="p">()</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">"eggs"</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">,</span> <span class="s">"ham"</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">,</span> <span class="s">"spam"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<p><strong>SLL vs. CSLL</strong></p>
+
+<p>SLL: 새로운 노드를 head node 다음에 삽입하고 싶으면 prev_node로 None을 전달하면 된다.</p>
+
+<p>CSLL: 노드가 원형 순환구조로 이어져 있기 때문에 head 다음에 삽입하는 것이나 중간에 삽입하는 것이나 똑같지만 prev_node 인자로 None을 넘긴다는 것은 해당 list 가 비어있음을 의미한다.</p>
+
+<p><br /></p>
+
+<h3 id="traverse-1">Traverse()</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">traverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">current</span><span class="p">.</span><span class="n">data</span>
+        <span class="k">if</span> <span class="n">current</span><span class="p">.</span><span class="nb">next</span> <span class="o">==</span> <span class="bp">self</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="nb">next</span>
+
+           
+<span class="n">words</span> <span class="o">=</span> <span class="n">CircularList</span><span class="p">()</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">"eggs"</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">,</span> <span class="s">"ham"</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">,</span> <span class="s">"spam"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">.</span><span class="n">traverse</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="deleteprev_node-1">Delete(prev_node)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev_node</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+    
+    <span class="c1"># delete a non-head node
+</span>    <span class="k">if</span> <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">!=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+    	<span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span><span class="p">.</span><span class="nb">next</span>
+        
+    <span class="c1"># delete the head node
+</span>	<span class="k">else</span><span class="p">:</span>
+    	<span class="c1"># multiple nodes in list
+</span>        <span class="k">if</span> <span class="n">prev_node</span> <span class="o">!=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="nb">next</span>
+            <span class="n">prev_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span>
+        <span class="c1"># only one node in list
+</span>    	<span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">None</span>
+        
+        
+<span class="n">words</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">head</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">.</span><span class="n">traverse</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>head node를 delete하는 경우에도 리스트에 노드가 하나만 있는 경우와 여러개가 있는 경우로 나뉜다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161936211-aa54b9ac-ebd9-4b79-87c5-8ddb0c0a079f.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161936294-e1e4337a-b7be-4fdb-8e71-78bf8941da70.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>백준 1158번 요세푸스 문제
+    <ul>
+      <li><a href="https://www.acmicpc.net/problem/1158">백준 1158번 요세푸스 문제</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161932271-10fc618a-eeb0-4709-a8de-de8a1f0fc9a6.png" alt="image" /></p>
+
+<p>n,k 인 경우에 노드를 하나씩 삭제해 가기 때문에 k-1만큼씩 prev_node를 지정한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+
+<span class="n">jo</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">jo</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="s">'&lt;'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">index</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">%=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jo</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">', '</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jo</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'&gt;'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="circular-list-using-python-list">Circular List using Python List</h2>
+
+<h3 id="python-list-methods">Python List Methods</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s">'orange'</span><span class="p">,</span> <span class="s">'apple'</span><span class="p">,</span> <span class="s">'banana'</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fruits</span><span class="p">))</span>
+<span class="c1"># 3
+</span>
+<span class="n">fruits</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'kiwi'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+<span class="c1"># ['orange', 'apple', 'banana', 'kiwi']
+</span>
+<span class="n">fruits</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'pear'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+<span class="c1"># ['orange', 'apple', 'pear', 'banana', 'kiwi']
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="c1"># 'apple'
+</span><span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">.</span><span class="n">pop</span><span class="p">())</span>
+<span class="c1"># 'kiwi'
+</span><span class="n">fruits</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="s">'banana'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+<span class="c1"># ['orange', 'pear']
+</span></code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="circular-list-increasing-the-index">Circular list: Increasing the index</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s">'orange'</span><span class="p">,</span> <span class="s">'apple'</span><span class="p">,</span> <span class="s">'pear'</span><span class="p">,</span> <span class="s">'banana'</span><span class="p">,</span> <span class="s">'kiwi'</span><span class="p">]</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+<span class="c1"># 'banana'
+</span>
+<span class="n">index</span> <span class="o">+=</span> <span class="mi">2</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+<span class="c1"># IndexError: list index out of range
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">index</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">index</span> <span class="o">+=</span> <span class="mi">2</span>
+<span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fruits</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+<span class="c1"># 'orange'
+</span></code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="circular-list-pop">Circular list: pop</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s">'orange'</span><span class="p">,</span> <span class="s">'apple'</span><span class="p">,</span> <span class="s">'pear'</span><span class="p">,</span> <span class="s">'banana'</span><span class="p">,</span> <span class="s">'kiwi'</span><span class="p">]</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">fruits</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<span class="c1"># 'banana'
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruit</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+<span class="c1"># 'kiwi'
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+<span class="c1"># 'kiwi'
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+<span class="c1"># IndexError: list index out of range
+</span>
+<span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s">'orange'</span><span class="p">,</span> <span class="s">'apple'</span><span class="p">,</span> <span class="s">'pear'</span><span class="p">,</span> <span class="s">'kiwi'</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+<span class="c1"># 'kiwi'
+</span>
+<span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">fruits</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="n">fruits</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+<span class="c1"># 'orange'
+</span></code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="example">Example</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">words</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'eggs'</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'spam'</span><span class="p">)</span>
+<span class="n">words</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'ham'</span><span class="p">)</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">%=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+            
+    <span class="k">print</span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">):</span> <span class="c1">#can be skipped
+</span>            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>		<span class="c1">#            
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ham
+eggs
+spam
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="요세푸스-문제">요세푸스 문제</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+
+<span class="n">jo</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">jo</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="s">'&lt;'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">index</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">%=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jo</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">', '</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jo</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'&gt;'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+
+<span class="n">jo</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">jo</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="s">'&lt;'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="mi">2</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="n">jo</span><span class="p">.</span><span class="n">pop</span><span class="p">())</span>
+</code></pre></div></div>
+
+:ET

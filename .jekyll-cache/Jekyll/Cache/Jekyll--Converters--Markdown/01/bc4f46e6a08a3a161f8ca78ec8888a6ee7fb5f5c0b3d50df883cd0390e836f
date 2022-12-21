@@ -1,0 +1,205 @@
+I"18<h1 id="수-찾기">수 찾기</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">시간 제한</th>
+      <th style="text-align: left">메모리 제한</th>
+      <th style="text-align: left">제출</th>
+      <th style="text-align: left">정답</th>
+      <th style="text-align: left">맞힌 사람</th>
+      <th style="text-align: left">정답 비율</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1 초</td>
+      <td style="text-align: left">128 MB</td>
+      <td style="text-align: left">144337</td>
+      <td style="text-align: left">42361</td>
+      <td style="text-align: left">28072</td>
+      <td style="text-align: left">29.884%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="문제">문제</h2>
+
+<p>N개의 정수 A[1], A[2], …, A[N]이 주어져 있을 때, 이 안에 X라는 정수가 존재하는지 알아내는 프로그램을 작성하시오.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>첫째 줄에 자연수 N(1 ≤ N ≤ 100,000)이 주어진다. 다음 줄에는 N개의 정수 A[1], A[2], …, A[N]이 주어진다. 다음 줄에는 M(1 ≤ M ≤ 100,000)이 주어진다. 다음 줄에는 M개의 수들이 주어지는데, 이 수들이 A안에 존재하는지 알아내면 된다. 모든 정수의 범위는 -231 보다 크거나 같고 231보다 작다.</p>
+
+<h2 id="출력">출력</h2>
+
+<p>M개의 줄에 답을 출력한다. 존재하면 1을, 존재하지 않으면 0을 출력한다.</p>
+
+<h2 id="예제-입력-1-복사">예제 입력 1 복사</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5
+4 1 5 2 3
+5
+1 3 7 9 5
+</code></pre></div></div>
+
+<h2 id="예제-출력-1-복사">예제 출력 1 복사</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1
+1
+0
+0
+1
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="문제-풀이">문제 풀이</h1>
+
+<ol>
+  <li>for문과 if문으로 그냥 푸는 코드</li>
+  <li>linear search를 하는 코드</li>
+  <li>binary search를 하는 코드</li>
+  <li>bisect를 사용한 코드</li>
+</ol>
+
+<p>이 때 중요한 점은 binary search의 경우 sort를 해야만 하기 때문에 이 과정을 추가하는데 이는 시간 복잡도에 영향을 미치지 않는다.</p>
+
+<p><br /></p>
+
+<h4 id="for문과-if문의-조합으로-탐색-시간-초과">for문과 if문의 조합으로 탐색: 시간 초과</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">bisect</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="n">card</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">card</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="n">M</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">target</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">target</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">card</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>for문과 if문의 조합으로 탐색하게 되면 시간 초과가 발생하게 된다.</p>
+
+<p>따라서 searching 알고리즘 중에 한 방법을 사용하여 풀어야 한다.</p>
+
+<p><br /></p>
+
+<h4 id="linear-search를-하는-코드-시간-초과">linear search를 하는 코드: 시간 초과</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 1. Linear Search
+</span><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">card</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">card_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">card</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">card_size</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="n">card</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+            <span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span>
+    <span class="k">print</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span>
+
+
+
+<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_card</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_target</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_target</span><span class="p">:</span>
+    <span class="n">search</span><span class="p">(</span><span class="n">_card</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>linear search는 사실상 시간 복잡도 측면에서 유리한 점이 없기 때문에 유사하기 앞 코드와 별 다를 바 없이 시간 초과가 발생한다.</p>
+
+<p><br /></p>
+
+<h4 id="binary-search를-하는-코드">binary search를 하는 코드</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 2. Binary search
+</span><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">binarysearch</span><span class="p">(</span><span class="n">card</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">card</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">while</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">:</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="k">if</span> <span class="n">target</span> <span class="o">&lt;</span> <span class="n">card</span><span class="p">[</span><span class="n">mid</span><span class="p">]:</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">target</span> <span class="o">&gt;</span> <span class="n">card</span><span class="p">[</span><span class="n">mid</span><span class="p">]:</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span>
+
+
+
+<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_card</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">_card</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_target</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_target</span><span class="p">:</span>
+    <span class="n">binarysearch</span><span class="p">(</span><span class="n">_card</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>이진 탐색을 사용하여 푼 결과 시간 초과가 발생하지 않고 풀 수 있었다.</p>
+
+<p><br /></p>
+
+<h4 id="bisect-라이브러리를-사용한-코드">bisect 라이브러리를 사용한 코드</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 3. Using bisect module
+</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">bisect</span>
+
+
+<span class="k">def</span> <span class="nf">bisectsearch</span><span class="p">(</span><span class="n">card</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">.</span><span class="n">bisect_left</span><span class="p">(</span><span class="n">card</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">card</span><span class="p">)</span> <span class="ow">and</span> <span class="n">card</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span>
+
+
+
+<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_card</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">_card</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_target</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_target</span><span class="p">:</span>
+    <span class="n">bisectsearch</span><span class="p">(</span><span class="n">_card</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>또한 파이썬에는 bisect라는 모듈이 존재하는데 이를 사용하여 푼 결과 binary search 보다 더 빠른 시간 안에 풀 수 있었다.</p>
+
+<p>이렇듯 이미 존재하는 모듈을 활용하여 풀면 더 시간 단축을 할 수 있으므로 여러 모듈을 적재적소에 사용할 수 있는 것이 중요하다.</p>
+
+:ET

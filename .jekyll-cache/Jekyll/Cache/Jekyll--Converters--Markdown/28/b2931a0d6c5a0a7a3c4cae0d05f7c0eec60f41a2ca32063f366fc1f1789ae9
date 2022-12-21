@@ -1,0 +1,494 @@
+I"�L<h1 id="제-3장-c-프로그래밍-환경">제 3장 C 프로그래밍 환경</h1>
+
+<h2 id="31-컴파일러">3.1 컴파일러</h2>
+
+<h3 id="gcc-컴파일러">gcc 컴파일러</h3>
+
+<ul>
+  <li>gcc(GNU cc) 컴파일러 / 상업용 C 컴파일러(cc)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">$ gcc [-옵션] 파일</code>  / <code class="language-plaintext highlighter-rouge">\$cc [-옵션] 파일</code></li>
+    </ul>
+  </li>
+  <li>GNU(GNU is Not Unix) 프로젝트의 freeware 컴파일러. 본래 C 언어용 컴파일러로 시작하였으므로 GNU C Compiler의 약자였으나 2.9 버전에 이르러 C뿐만이 아니라  Objective C, Pascal, Ada와 같은 언어도 지원. <strong>G</strong>NU <strong>C</strong>ompiler <strong>C</strong>ollection으로 개명</li>
+  <li>컴파일<strong>(시험)</strong>
+    <ul>
+      <li>$ gcc long.c</li>
+      <li>$ a.out             //실행 파일 생성</li>
+    </ul>
+  </li>
+  <li>-c 옵션
+    <ul>
+      <li>$ gcc - c long.c           //object file 생성</li>
+    </ul>
+  </li>
+  <li>-o 옵션
+    <ul>
+      <li>$ gcc -o long long.o     //실행 파일 이름 지정</li>
+      <li>혹은</li>
+      <li>$ gcc -o long long.c</li>
+      <li>$ long       // 실행 파일</li>
+    </ul>
+  </li>
+  <li>-O 옵션
+    <ul>
+      <li>$ gcc -O -o long long.c       //optimized compile</li>
+      <li>compiler가 판단하여 기계어로 번역할 때 최적화 된 실행을 제공</li>
+    </ul>
+  </li>
+  <li>-S 옵션
+    <ul>
+      <li>$ gcc -S long.c      //<strong>assembly 파일</strong>의 long.s 생성</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="단일-모듈-프로그램-longc">단일 모듈 프로그램: long.c</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#define MAXLINE 100
+</span>
+<span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="kt">char</span> <span class="n">from</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">to</span><span class="p">[]);</span>
+<span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span> <span class="c1">// 입력 줄</span>
+<span class="kt">char</span> <span class="n">longest</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span> <span class="c1">// 가장 긴 줄</span>
+<span class="cm">/*입력 줄 가운데 가장 긴 줄 프린트 */</span>
+
+<span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+     <span class="kt">int</span> <span class="n">max</span><span class="p">;</span>
+     <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    
+     <span class="k">while</span> <span class="p">(</span><span class="n">gets</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">len</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">max</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+             <span class="n">copy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">longest</span><span class="p">);</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 입력 줄이 있었다면</span>
+     	<span class="n">printf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">longest</span><span class="p">);</span>
+    
+     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* copy: from을 to에 복사; to가 충분히 크
+다고 가정*/</span>
+<span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="kt">char</span> <span class="n">from</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">to</span><span class="p">[])</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="k">while</span> <span class="p">((</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">from</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">)</span>
+     	<span class="o">++</span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="단일-모듈-프로그램">단일 모듈 프로그램</h3>
+
+<ul>
+  <li>한 코드안에 전부 작성하는 프로그램(단일 모듈 프로그램)</li>
+  <li>코드의 재사용(reuse)이 어렵다.</li>
+  <li>여러 사람이 참여하는 프로그래밍이 어렵다.</li>
+  <li>예를 들어, 다른 프로그램에서 copy 함수를 재사용 하기 힘들다.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="다중-모듈-프로그램">다중 모듈 프로그램</h3>
+
+<ul>
+  <li>다중 모듈 프로그램
+    <ul>
+      <li>여러 개의 .c 파일들로 이루어진 프로그램</li>
+      <li>일반적으로 복잡하며 대단위 프로그램인 경우에 적합</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="다중-모듈-프로그램의-예"><strong>다중 모듈 프로그램의 예</strong></h3>
+
+<ul>
+  <li>main 프로그램과 copy 함수를 분리하여 별도 파일로 작성
+    <ul>
+      <li>main.c</li>
+      <li>copy.c</li>
+      <li>copy.h  //함수의 프로토타입을 포함하는 헤더 파일</li>
+    </ul>
+  </li>
+  <li>컴파일
+    <ul>
+      <li>$ gcc -c main.c</li>
+      <li>$ gcc -c copy.c</li>
+      <li>$ gcc -o main main.o copy.o</li>
+      <li>혹은</li>
+      <li>$ gcc -o main main.c copy.c</li>
+      <li>헤더 파일은 안 넣어도 되는 구나?!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="mainc">main.c</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"copy.h"</span><span class="c1"> //copy 함수의 원형(프로토타입 선언)</span><span class="cp">
+</span>
+<span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span> <span class="c1">// 입력 줄</span>
+<span class="kt">char</span> <span class="n">longest</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span> <span class="c1">// 가장 긴 줄</span>
+<span class="cm">/*입력 줄 가운데 가장 긴 줄 프린트 */</span>
+
+<span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+     <span class="kt">int</span> <span class="n">max</span><span class="p">;</span>
+     <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="k">while</span> <span class="p">(</span><span class="n">gets</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+         <span class="n">len</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">max</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+             <span class="n">copy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">longest</span><span class="p">);</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 입력 줄이 있었다면</span>
+     	<span class="n">printf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">longest</span><span class="p">);</span>
+     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="copyc">copy.c</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"copy.h"</span><span class="cp">
+</span><span class="cm">/* copy: from을 to에 복사; to가 충분
+히 크다고 가정*/</span>
+<span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="kt">char</span> <span class="n">from</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">to</span><span class="p">[])</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="k">while</span> <span class="p">((</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">from</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">)</span>
+     	<span class="o">++</span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="copyh">copy.h</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define MAXLINE 100
+</span><span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="kt">char</span> <span class="n">from</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">to</span><span class="p">[]);</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="32-make-시스템">3.2 make 시스템</h2>
+
+<h3 id="make-시스템">make 시스템</h3>
+
+<ul>
+  <li>make 시스템
+    <ul>
+      <li>대규모 프로그램의 경우에는 헤더, 소스 파일, 목적 파일, 실행 파일의 모든 관계를 기억하고 <strong>체계적으로 관리</strong>하는 것이 필요</li>
+      <li>make 시스템을 이용하여 효과적으로 작업</li>
+    </ul>
+  </li>
+  <li>Makefile
+    <ul>
+      <li>실행 파일을 만들기 위해 필요한 파일들과 만드는 방법을 기술</li>
+      <li>make 시스템은 파일의 상호 의존 관계를 파악하여 실행 파일을 쉽게 다시 만듦.</li>
+    </ul>
+  </li>
+  <li>$ make [-f 메이크파일]
+    <ul>
+      <li>옵션이 없으면 그냥 Makefile(default) 혹은 makefile을 사용</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="메이크파일의-구성">메이크파일의 구성</h3>
+
+<ul>
+  <li>Makefile의 구성 형식
+    <ul>
+      <li>대상리스트
+        <ul>
+          <li>의존 리스트: 뭐가 컴파일 되기 위해선 뭐가 있어야 하고 (이런 것들)</li>
+          <li>명령 리스트: 명령어 리스트</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>예: Makefile</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>main:main.o copy.o
+	gcc -o main main.o copy.o
+main.o: main.c copy.h
+	gcc -c main.c
+copy.o: copy.c
+	gcc -c copy.c
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>make 실행<strong>(시험)</strong></p>
+
+    <p>$ make 혹은 $ make main</p>
+
+    <p>gcc -c main.c</p>
+
+    <p>gcc -c copy.c</p>
+
+    <p>gcc -o main main.o copy.o</p>
+  </li>
+  <li>
+    <p>copy.c 파일이 변경된 후</p>
+
+    <p>$ make</p>
+
+    <p>gcc -c copy.c</p>
+
+    <p>gcc -o main main.o copy.o</p>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158593750-3e6d9c44-4c01-4319-88de-ee17aa4e20ee.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="33-디버거">3.3 디버거</h2>
+
+<h3 id="gdb">gdb</h3>
+
+<ul>
+  <li>가장 대표적인 디버거
+    <ul>
+      <li>GNU debugger(gdb)</li>
+    </ul>
+  </li>
+  <li>gdb 주요 기능
+    <ul>
+      <li><strong>정지점</strong>(breakpoint) 설정</li>
+      <li>한 줄씩 실행</li>
+      <li>변수 접근 및 수정</li>
+      <li>함수 탐색</li>
+      <li>추적(tracing)</li>
+    </ul>
+  </li>
+  <li>gdb 사용을 위한 컴파일
+    <ul>
+      <li><strong>-g 옵션을 이용하여 컴파일</strong>
+        <ul>
+          <li>$ gcc - g -o longest longest.c</li>
+        </ul>
+      </li>
+      <li>다중 모듈 프로그램
+        <ul>
+          <li>$ gcc -g -o main main.c copy.c</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>gdb 실행
+    <ul>
+      <li>$ gdb [실행파일]</li>
+      <li>$ gdb main</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="gdb-기능">gdb 기능</h3>
+
+<ul>
+  <li>소스보기 : l(ist)
+    <ul>
+      <li>l [줄번호] : 지정된 줄을 프린트</li>
+      <li>l [파일명]:[함수명] : 지정된 함수를 프린트</li>
+      <li>set listsize n : 출력되는 줄의 수를 n으로 변경</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(gdb) l copy
+#include &lt;stdio.h&gt;
+
+/* copy: copy 'from' into 'to'; assume to is big enough */
+void copy(char from[], char to[])
+{
+    int i;
+    
+    i = 0;
+    while ((to[i] = from[i]) != '\0')
+        ++i:
+}
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="gdb-기능-1">gdb 기능</h3>
+
+<ul>
+  <li>
+    <p>정지점 : b(reak), clear, d(elete)</p>
+
+    <p>b [파일:]함수 				  파일의 함수 시작 부분에 정지점 설정</p>
+
+    <p>b n 								   n번 줄에 정지점을 설정</p>
+
+    <p>b +n 								현재 줄에서 n개 줄 이후에 정지점 설정</p>
+
+    <p>b -n 								 현재 줄에서 n개 줄 이전에 정지점 설정</p>
+
+    <p>info b 							  현재 설정된 정지점을 출력</p>
+
+    <p>clear 줄번호 				   해당 정지점을 삭제</p>
+
+    <p>d 									  모든 정지점을 삭제</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>(gdb) b copy</strong></p>
+
+<p>Breakpoint 1 at 0x804842a: file copy.c, line 9.</p>
+
+<p><br /></p>
+
+<p><strong>(gdb) info b</strong></p>
+
+<p>Num Type Disp Enb Address What</p>
+
+<p>1 breakpoint keep y 0x0804842a in copy at copy.c:9</p>
+
+<p><br /></p>
+
+<h3 id="gdb-기능-2">gdb 기능</h3>
+
+<ul>
+  <li>프로그램 수행
+    <ul>
+      <li>r(un)                   인수 명령 줄 인수를 받아 프로그램 수행</li>
+      <li>k(ill)                     프로그램 수행 강제 종료</li>
+      <li>n(ext)                  멈춘 지점에서 다음 줄을 수행하고 멈춤</li>
+      <li>s(tep)                  n과 같은 기능 함수 호출 시 함수 내부로 진입</li>
+      <li>c(ontinue)          정지점을 만날 때 까지 계속 수행</li>
+      <li>u                          반복문에서 빠져나옴</li>
+      <li>finish                   현재 수행하는 함수의 끝으로 이동</li>
+      <li>return                 현재 수행 중인 함수를 빠져나옴</li>
+      <li>quit                     종료</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ (gdb) r
+Starting program: /home/chang/바탕화면/src/main
+Merry X-mas !
+Breakpoint 1, copy (from=0x8049b60 "Merry X-mas !", to=0x8049760 "") at copy.c:98 i = 0;
+</code></pre></div></div>
+
+<p><br /></p>
+
+<ul>
+  <li>변수 값 프린트: p(rint)
+    <ul>
+      <li>p [변수명] 해당 변수 값 프린트</li>
+      <li>p 파일명::[변수명] 특정 파일의 전역변수 프린트</li>
+      <li>p [함수명]::[변수명] 특정 함수의 정적 변수 프린트.</li>
+      <li>info locals 현재 상태의 지역변수 리스트</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>(gdb) p from</strong>
+$1 = 0x8049b60 “Merry X-mas !”</p>
+
+<p><strong>(gdb) n</strong> 
+9 while ((to[i] = from[i]) != ‘\0’)</p>
+
+<p><strong>(gdb) n</strong> 
+10 ++i;</p>
+
+<p><strong>(gdb) p to</strong> 
+$2 = 0x8049760 “M”</p>
+
+<p><strong>(gdb) c</strong>
+Continuing
+Happy New Year !
+Breakpoint 1, copy
+	(from=0x8049b60 “Happy New Year !”, to=0x8049760 “Merry X-mas !”) at copy.c:9
+9 i = 0;</p>
+
+<p><strong>(gdb) p from</strong>
+$3 = 0x8049b60 “Happy New Year !”</p>
+
+<p><strong>(gdb) n</strong>
+10 while ((to[i] = from[i])!=’\0’)</p>
+
+<p><strong>(gdb) n</strong>
+11 ++i;</p>
+
+<p><strong>(gdb) p to</strong>
+$4 = 0x8049760 “Herry X-mas !”   // Happy….에서 첫 번째 자리에서 break가 걸려 첫 번째 문자에 H가 들어갔다.</p>
+
+<p><strong>(gdb) c</strong>
+Continuing
+Ctrl-D 입력
+Happy New Year !  // 더 긴 줄 프린트
+Program exited normally.</p>
+
+<p><br /></p>
+
+<h3 id="ddddata-display-debugger">DDD(Data Display Debugger)</h3>
+
+<ul>
+  <li>gdb를 위한 그래픽 사용자 인터페이스
+    <ul>
+      <li><a href="http://www.gnu.org/software/ ddd">http://www.gnu.org/software/ddd</a></li>
+    </ul>
+  </li>
+  <li>정지점을 설정
+    <ul>
+      <li>소스코드의 원하는 위치에 커서를 이동하고 상단의 Break 버튼</li>
+      <li>Next나 Step 같은 명령어 버튼을 이용하여 한 줄씩 실행</li>
+      <li>하단에는 gdb 명령어 입력 창</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158597693-df7cfd61-1db4-4353-9a50-f1d7b5da5903.png" alt="image" /></p>
+
+<h2 id="34-이클립스-통합개발환경">3.4 이클립스 통합개발환경</h2>
+
+<h3 id="이클립스eclipse">이클립스(Eclipse)</h3>
+
+<ul>
+  <li>통합 개발 환경
+    <ul>
+      <li>윈도우, 리눅스, 맥 등의 다양한 플랫폼에서 사용 가능</li>
+      <li>다양한 언어(C/C++, Java 등)를 지원</li>
+      <li>막강한 기능을 자랑하는 자유 소프트웨어</li>
+    </ul>
+  </li>
+  <li>이클립스 설치
+    <ul>
+      <li>CentOS 6 설치: [S/W Development Workstation] 선택하면 자동 으로 설치됨</li>
+      <li>메인메뉴: [시스템]-&gt;[관리]-&gt;[소프트웨어 추가/제거] 이용하여 이 클립스를 선택하여 설치할 수 있음.</li>
+      <li>https://www.eclipse.org: 리눅스용 이클립스를 다운 받아 설치 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+:ET

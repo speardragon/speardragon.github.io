@@ -1,0 +1,2669 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Computer Architecture] I/O | speardragon note</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Computer Architecture] I/O">
+<meta property="og:url" content="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-IO/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-05-31T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-IO/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-architecture" itemprop="item"><span itemprop="name">Computer architecture</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Computer Architecture] I/O</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Computer Architecture] I/O">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-05-31T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-IO/" class="u-url" itemprop="url">[Computer Architecture] I/O
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          14 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<h1 id="review">Review)</h1>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171526044-95eef031-8793-4f80-a2b5-acd929f8b70d.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="io-inputoutput">I/O (Input/Output)</h2>
+
+<ul>
+  <li>CPU입장에서 Mem빼고는 다 I/O
+    <ul>
+      <li>hard disk는 io와 controller에 연결 되어 있고 storage</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171527681-72b72e86-9dfe-4624-a02f-1d79a89bde2f.png" alt="image" /></p>
+
+<ul>
+  <li>입출력 모듈는 왜 필요할까요?
+    <ul>
+      <li>다양한 장치가 존재하는데 각자의 속도는 다 다릅니다. 출력 데이터 포맷도 다 다르고 그래서 <strong>일반화</strong> 할 수 는 없을까 해서 만들어진 것이 ‘<strong>I/O module</strong>’ 입니다. (CPU와 RAM보다 속도도 느리기 때문에 버퍼링 할 수 있는 게 필요 했습니다.)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>https://com24everyday.tistory.com/173</p>
+
+<ul>
+  <li>빠른 것들은 그냥 붙이고 느린 것들은 bridge를 달아서 거기에 매다는 방식도 존재함
+    <ul>
+      <li>hierarchical bus</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171528915-6c33181b-32b4-4ecc-b855-ad443d6f39d8.png" alt="image" /></p>
+
+<ul>
+  <li>data를 저장하는 register와 status/control register가 존재한다.
+    <ul>
+      <li>그런데 이런 것들 하나하나를 control 하는 것은 쉬운 일이 아니다.(chip을 설계한 사람이 아닌 이상)</li>
+      <li>그래서 드라이버를 설치하는 것</li>
+    </ul>
+  </li>
+  <li>
+    <p>하나하나 register와 logic마다 IO address가 존재한다.(I/O port)</p>
+  </li>
+  <li>memory와 별도로 I/O가 존재하는 경우 -&gt; <strong>Isolated I/O</strong>
+    <ul>
+      <li>I/O 명령어가 따로 존재</li>
+    </ul>
+  </li>
+  <li>memory의 한 부분을 I/O로 사용하는 것 -&gt; <strong>memory-mapped I/O</strong>
+    <ul>
+      <li>I/O를 할 때에도 그냥 기존의 lw, sw를 사용</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>I/O와 CPU가 통신하는 방법?</p>
+
+<p><strong>Input Output Techniques</strong></p>
+
+<ol>
+  <li>
+    <p><strong>Programmed I/O</strong> : CPU must wait (polling)</p>
+  </li>
+  <li>
+    <p><strong>Interrupted-driven I/O</strong></p>
+  </li>
+  <li>
+    <p><strong>Direct memory acess(DMA)</strong> : CPU한테 데이터를 주고 받겠다는 허락을 한 번 받기만 하면 그 이후부터는 CPU 에 개입 없이 다른 게 직접 수행</p>
+  </li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171528894-43da1788-f8e0-49f7-ac73-6afa7faa05a1.png" alt="image" /></p>
+
+<p>시스템 버스에는 CPU와 Memory가 붙고 아래쪽에 실제 디바이스가 위치한다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171528871-6d623e62-e08a-4ffb-a764-5747792b9ba7.png" alt="image" /></p>
+
+<h1 id="chapter-6-storage-and-other-io-topics">Chapter 6. Storage and Other I/O Topics</h1>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>CPU입장에서 Memory가 아닌 것은 전부 I/O이다.</p>
+
+<ul>
+  <li>I/O devices can be <strong>characterized</strong> by
+    <ul>
+      <li>Behaviour: input, output, storage (어떤 행동?)</li>
+      <li>Partner: human or machine (누가 컨트롤?)</li>
+      <li>Data rate: bytes/sec, transfers/sec (얼마나 빠르게 전송?)</li>
+    </ul>
+  </li>
+  <li>I/O bus connections</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171084746-56a2b456-f13d-4c86-b0e4-6121c4fb581c.png" alt="image" /></p>
+
+<ul>
+  <li>프로세서와 메모리는 프로세서가 원하면 메모리에서 데이터를 가져오거나 데이터를 쓰는 것이 가능한데</li>
+  <li>IO 자체가 주체가 되어 데이터를 주고 받을 수도 있는데
+    <ul>
+      <li>I/O들이 CPU에게 Interrupt를 걸기위한 interrupt 핀이 존재함 (그래야 I/O가 다 마쳤을 때 알리기 위함)</li>
+      <li>키보드와 같은 것은</li>
+    </ul>
+  </li>
+  <li>IO device들은 direct로 연결된 것이 아니라 IO controller를 중간에 거친다.
+    <ul>
+      <li>그래서 CPU는 IO device가 어떻게 생겼는지 알 필요가 없고</li>
+      <li>IO controller에 내장된 (두 종류의 register[control, cammand],  data, logic) 것들에 접근하여 데이터를 주고 받는 것이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-system-characteristics">I/O System Characteristics</h2>
+
+<ul>
+  <li>
+    <p>CPU 부분에서는 performance가 중요했음</p>
+  </li>
+  <li>memory 부분에서는 performance (throughput) 과 miss rate, capacitancy  과 같은 것들이 최대 관심사였다.</li>
+  <li>IO는 물론 performance(<strong>throughput</strong>)도 중요하지만 IO 종류가 다양하다 보니까 <strong>Latency가</strong> 중요한 경우도 많다.
+    <ul>
+      <li>또한 Dependability도 중요함</li>
+    </ul>
+  </li>
+  <li><strong>Dependability</strong> (reliability; 신뢰성) is important
+    <ul>
+      <li>disk가 날라가면 엄청 큰일나기 때문에 speed 도 중요하지만 dependability가 매우 중요한 것</li>
+      <li>Particularly for storage devices</li>
+    </ul>
+  </li>
+  <li><strong>Performance</strong> measures
+    <ul>
+      <li>Latency (response time)
+        <ul>
+          <li>IO에서는 키보드와 같은 것은 치자마자 입력이 되는 것이 중요하기 때문에 Latency가 중요함</li>
+          <li>키보드가 모았다가 보내는 것은 의미가 x</li>
+        </ul>
+      </li>
+      <li>Throughput (bandwidth)
+        <ul>
+          <li>gigabit internet 같은 것은 throughput이 중요함</li>
+        </ul>
+      </li>
+      <li>IO종류에 따라 latency가 중요할 때도 Throughput이 중요할 때도 있다</li>
+      <li>Desktops &amp; embedded systems (얘네는 아래가 중요함)
+        <ul>
+          <li>Mainly interested in <strong>response time</strong> &amp; <strong>diversity of devices</strong></li>
+        </ul>
+      </li>
+      <li>Servers (서버는 아래가 중요함)
+        <ul>
+          <li>Mainly interested in <strong>throughput</strong> &amp; <strong>expandability of devices</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dependability">Dependability</h2>
+
+<ul>
+  <li>system이 얼마나 안전하냐 (reliability)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171087780-a64dbcf1-426a-41c7-afa7-c8401a8f540d.png" alt="image" /></p>
+
+<p>system이 실행되다가 fail이 발생하면 interrupt가 발생하고 restoration 되면 다시 실행하는</p>
+
+<ul>
+  <li>Fault: failure of a component
+    <ul>
+      <li>May or may not lead to <strong>system failure</strong></li>
+    </ul>
+  </li>
+  <li>system에서 fail과 restore은 지정된 시간에 따라 발생하는 것이 아니기 때문에 평균을 구한다.</li>
+</ul>
+
+<p>실제로 사용할 수 있는 구간은 fail이 발생하고 restore가 되면 그 restore된 시점부터 다음 fail이 발생하기 전까지이다.</p>
+
+<p><br /></p>
+
+<h2 id="dependability-measures">Dependability Measures</h2>
+
+<ul>
+  <li>Reliability – measured by the <strong>mean time to failure</strong> (<strong>MTTF</strong>). Service  interruption is measured by <strong>mean time to repair</strong> (<strong>MTTR</strong>)
+    <ul>
+      <li>
+        <p>MTTF는 available한 상태</p>
+      </li>
+      <li>
+        <p>MTTR는 service interrupt 구간(사용하지 못하는)</p>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Availability</strong> – a measure of service accomplishment
+    <ul>
+      <li>Availability = MTTF/(MTTF + MTTR)</li>
+      <li>availablity를 높이기 위해선 분자를 높이던지 분모를 낮추던지</li>
+      <li>고장이 덜나게 하려면(MTTF를 높이려면) -&gt; Fault avoidance</li>
+    </ul>
+  </li>
+  <li>
+    <p>To increase MTTF, either improve the quality of the components or  design the system to continue operating in the presence of faulty  components</p>
+  </li>
+  <li>
+    <ol>
+      <li>Fault avoidance: preventing fault occurrence by construction</li>
+    </ol>
+  </li>
+  <li>
+    <ol>
+      <li>
+        <p>Fault tolerance: using redundancy to correct or bypass faulty  components (hardware)</p>
+
+        <ul>
+          <li>
+            <p>l Fault detection versus fault correction</p>
+          </li>
+          <li>
+            <p>l Permanent faults versus transient faults</p>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="disk-storage">Disk Storage</h2>
+
+<p>special IO</p>
+
+<ul>
+  <li>Nonvolatile, rotating magnetic storage
+    <ul>
+      <li>비휘발성, 자기를 띤, 겹친 디스크가 회전,</li>
+      <li>track의 sector마다에 데이터가 쓰여짐.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171547241-733fa6cf-ffab-46ec-95e6-ad1f1b56da9c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="disk-sectors-and-access">Disk Sectors and Access</h2>
+
+<ul>
+  <li>Each sector records
+    <ul>
+      <li>Sector ID</li>
+      <li>Data (512 bytes, 4096 bytes proposed)</li>
+      <li>Error correcting code (ECC): used to hide defects and errors</li>
+      <li>Synchronization fields and gaps</li>
+    </ul>
+  </li>
+  <li>Access to a sector involves
+    <ul>
+      <li>Queuing delay if other accesses are pending</li>
+      <li>Seek: move the heads</li>
+      <li>Rotational latency</li>
+      <li>Data transfer</li>
+      <li>Controller overhead</li>
+    </ul>
+  </li>
+  <li>Blocks vs. sectors
+    <ul>
+      <li><strong>Sector</strong>: a physical spot on a formatted disk that holds information</li>
+      <li><strong>Block</strong>: a group of sectors that the operating system can address 
+(1, 2, 4, 8 or even 16 sectors)
+        <ul>
+          <li>OS가 관리할 때는 block이라는 용어를 사용함.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="disk-access-example">Disk Access Example</h2>
+
+<ul>
+  <li>
+    <p>Given</p>
+
+    <ul>
+      <li>512B sector, 15,000rpm, 4ms average seek time, 100MB/s transfer rate, 0.2ms controller overhead, idle disk</li>
+    </ul>
+  </li>
+  <li>
+    <p>Average read time</p>
+
+    <ul>
+      <li>
+        <p>4ms seek time</p>
+
+        <p>½ / (15,000/60) = 2ms rotational latency</p>
+
+        <p>512 / 100MB/s = 0.005ms transfer time</p>
+
+        <p>0.2ms controller delay
+= 6.2ms</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>If actual average seek time is 1ms</p>
+
+    <ul>
+      <li>Average read time = 3.2ms</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="disk-performance-issues">Disk Performance Issues</h2>
+
+<ul>
+  <li>Manufacturers quote average seek time
+    <ul>
+      <li>Based on all possible seeks</li>
+      <li>Locality and OS scheduling lead to smaller actual average seek times</li>
+    </ul>
+  </li>
+  <li>Smart disk controller allocate physical sectors on disk
+    <ul>
+      <li>Present logical sector interface to host</li>
+      <li>SCSI, ATA, SATA</li>
+    </ul>
+  </li>
+  <li>Disk drives include <strong>caches</strong>
+    <ul>
+      <li>Prefetch sectors in anticipation of access</li>
+      <li>Avoid (or reduce) seek and rotational delay</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="flash-storagessd">Flash Storage(SSD)</h2>
+
+<ul>
+  <li>Non-volatile semiconductor storage</li>
+  <li>100× – 1000× <strong>faster</strong> than disk</li>
+  <li>Smaller, lower power, more robust</li>
+  <li>But more $/GB (between disk and DRAM)</li>
+  <li>Flash memory bits <strong>wear out</strong> (unlike disks and DRAMs), but <strong>wear leveling</strong> can make it unlikely that the write limits of the flash will be exceeded
+    <ul>
+      <li>wear out - 10만번 정도 쓰면 자주쓰는 부분은 다 떨어짐, 마모 된다.</li>
+      <li>FTL이라는 펌웨어가 들어있음 -&gt; 골고루 쓸 수 있도록 관리해 주는</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="raid-disk-arrays">RAID: Disk arrays</h2>
+
+<p><mark>dependability, throughput 을 위해 사용하는 방법</mark></p>
+
+<ul>
+  <li><strong>Redundant Array of Inexpensive Disks</strong> (RAID)
+    <ul>
+      <li>말 그대로 disk를 여러개 쓰는 (disk array)</li>
+      <li>reliability 측면에서 하나 있는 거 보다는 더 떨어짐
+        <ul>
+          <li>disk가 많아질 수록 고장날 확률이 올라가기 때문에</li>
+        </ul>
+      </li>
+      <li>그치만 동시에 여러 개의 데이터를 준비시킬 수 있음</li>
+    </ul>
+  </li>
+  <li>Arrays of small and inexpensive disks
+    <ul>
+      <li><strong>Increase</strong> potential <strong>throughput</strong> by having many disk drives
+        <ul>
+          <li>Data is spread over multiple disk</li>
+          <li>Multiple accesses are made to several disks at a time</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Reliability is lower than a single disk</li>
+  <li>But availability can be improved by adding redundant disks (RAID)
+    <ul>
+      <li>Lost information can be reconstructed from redundant  information</li>
+      <li>MTTR: mean time to repair is in the order of hours</li>
+      <li>MTTF: mean time to failure of disks is tens of years</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="raid-0-no-redundancy">RAID 0 (no redundancy)</h2>
+
+<ul>
+  <li>
+    <p>원래 하나의 disk에 다 있던 block을 두 개의 disk에 interleaved 시킴</p>
+  </li>
+  <li>Multiple smaller disks as opposed to one big disk
+    <ul>
+      <li>Spreading over multiple disks (<strong>striping</strong>) means that <strong>multiple blocks can be  accessed in parallel</strong> increasing the performance
+        <ul>
+          <li>A 4 disk system gives four times the  <strong>throughput</strong> of a 1 disk system</li>
+        </ul>
+      </li>
+      <li>Same cost as one big disk – assuming 4 small disks cost the same as one big disk</li>
+    </ul>
+  </li>
+  <li>No redundancy, so what if one disk fails?
+    <ul>
+      <li>Failure of one or more disks is more likely  as the number of disks in the system increases</li>
+    </ul>
+  </li>
+  <li>reliability가 떨어짐 - 하나 있을 때보다 두 개 있을 때 고장날 확률이 더 높기 때문에</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171555616-d3cebbf8-5de1-4a6c-8a2a-e6258a4260d2.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="raid-1-and-2">RAID 1 and 2</h2>
+
+<p>RAID 0 에서 reliability가 낮던 단점을 보완</p>
+
+<ul>
+  <li>RAID 1: <strong>Mirroring</strong>
+    <ul>
+      <li>N + N disks, <strong>replicate</strong> data
+        <ul>
+          <li>Write data to both data disk and mirror disk</li>
+          <li>On disk failure, read from mirror
+            <ul>
+              <li>하나가 고장나면 다른 곳에서 가져오면 됨</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>용량이 두 배가 되기 때문에 비효율</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172031135-fcc5128b-9956-4847-915a-8000960ac41f.png" alt="image" /></p>
+
+<ul>
+  <li>RAID 2: Error correcting code (ECC)
+    <ul>
+      <li>N + E disks (e.g., 10 + 4)</li>
+      <li>Split data at bit level across N disks</li>
+      <li>Generate E-bit <strong>ECC</strong>
+        <ul>
+          <li>Error correction code</li>
+          <li>어느 부분에서 error가 났는지 판단 후 복구</li>
+        </ul>
+      </li>
+      <li>Too complex, <strong>not used in practice</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171555775-17bea934-2a8e-401b-9a6e-43553b19aa28.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="striping">Striping</h2>
+
+<ul>
+  <li>Striping in Storage</li>
+  <li>A technique of <strong>segmenting logically sequential data</strong>, such as a file, so that consecutive segments are stored on different physical storage devices.
+    <ul>
+      <li>consecutive segment가 다른 물리적 storage에 저장되어있다.</li>
+    </ul>
+  </li>
+  <li>By spreading segments across multiple devices which can be accessed concurrently, total data throughput is increased</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172031193-c9040884-e140-44ba-8e69-72e053d47753.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="raid-3-byte-level-striping-with-parity">RAID 3: Byte-level striping with Parity</h2>
+
+<ul>
+  <li>N + 1 disks (+1은 parity check를 위한 disk)
+    <ul>
+      <li>Data striped(subdivided) across N  disks at byte level</li>
+      <li>Redundant disk stores parity</li>
+      <li>Read access: read all disks</li>
+      <li>Write access: generate new parity and update all disks</li>
+      <li>On failure: <strong>use parity to reconstruct missing data</strong></li>
+    </ul>
+  </li>
+  <li>Requires hardware support for efficient use</li>
+  <li>6개가 하나의 블락
+    <ul>
+      <li>한 블락을 access 하려면 저 6개를 다 access해야함</li>
+    </ul>
+  </li>
+  <li><strong>Not widely used</strong></li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172031212-a77b85b5-1c81-4e35-95e0-079945055f0c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="raid-4-block-level-striping">RAID 4: Block-level striping</h2>
+
+<ul>
+  <li>N + 1 disks
+    <ul>
+      <li>Data striped across N disks at block level
+        <ul>
+          <li>한 block이 한 disk에 담김</li>
+        </ul>
+      </li>
+      <li>Redundant disk stores parity for a  group of blocks</li>
+      <li>Read access: Read only the disk  holding the required block</li>
+      <li>Write access: Just read disk  containing modified block, and parity  disk
+        <ul>
+          <li>Calculate new parity, update data  disk and parity disk</li>
+        </ul>
+      </li>
+      <li>On failure: Use parity to reconstruct missing data
+        <ul>
+          <li>parity를 계속 체크해야하는 비효율</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Not widely used</strong></li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171556164-09fe90aa-c0ea-4a32-b607-5ff3a82697af.png" alt="image" /></p>
+
+<p>RAID 4 setup with dedicated parity disk  with each color representing the group of  blocks in the respective parity block (a stripe)</p>
+
+<p><br /></p>
+
+<h2 id="raid-3-vs-raid-4">RAID 3 vs RAID 4</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171556213-316133f9-0bd5-4b66-a251-1bfaf4d01cfb.png" alt="image" /></p>
+
+<p>RAID 4에서는 block 단위로 하기 때문에 disk하나하나 access 하지 않아도 됨(reliablity는 줄어들긴 해도)</p>
+
+<p><br /></p>
+
+<h2 id="raid-5-distributed-parity">RAID 5: Distributed Parity</h2>
+
+<ul>
+  <li>N + 1 disks
+    <ul>
+      <li>Like RAID 4, but parity blocks distributed across disks
+        <ul>
+          <li>Avoids parity disk being a bottleneck</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Widely used</strong></li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172031260-5d191a65-11d3-4d09-a512-8e0f0f6fa5f9.png" alt="image" /></p>
+
+<p><strong>parity block을 분산 시켜서 배치한 방식</strong></p>
+
+<ul>
+  <li>한 disk에만 traffic이 몰릴 것을 대비</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="raid-6-p--q-redundancy">RAID 6: P + Q Redundancy</h2>
+
+<p>redundancy를 두 개 쓰자는 아이디어</p>
+
+<ul>
+  <li>N + 2 disks
+    <ul>
+      <li>Like RAID 5, but two lots of parity</li>
+      <li><strong>Greater fault tolerance</strong> through more redundancy</li>
+    </ul>
+  </li>
+  <li><strong>Multiple RAID</strong>
+    <ul>
+      <li>More advanced systems give similar fault tolerance with better  performance</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171556412-8d8e5283-7d02-483c-8406-1caf7fad1263.png" alt="image" /></p>
+
+<ul>
+  <li>Allows up to two drives failure</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171556330-b0076afb-dd2e-46c8-b38a-82a146667d5d.png" alt="image" /></p>
+
+<p>복잡하고 cost가 올라가지만 두 개가 고장나도 복구가 가능하다.</p>
+
+<p><br /></p>
+
+<h2 id="raid-summary">RAID Summary</h2>
+
+<ul>
+  <li>RAID can improve <strong>performance</strong> and <strong>availability</strong>
+    <ul>
+      <li>High availability requires <strong>hot swapping</strong> (replacement of addition  of components to a computer system without stopping, shutting  down, or rebooting the system)</li>
+      <li>interleaved된 구조로 인해서 performance 증가</li>
+      <li>고장이 나도 parity라던가 redundancy로 복구가 가능함 -&gt; dependability(availability)</li>
+    </ul>
+  </li>
+  <li>Assumes independent disk failures
+    <ul>
+      <li>Too bad if the building burns down!</li>
+    </ul>
+  </li>
+  <li>See “Hard Disk Performance, Quality and Reliability”
+    <ul>
+      <li>http://www.pcguide.com/ref/hdd/perf/index.htm</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="review-components-of-a-computer">Review: components of a computer</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171556562-855855af-65bc-459c-a508-e71d4eecd413.png" alt="image" /></p>
+
+<ul>
+  <li>Important metrics for an I/O system (중요한 기준)
+    <ul>
+      <li><strong>Performance</strong></li>
+      <li>Expandability</li>
+      <li><strong>Dependability</strong></li>
+      <li><strong>Cost</strong>, size, weight</li>
+      <li>Security</li>
+    </ul>
+  </li>
+  <li>IO 종류에 따라 중요하게 여겨지는 metric(기준)이 달라질 수 있다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="a-typical-io-system">A Typical I/O system</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171556688-9a117fca-b523-4f6f-bf94-64dcbd087406.png" alt="image" /></p>
+
+<p>IO bus를 기준으로 윗 부분이 master, 아랫 부분이 slave로 보고</p>
+
+<p>IO device마다 속도가 다름</p>
+
+<p>사람이 CPU에게 요청할 수 있는데 이는 개별적으로 CPU에게 요청하는 것이 아니기 때문에 Interrupt라고 한다.</p>
+
+<p><br /></p>
+
+<h2 id="input-and-output-devices">Input and output Devices</h2>
+
+<ul>
+  <li>I/O devices are <strong>incredibly diverse</strong> with respect to
+    <ul>
+      <li>Behavior – input, output or storage</li>
+      <li>Partner – human or machine</li>
+      <li>Data rate – the peak rate at which data can be transferred  between the I/O device and the main memory or processor</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171556802-24468b73-eec9-46fb-b07e-0ec9e3b5c9ba.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="io-performance-measures">I/O Performance Measures</h2>
+
+<ul>
+  <li>I/O bandwidth (<strong>throughput</strong>) – amount of information that can be  input (output) and communicated across an interconnect (e.g., a  bus) to the processor/memory (I/O device) per unit time</li>
+  <li>How much data can we move through the system in a certain  time?</li>
+  <li>How many I/O operations can we do per unit time?</li>
+  <li>I/O response time (<strong>latency</strong>) – the total elapsed time to accomplish  an input or output operation</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-system-interconnection-issues">I/O system interconnection issues</h2>
+
+<ul>
+  <li>A <strong>bus</strong> is a shared communication link (a single set of wires used to connect multiple subsystems) that needs to support a range of devices with widely varying latencies and data transfer rates
+    <ul>
+      <li>키보드와 같은 IO device가 CPU에게 데이터를 보내기 위해서 IO controller의 serial interface를 통한다.</li>
+      <li><strong>Advantages</strong>
+        <ul>
+          <li><strong>Versatile</strong>(변하기 쉬움) – new devices can be added easily and can be moved between computer systems that use the same bus standard</li>
+          <li><strong>Low cost</strong> – a single set of wires is shared in multiple ways</li>
+        </ul>
+      </li>
+      <li><strong>Disadvantages</strong>
+        <ul>
+          <li>Creates a communication bottleneck
+            <ul>
+              <li>bus bandwidth limits the maximum I/O throughput</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>The maximum bus speed is largely limited by
+    <ul>
+      <li>The <strong>length</strong> of the bus</li>
+      <li>The <strong>number</strong> of devices on the bus</li>
+    </ul>
+  </li>
+</ul>
+
+<p>위는 진짜 간단한 형태의 bus로 이 방식으로 구성하면 제한이 너무 크다.</p>
+
+<p><br /></p>
+
+<h2 id="types-of-buses">Types of Buses</h2>
+
+<ul>
+  <li><strong>Processor-memory bus</strong> (“Front Side Bus”, proprietary)
+    <ul>
+      <li>Short and <strong>high speed</strong></li>
+      <li>Matched to the memory system to maximize the memory-processor bandwidth</li>
+      <li>Optimized for cache block transfers</li>
+    </ul>
+  </li>
+  <li><strong>I/O bus</strong> (industry standard, e.g., SCSI, USB, Firewire)
+    <ul>
+      <li>Usually is lengthy and <strong>slower</strong></li>
+      <li>Needs to accommodate a wide range of I/O devices</li>
+      <li>Use either the processor-memory bus or a backplane bus to  connect to memory</li>
+    </ul>
+  </li>
+  <li>Backplane bus (industry standard, e.g., ATA, PCIexpress)
+    <ul>
+      <li>Allow processor, memory and I/O devices to coexist on a single bus (built into backplane of computer)</li>
+      <li>Used as an intermediary bus connecting I/O busses to the  processor-memory bus</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-transactionsreadwrite">I/O Transactions(read/write)</h2>
+
+<ul>
+  <li>An I/O transaction is a sequence of operations over the interconnect that includes a <strong>request</strong> and may include a <strong>response</strong> either of which may carry data.</li>
+  <li>A transaction is initiated by a single request and may take many individual bus operations. An I/O transaction typically includes two parts
+    <ul>
+      <li>Sending the <strong>address</strong></li>
+      <li>Receiving or sending the <strong>data</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p>CPU에서 mem을 읽을 때 address가 mem으로 가면 어느 정도 후에 mem이 data를 실어주고 양방향으로 왔다갔다 하기도 한다.</p>
+
+    <ul>
+      <li>
+        <p>이 과정에서 메모리(slave)는 가만히 있고 CPU(master)가 능동적으로 작동한다.</p>
+      </li>
+      <li>
+        <p>메모리는 수동적</p>
+      </li>
+    </ul>
+  </li>
+  <li>IO도 마찬가지로 address를 보내주고 데이터를 받아오는데 가만히 있는 것이 아니라 능동적으로</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="synchronous-and-asynchronous-buses">Synchronous and Asynchronous Buses</h2>
+
+<ul>
+  <li>Synchronous bus (e.g., <strong>fast</strong> processor-memory buses)
+    <ul>
+      <li>Includes a clock in the control lines and has a fixed protocol for  communication that is relative to the clock</li>
+      <li>Advantage: involves very little logic and can run very fast</li>
+      <li>Disadvantages:
+        <ul>
+          <li>Every device communicating on the bus must use same clock rate</li>
+          <li>To avoid clock skew, they cannot be long if they are fast</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Asynchronous bus (e.g., <strong>relatively slow</strong> I/O buses)
+    <ul>
+      <li>It is not clocked, so requires a <strong>handshaking protocol</strong> and additional  control lines
+        <ul>
+          <li>(ReadReq, Ack, DataRdy)</li>
+        </ul>
+      </li>
+      <li>handshaking: 준비 됐어? -&gt; 준비 됐다 -&gt; 왔다 갔다</li>
+      <li>Advantages:
+        <ul>
+          <li>Can accommodate a wide range of devices and device speeds</li>
+          <li>Can be lengthened without worrying about clock skew or  synchronization problems</li>
+        </ul>
+      </li>
+      <li>Disadvantage: slow(er)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="asynchronous-bus-handshaking-protocol">Asynchronous Bus Handshaking Protocol</h2>
+
+<ul>
+  <li>Output (read) data from memory to an I/O device</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171557549-81be5214-315d-4740-b61a-8824aee3a6b4.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172282066-50571ad6-7c93-48e5-86d4-2158f1d1d61e.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="bus-types">Bus Types</h2>
+
+<ul>
+  <li><strong>Processor-Memory buses</strong>
+    <ul>
+      <li>Short, <strong>high speed</strong></li>
+      <li>Design is matched to memory organization</li>
+    </ul>
+  </li>
+  <li><strong>I/O buses</strong>
+    <ul>
+      <li><strong>Longer</strong>, allowing multiple connections</li>
+      <li>조금 느려도 low power?</li>
+      <li>Specified by standards for interoperability</li>
+      <li>Connect to processor-memory bus through a bridge</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bus-signals-and-synchronization">Bus Signals and Synchronization</h2>
+
+<ul>
+  <li><strong>Data lines</strong>
+    <ul>
+      <li>Carry address and data</li>
+      <li>Multiplexed or separate</li>
+    </ul>
+  </li>
+  <li><strong>Control lines</strong>
+    <ul>
+      <li>Indicate data type, synchronize transactions</li>
+    </ul>
+  </li>
+  <li><strong>Synchronous</strong>
+    <ul>
+      <li>Uses a bus <strong>clock</strong></li>
+    </ul>
+  </li>
+  <li><strong>Asynchronous</strong>
+    <ul>
+      <li>Uses request/acknowledge control lines for handshaking</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-bus-examples">I/O Bus Examples</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171557774-0860d316-3c4f-44a2-b5e8-1eea95106d74.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="typical-x86-pc-io-system">Typical x86 PC I/O System</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171557842-f9eb3ec4-0abd-4dc5-b5f5-7c0899b8fb5a.png" alt="image" /></p>
+
+<p>north bridge를 통해서 high speed IO가 연결 되고</p>
+
+<p>south bridge를 통해서 low speed IO가 연결된다.</p>
+
+<p><br /></p>
+
+<h2 id="ambaadvanced-microcontroller-bus-architecture">AMBA(Advanced Microcontroller Bus Architecture)</h2>
+
+<p>ARM</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171557954-3f233873-1b5b-4371-9959-3eccb45d5118.png" alt="image" /></p>
+
+<p>지금은 AXI로 변하였음 - network</p>
+
+<ul>
+  <li>master가 여러개가 붙어 있음(core와 같은 것들)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-management">I/O Management</h2>
+
+<ul>
+  <li>I/O is mediated by the <strong>OS</strong> (대부분 OS가 handling)</li>
+  <li>Multiple programs share I/O resources
+    <ul>
+      <li>Need <strong>protection and scheduling</strong></li>
+    </ul>
+  </li>
+  <li>I/O causes asynchronous <strong>interrupts</strong>
+    <ul>
+      <li>IO controller가 요청</li>
+      <li>Same mechanism as exceptions</li>
+    </ul>
+  </li>
+  <li><strong>I/O programming is fiddly</strong> (어렵다)
+    <ul>
+      <li>Low-level control of an I/O is complex and detailed</li>
+      <li>OS provides abstractions to programs</li>
+      <li>IO controller가 수십개 수백개가 되는 경우가 있는데 이것들에 대해 잘 알아야 프로그래밍을 잘 짤 수 있다.</li>
+    </ul>
+  </li>
+  <li>그래서 IO 설계 logic은 설계자 외에 모른다.
+    <ul>
+      <li>그래서 보통 드라이버 소스를 만들어서 제공해 주고 사용자가 실행하여 사용한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-commands">I/O Commands</h2>
+
+<ul>
+  <li>I/O devices are managed by I/O controller hardware
+    <ul>
+      <li>Transfers data to/from device</li>
+      <li>Synchronizes operations with software</li>
+    </ul>
+  </li>
+  <li>I/O registers (<strong>I/O port addresses</strong>)
+    <ul>
+      <li><strong>Command registers</strong> (control)
+        <ul>
+          <li>Cause device to do something</li>
+        </ul>
+      </li>
+      <li><strong>Status registers</strong>
+        <ul>
+          <li>Indicate what the device is doing and occurrence of errors</li>
+        </ul>
+      </li>
+      <li><strong>Data registers</strong>
+        <ul>
+          <li>Write: transfer data to a device</li>
+          <li>Read: transfer data from a device</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="io-register-mapping">I/O Register Mapping</h2>
+
+<p>몇 번지부터 몇 번지 까지 I/O를 쓸 것인가</p>
+
+<ul>
+  <li><strong>Memory mapped I/O</strong>
+    <ul>
+      <li>Registers are addressed in <strong>same space as memory</strong>:
+        <ul>
+          <li>the same load/store instruction used (lw/sw 사용)</li>
+        </ul>
+      </li>
+      <li>Address decoder distinguishes between them</li>
+      <li>OS uses address translation mechanism to make them only  accessible to kernel</li>
+      <li>RISC</li>
+    </ul>
+  </li>
+  <li><strong>Isolated I/O (or separated I/O or I/O mapped)</strong>
+    <ul>
+      <li>Memory and I/O address spaces separated (분리되어 있음)</li>
+      <li><strong>Special instructions</strong> to access I/O registers (e.g. in, out)</li>
+      <li>Separated control signal (e.g. MEM/IO)</li>
+      <li>Can only be executed in kernel mode</li>
+      <li>Example: x86</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-mapped-io-hardware">Memory-mapped I/O hardware</h2>
+
+<ul>
+  <li>Address Decoder:
+    <ul>
+      <li>Looks at address to determine which device/memory  communicates with the processor</li>
+    </ul>
+  </li>
+  <li>I/O Registers:
+    <ul>
+      <li>Hold values written to the I/O devices</li>
+    </ul>
+  </li>
+  <li>ReadData Multiplexer:
+    <ul>
+      <li>Selects between memory and I/O devices as source  of data sent to the processor</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172283407-19e5524d-9fd6-490e-beab-fd1f60b67e4b.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="memory-mapped-io-code">Memory-mapped I/O code</h2>
+
+<ul>
+  <li>Suppose I/O Device 1 is assigned the address 0xFFFFFFF4
+    <ul>
+      <li>Write the value 42 to I/O Device 1</li>
+      <li>Read value from I/O Device 1 and place in $t3</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171559093-7165c37c-73cc-475a-9fb7-d97b215610e9.png" alt="image" /></p>
+
+<p>memory의 address에 따라 진짜 memory에 접근 하는 것일 수도 있고 IO에 접근하는 것일 수도 있다.</p>
+
+<ul>
+  <li>이와 다르게 Isolated의 경우 <code class="language-plaintext highlighter-rouge">out</code> or <code class="language-plaintext highlighter-rouge">in</code> 과 같은 명령어가 별도로 존재함.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="communication-of-io-devices-and-processor">Communication of I/O devices and Processor</h2>
+
+<p>CPU와 IO간 어떤 방식으로 통신하는가?</p>
+
+<p>IO는 memory와 다르게 IO device마다 속도가 다르기 때문에 memory처럼 일관적인 속도로 주고 받을 수 없다.</p>
+
+<ul>
+  <li><strong>Polling</strong>
+    <ul>
+      <li>Periodically check I/O status register (through the OS)
+        <ul>
+          <li>주기적으로 <strong>IO status register를 check</strong>한다.(IO가 준비가 됐나… 하고 계속 체크하는 것)</li>
+          <li>If device ready, do operation -&gt; device가 준비되면 작동 하고</li>
+          <li>If error, take action -&gt; error이면 행동을 취한다.</li>
+        </ul>
+      </li>
+      <li>Common in small or low-performance real-time embedded  systems
+        <ul>
+          <li>Predictable timing</li>
+          <li>Low hardware cost</li>
+        </ul>
+      </li>
+      <li>In other systems, wastes CPU time</li>
+      <li>CPU가 하루종일 그것에만 <strong>낭비</strong>하면 손해임 그래서 나온게 Interrupt-driven I/O
+        <ul>
+          <li>물론 목적이 하나인 임베디드라면 상관이 없겠지만… 범용 컴퓨터에선 중요함</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Interrupt-driven I/O</strong> (<span style="color:red">중요</span>)
+    <ul>
+      <li>I/O device <strong>issues</strong> and <strong>interrupt</strong> to ask service</li>
+      <li>more efficient - CPU가 할일이 많고 Interrupt 걸 수 있는 I/O가 많을 때 효율적이다.
+        <ul>
+          <li>하지만 냉장고와 같은 거는 할 일이 없기 때문에 굳이 이런 기능이 없어도 되는 것이다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="polling-example">Polling example</h2>
+
+<ul>
+  <li>For input device</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171559431-3c51814d-6480-4be9-8357-edaae427b1e6.png" alt="image" /></p>
+
+<p>준비(loop)하다가 input</p>
+
+<p>LSB가 준비 됐는지를 알려주기 때문에 그것을 계속 확인해서 1이면 즉, 준비 됐으면 s2에 read한다.</p>
+
+<ul>
+  <li>For output device</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171559463-9ccc4167-fe70-4c0a-b077-13f77d793000.png" alt="image" /></p>
+
+<p>준비(loop)하다가 output</p>
+
+<p><br /></p>
+
+<h2 id="example-pic-32-microcontroller">Example (PIC 32 microcontroller)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172031784-e523a37b-faf3-4132-93ed-beb3b48ad933.png" alt="image" /></p>
+
+<p>Bus Matrix는 interconnection network로 되어 있으니까 여러개가 한 꺼번에도 가능</p>
+
+<ul>
+  <li>동시에 access 가능</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="pic32-mx675f521h-block-diagram">PIC32 MX675F521H block diagram</h2>
+
+<p>MIPS controller</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172031814-c4438a39-a892-4552-a3ae-6567a29f327c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="example-keyborad-control">Example (keyborad control)</h2>
+
+<ul>
+  <li>Example (note that this is not MIPS)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/172284468-e3c595a5-b361-4ed0-a6d0-0bb6a42f4e92.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="example-pic32-gpio-gernal-purpose-io">Example (PIC32 GPIO; Gernal Purpose IO)</h2>
+
+<p>여러 기능의 IO가 있어서 여러 개를 control 가능하다. -&gt; 일부는 output으로 일부는 input으로</p>
+
+<ul>
+  <li>(ex) Read four switches and turn on the  corresponding bottom four LEDs.
+    <ul>
+      <li>TRIS(control) register determines input(1) and output(0)</li>
+      <li>PORT(data reg) register: value from input or driven to output</li>
+      <li>Examine pins RD[11:8], and write it back to RD[3:0].</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// C Code</span>
+<span class="cp">#include</span> <span class="cpf">&lt;p3xxxx.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">switches</span><span class="p">;</span>
+    <span class="c1">//1111 111100000000</span>
+    <span class="n">TRISD</span> <span class="o">=</span> <span class="mh">0xFF00</span><span class="p">;</span> <span class="c1">// RD[7:0] outputs ; control register 0이면 output,1이면 input</span>
+    <span class="c1">// RD[11:8] inputs</span>
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// read &amp; mask switches, RD[11:8]</span>
+        <span class="n">switches</span> <span class="o">=</span> <span class="p">(</span><span class="n">PORTD</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xF</span><span class="p">;</span> <span class="c1">// read(1111)한 결과를 읽기 위해</span>
+        <span class="n">PORTD</span> <span class="o">=</span> <span class="n">switches</span><span class="p">;</span> <span class="c1">// display on LEDs ; write</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#i-o" class="page__taxonomy-item p-category" rel="tag">I/O</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#computer-architecture" class="page__taxonomy-item p-category" rel="tag">Computer Architecture</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-05-31T00:00:00+09:00">2022-05-31</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BComputer+Architecture%5D+I%2FO%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-IO%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-IO%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-IO%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Shortest-Path-Algorithms/" class="pagination--pager" title="[자료구조와 알고리즘] Shortest Path Algorithms
+">이전</a>
+    
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-IO-2/" class="pagination--pager" title="[Computer Architecture] I/O - 2
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-IO/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/computer%20architecture/[Computer Architecture] IO"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

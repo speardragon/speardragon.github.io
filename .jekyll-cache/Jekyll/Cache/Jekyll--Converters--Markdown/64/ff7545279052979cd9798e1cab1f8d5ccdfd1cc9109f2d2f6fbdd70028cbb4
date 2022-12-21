@@ -1,0 +1,492 @@
+I"y2<h2 id="textual-notations">Textual Notations</h2>
+
+<ul>
+  <li>Grammars</li>
+  <li>Production rules</li>
+  <li>Communication Sequential Process (CSP) and event algebras</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="textual---grammars">Textual - Grammars</h2>
+
+<ul>
+  <li>Regular expressionssel-line click click* dble-click
+    <ul>
+      <li>Equivalent expressiveness to JSD</li>
+      <li>Good for certain kinds of dialogue such as command line syntax</li>
+    </ul>
+  </li>
+  <li>BNF (Backus Normal Form)
+expr ::= empty
+           | atom expr
+           | ‘(‘ expr ‘)’ expr
+    <ul>
+      <li>More powerful than regular exp. or STNs</li>
+      <li>Iteration through recursive definitions</li>
+      <li>Still NO concurrent dialogue</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="production-rules">Production Rules</h2>
+
+<ul>
+  <li>Unordered list of rules</li>
+  <li>If <strong>condition</strong> then <strong>action</strong>
+    <ul>
+      <li>Conditions: user initiated events and current state</li>
+      <li>Actions: response to user or change to system’s state
+        <ul>
+          <li>E.g. Select-line -&gt; start-line &lt;highlight ‘line’&gt;</li>
+          <li>Click start-line -&gt; rest-line &lt;rubber band on&gt;</li>
+        </ul>
+      </li>
+      <li>Two forms:
+        <ul>
+          <li>Event based: firing a rule removes its conditions from memory</li>
+          <li>State based: memory changed only if action explicitly specifies</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Every rule always potentially active
+    <ul>
+      <li>Good for concurrency</li>
+      <li>Bad for sequence</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="event-based-production-rules">Event based Production Rules</h2>
+
+<ul>
+  <li>if <strong>condition</strong> then <strong>action</strong>
+Sel-line null -&gt; first
+C-point first -&gt; rest
+C-point rest -&gt; rest
+D-point rest -&gt; &lt; draw line &gt;</li>
+  <li>Note:
+    <ul>
+      <li>Events added to list of pending events</li>
+      <li>‘first’ and ‘rest’ are internally generated events</li>
+    </ul>
+  </li>
+  <li>Bad at state!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="propositional-production-system">Propositional Production System</h2>
+
+<ul>
+  <li>State based</li>
+  <li>Attributes:
+    <ul>
+      <li>Mouse: { mouse-off, select-line, click-point, double-click }</li>
+      <li>Line-state: { menu, first, rest }</li>
+    </ul>
+  </li>
+  <li>Rules (feedback not shown):
+    <ul>
+      <li>select-line -&gt; mouse-off, first</li>
+      <li>click-point, first -&gt; mouse-off, rest</li>
+      <li>click-point, rest -&gt; mouse-off, rest</li>
+      <li>double-click, rest -&gt; mouse-off, menu</li>
+    </ul>
+  </li>
+  <li>Bad at events!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="communication-sequential-process-csp-and-process-algebras">Communication Sequential Process (CSP) and Process Algebras</h2>
+
+<ul>
+  <li>Used in Alexander’s SPI (Specification, Prototyping and Interaction), and Agent notation</li>
+  <li>Good for sequential dialogues
+    <ul>
+      <li>Bold-tog = select-bold? -&gt; bold-on -&gt; select-bold? -&gt;bold-off -&gt; Bold-tog</li>
+      <li>Italic-tog = . . .</li>
+      <li>Under-tog = . . .</li>
+    </ul>
+  </li>
+  <li>And concurrent dialogue
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>Dialogue-box = Bold-tog</td>
+              <td> </td>
+              <td>Italic-tog</td>
+              <td> </td>
+              <td>Under-tog</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>But causality unclear</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="syntactic-dialogue-notations---summary">Syntactic Dialogue Notations - Summary</h2>
+
+<ul>
+  <li>Diagrammatic
+    <ul>
+      <li>STN, JSD, Flow charts</li>
+    </ul>
+  </li>
+  <li>Textual
+    <ul>
+      <li>Grammars, Production rules, CSP</li>
+    </ul>
+  </li>
+  <li>Issues
+    <ul>
+      <li>Event based vs. State based</li>
+      <li>Power vs. Clarity</li>
+      <li>Model vs. Notation</li>
+      <li>Sequential vs. Concurrent</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semantics---alexander-spi-i">Semantics - Alexander SPI (i)</h2>
+
+<ul>
+  <li>Two part specification:
+    <ul>
+      <li>EventCSP       - Pure dialogue order</li>
+      <li>EventISL          - Target dependent semantics
+        <ul>
+          <li>* ISL: Interaction Specification Language</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Dialogue description – Centralized</li>
+  <li>Syntactic/Semantic trade-off – Tolerable</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semantics---alexander-spi-ii">Semantics - Alexander SPI (ii)</h2>
+
+<ul>
+  <li>EventCSP
+Login = login-mess -&gt; get-name -&gt; Passwd
+Passwd = passwd-mess -&gt; (invalid -&gt; Login [ ] valid -&gt; Session)</li>
+  <li>EventISL</li>
+</ul>
+
+<p>event: login-mess
+					prompt: true
+					out: “Login:”
+event: get-name
+					uses: input
+					set: user-id = input
+event: valid
+					uses: input, user-id, passwd-db
+					wgen: passwd-id = passwd-db(user-id)</p>
+
+<p><br /></p>
+
+<h2 id="semantics---raw-code">Semantics - Raw Code</h2>
+
+<ul>
+  <li>Event loop for word processor</li>
+  <li>Dialogue description
+    <ul>
+      <li>very distributed</li>
+    </ul>
+  </li>
+  <li>Syntactic/Semantic 
+trade-off
+    <ul>
+      <li>terrible!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161007079.png" alt="image-20221010161007079" /></p>
+
+<p><br /></p>
+
+<h2 id="action-properties">Action Properties</h2>
+
+<ul>
+  <li>Completeness
+    <ul>
+      <li>Only a subset of the full set of actions are allowed for any state.</li>
+      <li>But what about missed actions, not shown on the diagram?</li>
+      <li>Unforeseen circumstances: need to know the consequences of all actions under any event and account for them.</li>
+      <li>For each state/action pair, the designer ought to decide what the behavior will be.</li>
+    </ul>
+  </li>
+  <li>Determinism
+    <ul>
+      <li>Several arcs for one action</li>
+      <li>Deliberate: application decision</li>
+      <li>Accident: production rules</li>
+      <li>e.g. Nested escapes or actions may be dependent on guard conditions</li>
+    </ul>
+  </li>
+  <li>Consistency
+    <ul>
+      <li>We expect the same action in different states to do the same effect</li>
+      <li>e.g. modes and visibility</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="checking-properties-i">Checking Properties (i)</h2>
+
+<ul>
+  <li>Completeness
+    <ul>
+      <li>Double-click in circle states?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161050271.png" alt="image-20221010161050271" /></p>
+
+<p><br /></p>
+
+<h2 id="state-properties">State Properties</h2>
+
+<ul>
+  <li>Reachability
+    <ul>
+      <li>Can you get anywhere from anywhere?</li>
+      <li>And how easily</li>
+    </ul>
+  </li>
+  <li>Reversibility
+    <ul>
+      <li>Can you get to the previous state?</li>
+      <li>But NOT undo</li>
+    </ul>
+  </li>
+  <li>Dangerous states
+    <ul>
+      <li>Some states you don’t want to get to</li>
+      <li>Some states must be made difficult to reach (disk format !)</li>
+      <li>Dangerous states can’t be determined automatically</li>
+      <li>The move to dangerous states must be different from other sequences (not-consistent!)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="checking-properties-ii">Checking Properties (ii)</h2>
+
+<ul>
+  <li>Reversibility:</li>
+  <li>To reverse select `line’</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161121552.png" alt="image-20221010161121552" /></p>
+
+<p><br /></p>
+
+<h2 id="checking-properties-ii-1">Checking Properties (ii)</h2>
+
+<ul>
+  <li>Reversibility:</li>
+  <li>To reverse select `line’</li>
+  <li>Click</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161138154.png" alt="image-20221010161138154" /></p>
+
+<p><br /></p>
+
+<h2 id="checking-properties-ii-2">Checking Properties (ii)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161149994.png" alt="image-20221010161149994" /></p>
+
+<p><br /></p>
+
+<h2 id="checking-properties-ii-3">Checking Properties (ii)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161158809.png" alt="image-20221010161158809" /></p>
+
+<p><br /></p>
+
+<h2 id="dangerous-states">Dangerous States</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161207295.png" alt="image-20221010161207295" /></p>
+
+<p><br /></p>
+
+<h2 id="dangerous-states-ii">Dangerous States (ii)</h2>
+
+<ul>
+  <li>Exit with/without save =&gt; dangerous states</li>
+  <li>Duplicate states - semantic distinction</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161227837.png" alt="image-20221010161227837" /></p>
+
+<ul>
+  <li>F1-F2 - exit with save</li>
+  <li>F1-Esc-F2 - exit with no save</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="lexical-issues">Lexical Issues</h2>
+
+<ul>
+  <li>Visibility
+    <ul>
+      <li>Differentiate modes and states</li>
+      <li>Annotations to dialogue</li>
+    </ul>
+  </li>
+  <li>Style
+    <ul>
+      <li>Command - verb noun (e.g. delete files)</li>
+      <li>Mouse based - noun verb (e.g. move files to trashcan)</li>
+    </ul>
+  </li>
+  <li>Layout
+    <ul>
+      <li>Not just appearance …</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="layout-matters">Layout Matters</h2>
+
+<ul>
+  <li>Word processor - Dangerous states</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161302697.png" alt="image-20221010161302697" /></p>
+
+<ul>
+  <li>Old keyboard - OK</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161310313.png" alt="image-20221010161310313" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>New keyboard layout</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161320965.png" alt="image-20221010161320965" /></p>
+
+<ul>
+  <li><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161358843.png" alt="image-20221010161358843" /></li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>New keyboard layout</li>
+</ul>
+
+<p>​	<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161411316.png" alt="image-20221010161411316" /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161422298.png" alt="image-20221010161422298" /></p>
+
+<p><br /></p>
+
+<h2 id="dialogue-analysis---summary">Dialogue Analysis - Summary</h2>
+
+<ul>
+  <li>Semantics and dialogue
+    <ul>
+      <li>Attaching semantics</li>
+      <li>Distributed/centralized dialogue description</li>
+      <li>Maximizing syntactic description</li>
+    </ul>
+  </li>
+  <li>Properties of dialogue
+    <ul>
+      <li>Action properties: completeness, determinism, consistency</li>
+      <li>State properties: reachability, reversibility, dangerous states</li>
+    </ul>
+  </li>
+  <li>Presentation and lexical issues
+    <ul>
+      <li>Visibility, style, layout</li>
+      <li>N.B. not independent of dialogue</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="digital-watch--user-instructions">Digital Watch – User Instructions</h2>
+
+<ul>
+  <li>Two main modes</li>
+  <li>Limited interface
+    <ul>
+      <li>3 buttons:
+A, Up, Down<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161520494.png" alt="image-20221010161520494" /></li>
+    </ul>
+  </li>
+  <li>Button A
+    <ul>
+      <li>Changes mode</li>
+    </ul>
+  </li>
+  <li>Button Up/Down
+    <ul>
+      <li>Changes Time/Alarm</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="digital-watch--user-instructions-1">Digital Watch – User Instructions</h2>
+
+<ul>
+  <li>Dangerous states
+    <ul>
+      <li>Unintended setting</li>
+      <li>Guarded …by two second hold</li>
+    </ul>
+  </li>
+  <li>Completeness<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161549989.png" alt="image-20221010161549989" />
+    <ul>
+      <li>From where to setting?</li>
+      <li>From setting to where?</li>
+      <li>Distinguish depress A and release A</li>
+      <li>What do they do in all modes?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="digital-watch--designers-instructions">Digital Watch – Designers Instructions</h2>
+
+<ul>
+  <li>and …</li>
+  <li>That’s just one button to change modes<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010161621281.png" alt="image-20221010161621281" /></li>
+</ul>
+:ET

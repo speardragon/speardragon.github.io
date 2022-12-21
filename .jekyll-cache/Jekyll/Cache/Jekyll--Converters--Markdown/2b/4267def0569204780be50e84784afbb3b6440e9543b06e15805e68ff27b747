@@ -1,0 +1,84 @@
+I"�<h2 id="error-handling">Error Handling</h2>
+
+<h3 id="status-code">Status Code</h3>
+
+<ul>
+  <li>1xx(정보) : 요청을 받았고, 프로세스를 계속 진행함</li>
+  <li>2xx(성공) : 요청을 성공적으로 받았고, 실행함</li>
+  <li>3xx(리다이렉션) : 요청 완료를 위한 추가 작업이 필요</li>
+  <li>4xx(클라이언트 오류) : 요청 문법이 잘못되었거나 요청을 처리할 수 없음</li>
+  <li>5xx(서버 오류) 서버가 요청에 대해 실패함</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">router</span><span class="p">.</span><span class="nx">param</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// @ts-ignore</span>
+    <span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">USERS</span><span class="p">[</span><span class="nx">value</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">User not found</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">err</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>위와 같이 인자를 4개로 받는 경우만 에러 핸들링으로 판단한다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>statusCode를 404로 만들어 주기 위함</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">router</span><span class="p">.</span><span class="nx">param</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// @ts-ignore</span>
+    <span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">USERS</span><span class="p">[</span><span class="nx">value</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">err</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">User not found</span><span class="dl">'</span><span class="p">)</span>
+        <span class="nx">err</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">404</span>
+	    <span class="k">throw</span> <span class="nx">err</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">err</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">||</span> <span class="mi">500</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>statusCode가 없다면 internal server를 뜻하는 500</p>
+
+<p><br /></p>
+
+<p>async로 하는 경우 무조건 try catch 문으로 감싸주어야 함.(서버가 터지는 걸 방지)</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="connection-pool-개념">Connection Pool 개념</h3>
+
+<p>https://techbless.github.io/2020/01/17/Node-js%EC%97%90%EC%84%9C-Mysql-Connection-Pool-%EC%9D%B4%EC%9A%A9%ED%95%98%EA%B8%B0/</p>
+
+<p><br /></p>
+
+<h3 id="실수">실수</h3>
+
+<ul>
+  <li>const {user} = req
+    <ul>
+      <li>const user = req</li>
+    </ul>
+  </li>
+  <li>Provider의 비동기 함수를 실행했는데 호출하는 곳에서 await을 안 붙임</li>
+</ul>
+
+:ET

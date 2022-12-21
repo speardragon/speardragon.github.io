@@ -1,0 +1,142 @@
+I"�5<h1 id="보물">보물</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">시간 제한</th>
+      <th style="text-align: left">메모리 제한</th>
+      <th style="text-align: left">제출</th>
+      <th style="text-align: left">정답</th>
+      <th style="text-align: left">맞힌 사람</th>
+      <th style="text-align: left">정답 비율</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">2 초</td>
+      <td style="text-align: left">128 MB</td>
+      <td style="text-align: left">37998</td>
+      <td style="text-align: left">24008</td>
+      <td style="text-align: left">20428</td>
+      <td style="text-align: left">65.740%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="문제">문제</h2>
+
+<p>옛날 옛적에 수학이 항상 큰 골칫거리였던 나라가 있었다. 이 나라의 국왕 김지민은 다음과 같은 문제를 내고 큰 상금을 걸었다.</p>
+
+<p>길이가 N인 정수 배열 A와 B가 있다. 다음과 같이 함수 S를 정의하자.</p>
+
+<p>S = A[0] × B[0] + … + A[N-1] × B[N-1]</p>
+
+<p>S의 값을 가장 작게 만들기 위해 A의 수를 재배열하자. 단, B에 있는 수는 재배열하면 안 된다.</p>
+
+<p>S의 최솟값을 출력하는 프로그램을 작성하시오.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>첫째 줄에 N이 주어진다. 둘째 줄에는 A에 있는 N개의 수가 순서대로 주어지고, 셋째 줄에는 B에 있는 수가 순서대로 주어진다. N은 50보다 작거나 같은 자연수이고, A와 B의 각 원소는 100보다 작거나 같은 음이 아닌 정수이다.</p>
+
+<h2 id="출력">출력</h2>
+
+<p>첫째 줄에 S의 최솟값을 출력한다.</p>
+
+<h2 id="예제-입력-1-복사">예제 입력 1 복사</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5
+1 1 1 6 0
+2 7 8 3 1
+</code></pre></div></div>
+
+<h2 id="예제-출력-1">예제 출력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>18
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="문제-풀이">문제 풀이</h1>
+
+<ul>
+  <li>배열 하나는 asending 으로 하면 되고 나머지 하나는 descending order로 해야 하기 때문에 이 때 부호를 마이너스로 바꾸어 sorting을 진행하면 해결된다.</li>
+  <li>sorting 알고리즘 중에서 버블 정렬을 사용하여 풀었다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">bubble_sort</span><span class="p">(</span><span class="n">unordered</span><span class="p">):</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unordered</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span> <span class="o">-</span> <span class="n">i</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="n">_a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">minus_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">_b</span><span class="p">))</span>
+
+<span class="n">bubble_sort</span><span class="p">(</span><span class="n">_a</span><span class="p">)</span>
+<span class="n">bubble_sort</span><span class="p">(</span><span class="n">minus_b</span><span class="p">)</span>
+
+<span class="n">_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">abs</span><span class="p">,</span> <span class="n">minus_b</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_a</span><span class="p">))))</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<ul>
+  <li>다음 코드는 정렬 알고리즘을 익히기 위해서 퀵 정렬로도 풀어본 결과이다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">first</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">last</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pivot</span> <span class="ow">and</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">last</span><span class="p">:</span>
+            <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pivot</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&gt;=</span> <span class="n">first</span><span class="p">:</span>
+            <span class="n">right</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">:</span>
+            <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">right</span>  <span class="c1"># pivot index
+</span>
+
+<span class="k">def</span> <span class="nf">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">first</span> <span class="o">&lt;</span> <span class="n">last</span><span class="p">:</span>
+        <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+        <span class="n">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">pivot_index</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">pivot_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="n">minus_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">_b</span><span class="p">))</span>
+
+<span class="n">quick_sort</span><span class="p">(</span><span class="n">_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">_a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">quick_sort</span><span class="p">(</span><span class="n">minus_b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">minus_b</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">abs</span><span class="p">,</span> <span class="n">minus_b</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_a</span><span class="p">))))</span>
+
+</code></pre></div></div>
+
+<p>일반적으로 퀵 정렬이 좋은 성능을 보인다고 알려져 있지만 쉬운 문제에서는 단순한 버블 정렬로도 쉽게 풀 수 있으며 시간 또한 버블 정렬이 더 빠른 것을 알 수 있었다.</p>
+:ET

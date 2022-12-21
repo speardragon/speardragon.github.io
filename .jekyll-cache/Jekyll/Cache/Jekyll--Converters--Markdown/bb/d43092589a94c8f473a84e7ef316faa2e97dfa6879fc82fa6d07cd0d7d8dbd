@@ -1,0 +1,470 @@
+I"I<p><br /></p>
+
+<h2 id="시스템-부팅">시스템 부팅</h2>
+
+<ul>
+  <li>부팅: 커널 이미지를 로딩, 커널 시작 (파워를 키면 부팅 시작)</li>
+  <li>시스템 부팅은 <strong>fork/exec</strong> 시스템 호출을 통해 이루어진다.</li>
+  <li>커널은 구동되면 우선 swapper 프로세스를 생성함
+    <ul>
+      <li>fork/exec을 통해 init 프로세스가 만들어지고</li>
+      <li>이것이 여러 자식 프로세스를 만듬(ex. 여러 개의 getty)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168194104-4aa3d82d-2f61-4e80-9196-c577e1567260.png" alt="image" /></p>
+
+<p>login process의 역할은 로그인을 할 수 있도록 -&gt; 로그인이 끝나면 shell 프로세스 실행</p>
+
+<p><br /></p>
+
+<h2 id="시스템-부팅시험">시스템 부팅(시험)</h2>
+
+<ul>
+  <li>The first process(sched ) with pid =0 is created during boot time, and fork/exec twice.
+    <ul>
+      <li>0 sched</li>
+      <li>1 init</li>
+      <li>2 pagedaemon</li>
+    </ul>
+  </li>
+  <li>Process ID 0 : swapper (scheduler process)
+    <ul>
+      <li>system process</li>
+      <li>part of the kernel</li>
+      <li>no program on disk corresponds to this process
+        <ul>
+          <li>code 자체가 kernel의 일부분이기 때문에 별도의 swapper 실행파일이 존재하지 않는 것이다.(<strong>harddisk에 없음</strong>)</li>
+        </ul>
+      </li>
+      <li>커널 내부에서 만들어진 프로세스로 프로세스 스케줄링을 한다</li>
+    </ul>
+  </li>
+  <li>Process ID 1: init process (초기화 프로세스)
+    <ul>
+      <li><strong>invoked by the kernel</strong> (/etc/init or /sbin/init)</li>
+      <li>/etc/inittab 파일에 기술된 대로 시스템을 초기화
+        <ul>
+          <li>reads the system initialization files (/etc/rc&lt;* - 초기화 할 내용이 저장된 곳)</li>
+          <li>brings the system to a certain state (<strong>multi-user</strong>)</li>
+          <li>creates processes based upon script files getty, login process, mounting file systems, start daemon processes</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Process ID 2: pagedaemon
+    <ul>
+      <li>supports the paging of the virtual memory system</li>
+      <li>kernel process</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="daemons">Daemons</h2>
+
+<ul>
+  <li>A daemon is a <strong>process</strong> that runs in the <strong>background</strong>, not connecting to any controlling terminal.</li>
+  <li>Daemons are normally started at boot time, are run as root or some other special user (such as apache or postfix), and handle system-level tasks</li>
+  <li>A daemon has two general requirements:
+    <ul>
+      <li>it must run as a child of init, and</li>
+      <li>it must <strong>not be connected to a controlling terminal</strong>
+        <ul>
+          <li>background에서 실행 되어야 하기 때문</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="시스템-부팅-1">시스템 부팅</h2>
+
+<ul>
+  <li>getty 프로세스 (/etc/getty)
+    <ul>
+      <li>터미널 디바이스 오픈</li>
+      <li>로그인 프롬프트를 내고 키보드 입력(사용자 ID, pw)을 감지한다.</li>
+      <li><strong>exec</strong> /bin/login, after entering a response to the login prompt.
+        <ul>
+          <li>login 프로세스로 변환하기 위해서 bin/login으로 exec을 한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>login 프로세스
+    <ul>
+      <li>사용자의 로그인 아이디 및 패스워드를 <strong>검사</strong> (/etc/passwd)</li>
+      <li><strong>성공 시</strong>: exec /bin/sh or /bin/csh (<strong>쉘 프로그램</strong>)</li>
+      <li><strong>set the evnironment variables</strong> like HOME, LOGNAME, PATH…</li>
+    </ul>
+  </li>
+  <li>shell 프로세스
+    <ul>
+      <li>시작 파일을 실행한 후에 쉘 프롬프트를 내고 사용자로부터 명령어를 기다린다($    )</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bsd-terminal-logins">BSD Terminal Logins</h2>
+
+<ul>
+  <li>The system administrator creates a file, usually <strong>/etc/ttys</strong>, that has one line per terminal device.
+    <ul>
+      <li>Each line specifies the name of the device and other parameters that are passed to the getty program (전송 속도 등…)</li>
+    </ul>
+  </li>
+  <li>The init process <strong>reads the file /etc/ttys and</strong>, for <strong>every terminal device</strong> that allows a login, does a <strong>fork</strong> followed by an <strong>exec of the program getty</strong></li>
+  <li>Linux Terminal Logins
+    <ul>
+      <li>The Linux login procedure is <strong>very similar</strong> to the BSD procedure</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="터미널-로그인-과정">터미널 로그인 과정</h2>
+
+<ol>
+  <li>init forks once per terminal.
+    <ul>
+      <li>init process가 terminal마다 한 번씩 fork</li>
+    </ul>
+  </li>
+  <li>each child of init execs getty.
+    <ul>
+      <li>getty 실행 파일 exec</li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <p>/etc/ttys: 1 line per terminal device Each line specifies the name of the device and other parameters that has passed to getty program</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168194595-ea636df1-822a-4997-9c43-860cf8f016be.png" alt="image" /></p>
+
+<ul>
+  <li>Processes invoked by init to allow terminal logins.</li>
+  <li>All the processes in this slide have a real user ID 0, and effective user ID <strong>0</strong> – <strong>superuser privileges</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="로그인-후-상태">로그인 후 상태</h2>
+
+<ol>
+  <li><strong>getty</strong> opens for <strong>terminals</strong> for reading and writing and then waits for us to <strong>enter our user name</strong>.
+    <ul>
+      <li>이 때 0, 1, 2 의 file descriptor를 받음</li>
+    </ul>
+  </li>
+  <li>When we enter our user name, <strong>getty execs login</strong>.
+process ID 1</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168476445-08da7261-8817-42a4-a53b-3161ec391899.png" alt="image" /></p>
+
+<p>State of processes after login has been invoked.</p>
+
+<p><br /></p>
+
+<h2 id="terminal-logins">Terminal Logins</h2>
+
+<ol>
+  <li>login reads password and <strong>authenticates</strong>.</li>
+  <li>If we log in correctly, <strong>login</strong> changes to our <strong>home directory</strong>, changes <strong>ownership</strong> of our terminal device, and initializes environment variables.</li>
+  <li>login execs our <strong>login shell</strong>, execl(“/bin/bash”, “-bash”, 0);</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168476488-baed4cf4-e6dc-4ec9-8c14-d8b096055292.png" alt="image" /></p>
+
+<p>Processes after everything is set.</p>
+
+<p><br /></p>
+
+<h2 id="network-logins">Network Logins</h2>
+
+<p>기본적인 방법은 대동소이 하다.</p>
+
+<ul>
+  <li><strong>inetd</strong>
+    <ul>
+      <li>waits for most network connections</li>
+      <li>sometimes called the Internet superserver</li>
+    </ul>
+  </li>
+  <li>As part of the system start-up, init (fork/exec) invokes a shell that executes the shell script <strong>/etc/rc</strong>.
+    <ul>
+      <li>One of the daemons that is started by this shell script is inetd.</li>
+      <li>Once the shell script terminates, the parent process of inetd becomes init;</li>
+      <li><strong>inetd waits for TCP/IP connection requests</strong> to arrive at the host.</li>
+      <li>When a connection request arrives, inetd does a fork and exec of the appropriate program (Telnet)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="network-logins-telnet">Network Logins (Telnet)</h2>
+
+<ul>
+  <li>Let‘s assume that a TCP connection request arrives for the TELNET server.
+    <ul>
+      <li>TELNET is a <strong>remote login application that uses the TCP protocol</strong>.</li>
+      <li><strong>A user on another host</strong> or on the same host <strong>initiates the login</strong> by starting the TELNET client:
+        <ul>
+          <li>telnet hostname</li>
+        </ul>
+      </li>
+      <li>The client opens a TCP connection to hostname, and the program that‘s started on hostname is called the TELNET server.</li>
+      <li>The client and the server then exchange data across the TCP connection using the TELNET application protocol.</li>
+      <li>What has happened is that the user who started the client program is now logged in to the server‘s host.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="telent-서버">TELENT 서버</h2>
+
+<p>The sequence of processes involved in executing the TELNET server, called telnetd</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168195574-61d1b7ea-3095-470d-ba5c-52a3a3dac2ea.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="process-groups-review">Process Groups (review)</h2>
+
+<p>session part를 위한 remind</p>
+
+<ul>
+  <li>Each process is a member of a process group, which is a collection of one or more processes generally associated with each other for the purposes of <strong>job control</strong></li>
+  <li>The primary attribute of a process group is that signals may be sent to all processes in the group: a single action can terminate, stop, or continue all processes in the same process group</li>
+  <li>Each process group is identified by a process group ID (pgid), and has a process group leader</li>
+  <li>The process group ID is equal to the pid of the process group leader.</li>
+  <li>Process groups exist so long as they have one remaining member.</li>
+  <li>Even if the process group leader terminates, the process group continues to exist</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="sessions">Sessions</h2>
+
+<ul>
+  <li>When a new user first logs into a machine, the <strong>login process</strong> creates <strong>a new session</strong> that consists of a <strong>single process</strong>, the user‘s <strong>login shell</strong>.
+    <ul>
+      <li>login process가 만든 새로운 session에 login shell이라는 하나의 process가 만들어짐</li>
+    </ul>
+  </li>
+  <li>The login shell functions as the <strong>session leader</strong>. The <strong>pid of the session leader</strong> is used as the <strong>session ID</strong>.</li>
+  <li>A session is a collection of one or more process groups.</li>
+  <li>Sessions arrange a logged-in user‘s activities, and associate that user with a controlling terminal, which is a specific tty device that handles the user‘s terminal I/O.</li>
+  <li>Consequently, sessions are largely the business of shells</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="sessions-and-process-groups">Sessions and Process Groups</h2>
+
+<ul>
+  <li>On a given system, there are many sessions:
+    <ul>
+      <li>one for each user login session, and others for processes not tied to user login sessions, such as daemons.</li>
+      <li>로그인을 위해서 만들어지는 것이 session</li>
+    </ul>
+  </li>
+  <li>Daemons tend to create their own sessions to avoid the issues of association with other sessions that may exit.</li>
+  <li>pid_t setsid(void);</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="sessions-and-process-groups-1">Sessions and Process Groups</h2>
+
+<ul>
+  <li>Session
+    <ul>
+      <li>
+        <p>login 하는 사용자마다 하나씩 만들어짐</p>
+      </li>
+      <li>A collection of one or more process groups.
+        <ul>
+          <li>login shell process는 자동으로 생성</li>
+          <li>login shell은 session과 같이 만들어지고 계속해서 살아 있지만 다른 process group은 만들어졌다 사라졌다 한다.</li>
+        </ul>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>$ proc1</td>
+              <td>proc2 &amp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>$ proc3</td>
+              <td>proc4</td>
+              <td>proc5</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168476690-f1899c2a-eefb-45fd-8594-e7a8d6abca0c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168195937-a7de9567-d33e-4505-9ea0-f9bb605cce00.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>Session example</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168196012-91b9d550-98db-40cc-9b4d-ff7ef680624e.png" alt="image" /></p>
+
+<p>session은 모두 같다.</p>
+
+<p>shell은 별도의 프로세스 그룹</p>
+
+<p>다른 프로세스 그룹의 parent는 shell.</p>
+
+<p><br /></p>
+
+<h2 id="sessions-1">Sessions</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="n">pid_t</span> <span class="nf">setsid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+		<span class="n">Returns</span><span class="o">:</span> <span class="n">process</span> <span class="n">group</span> <span class="n">ID</span> <span class="k">if</span> <span class="n">OK</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="n">on</span> <span class="n">error</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>create a new session.
+    <ul>
+      <li>The calling process becomes the leader of the new session.</li>
+      <li>The calling process <strong>becomes the process group leader</strong> of the new process group.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="n">pid_t</span> <span class="nf">getsid</span><span class="p">(</span><span class="n">pid_t</span> <span class="n">pid</span><span class="p">);</span>
+	 <span class="n">Returns</span><span class="o">:</span> <span class="n">session</span> <span class="n">leader</span><span class="err">'</span><span class="n">s</span> <span class="n">process</span> <span class="n">group</span> <span class="n">ID</span> <span class="k">if</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">1</span> <span class="n">on</span> <span class="n">error</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>returns the session ID of the process with pid.
+    <ul>
+      <li>getsid(0) returns the session ID of the calling process.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="controlling-terminal">Controlling terminal</h2>
+
+<ul>
+  <li>controlling terminal
+    <ul>
+      <li><strong>A session can have a single controlling terminal</strong>.
+        <ul>
+          <li>Controlling terminal is usually <strong>the terminal device</strong>.</li>
+          <li>/dev/tty</li>
+        </ul>
+      </li>
+      <li><strong>A session</strong> may have a single foreground process group and one or more background process groups.</li>
+      <li><strong>The session leader</strong> that established the connection to the controlling terminal is called <strong>controlling process</strong>.</li>
+      <li><strong>interrupt or quit signal</strong> are <strong>sent to all processes</strong> in the foreground process group.</li>
+      <li>hang-up signal is sent to the controlling process</li>
+    </ul>
+  </li>
+  <li>Process groups and sessions showing controlling terminal
+    <ul>
+      <li>여러 개의 process group이 하나의 controlling terminal과 연결 되어 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168196311-ba1e3f29-57eb-4919-a50c-fb9ac5f373fe.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="interaction-with-the-terminal-driver생략">Interaction with the terminal driver(생략)</h2>
+
+<ul>
+  <li>A special terminal character affects the foreground job:
+    <ul>
+      <li>the suspend key (typically Control-Z).</li>
+    </ul>
+  </li>
+  <li>Entering this character causes the terminal driver to send the SIGTSTP signal to all processes in the foreground process group.</li>
+  <li>The jobs in any background process groups aren‘t affected.</li>
+  <li>The terminal driver looks for three special characters, which generate signals to the foreground process group.
+    <ul>
+      <li>The interrupt character (typically DELETE or Control-C) generates SIGINT.</li>
+      <li>The quit character (typically Control-backslash) generates SIGQUIT.</li>
+      <li>The suspend character (typically Control-Z) generates SIGTSTP.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Another job control condition that must be handled by the terminal driver.
+    <ul>
+      <li>Since we can have a foreground job and one or more background jobs, which of these receives the characters that we enter at the terminal?</li>
+      <li>Only the foreground job receives terminal input.</li>
+      <li>It is not an error for a background job to try to read from the terminal,</li>
+      <li>but the terminal driver detects this and sends a special signal to the background job: SIGTTIN.</li>
+      <li>This signal normally stops the background job; by using the shell, we are notified of this event and can bring the job into the foreground so that it can read from the terminal.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="login-and-session-summary">Login and session summary</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168196621-4d8dbf0b-7266-4a06-bd44-c26d2874c9c7.png" alt="image" /></p>
+
+<p>getty를 통해 login을 하면 shell이 fork/exec을 한다.</p>
+
+<p>init에서 getty로 내려올 때는 fork/exec하고 login으로 user name을 받고</p>
+
+<p>getty에서 login process로 exec()하여 password를 받고 인증 절차를 거친 다음에 맞다고 판단되면 login shell로 exec()해서 shell command를 낸다.</p>
+
+<p><br /></p>
+
+<h2 id="핵심-개념">핵심 개념</h2>
+
+<ul>
+  <li>프로세스는 실행 중인 프로그램이다.</li>
+  <li>fork() 시스템 호출은 부모 프로세스를 똑같이 복제하여 새로운 자식 프로세스를 생성한다.</li>
+  <li>exec() 시스템 호출은 프로세스 내의 프로그램을 새로운 프로그램으로 대치하여 새로운 프로그램을 실행시킨다.</li>
+  <li>시스템 부팅은 fork/exec 시스템 호출을 통해 이루어진다.</li>
+  <li>시그널은 예기치 않은 사건이 발생할 때 이를 알리는 소프트웨어 인터럽트이다.</li>
+</ul>
+:ET

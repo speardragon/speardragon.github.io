@@ -1,0 +1,2803 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[System Programming] 4장. 파일 입출력 | speardragon note</title>
+<meta name="description" content="4.1 시스템 호출">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[System Programming] 4장. 파일 입출력">
+<meta property="og:url" content="http://localhost:4000/system/system%20programming/System-Programming-4%EC%9E%A5.-%ED%8C%8C%EC%9D%BC-%EC%9E%85%EC%B6%9C%EB%A0%A5/">
+
+
+  <meta property="og:description" content="4.1 시스템 호출">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-25T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/system/system%20programming/System-Programming-4%EC%9E%A5.-%ED%8C%8C%EC%9D%BC-%EC%9E%85%EC%B6%9C%EB%A0%A5/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system" itemprop="item"><span itemprop="name">System</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system-programming" itemprop="item"><span itemprop="name">System programming</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[System Programming] 4장. 파일 입출력</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[System Programming] 4장. 파일 입출력">
+    <meta itemprop="description" content="4.1 시스템 호출">
+    <meta itemprop="datePublished" content="2022-03-25T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/system/system%20programming/System-Programming-4%EC%9E%A5.-%ED%8C%8C%EC%9D%BC-%EC%9E%85%EC%B6%9C%EB%A0%A5/" class="u-url" itemprop="url">[System Programming] 4장. 파일 입출력
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          17 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h1 id="41-시스템-호출">4.1 시스템 호출</h1>
+
+<hr />
+
+<h2 id="대면-수업">대면 수업</h2>
+
+<p>하드디스크에 파일이 저장되는 것을 배움</p>
+
+<p><strong>시스템 호출</strong></p>
+
+<p>응용프로그램에서 뭔가 하드웨어와 관련된 일을 하고 싶은데 내가 할 수가 없으니까 OS한테 요구하는 인터페이스이다.</p>
+
+<p>a.out : program definition</p>
+
+<p>프로세스도 사실상 가상화</p>
+
+<p>OS</p>
+
+<ol>
+  <li>Convinience: to user</li>
+  <li>Efficiency: to itself</li>
+</ol>
+
+<hr />
+
+<h2 id="컴퓨터-시스템-구조">컴퓨터 시스템 구조</h2>
+
+<ul>
+  <li>유닉스 커널(kernel)
+    <ul>
+      <li>하드웨어 위에 탑재된 소프트웨어(kernel)</li>
+      <li><strong>하드웨어를 운영 관리(efficiency)</strong>하여 다음과 같은 <strong>서비스를 응용 프로그램에게 제공(convenient)</strong>
+        <ul>
+          <li>즉, 자원을 관리</li>
+        </ul>
+      </li>
+      <li>파일 관리 (File management)</li>
+      <li>프로세스 관리(Memory mangement)</li>
+      <li>통신 관리(Communication management)</li>
+      <li>주변 장치 관리(Device management)</li>
+      <li>응용 프로그램에게 서비스 제공</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160031305-ed2c70cf-47d6-4d3d-a36f-f8c0a8ce7324.png" alt="image" /></p>
+
+<p>OS가 <code class="language-plaintext highlighter-rouge">CPU, 메모리, 디스크, 주변 장치</code>와 같은 하드웨어를 추상화(abstraction) 하여 응용프로그램한테 제공한다.</p>
+
+<p><br /></p>
+
+<h2 id="저수준-파일-입출력과-고수준-파일-입출력">저수준 파일 입출력과 고수준 파일 입출력</h2>
+
+<p>OS에서는 두 가지의 파일 입출력을 제공한다.</p>
+
+<p>입출력 요구를 어디서 하냐에 따라 나뉘어 지는 것이지 효과는 똑같다.</p>
+
+<ul>
+  <li><strong>저수준 파일 입출력</strong>
+    <ul>
+      <li>유닉스,리눅스가 제공하는 시스템 호출을 직접 사용하는 것 (OS 커널에 더 가깝게)</li>
+      <li>더 낮은 곳에 있어서 저수준임</li>
+      <li>더 어려움</li>
+      <li>유닉스 커널의 시스템 호출을 사용하여 파일 입출력을 실행하며, 특수 파일도 읽고 쓸 수 있다.</li>
+      <li>int fd = open (const char *path, int oflag, [ mode_t mode ]);
+        <ul>
+          <li>리턴값: file descriptor</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>고수준 파일 입출력</strong>
+    <ul>
+      <li>시스템 호출을 직접 사용하는 것이 부담스러운 사람을 위해
+        <ul>
+          <li>커널 함수를 사용하면 커널 컴파일까지 해야하기 때문에 부담스러울 수 있다.</li>
+        </ul>
+      </li>
+      <li><strong>표준 입출력 라이브러리</strong>로 다양한 형태의 파일 입출력 함수를 제공한다. (유닉스 커널의 시스템 호출을 직접 사용하지 않음)</li>
+      <li>FILE *fopen(const char *name, const char *mode)
+        <ul>
+          <li>return: file 구조체</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="시스템-호출">시스템 호출</h2>
+
+<ul>
+  <li>시스템 호출은 커널에 서비스 요청을 위한 프로그래밍 <strong>인터페이스</strong>.</li>
+  <li>응용 프로그램은 시스템 호출을 통해서 커널에 서비스를 요청한다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160031553-e2711aa0-15d5-42cc-995b-d8f66f1ab96a.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>응용 프로그램은 커널에게 서비스 요청을 직접적으로 할 수도 있다.</p>
+  </li>
+  <li>라이브러리 함수를 호출하게 되면 시스템 호출을 이 라이브러리에서 대행을 해 준다.</li>
+  <li>결과적으로는 같지만 응용프로그램이 시스템 호출을 <strong>직접적</strong>으로 하냐 <strong>간접적</strong>으로 하느냐가 다른 것이다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="시스템-호출과-라이브러리-함수의-비교시험">시스템 호출과 라이브러리 함수의 비교<strong>(시험)</strong></h2>
+
+<ul>
+  <li>시스템 호출: 커널의 해당 서비스 모듈을 직접 호출하여 작업하고 결과를 리턴</li>
+  <li>라이브러리 함수: 일반적으로 커널 모듈을 직접 호출 안 함</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160031821-9eef6823-45fd-4fce-9a1a-9aa2200bff20.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>응용프로그램이 직접 시스템 호출을 하는 경우, 영역 변환에 필요한 준비를 시스템 호출 코드가 실행하는 것이다.</p>
+  </li>
+  <li>반면 응용프로그램이 라이브러리를 호출하는 경우 main함수에서 특정 라이브러리 함수를 통해 시스템 호출 코드를 실행시키는 경우 해당 함수 안에 시스템 호출 코드가 있는 것이기 때문에 시스템 호출이 종료 되고 라이브러리 함수로 돌아와 라이브러리 함수가 종료되면 main함수로 돌아오는 것이 과정이라면</li>
+  <li>main함수에서 직접 시스템 호출 코드를 실행하는 경우 사용자 영역에서 커널 영역으로 변환 후 커널이 종료되면 다시 사용자 영역으로 돌아온다.</li>
+</ul>
+
+<p><br /></p>
+
+<p>어떤 CPU든지 유저/커널 모드를 제공함.(특권의 차이)</p>
+
+<p>유저 모드보다 커널 모드에서 더 허용되는 것이 많다. 즉, 유저 모드에서 돌아가지 않는 것이 커널 모드에서 돌아가는 경우가 있다.</p>
+
+<p>멀티 프로그래밍이 될 수 있도록 커널이 도와주는 것</p>
+
+<p><br /></p>
+
+<p>함수 호출을 할 때</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">a</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="n">a</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>시스템 콜은 커널 명령어이기 때문에 stack을 통해서 전달할 수 없고 CPU register에 의해서 전달한다</p>
+
+<p><br /></p>
+
+<h4 id="시스템-호출-과정">시스템 호출 과정</h4>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160032207-fb3f91fe-d06c-489b-bf54-64497d052afa.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>fd: file descriptor의 약자</p>
+  </li>
+  <li>CPU는 외부에서 누가 interrupt를 건 지 알기 위해서</li>
+  <li>system call 같은 경우는 스택으로 인자를 전달할 수 없다.
+    <ul>
+      <li>호출하는 영역은 사용자 영역이지만 호출되는 영역은 커널 영역이기 때문에 스택을 공유하지 않는다.</li>
+    </ul>
+  </li>
+  <li>그래서 CPU 레지스터로 매개변수를 전달하게 된다.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="시스템-호출-요약">시스템 호출 요약</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160034362-fc9b0e08-9005-4bd5-b063-428911592116.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h1 id="42-파일">4.2 파일</h1>
+
+<h2 id="이-장의-기본-내용">이 장의 기본 내용</h2>
+
+<p>파일이 모여있는 것이 파일 시스템.</p>
+
+<p>이를 잘 찾기 위해서 시스템이 잘 정리가 되어있어야 한다.</p>
+
+<ul>
+  <li>Process가 file을 사용하려면?
+    <ul>
+      <li>File system에서 file의 위치를 찾는다. -&gt; open()</li>
+      <li>File의 data를 읽거나 쓴다. -&gt; read()/write()</li>
+      <li>File의 사용을 마친다. -&gt; close()</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162558132-6beac55f-76e7-401d-a40e-2c72f85195a4.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="유닉스에서-파일">유닉스에서 파일</h2>
+
+<ul>
+  <li>연속된 바이트의 나열</li>
+  <li>특별한 다른 <strong>포맷을 정하지 않음</strong>(데이터의 종류가 무엇인지 구분하지 않는다.)
+    <ul>
+      <li>어디서부터 어디까지는 integer만 들어갈 수 있고… 이런 것들이 존재하지 않는다는 것</li>
+    </ul>
+  </li>
+  <li>디스크 파일뿐만 아니라 <strong>외부 장치</strong>에 대한 인터페이스
+    <ul>
+      <li>외부 장치(키보드)도 special file로 간주하여 byte sequnece가 컴퓨터로 읽혀 들어온다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160037209-0f7937a7-4ea5-4421-a74a-5acd0ff63aa9.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="파일-열기open">파일 열기:open()</h2>
+
+<ul>
+  <li>
+    <p>파일을 사용하기 위해서는 먼저 open() 시스템 호출을 이용하여 파일을 열어야 한다.</p>
+  </li>
+  <li>
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="c1"> //defines Various data types used elsewhere(데이터 타입 정의)</span><span class="cp">
+#inlcude &lt;sys/stat.h&gt;  // File information (stat et al.) (파일 정보)
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="c1">     // File opening, locking and other operations</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">open</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="kt">int</span> <span class="n">oflag</span><span class="p">,</span> <span class="p">[</span><span class="n">mode_t</span> <span class="n">mode</span><span class="p">]);</span>
+<span class="c1">// 파일 열기에 성공하면 파일 디스크립터를 반환, 실패하면 -1을 반환한다.</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>몇 가지 헤더파일이 포함되어야 함</li>
+    </ul>
+  </li>
+  <li>
+    <p>return: 파일 디스크립터는 <strong>열린 파일</strong>을 나타내는 번호이다.</p>
+  </li>
+  <li>path: 파일의 경로명</li>
+  <li>oflag: 파일을 열어서 어떤 목적으로 사용할 것 인지를 명시하는 변수</li>
+  <li>mode: 파일의 access permission 값, 새로운 파일을 만드는 경우에만 사용됨.
+    <ul>
+      <li>기존 파일을 여는 경우에는 이 parameter가 의미가 없다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="oflag">Oflag</h4>
+
+<ul>
+  <li>파일을 오픈 할 때 무슨 목적으로 열 것인가</li>
+  <li>Access mode (<mark>One of three constants must be specified.</mark>) ; 아래 셋 중 하나는 반드시 명시
+    <ul>
+      <li>O_RDONLY
+        <ul>
+          <li>읽기 모드, read() 호출은 사용 가능</li>
+        </ul>
+      </li>
+      <li>O_WRONLY
+        <ul>
+          <li>쓰기 모드, write() 호출은 사용 가능</li>
+        </ul>
+      </li>
+      <li>O_RDWR
+        <ul>
+          <li>읽기/쓰기 모드, read(), write() 호출 사용 가능</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>The followings are <strong>optional</strong>.
+    <ul>
+      <li>O_APPEND
+        <ul>
+          <li>데이터를 쓰면 파일 끝에 이어서 첨부된다.</li>
+        </ul>
+      </li>
+      <li>O_CREAT
+        <ul>
+          <li>해당 파일이 없는 경우에 새로 생성하며 mode는 생성할 파일의 사용 권한을 나타낸다.</li>
+          <li>이걸 안 쓰면 -1을 리턴하고 파일을 생성 하지도 않는다.</li>
+        </ul>
+      </li>
+      <li>O_TRUNC
+        <ul>
+          <li>파일이 이미 있는 경우 내용을 지운다.(새로운 파일을 여는 것과 같은 효과)</li>
+        </ul>
+      </li>
+      <li>O_EXCL
+        <ul>
+          <li>O_CREAT와 함께 사용되며 해당 파일이 이미 있으면 오류를 반환</li>
+        </ul>
+      </li>
+      <li>O_NONBLOCK
+        <ul>
+          <li>넌블로킹 모드로 입출력 하도록 한다.</li>
+          <li>넌블록은 디스크에 내용이 다 쓰여지지 않아도 바로 리턴이 가능하다.</li>
+        </ul>
+      </li>
+      <li>O_SYNC
+        <ul>
+          <li>write() 시스템을 호출을 하면 반드시 디스크에 물리적으로 쓴 후에야 반환된다.
+            <ul>
+              <li>Any writes on the resulting file descriptor will block the calling process until the data has been physically written to the underlying hardware.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>nonblock은 디스크에  물리적으로 다 쓰지 않아도 반환이 되지만 sync는 반드시 다 쓴 후에 반환된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="파일-열기-예">파일 열기: 예</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">"account"</span><span class="p">,</span><span class="n">O_RDONLY</span><span class="p">);</span> <span class="c1">//current directory에 존재하는 파일</span>
+<span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDWR</span><span class="p">);</span>
+<span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDWR</span> <span class="o">|</span> <span class="n">O_CREAT</span><span class="p">,</span> <span class="mo">0600</span><span class="p">);</span>
+<span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">"tmpfile"</span><span class="p">,</span> <span class="n">O_WRONLY</span><span class="o">|</span><span class="n">O_CREAT</span><span class="o">|</span><span class="n">O_TRUNC</span><span class="p">,</span> <span class="mo">0600</span><span class="p">);</span>
+<span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">"/sys/log"</span><span class="p">,</span> <span class="n">O_WRONLY</span><span class="o">|</span><span class="n">O_APPEND</span><span class="o">|</span><span class="n">O_CREAT</span><span class="p">,</span> <span class="mo">0600</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">"tmpfile"</span><span class="p">,</span> <span class="n">O_WRONLY</span><span class="o">|</span><span class="n">O_CREAT</span><span class="o">|</span><span class="n">O_EXCL</span><span class="p">,</span> <span class="mo">0666</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="fopenc몰라도됨">fopen.c(몰라도됨)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+     <span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+     	<span class="n">printf</span><span class="p">(</span><span class="s">"파일 열기 오류</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+     <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"파일 %s 열기 성공 : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fd</span><span class="p">);</span>
+     
+     <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+     <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="file-descriptor">File Descriptor</h2>
+
+<ul>
+  <li>현재 열려있는 <strong>파일을 구분</strong>하는 정수값</li>
+  <li>저수준 파일 입출력에서 <strong>열린 파일</strong>을 참조하는데 사용</li>
+  <li><strong>file descriptor table</strong>
+    <ul>
+      <li>kernal이 관리하는 자료구조</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160038332-1cebe98f-bbb8-46b9-b0d1-482571f1fafc.png" alt="image" /></p>
+
+<ul>
+  <li>프로세서가 생성 될 때 0,1,2 index들은 자동으로 프로세스 주소공간(text, data,heap, stack)과 더불어 할당되어진다. (NEW state)</li>
+  <li>처음으로 부여 받는 file descriptor는 3번</li>
+</ul>
+
+<hr />
+
+<p>Q) close(fd)를 하면 file descriptor가 없어지는 것인가?(pop?)</p>
+
+<p>A) ㅇㅇ 3번으로 열렸다가 close하고 또 오픈 하면 3번에 생김.</p>
+
+<hr />
+
+<p><br /></p>
+
+<ul>
+  <li><strong>file descriptor</strong>
+    <ul>
+      <li>all open files are referred to by file descriptors. (<strong>not path name</strong>)</li>
+      <li>how to obtain file descriptor
+        <ul>
+          <li>return value of <strong>open()</strong>, creat()</li>
+        </ul>
+      </li>
+      <li>when we want to read or write a file,
+        <ul>
+          <li>we <strong>identify</strong> the file with the file descriptor</li>
+        </ul>
+      </li>
+      <li>file descriptor is the <span style="color:blue">index of user file descriptor table</span>(배열의 인덱스)</li>
+      <li>STDIN_FILENO(0), STDOUT_FILENO(1), STDERR_FILENO(2)
+        <ul>
+          <li>defined in &lt;unistd.h&gt;</li>
+        </ul>
+      </li>
+      <li>Ranged of file descriptor
+        <ul>
+          <li>0 ~ OPEN_MAX (<strong>63</strong> in many systems)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="파일-생성-creat">파일 생성: creat()</h2>
+
+<ul>
+  <li>creat() 시스템 호출
+    <ul>
+      <li>path가 나타내는 <strong>파일을 생성</strong>하고 <strong>쓰기 전용</strong>으로 연다.</li>
+      <li>생성된 파일의 <strong>사용권한</strong>은 <strong>mode</strong>로 정한다.</li>
+      <li>기존 파일이 있는 경우에는 그 내용을 삭제하고 연다.(O_TRUNC)</li>
+      <li>다음 시스템 호출과 동일
+        <ul>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>open(path, WRONLY</td>
+                  <td>O_CREAT</td>
+                  <td>O_TRUNC, mode);</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+      <li>Note that the file is opened <strong>only for writing.</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">creat</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>파일 생성에 성공하면 파일 디스크립터를, 실패하면 -1을 리턴</p>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>다음과 같이 사용자 영역(user mode)에서 구현 가능함에도 creat()는 system call로 존재하고 있다.</p>
+  </li>
+  <li>
+    <p>최근 glibc에서도 제공</p>
+
+    <ul>
+      <li>
+        <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">creat</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">WRONLY</span> <span class="o">|</span> <span class="n">O_CREAT</span> <span class="o">|</span> <span class="n">O_TRUNC</span><span class="p">,</span> <span class="n">mode</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>        </div>
+      </li>
+      <li>The <strong>GNU C Library</strong> is the GNU Project’s implementation of the C standard library.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="파일-닫기-close">파일 닫기: close()</h2>
+
+<ul>
+  <li>close() 시스템 호출은 fd가 나타내는 파일을 닫는다.</li>
+  <li>종료되면 알아서 OS가 종료 시켜 주지만 explicitly 종료 시켜 주는 것을 <strong>권장</strong></li>
+  <li>When a process termiantes, all of its open files are closed <strong>automatically</strong> by the kernel.
+    <ul>
+      <li>-&gt; Many program often do not explicily close open files.</li>
+    </ul>
+  </li>
+  <li>On Unix-like systems, the interface defined by <strong>unistd.h</strong> is typically made up largely of <strong>system call wrapper functions</strong> such as <strong>fork, pipe</strong> and <strong>I/O</strong> primitives (read, write, close, etc.).</li>
+  <li>&lt;unistd.h&gt; is the <strong>header file</strong> that provides access to the POSIX OS API</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">close</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">);</span>
+<span class="c1">//fd가 나타내는 파일을 닫는다.</span>
+<span class="c1">//성공하면 0, 실패하면 -1을 리턴한다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="데이터-읽기-read">데이터 읽기: read()</h2>
+
+<ul>
+  <li>read()  시스템 호출
+    <ul>
+      <li>read up to nbytes from file (fd) into the buffer starting at <em>buf</em>
+        <ul>
+          <li>read() <strong>starts</strong> at the file’s <strong>current offset</strong>.</li>
+          <li>Before a successful return, the offset is incremented by the number of bytes actually read.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">ssize_t</span> <span class="nf">read</span> <span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nbytes</span><span class="p">);</span>
+<span class="c1">// fd의 위치의 파일을 n바이트만큼 읽어서 buf위치부터 시작해서 저장하여 읽는다.</span>
+<span class="c1">//파일 읽기에 성공하면 읽은 바이트 수, 파일 끝을 만나면 0</span>
+<span class="c1">//실패하면 -1을 리턴</span>
+<span class="c1">//(size_t: unsigned integer)</span>
+<span class="c1">//(ssize_t: signed integer)</span>
+</code></pre></div></div>
+
+<p>read 시스템콜을 또 찾아가서 read하는 것은 귀찮기 때문에 file descriptor로 하는 것.</p>
+
+<p>항상 n 바이트가 읽혀지는 게 보장되는 것이 아님</p>
+
+<p><br /></p>
+
+<h2 id="fsizec">fsize.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#define BUFSIZE 512
+</span>
+<span class="cm">/* 파일 크기를 계산 한다.*/</span>
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argc</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFSIZE</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+    <span class="kt">ssize_t</span> <span class="n">nread</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDONLY</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">perror</span><span class="p">(</span><span class="n">argc</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    
+    <span class="cm">/* 파일의 끝에 도달할 때까지 반복해서 읽으면서 파일 크기 계산 */</span>
+    <span class="k">while</span><span class="p">((</span><span class="n">nread</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">BUFSIZE</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> 
+         <span class="n">total</span> <span class="o">+=</span> <span class="n">nread</span><span class="p">;</span>
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">"%s 파일 크기 : %ld 바이트 </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">total</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="err">}</span>
+</code></pre></div></div>
+
+<p>파일의 크기가 BUFSIZE보다 클 수도 있기 때문에 while loop를 돌면서 buf에 copy하는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="read">read()</h2>
+
+<ul>
+  <li>The number of bytes actually read may be less than the amount requested.</li>
+  <li>요구된 양의 바이트보다 덜 읽게 되는 경우는 다음과 같다.
+    <ul>
+      <li>If <strong>the end of regular file</strong> is reached before the requested number of bytes has been read.</li>
+      <li>When reading from a <strong>terminal</strong> device, up to <strong>one line</strong> is read at a time.
+        <ul>
+          <li>엔터 키를 치면 다음 라인으로 넘어간다.</li>
+        </ul>
+      </li>
+      <li>When reading from a network, <strong>buffering</strong> within the network may cause less than the requested amount to be returned.</li>
+      <li>When reading from a <strong>pipe</strong>, if the pipe contains <strong>fewer bytes</strong> than requested, read will return only what is available.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="데이터-쓰기-write">데이터 쓰기: write()</h2>
+
+<ul>
+  <li>write() 시스템 호출
+    <ul>
+      <li>writes up to nbytes to the file referenced by filedes from the buffer starting at buf</li>
+      <li>write <strong>start</strong> at the <span style="color:blue">file’s current offset.</span></li>
+      <li>if O_APPEND was specified when the file was opened
+        <ul>
+          <li>The file’s offset is set to the <strong>end of file</strong> before write</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">ssize_t</span> <span class="nf">write</span> <span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nbytes</span><span class="p">);</span>
+<span class="c1">// 파일에 쓰기를 성공하면 실제 쓰여진 바이트 수를 리턴하고, 실패하면 -1을 리턴</span>
+</code></pre></div></div>
+
+<p>쓰고 싶은 내용은 buf에서 시작하여 그 내용이 담겨져 있는데 buf부터 nbytes 만큼을 fd가 가리키는 파일에 작성하는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="copyc">copy.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span>
+<span class="cm">/* 파일 복사 프로그램 */</span>
+<span class="n">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argc</span><span class="p">[])</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">fd1</span><span class="p">,</span> <span class="n">fd2</span><span class="p">,</span> <span class="n">n</span><span class="p">;</span>
+     <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">BUFSIZ</span><span class="p">];</span>
+    
+     <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+     	<span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">"사용법: %s file1 file2</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+     <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> 
+     <span class="p">}</span>
+    
+     <span class="k">if</span> <span class="p">((</span><span class="n">fd1</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDONLY</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//source 파일</span>
+         <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+         <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+     <span class="p">}</span>
+    
+     <span class="k">if</span> <span class="p">((</span><span class="n">fd2</span> <span class="o">=</span><span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">O_WRONLY</span> <span class="o">|</span> <span class="n">O_CREAT</span> <span class="o">|</span> <span class="n">O_TRUNC</span> <span class="mo">0644</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//des 파일</span>
+         <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+         <span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+     <span class="p">}</span>
+    
+     <span class="k">while</span> <span class="p">((</span><span class="n">n</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd1</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">BUFSIZ</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+         <span class="n">write</span><span class="p">(</span><span class="n">fd2</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span> <span class="c1">// 읽은 내용을 쓴다.</span>
+         <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Q)O_APPEND를 명시하지 않아도 파일의 커서가 while loop가 끝나면 파일의 처음에 가 있는 것이 아니라 end of file에 가 있는 것인가?</p>
+
+<p>A) O_APPEND는 파일을 열 때 명시하는 것으로 파일을 읽거나 쓰면 파일의 커서는 해당 위치로 옮겨져서 다시 움직이지 않는다면 파일이 닫힐 때까지 움직이지 않는다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="파일-디스크립터-복제">파일 디스크립터 복제</h2>
+
+<ul>
+  <li>dup()/dup2() 호출은 기존의 파일 디스크립터를 복제한다.</li>
+  <li>기존의 file descriptor가 가리키던 파일을 같이 가리키는 file descriptor를 하나 더 만드는 기능</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">dup</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">);</span>
+<span class="c1">//oldfd에 대한 복제본인 새로운 파일 디스크립터를 생성하여 반환한다.</span>
+<span class="c1">//실패하면 –1을 반환한다.</span>
+
+<span class="kt">int</span> <span class="nf">dup2</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">newfd</span><span class="p">);</span>
+<span class="c1">//oldfd을 newfd에 복제하고 복제된 새로운 파일 디스크립터를 반환하고 실패하면 -1을 반환한다.</span>
+</code></pre></div></div>
+
+<p>Q) 왜 fd2 = fd1 으로 하면 안 되지?</p>
+
+<p>A) 바로 아래에 나옴</p>
+
+<ul>
+  <li>저렇게 하면 file descriptor를 하나 더 만드는 것이 아니다. 물론 접근은 할 수 있겠다만은…</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160048835-3ebc0fba-5591-40f4-be32-2e5194e0f1b7.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="dup-and-dup2">dup() and dup2()</h2>
+
+<ul>
+  <li>
+    <p><mark>실제로는 dup()가 oldfd를 반환해 주는 것이 아니라 kernel 안에서 kernal data structure에 대한 수정이 일어난다.</mark></p>
+  </li>
+  <li>
+    <p>Kernel data structures after “dup(1)”</p>
+    <ul>
+      <li>The next available descriptor is 3.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160048908-a84b4359-ab19-4a2e-8cf5-ba7fbe7e80db.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p><strong>Example</strong> (중요)</p>
+
+    <ul>
+      <li>
+        <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+        
+    <span class="n">fd</span> <span class="o">=</span> <span class="n">creat</span><span class="p">(</span><span class="s">"dup_result"</span><span class="p">,</span> <span class="mo">0644</span><span class="p">);</span> <span class="c1">// fd = 3</span>
+    <span class="n">dup2</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">STDOUT_FILENO</span><span class="p">);</span> <span class="c1">// STDOUT_FILENO = fd</span>
+        
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+        
+    <span class="n">printf</span><span class="p">(</span><span class="s">"hello world</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>        </div>
+
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+    
+<span class="err">$</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160264508-f23f7616-14bc-4c15-8fc4-0232f2217165.png" alt="image" /></p>
+
+<p>아무 것도 실행이 되지 않는데 이는 STDOUT_FILENO 즉, 표준 파일 출력 descriptor를 fd가 가리키는 file로 포인팅을 바꾸어 표준 출력을 하지 못해 printf() 가 작동하지 않았기 때문이다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>실행</p>
+
+    <ul>
+      <li>
+        <pre><code class="language-assembly">$ cat dup_result
+hello world
+</code></pre>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>파일을 STDOUT table에 복제를 하여 표준 출력을 사용할 수 없게 되고 코드의 결과인 printf가 실행되지 못할 것이다.</p>
+
+<p>그래서 만약 출력을 하고 싶으면 cat 명령어를 사용해야 한다.</p>
+
+<ul>
+  <li>파일 출력은 가능하기 때문에</li>
+</ul>
+
+<p>그래서 모니터에 출력 된 것이 아니라 파일에 출력된 것을 확인할 수 있다.</p>
+
+<p><br /></p>
+
+<h2 id="dupc">dup.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd1</span><span class="p">,</span> <span class="n">fd2</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">((</span><span class="n">fd1</span> <span class="o">=</span> <span class="n">creat</span><span class="p">(</span><span class="s">"myfile"</span><span class="p">,</span> <span class="mo">0600</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    	<span class="n">perror</span><span class="p">(</span><span class="s">"myfile"</span><span class="p">);</span>
+
+    <span class="n">write</span><span class="p">(</span><span class="n">fd1</span><span class="p">,</span> <span class="s">"Hello! Linux"</span><span class="p">,</span> <span class="mi">12</span><span class="p">);</span>
+    <span class="n">fd2</span> <span class="o">=</span> <span class="n">dup</span><span class="p">(</span><span class="n">fd1</span><span class="p">);</span>
+    <span class="n">write</span><span class="p">(</span><span class="n">fd2</span><span class="p">,</span> <span class="s">"Bye! Linux"</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>dup
+<span class="nv">$ </span><span class="nb">cat </span>myfile
+Hello! LinuxBye! Linux
+</code></pre></div></div>
+
+<p>fd1과 fd1을 duplicate한 fd2는 같은 파일을 가리키기 때문에 두 파일이 이어져서 작성이 되었다.</p>
+
+<p><br /></p>
+
+<h2 id="sync-fsync-and-fdatasync">sync(), fsync(), and fdatasync()</h2>
+
+<p>data를 파일에 write할 때 하드디스크에 직접 쓰면 속도가 매우 느리다.</p>
+
+<p>그래서 직접 쓰여지는 것이 아니라 (너무 오래걸리기 때문에) buffer cache에 써두었다가 나중에 사용되게 한다.(daemon에 의해서 주기적으로 update된다.)</p>
+
+<p>CPU-M.M 은 방식이 다르다 CPU와 M.M 사이에 있는 cache는 읽기 목적으로 사용되는 것이다. (write는 cache로 동작되지 않고 바로 memory에 쓰여진다.)</p>
+
+<ul>
+  <li><strong>Delayed write</strong>
+    <ul>
+      <li>When write data to a file, the data is copied into buffers.
+        <ul>
+          <li>file에 데이터가 write 될 때 file에 쓰여지는 것이 아니라 buffer에 쓰여지는 것이다.</li>
+        </ul>
+      </li>
+      <li>The data is physically written to disk at some later time.(디스크에는 나중에 쓰여짐)</li>
+      <li>이를 사용하는 이유 -&gt; 동일한 데이터에 대한 연속적인 read/write시 <strong>성능 향상</strong>.(I/O 성능 향상)</li>
+    </ul>
+  </li>
+  <li>When the <strong>delayed-write</strong> blocks are written to disk?
+    <ul>
+      <li>Buffer is filled with the delayed-write blocks or</li>
+      <li>Periodically by update <strong>daemon</strong> (usually every 30 seconds)</li>
+      <li><mark>이 주기보다 빠른 주기로 반영하고 싶을 때 사용하는 것이 sync()</mark>
+        <ul>
+          <li>반영이라는 말이 ‘key word’</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">fsync</span><span class="p">(</span><span class="kt">int</span> <span class="n">filedes</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">fdatasync</span><span class="p">(</span><span class="kt">int</span> <span class="n">filedes</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">sync</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 
+<span class="c1">//Returns: 0 if OK, -1 on error</span>
+</code></pre></div></div>
+
+<ul>
+  <li>sync()
+    <ul>
+      <li>리턴 타입이 void : 항상 성공을 보장한다는 의미</li>
+      <li>Write <strong>all</strong> the modified buffer blocks to disk.</li>
+      <li>파일에 관계없이 바로 디스크에 써라, (buffer cache에 있는 수정된)모든 modified buffer blocks을 디스크에 쓰여짐.
+        <ul>
+          <li>근데 이거는 <strong>모든</strong> modifies block을 write해야 하기 때문에 굉장히 오래 걸릴 수가 있는데</li>
+          <li>1바이트 단위가 아니라 한 번 데이터를 가져가러 갔을 때 그 근처의 모든 데이터를 다 가져온다는 것을 의미하는 block 단위로 가져옴</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>fsync()
+    <ul>
+      <li>Write only the modified (<strong>data + attribute</strong>) buffer blocks of a single file.</li>
+      <li>data block + attribute block</li>
+      <li>특정 파일에 대해서만 write (<strong>특히 file descriptor와 관련된 것들</strong>)</li>
+    </ul>
+  </li>
+  <li>fdatasync()
+    <ul>
+      <li>Write <strong>only</strong> the modified <strong>data</strong> buffer blocks of a single file.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fcntl">fcntl()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">fcntl</span><span class="p">(</span><span class="kt">int</span> <span class="n">filedes</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="p">...</span><span class="cm">/*int arg*/</span><span class="p">);</span> <span class="c1">// filedes:파일디스크립터, cmd: 커맨드</span>
+<span class="c1">//Return: depends on cmd if OK (see following), -1 on error</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>파일 컨트롤 할 때 대상 파일에 대해서 커맨드대로 <strong>파일 특성을 변경</strong>해달라는 명령어</p>
+  </li>
+  <li>Change the properties of a file that is <strong>already open</strong>
+    <ul>
+      <li>Duplicate an existing desciptor (cmd = F_DUPFD)</li>
+      <li>Get/set file descriptor flags (cmd = F_GETFD or F_SETFD)</li>
+      <li>Get/set file status flags (cmd = F_GETFL or F_SETFL)</li>
+      <li>Get/set asynchronous I/O ownership (cmd = F_GETOWN or F_SETOWN)</li>
+      <li>Get/set record <strong>locks</strong> (cmd = F_GETLK, F_SETLK, or F_SETLKW)</li>
+    </ul>
+  </li>
+  <li>example</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* include header files 생략 */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">mode</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">value</span><span class="p">;</span>
+    
+     <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">"test.sh"</span><span class="p">,</span> <span class="n">O_RDONLY</span><span class="o">|</span><span class="n">O_CREAT</span><span class="p">);</span>
+     <span class="n">value</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_GETFL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">//status flag 읽어오기 -&gt; value에 저장</span>
+    
+     <span class="n">mode</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="n">O_ACCMODE</span><span class="p">;</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="n">O_RDONLY</span><span class="p">)</span>
+     	<span class="n">printf</span><span class="p">(</span><span class="s">"O_RDONLY setting</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+     <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="n">O_WRONLY</span><span class="p">)</span>
+     	<span class="n">printf</span><span class="p">(</span><span class="s">"O_WRONLY setting</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+     <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="n">O_RDWR</span><span class="p">)</span>
+     	<span class="n">printf</span><span class="p">(</span><span class="s">"O_RDWR setting</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>실행</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ./fgetfl_test</span>
+O_RDONLY setting
+<span class="nv">$ </span>
+</code></pre></div></div>
+
+<p>open 할 때 RDONLY로 열어서 위와 같은 결과가 나옴</p>
+
+<ul>
+  <li>Macro: int <strong>O_ACCMODE</strong>
+    <ul>
+      <li>This macro stands for <strong>a mask</strong> that can be <mark>bitwise-ANDed</mark> with <strong>the file status flag</strong> value to produce a value representing the file access mode. The mode will be O_RDONLY, O_WRONLY, or O_RDWR.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h1 id="43-임의-접근-파일">4.3 임의 접근 파일</h1>
+
+<h2 id="파일-위치-포인터file-position-pointer">파일 위치 포인터(file position pointer)</h2>
+
+<ul>
+  <li>파일 위치 포인터는 파일 내에 읽거나 쓸 위치인 현재 파일 위치(currnet file position)를 가리킨다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160050554-ecab5614-966a-4c0b-958c-378b86764516.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="파일-위치-포인터-이동-lseek">파일 위치 포인터 이동: lseek()</h2>
+
+<ul>
+  <li>lseek() 시스템 호출
+    <ul>
+      <li><strong>임의의 위치로</strong> 파일 위치 포인터를 이동시킬 수 있다.</li>
+      <li>The offset for regular files must be non-negative</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">off_t</span> <span class="nf">lseek</span> <span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span> <span class="c1">//whence:기준점</span>
+<span class="c1">//이동에 성공하면 현재 위치(measured in bytes from the beginning of the file)를 리턴하고 실패하면 -1을 리턴한다.</span>
+</code></pre></div></div>
+
+<ul>
+  <li>off_t: 리눅스나 c에서 사용하는 데이터 타입 (의미를 부여하기 위해 사용하는 데이터 타입)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160050692-1709068a-0b5c-49c5-9e2b-d6b522c1c0d8.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p><strong>lseek()</strong></p>
+
+<ul>
+  <li>whence
+    <ul>
+      <li>SEEK_SET
+        <ul>
+          <li>The offset is set to offset bytes from <strong>the beginning of the file.</strong></li>
+        </ul>
+      </li>
+      <li>SEEK_CUR
+        <ul>
+          <li>The offset is set to <strong>its current location</strong> plus offset bytes.</li>
+        </ul>
+      </li>
+      <li>SEEK_END
+        <ul>
+          <li>The offset is set to <strong>the size of the file</strong> plus offset bytes.(파일의 마지막)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="파일-위치-포인터이동-예">파일 위치 포인터이동: 예</h2>
+
+<ul>
+  <li>파일 위치 이동
+    <ul>
+      <li>lseek(fd, 0L, SEEK_SET);  // 파일 시작으로 이동(rewind)</li>
+      <li>lseek(fd, 100L, SEEK_SET); // 파일 시작에서 100바이트 위치로</li>
+      <li>lseek(fd, 0L, SEEK_END); //파일 끝으로 이동 (일종의 append 하기 위한 행동)</li>
+      <li>lseek(fd, 100L, SEEK_CUR); //현재위치에서 100바이트 이동</li>
+    </ul>
+  </li>
+  <li>레코드 단위로 이동 (레코드 구조체의 size만큼 이동한다.)
+    <ul>
+      <li>lseek(fd, n * sizeof(record), SEEK_SET); //n+1번째 레코드 시작위치로</li>
+      <li>lseek(fd, sizeof(record), SEEK_CUR); //다음 레코드 시작위치로</li>
+      <li>lseek(fd, -sizeof(record), SEEK_CUR); // 전 레코드 시작위치로</li>
+    </ul>
+  </li>
+  <li>파일 끝 이후로 이동
+    <ul>
+      <li>lseek(fd, sizeof(record), SEEK_END);  //파일 끝에서 한 레코드 다음 위치로
+        <ul>
+          <li>빈 공간을 의미하는 hole이 발생함.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>hole</strong></p>
+
+<ul>
+  <li>The file’s offset can be greater than the file’s size.
+    <ul>
+      <li>offset은 file size보다 커도 상관없다.</li>
+      <li>Next write to the file will extend the file.</li>
+    </ul>
+  </li>
+  <li>It means that a <strong>hole</strong> in file is created and is allowed.</li>
+  <li>read from the data in hole <strong>returns 0</strong>.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160264881-a319ead0-778c-429b-96b0-414dafdb177d.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p><strong>example</strong></p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h"</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span>  
+<span class="kt">char</span> <span class="n">buf1</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"abcdefghij"</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">buf2</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"ABCDEFGHIJ"</span><span class="p">;</span>
+  
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+      
+    <span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">creat</span><span class="p">(</span><span class="s">"file.hole"</span><span class="p">,</span> <span class="n">FILE_MODE</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+   		<span class="n">err_sys</span><span class="p">(</span><span class="s">"creat error"</span><span class="p">);</span>
+    <span class="cm">/* FILE_MODE is defined as 644 in “apue.h”.; rw-r--r--*/</span>
+    <span class="cm">/* offset now = 0 */</span>
+      
+    <span class="k">if</span> <span class="p">(</span><span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">)</span>
+    	<span class="n">err_sys</span><span class="p">(</span><span class="s">"buf1 write error"</span><span class="p">);</span>
+    <span class="cm">/* offset now = 10 */</span>
+      
+    <span class="k">if</span> <span class="p">(</span><span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="mi">16384</span><span class="p">,</span> <span class="n">SEEK_SET</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">//16374 만큼의 hole이 생성됨.</span>
+    	<span class="n">err_sys</span><span class="p">(</span><span class="s">"lseek error"</span><span class="p">);</span>
+    <span class="cm">/* offset now = 16384 */</span>
+      
+    <span class="k">if</span> <span class="p">(</span><span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">// hole 뒤에 write</span>
+    	<span class="n">err_sys</span><span class="p">(</span><span class="s">"buf2 write error"</span><span class="p">);</span>
+    <span class="cm">/* offset now = 16394 */</span>
+      
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>실행 예</p>
+  </li>
+  <li>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> file.hole 	check its size
+<span class="nt">-rw-r--r--</span> 1 sar	16394 Nov 25 01:01 file.hole <span class="c"># file size : 0~16393  -&gt; 16394 bytes</span>
+<span class="nv">$ </span><span class="nb">od</span> <span class="nt">-c</span> file.hole	<span class="nb">let</span><span class="s1">'s look at the actual contents
+0000000 a b c d e f g h i j \0 \0 \0 \0 \0 \0
+0000020 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0
+*
+0040000 A B C D E F G H I J  //16384 = 40000(8)
+0040012						//16394 = 40012(8)
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <blockquote>
+      <p>od utility: dump files in octal.(8진수로 file을 dump)</p>
+
+      <p>​              -c: print the contents as characters.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p><mark>Are the disk blocks allocated for hole?</mark></p>
+
+    <ul>
+      <li>hole도 하드디스크가 할당될까?</li>
+    </ul>
+  </li>
+  <li>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-ls</span> file.hole file.nohole
+ 	8 <span class="nt">-rw-r--r--</span> 1 sar 			16394 Nov 25 01:01 file.hole
+ 	20 <span class="nt">-rw-r--r--</span> 1 sar 		16394 Nov 25 01:03 file.nohole
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Compare the sizes of file.hole and file.nohole</p>
+
+    <ul>
+      <li>file.hole: with hole
+        <ul>
+          <li>8 blocks are allocated.</li>
+          <li>so, <span style="color:red">하드디스크의 공간을 차지하지 않는다.</span></li>
+        </ul>
+      </li>
+      <li>file.nohole: a file of the same size, but without holes.
+        <ul>
+          <li>20 blocks are allocated.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>ls utility</p>
+
+  <p>-s: with -l, print size of each file, in blocks.</p>
+
+  <p>-s를 포함시켜서 block 수가 나온 것이다.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h2 id="레코드-저장-예">레코드 저장 예</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record1</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">));</span>
+<span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record2</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">));</span>
+<span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_END</span><span class="p">);</span> 
+<span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record3</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">));</span> <span class="c1">//hole 생성</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160264999-adc81c14-0c9e-48ef-b0f1-914ad46162d5.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="dbcreatec">dbcreate.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"student.h"</span><span class="cp">
+</span>
+<span class="cm">/* 학생 정보를 입력받아 데이터베이스 파일에 저장한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="n">record</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    	<span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법 : %s file</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    	<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_WRONLY</span><span class="o">|</span><span class="n">O_CREAT</span><span class="o">|</span><span class="n">O_EXCL</span><span class="p">,</span> <span class="mo">0640</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    	<span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    	<span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%-9s %-8s %-4s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">"학번"</span><span class="p">,</span> <span class="s">"이름"</span><span class="p">,</span> <span class="s">"점수"</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %s %d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="n">id</span> <span class="o">-</span> <span class="n">START_ID</span><span class="p">)</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_SET</span><span class="p">);</span>
+        <span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>학생의 학번에 따라 해당 학생의 정보가 저장될 레코드 주소가 부여되고 그 주소로 가서 정보를 저장하기 위해서는 학생의 id에서 START_ID를 뺀 값에 레코드 크기를 곱하여 이동 한뒤에 정보를 작성하면 그 전에 있는 학생들의 공간을 침해하지 않고 (즉, 그 공간들은 hole로 남겨 둔 채) 해당 학생의 정보를 저장하게 된다.</p>
+
+<p><br /></p>
+
+<h2 id="studenth">student.h</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define MAX 24
+#define START_ID 1401001 //학생들이 부여 받는 학번 중에서 가장 작은 값
+</span><span class="k">struct</span> <span class="n">student</span> <span class="p">{</span>
+ <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="n">MAX</span><span class="p">];</span>
+ <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+ <span class="kt">int</span> <span class="n">score</span><span class="p">;</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<hr />
+
+<h2 id="dbqueryc">dbquery.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"student.h"</span><span class="cp">
+</span>
+<span class="cm">/* 학번을 입력받아 해당 학생의 레코드를 파일에서 읽어 출력한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">id</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="n">record</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법 : %s file</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDONLY</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">do</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">검색할 학생의 학번 입력:"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="n">id</span><span class="o">-</span><span class="n">START_ID</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_SET</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"이름:%s</span><span class="se">\t</span><span class="s"> 학번:%d</span><span class="se">\t</span><span class="s"> 점수:%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">);</span>
+            <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"레코드 %d 없음</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">id</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"입력 오류"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"계속하겠습니까?(Y/N)"</span><span class="p">);</span>
+        <span class="n">scanf</span><span class="p">(</span><span class="s">" %c"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">c</span><span class="o">==</span><span class="sc">'Y'</span><span class="p">);</span>
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Q) if (scanf(“%d”, &amp;id) == 1)  -&gt;  이게 무슨 뜻이지?</p>
+
+<p>A) scanf의 입력 인자가 1이면 즉, 숫자 한 개를 제대로 입력 받았으면 다음 코드를 실행하라는 의미</p>
+
+<ul>
+  <li>띄어쓰기가 없이 입력을 잘 받았다는 뜻</li>
+</ul>
+
+<h2 id="레코드-수정-과정">레코드 수정 과정</h2>
+
+<ol>
+  <li>파일로부터 해당 레코드를 읽어서</li>
+  <li>이 레코드를 수정한 후에</li>
+  <li>수정된 레코드를 다시 파일 내의 원래 위치에 써야 한다.</li>
+</ol>
+
+<p>즉, 떼어내서 수정하고 다시 붙여넣는 식</p>
+
+<p><br /></p>
+
+<h2 id="레코드-수정">레코드 수정</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160265080-abf6cdea-96d0-4a5e-b4e1-61ef296269b9.png" alt="image" /></p>
+
+<p>수정된 걸 다시 돌려놓기 위해서 lseek를 2번 해야함</p>
+
+<p><br /></p>
+
+<h2 id="dbupdatec">dbupdate.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"student.h"</span><span class="cp">
+</span>
+<span class="cm">/* 학번을 입력받아 해당 학생 레코드를 수정한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">id</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="n">record</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법 : %s file</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">do</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"수정할 학생의 학번 입력: "</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="p">(</span><span class="n">id</span><span class="o">-</span><span class="n">START_ID</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_SET</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"학번:%8d</span><span class="se">\t</span><span class="s"> 이름:%4s</span><span class="se">\t</span><span class="s"> 점수:%4d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">);</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"새로운 점수: "</span><span class="p">);</span>
+                <span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">.</span><span class="n">score</span><span class="p">);</span>
+                <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span> <span class="o">-</span><span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">),</span> <span class="n">SEEK_CUR</span><span class="p">);</span> <span class="c1">//학생 레코드의 처음 위치로 돌아감</span>
+                <span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">record</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">record</span><span class="p">));</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"레코드 %d 없음</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">id</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="n">printf</span><span class="p">(</span><span class="s">"입력오류</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"계속하겠습니까?(Y/N)"</span><span class="p">);</span>
+        <span class="n">scanf</span><span class="p">(</span><span class="s">" %c"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">c</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">'Y'</span><span class="p">);</span>
+    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="핵심-개념">핵심 개념</h2>
+
+<ul>
+  <li>시스템 호출은 커널에 서비스를 요청하기 위한 프로그래밍 인터페이스로 응용 프로그램은 시스템 호출을 통해서 커널에 서비스를 요청할 수 있다.</li>
+  <li>파일 디스크립터는 열린 파일을 나타내는 정수값을 의미한다.</li>
+  <li>open() 시스템 호출을 파일을 열고 열린 파일의 파일 디스크립터를 반환한다.</li>
+  <li>read() 시스템 호출은 지정된 파일에서 원하는 만큼의 데이터를 읽고 
+write() 시스템 호출은 지정된 파일에 원하는 만큼의 데이터를 쓴다.</li>
+  <li>파일 위치 포인터는 파일 내에 읽거나 쓸 위치인 현재 파일 위치를 가리킨다. (커서 역할)</li>
+  <li>lseek() 시스템 호출은 지정된 파일의 현재 파일 위치를 원하는 위치로 이동시킨다</li>
+</ul>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a><span class="sep">, </span>
+    
+      <a href="/tags/#unix" class="page__taxonomy-item p-category" rel="tag">Unix</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#system" class="page__taxonomy-item p-category" rel="tag">System</a><span class="sep">, </span>
+    
+      <a href="/categories/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-03-25T00:00:00+09:00">2022-03-25</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BSystem+Programming%5D+4%EC%9E%A5.+%ED%8C%8C%EC%9D%BC+%EC%9E%85%EC%B6%9C%EB%A0%A5%20http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-4%25EC%259E%25A5.-%25ED%258C%258C%25EC%259D%25BC-%25EC%259E%2585%25EC%25B6%259C%25EB%25A0%25A5%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-4%25EC%259E%25A5.-%25ED%258C%258C%25EC%259D%25BC-%25EC%259E%2585%25EC%25B6%259C%25EB%25A0%25A5%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-4%25EC%259E%25A5.-%25ED%258C%258C%25EC%259D%25BC-%25EC%259E%2585%25EC%25B6%259C%25EB%25A0%25A5%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-R-Type,-J-Type,-I-Type/" class="pagination--pager" title="[Computer Architecture] R-Type, J-Type, I-Type
+">이전</a>
+    
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Sorting/" class="pagination--pager" title="[자료구조와 알고리즘] Sorting
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/system/system%20programming/System-Programming-4%EC%9E%A5.-%ED%8C%8C%EC%9D%BC-%EC%9E%85%EC%B6%9C%EB%A0%A5/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/system/system%20programming/[System Programming] 4장. 파일 입출력"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,562 @@
+I"�U<h1 id="시작하기-앞서">시작하기 앞서</h1>
+
+<p>micro architecture의 대략적인 큰 틀을 먼저 잡아보자.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>PC -&gt; instruction memory, fetch instruction</li>
+  <li>Register numbers -&gt; register file, read registers</li>
+  <li>Depending on instruction class
+    <ul>
+      <li>Use ALU to calculate
+        <ul>
+          <li>Arithmetic result</li>
+          <li>Memory address for load/store</li>
+          <li>Branch target address</li>
+        </ul>
+      </li>
+      <li>Access data memory for load/store</li>
+      <li>PC &lt;- target address or PC + 4</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>instruction이 instruction memory 상에서 4Byte 단위로 저장되어 있기 때문에 각 cycle마다 instruction을 PC에 의해 하나씩 가져오게 되는데 그래서 PC에 4를 더해야 그 다음 instruction memory address를 가리킬 수 있는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="구성">구성</h2>
+
+<h3 id="1-datapath">1. Datapath</h3>
+
+<p>:연산들을 수행하기 위한 여러 유닛들의 구조. MIPS연산에는 크기 5가지로 나누어진다.</p>
+
+<p>① <strong>I</strong>nsturction <strong>F</strong>etch:(Instruction Memory)</p>
+
+<ul>
+  <li>명령어를 메모리에서 CPU로 전달하는 과정</li>
+  <li>PC가 가리키는 메모리 주소에 저장된 데이터를 반환하여 CPU는 이를 copy해서 Instruction Register로 그 명령(data)을 가져온다.</li>
+  <li>현재 처리 중인 명령어는 IR에 저장된다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162255854-7e3aa9d0-4a68-45f2-9a34-669d5e1c23d1.png" alt="image" /></p>
+
+<p>② <strong>I</strong>nstruction <strong>D</strong>ecode &amp; Read Register File:(Register File)</p>
+
+<ul>
+  <li>명령을 해석하고 필요한 레지스터 값을 읽는다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162255895-9ee88682-6ffa-409a-9843-dc89da1e831a.png" alt="image" /></p>
+
+<p>③ <strong>E</strong>xecute operation: (Arithmetic Logic Unit)</p>
+
+<ul>
+  <li>명령에 필요한 연산을 수행한다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162256012-2b626ee9-fda7-4d99-ad98-5778d054c3ff.png" alt="image" /></p>
+
+<p>④ Read from <strong>M</strong>emory:</p>
+
+<ul>
+  <li>lw와 같이 메모리를 읽는 연산의 경우 메모리의 정보를 가져온다. (Memory)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162256364-866a7a94-626c-46de-9854-642a24b0d0ee.png" alt="image" /></p>
+
+<p>⑤ <strong>W</strong>rite <strong>B</strong>ack to register file</p>
+
+<ul>
+  <li>명령의 결과를 필요로 할 경우 레지스터 파일에 쓴다. (Register file)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162256489-85f8bf37-ddb5-4068-96f0-5d1c1f735633.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h1 id="micro-architecture">Micro architecture</h1>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162123262-b3e2bb08-8745-4277-9bb2-96ef88adacf0.png" alt="image" /></p>
+
+<p>위 과정을 1 clock에 수행하는 것을 single cycle이라고 한다.</p>
+
+<p><br /></p>
+
+<p>위 과정은 Abstraction 된 것으로 실제와는 조금 다르다. 그렇지만 직관적이기 때문에 위의 그림으로 설명을 하자면 실행은 다음과 같이 이루어 진다.</p>
+
+<ol>
+  <li>PC(Program Counter)를 전달하고 PC는 PC + 4연산이 진행된다.</li>
+  <li>해당 PC + 4 된 값은 또 가산기에 들어가서 업데이트 된다. (branch target address)</li>
+  <li>2개의 출력이 ALU에 각각 들어간다.</li>
+  <li>ALU의 출력이 다시 Data memory에 들어간다.</li>
+  <li>Data memory에서도 다시 출력이 레지스터로 들어간다.</li>
+</ol>
+
+<p><br /></p>
+
+<p>이제 이 과정을 바탕으로 구조를 점점 구체화시켜 나갈 것이다.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<ul>
+  <li>Microarchitecture: how to  implement an architecture in hardware</li>
+  <li>Processor는 다음 두 가지로 이루어져 있음.
+    <ul>
+      <li>Datapath: functional blocks</li>
+      <li>Control: control signals</li>
+    </ul>
+  </li>
+</ul>
+
+<p>꼭 processor만이 아니라 어떤 hardware를 설계하더라도 디지털 시스템은 위와 같이 구성해야 한다.</p>
+
+<p><br /></p>
+
+<h2 id="microarchitecture">Microarchitecture</h2>
+
+<ul>
+  <li>Multiple implementations for a single  architecture:
+    <ul>
+      <li>Single-cycle: Each instruction executes <strong>in a single cycle</strong></li>
+      <li>Multicycle: Each instruction is broken into series  of shorter steps</li>
+      <li>Pipelined: Each instruction broken up into series  of steps &amp; multiple instructions execute at once</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="processor-performance">Processor Performance</h3>
+
+<ul>
+  <li>Program execution time
+    <ul>
+      <li>Execution Time = (#instructions)(cycles/instruction)(seconds/cycle)</li>
+      <li>Tc = seconds/cycle</li>
+      <li>CPI = cycles/instruction</li>
+    </ul>
+  </li>
+  <li>Definitions:
+    <ul>
+      <li>CPI: Cycles/instruction</li>
+      <li>clock period: seconds/cycle</li>
+      <li>IPC: instructions/cycle = IPC</li>
+    </ul>
+  </li>
+  <li>Challenge is to satisfy constraints of:
+    <ul>
+      <li>Cost</li>
+      <li>Power</li>
+      <li>Performance</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="mips-processor">MIPS Processor</h3>
+
+<ul>
+  <li>Consider subset of MIPS instructions:
+    <ul>
+      <li>R-type instructions: <em>and, or, add, sub, slt</em></li>
+      <li>Memory instructions: <em>lw, sw</em></li>
+      <li>Branch instructions: <em>beq</em></li>
+      <li>Jump: j</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>위와 같은 9개의 기능에 대하여 MIPS microprocessor를 구현해 보도록 하겠다.</p>
+
+<h3 id="single-cycle-implementation">Single-Cycle implementation</h3>
+
+<p>Single cycle implementation이란 <strong>instruction 하나</strong>를 <strong>하나의 cycle</strong>에 수행하는 것을 말한다.</p>
+
+<p>Cycle이 끝나면 새로운 instruction을 수행한다.</p>
+
+<p><br /></p>
+
+<p>Clock이 올라가서부터 다음 clock이 올라가기 전까지 하나의 수행을 마친다.</p>
+
+<p>다음 clock이 올라가는 순간 instruction 수행 결과(state)를 update하고 , 새로운 instruction을 수행한다.</p>
+
+<p>single cycle의 <mark>CPI는 무조건 1이다.</mark></p>
+
+<p><br /></p>
+
+<h3 id="architectural-state">Architectural State</h3>
+
+<ul>
+  <li>Determines everything about a processor:
+    <ul>
+      <li>PC: 새로운 PC로 update한다.</li>
+      <li>32 registers: add, sub, lw 등</li>
+      <li>Memory(data memory): sw 등</li>
+    </ul>
+  </li>
+</ul>
+
+<p>ALU, Decode : Combinational logic</p>
+
+<p><br /></p>
+
+<h3 id="mips-state-elements">MIPS State Elements</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162123912-b8dbf469-c43a-48df-88c3-0052082d1edd.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>clock edge에서 program counter가 바뀜</p>
+  </li>
+  <li>Instruction Memory:
+    <ul>
+      <li>data가 들어오면 바뀔 필요가 없는 ROM 이다.</li>
+      <li>여러 memory 중에서도 클락과 무관하게 address를 받으면 바로 output으로 나오는 Asynchronous ROM이다.(read만 가능)</li>
+    </ul>
+  </li>
+  <li>Register File
+    <ul>
+      <li>read port 두 개 사용
+        <ul>
+          <li>ALU에 두 개의 input을 받기 때문에</li>
+        </ul>
+      </li>
+      <li>Address A1, A2를 받기(읽기) 위한 각각의 read port RD1, RD2가 존재한다.</li>
+      <li>Write port도 존재(WE, CLK에 의해)</li>
+    </ul>
+  </li>
+  <li>Data memory:
+    <ul>
+      <li>read port가 두 개(ALU연산을 위하여)</li>
+      <li>데이터를 넣었다 뺐다 자유자재로 바꾸어야 하기 때문에 RAM</li>
+      <li>WE(write enable)이 active 일 때만 write을 한다.</li>
+      <li>RAM(read/ write 모두 가능)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="single-cycle-mips-processor">Single Cycle MIPS Processor</h2>
+
+<ul>
+  <li>Datapath</li>
+  <li>Control</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="reivew">Reivew)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162221949-152b8e0d-115c-4842-bc3b-a80ae7335e99.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h1 id="lw">lw</h1>
+
+<p>일단 load의 역할을 짚어보면 memory에 있는 data를 register file에 불러오는 것이다. 따라서 memory로부터 받은 정보를 저장할 곳과 memory에 저장된 값을 불러올 건지를 결정하는 부분이 정의되어야 할 것이다.</p>
+
+<h2 id="single-cycle-datapath-lw-fetch">Single-Cycle Datapath: lw fetch</h2>
+
+<p><strong>STEP 1: Fetch instruction</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">lw $3, 4($4)</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">lw rt, address(rs)</code></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162219565-6b4a32b0-c817-4667-a867-c8d2783faee7.png" alt="image" /></p>
+
+<p>PC에서 받아온 값에 의해 IM에서 명령어가 결정된다.(fetch)</p>
+
+<p><br /></p>
+
+<h2 id="single-cycle-datapath-lw-register-read">Single-Cycle Datapath: lw Register Read</h2>
+
+<p><strong>STEP 2: Read source operands from RF</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162152113-1c19ab56-51ea-4f5a-b65f-cc9af72f7526.png" alt="image" /></p>
+
+<p>I[25:21]은 memory의 주소로 Read input으로 들어간다.</p>
+
+<p>즉, source register(rs; $3)를 읽어서 RF에 저장시킨다.</p>
+
+<p><br /></p>
+
+<h2 id="single-cycle-datapath-lw-immediate">Single-Cycle Datapath: lw Immediate</h2>
+
+<p><strong>STEP 3: Sign-extend the immediate</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162152239-6e1d92c7-8001-41f2-ab44-6245571e0d2e.png" alt="image" /></p>
+
+<p>memory의 정확한 address 값을 얻기 위해서 immediate value를 구하여 rs와 더한 결과 값을 구해야 한다.</p>
+
+<p>그런데 이 때 유의해야 할 것은 immediate value 자체는 16bit로 받아오는데 실제 주소의 위치는 32bit로 표현되어 16bit를 32bit로 바꿔주는 과정이 필요한데 이를 위하여 sign extend 모듈에서 해당과정을 수행한다.</p>
+
+<p><br /></p>
+
+<h2 id="single-cycle-datapath-lw-address">Single-Cycle Datapath: lw address</h2>
+
+<p><strong>STEP4: Compute the memory address</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162152342-01c6f27b-8ba1-4a40-9391-848167e78cd1.png" alt="image" /></p>
+
+<p>위 과정을 통해 뽑아온 immediate 값을 사용하기 위해서는 추후에 나올 것이지만 위 그림과 같이 SrcB로 바로 들어가는 것이 아니라 control signal에 포함된 ALUSrc 값이 1로 세팅될 때 해당 값을 사용할 수 있다.</p>
+
+<p>ALU를 통해 data memory address를 계산하여 값을 data memory로 넘긴다.</p>
+
+<p>이 때 덧셈 연산을 해야하므로 ALUControl에 add 신호를 넣어주고 연산의 결과가 ALU의 output으로 나오는데 이 값이 바로 memory의 address이다.</p>
+
+<p><br /></p>
+
+<h2 id="single-cycle-datapath-lw-memory-read">Single-Cycle Datapath: lw Memory Read</h2>
+
+<p><strong>STEP 5: Read data from memory and write it back to register file</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162152459-794c0d55-d335-4f99-b44e-d235734ee63b.png" alt="image" /></p>
+
+<p>target register(데이터를 쓸 공간)인 rt는 Write input(A3)으로 들어간다.</p>
+
+<p>그런 후에 data memory에서 앞서 구한 memory 주소를 바탕으로  해당 값을 찾은 후에 target register인 rt에 해당하는 값을 저장하게 된다.</p>
+
+<p>lw는 RF(register file)에 write을 하는 것이기 때문에 RegWrite이 enable이 될 때 저장이 되고 memory로부터 data를 읽어서 RF의 WD3에 들어오고 rt에 해당하는 A3에 읽어온 데이터가 쓰인다.</p>
+
+<p><br /></p>
+
+<h2 id="single-cycle-datapath-lw-pc-increment">Single-Cycle Datapath: lw PC Increment</h2>
+
+<p><strong>STEP 6: Determine address of next instruction</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162152574-22ad8304-8a85-4a42-befe-c7c355b43c55.png" alt="image" /></p>
+
+<p>PC가 다음 명령을 가져오기 위해서 PC 값에 4를 더하여 다음 명령을 fetch할 준비를 한다.</p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162253084-494fd202-1b3f-4da4-8698-4a7f48b6b5be.png" alt="image" /></p>
+
+<p><br /></p>
+
+<hr />
+
+<h2 id="single-cycle-datapath-sw">Single-Cycle Datapath: sw</h2>
+
+<p><strong>Write data in rt to memory</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162152657-f8ceeedd-3120-4f42-9c49-3c7b62680629.png" alt="image" /></p>
+
+<p>sw(store word) 명령도 역할 자체가 target register의 값을 data memory에 저장하는 것이기 때문에 기본적인 구조는 lw와 비슷하다.</p>
+
+<p>다만, sw는 data memory address를 연산하여 해당 address에다가 write하는 것이기 때문에 A2(rt)의 data를 read하여 MemWrite Control이 1이 될 때 memory에 값을 write한다.</p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162253143-6c2eadec-38ec-4ca0-ad25-cd83c8bb0ad8.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="single-cycle-datapath-r-type">Single-Cycle Datapath: R-Type</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162230096-851c460f-a01e-4a84-97f3-98da49824d23.png" alt="image" /></p>
+
+<ul>
+  <li>Read from rs and rt</li>
+  <li>
+    <p>Write ALUResult to register file</p>
+  </li>
+  <li>Write to rd (instead of rt)</li>
+  <li><code class="language-plaintext highlighter-rouge">add $3, $4, $5</code></li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162152809-5e9f85f4-c430-4a1e-a240-e0174c13aba9.png" alt="image" /></p>
+
+<p>rs에 해당하는 I[25:21]과 rt에 해당하는 I[20:16]을 Read Register에 넘겨준다.</p>
+
+<p>또한 결과는 destination register인 rd에 저장할 것이기 때문에 저장할 rd도 A3에 저장된다.</p>
+
+<ul>
+  <li>이 때 A3는 그냥 들어가는 것이 아니라 RegDst에 의해 결정된 값이 들어가게 되는데 instruction format에 따라서 나눠지는 bit수가 달라지기 때문이다.</li>
+  <li>무슨 말이냐 하면, 해당 control signal은 destination register로 사용할 것인지를 결정하는 것이므로 R-Type의 경우에만 1로 설정이 된다.</li>
+</ul>
+
+<p>그리고 ALUControl에 의해서 무슨 연산을 할 건지를 빼오는데 add에 해당하는 control signal로 설정 후에 두 레지스터 rs, rt에 대해서 연산이 이루어지고 해당 결과가 memory를 거치지 않고(MemtoReg = 0) WD3에 들어와 이 내용이 rd(A3)에 쓰여진다.</p>
+
+<p><strong>Q) R-Type의 경우 opcode가 0이고 funct을 봐야하는데 이 때는 어떻게 하죠?</strong></p>
+
+<p>A) opcode와 funct에 의해 control signal이 결정됨</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162253385-7f5586b4-4c44-433e-a31f-80c915d431d8.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="single-cycle-datapath-beq">Single-Cycle Datapath: beq</h2>
+
+<p>beq 명령어는 사실 직접적으로 memory access를 하지 않으면서도 I-Type instruction을 사용한다.</p>
+
+<p>컨셉은 정상적인 수행일 때는 PC += 4가 행해지고,</p>
+
+<p>만약 branch인 경우에는 지정된 주소를 기준으로 immediate 만큼 떨어진 곳으로 이동하게끔 된다. 그런데 이 때 PC는 4byte 단위의 값을 지정하기 때문에 immediate 값에 4를 곱해 주는 것이 key point 이다.</p>
+
+<ul>
+  <li>Determine whether values in rs and rt are equal
+    <ul>
+      <li>equal하면 zero를 의미한다. -&gt; 두 값을 뺀 걸 볼 것이기 때문</li>
+    </ul>
+  </li>
+  <li>Calculate branch target address:
+    <ul>
+      <li>BTA = (sign-extended immediate « 2) + (PC + 4)</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">beq $3, $4, Imm</code></li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162152990-2c3d35cb-4084-4704-bd4e-42feb8ba5841.png" alt="image" /></p>
+
+<p>먼저 2개의 register(rs, rt)를 register file로부터 읽는다.</p>
+
+<p>ALU에서 2개의 값을 비교할텐데 두 개의 차가 0이면 zero signal을 1로 설정된다.</p>
+
+<p>jump할 immediate 값을 sign extention하고 word offset에서 byte offset으로 바꾼다.</p>
+
+<p>위에서 구한 BTA 식으로 target address를 구한다.</p>
+
+<ul>
+  <li>그래서 위의 그림과 같이 PC+4으로 업데이트 된 값을 사용하는 것이 아니라 ALU와의 연산을 통한 address를 사용하게 된다.</li>
+  <li>zero signal이 1인 경우: PC &lt;- target address(BTA)</li>
+  <li>zero signal이 0인 경우: PC &lt;- PC + 4</li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162253494-a475d3d3-497a-46ae-93ed-9761ab6082a5.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="single-cycle-processor-data-path">Single-Cycle Processor (Data path)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162127622-e2f1200a-fb43-4628-877f-f7e22cb57e43.png" alt="image" /></p>
+
+<p>전체적인 Single-Cycle Processor의 datapath는 위와 같다.</p>
+
+<p><strong>Q) Register File에서 보면 lw인 경우에는 write을 하기 위해서 아래 RegDst에 결정되는 MUX 쪽으로 가고 add 명령인 경우에는 read를 하기 위해서 register file의 A2쪽으로 가게되는데 이런 것은 Instruction Memory에서 Decoding 된 것으로 어느 노드로 갈지가 결정되는 건가요? 아니면 두 노드 모두로 이동하게 되나요?</strong></p>
+
+<p>A) 물론 두 노드 모두 이동하여 해당 라인에는 그 데이터의 값이 들어있는 것 그래서 flip flop에도 그 데이터가 들어가는데 이 값을 쓸지 말지는 enable 신호와 mux가 결정하는 것</p>
+
+<p><br /></p>
+
+<p><code class="language-plaintext highlighter-rouge">add $4, $5, $6</code> 이라는 명령어를 실행할 때 각 control 에는 어떤 신호가 들어있을 것인가? -&gt; 시험문제</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162250108-94896b45-c7ea-42d1-890e-7f737a3ef161.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p><code class="language-plaintext highlighter-rouge">lw $3, 8($4)</code></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162250187-0a4d8c03-ab30-4d1a-8168-795761bbb0c6.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p><code class="language-plaintext highlighter-rouge">beq $3, $4, 5</code></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162250214-b8349de1-ba7a-427c-9425-624564192434.png" alt="image" /></p>
+
+<p>resgister에 write하는 과정은 하나도 없기 때문에 RegDst와 MemtoReg는 don’t care이다.</p>
+
+<p><br /></p>
+
+<p><strong>Jump</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162253610-c967b834-ddc1-4da5-816a-4f8f40952750.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162155339-23cfcec3-c01d-47a8-b5a5-caad09895935.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="control-signal-정리">Control signal 정리</h3>
+
+<ul>
+  <li>RegDst
+    <ul>
+      <li>write할 register의 번호를 결정한다.</li>
+      <li>R-format 일때만 high</li>
+    </ul>
+  </li>
+  <li>ALUSrc
+    <ul>
+      <li>ALU 연산에 들어가는 데이터를 결정한다.</li>
+      <li>lw/sw일 때만 high : ALU = register + immediate</li>
+    </ul>
+  </li>
+  <li>MemtoReg
+    <ul>
+      <li>register에 write 할 것을 결정한다.</li>
+      <li>lw일 때만 high : register ← memory에서 read 한 값</li>
+    </ul>
+  </li>
+  <li>RegWrite
+    <ul>
+      <li>register에 값을 write 할지 결정한다.</li>
+      <li>R-format, lw 때만 high</li>
+    </ul>
+  </li>
+  <li>MemRead
+    <ul>
+      <li>data memory를 read 할 지 결정한다.</li>
+      <li>lw 일 때만 high : memory read</li>
+    </ul>
+  </li>
+  <li>MemWrite
+    <ul>
+      <li>data memory에 write할지 결정한다.</li>
+      <li>sw일 때만 high : memory write</li>
+    </ul>
+  </li>
+  <li>PCSrc = Branch
+    <ul>
+      <li>branch instruction인지 아닌지 결정한다.</li>
+      <li>beq일 때만 high : PC←PC + target offset</li>
+    </ul>
+  </li>
+  <li>ALUOp1, ALUOp2
+    <ul>
+      <li>ALU control에 input으로 들어가서 ALU의 연산 종류를 결정한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>Q) single cycle인데 clk이 3개</p>
+
+<p>A) 다음 시간에</p>
+
+<p>Q) data memory에는 clock이 없는가?</p>
+
+<p>A) 메모리에도 종류가 여러가지이다. 이 챕터에서 다룬 메모리는 Aysnc data 방식이기 때문</p>
+
+<p><strong>Q) Register File에서 보면 lw인 경우에는 write을 하기 위해서 아래 RegDst에 결정되는 MUX 쪽으로 가고 add인 경우에는 read를 하기 위해서 register file의 A2쪽으로 가게되는데 이런 것은 Instruction Memory에서 Decoding 된 것으로 어느 노드로 갈지가 결정되는 건가요? 아니면 두 노드 모두로 이동하게 되나요?</strong></p>
+
+<p>Q) instruction register는 instruction memory랑 다른 건가?</p>
+
+<p>A)</p>
+
+<ul>
+  <li>IM은 실행할 명령이들이 machine code로 바뀌어서 들어가는 공간</li>
+  <li>그 중에 한 명령어(PC가 가리키고 있는)가 fetch된다.</li>
+  <li>이 때 가져온 instruction을 instruction register에 저장하여 해석하는 공간인 것이다.</li>
+  <li>그런데 single cylce에서는 어차피 한 clock에 다 실행되니까 IR 공간이 없어도 되는 것이다.</li>
+  <li>Multi에서 나올 것이다.</li>
+</ul>
+
+<hr />
+
+:ET

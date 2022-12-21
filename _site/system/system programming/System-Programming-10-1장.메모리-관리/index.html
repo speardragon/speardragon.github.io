@@ -1,0 +1,2358 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[System Programming] 10-1장. 메모리 관리 | speardragon note</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[System Programming] 10-1장. 메모리 관리">
+<meta property="og:url" content="http://localhost:4000/system/system%20programming/System-Programming-10-1%EC%9E%A5.%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-05-13T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/system/system%20programming/System-Programming-10-1%EC%9E%A5.%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system" itemprop="item"><span itemprop="name">System</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system-programming" itemprop="item"><span itemprop="name">System programming</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[System Programming] 10-1장. 메모리 관리</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[System Programming] 10-1장. 메모리 관리">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-05-13T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/system/system%20programming/System-Programming-10-1%EC%9E%A5.%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/" class="u-url" itemprop="url">[System Programming] 10-1장. 메모리 관리
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><br /></p>
+
+<h1 id="101-변수와-메모리">10.1 변수와 메모리</h1>
+
+<h2 id="프로세스">프로세스</h2>
+
+<ul>
+  <li>프로세스는 실행 중인 프로그램이다.</li>
+  <li>프로그램 실행을 위해서는
+    <ul>
+      <li>프로그램의 코드, 데이터, 스택,  힙, U-영역 등이 필요하다.</li>
+    </ul>
+  </li>
+  <li>프로세스 이미지(구조)는 메모리 내의 프로세스 레이아웃</li>
+  <li>프로그램(program definition) 자체가 프로세스(program instance)는 아니다 !</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-process-address-space프로세스-주소-공간">The Process Address Space(프로세스 주소 공간)</h2>
+
+<ul>
+  <li>Linux <strong>virtualizes</strong> its physical resource of memory</li>
+  <li>Processes do not directly address physical memory.</li>
+  <li>Instead, the kernel associates each process with a unique <strong>virtual</strong> <strong>address space</strong>.
+    <ul>
+      <li>program definition에서 프로세스가 만들어지면 프로세스 마다 VAS가 할당된다.</li>
+    </ul>
+  </li>
+  <li>This address space is <strong>linear</strong>, with addresses <strong>starting at zero</strong>, and increasing to some maximum value</li>
+  <li>Pages and Paging
+    <ul>
+      <li>The virtual address space is composed of <strong>pages</strong>.</li>
+      <li>The system architecture and machine type determine the size of a page, which is fixed;
+        <ul>
+          <li>typical sizes include 4 KB (for 32-bit systems), and 8 KB (for 64-bit systems)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="paging-model">Paging Model</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168198658-5f67ba47-8f05-46c7-b542-197692732d02.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>CPU로부터 출발하는 주소 -&gt; logical address</p>
+  </li>
+  <li>Mem의 주소 -&gt; physical address</li>
+  <li>그래서 주소 번역을 담당하는 MMU라는 칩에서 번역이 된다. (V-&gt;P)</li>
+</ul>
+
+<p>virtual address에서는 contiguous and linear하게 저장되어 있음</p>
+
+<p>Paging 기법: 연속된 logical memory를 연속적이지 않은 physical memory에 mapping</p>
+
+<ul>
+  <li>paging model을 사용하는 이유
+    <ul>
+      <li>memory 낭비를 없애기 위해</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스-이미지-구조-주소공간">프로세스 이미지 구조 (주소공간)</h2>
+
+<ul>
+  <li>프로세스 구조
+    <ul>
+      <li>아래는 실제로 탑재된 내용 기준으로 그린 그림이다.</li>
+      <li>위의 그림은 물리적인 size(용량)을 기준으로 그린 그림이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168198905-d71739aa-fccf-4f5d-8986-aae32c569db3.png" alt="image" /></p>
+
+<ul>
+  <li>코드 세그먼트(code segment)
+    <ul>
+      <li>코드를 번역한 기계어 명령어</li>
+    </ul>
+  </li>
+  <li>데이터 세그먼트(data segment)
+    <ul>
+      <li>e.g. int maxcount = 99; (initialized)</li>
+      <li>e.g. long sum[1000]; (uninitialized)</li>
+    </ul>
+  </li>
+  <li>스택(stack)
+    <ul>
+      <li>지역 변수, 매개 변수, 반환 주소, 반환 값, 등</li>
+    </ul>
+  </li>
+  <li>힙(heap)
+    <ul>
+      <li>동적 메모리 할당</li>
+      <li>malloc() in C,</li>
+      <li>new class() in Java</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스-이미지-세그먼트">프로세스 이미지 세그먼트</h2>
+
+<ul>
+  <li><strong>Text segment</strong> contains
+    <ul>
+      <li>
+        <p>The program code, string literals, constant variables, and other read-only data.</p>
+      </li>
+      <li>
+        <p>In Linux, this segment is marked read-only</p>
+        <ul>
+          <li>text segment의 내용을 변경할 수 없다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Data segment</strong> contains
+    <ul>
+      <li>initialized global variables. (함수 밖 선언)</li>
+      <li>Static variables (함수 안, 밖 선언)</li>
+    </ul>
+  </li>
+  <li><strong>bss segment</strong> contains
+    <ul>
+      <li>uninitialized global variables.</li>
+      <li>These variables contain special values (essentially, all <strong>zeros</strong>)</li>
+    </ul>
+  </li>
+  <li><strong>Stack</strong> contains
+    <ul>
+      <li>the process’ execution stack (stack frame), which <strong>grows and shrinks</strong> dynamically as the stack depth increases and decreases.</li>
+      <li>The execution stack contains local variables and function return data.</li>
+    </ul>
+  </li>
+  <li><strong>Heap</strong> contains
+    <ul>
+      <li>a process’ dynamic memory.</li>
+      <li>This segment is writable and can grow or shrink in size.</li>
+      <li>This is the memory returned by malloc( )</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="varsc시험">vars.c(시험)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+    
+    <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">40</span><span class="p">);</span>
+    <span class="n">fun</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>a, b는 함수 밖에 선언 되었으므로 global 변수이고, d는 함수 안에서 선언 되었지만 static으로 선언되었기 때문에 a,b,d는 data section에 자리를 잡는다.</p>
+  </li>
+  <li>
+    <p>c와 p는 지역 변수 이기 때문에 stack section에 저장이 된다.</p>
+
+    <ul>
+      <li>
+        <p>stack에는 이외에도 지역 변수, 매개변수, 반환 주소, 반환 값 들이 저장된다.</p>
+      </li>
+      <li>
+        <p>다른 함수를 호출했을 때는 stack frame이 하나 할당 되어 그 안에 그 함수만의 지역 변수들이 저장된다.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>data section의 변수들은 프로그램이 종료되어도 사라지지 않는다.</p>
+  </li>
+  <li>
+    <p>stack의 변수들은 해당 함수 리턴 시 사라진다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로그램-시작할-때-메모리-영역">프로그램 시작할 때 메모리 영역</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168521542-ffb1cb2b-464d-4445-8b1f-e6d2c7443237.png" alt="image" /></p>
+
+<p>시작 전의 모습</p>
+
+<p><br /></p>
+
+<h2 id="main-함수-실행할-때-메모리-영역">main() 함수 실행할 때 메모리 영역</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168521575-a311dc3c-3ddc-40ae-8942-ea9fe148c828.png" alt="image" /></p>
+
+<ul>
+  <li>malloc에 40 바이트 요구</li>
+  <li>p, c 지역 변수 선언 및 초기화</li>
+</ul>
+
+<p>local 변수 -&gt; stack에 저장</p>
+
+<p><br /></p>
+
+<h2 id="함수-fun-실행할-때-메모리-영역">함수 fun() 실행할 때 메모리 영역</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168521624-1f19b8c2-ee00-4dc4-b6ec-c9b1841181ce.png" alt="image" /></p>
+
+<ul>
+  <li>함수에 대한 stack frame</li>
+  <li>노란색 부분 fun 함수에 대한 실행 stack
+    <ul>
+      <li>리턴을 하면 fun에 대한 실행 stack 없어짐</li>
+    </ul>
+  </li>
+  <li>프로그램이 종료하면 main()에 대한 실행 stack 없어짐</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="함수-fun-실행이-종료될-때-메모리-영역">함수 fun() 실행이 종료될 때 메모리 영역</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168521660-9d752ddd-18c4-4b49-9661-500581462c9f.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="할당-방법에-따른-변수들의-분류">할당 방법에 따른 변수들의 분류</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168521688-93e2ca93-7336-4dcb-9d7b-95ffbd345308.png" alt="image" /></p>
+
+<p>정적 변수: 함수 밖에서 선언된 변수</p>
+
+<p>자동 변수: 자동으로 사라지고 생기는 변수</p>
+
+<p>동적 변수: 동적 할당 되어 heap에 생성되는 변수</p>
+
+<p><br /></p>
+
+<h2 id="stack-model-vs-heap-model">Stack model vs. Heap model</h2>
+
+<ul>
+  <li>
+    <p>Modern programming languages employ two different memory models, namely the Stack and the Heap.</p>
+  </li>
+  <li>
+    <p>We need to understand <strong>how calling procedures/functions/methods effects the memory model</strong>.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="procedures">Procedures</h2>
+
+<ul>
+  <li>High level languages usually <strong>employ the concept of procedures</strong> (or functions, methods, routines, etc).</li>
+  <li>A program is composed of several procedures. Each procedure is a small piece of code, which can receive arguments, define variables, perform a simple and defined operation and optionally return a value.</li>
+  <li>Procedures may call other procedures(<strong>nested function</strong>) or themselves (<strong>recursion</strong>). Note that even object oriented programs are procedural.</li>
+  <li>When you call a member method of some object, you basically call the method with the object as one of the arguments.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-call-stack">The Call Stack</h2>
+
+<ul>
+  <li>Procedural calls can be viewed in a <strong>stack-like manner</strong>; each procedure’s activation (function call) requires a dedicated frame on a stack.</li>
+  <li>This function-call-dedicated stack frame is called an <strong>Activation Frame</strong>.
+    <ul>
+      <li>Each time a procedure is called, a new activation frame is generated on the stack.</li>
+      <li>Each activation frame holds the following information:
+        <ul>
+          <li>The <strong>parameters</strong> passed to the procedure</li>
+          <li><strong>Local primitive variables</strong> declared in the procedure</li>
+          <li>The <strong>return address</strong> - Where to return to when the procedure ends</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>When an activation frame is created, the binding between local variables and <strong>their location on the stack</strong> is made. When a procedure terminates, its associated activation frame is <strong>popped</strong> from the stack, and discarded.</li>
+  <li>In Java, only the variables located on the top-most activation frame may be accessed (parameters and local variables). However, this is not the case in C++.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="stack-implementation">Stack Implementation</h2>
+
+<ul>
+  <li>To realize the concept of procedures and activation frames, modern computer systems inherently support the <strong>call stack data structure</strong>;</li>
+  <li>For each execution element (process, thread, etc. - 실행 주체마다) there exists an associated memory region which is called the call stack.</li>
+  <li><strong>The operating system is responsible</strong> for allocating enough space for the stack of each process (or thread), and the process (or thread) implicitly, using a code generated by the compiler, manages the stack on its own.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="stack-advantages-and-disadvantages">Stack: Advantages and Disadvantages</h2>
+
+<ul>
+  <li><strong>Advantages</strong>
+    <ul>
+      <li><strong>call-stack</strong> memory model provides a <strong>fast managed memory</strong>
+        <ul>
+          <li>the memory used by the stack is automatically discarded when popping the stack frame just by changing the value of a single register.</li>
+        </ul>
+      </li>
+      <li>In addition, the compiler is responsible of generating the instructions that manipulate the stack and therefore can optimize them.</li>
+    </ul>
+  </li>
+  <li><strong>Disadvantages</strong>
+    <ul>
+      <li>
+        <p>the stack is often limited in <strong>size</strong></p>
+      </li>
+      <li>
+        <p>one cannot use values that resides inside a stack frame once it is popped (i.e., by one of the methods that correspond to the upper stack frames).</p>
+      </li>
+      <li>
+        <p>the <strong>allocations</strong> must be <strong>static</strong> and the size allocated must be known at compile time, because the compiler generate the instructions that manipulate the stack at compile time.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h1 id="102-동적-할당">10.2 동적 할당</h1>
+
+<h2 id="동적-메모리-할당">동적 메모리 할당</h2>
+
+<ul>
+  <li>동적 할당을 사용하는 이유
+    <ul>
+      <li>필요할 때 필요할 만큼만 메모리를 요청해서 사용하여</li>
+      <li>메모리를 절약한다.</li>
+      <li>고정 할당의 경우 프로그램 시작 전에 메모리를 할당해야 한다.</li>
+      <li>메모리가 적게 사용되어도 반드시 지정된 메모리를 할당해야 하기 때문에 비효율적인 경우 다반사</li>
+    </ul>
+  </li>
+  <li>malloc( )</li>
+  <li>calloc( )</li>
+  <li>realloc( )</li>
+  <li>free( )</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dynamic-memory-allocation">Dynamic memory allocation</h2>
+
+<ul>
+  <li>Static memory allocation
+    <ul>
+      <li>Array</li>
+      <li>Array requires exact element number. (배열의 element 개수)</li>
+      <li>In some cases, we could not predict the amount of required memory in compilation time.</li>
+    </ul>
+  </li>
+  <li>Functions for dynamic memory allocation
+    <ul>
+      <li>malloc : allocate memory space</li>
+      <li>calloc : allocate memory space and initialize it to zero</li>
+      <li>free : frees previously allocated memory space</li>
+      <li>realloc : modifies the size of previously allocated space</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="메모리-할당">메모리 할당</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="o">*</span><span class="nf">malloc</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">);</span>
+<span class="c1">//size 바이트만큼의 메모리 공간을 할당하며 그 시작주소를 void* 형으로 반환한다.</span>
+<span class="kt">void</span> <span class="nf">free</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">);</span>
+<span class="c1">//포인터 p가 가리키는 메모리 공간을 해제한다.</span>
+</code></pre></div></div>
+
+<ul>
+  <li>return type이 void* 인데 이는 어떤 타입이 리턴 되더라도 상관 없다는 말</li>
+  <li>힙에 동적 메모리 할당</li>
+  <li>라이브러리가 메모리 풀을 관리한다</li>
+  <li>malloc() 함수는 메모리를 할당할 때 사용하고 free()는 할당 한 메모리를 해제할 때 사용한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="메모리-할당-예">메모리 할당 예</h2>
+
+<ul>
+  <li>char *ptr;</li>
+  <li>ptr = (char *) malloc(40); // 좌변은 char * 형, 우변은 void * 형이어서 
+                                             // 형변환 필요</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168522226-28804a8d-6e73-40ae-b3dc-9c03dfaf03a0.png" alt="image" /></p>
+
+<ul>
+  <li>int *ptr;</li>
+  <li>ptr = (int *) malloc(10 * sizeof(int));</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168522259-68362e36-9b52-4ad8-92f7-cf9d0474f35b.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="구조체를-위한-메모리-할당-예">구조체를 위한 메모리 할당 예</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">student</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+<span class="n">ptr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">student</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168522309-00533f00-896d-4b55-8e95-5fbd5f3f50f3.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="구조체-배열을-위한-메모리-할당-예">구조체 배열을 위한 메모리 할당 예</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+<span class="n">ptr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="nf">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">student</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168522350-72945a3b-aa0f-4bc2-9095-65de84425567.png" alt="image" /></p>
+
+<p>*(ptr+i) or ptr[i] : (i+1)번째 구조체</p>
+
+<p><br /></p>
+
+<h2 id="stud1c">stud1.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">student</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+<span class="p">};</span>
+<span class="cm">/* 입력받을 학생 수를 미리 입력받고 이어서 학생 정보를 입력받은 후, 이들 학생 정보를 역순으로 출력하는 프로그램 */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span> <span class="c1">// 동적 할당된 블록을 가리킬 포인터</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"몇 명의 학생을 입력하겠습니까? "</span><span class="p">);</span>
+    <span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">n</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"오류: 학생 수를 잘못 입력했습니다.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"프로그램을 종료합니다.</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ptr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">student</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ptr</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">"malloc"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%d 명의 학번과 이름을 입력하세요.</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">scanf</span><span class="p">(</span><span class="s">"%d %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ptr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">id</span><span class="p">,</span> <span class="n">ptr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">name</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">* 학생 정보(역순) *</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%d %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ptr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">id</span><span class="p">,</span> <span class="n">ptr</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">name</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>stud1
+몇 명의 학생을 입력하겠습니까? 5
+5 명의 학번과 이름을 입력하세요.
+1401001 박연아
+1401003 김태환
+1401006 김현진
+1401009 장샛별
+1401011 홍길동
+^D
+<span class="k">*</span> 학생 정보<span class="o">(</span>역순<span class="o">)</span> <span class="k">*</span>
+1401011 홍길동
+1401009 장샛별
+1401006 김현진
+1401003 김태환
+1401001 박연아
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="example-of-memory-allocation">Example of memory allocation</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span> <span class="cp">#include</span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">buffer</span><span class="p">;</span>
+    <span class="cm">/*Allocating memory*/</span>
+    <span class="k">if</span><span class="p">((</span><span class="n">buffer</span><span class="o">=</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span><span class="p">))</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Malloc failed</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">strcpy</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="s">"Kwangwoon Univ."</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">buffer</span><span class="p">);</span>
+    <span class="cm">/*freeing memory*/</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span> <span class="c1">// size of char * 20 이  free</span>
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="배열-할당">배열 할당</h2>
+
+<ul>
+  <li>같은 크기의 메모리를 여러 개를 할당한 경우</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="o">*</span><span class="nf">calloc</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">n</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">);</span>
+<span class="c1">// 크기가 size인 메모리 공간을 n개 할당한다. 값을 모두 0으로 초기화한다. 실패하면 NULL를 반환한다.</span>
+</code></pre></div></div>
+
+<ul>
+  <li>이미 할당된 메모리 크기 변경</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="o">*</span><span class="nf">realloc</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">newsize</span><span class="p">);</span>
+<span class="c1">//ptr이 가리키는 이미 할당된 메모리의 크기를 newsize로 변경한다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="calloc-예">calloc() 예</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span><span class="o">*</span><span class="n">q</span><span class="p">;</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="nf">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+	<span class="n">perror</span><span class="p">(</span><span class="err">“</span><span class="n">malloc</span><span class="err">”</span><span class="p">);</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">calloc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">q</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+	<span class="n">perror</span><span class="p">(</span><span class="err">“</span><span class="n">calloc</span><span class="err">”</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="스택에-메모리-할당">스택에 메모리 할당</h2>
+
+<ul>
+  <li>#include</li>
+  <li>Void * alloca( size_t size);</li>
+  <li>Life cycle?</li>
+</ul>
+
+<p>stack frame에서 생성된 모든 변수는 stack frame이 사라지면서 같이 모두 사라지게 된다.</p>
+
+<p><br /></p>
+
+<h2 id="dynamic-vs-static">Dynamic vs. Static</h2>
+
+<ul>
+  <li>Dynamic
+    <ul>
+      <li>More efficient memory usage</li>
+      <li>Slower execution time (커널에게 몇바이트를 지금 당장 할당해 달라고 요청)</li>
+      <li>Less reliable compared to static mechanism</li>
+      <li>Realization : malloc( ), free( )</li>
+    </ul>
+  </li>
+  <li>Static
+    <ul>
+      <li>Inefficient in memory usage</li>
+      <li><strong>Faster</strong></li>
+      <li><strong>Reliable</strong> because all required memory spaces are <strong>reserved</strong> at compilation time</li>
+      <li>Realization : declaring memory</li>
+      <li>컴파일 전에 할당 - 메모리가 확보 된 상황에서 시작 됨</li>
+    </ul>
+  </li>
+  <li>Real world : Dynamic + Static</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+    
+    <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">40</span><span class="p">);</span>
+    <span class="n">fun</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>a, b는 컴파일 할 때 할당 받는 정적 변수이다.</p>
+
+<p>p는 컴파일 할 때가 아니라 실제 이 프로세스 실행될 때 결정되기 때문에 동적 할당이다.</p>
+
+<p><br /></p>
+
+<h2 id="heap">Heap</h2>
+
+<ul>
+  <li>Sometimes, programs need to store information which is relevant across function calls, too big to fit on the stack, or of size that is unknown at compile time.
+    <ul>
+      <li>함수 호출에 관련된 정보 저장, 스택에 맞추기에는 너무 큰 데이터, 컴파일 당시 알 수 없는 크기의 정보 저장 -&gt; 이 경우에 heap</li>
+      <li>stack과의 차이점: 함수가 종료되더라도 살아있다.</li>
+    </ul>
+  </li>
+  <li>We would like to be able to specify that we want a block of memory of a given size to store some information.</li>
+  <li>We usually do not care where the memory comes from, we are just interested in getting a block of it for our use.</li>
+  <li>As a result, we abstract this service as a heap, where blocks of memory are heaped in a pile, and we can get to the block we need if we remember where we left it.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="heap-advantages-and-disadvantages">Heap: Advantages and Disadvantages</h2>
+
+<ul>
+  <li><strong>Advantages</strong>
+    <ul>
+      <li>The Heap model allows for dynamic memory allocation
+        <ul>
+          <li>i.e., the size of the allocation does not have to be known at compile time.</li>
+        </ul>
+      </li>
+      <li>memory on the heap <strong>stays on the heap until it is explicitly freed</strong> (either by the user or by the garbage collector),</li>
+      <li>the heap is much larger than the stack and consists from most of the memory available to the process (the virtual memory).</li>
+    </ul>
+  </li>
+  <li><strong>Disadvantages</strong>
+    <ul>
+      <li>heap allocation <strong>costs</strong> more than stack allocation (as the runtime must find an empty memory location to allocate on the fly) and can cause <strong>memory</strong> <strong>fragmentation</strong>.
+        <ul>
+          <li>하드디스크나 메모리에서 데이터가 저장되었다가 빼졌을 때 남는 사용되지 않는 공간</li>
+        </ul>
+      </li>
+      <li>If the user is responsible to free the allocated memory by hand
+        <ul>
+          <li>the program may be pruned to memory leaks and access to non-allocated memory.</li>
+        </ul>
+      </li>
+      <li>If the runtime is responsible to free the allocated memory (i.e., using automatic garbage collection)
+        <ul>
+          <li>the performance of the program may degrade as CPU time will be dedicated for the garbage collection execution and also since most garbage collection algorithms require to stop all or some parts of the program while they perform the cleaning.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h1 id="103-연결-리스트">10.3 연결 리스트</h1>
+
+<h2 id="연결-리스트의-필요성">연결 리스트의 필요성</h2>
+
+<ul>
+  <li>예: 여러 학생들의 데이터를 저장해야 한다고 생각해보자.
+    <ul>
+      <li>가장 간단한 방법은 구조체 배열을 선언하여 사용하는 것이다.</li>
+      <li>이 방법은 배열의 크기를 미리 결정해야 하는 문제점이 있다.</li>
+      <li>배열의 크기보다 많은 학생들은 처리할 수 없으며 이보다 적은 학 생들의 경우에는 배열의 기억 공간은 낭비된다.</li>
+    </ul>
+  </li>
+  <li>연결 리스트(linked list)를 사용하여 해결할 수 있다.
+    <ul>
+      <li>data field + pointer field</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168522865-330a6668-dcea-44b7-881a-764a1810a124.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="자기-참조-구조체를-위한-메모리-할당">자기 참조 구조체를 위한 메모리 할당</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">student</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+<span class="n">ptr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">student</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168522900-58b26e4d-0f88-404f-9797-033aaa215c54.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="stud2c">stud2.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="err">…</span>
+<span class="cm">/* 학생 정보를 입력받아 연결 리스트에 저장하고 학생 정보를 역순으로 출력한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">id</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+    <span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">head</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"학번과 이름을 입력하세요</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">"%d %s"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//한 학생 정보 입력</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">student</span><span class="p">));</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">perror</span><span class="p">(</span><span class="s">"malloc"</span><span class="p">);</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">p</span><span class="o">-&gt;</span><span class="n">id</span> <span class="o">=</span> <span class="n">id</span><span class="p">;</span>
+        <span class="n">strcpy</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="n">name</span><span class="p">);</span>
+        <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">* 학생 정보(역순) *</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"학번: %d 이름: %s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="n">printf</span><span class="p">(</span><span class="s">"총 %d 명입니다.</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>stud2
+학번과 이름을 입력하세요.
+1401001 박연아
+1401003 김태환
+1401006 김현진
+1401009 장샛별
+1401011 홍길동
+^D
+<span class="k">*</span> 학생 정보<span class="o">(</span>역순<span class="o">)</span> <span class="k">*</span>
+1401011 홍길동
+1401009 장샛별
+1401006 김현진
+1401003 김태환
+1401001 박연아
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="큐-형태의-연결-리스트">큐 형태의 연결 리스트</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="o">*</span><span class="n">head</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">*</span><span class="n">tail</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="n">ptr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">student</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">student</span><span class="p">));</span>
+<span class="p">...</span>
+<span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">ptr</span><span class="p">;</span> <span class="c1">// 큐의 끝에 연결</span>
+<span class="n">tail</span> <span class="o">=</span> <span class="n">ptr</span><span class="p">;</span> <span class="c1">// 큐의 끝을 가리킴</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168523025-a5a6e129-54ba-4f4b-a39d-751e7ebad78d.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h1 id="104-메모리-관리-함수">10.4 메모리 관리 함수</h1>
+
+<h2 id="문자열-처리-함수와의-차이점">문자열 처리 함수와의 차이점</h2>
+
+<ul>
+  <li>strcpy() or strncpy() <strong>vs</strong> memcpy, strcmp() vs memcmp()</li>
+  <li>기본적 동작은 동일함</li>
+  <li>차이점
+    <ul>
+      <li>인자와 반환 값이 다름
+        <ul>
+          <li><strong>문자열 처리함수</strong>
+            <ul>
+              <li>문자열을 대상으로 하므로 인자와 반환 값이 char * 형</li>
+            </ul>
+          </li>
+          <li><strong>메모리 관리 함수</strong>
+            <ul>
+              <li>임의의 값을 갖는 메모리 영역을 대상으로 하므로 인자와 반환 값이 void * 형 메모리에 저장된 값의 타입에 무관함</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>길이 정보
+        <ul>
+          <li>문자열 처리함수
+            <ul>
+              <li>문자열은 시작 주소를 알려주면 NULL 문자를 문자열의 끝으로 인지하므로 길이를 알려주지 않음.</li>
+            </ul>
+          </li>
+          <li>메모리 관리 함수
+            <ul>
+              <li>스트링 단위로 처리하지 않으므로 길이를 알려 주어야 함</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="메모리-관리-함수">메모리 관리 함수</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp"># include &lt;string.h&gt;
+</span><span class="kt">void</span> <span class="o">*</span><span class="nf">memset</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">);</span>
+<span class="c1">//s에서 시작하여 n 바이트만큼 바이트 c로 설정한 다음에 s를 반환한다.</span>
+<span class="kt">int</span> <span class="nf">memcmp</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">s1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">s2</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">);</span>
+<span class="c1">//s1과 s2에서 첫 n 바이트를 비교해서, 메모리 블록 내용이 동일하면 0을 반환하고 s1이</span>
+<span class="c1">//s2보다 작으면 음수를 반환하고, s1이 s2보다 크다면 양수를 반환한다.</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">memchr</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">);</span>
+<span class="c1">//s가 가리키는 메모리의 n 바이트 범위에서 문자 c를 탐색한다. c와 일치하는 첫 바이트에</span>
+<span class="c1">//대한 포인터를 반환하거나,c를 찾지 못하면 NULL을 반환한다.</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">memmove</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">dst</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">src</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">);</span>
+<span class="c1">//src에서 dst로 n 바이트를 복사하고, dst를 반환한다.</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">memcpy</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">dst</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">src</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">);</span>
+<span class="c1">//src에서 dst로 n 바이트를 복사한다. 두 메모리 영역은 겹쳐지지 않는다. 만일 메모리 영</span>
+<span class="c1">//역을 겹쳐서 쓰길 원핚다면 memmove() 함수를 사용해라. dst를 반환한다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="memc">mem.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">=</span><span class="s">"Do you like Linux?"</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span><span class="o">*</span><span class="n">p</span><span class="p">;</span>
+    
+    <span class="n">ptr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">str</span><span class="p">));</span>
+    <span class="n">puts</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">ptr</span><span class="o">+</span><span class="mi">12</span><span class="p">,</span><span class="sc">'l'</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> 
+    <span class="n">puts</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span> 
+
+    <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">memchr</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span><span class="sc">'l'</span><span class="p">,</span><span class="mi">18</span><span class="p">);</span> 
+    <span class="n">puts</span><span class="p">(</span><span class="n">p</span><span class="p">);</span> 
+    <span class="n">memmove</span><span class="p">(</span><span class="n">str</span><span class="o">+</span><span class="mi">12</span><span class="p">,</span><span class="n">str</span><span class="o">+</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mem
+Do you like Linux?
+Do you like Linux?
+like Linux?
+Do you like Linux
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#memory" class="page__taxonomy-item p-category" rel="tag">memory</a><span class="sep">, </span>
+    
+      <a href="/tags/#variable" class="page__taxonomy-item p-category" rel="tag">variable</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#system" class="page__taxonomy-item p-category" rel="tag">System</a><span class="sep">, </span>
+    
+      <a href="/categories/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-05-13T00:00:00+09:00">2022-05-13</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BSystem+Programming%5D+10-1%EC%9E%A5.+%EB%A9%94%EB%AA%A8%EB%A6%AC+%EA%B4%80%EB%A6%AC%20http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-10-1%25EC%259E%25A5.%25EB%25A9%2594%25EB%25AA%25A8%25EB%25A6%25AC-%25EA%25B4%2580%25EB%25A6%25AC%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-10-1%25EC%259E%25A5.%25EB%25A9%2594%25EB%25AA%25A8%25EB%25A6%25AC-%25EA%25B4%2580%25EB%25A6%25AC%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-10-1%25EC%259E%25A5.%25EB%25A9%2594%25EB%25AA%25A8%25EB%25A6%25AC-%25EA%25B4%2580%25EB%25A6%25AC%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/system/system%20programming/System-Programming-9-2%EC%9E%A5.-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EC%8B%A4%ED%96%89/" class="pagination--pager" title="[System Programming] 9-2장. 프로그램 실행
+">이전</a>
+    
+    
+      <a href="/system/system%20programming/System-Programming-9-3%EC%9E%A5.-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%B6%80%ED%8C%85/" class="pagination--pager" title="[System Programming] 9-3장. 시스템 부팅
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/system/system%20programming/System-Programming-10-1%EC%9E%A5.%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/system/system%20programming/[System Programming] 10-1장.메모리 관리"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

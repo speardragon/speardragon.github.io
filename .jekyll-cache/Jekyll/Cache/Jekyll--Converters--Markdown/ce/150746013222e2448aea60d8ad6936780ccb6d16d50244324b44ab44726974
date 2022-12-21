@@ -1,0 +1,46 @@
+I"~
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/etc/tip/Tip-%EC%BD%94%EB%94%A9-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%B0%8F-%EB%AC%B8%EC%A0%9C-%ED%8C%81/" rel="permalink">[Tip] 문제 풀이 팁
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 03/08/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶ETC
+      ▶Tip
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">이 포스팅에서는 주로 코딩 테스트를 준비하면서 알아가면 좋은 팁과 코딩 문제 풀이를 할 때 빈번하게 쓰이는 파이썬 코드들에 대해 작성할 것이며, 계속 새롭게 알게 되는 것이 생길 때마다 추가할 예정이다.
+</p>
+  </article>
+</div>
+
+:ET

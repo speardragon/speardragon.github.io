@@ -1,0 +1,652 @@
+I"�~<p><br /></p>
+
+<h2 id="프로세스-id">프로세스 ID</h2>
+
+<ul>
+  <li>각 프로세스는 프로세스를 구별하는 번호인 프로세스 ID를 갖는다.
+    <ul>
+      <li>PID : a unique identifier</li>
+      <li>The pid is guaranteed to be <strong>unique</strong> at any single point in time</li>
+      <li>As processes terminate, IDs become candidates for reuse.</li>
+    </ul>
+  </li>
+  <li>각 프로세스는 자신을 생성해준 부모 프로세스가 있다.
+    <ul>
+      <li>init process를 제외한 모든 process는 부모 프로세스가 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">getpid</span><span class="p">(</span> <span class="p">);</span> <span class="c1">//프로세스의 ID를 리턴한다.</span>
+<span class="kt">int</span> <span class="nf">getppid</span><span class="p">(</span> <span class="p">);</span> <span class="c1">//부모 프로세스의 ID를 리턴한다. </span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="pidc">pid.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="cm">/* 프로세스 번호를 출력한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"나의 프로세스 번호 : [%d] </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"내 부모 프로세스 번호 : [%d] </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getppid</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167991887-a27e4077-0c5b-4ee3-980d-16355a3e210d.png" alt="image" /></p>
+
+<p>shell prompt에 pid 실행파일을 치면 나의 프로세스는 pid process가 되는 것이고 나의 부모 process는 shell process가 되는 것이다.</p>
+
+<p>get parent pid -&gt; getppid()</p>
+
+<p><br /></p>
+
+<h2 id="process-identifiers">Process identifiers</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167991918-a18226f1-fe2a-43b2-b706-a46e0bb745d8.png" alt="image" /></p>
+
+<p>같은 번호를 갖지 않도록 할당 됨</p>
+
+<p><br /></p>
+
+<h2 id="current-working-directory-of-process">Current working directory of process</h2>
+
+<ul>
+  <li>각 프로세스는 Current working directory 를 가지고 있음</li>
+  <li>chdir() 시스템 콜을 이용해 Current working directory를 pathname 이 지정하는 디렉토리로 변경 가능
+    <ul>
+      <li>단, 프로세스는 pathname이 지정하는 디렉토리에 대한 <strong>실행 권한</strong>이 있어 야 함. (5장 파일 시스템 참조)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">chdir</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">);</span> <span class="c1">// return: 0 if OK, -1 on error</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="process-identifiers-1">Process identifiers</h2>
+
+<p>process id는 고정적인 번호가 아닌데 0,1,2 번은 고정되어 있다.</p>
+
+<ul>
+  <li>Process 0 (idle process : scheduler process or swapper)
+    <ul>
+      <li>READY에서 RUNNING으로 넘어갈 process를 결정해 주는 process</li>
+      <li>The process that the kernel “runs” <strong>when there are no other runnable processes</strong></li>
+      <li>Part of the kernel.</li>
+      <li>System process.</li>
+    </ul>
+  </li>
+  <li>Process 1 (<strong>init process</strong>)
+    <ul>
+      <li>Normally, the init process on Linux is the init program</li>
+      <li><strong>The first process</strong> that the kernel executes <strong>after booting the system</strong>
+        <ul>
+          <li>Invoked at the end of the bootstrap procedure.</li>
+        </ul>
+      </li>
+      <li>invoked by the kernel (/sbin/init or /etc/init )</li>
+      <li><strong>Initialize the UNIX system</strong> with initialization files: /etc/rc* or /etc/inittab.</li>
+      <li>Never dies.</li>
+      <li>User process with superuser privilege.</li>
+    </ul>
+  </li>
+  <li>Process 2 (pagedaemon)
+    <ul>
+      <li>supports the paging of the virtual memory system</li>
+      <li>kernel process</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="init-process">Init Process</h2>
+
+<ul>
+  <li>Unless the user explicitly tells the kernel what process to run (through the init kernel command-line parameter), the kernel has to identify a suitable init process on its own</li>
+  <li>The Linux kernel tries four executables, in the following order:</li>
+</ul>
+
+<ol>
+  <li>
+    <p>/sbin/init: The preferred and most likely location for the init process.</p>
+  </li>
+  <li>/etc/init: Another likely location for the init process.</li>
+  <li>/bin/init: A possible location for the init process.</li>
+  <li>/bin/sh: The location of the Bourne shell, which the kernel tries to run if it fails to find an init process.</li>
+</ol>
+
+<ul>
+  <li>
+    <p>위 우선순위를 기반하여 init process가 결정</p>
+  </li>
+  <li>After the handoff from the kernel, the init process handles the remainder of the boot process.</li>
+  <li>Typically, this includes <strong>initializing the system</strong>, <strong>starting various services</strong>, and <strong>launching a login program</strong>.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스의-사용자-iduid">프로세스의 사용자 ID(uid)</h2>
+
+<ul>
+  <li><strong>프로세스는 프로세스 ID 외에</strong></li>
+  <li>프로세스의 사용자 ID와 그룹 ID를 갖는다.
+    <ul>
+      <li>그 <strong>프로세스를 실행시킨 사용자</strong>의 ID와 사용자의 그룹 ID</li>
+      <li>프로세스가 수행할 수 있는 연산 권한 (예:파일 사용권한)을 결정 하는 데 사용된다.</li>
+      <li>새로운 프로세스 생성 시 부모의 사용자 ID와 그룹 ID를 물려 받음, 프로세스 ID는 별도 ID를 부여 받음</li>
+    </ul>
+  </li>
+  <li>프로세스의 실제 사용자 ID (<strong>real user ID</strong>)
+    <ul>
+      <li>그 프로세스를 실행한 원래 사용자의 사용자 ID로 설정된다.</li>
+      <li>예를 들어 chang이라는 사용자 ID로 로그인하여 어떤 프로그램을 실행시키면 그 프로세스의 실제 사용자 ID는 chang이 된다.</li>
+    </ul>
+  </li>
+  <li>프로세스의 유효 사용자 ID (<strong>effective user ID</strong>)
+    <ul>
+      <li>현재 유효한 사용자 ID로 새로 파일을 만들 때나 파일에 대한 접근 권한을 검사할 때 주로 사용된다.</li>
+      <li>보통 유효 사용자 ID와 실제 사용자 ID는 <strong>특별한 실행파일을 실행 할 때를 제외하고는</strong> 동일하다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>사용자 ID vs. 프로세스 ID</p>
+
+<ul>
+  <li>사용자 ID: 로그인 이름</li>
+  <li>프로세스 ID: 프로세스마다 생성되는 ID(권한에 대한 것)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스의-사용자-id">프로세스의 사용자 ID</h2>
+
+<ul>
+  <li>프로세스의 실제/유효 사용자 ID 반환</li>
+  <li>프로세스의 실제/유효 그룹 ID 반환</li>
+  <li>오류 리턴은 없음</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="n">uid_t</span> <span class="nf">getuid</span><span class="p">(</span> <span class="p">);</span> <span class="c1">//프로세스의 실제 사용자 ID를 반환한다.</span>
+<span class="n">uid_t</span> <span class="nf">geteuid</span><span class="p">(</span> <span class="p">);</span> <span class="c1">//프로세스의 유효 사용자 ID를 반환한다.</span>
+<span class="n">gid_t</span> <span class="nf">getgid</span><span class="p">(</span> <span class="p">);</span> <span class="c1">//프로세스의 실제 그룹 ID를 반환한다.</span>
+<span class="n">gid_t</span> <span class="nf">getegid</span><span class="p">(</span> <span class="p">);</span> <span class="c1">//프로세스의 유효 그룹 ID를 반환한다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="pid-uid">PID, UID</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="n">pid_t</span> <span class="nf">getpid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 	<span class="n">Returns</span><span class="o">:</span> <span class="n">process</span> <span class="n">ID</span> <span class="n">of</span> <span class="n">calling</span> <span class="n">process</span>
+<span class="n">pid_t</span> <span class="nf">getppid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 	<span class="n">Returns</span><span class="o">:</span> <span class="n">parent</span> <span class="n">process</span> <span class="n">ID</span> <span class="n">of</span> <span class="n">calling</span> <span class="n">process</span>
+<span class="n">uid_t</span> <span class="nf">getuid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 	<span class="n">Returns</span><span class="o">:</span> <span class="n">real</span> <span class="n">user</span> <span class="n">ID</span> <span class="n">of</span> <span class="n">calling</span> <span class="n">process</span>
+<span class="n">uid_t</span> <span class="nf">geteuid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 	<span class="n">Returns</span><span class="o">:</span> <span class="n">effective</span> <span class="n">user</span> <span class="n">ID</span> <span class="n">of</span> <span class="n">calling</span> <span class="n">process</span>
+<span class="n">gid_t</span> <span class="nf">getgid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 	<span class="n">Returns</span><span class="o">:</span> <span class="n">real</span> <span class="n">group</span> <span class="n">ID</span> <span class="n">of</span> <span class="n">calling</span> <span class="n">process</span>
+<span class="n">gid_t</span> <span class="nf">getegid</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+ 	<span class="n">Returns</span><span class="o">:</span> <span class="n">effective</span> <span class="n">group</span> <span class="n">ID</span> <span class="n">of</span> <span class="n">calling</span> <span class="n">process</span> 
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">pid_t defined in &lt;sys/types.h&gt; </code></p>
+
+<ul>
+  <li>pid_t: Used for process IDs and process group IDs.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="uidc">uid.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> $ uid</span><span class="cp">
+#include</span> <span class="cpf">&lt;pwd.h&gt;</span><span class="c1"> </span><span class="cp">
+#include</span> <span class="cpf">&lt;grp.h&gt;</span><span class="c1"> </span><span class="cp">
+</span>
+<span class="cm">/* 사용자 ID를 출력한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">pid</span><span class="p">;</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"나의 실제 사용자 ID : %d(%s) </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getuid</span><span class="p">(),</span> <span class="n">getpwuid</span><span class="p">(</span><span class="n">getuid</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">);</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"나의 유효 사용자 ID : %d(%s) </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">geteuid</span><span class="p">(),</span> <span class="n">getpwuid</span><span class="p">(</span><span class="n">geteuid</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">pw_name</span><span class="p">);</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"나의 실제 그룹 ID : %d(%s) </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getgid</span><span class="p">(),</span> <span class="n">getgrgid</span><span class="p">(</span><span class="n">getgid</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">gr_name</span><span class="p">);</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"나의 유효 그룹 ID : %d(%s) </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getegid</span><span class="p">(),</span> <span class="n">getgrgid</span><span class="p">(</span><span class="n">getegid</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">gr_name</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">getpwuid</span><span class="p">()</span> <span class="o">:</span> <span class="n">uid</span><span class="err">에</span> <span class="err">해당하는</span> <span class="err">패스워드파일</span> <span class="err">엔트리를</span> <span class="err">읽어</span> <span class="err">사용자이름으로</span> <span class="err">변환</span>
+<span class="n">getgrgid</span><span class="p">()</span> <span class="o">:</span> <span class="n">gid</span><span class="err">에</span> <span class="err">해당하는</span> <span class="err">그룹파일</span> <span class="err">엔트리를</span> <span class="err">읽어</span> <span class="err">그룹이름으로</span> <span class="err">변환</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="getpwuid-5장">Getpwuid (5장)</h2>
+
+<ul>
+  <li>사용자 id와 일치하는 <strong>엔트리를</strong> /etc/pswd 파일에서 찾아 그 엔트리에 대한 포인터를 반환</li>
+  <li>이 엔트리의 pw_name 필드가 사용자 이름을 가지고 있음</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;pwd.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">passwd</span> <span class="o">*</span><span class="nf">getpwuid</span><span class="p">(</span><span class="n">uid_t</span> <span class="n">uid</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">passwd</span><span class="p">{</span> <span class="cm">/* pwd.h */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_name</span><span class="p">;</span> <span class="cm">/* Username. */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_passwd</span><span class="p">;</span> <span class="cm">/* Password. */</span>
+    <span class="n">uid_t</span> <span class="n">pw_uid</span><span class="p">;</span> <span class="cm">/* User ID. */</span>
+    <span class="n">gid_t</span> <span class="n">pw_gid</span><span class="p">;</span> <span class="cm">/* Group ID. */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_gecos</span><span class="p">;</span> <span class="cm">/* Real name. */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_dir</span><span class="p">;</span> <span class="cm">/* Home directory. */</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">pw_shell</span><span class="p">;</span> <span class="cm">/* Shell program. */</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<p>getgrgid : 그룹 id로 그룹 정보 제공</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;grp.h&gt;</span><span class="cp">
+</span><span class="k">struct</span> <span class="n">group</span> <span class="o">*</span><span class="nf">getgrgid</span><span class="p">(</span><span class="n">gid_t</span> <span class="n">gid</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="etcpasswd-파일">/etc/passwd 파일</h2>
+
+<ul>
+  <li>
+    <p>사용자 계정 별로 콜론(:) 으로 구분된 7개의 필드를 기록</p>
+  </li>
+  <li>
+    <p>Login name</p>
+
+    <ul>
+      <li>
+        <p>로그인할 때 사용하는 ID (문자로 표현됨)</p>
+      </li>
+      <li>
+        <p>user name이라고도 함.</p>
+      </li>
+    </ul>
+  </li>
+  <li>Password
+    <ul>
+      <li>암호화된 패스워드</li>
+    </ul>
+  </li>
+  <li>
+    <p>User ID</p>
+
+    <ul>
+      <li>
+        <p>Number로 표현된 ID</p>
+      </li>
+      <li>
+        <p>root (슈퍼유저) login name은 user ID가 0임</p>
+      </li>
+    </ul>
+  </li>
+  <li>Group ID
+    <ul>
+      <li>사용자가 소속된 Group의 ID</li>
+    </ul>
+  </li>
+  <li>Comment
+    <ul>
+      <li>사용자에 대한 설명</li>
+    </ul>
+  </li>
+  <li>Home directory
+    <ul>
+      <li>로그인하면 최초 존재하는 디렉토리</li>
+      <li>HOME 환경 변수의 값</li>
+    </ul>
+  </li>
+  <li>Login shell
+    <ul>
+      <li>쉘 프로그램의 종류</li>
+      <li>로그인 후 사용자가 처음 접하는 프로그램</li>
+      <li>SHELL 환경 변수의 값</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스의-사용자-id-1">프로세스의 사용자 ID</h2>
+
+<ul>
+  <li>프로세스의 실제/유효 사용자 ID 변경</li>
+  <li>프로세스의 실제/유효 그룹 ID 변경</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">setuid</span><span class="p">(</span><span class="n">uid_t</span> <span class="n">uid</span><span class="p">);</span> <span class="c1">//프로세스의 실제 사용자 ID를 uid로 변경한다.</span>
+<span class="kt">int</span> <span class="nf">seteuid</span><span class="p">(</span><span class="n">uid_t</span> <span class="n">uid</span><span class="p">);</span> <span class="c1">//프로세스의 유효 사용자 ID를 uid로 변경한다.</span>
+<span class="kt">int</span> <span class="nf">setgid</span><span class="p">(</span><span class="n">gid_t</span> <span class="n">gid</span><span class="p">);</span> <span class="c1">//프로세스의 실제 그룹 ID를 gid로 변경한다.</span>
+<span class="kt">int</span> <span class="nf">setegid</span><span class="p">(</span><span class="n">gid_t</span> <span class="n">gid</span><span class="p">);</span> <span class="c1">//프로세스의 유효 그룹 ID를 gid로 변경한다.</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="st_mode">st_mode</h2>
+
+<ul>
+  <li>Stat 구조체  &lt;sys/stat.h&gt;
+    <ul>
+      <li>파일 타입과 사용권한 정보는 st-&gt;st_mode 필드에 함께 저장됨.</li>
+    </ul>
+  </li>
+  <li>st_mode 필드
+    <ul>
+      <li>4비트: 파일 타입</li>
+      <li><strong>3비트: 특수용도</strong></li>
+      <li>9비트: 사용권한
+        <ul>
+          <li>3비트: 파일 소유자의 사용권한</li>
+          <li>3비트: 그룹의 사용권한</li>
+          <li>3비트: 기타 사용자의 사용권한</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168038128-16249028-f2d2-414c-908c-b895d75a1d8e.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>special bits (3비트: 특수용도)</strong>
+    <ul>
+      <li>#define S_ISUID 0004000     /* set uid on execution */</li>
+      <li>#define S_ISGID 0002000     /* set group id on execution <em>*/</em></li>
+      <li>#define S_ISVTX 0001000     /* save text(sticky bit) */</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Stick bit의 사용</p>
+
+<ul>
+  <li>원래의 용도는 실행 프로그램을 swap area에 저장하여 속도 향상.
+    <ul>
+      <li>virtual memory의 사용으로 필요가 없어짐.</li>
+    </ul>
+  </li>
+  <li>기능이 확장되어 현재는 다음 용도로 많이 사용됨.
+    <ul>
+      <li>/tmp, /var/spool/uucppublic에서는 모든 사용자가 파일을 읽고, 쓰고, 실행 가능</li>
+      <li>하지만, 다른 사용자의 파일을 delete/rename하면 안 된다.</li>
+      <li>이러한 directory들은 sticky bit로 설정한다.(위 두 기능을 수행하기 위해서)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="set-user-id-and-set-group-id">Set-user-ID and set-group-ID</h2>
+
+<ul>
+  <li>real ID and effective ID
+    <ul>
+      <li><strong>real user</strong>(group) ID
+        <ul>
+          <li>Identifies who we really are.</li>
+          <li>Written in the password file(/etc/passwd,/etc/shadow).</li>
+        </ul>
+      </li>
+      <li><strong>effective user</strong>(group) ID
+        <ul>
+          <li>Determines file access permission, signal delivery permission.</li>
+          <li>내가 누군지를 입증해 주는 id가 아니라 file을 access할 때나 signal delivery 할 때의 허락을 결정하는 id이다.</li>
+          <li>effective User ID가 0인 프로세스를 privileged process라고 함
+            <ul>
+              <li>모든 권한을 갖고 있음.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Normally</strong>, effective user(group) ID = real user(group) ID.</li>
+      <li>But, effective user(group) ID <strong>can be different</strong> from the real user(group) ID,
+        <ul>
+          <li>In the case of executing programs with the setuid(setgid) bit set.
+            <ul>
+              <li>이에 대해서 아래에서 설명하도록 하겠다.</li>
+              <li>set user id bit set을 가진 프로그램을 실행하는 경우</li>
+            </ul>
+          </li>
+          <li><strong>In the case of calling system call: setuid(). setgid()</strong>
+            <ul>
+              <li>원래 둘이 같았었는데 직접 변경한 경우</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="set-user-id-실행파일중요">set-user-id 실행파일(중요)</h2>
+
+<ul>
+  <li>특별한 실행권한 set-user-id(set user ID upon execution)
+    <ul>
+      <li>어떤 프로세스가 set-user-id 설정된 실행파일을 실행하면 (ex. shell 명령어를 치면)</li>
+      <li>이 프로세스의 유효 사용자 ID는 그 실행파일의 소유자로 바뀜.</li>
+      <li>이 프로세스는 실행되는 동안 그 파일의 소유자 권한을 갖게 됨.
+        <ul>
+          <li>exec()을 통해 set-user-id 프로그램을 메모리에 탑재하면 프로세스의 유효 사용자 ID를 실행 파일의 사용자 id로 설정됨</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>예</strong> : /usr/bin/passwd 명령어 실행 파일
+    <ul>
+      <li>set-user-id 실행권한이 설정된 실행파일이며 소유자는 root</li>
+      <li>일반 사용자가 쉘에서 이 파일을 실행하게 되면, 이 프로세스의 유효 사용자 ID는 <strong>root</strong>가 됨.</li>
+      <li>/etc/passwd처럼 root만 수정할 수 있는 파일의 접근 및 수정 가능(이 실행파일을 실행시키는 동안에는)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="set-user-id-and-set-group-id-1">Set-user-ID and set-group-ID</h2>
+
+<ul>
+  <li>passwd program를 이용하여 password를 바꿀 경우
+    <ul>
+      <li>passwd program을 실행하는 도중 root의 권한을 부여받음. (잠정적으로)
+        <ul>
+          <li><strong>Real user ID of passwd program: user</strong></li>
+          <li><strong>Effective user ID of passwd program: root</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168038743-5199badc-29cf-4ecc-9021-b70636a069a3.png" alt="image" /></p>
+
+<p>s가 set-user-ID가 세팅 되었음을 의미한다.</p>
+
+<p>이를 실행하면 effective user ID가 root로 setting 되어 passwd 파일을 수정할 수 있게 된다.(root만 할 수 있던)</p>
+
+<p><br /></p>
+
+<h2 id="ownerships-of-new-files">Ownerships of new files</h2>
+
+<ul>
+  <li>When a file is created using open or creat
+    <ul>
+      <li>Generally, <strong>the user ID of a new file</strong> is set to the <strong>effective user ID</strong> of the process</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168038789-911fc7e3-a32d-49ec-8862-56af3bb6e34b.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="set-user-id-실행파일">set-user-id 실행파일</h2>
+
+<ul>
+  <li>set-user-id 실행권한은 심볼릭 모드로 ‘s’로 표시, 8진수로는 4000</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> –asl /bin/su /usr/bin/passwd
+32 <span class="nt">-rwsr-xr-x</span><span class="nb">.</span> 1 root root 32396 2011-05-31 01:50 /bin/su
+28 <span class="nt">-rwsr-xr-x</span><span class="nb">.</span> 1 root root 27000 2010-08-22 12:00 /usr/bin/passwd
+</code></pre></div></div>
+
+<ul>
+  <li>set-uid 실행권한 설정</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">chmod </span>4755 file1
+</code></pre></div></div>
+
+<ul>
+  <li>set-gid 비트 설정 // 강제 잠금 설정</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">chmod </span>2755 file1
+</code></pre></div></div>
+
+<p><br /></p>
+
+<ul>
+  <li>$ /bin/su</li>
+  <li># chown root uid   : uid 실행파일에게 root 권한을 준다.</li>
+  <li># exit</li>
+  <li>$ chmod 4755 uid</li>
+  <li>$ uid</li>
+</ul>
+
+<p>나의 실제 사용자 ID : 109 (chang)
+나의 유효 사용자 ID : 0 (root)
+나의 실제 그룹 ID : 101 (faculty) 
+나의 유효 그룹 ID : 101 (faculty)</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>uid
+나의 실제 사용자 ID : 109 <span class="o">(</span>chang<span class="o">)</span>
+나의 유효 사용자 ID : 109 <span class="o">(</span>chang<span class="o">)</span>
+나의 실제 그룹 ID : 101 <span class="o">(</span>faculty<span class="o">)</span>
+나의 유효 그룹 ID : 101 <span class="o">(</span>faculty<span class="o">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="85-프로세스-구조">8.5 프로세스 구조</h2>
+
+<h2 id="프로세스">프로세스</h2>
+
+<ul>
+  <li>프로세스는 실행중인 프로그램이다.
+    <ul>
+      <li>Program instance of program definition</li>
+    </ul>
+  </li>
+  <li>프로그램 실행을 위해서는
+    <ul>
+      <li>프로그램의 코드, 데이터, 스택, 힙, U-영역 등이 필요하다.</li>
+    </ul>
+  </li>
+  <li>프로세스 이미지(구조)는 메모리 내의 프로세스 레이아웃</li>
+  <li>프로그램 자체가 프로세스는 아니다 !</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="프로세스-구조">프로세스 구조</h2>
+
+<ul>
+  <li>프로세스 구조</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/168039330-78c5ac79-3fe4-47f1-a6f3-dfc977368c6e.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>텍스트</strong>(text)
+    <ul>
+      <li>프로세스가 실행하는 <strong>실행코드</strong>를 저장하는 영역이다.</li>
+      <li>읽기 전용, 공유는 가능함</li>
+    </ul>
+  </li>
+  <li><strong>데이터</strong> (data)
+    <ul>
+      <li>전역 변수(global variable) 및 정적 변수(static variable)를 위한 메모리 영역이다.</li>
+      <li>프로세스가 종료되지 않으면 없어지지 않는다.</li>
+      <li><strong>Initialized data segment</strong> : exec()에 의해 프로그램에서 읽어옴
+        <ul>
+          <li>int x = 10;</li>
+        </ul>
+      </li>
+      <li><strong>Unnitialized data segment</strong> (bss) : exec()에 의해 0으로 초기화
+        <ul>
+          <li>int array[10];</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>힙</strong>(heap)
+    <ul>
+      <li>동적 메모리 할당을 위한 영역이다. (malloc)</li>
+      <li>C 언어의 malloc 함수를 호출하면 이 영역에서 동적으로 메모리를 할당해준다.</li>
+    </ul>
+  </li>
+  <li><strong>스택</strong>(stack area)
+    <ul>
+      <li>함수 호출을 구현하기 위한 실행시간 스택(runtime stack)을 위한 영역으로 활성 레코드(activation record, or stack frame)가 저장된다.</li>
+      <li><strong>activation record</strong> 안에<code class="language-plaintext highlighter-rouge"> automatic local variables</code>, <code class="language-plaintext highlighter-rouge">parameter variables</code>, <code class="language-plaintext highlighter-rouge">return address</code>, <code class="language-plaintext highlighter-rouge">호출함수의 레지스터</code> 등이 저장</li>
+      <li>함수가 종료되면 없어지는 이유는 함수가 호출될 때 만들어진 stack frame이 함수가 return 될 때 없어지게 된다. 그래서 local variable은 함수가 실행되는 도중에만 존재하고 그 함수가 return 하면 없어지게 되는 특징을 갖는 것이다.</li>
+    </ul>
+  </li>
+  <li>U-영역(user-area)
+    <ul>
+      <li>열린 파일 디스크립터, 현재 작업 디렉터리 등과 같은 <strong>프로세스의 정보를 저장</strong>하는 영역이다.</li>
+      <li>command-line arguments and environment variables are stored.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>프로세스가 공유 가능한 부분은 code 부분</p>
+
+<p>tread는 데이터도 공유 가능</p>
+
+<p><br /></p>
+
+<h2 id="핵심-개념">핵심 개념</h2>
+
+<ul>
+  <li>프로세스는 실행중인 프로그램이다.</li>
+  <li>쉘은 사용자와 운영체제 사이에 창구 역할을 하는 소프트웨어로 사용자로부터 명령어를 입력받아 이를 처리하는 명령어 처리기 역할을 한다.</li>
+  <li>프로그램이 실행되면 프로그램의 시작 루틴에게 명령줄 인수와 환경 변수가 전달된다.</li>
+  <li>exit()는 뒷정리를 한 후 프로세스를 정상적으로 종료시키고 _exit()는 뒷정리를 하지 않고 프로세스를 즉시 종료시킨다.</li>
+  <li>exit 처리기는 exit()에 의한 프로세스 종료 과정에서 자동으로 수행된다.</li>
+  <li>각 프로세스는 프로세스 ID를 갖는다. 각 프로세스는 자신을 생성해 준 부모 프로세스가 있다.</li>
+  <li>각 프로세스는 실제 사용자 ID와 유효 사용자 ID를 가지며 실제 그룹 ID와 유효 그룹 ID를 갖는다.</li>
+  <li>프로세스 이미지는 텍스트(코드), 데이터, 힙, 스택 등으로 구성된다.</li>
+</ul>
+
+:ET

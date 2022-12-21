@@ -1,0 +1,189 @@
+I"�<h1 id="review">Review)</h1>
+
+<p>RISC는 시험에 나오지 않음 (MIPS와 유사하기 때문에)</p>
+
+<h2 id="arm-v8-instruction-from-cod">ARM v8 instruction (from COD)</h2>
+
+<ul>
+  <li>In moving to 64-bit, ARM did a complete overhaul.</li>
+  <li>ARM v8 resembles MIPS</li>
+  <li>Changes from v7:
+    <ul>
+      <li>No conditional execution field</li>
+      <li>Immediate field</li>
+      <li>Dropped load/store multiple</li>
+      <li>PC is no longer a GPR</li>
+      <li>GPR set expanded to 32</li>
+      <li>Addressing modes work for all word sizes</li>
+      <li>Divide instruction</li>
+      <li>Branch if equal/branch if not equal instruction</li>
+    </ul>
+  </li>
+</ul>
+
+<p>MIPS와 거의 유사함</p>
+
+<p><br /></p>
+
+<h2 id="intel-x86-register">Intel x86 Register</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161671399-d1d81aee-9469-47ad-8ff7-17331745e223.png" alt="image" /></p>
+
+<p>flag register</p>
+
+<p>register 수가 MIPS에 비해서 현저히 적다.</p>
+
+<p><br /></p>
+
+<h2 id="intel-x86-instructions">Intel x86 Instructions</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161671594-0a7e9543-7b9a-4fc2-b12f-388e7d4c7d17.png" alt="image" /></p>
+
+<p>RISC에서는 fetch할 때 32bit만 가져오면 됐는데 CISC는 위와 같이 32bit로 고정되어 있지 않다.</p>
+
+<p>그래서 CISC는 고정된 bit를 fetch하는 것이 아니라. instruction buffer라는 곳에 몽땅 다 넣어서 명령어가 몇 bit인지 decode한 후에 명령어를 가져온다(fetch).</p>
+
+<p><br /></p>
+
+<h2 id="mips-and-risc-v">MIPS and RISC-V</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161671868-027a12ae-aa23-436f-bf87-fd12ea4e1569.png" alt="image" /></p>
+
+<p>MIPS와 비교했을 때, RISC-V는 opcode가 뒤쪽으로 가 있다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="risc-v-register-set">RISC-V Register Set</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161672037-7235da1a-0aef-4286-a565-0b0573a9e1b0.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="branching">Branching</h2>
+
+<ul>
+  <li>Execute instructions out of sequence</li>
+  <li>Types of brances:
+    <ul>
+      <li>Conditional
+        <ul>
+          <li>branch if equal (beq)</li>
+          <li>branch if not equal (bne)</li>
+          <li>branch if less than (blt)</li>
+          <li>branch if greater than or equal (bge)</li>
+        </ul>
+      </li>
+      <li>Unconditional
+        <ul>
+          <li>jump(j)</li>
+          <li>jump register(jr)</li>
+          <li>jump and link(jal)</li>
+          <li>jump and link register(jalr)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="risc-v-function-calling-conventions">RISC-V Function Calling Conventions</h2>
+
+<ul>
+  <li>Call Function: jump and link (jal func)</li>
+  <li>Return from function: jump register (jr ra)</li>
+  <li>Arguments: a0 – a7</li>
+  <li>Return value: a0</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="preserved-registers">Preserved Registers</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161672266-afa76b96-7341-4767-865f-84efc5466812.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="machine-language">Machine Language</h2>
+
+<ul>
+  <li>Binary representation of instructions</li>
+  <li>Computers only understand 1’s and 0’s</li>
+  <li>32-bit instructions</li>
+  <li>Simplicity favors regularity: 32-bit data &amp;  instructions</li>
+  <li>4 Types of Instruction Formats:</li>
+  <li>R-Type</li>
+  <li>I-Type</li>
+  <li>S/B-Type</li>
+  <li>U/J-Typ</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="uj-type">U/J-Type</h3>
+
+<ul>
+  <li>Upper - immediate-Type</li>
+  <li>Jump-Type</li>
+  <li>Differ only in immediate encoding</li>
+  <li></li>
+</ul>
+
+<h2 id="review-instruction-formats">Review: Instruction Formats</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161672444-c040f3c0-7400-490b-a713-2f4ea43c5446.png" alt="image" /></p>
+
+<p>MIPS의 R,I, J와 거의 유사하다.</p>
+
+<p><br /></p>
+
+<h2 id="compressed-instructions">Compressed instructions</h2>
+
+<ul>
+  <li>16-bit RISC-V instructions
+    <ul>
+      <li>register 32-bit을 다 쓰지 않아 더 가볍지만 할 수 있는 명령이 제한되기 때문에 microprocessor나 embedded에 사용된다.</li>
+    </ul>
+  </li>
+  <li>Replace common integer and floating-point  instructions with 16-bit versions.</li>
+  <li>Most RISC-V compilers/processors can use a  mix of 32-bit and 16-bit instructions (and  use 16-bit instructions whenever possible).</li>
+  <li>Uses prefix: c.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="compressed-machine-formats">Compressed Machine Formats</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161672587-e1e20c8c-357d-4503-a9e8-7454cb175951.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="risc-v-floating-point-extensions">RISC-V Floating-Point Extensions</h2>
+
+<ul>
+  <li>RISC-V offers three floating point extensions:</li>
+  <li>RVF: single-precision (32-bit)</li>
+  <li>8 exponent bits, 23 fraction bits</li>
+  <li>RVD: double-precision (64-bit)</li>
+  <li>11 exponent bits, 52 fraction bits</li>
+  <li>RVQ: quad-precision (128-bit)</li>
+  <li>15 exponent bits, 112 fraction bits</li>
+</ul>
+
+<h2 id="exceptions">Exceptions</h2>
+
+<p>MIPS와 마찬가지임 전 강의 참조.</p>
+
+<h2 id="risc-v-instructions">RISC-V Instructions</h2>
+
+<p>MIPS와 거의 같다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161673006-a87859d5-e4a7-4321-809d-9a9e798700fb.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161672888-094eff76-2a63-4a82-ad8b-36760e398b15.png" alt="image" style="zoom:80%;" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161672918-1d3a6a7b-3363-4d48-b538-b8f173547d3a.png" alt="image" /></p>
+
+:ET

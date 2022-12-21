@@ -1,0 +1,1980 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[System Programming] 3장. C 프로그래밍 환경 | speardragon note</title>
+<meta name="description" content="제 3장 C 프로그래밍 환경">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[System Programming] 3장. C 프로그래밍 환경">
+<meta property="og:url" content="http://localhost:4000/system/system%20programming/System-Programming-3%EC%9E%A5.-C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%ED%99%98%EA%B2%BD/">
+
+
+  <meta property="og:description" content="제 3장 C 프로그래밍 환경">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-16T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/system/system%20programming/System-Programming-3%EC%9E%A5.-C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%ED%99%98%EA%B2%BD/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system" itemprop="item"><span itemprop="name">System</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system-programming" itemprop="item"><span itemprop="name">System programming</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[System Programming] 3장. C 프로그래밍 환경</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[System Programming] 3장. C 프로그래밍 환경">
+    <meta itemprop="description" content="제 3장 C 프로그래밍 환경">
+    <meta itemprop="datePublished" content="2022-03-16T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/system/system%20programming/System-Programming-3%EC%9E%A5.-C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%ED%99%98%EA%B2%BD/" class="u-url" itemprop="url">[System Programming] 3장. C 프로그래밍 환경
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h1 id="제-3장-c-프로그래밍-환경">제 3장 C 프로그래밍 환경</h1>
+
+<h2 id="31-컴파일러">3.1 컴파일러</h2>
+
+<h3 id="gcc-컴파일러">gcc 컴파일러</h3>
+
+<ul>
+  <li>gcc(GNU cc) 컴파일러 / 상업용 C 컴파일러(cc)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">$ gcc [-옵션] 파일</code>  / <code class="language-plaintext highlighter-rouge">\$cc [-옵션] 파일</code></li>
+    </ul>
+  </li>
+  <li>GNU(GNU is Not Unix) 프로젝트의 freeware 컴파일러. 본래 C 언어용 컴파일러로 시작하였으므로 GNU C Compiler의 약자였으나 2.9 버전에 이르러 C뿐만이 아니라  Objective C, Pascal, Ada와 같은 언어도 지원. <strong>G</strong>NU <strong>C</strong>ompiler <strong>C</strong>ollection으로 개명</li>
+  <li>컴파일<strong>(시험)</strong>
+    <ul>
+      <li>$ gcc long.c</li>
+      <li>$ a.out             //실행 파일 생성</li>
+    </ul>
+  </li>
+  <li>-c 옵션
+    <ul>
+      <li>$ gcc - c long.c           //object file 생성</li>
+    </ul>
+  </li>
+  <li>-o 옵션
+    <ul>
+      <li>$ gcc -o long long.o     //실행 파일 이름 지정</li>
+      <li>혹은</li>
+      <li>$ gcc -o long long.c</li>
+      <li>$ long       // 실행 파일</li>
+    </ul>
+  </li>
+  <li>-O 옵션
+    <ul>
+      <li>$ gcc -O -o long long.c       //optimized compile</li>
+      <li>compiler가 판단하여 기계어로 번역할 때 최적화 된 실행을 제공</li>
+    </ul>
+  </li>
+  <li>-S 옵션
+    <ul>
+      <li>$ gcc -S long.c      //<strong>assembly 파일</strong>의 long.s 생성</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="단일-모듈-프로그램-longc">단일 모듈 프로그램: long.c</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#define MAXLINE 100
+</span>
+<span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="kt">char</span> <span class="n">from</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">to</span><span class="p">[]);</span>
+<span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span> <span class="c1">// 입력 줄</span>
+<span class="kt">char</span> <span class="n">longest</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span> <span class="c1">// 가장 긴 줄</span>
+<span class="cm">/*입력 줄 가운데 가장 긴 줄 프린트 */</span>
+
+<span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+     <span class="kt">int</span> <span class="n">max</span><span class="p">;</span>
+     <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    
+     <span class="k">while</span> <span class="p">(</span><span class="n">gets</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">len</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">max</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+             <span class="n">copy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">longest</span><span class="p">);</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 입력 줄이 있었다면</span>
+     	<span class="n">printf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">longest</span><span class="p">);</span>
+    
+     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* copy: from을 to에 복사; to가 충분히 크
+다고 가정*/</span>
+<span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="kt">char</span> <span class="n">from</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">to</span><span class="p">[])</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="k">while</span> <span class="p">((</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">from</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">)</span>
+     	<span class="o">++</span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="단일-모듈-프로그램">단일 모듈 프로그램</h3>
+
+<ul>
+  <li>한 코드안에 전부 작성하는 프로그램(단일 모듈 프로그램)</li>
+  <li>코드의 재사용(reuse)이 어렵다.</li>
+  <li>여러 사람이 참여하는 프로그래밍이 어렵다.</li>
+  <li>예를 들어, 다른 프로그램에서 copy 함수를 재사용 하기 힘들다.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="다중-모듈-프로그램">다중 모듈 프로그램</h3>
+
+<ul>
+  <li>다중 모듈 프로그램
+    <ul>
+      <li>여러 개의 .c 파일들로 이루어진 프로그램</li>
+      <li>일반적으로 복잡하며 대단위 프로그램인 경우에 적합</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="다중-모듈-프로그램의-예"><strong>다중 모듈 프로그램의 예</strong></h3>
+
+<ul>
+  <li>main 프로그램과 copy 함수를 분리하여 별도 파일로 작성
+    <ul>
+      <li>main.c</li>
+      <li>copy.c</li>
+      <li>copy.h  //함수의 프로토타입을 포함하는 헤더 파일</li>
+    </ul>
+  </li>
+  <li>컴파일
+    <ul>
+      <li>$ gcc -c main.c</li>
+      <li>$ gcc -c copy.c</li>
+      <li>$ gcc -o main main.o copy.o</li>
+      <li>혹은</li>
+      <li>$ gcc -o main main.c copy.c</li>
+      <li>헤더 파일은 안 넣어도 되는 구나?!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="mainc">main.c</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"copy.h"</span><span class="c1"> //copy 함수의 원형(프로토타입 선언)</span><span class="cp">
+</span>
+<span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span> <span class="c1">// 입력 줄</span>
+<span class="kt">char</span> <span class="n">longest</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span> <span class="c1">// 가장 긴 줄</span>
+<span class="cm">/*입력 줄 가운데 가장 긴 줄 프린트 */</span>
+
+<span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+     <span class="kt">int</span> <span class="n">max</span><span class="p">;</span>
+     <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="k">while</span> <span class="p">(</span><span class="n">gets</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+         <span class="n">len</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">max</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+             <span class="n">copy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">longest</span><span class="p">);</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 입력 줄이 있었다면</span>
+     	<span class="n">printf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">longest</span><span class="p">);</span>
+     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="copyc">copy.c</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"copy.h"</span><span class="cp">
+</span><span class="cm">/* copy: from을 to에 복사; to가 충분
+히 크다고 가정*/</span>
+<span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="kt">char</span> <span class="n">from</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">to</span><span class="p">[])</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="k">while</span> <span class="p">((</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">from</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">)</span>
+     	<span class="o">++</span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="copyh">copy.h</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define MAXLINE 100
+</span><span class="kt">void</span> <span class="nf">copy</span><span class="p">(</span><span class="kt">char</span> <span class="n">from</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">to</span><span class="p">[]);</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="32-make-시스템">3.2 make 시스템</h2>
+
+<h3 id="make-시스템">make 시스템</h3>
+
+<ul>
+  <li>make 시스템
+    <ul>
+      <li>대규모 프로그램의 경우에는 헤더, 소스 파일, 목적 파일, 실행 파일의 모든 관계를 기억하고 <strong>체계적으로 관리</strong>하는 것이 필요</li>
+      <li>make 시스템을 이용하여 효과적으로 작업</li>
+    </ul>
+  </li>
+  <li>Makefile
+    <ul>
+      <li>실행 파일을 만들기 위해 필요한 파일들과 만드는 방법을 기술</li>
+      <li>make 시스템은 파일의 상호 의존 관계를 파악하여 실행 파일을 쉽게 다시 만듦.</li>
+    </ul>
+  </li>
+  <li>$ make [-f 메이크파일]
+    <ul>
+      <li>옵션이 없으면 그냥 Makefile(default) 혹은 makefile을 사용</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="메이크파일의-구성">메이크파일의 구성</h3>
+
+<ul>
+  <li>Makefile의 구성 형식
+    <ul>
+      <li>대상리스트
+        <ul>
+          <li>의존 리스트: 뭐가 컴파일 되기 위해선 뭐가 있어야 하고 (이런 것들)</li>
+          <li>명령 리스트: 명령어 리스트</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>예: Makefile</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>main:main.o copy.o
+	gcc -o main main.o copy.o
+main.o: main.c copy.h
+	gcc -c main.c
+copy.o: copy.c
+	gcc -c copy.c
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>make 실행<strong>(시험)</strong></p>
+
+    <p>$ make 혹은 $ make main</p>
+
+    <p>gcc -c main.c</p>
+
+    <p>gcc -c copy.c</p>
+
+    <p>gcc -o main main.o copy.o</p>
+  </li>
+  <li>
+    <p>copy.c 파일이 변경된 후</p>
+
+    <p>$ make</p>
+
+    <p>gcc -c copy.c</p>
+
+    <p>gcc -o main main.o copy.o</p>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158593750-3e6d9c44-4c01-4319-88de-ee17aa4e20ee.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="33-디버거">3.3 디버거</h2>
+
+<h3 id="gdb">gdb</h3>
+
+<ul>
+  <li>가장 대표적인 디버거
+    <ul>
+      <li>GNU debugger(gdb)</li>
+    </ul>
+  </li>
+  <li>gdb 주요 기능
+    <ul>
+      <li><strong>정지점</strong>(breakpoint) 설정</li>
+      <li>한 줄씩 실행</li>
+      <li>변수 접근 및 수정</li>
+      <li>함수 탐색</li>
+      <li>추적(tracing)</li>
+    </ul>
+  </li>
+  <li>gdb 사용을 위한 컴파일
+    <ul>
+      <li><strong>-g 옵션을 이용하여 컴파일</strong>
+        <ul>
+          <li>$ gcc - g -o longest longest.c</li>
+        </ul>
+      </li>
+      <li>다중 모듈 프로그램
+        <ul>
+          <li>$ gcc -g -o main main.c copy.c</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>gdb 실행
+    <ul>
+      <li>$ gdb [실행파일]</li>
+      <li>$ gdb main</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="gdb-기능">gdb 기능</h3>
+
+<ul>
+  <li>소스보기 : l(ist)
+    <ul>
+      <li>l [줄번호] : 지정된 줄을 프린트</li>
+      <li>l [파일명]:[함수명] : 지정된 함수를 프린트</li>
+      <li>set listsize n : 출력되는 줄의 수를 n으로 변경</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(gdb) l copy
+#include &lt;stdio.h&gt;
+
+/* copy: copy 'from' into 'to'; assume to is big enough */
+void copy(char from[], char to[])
+{
+    int i;
+    
+    i = 0;
+    while ((to[i] = from[i]) != '\0')
+        ++i:
+}
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="gdb-기능-1">gdb 기능</h3>
+
+<ul>
+  <li>
+    <p>정지점 : b(reak), clear, d(elete)</p>
+
+    <p>b [파일:]함수 				  파일의 함수 시작 부분에 정지점 설정</p>
+
+    <p>b n 								   n번 줄에 정지점을 설정</p>
+
+    <p>b +n 								현재 줄에서 n개 줄 이후에 정지점 설정</p>
+
+    <p>b -n 								 현재 줄에서 n개 줄 이전에 정지점 설정</p>
+
+    <p>info b 							  현재 설정된 정지점을 출력</p>
+
+    <p>clear 줄번호 				   해당 정지점을 삭제</p>
+
+    <p>d 									  모든 정지점을 삭제</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>(gdb) b copy</strong></p>
+
+<p>Breakpoint 1 at 0x804842a: file copy.c, line 9.</p>
+
+<p><br /></p>
+
+<p><strong>(gdb) info b</strong></p>
+
+<p>Num Type Disp Enb Address What</p>
+
+<p>1 breakpoint keep y 0x0804842a in copy at copy.c:9</p>
+
+<p><br /></p>
+
+<h3 id="gdb-기능-2">gdb 기능</h3>
+
+<ul>
+  <li>프로그램 수행
+    <ul>
+      <li>r(un)                   인수 명령 줄 인수를 받아 프로그램 수행</li>
+      <li>k(ill)                     프로그램 수행 강제 종료</li>
+      <li>n(ext)                  멈춘 지점에서 다음 줄을 수행하고 멈춤</li>
+      <li>s(tep)                  n과 같은 기능 함수 호출 시 함수 내부로 진입</li>
+      <li>c(ontinue)          정지점을 만날 때 까지 계속 수행</li>
+      <li>u                          반복문에서 빠져나옴</li>
+      <li>finish                   현재 수행하는 함수의 끝으로 이동</li>
+      <li>return                 현재 수행 중인 함수를 빠져나옴</li>
+      <li>quit                     종료</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ (gdb) r
+Starting program: /home/chang/바탕화면/src/main
+Merry X-mas !
+Breakpoint 1, copy (from=0x8049b60 "Merry X-mas !", to=0x8049760 "") at copy.c:98 i = 0;
+</code></pre></div></div>
+
+<p><br /></p>
+
+<ul>
+  <li>변수 값 프린트: p(rint)
+    <ul>
+      <li>p [변수명] 해당 변수 값 프린트</li>
+      <li>p 파일명::[변수명] 특정 파일의 전역변수 프린트</li>
+      <li>p [함수명]::[변수명] 특정 함수의 정적 변수 프린트.</li>
+      <li>info locals 현재 상태의 지역변수 리스트</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>(gdb) p from</strong>
+$1 = 0x8049b60 “Merry X-mas !”</p>
+
+<p><strong>(gdb) n</strong> 
+9 while ((to[i] = from[i]) != ‘\0’)</p>
+
+<p><strong>(gdb) n</strong> 
+10 ++i;</p>
+
+<p><strong>(gdb) p to</strong> 
+$2 = 0x8049760 “M”</p>
+
+<p><strong>(gdb) c</strong>
+Continuing
+Happy New Year !
+Breakpoint 1, copy
+	(from=0x8049b60 “Happy New Year !”, to=0x8049760 “Merry X-mas !”) at copy.c:9
+9 i = 0;</p>
+
+<p><strong>(gdb) p from</strong>
+$3 = 0x8049b60 “Happy New Year !”</p>
+
+<p><strong>(gdb) n</strong>
+10 while ((to[i] = from[i])!=’\0’)</p>
+
+<p><strong>(gdb) n</strong>
+11 ++i;</p>
+
+<p><strong>(gdb) p to</strong>
+$4 = 0x8049760 “Herry X-mas !”   // Happy….에서 첫 번째 자리에서 break가 걸려 첫 번째 문자에 H가 들어갔다.</p>
+
+<p><strong>(gdb) c</strong>
+Continuing
+Ctrl-D 입력
+Happy New Year !  // 더 긴 줄 프린트
+Program exited normally.</p>
+
+<p><br /></p>
+
+<h3 id="ddddata-display-debugger">DDD(Data Display Debugger)</h3>
+
+<ul>
+  <li>gdb를 위한 그래픽 사용자 인터페이스
+    <ul>
+      <li><a href="http://www.gnu.org/software/ ddd">http://www.gnu.org/software/ddd</a></li>
+    </ul>
+  </li>
+  <li>정지점을 설정
+    <ul>
+      <li>소스코드의 원하는 위치에 커서를 이동하고 상단의 Break 버튼</li>
+      <li>Next나 Step 같은 명령어 버튼을 이용하여 한 줄씩 실행</li>
+      <li>하단에는 gdb 명령어 입력 창</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/158597693-df7cfd61-1db4-4353-9a50-f1d7b5da5903.png" alt="image" /></p>
+
+<h2 id="34-이클립스-통합개발환경">3.4 이클립스 통합개발환경</h2>
+
+<h3 id="이클립스eclipse">이클립스(Eclipse)</h3>
+
+<ul>
+  <li>통합 개발 환경
+    <ul>
+      <li>윈도우, 리눅스, 맥 등의 다양한 플랫폼에서 사용 가능</li>
+      <li>다양한 언어(C/C++, Java 등)를 지원</li>
+      <li>막강한 기능을 자랑하는 자유 소프트웨어</li>
+    </ul>
+  </li>
+  <li>이클립스 설치
+    <ul>
+      <li>CentOS 6 설치: [S/W Development Workstation] 선택하면 자동 으로 설치됨</li>
+      <li>메인메뉴: [시스템]-&gt;[관리]-&gt;[소프트웨어 추가/제거] 이용하여 이 클립스를 선택하여 설치할 수 있음.</li>
+      <li>https://www.eclipse.org: 리눅스용 이클립스를 다운 받아 설치 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a><span class="sep">, </span>
+    
+      <a href="/tags/#unix" class="page__taxonomy-item p-category" rel="tag">Unix</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#system" class="page__taxonomy-item p-category" rel="tag">System</a><span class="sep">, </span>
+    
+      <a href="/categories/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-03-16T00:00:00+09:00">2022-03-16</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BSystem+Programming%5D+3%EC%9E%A5.+C+%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D+%ED%99%98%EA%B2%BD%20http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-3%25EC%259E%25A5.-C-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D-%25ED%2599%2598%25EA%25B2%25BD%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-3%25EC%259E%25A5.-C-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D-%25ED%2599%2598%25EA%25B2%25BD%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-3%25EC%259E%25A5.-C-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D-%25ED%2599%2598%25EA%25B2%25BD%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-03.15-performance%EC%99%80-CPU-time/" class="pagination--pager" title="[Computer Architecture] 03.15 performance와 CPU time
+">이전</a>
+    
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-MIPS-instruction-set/" class="pagination--pager" title="[Computer Architecture] MIPS instruction set
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/system/system%20programming/System-Programming-3%EC%9E%A5.-C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%ED%99%98%EA%B2%BD/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/system/system%20programming/[System Programming] 3장. C 프로그래밍 환경"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

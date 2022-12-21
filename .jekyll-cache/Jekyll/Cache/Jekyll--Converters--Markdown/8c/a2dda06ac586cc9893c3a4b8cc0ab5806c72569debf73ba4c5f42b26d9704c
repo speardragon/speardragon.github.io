@@ -1,0 +1,621 @@
+I"N�<p>프로그램 실행 위주</p>
+
+<p>이론 위주</p>
+
+<p>어떻게 돌아가는 건지 + 코드를 바꾸면 어떻게 돌아갈지</p>
+
+<h1 id="python-flow-control">Python Flow Control</h1>
+
+<p>프로그램은 통상적으로 순서에 따라 실행되지만 프로그램 실행의 흐름(flow)를 제어하기 위한 주된 두 가지 방식이 존재한다.</p>
+
+<ul>
+  <li>conditional statements(is, else,…)</li>
+  <li>loops(for, while …)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="if---else-statements">if - else statements</h2>
+
+<p>if…else 와 elif statement는 statement의 conditional execution을 control 한다. general format은 일련의 if 와 elif statement와 잇따라서 오는 마지막의 else statement이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="s">'one'</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"false"</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"true"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Something else"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Something else
+</code></pre></div></div>
+
+<p>if - elif - else 가 <strong>같은 개행에 있는 경우</strong> 그 중 조건에 맞는 한 가지 경우의 코드 블럭만 실행한다.</p>
+
+<p><br /></p>
+
+<h2 id="equility-operator-and-is-operator">Equility operator(==) and is operator</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">==</code> compares the <mark>objects </mark>(values)</li>
+  <li><code class="language-plaintext highlighter-rouge">is</code> checks whether both variables point to <mark>a same object</mark></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="range">range</h2>
+
+<ul>
+  <li><strong>range</strong> object is created by <code class="language-plaintext highlighter-rouge">range()</code> function</li>
+  <li>It contains a sequence of numbers</li>
+  <li>Immutable and iterable</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">class</span> <span class="err">'</span><span class="nc">range</span><span class="s">'
+&gt;&gt;&gt;
+&gt;&gt;&gt; b = a.__iter__()
+&gt;&gt;&gt; type(b)
+class '</span><span class="n">range_iterator</span><span class="s">'
+&gt;&gt;&gt;
+&gt;&gt;&gt; b.__next__()
+0
+&gt;&gt;&gt; b.__next__()
+1
+&gt;&gt;&gt; b.__next__()
+2
+&gt;&gt;&gt; b.__next__()
+3
+&gt;&gt;&gt; b.__next__()
+4
+</span></code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="for-loops">for loops</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>    
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>       
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s">' '</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 1 2 3 4
+1 3 5
+1 0 -1 -2 -3
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Python’s <code class="language-plaintext highlighter-rouge">for loop</code> iterates over the items of any iterable object(list, string, etc)</p>
+  </li>
+  <li>
+    <p>사용법</p>
+    <ul>
+      <li>range(start, end, step)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="break--continue">break / continue</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+	<span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Found an even number'</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Found an odd number'</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Found an even number 2
+Found an odd number 3
+Found an even number 4
+</code></pre></div></div>
+
+<p><br /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+	<span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Found an even number'</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+        <span class="k">break</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Found an odd number'</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Found an even number 2
+</code></pre></div></div>
+
+<ul>
+  <li>break: 뒤의 코드는 건너 뛰고(skip) 반복문을 종료</li>
+  <li>continue: 뒤의 코드는 건너 뛰고(skip) 반복문의 맨 처음으로 이동</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="while-loops">while loops</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
+4
+</code></pre></div></div>
+
+<p><br /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1
+2
+</code></pre></div></div>
+
+<p><br /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'finished!'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 
+2
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="built-in-data-types">Built-in Data Types</h1>
+
+<ol>
+  <li>List</li>
+  <li>String</li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="list">List</h2>
+
+<ul>
+  <li>List is the standard multi-element container in Python</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s">'p'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">,</span> <span class="s">'o'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="s">'p'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="s">'e'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="s">'e'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+<span class="s">'p'</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="list-is-mutable값을-바꿀-수-있는">List is mutable(값을 바꿀 수 있는)</h3>
+
+<p>tuple, string은 인덱스로 값을 바꿀 수 없는 immutable data type이다.</p>
+
+<p><span style="color:red">리스트의 값을 하나만 바꾸는 것은 만약 그 리스트의 이름이 a라면 a의 address는 기존의 address와 다르지 않지만 리스트를 새로 할당하면 주소가 바뀌게 된다.</span></p>
+
+<p>기존의 리스트는 anonymous object가 되고 이는 메모리 낭비를 하기 때문에 이를 수집하여 없애는 garbage collection이 존재한다.(파이썬 시스템에서)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+<span class="c1">#modify the object
+</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+<span class="c1">#assign a new object
+</span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2083801980552
+[1, 2, 9] 2083801980552
+2083801479944
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="list-is-iterable순회하며-값을-가져올-수-있는">List is iterable(순회하며 값을 가져올 수 있는)</h3>
+
+<ul>
+  <li>An iterable object is capable of returning its items one at a time</li>
+  <li>Iterable objects can be used in
+    <ul>
+      <li>for loops</li>
+      <li><mark>map() functions</mark></li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'four'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 2 3 four
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="list-slicing">List slicing</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s">'p'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">,</span> <span class="s">'o'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'r'</span><span class="p">,</span> <span class="s">'o'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'p'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">,</span> <span class="s">'o'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'e'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'o'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">,</span> <span class="s">'p'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>slicing된 리스트들은 다시 어떤 변수에 넣지 않는 이상 새로운 object가 만들어진 것이기 때문에(id가 다른) anonymous object 가 된다.</p>
+
+<p><br /></p>
+
+<h2 id="addchange-list-elements">add/change List elements</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># change an item
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>	<span class="c1"># change a range of items
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>	<span class="c1"># add one item
+</span><span class="o">&gt;&gt;&gt;</span><span class="n">a</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span><span class="n">a</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span> <span class="c1"># add multiple items
+</span><span class="o">&gt;&gt;&gt;</span><span class="n">a</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="mi">13</span><span class="p">,</span><span class="mi">15</span><span class="p">])</span> <span class="c1"># add one item
+</span><span class="o">&gt;&gt;&gt;</span><span class="n">a</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">]]</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="deleteremove-list-elements">delete/remove List elements</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">,</span> <span class="s">'d'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">del</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># delete one item
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'d'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">]</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="k">del</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>	<span class="c1"># delete multiple items
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">,</span> <span class="s">'d'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="s">'c'</span><span class="p">)</span>	<span class="c1"># remove one item
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'d'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># remove and return one item , 추출
+</span><span class="s">'d'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1"># remoe and return the last item: stack에서 pop의 정의 
+</span><span class="s">'e'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">clear</span><span class="p">()</span> <span class="c1"># empty a list
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[]</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="string-is-immutable-and-iterable">String is immutable and iterable</h2>
+
+<p>스트링은 그 안의 값을 배열의 인덱스로 접근하여 값을 바꾸는 행위가 불가능하나 하나하나씩 순회는 가능하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s">'have'</span><span class="p">,</span> <span class="s">'a'</span><span class="p">,</span> <span class="s">'nice'</span><span class="p">,</span> <span class="s">'day'</span><span class="p">]</span>
+<span class="n">one_string</span> <span class="o">=</span> <span class="s">' '</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">one_string</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>have a nice day
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="functions">Functions</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">absolute</span><span class="p">(</span><span class="n">num</span><span class="p">):</span> <span class="c1">#absolute라는 변수가 함수 object를 가리키고 있는 것
+</span>    <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">num</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">num</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="n">absolute</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">absolute</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span>
+<span class="c1">#2 3
+</span></code></pre></div></div>
+
+<p>absolute(2) 에서 안에 넣어주는 인자가 argument</p>
+
+<p>def absolute(num)에서 안에 넣어주는 인자는 parameter</p>
+
+<p><br /></p>
+
+<h3 id="localglobal-variable">local/global variable</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">512</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">))</span> <span class="c1">#local variable
+</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">512</span> <span class="c1">#global variable
+</span><span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="c1"># 512 2297106833872
+</span>
+<span class="n">test</span><span class="p">()</span>
+<span class="c1"># 512 2297106833776
+</span></code></pre></div></div>
+
+<p>문법상 문제는 없지만 되도록 오해를 방지하기 위해서 local과 global 변수를 같은 variable name은 피하도록 해야한다.</p>
+
+<h3 id="function-parameters">Function parameters</h3>
+
+<p>함수로 넘긴 인자의 값이 바뀌게 할 경우</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#All parameters in Pythion are passed by reference
+</span>
+<span class="k">def</span> <span class="nf">list1</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'inside the function: '</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    
+<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">list1</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="c1">#inside the function: [1, 2, 3, 9]
+</span>
+<span class="n">b</span>
+<span class="c1">#[1, 2 ,3, 9]
+</span></code></pre></div></div>
+
+<p><br />
+함수로 넘긴 인자의 값이 바뀌지 않길 바라는 경우</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Reference link is broken if we assign a new object
+</span>
+<span class="k">def</span> <span class="nf">list2</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:]</span> <span class="c1">#local 변수로 뒤집어 씌운다.
+</span>    <span class="n">a</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'inside the function: '</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    
+<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">list2</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="c1">#inside the function: [1, 2, 3, 9]
+</span>
+<span class="n">b</span>
+<span class="c1">#[1, 2 ,3]
+</span></code></pre></div></div>
+
+<p>list2 함수에서 만들어졌던 리스트는 함수가 종료후 garbage(anonymous object)가 된다</p>
+
+<p><br /></p>
+
+<h3 id="multiple-return-values">Multiple return values</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">num</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">num</span><span class="o">**</span><span class="mi">3</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">power</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="c1">#4 8
+</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">power</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1">#(9, 27)
+</span></code></pre></div></div>
+
+<p>multiple return values는 tuple 형식으로 반환된다.</p>
+
+<p><br /></p>
+
+<h2 id="input">Input</h2>
+
+<ul>
+  <li>input() function <strong>read a line</strong> from the standard input(keyboard, and returns it as a <strong>string</strong>.)</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+<span class="n">Hello</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">str</span><span class="s">'&gt;
+&gt;&gt;&gt; a
+'</span><span class="n">Hello</span><span class="err">!</span><span class="s">'
+&gt;&gt;&gt;
+&gt;&gt;&gt; #read a number from the keyboard
+&gt;&gt;&gt; n = int(input())
+123
+&gt;&gt;&gt; type(n)
+&lt;class '</span><span class="nb">int</span><span class="s">'&gt;
+&gt;&gt;&gt; n
+123
+</span></code></pre></div></div>
+
+<h1 id="수업-실습-관련">수업 실습 관련</h1>
+
+<p>백준 사이트 이용</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157386280-cdf8fd6c-9e2a-4841-befe-8fcc4c6b83f6.png" alt="image" /></p>
+
+<ul>
+  <li>제한 조건 중 시간 제한이 매우 중요</li>
+</ul>
+
+<p><br /></p>
+
+<h1 id="python-classes">Python Classes</h1>
+
+<ol>
+  <li>Class and object</li>
+  <li>Defining a class</li>
+  <li>Modules</li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="data-types">Data types</h2>
+
+<ul>
+  <li>data type consists of two parts:
+    <ul>
+      <li>a set of values</li>
+      <li>functions that can be performed on the values</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695221-97e809ad-6100-4d90-afbe-79d38f4e308c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="classes-and-objects">Classes and Objects</h2>
+
+<ul>
+  <li><strong>Class</strong> is the definition of <strong>a data type</strong>
+    <ul>
+      <li>A class has its own values and functions</li>
+      <li>Built-in classes: int, float, string, etc.</li>
+      <li>We can create a new class -&gt; creating a new data type</li>
+    </ul>
+  </li>
+  <li>Object is variable of the data type
+    <ul>
+      <li>A value in memory that is created by the class definition</li>
+      <li>Instance (or entity) of the class</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695258-46e64595-43da-4b97-8081-84bf282d7bf9.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="examples-of-user-defined-classes">Examples of (User-defined) Classes</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695263-1f535c4f-483b-4cee-92e5-abae5c06bb5e.png" alt="image" /></p>
+
+<h3 id="defining-a-class">Defining a class</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695277-5a25cdd5-61cc-46ef-bb70-9ad0c2f441a0.png" alt="image" /></p>
+
+<h3 id="making-objects-of-a-class">Making objects of a class</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695281-76556b52-445f-48ab-b5dc-7880b7adbec3.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="inheritance">Inheritance</h2>
+
+<p>Inheritance는 새로운 class(즉, derived class로 알려진) 가 base class라고 불리는 다른 class로부터 만들어지는 과정이다.</p>
+
+<p>A derived class는 자동으로 base class가 가진 부수적인 모든 member variables과 모든 ordinary member functions을 가지고, 추가적인 member functions과 추가적인 member variables을 가질 수 있다.</p>
+
+<p>일반적으로, 새로운 classes는 inheritance를 통해 더 빠르고 쉽고, 더 싸게 만들어질 수 있다.(그것들을 scratch를 통해 쓰는 것보다)</p>
+
+<p>Inheritance는 software 재사용의 idea를 돕는 한 가지 방법이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695349-4916cc1e-2040-4e5b-ba1b-9d0bd2f3d66b.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="save-the-class-definitions">Save the class definitions</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695359-801a3896-0cb7-4e19-8c1c-af00c6116ee9.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="python-modules">Python Modules</h2>
+
+<ul>
+  <li>Module is a file with .py extension</li>
+  <li>It contains functions and/or classes you want to include in your application</li>
+  <li>There are several ways to import modules:</li>
+  <li>import &lt;module&gt;</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695372-9d28411f-cb4b-4baa-ab69-51fb954cb330.png" alt="image" /></p>
+
+<ul>
+  <li>import &lt;module&gt; as &lt;alias&gt;</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695382-9e9adaaa-2cce-4752-a586-bdf9b2b198ee.png" alt="image" /></p>
+
+<ul>
+  <li>from <module> import &lt;class/function&gt;</module></li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163695394-d8d5beb8-c273-458c-8233-01ce63803abd.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="module-related-termsmodule관련-용어-정리">Module-related terms(module관련 용어 정리)</h2>
+
+<ul>
+  <li>Script
+    <ul>
+      <li>A Python (.py extension) file that’s intended to be run directly</li>
+    </ul>
+  </li>
+  <li>Module
+    <ul>
+      <li>A Python (.py extension) file that contains collections of functions, global variables, and classes</li>
+    </ul>
+  </li>
+  <li>Package
+    <ul>
+      <li>A directory that has a collections of modules</li>
+    </ul>
+  </li>
+  <li>Library
+    <ul>
+      <li>A generic term that loosely means “a bundle of code”</li>
+      <li>It can have tens or even hundreds of individual modules</li>
+    </ul>
+  </li>
+</ul>
+
+:ET

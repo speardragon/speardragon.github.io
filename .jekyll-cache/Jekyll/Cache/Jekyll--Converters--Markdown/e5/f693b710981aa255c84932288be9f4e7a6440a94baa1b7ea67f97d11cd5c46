@@ -1,0 +1,48 @@
+I"�
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/dijkstra/Algorithm-Dijkstra-Algorithm(%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)/" rel="permalink">[Algorithm] Dijkstra Algorithm(다익스트라 알고리즘)
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 02/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Computer Science
+      ▶Data structures and algorithms with Java
+      ▶Algorithm
+      ▶Dijkstra
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">이번 시간에는 다익스트라 라는 최단 거리를 알아내는 알고리즘에 대해 배워 보도록 하겠다.
+</p>
+  </article>
+</div>
+
+:ET

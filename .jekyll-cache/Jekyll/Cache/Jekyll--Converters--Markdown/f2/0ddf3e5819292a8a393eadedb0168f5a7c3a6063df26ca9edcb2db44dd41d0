@@ -1,0 +1,537 @@
+I"OH<h1 id="1-introduction-to-hci">1. Introduction to HCI</h1>
+
+<p>사람과</p>
+
+<p>그것이 포함된 모든 것을 총괄하는 것이 HCI</p>
+
+<p>실제로는 유저 인터페이스 뿐만 아니라</p>
+
+<p>HCI의 C가 computer에 한정되지 않고 모든 인간이 사용하는 도구로 확장 가능함</p>
+
+<h2 id="hci-in-the-1970s">HCI in the 1970s</h2>
+
+<p>예전에는 생산성이 더 강조되던 시기</p>
+
+<p>그 당시 개발은 waterfall 방식 사용</p>
+
+<ul>
+  <li>유저 - 극단적인 이분법
+    <ul>
+      <li>“자연과 스무고개를 해서 이길 수 없다.”</li>
+    </ul>
+  </li>
+  <li>실험적으로 usability를 연구
+    <ul>
+      <li>특별한 정보를 주지 않는 경우가 많았음</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="hci-in-the-1980s">HCI in the 1980s</h2>
+
+<ul>
+  <li>결과를 보고 하는 것이 아니라 설계를 한다음에 유저에게 확인</li>
+  <li>설계 끝까지 가는 것이 아니라 중간 단계에서 유저와의 interaction을 통해 수정에 수정을 거침
+    <ul>
+      <li>prototyping, mock-ups의 중요성</li>
+      <li>formative evaluation
+        <ul>
+          <li>thinking aloud: 시제품을 유저에게 써보라고 하고 그 때 생각나는 모든 것을 말하기를 요구 후 모든 의견을 취합 및 파악</li>
+          <li>중간 평가의 방법론이 생기기 시작</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Models and theory (vs. guidelines)
+    <ul>
+      <li>the model human processor
+        <ul>
+          <li>Fitts’s Law: 사람이 아이콘을 클릭하는 데 걸리는 시간이나 배치를 효과적으로 하게끔 수식으로 규정해 놓은 것</li>
+          <li>GOMS: 사람이 메뉴를 보고 어떤식으로 움직이는지 모델링 한 것, operation을 어떻게 할 지 모델링</li>
+        </ul>
+      </li>
+      <li>mapping models: syntactic-semantic consistency
+        <ul>
+          <li>syntax: 휴지통에 파일을 버린다</li>
+          <li>semantic: 버리는 걸 휴지통으로 만듦으로써 의미를 알게끔하는.(의미가 통하게)</li>
+        </ul>
+      </li>
+      <li>the active user: prior knowledge, problem solving, and error as primary resources
+        <ul>
+          <li>이미 이전에 좀 써 본 사람들(이전 지식을 가진 사람)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hci-in-the-1990s">HCI in the 1990s</h2>
+
+<ul>
+  <li>UE (usability engineering) is multifaceted, qualitative, field-oriented
+    <ul>
+      <li>어디에서 사용하는 지 고려하기 시작</li>
+      <li>participatory design, contextual design(맥락을 고려한 디자인), ethnographicallyinformed design(어느 나라 사람이 쓸 것인지, 어떤 문화를 가진 사람이 쓸 것인지를 고려한 디자인)</li>
+      <li>drives/integrates system development <strong>lifecycle</strong>
+        <ul>
+          <li>version2, version3, ….</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Conceptual frameworks beyond user models
+    <ul>
+      <li>activity theory, ethnomethodology(민족적인), distributed cognition(개인이 아닌 사회가 갖고 있는 의식, 영향),  grounded theory, design rationale</li>
+      <li>But diminishing role in mainstream discourse (물론 mainstream과 멀어지기 시작)
+        <ul>
+          <li>기술들이 너무 integrated 되어 있어서 신경 쓰지 않아도될 정도가 됨</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>User interface technology too well integrated!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="context-of-hci-changes-in-computer-use">Context of HCI: Changes in Computer Use</h2>
+
+<ul>
+  <li>1960’s - Professional programmers, software psychology
+    <ul>
+      <li>전문성이 짙음</li>
+    </ul>
+  </li>
+  <li>1970’s - Business professionals, <strong>mainframes</strong>, command-line
+    <ul>
+      <li>비지니스에서 사용되기 시작, 굉장히 큰 mainframe과 같은 것이 회사에서 사용되기 시작</li>
+    </ul>
+  </li>
+  <li>1980’s - Large, diverse user groups, the computer for the rest of us
+    <ul>
+      <li>컴퓨터의 보편화</li>
+    </ul>
+  </li>
+  <li>1990’s - World Wide Web and more, information access &amp; overload</li>
+  <li>2000+ - Ubiquitous computing, diversity in task, device, …</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="historical-basis-of-hci">Historical basis of HCI</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907135707161.png" alt="image-20220907135707161" /></p>
+
+<ul>
+  <li>University Research</li>
+  <li>Corporate Research</li>
+  <li>Commercial Products</li>
+</ul>
+
+<p>마우스 연구가 끊긴 것이 마우스를 연구하지 않는다는 것이 아니라 마우스라는 개념으로서 추가적인 integration이 거의 끝난 것</p>
+
+<p><br /></p>
+
+<h2 id="basic-interaction-1">Basic Interaction (1)</h2>
+
+<ul>
+  <li>Graphical Objects
+    <ul>
+      <li>1963 (MIT)
+        <ul>
+          <li>Graphical Objects manipulated by a pointing device (light pen)</li>
+          <li>Objects could be selected, moved, resized, etc.</li>
+        </ul>
+      </li>
+      <li>1966 (Imperial College, London)
+        <ul>
+          <li>Icons, Gesture Recognition, Dynamic Menus, etc.</li>
+        </ul>
+      </li>
+      <li>1970 (XEROX Palo Alto Research Center)
+        <ul>
+          <li>XEROX: 복사기로 유명한 회사, 복사한다는 뜻이기도 함.</li>
+          <li>Object selection and manipulation</li>
+          <li>WYSIWYG
+            <ul>
+              <li>What You See What You Get</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="basic-interaction-2">Basic Interaction (2)</h2>
+
+<ul>
+  <li>Mouse
+    <ul>
+      <li>1965 (Stanford Research Lab [SRI])
+        <ul>
+          <li>Created to be a cheap replacement for light pens</li>
+          <li>light pen이 비쌈 -&gt; 싼 걸로 바꾸고자 했던 것이 mouse</li>
+        </ul>
+      </li>
+      <li>1970
+        <ul>
+          <li>Adopted at Xerox PARC</li>
+        </ul>
+      </li>
+      <li>First appeared commercially as part of
+        <ul>
+          <li>The Xerox Star (1981),</li>
+          <li>The Apple Lisa (1982),</li>
+          <li>The Apple Macintosh (1984).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="basic-interaction-3">Basic Interaction (3)</h2>
+
+<ul>
+  <li>Windows
+    <ul>
+      <li>1968 (Stanford Research  Lab [SRI])</li>
+      <li>1969 - 1974 (Xerox  PARC)
+        <ul>
+          <li>Smalltalk System</li>
+        </ul>
+      </li>
+      <li>1974 (MIT)
+        <ul>
+          <li>EMACS Text Editor - 우리가 사용하는 것과 거의 비슷한 에디터</li>
+        </ul>
+      </li>
+      <li>1981 (Xerox PARC)
+        <ul>
+          <li>The Cedar Window  Manager</li>
+        </ul>
+      </li>
+      <li>1981 Xerox Star</li>
+      <li>1982 Apple Lisa</li>
+      <li>1983 (Carnegie Mellon  University funded by IBM))
+        <ul>
+          <li>Andrew window manager</li>
+        </ul>
+      </li>
+      <li>1984 Apple Macintosh
+        <ul>
+          <li>훨씬 더 자연스럽게</li>
+        </ul>
+      </li>
+      <li>The early versions of the  Star and Microsoft  Windows were tiled, but  eventually they supported  overlapping windows like  the Lisa and Macintosh.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="applications-1">Applications (1)</h2>
+
+<ul>
+  <li>Drawing programs
+    <ul>
+      <li>uses a mouse for graphics (1965)</li>
+      <li>uses a tablet (1971)</li>
+      <li>handling of lines and curves (1975)</li>
+    </ul>
+  </li>
+  <li>Text Editing
+    <ul>
+      <li>first word processor with automatic word wrap, search &amp;  replace, user-definable macros, scrolling text, &amp;  commands to move, copy, and delete characters, words,  or blocks of text (1962)</li>
+      <li>screen editing &amp; formatting of arbitrary-sized strings with  a lightpen (1967)</li>
+      <li>mouse-based editing (1968)</li>
+      <li>first WYSIWYG editor-formatter (1974)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="applications-2">Applications (2)</h2>
+
+<ul>
+  <li>Spreadsheets
+    <ul>
+      <li>Initial spreadsheet was VisiCalc (1977-8) for the Apple II</li>
+    </ul>
+  </li>
+  <li>HyperText
+    <ul>
+      <li>The idea where documents are <strong>linked to related documents</strong> (1945)</li>
+      <li>Ted Nelson coined the term “hypertext” (1965)</li>
+      <li>NLS system was one of the first on-line journals, and it included  full linking of articles (1970)
+        <ul>
+          <li>Online System - NLS</li>
+        </ul>
+      </li>
+      <li>HyperCard from Apple (1988) significantly helped to bring the idea  to a wide audience</li>
+      <li><strong>Tim Berners-Lee</strong> used the hypertext idea to create the World Wide  Web in 1990 at the government-funded European Particle Physics  Laboratory (CERN)
+        <ul>
+          <li>입자 가속기</li>
+        </ul>
+      </li>
+      <li>Mosaic, the first popular hypertext browser for the World-Wide  Web, released in 1993
+        <ul>
+          <li>웹 브라우저</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="applications-3">Applications (3)</h2>
+
+<ul>
+  <li>Computer Aided Design (CAD)
+    <ul>
+      <li>first CAD systems similar to drawing programs (1963)</li>
+      <li>pioneering work on interactive 3D CAD system (1963)
+        <ul>
+          <li>처음 목적이 배나 이런 것들을 위한 것이었기 때문에 3D로 시작</li>
+        </ul>
+      </li>
+      <li>first CAD/CAM (manufacture) system in <strong>industry</strong> was  probably General Motor’s DAC-1 (about 1963)</li>
+    </ul>
+  </li>
+  <li>Video Games
+    <ul>
+      <li>first graphical video game was probably SpaceWar (1962)</li>
+      <li>the first computer joysticks (1962)</li>
+      <li>early computer adventure game was  created (1966)</li>
+      <li>first popular commercial game was  Pong (about 1976).</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="up--coming-areas-1">Up &amp; Coming Areas (1)</h2>
+
+<ul>
+  <li>Gesture Recognition
+    <ul>
+      <li>first pen-based input device used light-pen gestures (1963)</li>
+      <li>first trainable gesture recognizer (1964)</li>
+      <li>a gesture-based text editor using proof-reading symbols (1969)</li>
+      <li>gesture recognition has been used in commercial CAD systems  since the 1970s</li>
+      <li>came to universal notice with the Apple Newton (1992)</li>
+    </ul>
+  </li>
+  <li>Multimedia
+    <ul>
+      <li>컴퓨터에 등장하는 것을 모두 한꺼번에 등장토록 하는(텍스트, 그래픽, 스피치, …)</li>
+      <li>multiple windows with integrated <strong>text and graphics</strong> (1968)</li>
+      <li>Interactive Graphical Documents project was the first  hypermedia system which used raster graphics and text (1979- 1983)</li>
+      <li>Diamond project explored combining multimedia (text,  spreadsheets, graphics, speech) (1982)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="up--coming-areas-2">Up &amp; Coming Areas (2)</h2>
+
+<ul>
+  <li>3-D
+    <ul>
+      <li>first system 3-D CAD system (1963)</li>
+      <li>first interactive 3-D system used for molecular modelling  (1966)</li>
+      <li>the late 60’s and early 70’s saw the flowering of 3D raster  graphics funded by the government</li>
+      <li>the military-industrial flight simulation work of the 60’s - 70’s led the way to making 3-D real-time</li>
+    </ul>
+  </li>
+  <li>Virtual Reality
+    <ul>
+      <li>이 때 당시에 VR 장비가 ATM보다 큰 정도였음</li>
+      <li>original work on VR funded by Air Force (1965-1968)</li>
+      <li>study of force feedback, early research on head-mounted  displays and on the DataGlove (1971)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="up--coming-areas-2-1">Up &amp; Coming Areas (2)</h2>
+
+<ul>
+  <li>Computer Supported Cooperative Work
+    <ul>
+      <li>remote participation of multiple people at various sites  (1968)</li>
+      <li>Electronic mail, still the most widespread multi-user  software, was enabled by the ARPAnet (1969)</li>
+      <li>and by the Ethernet from Xerox PARC (1973)</li>
+      <li>an early computer conferencing system (1975)</li>
+    </ul>
+  </li>
+  <li>Natural language and speech
+    <ul>
+      <li>Speech synthesis</li>
+      <li>Speech recognition</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hci-as-a-business-necessity">HCI as a business necessity</h2>
+
+<ul>
+  <li>Can the users be ignored? (Linux, Windows,…)</li>
+  <li>NO
+    <ul>
+      <li><strong>HCI + Usability engineering</strong> are a crucial business  necessity
+        <ul>
+          <li>피쳐폰만 해도 되는 기능이 꽤 있었는데 인터페이스 하나만 바꾸었더니(스마트폰) 굉장한 혁신을 불러옴</li>
+        </ul>
+      </li>
+      <li>Good Interface &amp; Interaction Design should not be added  after system is built</li>
+      <li>Supporting users is an integral part of the design. To do  this one must consider …
+        <ul>
+          <li>International Standards in HCI and Ergonomics</li>
+          <li>User population is growing (size, diversity, etc.)</li>
+          <li>Expanding awareness amongst users of what can be achieved</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="case-study-1">Case Study (1)</h2>
+
+<ul>
+  <li>A mechanical syringe was once being developed. An  input device had to be created in order to enter the  injected dose</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907143147422.png" alt="image-20220907143147422" /></p>
+
+<p><br /></p>
+
+<h2 id="case-study-2">Case Study (2)</h2>
+
+<ul>
+  <li>A prototype was developed by the manufacturing  company and demonstrated to the hospital staff.  Happily they quickly noticed the potentially <strong>fatal flaw</strong>  in its interface.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907143115489.png" alt="image-20220907143115489" /></p>
+
+<p>키를 잘못누르면 망한다는 인터페이스</p>
+
+<p><br /></p>
+
+<h2 id="case-study-3">Case Study (3)</h2>
+
+<ul>
+  <li>The doses were entered by a numeric keypad: an  accidental keypress and the dose could be out by a  factor of 10! The production version had individual  increment/decrement buttons for each digit</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907143218800.png" alt="image-20220907143218800" /></p>
+
+<p><strong>단순히 편하고 멋진 디자인만이 HCI에서 생각하는 것이 아니라 안전성, 편의성 간의 tradeoff를 생각해 봐서 최적의 인터페이스를 고려해 내는 것이다.</strong></p>
+
+<p><br /></p>
+
+<h2 id="safety-critical-systems">Safety-critical systems</h2>
+
+<ul>
+  <li>Poor designs
+    <ul>
+      <li>Very common in
+        <ul>
+          <li>Safety</li>
+          <li>Life-critical</li>
+        </ul>
+      </li>
+      <li>Which all depend on computer-control</li>
+      <li>We need to understand why these happen?
+        <ul>
+          <li>Disasters</li>
+          <li>Accidents</li>
+          <li>Frustrations</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-hostile-example">‘User Hostile’ example</h2>
+
+<ul>
+  <li>Poor HCI can lead to User Hostile systems rather  than User Friendly ones …
+    <ul>
+      <li>John has a <strong>stereo system</strong> with a matched set of  components made by the same manufacturer: a receiver,  a CD player, and a cassette deck, stacked in that order.  They all have the on/off button on the left side. Every time  John goes to turn off all three components, he presses  the top left button on the receiver, which turns it off; then  he presses the top left button on the CD player, which  turns it off; then, naturally, he presses the top left button  on the cassette deck – <strong>which pops open the cassette  door</strong>.</li>
+    </ul>
+  </li>
+  <li>이런 일이 발생하는 이유는 앰프를 만드는 팀과 카세트를 만드는 팀이 다르다.(회사는 같더라도)</li>
+  <li>stereo 시스템이 있어야 되는 이유는 커다란 스피커를 핸들링 하기 위해서 나온 것이다.(핸드폰 x)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="its-obvious">It’s obvious</h2>
+
+<ul>
+  <li>It seems “obvious” that the manufacturer could have  improved the interface
+    <ul>
+      <li>putting all three buttons in the same location</li>
+    </ul>
+  </li>
+  <li>But it clearly wasn’t obvious to the system’s  designers!!</li>
+  <li>Most actions used to accomplish tasks with an  interface are quite obvious to people who know them,  including, of course, the software designer. But the  actions are often not obvious to the first-time user.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="another-example">Another example…</h2>
+
+<ul>
+  <li>Imagine a first-time user of a computer
+    <ul>
+      <li>he has been shown how to login to the system</li>
+      <li>has done some work</li>
+      <li>is now finished with the computer for the day</li>
+    </ul>
+  </li>
+  <li>Experienced computer users will find it obvious that a  logout command is needed.</li>
+  <li>But it may not occur to first-time users that a special  action is required to end the session.
+    <ul>
+      <li>People don’t “log out” of typewriters or televisions or video  games, so why should they log out of computers?</li>
+    </ul>
+  </li>
+  <li>Learning to predict problems like these by taking the  user’s point of view is a skill that requires practice.
+    <ul>
+      <li>이런 것들은 연습을 요구하는 스킬이잖아?!</li>
+    </ul>
+  </li>
+  <li>엑셀 파일을 x를 눌러 껐는데 저장 여부를 묻는 팝업창이 없다면 UX는 최악일 것이다.</li>
+</ul>
+
+<p><mark>처음 쓰는 유저도 사용할 수 있도록 유도할 수 있는 디자인이 좋은 디자인이다.</mark></p>
+
+<p>만약 예상치 못한 일로 어떤 사용자에게는 큰 일이 벌어진다면 그 사용자는 다시는 사용하지 않을 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="who-studies-hci">Who studies HCI?</h2>
+
+<ul>
+  <li>Multi-discipline field …</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907144418714.png" alt="image-20220907144418714" /></p>
+:ET

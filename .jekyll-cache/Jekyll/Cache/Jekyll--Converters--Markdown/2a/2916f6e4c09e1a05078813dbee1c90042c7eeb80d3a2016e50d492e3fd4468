@@ -1,0 +1,169 @@
+I"�9<p>이 포스팅에서는 주로 코딩 테스트를 준비하면서 알아가면 좋은 팁과 코딩 문제 풀이를 할 때 빈번하게 쓰이는 파이썬 코드들에 대해 작성할 것이며, 계속 새롭게 알게 되는 것이 생길 때마다 추가할 예정이다.</p>
+
+<h2 id="특정-숫자까지-리스트-만들기">특정 숫자까지 리스트 만들기</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">list_a</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+<span class="c1"># [1,2,3,4,5,6,7,8,9]
+</span></code></pre></div></div>
+
+<h2 id="소인수분해-리스트-만들기">소인수분해 리스트 만들기</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">N</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">N</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="리스트-요소-개수-구하기">리스트 요소 개수 구하기</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
+<span class="c1"># 리스트의 요수 중에서 '7'이 몇개인지 세준다.
+</span></code></pre></div></div>
+
+<h2 id="리스트-요소-개수-구하기딕셔너리">리스트 요소 개수 구하기(딕셔너리)</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">test1</span> <span class="o">=</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span> <span class="s">"b"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">,</span> <span class="s">"c"</span><span class="p">,</span> <span class="s">"d"</span><span class="p">,</span> <span class="s">"e"</span><span class="p">,</span> <span class="s">"c"</span><span class="p">,</span> <span class="s">"c"</span><span class="p">]</span>
+
+<span class="n">a1</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span> <span class="n">Counter</span><span class="p">(</span><span class="n">test1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+<span class="c1">#Counter({'c': 3, 'a': 2, 'b': 1, 'd': 1, 'e':1})
+</span></code></pre></div></div>
+
+<p>또한 Counter로 얻은 딕셔너리끼리는 뺄셈도 가능하다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test2</span> <span class="o">=</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span> <span class="s">"b"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">,</span> <span class="s">"c"</span><span class="p">,</span> <span class="s">"d"</span><span class="p">,</span> <span class="s">"e"</span><span class="p">,</span> <span class="s">"c"</span><span class="p">]</span>
+
+<span class="n">a2</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">test2</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">a1</span> <span class="o">-</span> <span class="n">a2</span><span class="p">)</span>
+<span class="c1">#Counter({'c': 1})
+</span></code></pre></div></div>
+
+<h2 id="eoferror입력의-개수가-정해지지-않은-경우">EOFError(입력의 개수가 정해지지 않은 경우)</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+    <span class="k">except</span> <span class="nb">EOFError</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="p">{</span>
+        <span class="n">code</span> <span class="n">block</span>
+    <span class="p">}</span>   
+</code></pre></div></div>
+
+<h2 id="입력-소수로-받기">입력 소수로 받기</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<h2 id="특정-소수점-자리까지-나타내기">특정 소수점 자리까지 나타내기</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mf">1.2345</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1">#1.23
+</span></code></pre></div></div>
+
+<h2 id="max-min-함수">max, min 함수</h2>
+
+<h3 id="1-max">1. max()</h3>
+
+<p>max(iterable 객체) : 괄호안에 iterable 객체의 object를 하나씩 읽어 가장 큰 값을 반환해 준다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mi">8</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="mi">2</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="2-min">2. min()</h3>
+
+<p>max(iterable 객체) : 괄호안에 iterable 객체의 object를 하나씩 읽어 가장 큰 작은을 반환해 준다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">8</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="mi">1</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="3-parameter">3. Parameter</h3>
+
+<p>min(), max() 함수는 둘 다 key, default parameter를 내장하고 있다.</p>
+
+<p><span style="color:blue">key</span></p>
+
+<p>key=func 으로 되어 있다. 즉, key값에는 특정 함수를 넣어주어서 단순 가장 큰 값을 리턴하는 것이 아니라 key에 의해 우선순위가 가장 큰 값을 넘겨 주는 것이다.</p>
+
+<p><br /></p>
+
+<p>예시) 절대값 우선순위</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">abs</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">10</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">_list</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">abs</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">2</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<p>예시) 가장 많이 포함한 값 우선순위(count)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">_list</span><span class="p">.</span><span class="n">count</span><span class="p">)</span>
+<span class="mi">0</span>
+</code></pre></div></div>
+
+<p>위 예시와 같이 count()라는 함수를 넘겨주기 때문에 괄호는 생략하고 작성한다. count함수는 리스트의 원소 갯수를 세는 함수로 이 원소 갯수가 가장 많은 0을 반환한 모습을 볼 수 있다.</p>
+
+<p><br /></p>
+
+<p>예시) 람다 함수(lambda)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">%</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">5</span>
+</code></pre></div></div>
+
+<p>3으로 나누어 떨어진 나머지 값을 기준으로 최대값을 정하기 때문에 3의 배수는 모두 나가 떨어지고 나머지가 2가 되는 5가 반환되었다.</p>
+
+<p><br />
+<span style="color:blue">default</span></p>
+
+<p>iterable 객체가 비어있는 경우 대신 반환할 값을 지정해 줄 수 있다.</p>
+
+<p>만약 이 default값을 지정하지 않고 빈 iterable의 max나 min 값을 반환하려하면 오류가 발생한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">_list</span><span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">_list</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">_list</span><span class="p">)</span>
+<span class="nb">ValueError</span><span class="p">:</span> <span class="nb">max</span><span class="p">()</span> <span class="n">arg</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">sequence</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="dictionary">dictionary</h3>
+
+<p>딕셔너리도 위와 같은 과정이 가능하다. 단, 딕셔너리의 최대값을 가지는 키 값을 알아내기 위해서는 두 가지 방법이 가능하다.</p>
+
+<p><strong>중복이 없는 경우</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">max</span><span class="p">(</span><span class="n">dic</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">dic</span><span class="p">.</span><span class="n">get</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<p><strong>중복이 있는 경우</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">dic</span><span class="p">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">dic</span><span class="p">.</span><span class="n">values</span><span class="p">())</span> <span class="o">==</span> <span class="n">v</span><span class="p">]</span>
+</code></pre></div></div>
+
+:ET

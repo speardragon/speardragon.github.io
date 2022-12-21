@@ -1,0 +1,2075 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Computer Architecture] MIPS assembly programming(2) | speardragon note</title>
+<meta name="description" content="Addressing Modes">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Computer Architecture] MIPS assembly programming(2)">
+<meta property="og:url" content="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-MIPS-assembly-programming(2)/">
+
+
+  <meta property="og:description" content="Addressing Modes">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-31T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-MIPS-assembly-programming(2)/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-architecture" itemprop="item"><span itemprop="name">Computer architecture</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Computer Architecture] MIPS assembly programming(2)</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Computer Architecture] MIPS assembly programming(2)">
+    <meta itemprop="description" content="Addressing Modes">
+    <meta itemprop="datePublished" content="2022-03-31T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-MIPS-assembly-programming(2)/" class="u-url" itemprop="url">[Computer Architecture] MIPS assembly programming(2)
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h2 id="addressing-modes">Addressing Modes</h2>
+
+<h3 id="how-do-we-address-the-operandsin-mips">How do we address the operands?(In MIPS)</h3>
+
+<ul>
+  <li>Register Only</li>
+  <li>Immediate</li>
+  <li>Base Addressing</li>
+  <li>PC-Relative</li>
+  <li>Pseudo Direct</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="register-only">Register Only</h4>
+
+<ul>
+  <li>Operands found in registers
+    <ul>
+      <li>Example: add $s0, $t2, $t3</li>
+      <li>Example: sub $t8, $s1, $0</li>
+    </ul>
+  </li>
+  <li>Immediate
+    <ul>
+      <li>16-bit immediate used as an operand
+        <ul>
+          <li>Example:addi $s4, $t5, -73</li>
+          <li>Example: ori $t3, $t7 0xFF</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="base-addressing">Base Addressing</h4>
+
+<ul>
+  <li>
+    <p>Address of operand is:
+base address + sign-extended immediate</p>
+  </li>
+  <li>Example: lw $s4, 72($0)
+    <ul>
+      <li>$0은 data memory의 address</li>
+      <li>address = $0 + 72</li>
+    </ul>
+  </li>
+  <li>Example: sw $t2, -25($t1)
+    <ul>
+      <li>address = $t1 - 25</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="pc-relative-addressing">PC-Relative Addressing</h4>
+
+<ul>
+  <li>
+    <p>Program memory</p>
+  </li>
+  <li>
+    <p>우리는 label을 그냥 사용하면 되지만 예를 들어 <code class="language-plaintext highlighter-rouge">else:</code> 로 가야할 때 PC에서 얼마만큼 떨어진 곳으로 가야 하는 지를 알아야 한다.</p>
+  </li>
+  <li>
+    <p>Program memory address</p>
+  </li>
+</ul>
+
+<pre><code class="language-assembly">0x10 		beq $t0, $0, else
+0x14 		addi $v0, $0, 1 
+0x18 		addi $sp, $sp, i
+0x1C 		jr $ra
+0x20 	else: addi $a0, $a0, -1
+0x24 		jal factorial
+</code></pre>
+
+<p>위와 같은 경우에 beq에서 $t0와 $0가 같으면 else로 jump하는데 이 때 4칸을 뛰어야 한다.</p>
+
+<p>그런데 PC에서는 미리 다음 주소로 이동하기 위해 값을 다음으로 지정해 놓고 있기 때문에 3칸만 뛰어도 되는 것이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160977970-16c48d2c-21c1-443a-a33e-a0ab07071f3e.png" alt="image" /></p>
+
+<p>BTA(Branch Target Address) = <strong>(PC + 4)</strong> + (Imm«2)</p>
+
+<ul>
+  <li>4를 더한 것은 PC가 다음으로 이동하기 위해 미리 한 칸 가 있는 것이고 imm(3)에 left shift를 2번하면 x4의 효과가 있기 때문에 한 것이다.(따라서 (PC+4) + 12)</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="pseudo-direct-addressing">Pseudo-direct Addressing</h4>
+
+<pre><code class="language-assembly">0x0040005C 			jal sum
+...
+0x004000A0 		sum: add $v0, $a0, $a1
+</code></pre>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160978342-d67ec7d4-8e9e-47f4-85c7-73f1a4f2cf4e.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>26bit밖에 없는데 32bit를 만들어야 하는 경우</p>
+
+    <ul>
+      <li>
+        <p>JTA(Jump Target Address)</p>
+      </li>
+      <li>
+        <p>맨 뒤에 2 비트를 0으로 채움</p>
+      </li>
+      <li>
+        <p>맨 앞의 4bit(한 바이트)는 PC에서 그대로 가져온다.</p>
+      </li>
+      <li>
+        <p>J타입은 원래 어디로 jump 할 지를 바로 정해주는 direct addressing인데 여기서 32bit를 만들기 위해 앞의 4bit는 PC에서 왔기 때문에 Pseudo-direct addressing이라고 한다.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="how-to-compile--run-a-program">How to Compile &amp; Run a Program</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160979034-7ab2fc1e-6ee8-4ccd-b08a-34796fa17d98.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="what-is-stored-in-memory">What is Stored in Memory?</h2>
+
+<ul>
+  <li>
+    <p>Instructions (also called text)</p>
+  </li>
+  <li>
+    <p>Data</p>
+
+    <ul>
+      <li>
+        <p>Global/static: allocated before program begins</p>
+      </li>
+      <li>
+        <p>Dynamic: allocated within program</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>How big is memory?</p>
+
+    <ul>
+      <li>At most 2<sup>32</sup> = 4 gigabytes (4 GB)</li>
+      <li>From address 0x00000000 to 0xFFFFFFFF</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mips-memory-map">MIPS Memory Map</h2>
+
+<ul>
+  <li>Text segment: 256MB</li>
+  <li>Global data segment: 64 KB,  accessed by $gp</li>
+  <li>$gp does not change during  execution (unlike $sp)</li>
+  <li>Reserved: I/O 영역(위) 과 OS(아래)가 사용하는 공간</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160979282-13099d79-9ddb-4521-8d72-b11e222e5945.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="example-risc-v-memory-map">Example RISC-V Memory Map</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160979433-a915096d-d612-4091-93f7-e34e9d0af372.png" alt="image" /></p>
+
+<p>address는 다르지만 기본적인 구조는 매우 유사함(MIPS와)</p>
+
+<p><br /></p>
+
+<h2 id="example-program-c-code">Example Program: C Code</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span> <span class="c1">// global variables</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">sum</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="example-program-compiling">Example Program: compiling</h2>
+
+<pre><code class="language-assembly">.data
+f:
+g:
+y:
+.text
+main:
+    addi $sp, $sp, -4 	# stack frame
+    sw $ra, 0($sp) 		# store $ra
+    addi $a0, $0, 2 	# $a0 = 2
+    sw $a0, f 			# f = 2 ; label을 그냥 그대로 써도 됨
+    addi $a1, $0, 3 	# $a1 = 3
+    sw $a1, g 			# g = 3
+    jal sum 			# call sum
+    sw $v0, y 			# y = sum()
+    lw $ra, 0($sp) 		# restore $ra
+    addi $sp, $sp, 4 	# restore $sp
+    jr $ra 				# return to OS
+sum:
+    add $v0, $a0, $a1 	# $v0 = a + b
+    jr $ra 				# return
+</code></pre>
+
+<h2 id="example-program-symbol-table">Example Program: Symbol Table</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160980280-e573b6b8-50e7-429f-b04c-7eb950f0d6c8.png" alt="image" /></p>
+
+<p>f,g,y : data memory</p>
+
+<p>main, sum: program memory(text memory)</p>
+
+<p><br /></p>
+
+<h2 id="example-program-linking-executable">Example Program: linking (Executable)</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160980322-7696a025-98a3-43e9-99e4-0c55e10ca64a.png" alt="image" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">sw $a0, 0x8000($gp)</code>가 의미하는 것:</p>
+
+<p>global pointer는 memory의 global data 공간을 가리키고 있는데 이 공간에서 0x8000만큼 떨어진 곳으로 store하라는 것인데 0x8000은 맨 앞의 8이 이진수로 ‘1000’을 나타내고 이는 -8이기 때문에  -8000을 의미하는 것이기 때문에 0x10008000에 있던 $gp 가 0x10000000으로 가서 f를 저장하고 g를 저장할 때는 0x8004만큼 움직이면 -7996을 의미하는 것이기 때문에 f를 저장한 곳보다 4만큼 위의 공간에 저장하는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="example-program-loading-in-memory">Example Program: loading (in memory)</h2>
+
+<ul>
+  <li>OS loads the program from  storage</li>
+  <li>OS sets $gp=0x10008000,  and $sp= 0x7ffffffc, and  jump to the beginning of  the program  (jal 0x00400000).</li>
+  <li>Reserved area: memory-mapped I/O, interrupt  vector</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160980658-918b2b67-6204-4b85-a643-4e82a61f1797.png" alt="image" /></p>
+
+<hr />
+
+<h2 id="lab-1-mips-assembly-programming">Lab 1: MIPS Assembly Programming</h2>
+
+<p>MIPS을 해보는 것처럼 실행할 수 있는 runtime simulator인 MARS로 구동시킬 것임</p>
+
+<hr />
+
+<h2 id="odds--ends-misc">Odds &amp; Ends (Misc.)</h2>
+
+<ul>
+  <li>Pseudo-instructions
+    <ul>
+      <li>Not a part of ISA, but commonly used</li>
+      <li>assembler가 진짜 instruction으로 바꿔줌</li>
+    </ul>
+  </li>
+  <li>Exceptions(interrupt)
+    <ul>
+      <li>Unscheduled function call(예기치 않은 function call)</li>
+      <li>Exception handler is at 0x80000180</li>
+    </ul>
+  </li>
+  <li>Signed and unsigned instructions</li>
+  <li>Floating-point instructions</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="pseudoinstruction">Pseudoinstruction</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160982585-ed6ec6eb-d2b8-42b3-92b4-cef838e9e948.png" alt="image" /></p>
+
+<ul>
+  <li>li $s0, 0x1234AA77 (load immediate) : 32bit를 immediate로 쓸 때에는 두 과정으로 나누어 준다.
+    <ul>
+      <li>lui / ori</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="exception">Exception</h3>
+
+<ul>
+  <li>Unscheduled function call to exception handler</li>
+  <li>Caused by:
+    <ul>
+      <li>Hardware, also called an <strong>interrupt</strong>, e.g., keyboard</li>
+      <li>Software, also called <strong>traps</strong>, e.g., undefined instruction</li>
+    </ul>
+  </li>
+  <li>When exception occurs, the processor:</li>
+  <li>Records the cause of the exception (원인을 저장)</li>
+  <li>Jumps to exception handler (at instruction address  0x80000180)</li>
+  <li>Returns to program</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="exception-registers">Exception Registers</h3>
+
+<ul>
+  <li>
+    <p>Not part of register clk</p>
+
+    <ul>
+      <li>
+        <p>Cause: <strong>Records</strong> <strong>cause</strong> of exception</p>
+      </li>
+      <li>
+        <p>EPC (Exception PC): Records PC where exception occurred</p>
+        <ul>
+          <li><strong>exception handler에서 다 처리한 후 다시 돌아올 자리</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>EPC and Cause: part of Coprocessor 0</p>
+  </li>
+  <li>
+    <p>Move from Coprocessor 0</p>
+
+    <ul>
+      <li>mfc0 $t0, EPC</li>
+      <li>Moves contents of EPC into $t0</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="exception-causes">Exception Causes</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984004-e9bbc166-237c-488b-b997-fc29c2e264d6.png" alt="image" /></p>
+
+<h2 id="exception-flow">Exception Flow</h2>
+
+<ul>
+  <li>Processor saves cause and exception PC in <strong>Cause</strong> and <strong>EPC</strong></li>
+  <li>Processor jumps to exception handler (0x80000180)</li>
+  <li>Exception handler:
+    <ul>
+      <li>Saves registers on stack
+        <ul>
+          <li>내가 사용할 register 저장(어떤 register가 문제인지 모르기 때문에)</li>
+        </ul>
+      </li>
+      <li>Reads <strong>Cause</strong> register
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">mfc0 $k0, Cause </code></li>
+        </ul>
+      </li>
+      <li>Handles exception</li>
+      <li>Restores registers</li>
+      <li><strong>Returns</strong> to program</li>
+      <li>mfc0 $k0, EPC <code class="language-plaintext highlighter-rouge">//$k0, $k1 reserved by OS jr $k0</code></li>
+      <li>jr $k0</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="exception-example">Exception Example</h2>
+
+<ul>
+  <li>Example: read one input from a keyborad (assum interrupt is enabled)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984184-03d27317-ab2e-4f1f-b7d7-bdb48ddfdfdd.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161664669-86bff572-4fde-4ddb-8d54-8076b44d0fe5.png" alt="image" style="zoom:50%;" /></p>
+
+<p>$k0-$k1 : OS temporaries</p>
+
+<p><br /></p>
+
+<h2 id="signed--unsigned-instructions">Signed &amp; Unsigned Instructions</h2>
+
+<ul>
+  <li>Addition and subtraction</li>
+  <li>Multiplication and division</li>
+  <li>Set less than</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="addition--subtraction">Addition &amp; Subtraction</h2>
+
+<ul>
+  <li>Signed: add, addi, sub
+    <ul>
+      <li>Same operation as unsigned versions</li>
+      <li>But processor takes exception on overflow</li>
+    </ul>
+  </li>
+  <li>Unsigned: addu, addiu, subu
+    <ul>
+      <li>Doesn’t take exception on overflow</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Note: addiu sign-extends the immediate (two versions are identical except exception is triggered.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h2 id="mul">Mul</h2>
+
+<ul>
+  <li>Signed: mult, div</li>
+  <li>Unsigned: multu, divu</li>
+</ul>
+
+<p>ex) 0xFFFF_FFFF * 0xFFFF_FFFF</p>
+
+<p>=&gt; 0xFFFFFFFE00000001   (unsigned)</p>
+
+<p>=&gt; 0x0000000000000001 (signed)</p>
+
+<p><br /></p>
+
+<h2 id="set-less-than">Set Less Than</h2>
+
+<ul>
+  <li>Signed: slt, slti</li>
+  <li>Unsigned: sltu, sltiu</li>
+</ul>
+
+<blockquote>
+  <p>Note: sltiu sign-extends the immediate before comparing it to the register.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h2 id="loads">Loads</h2>
+
+<ul>
+  <li>Signed:
+    <ul>
+      <li>Sign-extends to create 32-bit value to load into register</li>
+      <li>Load halfword: lh</li>
+      <li>Load byte: lb</li>
+    </ul>
+  </li>
+  <li>Unsigned:
+    <ul>
+      <li>Zero-extends to create 32-bit value</li>
+      <li>Load halfword unsigned: lhu</li>
+      <li>Load byte: lbu</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="floating-point-coprocessoror-accelerator">Floating-Point Coprocessor(or Accelerator)</h2>
+
+<p>별로 중요하지 않음, 내부가 중요함</p>
+
+<p><br /></p>
+
+<h2 id="example-design">Example design</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984525-2c2b69ae-5eea-413e-9ea5-878d9abf25a3.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="floating-point-instructions">Floating-Point Instructions</h2>
+
+<ul>
+  <li>Floating-point coprocessor(Coprocessor 1)</li>
+  <li>32 32-bit floating-pointer registers($f0-$f31)</li>
+  <li>Double-precision values held in two floating point registers
+    <ul>
+      <li>e.g., $f0 and $f1,$f2 and $f3, etc.</li>
+      <li>Double-precision floating point registers: $f0, $f2, $f4, etc.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984582-8e09efe1-7f7a-4061-9545-7074a12b1297.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="f-type-instruction-format">F-Type Instruction Format</h2>
+
+<ul>
+  <li>Opcode = 17 (010001<sub>2</sub>)</li>
+  <li>Single-precision:
+    <ul>
+      <li>cop = 16 (010000<sub>2</sub>)</li>
+      <li>add.s , sub.s, div.s, neg.s, abs.s, etc.</li>
+    </ul>
+  </li>
+  <li>Double-precision:
+    <ul>
+      <li>cop = 17 (010001<sub>2</sub>)</li>
+      <li>add.d, sub.d, div.d, neg.d, abs.d, etc.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="floating-point-branches">Floating-Point Branches</h2>
+
+<ul>
+  <li>Set/clear condition flag: fpcond
+    <ul>
+      <li>Equality: c.seq.s, c.seq.d</li>
+      <li>Less than: c.lt.s, c.lt.d</li>
+      <li>Less than or equal: c.le.s, c.le.d</li>
+    </ul>
+  </li>
+  <li>Conditional branch
+    <ul>
+      <li>bclf: branches if fpcond is FALSE</li>
+      <li>bclt: branches if fpcond is TRUE</li>
+    </ul>
+  </li>
+  <li>Loads and stores
+    <ul>
+      <li>lwc1: lwc1 $ft1, 42($s1)  ; load coprocessor 1</li>
+      <li>swc1: swc1 $fs2, 17($sp)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="arm--mips-instruction-set">ARM &amp; MIPS instruction set</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160984760-2ad592ce-a197-49b9-8dfb-01f4abbeed12.png" alt="image" /></p>
+
+<p>난이도: MIPS &lt; RISC-V &lt; ARM</p>
+
+<p>ARM은 복잡, MIPS은 비교적 쉬움, 이 사이에 있는 것이 RISC-V</p>
+
+<hr />
+
+<p>Q)</p>
+
+<p>A)handling하는 방식이 processor마다 조금씩 다를 수 있다.</p>
+
+<p>Q)floating point /single, double</p>
+
+<p>A)</p>
+
+<p>범위가 틀린 것</p>
+
+<p>single precision</p>
+
+<ul>
+  <li>32 bit</li>
+  <li>float a;</li>
+</ul>
+
+<p>double precision</p>
+
+<ul>
+  <li>64bit</li>
+  <li>double b;</li>
+</ul>
+
+<p>Q)unsigned에서는 overflow가 일어나지 않는데 이를 어떻게 처리하는 것인가?</p>
+
+<p>A)있을 수 있으나 무시하여 발생하지 않도록 설계하는 것이다.</p>
+
+<hr />
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#computer-architecture" class="page__taxonomy-item p-category" rel="tag">Computer Architecture</a><span class="sep">, </span>
+    
+      <a href="/tags/#intro" class="page__taxonomy-item p-category" rel="tag">Intro</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#computer-architecture" class="page__taxonomy-item p-category" rel="tag">Computer Architecture</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-03-31T00:00:00+09:00">2022-03-31</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BComputer+Architecture%5D+MIPS+assembly+programming%282%29%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-MIPS-assembly-programming%282%29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-MIPS-assembly-programming%282%29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fcomputer%2520architecture%2FComputer-Architecture-MIPS-assembly-programming%282%29%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/system/system%20programming/System-Programming-5.1-%ED%8C%8C%EC%9D%BC-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B5%AC%ED%98%84/" class="pagination--pager" title="[System Programming] 5.1 파일 시스템 구현
+">이전</a>
+    
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20python/python/Python-Abstract-Data-Types/" class="pagination--pager" title="[Python] Abstract Data Types
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/computer%20architecture/Computer-Architecture-MIPS-assembly-programming(2)/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/computer%20architecture/[Computer Architecture] MIPS assembly programming(2)"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,888 @@
+I"�^<h2 id="the-computer">The Computer</h2>
+
+<ul>
+  <li>a computer system is made up of various elements</li>
+  <li>each of these elements affects the interaction
+    <ul>
+      <li>input devices – text entry and pointing</li>
+      <li>output devices – screen (small&amp;large), digital paper</li>
+      <li>virtual reality – special interaction and display devices</li>
+      <li>physical interaction – e.g. sound, haptic, bio-sensing</li>
+      <li>paper – as output (print) and input (scan)</li>
+      <li>memory – RAM &amp; permanent media, capacity &amp; access</li>
+      <li>processing – speed of processing, networks</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interacting-with-computers">Interacting with computers</h2>
+
+<p>to understand human–computer interaction … need to understand computers!</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221050687.png" alt="image-20220909221050687" /></p>
+
+<p><br /></p>
+
+<h2 id="a-typical-computer-system">A ‘typical’ computer system</h2>
+
+<ul>
+  <li>screen, or monitor, on which there are windows</li>
+  <li>keyboard</li>
+  <li>
+    <p>mouse/trackpad <img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220919121321481.png" alt="image-20220919121321481" /></p>
+  </li>
+  <li>variations
+    <ul>
+      <li>desktop</li>
+      <li>laptop</li>
+      <li>tablet</li>
+    </ul>
+  </li>
+  <li>the devices dictate the styles of interaction that the system supports</li>
+  <li>If we use different devices, then the interface will support a different style of interaction</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="how-many-computers-">How many computers …</h2>
+
+<ul>
+  <li>
+    <p>in your house?</p>
+
+    <ul>
+      <li>PC</li>
+      <li>TV, VCR, DVD, HiFi, cable/satellite TV</li>
+      <li>microwave, cooker, washing machine</li>
+      <li>central heating</li>
+      <li>security system</li>
+    </ul>
+
+    <p>-&gt; can you think of more?</p>
+  </li>
+  <li>
+    <p>in your pockets?</p>
+
+    <ul>
+      <li>tablet</li>
+      <li>phone, camera</li>
+      <li>smart card, card with magnetic strip?</li>
+      <li>electronic car key</li>
+      <li>USB memory</li>
+    </ul>
+
+    <p>-&gt; try your pockets and bags</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interactivity">Interactivity?</h2>
+
+<ul>
+  <li>Long ago in a galaxy far away … batch processing
+    <ul>
+      <li>punched card stacks or large data files prepared</li>
+      <li>long wait ….</li>
+      <li>line printer output</li>
+      <li>… and if it is not right …</li>
+    </ul>
+  </li>
+  <li>Now most computing is interactive
+    <ul>
+      <li>rapid feedback</li>
+      <li>the user in control (most of the time)</li>
+      <li>doing rather than thinking …</li>
+    </ul>
+  </li>
+  <li>Is faster always better?</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="text-entry-devices-keyboards">text entry devices: Keyboards</h2>
+
+<ul>
+  <li>Most common text input device</li>
+  <li>Allows rapid entry of text by experienced users</li>
+  <li>Keypress closes circuit connection, causing a character code to be sent</li>
+  <li>Usually connected by cable, but can be wireless</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="layout---qwerty">Layout - QWERTY</h2>
+
+<ul>
+  <li>Standardised layout</li>
+  <li>but …
+    <ul>
+      <li>non-alphanumeric keys are placed differently</li>
+      <li>accented symbols needed for different scripts</li>
+      <li>minor differences between UK and USA keyboards</li>
+    </ul>
+  </li>
+  <li>QWERTY arrangement not optimal for typing
+    <ul>
+      <li>layout to prevent typewriters jamming! (그래서 많이쓰고 연속되는 키가 바로 옆에 있지 않다.)</li>
+    </ul>
+  </li>
+  <li>Alternative designs allow faster typing but large social base of QWERTY typists produces reluctance to change.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221454692.png" alt="image-20220909221454692" /></p>
+
+<p><br /></p>
+
+<h2 id="alternative-keyboard-layouts">Alternative keyboard layouts</h2>
+
+<ul>
+  <li>Alphabetic
+    <ul>
+      <li>keys arranged in alphabetic order</li>
+      <li>not faster for trained typists</li>
+      <li>not faster for beginners either!</li>
+    </ul>
+  </li>
+  <li>Dvorak
+    <ul>
+      <li>common letters under dominant fingers</li>
+      <li>biased towards right hand</li>
+      <li>common combinations of letters alternate between hands</li>
+      <li>10-15% improvement in speed and reduction in fatigue</li>
+      <li>But - large social base of QWERTY typists produce market pressures not to change</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="special-keyboard">Special keyboard</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221607087.png" alt="image-20220909221607087" /></p>
+
+<ul>
+  <li>One-handed keyboard
+    <ul>
+      <li>designs to reduce fatigue for RSI</li>
+      <li>e.g. the Maltron left-handed keyboard</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221619732.png" alt="image-20220909221619732" /></p>
+
+<ul>
+  <li>Chord keyboard
+    <ul>
+      <li>letters typed as combination of keys pressed simultaneously</li>
+      <li>BUT - social resistance, plus fatigue after extended use</li>
+      <li>NEW – niche market for some wearables</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="phone-pad-and-t9-entry">Phone pad and T9 entry</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221648373.png" alt="image-20220909221648373" /></p>
+
+<ul>
+  <li>use numeric keys with multiple presses</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221659462.png" alt="image-20220909221659462" /></p>
+
+<ul>
+  <li>hello = 4433555[pause]555666</li>
+  <li>surprisingly fast!</li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221719369.png" alt="image-20220909221719369" /></p>
+
+<ul>
+  <li>T9 predictive entry
+    <ul>
+      <li>type as if single key for each letter</li>
+      <li>use dictionary to ‘guess’ the right word</li>
+      <li>hello = 43556 …</li>
+      <li>but 26 -&gt; menu ‘am’ or ‘an’</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="handwriting-recognition">Handwriting recognition</h2>
+
+<ul>
+  <li>Text can be input into the computer, using a pen and a digitizing tablet
+    <ul>
+      <li>natural interaction</li>
+    </ul>
+  </li>
+  <li>Technical problems:
+    <ul>
+      <li>capturing all useful information - stroke path, pressure, etc. in a natural manner</li>
+      <li>segmenting joined up writing into individual letters</li>
+      <li>interpreting individual letters</li>
+      <li>coping with different styles of handwriting</li>
+    </ul>
+  </li>
+  <li>Used in smartphones, and tablet computers … … leave the keyboard on the desk!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="speech-recognition">Speech recognition</h2>
+
+<ul>
+  <li>Improving rapidly</li>
+  <li>Most successful when:
+    <ul>
+      <li>single user – initial training and learns peculiarities</li>
+      <li>limited vocabulary systems</li>
+    </ul>
+  </li>
+  <li>Problems with
+    <ul>
+      <li>external noise interfering</li>
+      <li>imprecision of pronunciation</li>
+      <li>large vocabularies</li>
+      <li>different speakers</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scanners">Scanners</h2>
+
+<ul>
+  <li>Take paper and convert it into a bitmap</li>
+  <li>Two sorts of scanner
+    <ul>
+      <li>flat-bed: paper placed on a glass plate; whole page converted into bitmap</li>
+      <li>hand-held: scanner passed over paper, digitising strip typically 3-4” wide. some camera apps do the same.</li>
+    </ul>
+  </li>
+  <li>Shines light at paper and note intensity of reflection
+    <ul>
+      <li>colour or greyscale</li>
+    </ul>
+  </li>
+  <li>Typical resolutions from 600–2400 dpi</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="optical-character-recognition">Optical character recognition</h2>
+
+<ul>
+  <li>OCR converts bitmap back into text</li>
+  <li>different fonts
+    <ul>
+      <li>create problems for simple “template matching” algorithms</li>
+      <li>more complex systems segment text, decompose it into lines and arcs, and decipher characters that way</li>
+    </ul>
+  </li>
+  <li>page format
+    <ul>
+      <li>columns, pictures, headers and footers</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="positioning-pointing-and-drawing-the-mouse">Positioning, pointing and drawing: the Mouse</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222026683.png" alt="image-20220909222026683" /></p>
+
+<ul>
+  <li>Handheld pointing device
+    <ul>
+      <li>very common &amp; easy to use</li>
+    </ul>
+  </li>
+  <li>Two characteristics
+    <ul>
+      <li>planar movement</li>
+      <li>Buttons : usually from 1 to 3 buttons on top, used for making a selection, indicating an option, or to initiate drawing etc.</li>
+    </ul>
+  </li>
+  <li>Relative movement only is detectable.</li>
+  <li>Movement of mouse moves screen cursor</li>
+  <li>… an indirect manipulation device.
+    <ul>
+      <li>device itself doesn’t obscure screen, is accurate and fast.</li>
+      <li>hand-eye coordination problems for novice users</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="trackball-and-thumbwheels">Trackball and thumbwheels</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222120750.png" alt="image-20220909222120750" /></p>
+
+<ul>
+  <li>Touchpad
+    <ul>
+      <li>small touch sensitive tablets</li>
+      <li>‘stroke’ to move mouse pointer</li>
+      <li>used mainly in laptop computers</li>
+    </ul>
+  </li>
+  <li>Trackball
+    <ul>
+      <li>ball is rotated inside static housing</li>
+      <li>like an upside-down mouse!</li>
+      <li>relative motion moves cursor</li>
+      <li>indirect device, fairly accurate</li>
+      <li>separate buttons for picking</li>
+      <li>very fast for gaming</li>
+      <li>used in some portable and notebook computers.</li>
+    </ul>
+  </li>
+  <li>Thumbwheels …
+    <ul>
+      <li>for accurate CAD – two dials for X-Y cursor position</li>
+      <li>for fast scrolling – single dial on mouse</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="joystick-and-pointing-stick">Joystick and Pointing Stick</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222205235.png" alt="image-20220909222205235" /></p>
+
+<ul>
+  <li>
+    <p>Joystick</p>
+
+    <ul>
+      <li>
+        <p>indirect</p>
+
+        <p>pressure of stick = velocity of movement</p>
+      </li>
+      <li>
+        <p>buttons for selection</p>
+
+        <p>on top or on front like a trigger</p>
+      </li>
+      <li>
+        <p>often used for computer games</p>
+
+        <p>aircraft controls and 3D navigation</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222217448.png" alt="image-20220909222217448" /></p>
+
+<ul>
+  <li>Pointing Stick
+    <ul>
+      <li>for laptop computers</li>
+      <li>miniature joystick in the middle of the keyboard</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="digitizing-tablet">Digitizing tablet</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222247069.png" alt="image-20220909222247069" /></p>
+
+<ul>
+  <li>Mouse like-device with cross hairs</li>
+  <li>used on special surface
+    <ul>
+      <li>rather like stylus</li>
+    </ul>
+  </li>
+  <li>very accurate
+    <ul>
+      <li>used for digitizing maps</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="touch-screen">Touch screen</h2>
+
+<ul>
+  <li>Detect the presence of finger or stylus on the screen.
+    <ul>
+      <li>works by interrupting matrix of light beams, capacitance changes or ultrasonic reflections</li>
+      <li>direct pointing device</li>
+    </ul>
+  </li>
+  <li>Advantages:
+    <ul>
+      <li>fast, and requires no specialised pointer</li>
+      <li>good for menu selection</li>
+      <li>suitable for use in hostile environment: clean and safe from damage.</li>
+    </ul>
+  </li>
+  <li>Disadvantages:
+    <ul>
+      <li>finger can mark screen</li>
+      <li>imprecise (finger is a fairly blunt instrument!)
+        <ul>
+          <li>difficult to select small regions or perform accurate drawing</li>
+        </ul>
+      </li>
+      <li>lifting arm can be tiring</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="eyegaze">Eyegaze</h2>
+
+<ul>
+  <li>Control interface by eye gaze direction
+    <ul>
+      <li>e.g. look at a menu item to select it</li>
+    </ul>
+  </li>
+  <li>Uses IR laser reflected off retina
+    <ul>
+      <li>… a very low power laser!</li>
+    </ul>
+  </li>
+  <li>Mainly used for evaluation</li>
+  <li>Potential for hands-free control</li>
+  <li>High accuracy requires headset</li>
+  <li>Cheaper and lower accuracy devices available</li>
+  <li>Sit under the screen like a small webcam</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222403698.png" alt="image-20220909222403698" /></p>
+
+<p><br /></p>
+
+<h2 id="display-devices-resolution-and-colour-depth">Display devices: Resolution and colour depth</h2>
+
+<ul>
+  <li>Resolution … used (inconsistently) for
+    <ul>
+      <li>number of pixels on screen (width x height)
+        <ul>
+          <li>e.g. SVGA 1024 x 768, Full HD 1920 x 1080</li>
+        </ul>
+      </li>
+      <li>density of pixels (in pixels or dots per inch - dpi)
+        <ul>
+          <li>typically between 72 and 96 dpi, for retina 200 to 400 dpi</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Aspect ratio
+    <ul>
+      <li>ration between width and height</li>
+      <li>4:3 for computer screens, 16:9 for wide-screen TV</li>
+    </ul>
+  </li>
+  <li>Colour depth:
+    <ul>
+      <li>how many different colours for each pixel?</li>
+      <li>black/white or greys only</li>
+      <li>256 from a palette</li>
+      <li>8 bits each for red/green/blue = millions of colours</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cathode-ray-tubecrt">Cathode ray tube(CRT)</h2>
+
+<ul>
+  <li>Stream of electrons emitted from electron gun, focused and directed by magnetic fields, hit phosphor-coated screen which glows</li>
+  <li>used in TVs and computer monitors</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222523023.png" alt="image-20220909222523023" /></p>
+
+<p><br /></p>
+
+<h2 id="liquid-crystal-displays-lcd">Liquid crystal displays (LCD)</h2>
+
+<ul>
+  <li>Smaller, lighter, and … no radiation problems.</li>
+  <li>Found on phones, portables and notebooks, … and increasingly on desktop and for home TV</li>
+  <li>also used in dedicated displays: digital watches, mobile phones, HiFi controls</li>
+  <li>How it works …
+    <ul>
+      <li>Top plate transparent and polarised, bottom plate reflecting or transparent.</li>
+      <li>Voltage applied to crystal changes polarisation(편광) and hence colour</li>
+      <li>Light reflected not emitted =&gt; less eye strain</li>
+      <li>For a device with an internal light source has a backlight</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="lcd-operating-principle">LCD Operating Principle</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222628763.png" alt="image-20220909222628763" /></p>
+
+<ul>
+  <li>Online
+    <ul>
+      <li>Surrounding light is polarized on the upper plate.</li>
+      <li>Molecules and lights are parallel to the lower analyzer.</li>
+      <li>Light passes through the plate.</li>
+    </ul>
+  </li>
+  <li>Offline
+    <ul>
+      <li>Surrounding light is polarized on the upper plate.</li>
+      <li>Molecules and lights are perpendicular to the lower analyzer.</li>
+      <li>Light cannot pass through the plate.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="digital-paper">Digital paper</h2>
+
+<ul>
+  <li>what?
+    <ul>
+      <li>thin flexible sheets</li>
+      <li>updated electronically</li>
+      <li>but retain display</li>
+    </ul>
+  </li>
+  <li>how?
+    <ul>
+      <li>small spheres turned</li>
+      <li>or channels with <strong>coloured</strong> liquid and contrasting spheres</li>
+      <li>or move up and down B/W microballs (e-ink)
+        <ul>
+          <li>소비전력이 낮음</li>
+        </ul>
+      </li>
+      <li>rapidly developing area</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222703633.png" alt="image-20220909222703633" /></p>
+
+<p><br /></p>
+
+<h2 id="virtual-reality-and-3d-interaction-3d-displays">Virtual reality and 3D interaction: 3D displays</h2>
+
+<ul>
+  <li>Desktop VR
+    <ul>
+      <li>Ordinary screen, mouse or keyboard control</li>
+      <li>Perspective and motion give 3D effect</li>
+    </ul>
+  </li>
+  <li>Seeing in 3D
+    <ul>
+      <li>Use stereoscopic vision</li>
+      <li>VR helmets</li>
+      <li>Screen plus shuttered specs, etc</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222750595.png" alt="image-20220909222750595" /></p>
+
+<p><br /></p>
+
+<h2 id="vr-motion-sickness">VR motion sickness</h2>
+
+<ul>
+  <li>Time delay
+    <ul>
+      <li>move head … lag … display moves</li>
+      <li>conflict: head movement vs. eyes</li>
+    </ul>
+  </li>
+  <li>Depth perception
+    <ul>
+      <li>headset gives different stereo distance</li>
+      <li>but all focused in same plane</li>
+      <li>conflict: eye angle vs. focus</li>
+    </ul>
+  </li>
+  <li>Conflicting cues =&gt; sickness
+    <ul>
+      <li>helps motivate improvements in technology</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="simulators-and-vr-caves">Simulators and VR caves</h2>
+
+<ul>
+  <li>Scenes projected on walls</li>
+  <li>Realistic environment</li>
+  <li>Hydraulic rams!</li>
+  <li>Real controls</li>
+  <li>Other people</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222845514.png" alt="image-20220909222845514" /></p>
+
+<p><br /></p>
+
+<h2 id="dedicated-displays">Dedicated displays</h2>
+
+<ul>
+  <li>Analogue representations:
+    <ul>
+      <li>dials, gauges, lights, etc.</li>
+    </ul>
+  </li>
+  <li>Digital displays:
+    <ul>
+      <li>small LCD screens, LED lights, etc.</li>
+    </ul>
+  </li>
+  <li>Head-up displays (HUD)
+    <ul>
+      <li>found in aircraft cockpits or automobiles</li>
+      <li>show most important controls … depending on context</li>
+    </ul>
+  </li>
+  <li>Hologram
+    <ul>
+      <li>Gatebox animated robot</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909222923428.png" alt="image-20220909222923428" /></p>
+
+<p><br /></p>
+
+<h2 id="printing">Printing</h2>
+
+<ul>
+  <li>image made from small dots
+    <ul>
+      <li>allows any character set or graphic to be printed,</li>
+    </ul>
+  </li>
+  <li>critical features:
+    <ul>
+      <li>resolution
+        <ul>
+          <li>size and spacing of the dots</li>
+          <li>measured in dots per inch (dpi)</li>
+        </ul>
+      </li>
+      <li>speed
+        <ul>
+          <li>usually measured in pages per minute</li>
+        </ul>
+      </li>
+      <li>cost!!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="types-of-dot-based-printers">Types of dot-based printers</h2>
+
+<ul>
+  <li>dot-matrix printers (가끔 영수증 뽑는 데서 보임)
+    <ul>
+      <li>use inked ribbon (like a typewriter)</li>
+      <li>line of pins that can strike the ribbon, dotting the paper.</li>
+      <li>typical resolution 80-120 dpi</li>
+    </ul>
+  </li>
+  <li>ink-jet and bubble-jet printers
+    <ul>
+      <li>tiny blobs of ink sent from print head to paper</li>
+      <li>typically 300 dpi or better .</li>
+    </ul>
+  </li>
+  <li>laser printer
+    <ul>
+      <li>like photocopier: dots of electrostatic charge deposited on drum, which picks up toner (black powder form of ink) rolled onto paper which is then fixed with heat</li>
+      <li>typically 600 dpi or better.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="processing-and-networks-finite-processing-speed">Processing and networks: Finite processing speed</h2>
+
+<ul>
+  <li>Designers tend to assume fast processors, and make interfaces more and more complicated</li>
+  <li>But problems occur, because processing cannot keep up with all the tasks it needs to do
+    <ul>
+      <li>cursor overshooting because system has buffered keypresses</li>
+      <li>icon wars - user clicks on icon, nothing happens, clicks on another, then system responds and windows fly everywhere</li>
+    </ul>
+  </li>
+  <li><strong>Also problems if system is too fast</strong>
+    <ul>
+      <li>e.g. help screens may scroll through text much too rapidly to be read</li>
+    </ul>
+  </li>
+</ul>
+
+<p>​</p>
+
+<p><br /></p>
+
+<h2 id="moores-law">Moore’s law</h2>
+
+<ul>
+  <li>computers get faster and faster!</li>
+  <li>1965 …
+    <ul>
+      <li>Gordon Moore, co-founder of Intel, noticed a pattern</li>
+      <li>processor speed doubles every 18 months</li>
+      <li>PC … 1987: 1.5 Mhz, 2002: 1.5 GHz</li>
+    </ul>
+  </li>
+  <li>similar pattern for memory
+    <ul>
+      <li>but doubles every 12 months!!</li>
+      <li>hard disk … 1991: 20Mbyte : 2002: 30 Gbyte</li>
+    </ul>
+  </li>
+  <li>baby born today
+    <ul>
+      <li>record all sound and vision</li>
+      <li>by 70 all life’s memories stored in a grain of dust!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-myth-of-the-infinitely-fast-machine">The myth of the infinitely fast machine</h2>
+
+<ul>
+  <li>implicit assumption … no delays
+    <ul>
+      <li>an infinitely fast machine</li>
+    </ul>
+  </li>
+  <li>what is good design for real machines?</li>
+  <li>good example … the telephone :
+    <ul>
+      <li>type keys too fast</li>
+      <li>hear tones as numbers sent down the line</li>
+      <li>actually an accident of implementation</li>
+      <li>emulate in design</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="limitations-on-interactive-performance">Limitations on interactive performance</h2>
+
+<p>bottleneck</p>
+
+<ul>
+  <li>Computation bound
+    <ul>
+      <li>Computation takes ages, causing frustration for the user</li>
+    </ul>
+  </li>
+  <li>Storage channel bound
+    <ul>
+      <li>Bottleneck in transference of data from disk to memory</li>
+    </ul>
+  </li>
+  <li>Graphics bound
+    <ul>
+      <li>Common bottleneck: updating displays requires a lot of effort sometimes helped by adding a graphics coprocessor optimised to take on the burden</li>
+    </ul>
+  </li>
+  <li>Network capacity
+    <ul>
+      <li>Many computers networked – shared resources and files, access to printers etc. – but interactive performance can be reduced by slow network speed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="networked-computing">Networked computing</h2>
+
+<ul>
+  <li>Networks allow access to …
+    <ul>
+      <li>large memory and processing</li>
+      <li>other people (groupware, email)</li>
+      <li>shared resources – esp. the web</li>
+    </ul>
+  </li>
+  <li>Issues
+    <ul>
+      <li>network delays – slow feedback</li>
+      <li>conflicts – many people update data</li>
+      <li>unpredictability</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-internet">The internet</h2>
+
+<ul>
+  <li>history …
+    <ul>
+      <li>1969: DARPANET US DoD, 4 sites</li>
+      <li>1971: 23; 1984: 1000; 1989: 10000</li>
+    </ul>
+  </li>
+  <li>common language (protocols):
+    <ul>
+      <li>TCP – Transmission Control protocol
+        <ul>
+          <li>lower level, packets (like letters) between machines</li>
+        </ul>
+      </li>
+      <li>IP – Internet Protocol
+        <ul>
+          <li>reliable channel (like phone call) between programs on machines</li>
+        </ul>
+      </li>
+      <li>email, HTTP, all build on top of these</li>
+    </ul>
+  </li>
+</ul>
+:ET

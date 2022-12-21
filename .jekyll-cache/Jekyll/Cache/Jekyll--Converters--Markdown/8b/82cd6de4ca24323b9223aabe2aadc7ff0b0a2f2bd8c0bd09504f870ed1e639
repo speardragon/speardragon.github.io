@@ -1,0 +1,155 @@
+I"	<p>miPs vs. ARM vs. RISC-V</p>
+
+<p><strong>mips</strong>: wokrstation, embede system에 사용</p>
+
+<p><strong>ARM</strong>: ARM이라는 회사에서 사용,운용</p>
+
+<p><strong>RISC-V</strong>: open-source</p>
+
+<p>mips가지고 공부를 하고 arm하고 어떤 차이가 있지? risc-v하고 무슨 차이가 있지?</p>
+
+<p>mips와 risc-v는 95%의 의 유사도</p>
+
+<p>mips와 arm은 거의 다르다.</p>
+
+<p>우리 수업에서는 mips를 가지고 공부를 하되 차이점도 알아가도록 하겠다.</p>
+
+<p><br /></p>
+
+<p>컴퓨터 구조 파트는 mips, arm, risc-v하고 차이가 있기 때문에 arm edition은 힘들 것이다.</p>
+
+<p><br /></p>
+
+<p>교재는 그대로 사용(디지털 공학때 사용했던 것, Mips version)</p>
+
+<p><br />
+instruction set: 스펙</p>
+
+<p><br /></p>
+
+<p>로보트를 가지고 있다고 생각해 보자.</p>
+
+<p>로보트한테 커피를 탈때 설탕, 가루, 시럽 등을 특정 비율로 만들어서 가져오라고 하자.</p>
+
+<p><code class="language-plaintext highlighter-rouge">주방에 가서 머피를 타서 가지고 와</code></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/156500057-d950c27b-8890-40fa-b327-5cf4bc06039e.png" alt="image" /></p>
+
+<p>주방에 가서 커피를 만드는데 커피 몇, 설탕 몇, 우유 몇의 비율을 제공한다.</p>
+
+<p>이 명령을 이해하기 위해선 robot는</p>
+
+<p><br /></p>
+
+<p>로보트의 기능은 다음과 같다.</p>
+
+<ul>
+  <li>앞,좌우로 가기</li>
+  <li>뱅글뱅글 도는 기능</li>
+  <li>젓는 기능</li>
+  <li>+, -</li>
+</ul>
+
+<p><br /></p>
+
+<p>robot의 instruction(명령어)은 다음과 같을 것이다.</p>
+
+<p>↑, →, ↑, ←, ↑, water, sugar, mix ….. (단순한 명령어들)</p>
+
+<p>이를 robot의 스펙이라고도 하며 instruction이 탑재되었다고 한다.</p>
+
+<p>스펙의 기능은 로봇마다 다를 것이며 위의 명령어가 모두 포함된 기능을 한 번에 할 수있는 명령어도 만들 수 있는 것이다.</p>
+
+<ul>
+  <li>이는 복잡한 명령어들이다.</li>
+</ul>
+
+<p><br /></p>
+
+<p>즉, 컴퓨터가 알아먹을 수 있는 명령어(instruction)들의 모음을 스펙(spec)이라고 하는 것이다.</p>
+
+<p>이것의 종류에 RISC, CISC 등이 있는 것이다.
+RISC:</p>
+
+<ul>
+  <li>MIPS</li>
+  <li>ARM</li>
+  <li>RISC-V</li>
+</ul>
+
+<p>CISC:</p>
+
+<ul>
+  <li>x86</li>
+</ul>
+
+<p><br />
+복잡한 것들은 모두 빼고 최대한 단순한 것으로 구성하자</p>
+
+<p><br /></p>
+
+<p>intel 프로세서는 instruction의 구성을 보니까 특정 몇 개 기능은 가뭄에 콩나듯 사용되는데 모든 기능을 다 넣으려다 보니까 규모가 너무 크다.(CISC)</p>
+
+<p>그래서 주된 기능만 사용할 수 있는 컴퓨터를 만들면 간단해 지지 않을까 해서 만들어 본 것이 <strong>RISC</strong></p>
+
+<p><br /></p>
+
+<p>Instruction Set Architecture (ISA)</p>
+
+<ul>
+  <li>프로그래머가 보는</li>
+</ul>
+
+<p><br /></p>
+
+<p>High-level language (Human friendly): int a; / a = b+c ….</p>
+
+<p>assembly language: add, load, store ,…</p>
+
+<p>machine language: 01011101</p>
+
+<p><br /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int a,b,c &lt;- data
+main()
+	a = b + c &lt;- program
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/156502993-f13938a2-d381-4bc7-a8d4-c5f8ef714710.png" alt="image" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>load b
+load c
+add x,b,c
+store x
+</code></pre></div></div>
+
+<p>와 같이 변환되어 넘어감</p>
+
+<p><br /></p>
+
+<p>cpu는 굉장히 빠르지만 memory는 cpu보다는 느림</p>
+
+<p>register(reg)파일에 저장하여 alu로 넘겨서 이를 다시 reg파일에 넘긴</p>
+
+<p>load b가 의미하는 것은 b를 register 파일로 가져와라</p>
+
+<p><br /></p>
+
+<h3 id="이번학기에는">이번학기에는?</h3>
+
+<ul>
+  <li>
+    <p>instruction에는 어떤 명령어가 있을떄</p>
+  </li>
+  <li>
+    <p>위의 것들을 수행할 수 있는 프로세서는 어떻게 생겼을까?</p>
+  </li>
+  <li>
+    <p>architecture, micro-architecture</p>
+  </li>
+  <li>cache - memory</li>
+  <li>IO</li>
+  <li>parallel processing(프로세싱이 여러개 있는 경우)</li>
+</ul>
+
+:ET

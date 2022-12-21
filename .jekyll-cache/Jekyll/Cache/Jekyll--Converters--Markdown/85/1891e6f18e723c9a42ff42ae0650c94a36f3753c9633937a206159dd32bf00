@@ -1,0 +1,140 @@
+I"N
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/binarysearch/Algorithm-Jump-Search(%EC%A0%90%ED%94%84-%ED%83%90%EC%83%89)/" rel="permalink">[Algorithm] Jump Search(점프 탐색)
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 02/13/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Computer Science
+      ▶Data structures and algorithms with Java
+      ▶Algorithm
+      ▶BinarySearch
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">이번 시간에는 저번 시간(이진 탐색)에 이어서 점프 탐색(Jump search)에 대해서 알아보도록 하자.
+</p>
+  </article>
+</div>
+
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/binarysearch/Algorithm-Interpolation-Search,-Terenary-Search,-Exponential-Search(%EB%B3%B4%EA%B0%84-%ED%83%90%EC%83%89,-%EC%82%BC%EC%A7%84-%ED%83%90%EC%83%89,-%EC%A7%80%EC%88%98-%ED%83%90%EC%83%89)/" rel="permalink">[Algorithm] 보간 탐색, 삼진 탐색, 지수 탐색(Interpolation, Terenary, Exponential Search)
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 02/13/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Computer Science
+      ▶Data structures and algorithms with Java
+      ▶Algorithm
+      ▶BinarySearch
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">이번 시간에는 보간 탐색(Interpolation Search), 삼진 탐색(Ternary Search), 지수 탐색(Exponential Search)에 대해서 알아 보도록 하겠다.
+</p>
+  </article>
+</div>
+
+<div class="list__item">
+  <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/binarysearch/Algorithm-Binary-Search(%EC%9D%B4%EC%A7%84-%ED%83%90%EC%83%89)/" rel="permalink">[Algorithm] Binary Search(이진 탐색)
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 02/13/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶Computer Science
+      ▶Data structures and algorithms with Java
+      ▶Algorithm
+      ▶BinarySearch
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">이번 시간에는 이진 탐색(Binary Search)에 대해서 알아볼 것이다.
+</p>
+  </article>
+</div>
+
+:ET

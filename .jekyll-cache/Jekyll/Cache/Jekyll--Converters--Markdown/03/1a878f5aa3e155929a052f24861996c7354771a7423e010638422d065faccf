@@ -1,0 +1,549 @@
+I"��<h1 id="sorting">Sorting</h1>
+
+<h2 id="sorting-algorithms">Sorting Algorithms</h2>
+
+<ul>
+  <li>Bubble sort</li>
+  <li>Insertion sort</li>
+  <li>Quick sort</li>
+</ul>
+
+<p><br /></p>
+
+<p>Sorting이란 크기 순으로 오름차순 정렬된 리스트로 모든 아이템을 배치하는 것을 말한다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160319901-8ead70a4-2cb0-4bba-a87d-2097226e2aee.png" alt="image" /></p>
+
+<p>숫자가 212인 item이 여러개가 있기 때문에 숫자를 key값으로 sorting하게 되면 이들 간의 순서를 정하기가 모호하다.</p>
+
+<p>이 때 같은 numeric key에 대한 item들이 unstorted data에서 정렬된 순서가 sorted data에 반영된 순서로 정렬되면 <mark>Stable sort</mark>, 그렇지 않으면 <mark>Unstable sort</mark>라고 한다.</p>
+
+<p><strong>Stable sort</strong></p>
+
+<ul>
+  <li>같은 key를 갖는 데이터가 그들의 <strong><em>relative input order</em></strong>를 output에서 유지하는 방식</li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160320119-af0351d6-dc0a-444f-a4f3-4eb0abffccbb.png" alt="image" /></p>
+
+<p>복잡하고 성능이 좋은 sort는 O(nlogn)의 시간복잡도를 갖는다.</p>
+
+<p>quick sort는 O(n<sup>2</sup>)의 시간복잡도를 갖는데 어느 경우에 n<sup>2</sup>을 갖는데 굉장히 희박하게 갖는 것이기 때문에 quick sort는 코드를 조금만 바꾸면 nlong의 시간복잡도를 가져서 사실상 O(nlogn)으로 생각해도 큰 문제가 없다.</p>
+
+<ul>
+  <li>정렬이 하나도 되어있지 않은 경우에만 O(n<sup>2</sup>)</li>
+</ul>
+
+<p><br /></p>
+
+<p>실제 시스템에 적용했을 때 속도가 빠른 sort는 quick sort이다.</p>
+
+<p>같은 nlogn이지만 실제 적용했을 때 heap이나 merge에 비해서 평균적으로 더 빠르기 때문에 quick sort를 굉장히 많이 사용한다. 프로그램 언어마다 sorting을 해주는 라이브러리를 만들어 놨는데 c++,java의 sorting 알고리즘에서 quick sort를 사용한 것이고 파이썬의 내장 sort 함수들은 merge sort를 사용한 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="bubble-sort-algorithms">Bubble sort algorithms</h2>
+
+<p>리스트에서 <mark>인접한 element들을 비교</mark>한 후에 크기 순으로 올바르게 배치하는 방식이다.</p>
+
+<p>리스트 안의 item들이 올바르지 않은 순서라면, 각각의 인접한 item들을 swapping하면서 작동한다.</p>
+
+<ul>
+  <li>n개의 item에 대해 비교를 할 때 (n-1) 번의 비교가 진행된다.
+    <ul>
+      <li>(맨 마지막에 하나 남은 경우는 당연히 제일 작은 값일 것이기 때문에 할 필요가 없어서 sorting이 그대로 끝나기 때문에 n-1번의 process가 진행되는 것)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>The 1st iteration</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160789258-eff63765-d6b3-4c7e-b8d5-7100a2648ae0.png" alt="image" /></p>
+
+<p>6개의 데이터를 왼쪽부터 시작하여 쭉 비교하면서 제일 큰 값을 맨 오른쪽에 넣은 모습을 볼 수있다.</p>
+
+<p>그러면 맨 끝 값은 sorting이 완료되었다고 보고 다시 남은 5개의 item에 대해서 sort(iteration)를 진행하는 것이다.</p>
+
+<p><strong>Why Bubble?</strong></p>
+
+<p>첫 값인 45인 값이 bubble과 같이 솟아올라 오른쪽으로 흘러간다. 흘러가면서 비교하다가 현재 bubble보다 더 큰 값이 나오면 해당 bubble이 툭 튀어올라서 해당 bubble이 오른쪽으로 흘러가게 된다.</p>
+
+<p>이처럼 값이 정렬되는 방식이 bubble과 같이 보인다 하여 bubble sort라는 이름이 붙여지게 되었다.</p>
+
+<p><br /></p>
+
+<p><strong>The 2nd iteration</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160321358-523dc934-c480-4008-9ce2-5369f1bde240.png" alt="image" /></p>
+
+<p><strong>The 3rd iteration</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160321383-b71cd0f7-ce52-4cbd-a1c0-892748629d88.png" alt="image" /></p>
+
+<p><strong>The 4th iteration</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160321420-f415ee67-170c-4385-8ff5-8933b0eda88e.png" alt="image" /></p>
+
+<p><strong>The 5th iteration</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160321442-6f86ccf0-69d8-46c4-94af-e9483dc8b04b.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p>최대 operation의 횟수는 n-1번이고 n/2번 반복하기 때문에 (n-1) * n/2 라서 O(n<sup>2</sup>)의 시간복잡도를 갖는 것이다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>(n-1) + (n-2) + … + 1
+    <ul>
+      <li>(n-1)(n-1+1) / 2</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>코드로 구현</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">bubble_sort</span><span class="p">(</span><span class="n">unordered</span><span class="p">):</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unordered</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>    <span class="c1"># n-1
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>		<span class="c1"># 0~n-2
+</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span> <span class="o">-</span> <span class="n">i</span><span class="p">):</span> <span class="c1">#각 iteration에서 뒤져봐야 되는 index의 범위 
+</span>            <span class="k">if</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                
+                
+<span class="n">test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">bubble_sort</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="c1"># [4, 12, 23, 32, 45, 87]
+</span></code></pre></div></div>
+
+<p>j - for 문이 한 번 돌 때마다 현재 리스트에서 제일 큰 값이 제일 오른쪽에 배치되게 된다.</p>
+
+<p><br /></p>
+
+<h2 id="insertion-sort-algorithms">Insertion sort algorithms</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160323021-ef7b07ba-2682-4a3a-aaff-0b158a0b13f4.png" alt="image" /></p>
+
+<p><strong>삽입 정렬 알고리즘</strong>은 항상 정렬된 상태의  서브 리스트를 유지하고, 다른 나머지 비율은 정렬되지 않은 상태로 남아있다.</p>
+
+<p>방식은 정렬되지 않는 서브 리스트로부터 element를 한 개씩 취하여 정렬된 서브 리스트의 알맞은 위치에 그 element들을 삽입하는 방식이다.</p>
+
+<p>그래서 서브리스트는 정렬된 채로 남아있는 것이다.</p>
+
+<p><br /></p>
+
+<p>다음과 같은 배열을 생각해 보자.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160323065-124ebf66-03b3-4de2-99f8-e62161d1997b.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p>알고리즘은 1번과 4번 인덱스들 사이를 돌기위해 for loop를 사용하면서 시작한다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160323564-4db888e9-ba60-427f-afad-4cc927ed5e6b.png" alt="image" /></p>
+
+<p><mark>핵심 아이디어는 0번 인덱스는 이미 정렬된 상태의 서브리스트로 보는 것이다.</mark> 그렇기 때문에 1번 index부터 시작할 것이다.</p>
+
+<p>즉, 0번 index의 ‘5’ 카드를 쥐고 있다고 생각하면 이를 정렬할 필요가 없다는 의미인 것이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160323592-606feb91-0501-4470-b287-1d497ac1d467.png" alt="image" /></p>
+
+<p>그런데 딜러가 다음 카드인 1번 인덱스의 1이라는 카드를 주었다. 그러면 이 때는 sorting된 상태를 유지하면서 내 손에 가진 덱의 가장 마지막 값부터 비교하여 알맞은 위치에 삽입시킬 것이다. 1과 5를 비교했을 때 1이 5보다 작기 때문에 5의 왼쪽에 삽입하였다.</p>
+
+<p><br /></p>
+
+<p>이와 같은 과정을 모든 element에 대해서 진행한다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160323626-b4efa32b-64fd-40a7-8a81-5e70cd094003.png" alt="image" /></p>
+
+<p>딜러가 주는 카드덱(오른쪽 서브리스트)에서 한 장씩 카드를 나에게 주는데 내 손에 있는 카드덱의 가장 큰 것부터 비교하기 때문에 my&lt;dealer 일 때까지 swapping을 하는 것이다.</p>
+
+<p>n-1번의 iteration을 평균 n/2번 진행한다.</p>
+
+<p><br /></p>
+
+<p><strong>코드로 구현</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="n">unordered</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">unordered</span><span class="p">)):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">unordered</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1">#딜러한테 새로 받는 카드
+</span>        
+        <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="c1"># 이 순간 받은 카드도 내 손의 카드에 속하게 된다.
+</span>        
+        <span class="k">while</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">key</span><span class="p">:</span> <span class="c1"># 내 손의 카드의 가장 마지막 값부터 시작하여 비교
+</span>            <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># 바꿔야 되면 큰 걸 앞으로 땡겨온다.
+</span>            <span class="n">j</span><span class="o">-=</span><span class="mi">1</span>  <span class="c1"># 그 다음 값으로 이동
+</span>        <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span> <span class="c1"># while문이 통과되면 key값이 제 자리(j)를 찾은 것이므로 삽입
+</span>                                  
+                            
+<span class="n">test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">insertion_sort</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[4, 12, 23, 32, 45, 87]
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="quick-sort-algorithms">Quick sort algorithms</h2>
+
+<p>Quick sort 알고리즘은 매우 효율적인 sorting 방식이다. 더 구체적으로 퀵정렬은 문제를 해결하기가 훨씬 더 쉬운 작은 서브 문제들로 나누는 merge sort 알고리즘과 유사한 알고리즘의 종류인 분할정복 알고리즘이다.</p>
+
+<p>이 알고리즘은 <strong>정렬되지 않은 배열</strong>을 두 개의 sub-array로 나누는 것이 핵심 아이디어이다.</p>
+
+<p>구조상으로는 모든 elements가 분기점(pivot이라고도 함)을 기준으로 왼쪽 부분에 있는 모든 element들은 그 값보다 작은 값을 pivot의 오른쪽 부분의 모든 element들은 pivot 값보다 더 큰 값을 가진 애들만 있게 된다.</p>
+
+<p>첫 번째 iteration 이후에 두 개의 정렬되지 않은 sub-list를 얻고 이러한 두 sub-list위에서 똑같은 process가 진행된다.</p>
+
+<p>따라서 퀵정렬 알고리즘은 리스트를 두 부분으로 나눠서 전체 리스트를 정렬하기 위해 두 개의 서브 리스트로 계속 나눠서 재귀적으로(recursively) 퀵 정렬을 적용한다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160728669-11ef166c-bcbe-4e65-81fe-f1fa879e9724.png" alt="image" /></p>
+
+<p>4번째 단계에서 left pointer와 right pointer가 더 이상 움직이지 못하기 때문에 두 값의 위치를 바꾸어 주고 계속 진행한다. (포인터는 바뀌지 않는 것임에 유의한다.)</p>
+
+<ul>
+  <li>정상이면 멈출 필요가 없기 때문에 다음 값을 보기 위해서 pointer를 움직이는 것이고 만약 비정상적이면 멈춰서 값을 바꿀 준비를 하는 것이다.
+    <ul>
+      <li><mark>OK면 넘어가!</mark></li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160728949-ca1d403b-f7ec-4c1b-b236-111d3ccfa7cd.png" alt="image" /></p>
+
+<p>위와 같은 과정이 끝나는 조건은 left pointer와 right pointer가 서로 교차 되었을 때이고 이 때 right pointer의 데이터와 pivot 데이터를 swap 하면 pivot 값인 45를 기준으로 왼쪽 오른쪽에 각각 작은값과 큰 값이 들어가지게 된다.</p>
+
+<p>물론 이때 양 옆 서브 리스트들은 정렬되지 않은 상태이다.</p>
+
+<p><br /></p>
+
+<p>자, 그래서 우리는 두 개의 sub-list를 얻었고 똑같은 과정을 이 두 서브리스트들에 대하여 재귀적으로 퀵 정렬 알고리즘을 적용할 것이고 전체 모든 리스트가 정렬될 때까지 반복할 것이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160744416-ecebe354-76fb-4ace-88d1-f5c04a739d7e.png" alt="image" /></p>
+
+<ul>
+  <li>왼쪽 서브 리스트에서 pivot값인 4를 기준으로 정렬을 진행하고 마지막 과정에서 4에 right pointer가 위치하여 right pointer와 pivot 값을 바꾸어 주어야 하는데 두 값이 같은 값을 가리키기 때문에 그대로 두는 것이다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># pivot을 기준으로 양 옆 값을 정하고 궁극적으로 pivot index를 반환해 주는 함수
+</span><span class="k">def</span> <span class="nf">partition</span> <span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">first</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">last</span>
+    
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pivot</span> <span class="ow">and</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">last</span><span class="p">:</span>
+            <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pivot</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&gt;=</span> <span class="n">first</span><span class="p">:</span> <span class="c1"># right이 pivot까지 가도 OK
+</span>            <span class="n">right</span> <span class="o">-=</span> <span class="mi">1</span>
+            
+        <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">:</span>
+            <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+            
+    
+    <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">]</span><span class="c1">#swap(pivot right)
+</span>    <span class="k">return</span> <span class="n">right</span> <span class="c1"># pivot index
+</span>
+
+<span class="k">def</span> <span class="nf">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">first</span> <span class="o">&lt;</span> <span class="n">last</span><span class="p">:</span>
+        <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+        <span class="n">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">pivot_index</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 왼쪽 sub-list에 대해서 또 진행
+</span>        <span class="n">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">pivot_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span> <span class="c1"># 오른쪽 sub-list에 대해서 또 진행
+</span>        
+    <span class="c1"># 만약 first와 last가 같아지면 (sub-list의 크기가 1) 그냥 return 한다.
+</span>        
+        
+<span class="n">test</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">32</span> <span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">quick_sort</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="sort-functions-in-python">Sort Functions in Python</h1>
+
+<p>sorting을 위한 python</p>
+
+<ul>
+  <li>sort()</li>
+  <li>sorted()</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="lambda-functions">Lambda functions</h2>
+
+<ul>
+  <li>A lambda function is a <strong>small anonymous function object</strong></li>
+  <li>It can have mant parameters, but can have only one expression</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">temp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+	<span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="mi">7</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">base</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    	<span class="k">return</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">a</span> <span class="o">*</span> <span class="n">n</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">doubler</span> <span class="o">=</span> <span class="n">base</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># doubler : a * 2
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">tripler</span> <span class="o">=</span> <span class="n">base</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># tripler : a * 3
+</span><span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">doubler</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="mi">22</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tripler</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="mi">33</span>
+</code></pre></div></div>
+
+<p>위처럼 람다 함수 자체가 반환이 되기도 함</p>
+
+<p><br /></p>
+
+<h2 id="python-sort">Python sort()</h2>
+
+<ul>
+  <li>sort() is a member function of the list class</li>
+  <li>It is implemented using Timsort, which is based on Merge sort and this stable.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span>
+<span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tuples</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tuples</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tuples</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tulples</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># tuple의 두 번째 element를 기준으로 sorting
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">tuples</span>
+<span class="p">[(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">test</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span>
+<span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;</span> <span class="n">test</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span>
+<span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># (3, 'd'), (1, 'c'), (2, 'b'), (3, 'a')
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span>
+<span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>별도로 지정을 하지 않은 경우 첫 번째 element가 같은 경우 두 번째 element를 기준으로 정렬한다.
+    <ul>
+      <li>sort()</li>
+    </ul>
+  </li>
+  <li>그러나 key=lambda x: x[0] 를 명시하여 첫 번째 element를 기준으로 정렬을 하겠다 하면 그 값이 같은 경우에 두 번째 element에 대하여는 original의 순서를 그대로 사용하는 stable 정렬 방식이다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="python-sorted">Python sorted()</h2>
+
+<ul>
+  <li>sorted() is a built-in function of Python</li>
+  <li>It receives list tuple, set, string, and returns the sorted list</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data1</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data1</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span>
+<span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span> <span class="p">,</span><span class="mi">5</span> <span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data1</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data1</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data1</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data1</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span>
+<span class="p">{</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span> <span class="c1"># data의 순서가 바뀌어 있는데 set object이기 때문에 순서는 상관없다.
+</span></code></pre></div></div>
+
+<p><br /><img src="https://user-images.githubusercontent.com/79521972/160752409-3fac1bcc-871f-4b33-a1e6-09c0ade422e4.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160752440-358bbf3b-1794-4639-a973-b7e340456b0d.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/1026">백준 1026번 보물</a></p>
+
+<ul>
+  <li>(Bubble or Insertion Sort) and Quick sort</li>
+  <li>배열 하나는 asending 으로 하면 되고 나머지 하나는 descending order로 해야 하기 때문에 이 때 부호를 마이너스로 바꾸어 sorting을 진행하면 해결된다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">bubble_sort</span><span class="p">(</span><span class="n">unordered</span><span class="p">):</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unordered</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iteration</span> <span class="o">-</span> <span class="n">i</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">unordered</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="n">_a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">minus_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">_b</span><span class="p">))</span>
+
+<span class="n">bubble_sort</span><span class="p">(</span><span class="n">_a</span><span class="p">)</span>
+<span class="n">bubble_sort</span><span class="p">(</span><span class="n">minus_b</span><span class="p">)</span>
+
+<span class="n">_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">abs</span><span class="p">,</span> <span class="n">minus_b</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_a</span><span class="p">))))</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">first</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">last</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pivot</span> <span class="ow">and</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">last</span><span class="p">:</span>
+            <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pivot</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&gt;=</span> <span class="n">first</span><span class="p">:</span>
+            <span class="n">right</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">:</span>
+            <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">=</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="n">unsorted</span><span class="p">[</span><span class="n">first</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">right</span>  <span class="c1"># pivot index
+</span>
+
+<span class="k">def</span> <span class="nf">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">first</span> <span class="o">&lt;</span> <span class="n">last</span><span class="p">:</span>
+        <span class="n">pivot_index</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+        <span class="n">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">pivot_index</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">quick_sort</span><span class="p">(</span><span class="n">unsorted</span><span class="p">,</span> <span class="n">pivot_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">_a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="n">minus_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">_b</span><span class="p">))</span>
+
+<span class="n">quick_sort</span><span class="p">(</span><span class="n">_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">_a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">quick_sort</span><span class="p">(</span><span class="n">minus_b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">minus_b</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">_b</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">abs</span><span class="p">,</span> <span class="n">minus_b</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_a</span><span class="p">))))</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160752487-332564d0-a181-4ba6-b7e8-80422d139c2d.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160752500-d2e1b75e-27ee-44b2-a253-601fb0a30695.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p><a href="https://www.acmicpc.net/problem/10825">백준 10825번 국영수</a></p>
+
+<ul>
+  <li>데이터의 범위가 매우크기 때문에 단순한 알고리즘으로 풀리지 않을 것으로 예상됨</li>
+  <li>sort()를 사용하여 풀어볼 것</li>
+  <li>input 데이터의 갯수가 많기 때문에 이 시간을 줄여야 하고 아래와 같이 입력 받도록 한다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">())</span>
+
+<span class="n">student</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+<span class="n">student</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">student</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+
+<span class="n">data</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+:ET

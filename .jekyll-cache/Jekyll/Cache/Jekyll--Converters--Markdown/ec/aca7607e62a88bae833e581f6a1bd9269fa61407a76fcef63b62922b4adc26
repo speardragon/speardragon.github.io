@@ -1,0 +1,515 @@
+I"�V<p>이번 시간에는 Stack 자료구조에 대해서 배워 볼 것이다.</p>
+
+<p><br /></p>
+
+<h3 id="스택stack이란">스택(Stack)이란?</h3>
+
+<p><code class="language-plaintext highlighter-rouge">stack</code>은 후입선출(Last-In-First-Out - LIFO)의 대표적인 선형 자료구조 중의 하나이다.</p>
+
+<p>후입선출이란 ‘Last-In-First-Out’이라는 뜻 그대로 ‘나중에 들어온 데이터가 가장 먼저 나간다’ 의 의미를 가지고 있다.</p>
+
+<p>그 예로 인터넷 브라우저에서 뒤로 가기 기능같은 경우 그 버튼을 눌렀을 때 가장 최근의 페이지가 나오는데 이 역시 가장 나중에 들어간 페이지가 가장 먼저 나오는 것이기 때문에 스택 구조라고 할 수 있다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155285204-389913f2-8642-472f-91a4-8c620aece983.png" alt="image" /></p>
+
+<p>또한, Ctrl + z 와 같은 실행 취소 기능역시 제일 나중에 했던 동작을 취소하는 것이므로 스택 구조라고 볼 수 있습니다.</p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153334791-de3d66bd-db92-4985-b84a-cd539241eee2.png" alt="image" /></p>
+
+<p>위 그림은 스택의 구조를 시각화한 자료이다.</p>
+
+<p>흔히 스택은 접시쌓기를 생각하면 이해하기 편하다. 가장 마지막에 내려놓은 접시를 가장 먼저 빼야지 쌓아놓은 접시들이 무너지지 않겠지 않는가?</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155284977-768def9a-3c4c-4b94-831d-ff65c125494c.png" alt="image" /></p>
+
+<p>이때, 접시(데이터)를 넣는 작업을 Push, 접시를 빼는 작업을 Pop이라고 한다.</p>
+
+<p>또한 스택은 완전히 꽉 찼을 때 <code class="language-plaintext highlighter-rouge">Overflow</code>상태라고 하고, 완전히 비어 있으면 <code class="language-plaintext highlighter-rouge">Underflow</code>상태라고 한다.</p>
+
+<p>그럼 연산 메소드에 대해 자세히 알아 보자.</p>
+
+<p><br /></p>
+
+<h2 id="연산-메소드-추상-자료형adt">연산 메소드, 추상 자료형(ADT)</h2>
+
+<p>스택은 아래와 같은 연산 메소드들로 추상화할 수 있다.</p>
+
+<ul>
+  <li>push() - 데이터를 <strong>가장 위</strong>에 <strong>추가</strong>하는 작업</li>
+  <li>pop() -가장 위의 데이터를 <strong>삭제하면서</strong> 그 데이터를 <strong>읽어오는</strong> 작업</li>
+  <li>top(), peek() - 구조는 <strong>그대로 둔 채</strong> 가장 위의 데이터를 읽어오는 작업</li>
+  <li>isEmpty() - 스택이 <strong>비어있는 지</strong> 확인하는 작업</li>
+  <li>isFull() - 스택이 <strong>꽉 차있는 지</strong> 확인하는 작업</li>
+  <li>size(), getSize() - 스택에 있는 <strong>요소(element)의 수</strong>를 <strong>반환</strong>하는 작업(크기를 반환)</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="스택의-과정">스택의 과정</h3>
+
+<h4 id="push데이터-삽입">Push(데이터 삽입)</h4>
+
+<p>push는 스택 구조에 데이터를 넣는 작업을 말한다. push는 다음 과정으로 진행된다.</p>
+
+<ol>
+  <li>스택이 꽉차 있는지 확인</li>
+  <li>스택이 꽉차 있다면 오류 발생 후 종료</li>
+  <li>2번의 경우가 아니라면 Top을 증가</li>
+  <li>Top이 가리키는 스택 위치에 데이터 삽입</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155285987-a085e083-3732-445b-967b-a6704dd24d0f.png" alt="image" /></p>
+
+<p>위 의 그림처럼 Top은 항상 스택구조에서 위에 위치한 데이터를 가리키는 변수로 데이터를 뺄 때는 top이 빠지는 것이다.</p>
+
+<p><br /></p>
+
+<h4 id="pop데이터-꺼내오기-추출">pop(데이터 꺼내오기, 추출)</h4>
+
+<p>많은 사람들이 pop을 데이터를 제거하는 과정이라고 하는데 그것도 틀리지는 않지만 더 정확히 말하자면 <mark>추출</mark>에 좀 더 가깝다. 실제로 pop메소드 실행시 제거한 데이터를 반환까지 하기 때문에 제거라고만 하기엔 뭔가 허전하다.</p>
+
+<p>그렇다면 데이터를 꺼내서 가져오는 pop과정에 대해서 알아보자. 기본적으로 pop은 스택에 있는 데이터를 추출하여 가져오는 것으로 다음 과정을 거친다.</p>
+
+<ol>
+  <li>스택이 비어 있는지 확인</li>
+  <li>스택이 비어 있으면 오류 발생 후 종료</li>
+  <li>2번의 경우가 아니라면 Top이 가리키고 있는 데이터를 스택에서 제거</li>
+  <li>Top 값을 바로 아래 위치로 가도록 감소</li>
+  <li>제대로 이루어 졌다면 해당 데이터 반환</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155286429-4f983983-ec4b-457e-bf1a-63f3847f87fe.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="시간-복잡도">시간 복잡도</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>연산</th>
+      <th>평균 소모 시간</th>
+      <th>최악 소모 시간</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Access</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Search</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Push(Insert)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Pop(Delete)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>스택에서 데이터의 삽입, 삭제, isEmpty, peek 연산은 모두 O(1)의 시간 복잡도를 갖는다.</p>
+
+<ul>
+  <li>삽입, 삭제와 같은 것들은 항상 Top에서만 일어나기 때문(특정 index를 찾아 들어가야 할 필요가 없음)</li>
+</ul>
+
+<h2 id="stack-구현">Stack 구현</h2>
+
+<p>스택을 구현하는 방법에는 <strong>배열</strong>을 사용하는 방법과 <strong>LinkedList</strong>를 사용하는 방법이 있다.</p>
+
+<ul>
+  <li>
+    <h4 id="배열-사용">배열 사용:</h4>
+  </li>
+</ul>
+
+<p><strong>장점</strong></p>
+
+<ol>
+  <li>구현하기가 쉽다.(logic 상으로)</li>
+  <li>자료를 넣고 뺄 때 기존의 자료들의 위치를 변경할 필요가 없다.
+    <ul>
+      <li>삽입/추출 시 O(1)의 시간 복잡도만을 요구한다.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>단점</strong></p>
+
+<p>크기가 동적으로 할당되는 것이 아니고 런타임 시 필요에 따라 늘어나거나 줄어들지 않는다.</p>
+
+<ul>
+  <li>
+    <h4 id="연결-리스트-사용">연결 리스트 사용:</h4>
+  </li>
+</ul>
+
+<p><strong>장점</strong></p>
+
+<ol>
+  <li>크기가 동적이다.</li>
+  <li>런타임 시 필요에 따라 크기가 확장 되거나 축소 될 수 있다.</li>
+  <li>마지막에 넣은 자료를 삽입 혹은 추출 시, 기존의 마지막에 넣어져 있던 자료(tail)와의 상호 연결된 prev/ next pointer의 연결만 바꾸어 주면 되기 때문에 삽입/추출 시 O(1)의 시간 복잡도를 요구한다.</li>
+</ol>
+
+<p><strong>단점</strong></p>
+
+<p>포인터(노드)를 위한 추가 메모리 공간이 필요하다.</p>
+
+<p><br /></p>
+
+<p>배열로 구현 시 순서가 중요하기 때문에 top이란 변수가 굉장히 중요하게 작용하지만 연결리스트로 구현 시 이 변수가 그렇게 중요하지 않다.</p>
+
+<p>나는 자바의 강점을 살려 노드로 구현을 해 보도록 할 것이다.</p>
+
+<p><strong>IStack.java</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">stack</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IStack</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">push</span><span class="o">(</span><span class="no">T</span> <span class="n">data</span><span class="o">);</span>
+    <span class="no">T</span> <span class="nf">pop</span><span class="o">();</span>
+    <span class="no">T</span> <span class="nf">peak</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="nf">size</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>IStack이라는 interface에 push(), pop(), peak(), size() 메소드들을 정의하였음.</p>
+
+<p><br /></p>
+
+<p><strong>MyStack.java</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">stack</span><span class="o">;</span> 
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyStack</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="nc">IStack</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>MyStack 클래스에서 IStack을 구현상속 할 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="노드-클래스">노드 클래스</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">class</span> <span class="nc">Node</span> <span class="o">{</span>
+    <span class="no">T</span> <span class="n">data</span><span class="o">;</span>
+    <span class="nc">Node</span> <span class="n">next</span><span class="o">;</span>
+    
+    <span class="nc">Node</span><span class="o">(</span><span class="no">T</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">;</span> <span class="o">}</span>
+    
+    <span class="nc">Node</span><span class="o">(</span><span class="no">T</span> <span class="n">data</span><span class="o">,</span> <span class="nc">Node</span> <span class="n">next</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>먼저 stack도 마찬가지로 노드를 기반으로 하여 구현할 것이기 때문에 지난 시간에 만들었던 Node 클래스를 가져온다.</p>
+
+<p>**지난 시간 포스팅 참조</p>
+
+<ul>
+  <li><a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/linkedlist/Algorithm-CH2-2.-LinkedList/"><u>LinkedList(연결리스트)</u></a></li>
+</ul>
+
+<h2 id="멤버변수">멤버변수</h2>
+
+<p>스택의 크기 변수와 head 노드를 멤버 변수로 선언한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">int</span> <span class="n">size</span><span class="o">;</span>
+<span class="kd">private</span> <span class="nc">Node</span> <span class="n">head</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="생성자">생성자</h2>
+
+<p>위에서 선언한 멤버변수의 값을 초기화 시켜준다.</p>
+
+<p>head 노드를 null로 초기화 시키는 것도 가능하지만 그렇게 되면 코드가 나중에 복잡해 질 가능성이 있기 때문에 새로운 null 노드 객체를 생성시켜 대입하였다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nf">MyStack</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">size</span> <span class="o">=</span> <span class="n">size</span><span class="o">();</span>
+ 	<span class="k">this</span><span class="o">.</span><span class="na">head</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Node</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="c1">// this.head = null; 코드가 복잡해 질 수 있다.</span>
+    
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="push">push</h2>
+
+<p>새로 push할 노드를 생성하는데 이 노드의 next pointer가 가리키고 있는 노드는 head노드의 next pointer가 가리키고 있던 노드를 가리키게 된다.</p>
+
+<p>그 후 head 노드의 next pointer는 새로운 노드를 가리키게 해 주고, 스택의 크기를 1 증가시키면 된다.</p>
+
+<p><span style="color:red">이로써 head next pointer는 항상 새로 들어온 노드를 가리키는 것을 알 수 있다.</span></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">push</span><span class="o">(</span><span class="no">T</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Node</span> <span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Node</span><span class="o">(</span><span class="n">data</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">head</span><span class="o">.</span><span class="na">next</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">head</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">node</span><span class="o">;</span>
+    
+    <span class="k">this</span><span class="o">.</span><span class="na">size</span><span class="o">++;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="pop">pop</h2>
+
+<p>head노드의 next pointer가 가리키는 노드는 항상 스택 맨 위에 있는 노드(Top)이기 때문에 이를 curr 노드로 지정하고 head 노드의 next pointer를 curr 노드의 다음 노드와 연결한다.</p>
+
+<p>그 이후 curr 노드의 next pointer 연결을 null로 초기화 시켜 끊어주고 스택의 size를 1 감소 시킨다.</p>
+
+<p>pop()연산은 스택의 데이터를 삭제하면서 그 삭제한 데이터를 가져오는 것이기 때문에 curr의 데이터를 반환한다.</p>
+
+<p>단, 스택이 비어있는 경우 가져올 데이터 혹은 노드가 없기 때문에 반환할 객체가 없으므로 null 객체를 리턴한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span> <span class="kd">public</span> <span class="no">T</span> <span class="nf">pop</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="nc">Node</span> <span class="n">curr</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">head</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+	<span class="k">this</span><span class="o">.</span><span class="na">head</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="na">next</span><span class="o">;</span>
+    <span class="n">curr</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">size</span><span class="o">--;</span>
+    <span class="k">return</span> <span class="n">curr</span><span class="o">.</span><span class="na">data</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="peak">peak</h2>
+
+<p>peak() 연산은 <strong>스택의 구조를 건들이지 않고</strong> 가장 꼭대기의 값을 가져오는 것이기 때문에 head 노드의 next pointer가 가리키고 있는 노드(Top)의 data만을 그대로 return 하면 된다.</p>
+
+<p>이 역시도 스택이 비어있는 경우에는 리턴할 객체가 없기 때문에 <strong>null을 반환</strong>해 줍니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="no">T</span> <span class="nf">peek</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">head</span><span class="o">.</span><span class="na">next</span><span class="o">.</span><span class="na">data</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="size">size</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">size</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>size()는 언제나 그랬듯이 간단하게 멤버변수 size를 리턴해 주면 됩니다.</p>
+
+<p><br /></p>
+
+<p>이렇게 스택의 각 연산에 대해서 알아 보았다. 이 역시도 노드를 통해 이루어진 자료구조이지만 일반적인 연결리스트와는 데이터의 삽입, 삭제 방식(코드 구현)이 더 간편하다고 볼 수도 있다.</p>
+
+<p><br /></p>
+
+<h1 id="관련된-문제">관련된 문제</h1>
+
+<p>챕터 3에서 배운 스택과 관련된 풀어 볼 만한 문제는 백준 사이트의 9012번 괄호 문제가 있다.</p>
+
+<p><a href="https://www.acmicpc.net/problem/9012" title="9012 괄호"><u>백준 9012번 괄호</u></a></p>
+
+<p><br /></p>
+
+<p>이상 스택 자료구조에 대한 내용이었습니다.</p>
+
+<p><br /></p>
+
+<h3 id="자료구조-시간-복잡도-비교">자료구조 시간 복잡도 비교</h3>
+
+<ul>
+  <li>평균 시간 복잡도(Average)</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>자료구조</th>
+      <th>Access</th>
+      <th>Search</th>
+      <th>Insertion</th>
+      <th>Deletion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Array</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Stack</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Queue</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Singly Linked List</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Doubly Linked List</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Hash Table</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Binary Search Tree</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+    </tr>
+    <tr>
+      <td>AVL Tree</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+    </tr>
+    <tr>
+      <td>B Tree</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>최악의 경우 시간 복잡도(Worst)</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>자료구조</th>
+      <th>Access</th>
+      <th>Search</th>
+      <th>Insertion</th>
+      <th>Deletion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Array</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Stack</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Queue</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Singly Linked List</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Doubly Linked List</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(1)</td>
+    </tr>
+    <tr>
+      <td>Hash Table</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Binary Search Tree</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>AVL Tree</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+    </tr>
+    <tr>
+      <td>Binary Tree</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>B Tree</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+      <td>O(log<sub>2</sub>n)</td>
+    </tr>
+  </tbody>
+</table>
+
+:ET

@@ -1,0 +1,786 @@
+I"P<h2 id="evaluation-techniques">Evaluation Techniques</h2>
+
+<ul>
+  <li>Evaluation
+    <ul>
+      <li>Tests usability and functionality of system</li>
+      <li>Occurs in laboratory, field and/or in collaboration with users</li>
+      <li>Evaluates both design and implementation</li>
+      <li>Should be considered at all stages in the design life cycle</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="goals-of-evaluation">Goals of Evaluation</h2>
+
+<ul>
+  <li>Assess extent of system functionality</li>
+  <li>Assess effect of interface on user</li>
+  <li>Identify specific problems</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="evaluating-designs">Evaluating Designs</h2>
+
+<ul>
+  <li>Expert-based Evaluation
+    <ul>
+      <li>Cognitive Walkthrough</li>
+      <li>Heuristic Evaluation</li>
+      <li>Review-based Evaluation</li>
+    </ul>
+  </li>
+  <li>Model-based Evaluation</li>
+  <li>User-based Evaluation</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cognitive-walkthrough">Cognitive Walkthrough</h2>
+
+<ul>
+  <li>Proposed by Polson et al.
+    <ul>
+      <li>Evaluates design on how well it supports user in learning task</li>
+      <li>Usually performed by expert in cognitive psychology</li>
+      <li>Expert ‘walks though’ design to identify potential <strong>problems</strong> using psychological principles
+        <ul>
+          <li>가이드 제공</li>
+        </ul>
+      </li>
+      <li>Forms used to guide analysis</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cognitive-walkthrough-cont">Cognitive Walkthrough (cont)</h2>
+
+<ul>
+  <li>For each task walkthrough considers
+    <ul>
+      <li>What impact will interaction have on user?</li>
+      <li>What cognitive processes are required?</li>
+      <li>What learning problems may occur?</li>
+    </ul>
+  </li>
+  <li>Analysis focuses on goals and knowledge: does the design lead the user to generate the correct goals?</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="heuristic-evaluation">Heuristic Evaluation</h2>
+
+<p>의식의 흐름보다 이런 건 꼭 하면 좋겠다.(좀 더 <strong>형식적인</strong>)</p>
+
+<ul>
+  <li>Proposed by Nielsen and Molich.</li>
+  <li><strong>Usability criteria (heuristics)</strong> are identified</li>
+  <li>Design examined by experts to see if these are violated</li>
+  <li>Example heuristics
+    <ul>
+      <li>System behaviour is predictable</li>
+      <li>System behaviour is consistent</li>
+      <li>Feedback is provided</li>
+    </ul>
+  </li>
+  <li>Heuristic evaluation ‘debugs’ design.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ten-usability-heuristics-for-ui-design">Ten Usability Heuristics for UI Design</h2>
+
+<ol>
+  <li>Visibility of system status
+    <ul>
+      <li>현재 내가 진행하는 프로세스가 보이는지</li>
+    </ul>
+  </li>
+  <li>Match between system and the real world
+    <ul>
+      <li>유저 입장에서 현실세계와 시스템을 매칭할 수 있는지</li>
+    </ul>
+  </li>
+  <li>User control and freedom</li>
+  <li>Consistency and standards</li>
+  <li>Error prevention</li>
+  <li>Recognition rather than recall
+    <ul>
+      <li>메뉴를 보고 바로 무슨 행동을 하는 지 알수 있도록</li>
+    </ul>
+  </li>
+  <li>Flexibility and efficiency of use</li>
+  <li>Aesthetic and minimalist design</li>
+  <li>Help users recognize, diagnose, and recover from errors</li>
+  <li>Help and documentation</li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="review-based-evaluation">Review-based evaluation</h2>
+
+<ul>
+  <li>Experimental results and empirical evidence from the literature (e.g., from psychology, HCI, etc) can be used to support or refute parts of design.</li>
+  <li>It is expensive to repeat experiments continually and therefore a review of relevant literature can save resources (e.g., effort, time, finances, etc).</li>
+  <li>However, care should be taken to ensure results are transferable to the new design (e.g., note the design in consideration, the user audience, the assumptions made, etc).</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="model-based-evaluation">Model-based evaluation</h2>
+
+<ul>
+  <li>Cognitive models can be used to filter design options e.g. GOMS (Goals, Operators, Methods and Selection) model can be used to predict user performance with a user interface, keystroke-level model (KLM) can be used to predict performance for low-level tasks.</li>
+  <li>Dialog models (e.g. STN: state transition model) can be used to evaluate dialog problems in a user interface e.g. unreachable states, circular dialogs, etc.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010143954829.png" alt="image-20221010143954829" style="zoom:150%;" /></p>
+
+<p><br /></p>
+
+<h2 id="goms--klm">GOMS &amp; KLM</h2>
+
+<ul>
+  <li>KLM or KLM-GOMS
+    <ul>
+      <li>Belongs to the family of GOMS models</li>
+      <li>Find more efficient ways to complete a task by analyzing</li>
+      <li>the steps required in the process</li>
+    </ul>
+  </li>
+  <li>The keystroke-level model consists of six operators
+    <ul>
+      <li>K: Press a Key or button time varies with user skill</li>
+      <li>P: Point with a mouse</li>
+      <li>H: Home to/from keyboard or other device</li>
+      <li>D(n,l): Draw n straight lines of total lenght l</li>
+      <li>M: Mentally prepare</li>
+      <li>R(t): Response by system</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-based-evaluation">User-based Evaluation</h2>
+
+<ul>
+  <li>User-based evaluation basically is evaluation through user participation, i.e. evaluation that involves the people for whom the system is intended; the users.</li>
+  <li>User-based evaluation techniques include: experimental methods, observational methods, query techniques (e.g., questionnaires and interviews), physiological monitoring methods (e.g., eye tracking, measuring skin conductance, measuring heart rate).</li>
+  <li>User-based methods can be conducted in the laboratory and/or in the field.</li>
+  <li>Two Cases
+    <ul>
+      <li>Laboratory Studies</li>
+      <li>Field Studies</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="laboratory-studies">Laboratory Studies</h2>
+
+<ul>
+  <li>Advantages:
+    <ul>
+      <li>Specialist &amp; equipment available</li>
+      <li>Uninterrupted environment</li>
+    </ul>
+  </li>
+  <li>Disadvantages:
+    <ul>
+      <li>Lack of context</li>
+      <li>Difficult to observe several users cooperating</li>
+    </ul>
+  </li>
+  <li>Appropriate
+    <ul>
+      <li>If system location is dangerous or impractical for constrained single user systems to allow controlled manipulation of use</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="field-studies">Field Studies</h2>
+
+<ul>
+  <li>Advantages:
+    <ul>
+      <li>Natural environment</li>
+      <li>Context retained (though observation may alter it)</li>
+      <li>Longitudinal(장기적인) studies possible</li>
+    </ul>
+  </li>
+  <li>Disadvantages:
+    <ul>
+      <li>Distractions</li>
+      <li>Noise</li>
+    </ul>
+  </li>
+  <li>Appropriate
+    <ul>
+      <li>Where context is crucial for longitudinal studies</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="evaluating-implementations">Evaluating Implementations</h2>
+
+<ul>
+  <li>Requires an artefact:
+    <ul>
+      <li>Simulation</li>
+      <li>Prototype</li>
+      <li>Full implementation</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="experimental-evaluation">Experimental Evaluation</h2>
+
+<ul>
+  <li>Controlled evaluation of specific aspects of interactive behaviour</li>
+  <li>Evaluator chooses hypothesis to be tested</li>
+  <li>A number of experimental conditions are considered which differ only in the value of some controlled variable.</li>
+  <li>Changes in behavioural measure are attributed to different conditions</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="experimental-factors">Experimental Factors</h2>
+
+<ul>
+  <li>Subjects(실험대상)
+    <ul>
+      <li>Who – representative, sufficient sample</li>
+    </ul>
+  </li>
+  <li>Variables
+    <ul>
+      <li>Things to modify and measure</li>
+    </ul>
+  </li>
+  <li>Hypothesis
+    <ul>
+      <li>What you’d like to show</li>
+    </ul>
+  </li>
+  <li>Experimental design
+    <ul>
+      <li>How you are going to do it</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="variables">Variables</h2>
+
+<ul>
+  <li>Independent Variable (<strong>IV</strong>) - 입력
+    <ul>
+      <li>Characteristic changed to produce different conditions</li>
+      <li>e.g. interface style, number of menu items</li>
+    </ul>
+  </li>
+  <li>Dependent Variable (<strong>DV</strong>) - 출력
+    <ul>
+      <li>Characteristics measured in the experiment</li>
+      <li>e.g. time taken, number of errors.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hypothesis">Hypothesis</h2>
+
+<ul>
+  <li>Prediction of Outcome
+    <ul>
+      <li>Framed in terms of IV and DV</li>
+      <li>e.g. “error rate will increase as font size decreases”</li>
+    </ul>
+  </li>
+  <li>Null hypothesis:
+    <ul>
+      <li>States no difference between conditions</li>
+      <li>Aim is to disprove this</li>
+      <li>e.g. null hyp. = “no change with font size”</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="experimental-design">Experimental Design</h2>
+
+<ul>
+  <li>Within groups design
+    <ul>
+      <li>Each subject performs experiment under each condition.</li>
+      <li>Transfer of learning possible</li>
+      <li>Less costly and less likely to suffer from user variation.</li>
+    </ul>
+  </li>
+  <li>Between groups design
+    <ul>
+      <li>Each subject performs under only one condition</li>
+      <li>No transfer of learning</li>
+      <li>More users required</li>
+      <li>Variation can bias results.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="analysis-of-data">Analysis of Data</h2>
+
+<ul>
+  <li>Before you start to do any statistics:
+    <ul>
+      <li>Look at data</li>
+      <li>Save original data</li>
+    </ul>
+  </li>
+  <li>Choice of statistical technique depends on
+    <ul>
+      <li>Type of data</li>
+      <li>Information required</li>
+    </ul>
+  </li>
+  <li>Type of data
+    <ul>
+      <li><strong>Discrete</strong> - finite number of values</li>
+      <li><strong>Continuous</strong> - any value</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="analysis---types-of-test">Analysis - Types of Test</h2>
+
+<ul>
+  <li>Parametric
+    <ul>
+      <li>가정이 좀 있는 경우</li>
+      <li>Assume normal distribution</li>
+      <li>Robust</li>
+      <li>Powerful</li>
+    </ul>
+  </li>
+  <li>Non-parametric
+    <ul>
+      <li>Do not assume normal distribution
+        <ul>
+          <li>chi-square test</li>
+        </ul>
+      </li>
+      <li>Less powerful</li>
+      <li>More reliable</li>
+    </ul>
+  </li>
+  <li>Contingency table
+    <ul>
+      <li>Classify data by discrete attributes</li>
+      <li>Count number of data items in each group</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="analysis-of-data-cont">Analysis of Data (cont.)</h2>
+
+<ul>
+  <li>What information is required?
+    <ul>
+      <li>Is there a difference?</li>
+      <li>How big is the difference?</li>
+      <li>How accurate is the estimate?</li>
+    </ul>
+  </li>
+  <li>Parametric and non-parametric tests mainly address first of these</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="experimental-studies-on-groups">Experimental Studies on Groups</h2>
+
+<ul>
+  <li>More difficult than single-user experiments</li>
+  <li>Problems with:
+    <ul>
+      <li>Subject groups</li>
+      <li>Choice of task</li>
+      <li>Data gathering</li>
+      <li>Analysis</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="subject-groups">Subject Groups</h2>
+
+<ul>
+  <li>Larger number of subjects</li>
+  <li>more expensive</li>
+  <li>Longer time to `settle down’
+… even more variation!</li>
+  <li>Difficult to timetable</li>
+  <li>So … often only three or four groups</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-task">The Task</h2>
+
+<ul>
+  <li>Must encourage cooperation</li>
+  <li>Perhaps involve multiple channels</li>
+  <li>Options:
+    <ul>
+      <li>Creative task e.g. ‘write a short report on …’</li>
+      <li>Decision games e.g. desert survival task</li>
+      <li>Control task e.g. ARKola bottling plant</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="data-gathering">Data Gathering</h2>
+
+<ul>
+  <li>Several video cameras + Direct logging of application</li>
+  <li>Problems:
+    <ul>
+      <li>Synchronisation</li>
+      <li>Sheer volume!(엄청난 양의 데이터)</li>
+    </ul>
+  </li>
+  <li>One solution:
+    <ul>
+      <li>Record from each perspective(필요한 상황에 따라 하나씩 조정)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="analysis">Analysis</h2>
+
+<ul>
+  <li>N.B. Vast variation between groups
+    <ul>
+      <li>e.g. democratic / dominandt’</li>
+    </ul>
+  </li>
+  <li>Solutions:
+    <ul>
+      <li>Within groups experiments</li>
+      <li>Micro-analysis (e.g., gaps in speech)</li>
+      <li>Anecdotal and qualitative analysis</li>
+    </ul>
+  </li>
+  <li>Look at interactions between group and media</li>
+  <li>Controlled experiments may ‘waste’ resources!
+    <ul>
+      <li>if the number of experimental groups is limited</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="field-studies-1">Field Studies</h2>
+
+<ul>
+  <li>Experiments dominated by group formation</li>
+  <li>Field studies more realistic:
+    <ul>
+      <li>Distributed cognition =&gt; work studied in context</li>
+      <li>Real action is situated action</li>
+      <li>Physical and social environment both crucial</li>
+    </ul>
+  </li>
+  <li>Contrast:
+    <ul>
+      <li>Psychology – controlled experiment</li>
+      <li>Sociology and anthropology – open study and rich data</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="observational-methods">Observational Methods</h2>
+
+<ul>
+  <li>Think Aloud</li>
+  <li>Cooperative evaluation</li>
+  <li>Protocol analysis</li>
+  <li>Automated analysis</li>
+  <li>Post-task walkthroughs</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="think-aloud">Think Aloud</h3>
+
+<ul>
+  <li>
+    <p>유저가 자기가 하는 생각을 계속 description</p>
+  </li>
+  <li>User observed performing task</li>
+  <li>User asked to describe what he is doing and why, what he thinks is happening etc.</li>
+  <li>Advantages
+    <ul>
+      <li>Simplicity - requires little expertise</li>
+      <li>Can provide useful insight</li>
+      <li>Can show how system is actually used</li>
+    </ul>
+  </li>
+  <li>Disadvantages
+    <ul>
+      <li>Subjective</li>
+      <li>Selective</li>
+      <li>Act of describing may alter task performance</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="cooperative-evaluation">Cooperative Evaluation</h3>
+
+<ul>
+  <li>Variation on think aloud</li>
+  <li>User collaborates in evaluation</li>
+  <li>Both user and evaluator can ask each other questions throughout</li>
+  <li>Additional advantages
+    <ul>
+      <li>Less constrained and easier to use</li>
+      <li>User is encouraged to criticize system</li>
+      <li>Clarification possible</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="protocol-analysis">Protocol Analysis</h3>
+
+<ul>
+  <li>Paper and pencil – cheap, limited to writing speed</li>
+  <li>Audio – good for think aloud, difficult to match with other protocols</li>
+  <li>Video – accurate and realistic, needs <strong>special equipment,</strong> obtrusive sometimes</li>
+  <li>Computer logging – automatic and unobtrusive, large amounts of data difficult to analyze</li>
+  <li>User notebooks – coarse and subjective, useful insights, good for longitudinal studies</li>
+  <li>Mixed use in practice.
+    <ul>
+      <li>Audio/video transcription difficult and requires skill.</li>
+      <li>Some automatic support tools available</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="automated-analysis--video-annotation">Automated Analysis – Video Annotation</h3>
+
+<ul>
+  <li>Interface
+    <ul>
+      <li>How many objects should we annotate at once?</li>
+      <li>How do we visualize space and time?</li>
+      <li>How do we select key frames?</li>
+    </ul>
+  </li>
+  <li>Crowdsourcing
+    <ul>
+      <li>How do we split up work?</li>
+      <li>How do we do quality control?</li>
+    </ul>
+  </li>
+  <li>Interpolation / Tracking
+    <ul>
+      <li>How do we learn the appearance of an object?</li>
+      <li>How do we interpolate to minimize effort?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="post-task-walkthroughs">Post-task Walkthroughs</h3>
+
+<ul>
+  <li>User reacts <strong>on action after the event</strong></li>
+  <li>Useful to identify reasons for actions and alternatives considered</li>
+  <li>Necessary in cases where think aloud is not possible</li>
+  <li>Transcript played back to participant for comment
+    <ul>
+      <li>Immediately =&gt; fresh in mind</li>
+      <li>Delayed =&gt; evaluator has time to identify questions</li>
+    </ul>
+  </li>
+  <li>Advantages
+    <ul>
+      <li>Analyst has time to focus on relevant incidents</li>
+      <li>Avoid excessive interruption of task</li>
+    </ul>
+  </li>
+  <li>Disadvantages
+    <ul>
+      <li>Lack of freshness</li>
+      <li>May be post-hoc interpretation of events</li>
+      <li>이벤트 끝나고 나서 자기가 다시 평가하는 것에 묶임?(bias 되어 버림)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="query-techniques">Query Techniques</h2>
+
+<ul>
+  <li>Interviews</li>
+  <li>Questionnaires</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interviews">Interviews</h2>
+
+<ul>
+  <li>Analyst questions user on one-to-one basis usually based on prepared questions</li>
+  <li>Informal, subjective and relatively <strong>cheap</strong></li>
+  <li>Advantages
+    <ul>
+      <li>Can be varied to suit context</li>
+      <li>Issues can be explored more fully</li>
+      <li>Can elicit user views and identify unanticipated problems</li>
+    </ul>
+  </li>
+  <li>Disadvantages
+    <ul>
+      <li>Very subjective</li>
+      <li>Time consuming</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="questionnaires">Questionnaires</h2>
+
+<ul>
+  <li>Set of fixed questions given to users</li>
+  <li>Advantages
+    <ul>
+      <li>Quick and reaches large user group</li>
+      <li>Can be analyzed more rigorously</li>
+    </ul>
+  </li>
+  <li>Disadvantages
+    <ul>
+      <li>Less flexible</li>
+      <li>Less probing</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="questionnaires-ctd">Questionnaires (ctd)</h2>
+
+<ul>
+  <li>Need careful design
+    <ul>
+      <li>What information is required?</li>
+      <li>How are answers to be analyzed?</li>
+    </ul>
+  </li>
+  <li>Styles of question
+    <ul>
+      <li>General</li>
+      <li>Open-ended</li>
+      <li>Scalar</li>
+      <li>Multi-choice</li>
+      <li>Ranked</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="physiological-methods">Physiological Methods</h2>
+
+<ul>
+  <li>Eye tracking</li>
+  <li>Physiological measurement</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="eye-tracking">Eye Tracking</h2>
+
+<ul>
+  <li>Head or desk mounted equipment tracks the position of the eye</li>
+  <li>Eye movement reflects the amount of cognitive processing a display requires</li>
+  <li>Measurements include
+    <ul>
+      <li>Fixations: eye maintains stable position. Number and duration indicate level of difficulty with display</li>
+      <li>Saccades: rapid eye movement from one point of interest to another</li>
+      <li>Scan paths: moving straight to a target with a short fixation at the target is optimal</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="physiological-measurements">Physiological Measurements</h2>
+
+<ul>
+  <li>Emotional response linked to physical changes</li>
+  <li>These may help determine a user’s reaction to an interface</li>
+  <li>Measurements include:
+    <ul>
+      <li>Heart activity, including blood pressure, volume and pulse.</li>
+      <li>Activity of sweat glands: Galvanic Skin Response (GSR)</li>
+      <li>Electrical activity in muscle: electromyogram (EMG)</li>
+      <li>Electrical activity in brain: electroencephalogram (EEG)</li>
+    </ul>
+  </li>
+  <li>Some difficulty in interpreting these physiological responses - more research needed</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="choosing-an-evaluation-method">Choosing an Evaluation Method</h2>
+
+<ul>
+  <li>When in process: design vs. implementation</li>
+  <li>Style of evaluation: laboratory vs. field</li>
+  <li>How objective: subjective vs. objective</li>
+  <li>Type of measures: qualitative vs. quantitative</li>
+  <li>Level of information: high level vs. low level</li>
+  <li>Level of interference: obtrusive vs. unobtrusive</li>
+  <li>Resources available: time, subjects, equipment, expertise</li>
+</ul>
+
+:ET

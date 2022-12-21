@@ -1,0 +1,561 @@
+I"�S<h1 id="review">Review)</h1>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160535013-589fec78-5b74-42eb-9ff4-85c18839f01a.png" alt="image" /></p>
+
+<p>스택 사용 위치를 알려주는 stack pointer가 존재, stack pointer는 항상 스택 메모리에 제일 마지막 값을 가리킨다.</p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/159404503-407c2aaa-c693-4704-90f7-6826b5397d92.png" alt="image" /></p>
+
+<ul>
+  <li>t: temporary
+    <ul>
+      <li>임시로 쓰기 위한 변수이다.</li>
+    </ul>
+  </li>
+  <li>s: saved
+    <ul>
+      <li>s의 내용은 중요한 변수 함부로 바꾸거나 할 수 없다.</li>
+    </ul>
+  </li>
+  <li>at</li>
+</ul>
+
+<p><br /></p>
+
+<hr />
+
+<h2 id="array">Array</h2>
+
+<ul>
+  <li>Access large amounts of similar data</li>
+  <li>Index: access each element</li>
+  <li>
+    <p>Size: number of elements</p>
+  </li>
+  <li>5-element array</li>
+  <li><strong>Base address</strong> = = 0x12348000 (address of first element, array[0])</li>
+  <li>First step in accessing an array: load base address into a register</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160526538-f30c97be-8de8-46e8-9198-ed26594a4fc4.png" alt="image" /></p>
+
+<h2 id="accessing-arrays">Accessing Arrays</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// C Code</span>
+<span class="kt">int</span> <span class="n">array</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</code></pre></div></div>
+
+<pre><code class="language-assembly"># MIPS assembly code
+# array base address = $s0
+lui $s0, 0x1234 		# 0x1234 in upper half of $S0
+ori $s0, $s0, 0x8000 	# 0x8000 in lower half of $s0
+
+lw $t1, 0($s0) 			# $t1 = array[0]
+sll $t1, $t1, 1 		# $t1 = $t1 * 2
+sw $t1, 0($s0) 			# array[0] = $t1
+
+lw $t1, 4($s0) 			# $t1 = array[1]
+sll $t1, $t1, 1 		# $t1 = $t1 * 2
+sw $t1, 4($s0) 			# array[1] = $t1
+</code></pre>
+
+<p><br /></p>
+
+<h2 id="array-using-for-loops">Array using For Loops</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// C Code</span>
+<span class="kt">int</span> <span class="n">array</span><span class="p">[</span><span class="mi">1000</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+	<span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">8</span><span class="p">;</span>
+</code></pre></div></div>
+
+<pre><code class="language-assembly"># MIPS assembly code
+# $s0 = array base address, $s1 = i
+# MIPS assembly code
+# $s0 = array base address, $s1 = i
+# initialization code
+lui $s0, 0x23B8 		# $s0 = 0x23B80000
+ori $s0, $s0, 0xF000 	# $s0 = 0x23B8F000
+addi $s1, $0, 0			# i = 0
+addi $t2, $0, 1000 		# $t2 = 1000
+
+loop:
+    slt $t0, $s1, $t2 		# i &lt; 1000?
+    beq $t0, $0, done 		# if not then done
+    sll $t0, $s1, 2 		# $t0 = i * 4 (byte offset)
+    add $t0, $t0, $s0 		# address of array[i]
+    lw $t1, 0($t0) 			# $t1 = array[i]
+    sll $t1, $t1, 3 		# $t1 = array[i] * 8
+    sw $t1, 0($t0) 			# array[i] = array[i] * 8
+    addi $s1, $s1, 1 		# i = i + 1
+    j loop 					# repeat
+done:
+</code></pre>
+
+<p><br /></p>
+
+<h2 id="function-calls">Function Calls</h2>
+
+<ul>
+  <li>Caller: calling function (in this case, main)</li>
+  <li>Calle: called function (in this case, sum)</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//C Code</span>
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">sum</span> <span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>$ra를 통해 다시 돌아오고 반환할 때는 $v0에 담아서 반환한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="function-conventions">Function Conventions</h2>
+
+<ul>
+  <li>Caller:
+    <ul>
+      <li>passes arguments to callee</li>
+      <li>jumps to callee</li>
+    </ul>
+  </li>
+  <li>Callee:
+    <ul>
+      <li><strong>performs</strong> the function</li>
+      <li><strong>returns</strong> result to caller</li>
+      <li><strong>returns</strong> to point of call</li>
+      <li>must not overwrite registers or memory needed by caller</li>
+    </ul>
+  </li>
+</ul>
+
+<p>j vs. jal</p>
+
+<p><br /></p>
+
+<h2 id="mips-function-conventions">MIPS Function Conventions</h2>
+
+<ul>
+  <li>Call Function: jump and link (jal , or call)</li>
+  <li>Return from function: jump register (jr)</li>
+  <li>Arguments: $a0 - $a3 ($4-$7)</li>
+  <li>Return value: $v0 - $v1 ($2-$3)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="function-calls-1">Function Calls</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//C Code</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">simple</span><span class="p">();</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">simple</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<pre><code class="language-assembly"># MIPS assembly code
+0x00400200 main: jal simple  #PC + 4 -&gt; $ra
+0x00400204 add $s0, $s1, $s2
+...
+
+0x00401020 simple: jr $ra
+</code></pre>
+
+<p>jal : 다음 address(0x00400204), 즉 돌아올 자리를 $ra에 저장시키고 jump한다.</p>
+
+<blockquote>
+  <p>void means that simple doesn’t return a value</p>
+</blockquote>
+
+<p><br /></p>
+
+<p>jal: jumps to simple (call)</p>
+
+<ul>
+  <li>$ra = PC + 4 = 0x00400204</li>
+</ul>
+
+<p>jr $ra: jumps to address in $ra (0x00400204) (ret)</p>
+
+<p><br /></p>
+
+<h2 id="input-arguments--return-value">Input Arguments &amp; Return Value</h2>
+
+<p>MIPS Conventions</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Argument values</code>: $a0 - $a3</li>
+  <li><code class="language-plaintext highlighter-rouge">Return value</code>: $v0</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// C Code</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> 
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+    <span class="p">...</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">diffofsums</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="c1">// 4 arguments ,$a0-$a3</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">diffofsums</span><span class="p">(</span><span class="kt">int</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">g</span><span class="p">,</span> <span class="kt">int</span> <span class="n">h</span><span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">result</span><span class="p">;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="n">g</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">h</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span> <span class="c1">// return value</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<pre><code class="language-assembly"># MIPS assembly code
+# $s0 = y
+
+main:
+	...
+	addi $a0, $0, 2 # argument 0 = 2
+    addi $a1, $0, 3 # argument 1 = 3
+    addi $a2, $0, 4 # argument 2 = 4
+    addi $a3, $0, 5 # argument 3 = 5
+    jal diffofsums # call Function
+    add $s0, $v0, $0 # y = returned value
+    ...
+# $s0 = result
+diffofsums:
+    add $t0, $a0, $a1 # $t0 = f + g
+    add $t1, $a2, $a3 # $t1 = h + i
+    sub $s0, $t0, $t1 # result = (f + g) - (h + i)
+    add $v0, $s0, $0 # put return value in $v0
+    jr $ra # return to caller
+</code></pre>
+
+<p>s0에 담기는 내용은 $ra 이후에 사라지는가?</p>
+
+<p><br /></p>
+
+<p>만약 main에서 t0, t1, s0를 이미 사용했다면 즉 4개가 넘으면 stack memory을 이용한다.</p>
+
+<pre><code class="language-assembly"># MIPS assembly code
+# $s0 = result
+diffofsums:
+    add $t0, $a0, $a1 	# $t0 = f + g
+    add $t1, $a2, $a3 	# $t1 = h + i
+    sub $s0, $t0, $t1 	# result = (f + g) - (h + i)
+    add $v0, $s0, $0 	# put return value in $v0
+    jr $ra 				# return to caller
+</code></pre>
+
+<ul>
+  <li>diffofsums <strong>overworte</strong> 3 register: $t0, $t1, $s0</li>
+  <li>diffofsums can use <strong>stack</strong> to temporarily store registers</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-stack">The Stack</h2>
+
+<ul>
+  <li>
+    <p>Memory used to temporarily save variables</p>
+  </li>
+  <li>Like stack of dishes, last-in-first-out(LIFO) queue</li>
+  <li>Expands: uses more memory when more space needed</li>
+  <li>Contracts: uses less memory when the space is no longer needed(pop)</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>스택은 위에서부터 내려오는 방식, 힙은 아래에서 위로 올라가는 방식</p>
+  </li>
+  <li>스택을 사용하기 전에는 쓸 만큼 stack pointer를 증가 시켜서 다음 빈 스택을 가리켜야 하기 때문에 stack pointer를 이동시켜야 한다.</li>
+  <li>즉, stack pointer 전까지의 공간은 누가 사용하고 있는 것</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Grows down (from higher to lower memory address)</li>
+  <li>Stack pointer: $sp points to top of the stack</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160535683-c7461610-e7b9-45bf-b6f8-ffcbf52e676e.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="how-functions-use-the-stack">How Functions use the Stack</h2>
+
+<ul>
+  <li>Called functions must have no unintened side effects</li>
+  <li>But diffofsums overwrites 3 registers: $t0, $t1, $s0</li>
+</ul>
+
+<pre><code class="language-assembly"># MIPS assembly
+# $s0 = result
+diffofsums:
+	add $t0, $a0, $a1 	# $t0 = f + g
+	add $t1, $a2, $a4 	# $t1 = h + i
+	sub $s0, $t0, $t1 	# result = (f + g) - (h + i)
+	add $v0, $s0, $0 	#put return value in $v0
+	jr $ra 				#return to caller
+</code></pre>
+
+<h2 id="storing-register-values-on-the-stack">Storing Register Values on the Stack</h2>
+
+<ul>
+  <li>push(sw), pop(lw)</li>
+</ul>
+
+<pre><code class="language-assembly"># $s0 = result
+diffofsums:
+addi $sp, $sp, -12 	# make space on stack
+					# to store 3 registers
+sw $s0, 8($sp) 		# save $s0 on stack
+sw $t0, 4($sp) 		# save $t0 on stack
+sw $t1, 0($sp) 		# save $t1 on stack
+add $t0, $a0, $a1 	# $t0 = f + g
+add $t1, $a2, $a3 	# $t1 = h + i
+sub $s0, $t0, $t1 	# result = (f + g) - (h + i)
+add $v0, $s0, $0 	# put return value in $v0
+lw $t1, 0($sp) 		# restore $t1 from stack
+lw $t0, 4($sp) 		# restore $t0 from stack
+lw $s0, 8($sp) 		# restore $s0 from stack
+addi $sp, $sp, 12 	# deallocate stack space
+jr $ra 				# return to caller
+</code></pre>
+
+<p>s0, t0, t1을 쓰고 싶어서 잠깐 stack에 저장해 두었다가 사용 후에 다시 변수에 가져오는(restore)</p>
+
+<hr />
+
+<p>Q)$t1,t0, s0에다가 스택 내용을 저장하고 스택 pointer만 옮기는 것이기 때문에 사실상 스택 안에는 그 내용이 유지되어 있는 것인데 스택 포인터 아래에 있는 내용은 그냥 빈 공간 취급하는 것인가?</p>
+
+<p>A) 맞음 override</p>
+
+<p>Q)subroutine에서 모든 걸 다 저장해야하는가?</p>
+
+<ul>
+  <li>그래서 t와 s로 구분한 것</li>
+</ul>
+
+<hr />
+
+<h3 id="the-stack-during-diffofsums-call">The stack during diffofsums Call</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160536148-de64e9b7-f0d9-49f6-9ec8-4249cadc2669.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="register">Register</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160529523-d2f1af63-f092-47f4-bf08-e89bbf71f03a.png" alt="image" /></p>
+
+<p>s로 시작하는 데이터는 중요한 데이터이기 때문에 다른 function에서 사용후 값을 다시 되돌리는 callee-saved 방식이고 t로 시작하는 데이터는 temporary 데이터이기 때문에 다른 function에서 마음대로 값을 바꿀 수 있기 때문에 main 함수에서 저장해야 하는 caller-saved 방식이다.</p>
+
+<pre><code class="language-assembly"># $s0 = result
+diffofsums:
+    addi $sp, $sp, -4 # make space on stack to 
+    			      # store one register
+    sw $s0, 0($sp)    # save $s0 on stack
+    				  # no need to save $t0 or $t1
+    add $t0, $a0, $a1 # $t0 = f + g
+    add $t1, $a2, $a3 # $t1 = h + i
+    sub $s0, $t0, $t1 # result = (f + g) - (h + i)
+    add $v0, $s0, $0  # put return value in $v0
+    lw $s0, 0($sp)    # restore $s0 from stack
+    addi $sp, $sp, 4  # deallocate stack space
+    jr $ra 			  # return to caller
+</code></pre>
+
+<p>그래서 t의 내용은 function에서 저장하지 않아도 되기 때문에 <code class="language-plaintext highlighter-rouge">addi $sp, $sp, -12</code>가 아니라<code class="language-plaintext highlighter-rouge">addi $sp, $sp, -4</code> 이고 (s내용만 저장)</p>
+
+<p>Q)어? 근데 t0가 이미 있어서 스택에 저장해야 되는 것 아닌가?</p>
+
+<p>A) 그게 아니라 t0 내용은 main함수가 아닌 다른 함수에서 마음대로 사용해도 되는 메커니즘이기 때문에 굳이 스택을 만들어 줄 필요없이 0부터 사용하고 싶은대로 사용하는 것이다.</p>
+
+<p><br /></p>
+
+<hr />
+
+<p>f1()으로 jump하기 전에 $ra에 *을 저장하고 jump하고 f1()함수가 종료할 때 <code class="language-plaintext highlighter-rouge">jr $ra</code>을 통해 caller로 돌아가게 된다.</p>
+
+<p>그런데 만약 f1() 안에 f2()라는 함수를 호출하면 또 f2로 jump하기 전에 $ra에 f2의 return address가 담기게 되는데 f2가 종료시에 <code class="language-plaintext highlighter-rouge">jr $ra</code>(f1()함수의)로 돌아가고 f1에서 함수 종료시 $ra 명령어로 main으로 돌아가야 하는데 현재 $ra에는 f2의 주소가 담겨있기 때문에 이는 stack을 사용하여 해결한다!</p>
+
+<p>즉, main에서 f1()으로 jal할 때 $ra 값이 stack에 push 되었다가 f2()가 호출될때는 $ra에 overriding되어도 f1()에 다시 돌아와서 return address를 할 때에는 stack의 내용을 pop하면 main의 return address값을 가져올 수 있는 것이다.</p>
+
+<p><br /></p>
+
+<hr />
+
+<h2 id="multiple-function-calls">Multiple Function Calls</h2>
+
+<pre><code class="language-assembly">proc1:
+    addi $sp, $sp, -4 	# make space on stack
+    sw $ra, 0($sp) 		# save $ra on stack(push)
+    jal proc2 			# override current return address to $ra
+    ...
+    lw $ra, 0($sp) 		# restore $s0 from stack
+    addi $sp, $sp, 4 	# deallocate stack space(원상복귀)
+    jr $ra 				# return to caller
+</code></pre>
+
+<p><br /></p>
+
+<h2 id="recursive-function-call">Recursive Function Call</h2>
+
+<ul>
+  <li>
+    <p>Function that calls it self</p>
+  </li>
+  <li>
+    <p>When convertint to assembly code:</p>
+
+    <ul>
+      <li>In the first pass, treat recursive calls as if it’s calling a different function and ignore overwritten registers.</li>
+      <li>Then save/restore registers on stack as needed.</li>
+    </ul>
+  </li>
+  <li>
+    <p>ex) Factorial function</p>
+
+    <ul>
+      <li>
+        <p>factorial(n) = n!</p>
+
+        <ul>
+          <li>=n*(n-1)*(n-2)*(n-3) … *1</li>
+        </ul>
+      </li>
+      <li>
+        <p>Example: factorial(6) = 6!</p>
+
+        <p>=6*5*4*3*2*1</p>
+
+        <p>=720</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// High-level code</span>
+<span class="kt">int</span> <span class="nf">factorial</span> <span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">ractorial</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160531382-2afbfc0d-32ba-411f-beb9-1604e0e46cb7.png" alt="image" /></p>
+
+<p><br /></p>
+
+<pre><code class="language-assembly">factorial:
+    addi $sp, $sp, -8 	# save regs
+    sw $a0, 4($sp)
+    sw $ra, 0($sp)
+    addi $t0, $0, 2
+    slt $t0, $a0, $t0 	# a &lt;= 1 ?
+    beq $t0, $0, else 	# no: go to else
+    addi $v0, $0, 1 	# yes: return 1
+    addi $sp, $sp, 8 	# restore $sp
+    jr $ra 				# return
+else:
+    addi $a0, $a0, -1 	# n = n - 1
+    jal factorial 		# recursive call
+    lw $ra, 0($sp) 		# restore $ra
+    lw $a0, 4($sp) 		# restore $a0
+    addi $sp, $sp, 8 	# restore $sp
+    mul $v0, $a0, $v0 	# n*factorial(n-1)
+    jr $ra 				# return
+</code></pre>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160536462-7c002ba7-92f5-42c5-861e-406f608ed500.png" alt="image" style="zoom:67%;" /></p>
+
+<p><br /></p>
+
+<h2 id="stack-during-recursive-call">Stack During Recursive Call</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/160536690-6a247284-83d2-412f-950c-53e5d81ee3fc.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="function-call-summary">Function Call Summary</h2>
+
+<ul>
+  <li>Caller
+    <ul>
+      <li>Put arguments in $a-$a3</li>
+      <li>Save any needed registers ($ra, maybe $t0-t9)</li>
+      <li>jal callee</li>
+      <li>Restore registers</li>
+      <li>Look for result in $v0</li>
+    </ul>
+  </li>
+  <li>Callee
+    <ul>
+      <li><strong>s register만 저장</strong></li>
+      <li>Save registers that might be disturbed ($s0-$s7)</li>
+      <li>Perform function</li>
+      <li>Put result in $v0</li>
+      <li>Restore registers</li>
+      <li>jr $ra</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="addressing-modes">Addressing Modes</h2>
+
+<p>How do we address the operands?</p>
+
+<ul>
+  <li>Register Only
+    <ul>
+      <li>add $5, $6, $7</li>
+    </ul>
+  </li>
+  <li>Immediate
+    <ul>
+      <li>addi $5, $6, -3</li>
+    </ul>
+  </li>
+  <li>Base Addressing
+    <ul>
+      <li>lw $1, 4($2) <code class="language-plaintext highlighter-rouge">&lt;- data memory</code></li>
+    </ul>
+  </li>
+  <li>PC-Relative
+    <ul>
+      <li>beq $1, $2, Label   <code class="language-plaintext highlighter-rouge">&lt;- prog. mem.</code></li>
+    </ul>
+  </li>
+  <li>Pseudo Direct
+    <ul>
+      <li>J Label   <code class="language-plaintext highlighter-rouge">&lt;- prog. mem.</code></li>
+    </ul>
+  </li>
+</ul>
+
+:ET

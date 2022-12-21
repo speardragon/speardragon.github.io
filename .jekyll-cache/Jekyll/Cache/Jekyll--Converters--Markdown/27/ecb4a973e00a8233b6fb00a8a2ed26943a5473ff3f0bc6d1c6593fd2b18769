@@ -1,0 +1,806 @@
+I"��<p><br /></p>
+
+<h1 id="10-heaps">10. Heaps</h1>
+
+<p>heap을 이용하여 sorting을 하는 것을 heap sort라고 함.</p>
+
+<p>heap이 주로 사용되는 곳은 <strong>priority queue</strong>임.</p>
+
+<p>10-2</p>
+
+<h2 id="complete-binary-tree">Complete binary tree</h2>
+
+<ul>
+  <li>
+    <p><strong>Complete binary tree</strong> has the maximum number of entries for its height</p>
+  </li>
+  <li>
+    <p><img src="https://user-images.githubusercontent.com/79521972/167300113-d35abb84-664e-4c4c-ac53-6ecf903b8047.png" alt="image" /></p>
+    <ul>
+      <li>첫 번째 그림(height = 0) 에서 height 0에 대해 node를 maximum으로 채우는 경우는 1개가 들어가는 구조.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>Binary tree</strong> is <code class="language-plaintext highlighter-rouge">nearly complete</code> if
+    <ul>
+      <li>it has the minimum height for its nodes and</li>
+      <li><strong>all nodes in the last level are found on the left</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300125-1c72f55f-3316-40f6-bb8f-d45afd096c5a.png" alt="image" /></p>
+
+<hr />
+
+<p>10-3</p>
+
+<h2 id="properties-of-nearly-complete-binary-trees">Properties of Nearly complete binary trees</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300148-0429f4e3-679b-4846-a689-7e171f003d00.png" alt="image" /></p>
+
+<ul>
+  <li>h = [log<sub>2</sub>N], where N is the number of nodes and h is the height of the tree
+    <ul>
+      <li><strong>[] means Gauss’s notation</strong></li>
+    </ul>
+  </li>
+  <li>Leaf nodes are [N/2] + 1, [N/2] + 2, …, N
+    <ul>
+      <li>1 ~ [N/2] 은 자식노드를 가지는 internal node, [N/2] + 1 ~ N 는 leaf node이다.</li>
+    </ul>
+  </li>
+  <li>In a complete binary tree, N = 2<sup>h+1</sup> – 1</li>
+</ul>
+
+<hr />
+
+<p>10-4</p>
+
+<h2 id="61-heaps">6.1 Heaps</h2>
+
+<ul>
+  <li>
+    <p>Heap is a <strong>nearly complete binary tree</strong> that satisfies the <mark>heap property</mark></p>
+  </li>
+  <li>There are two kinds of binary heaps:
+    <ul>
+      <li><strong>max-heaps and min-heaps.</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p>In both kinds, the values in the nodes satisfy a heap property, the specifics of which depend on the kind of heap.</p>
+  </li>
+  <li>
+    <p>In a max-heap, the max-heap property is that for every node i other than the root,</p>
+
+    <ul>
+      <li>어떤 root 노드의 값이 그 노드의 자식 노드의 값보다 항상 크거나 같다.</li>
+      <li>
+        <p>A[Parent(i)] &gt;= A[i],</p>
+      </li>
+      <li>
+        <p>that is, the value of a node is at most the value of its parent. Thus, the largest element in a max-heap is stored at the root</p>
+      </li>
+      <li><strong>max-heap에서 가장 큰 element는 root에 담겨있다.</strong></li>
+    </ul>
+  </li>
+  <li>A min-heap is organized in the opposite way;
+    <ul>
+      <li>The smallest element in a min-heap is at the root</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>10-5</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300306-457026bd-a6f9-4229-a2fc-f7258b273ca8.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300315-946e7269-6d4f-477b-aad4-caa62e8a1906.png" alt="image" /></p>
+
+<p>(a) 그림의 tree는 nearly complete binary tree이면서 max heap property를 만족한다.</p>
+
+<hr />
+
+<p>10-6</p>
+
+<h2 id="62-maintaining-the-heap-property">6.2 Maintaining the heap property</h2>
+
+<p>In order to maintain the max-heap property, we call the procedure <strong>MAX-HEAPIFY</strong>.</p>
+
+<p>Its inputs are an array <strong>A</strong> and an index <strong>i</strong> into the array. When it is called, MAX-HEAPIFY assumes that the binary trees rooted at LEFT(i) and RIGHT(i) are max-heaps, but that A[i] might be smaller than its children, thus violating the max-heap property.</p>
+
+<p><strong>MAX-HEAPIFY</strong> lets the value at A[i] “float down” in the max-heap so that the subtree rooted at index i obeys the max-heap property.</p>
+
+<ul>
+  <li>어떤 node의 값을 max heap property를 만족하도록 구조를 조정하는 것</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300447-78a21085-bce8-4c49-8b77-002f53ed59a9.png" alt="image" /></p>
+
+<hr />
+
+<p>10-7</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300468-35df6012-9e96-4b3e-b9bf-68de9bbb29d8.png" alt="image" /></p>
+
+<ul>
+  <li>max heap을 만들어야 하는데 2번 노드를 보니까 max heap property를 만족하지 않는 것을 볼 수 있다. (자식 노드보다 내가 더 크지 않음)</li>
+  <li>heap property를 만족할 때까지 해당 노드를 끌어 내린다.</li>
+  <li>2번 노드와 그 자식 노드인 4번 노드의 값을 비교하여 자식 노드의 값이 더 크다면 두 노드의 값을 바꾼다.</li>
+  <li>또 다시 4번 노드를 확인하여 위의 과정을 진행한다.
+    <ul>
+      <li>만족하지 않기 때문에 4번 노드와 9번 노드의 값을 바꿔준다.</li>
+    </ul>
+  </li>
+  <li>만족!</li>
+</ul>
+
+<hr />
+
+<p>10-8</p>
+
+<h2 id="63-building-a-heap">6.3 Building a heap</h2>
+
+<p>We can use the procedure MAX-HEAPIFY in a <strong>bottom-up manner</strong> to convert an array A[1 .. n]</p>
+
+<ul>
+  <li>where n = A.length, into a max-heap.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300567-596b4767-3f2e-4054-8705-b68d851a96ba.png" alt="image" /></p>
+
+<hr />
+
+<p>10-9</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300619-26c4287d-dfee-4f94-a2cd-89ee72a8ec89.png" alt="image" /></p>
+
+<p>internal node 중에서 가장 큰 애부터 루트 노드까지에 대하여 Max- heapify를 진행한다.</p>
+
+<hr />
+
+<p>10-10</p>
+
+<h2 id="implementation-of-max-heap">Implementation of Max Heap</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MaxHeap</span><span class="p">:</span>  <span class="c1"># 1
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_list</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>	<span class="c1"># the heap
+</span>        <span class="k">if</span> <span class="n">data_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data_list</span><span class="p">)</span>
+            
+        <span class="c1"># 7; build the max heap
+</span>        <span class="c1"># apply max_heapify() only for internal nodes
+</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># internal node의 제일 끝에 있는 애부터 1까지
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">max_heapify</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="c1"># 66
+</span><span class="n">h1</span> <span class="o">=</span> <span class="n">MaxHeap</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">h1</span><span class="p">.</span><span class="n">h</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300742-03d3946c-db5d-4185-9320-b234eb8c7360.png" alt="image" /></p>
+
+<hr />
+
+<p>10-11</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="c1"># 12; return the current size of the heap
+</span>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># 0 제외
+</span>    
+    <span class="c1"># 16; move item k as down as possible
+</span>    <span class="k">def</span> <span class="nf">max_heapify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="c1"># 17 ; k는 heapify를 진행할 노드 number
+</span>        <span class="n">left</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        
+        <span class="n">largest</span> <span class="o">=</span> <span class="n">k</span> <span class="c1"># 21
+</span>        <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">largest</span><span class="p">]:</span>
+            <span class="n">largest</span> <span class="o">=</span> <span class="n">left</span>
+        <span class="k">if</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">largest</span><span class="p">]:</span>
+            <span class="n">largest</span> <span class="o">=</span> <span class="n">right</span>
+         
+        <span class="k">if</span> <span class="n">largest</span> <span class="o">!=</span> <span class="n">k</span><span class="p">:</span> <span class="c1"># 27
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">largest</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">largest</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">max_heapify</span><span class="p">(</span><span class="n">largest</span><span class="p">)</span> <span class="c1"># recursion
+</span></code></pre></div></div>
+
+<ul>
+  <li>
+    <p>largest는 현재 부모 노드를 말하고 left node가 존재하면서(and) 그 left 노드가 부모 노드보다 크면 largest를 바꾼다.(right도 마찬가지로)</p>
+  </li>
+  <li>
+    <p>둘의 값을 바꿔준다.</p>
+  </li>
+  <li>sub tree로 들어가기 위해서 재귀 호출을 진행한다.()</li>
+  <li>left를 먼저 확인하고 right를 확인하기 때문에 둘 다 max-heapify를 만족하지 않는 경우 마지막에 largest를 update한 right node와 교환을 진행한다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/171456007-7e4abe10-4198-4295-b6a5-7d349854b3a3.png" alt="image" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># max_heapify 한 번 진행할 때마다 바뀌는 과정
+[4, 8, 7, 2, 9, 10, 5, 1, 3, 6] # 초기 배열
+
+[0, 4, 8, 7, 2, 9, 10, 5, 1, 3, 6] 
+[0, 4, 8, 7, 3, 9, 10, 5, 1, 2, 6] 2-3
+[0, 4, 8, 10, 3, 9, 7, 5, 1, 2, 6] 7-10
+[0, 4, 9, 10, 3, 8, 7, 5, 1, 2, 6] 8-9
+[0, 10, 9, 7, 3, 8, 4, 5, 1, 2, 6] 10-7-4(recursion)
+[0, 10, 9, 7, 3, 8, 4, 5, 1, 2, 6] 
+</code></pre></div></div>
+
+<ul>
+  <li>한 노드에 대해서 max-heapify를 돌리면 나오는 결과를 보여줌</li>
+  <li>10개의 노드가 있기 때문에 10/2 부터 1까지 for문이 돈다. (5~1)</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 재귀 전까지 print()를 찍어본 것인데 참고
+[0, 4, 8, 7, 2, 9, 10, 5, 1, 3, 6] # 초기 상태
+[0, 4, 8, 7, 3, 9, 10, 5, 1, 2, 6] # 4번째 노드 (2,3 교환)
+[0, 4, 8, 7, 3, 9, 10, 5, 1, 2, 6] # 재귀를 했지만 다음 노드가 없어서 변화 x
+[0, 4, 8, 10, 3, 9, 7, 5, 1, 2, 6] # 3번째 노드 (7,10 교환)
+[0, 4, 8, 10, 3, 9, 7, 5, 1, 2, 6] # 재귀를 했지만 다음 노드가 없어서 변화 x
+[0, 4, 9, 10, 3, 8, 7, 5, 1, 2, 6] # 2번째 노드 (8,9 교환)
+[0, 4, 9, 10, 3, 8, 7, 5, 1, 2, 6] # 재귀를 했지만 이미 만족하고 있어서 변화 x(9, 6)
+[0, 10, 9, 7, 3, 8, 4, 5, 1, 2, 6] # 1번째 노드 (4, 10 교환)
+[0, 10, 9, 7, 3, 8, 4, 5, 1, 2, 6] # 
+[0, 10, 9, 7, 3, 8, 4, 5, 1, 2, 6]
+[0, 10, 9, 7, 3, 8, 4, 5, 1, 2, 6]
+</code></pre></div></div>
+
+<ul>
+  <li>아래 것이 맞는 거임(재귀까지 고려)</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0, 4, 8, 7, 2, 9, 10, 5, 1, 3, 6] # 초기 상태
+[0, 4, 8, 7, 2, 9, 10, 5, 1, 3, 6]
+[0, 4, 8, 7, 3, 9, 10, 5, 1, 2, 6] # 4번째 노드 (2,3 교환)
+[0, 4, 8, 7, 3, 9, 10, 5, 1, 2, 6]
+[0, 4, 8, 10, 3, 9, 7, 5, 1, 2, 6] # 3번째 노드 (7,10 교환)
+[0, 4, 8, 10, 3, 9, 7, 5, 1, 2, 6]
+[0, 4, 9, 10, 3, 8, 7, 5, 1, 2, 6] # 2번째 노드 (8,9 교환)
+[0, 4, 9, 10, 3, 8, 7, 5, 1, 2, 6]
+[0, 10, 9, 4, 3, 8, 7, 5, 1, 2, 6] # 1번째 노드 (4, 10 교환)
+[0, 10, 9, 7, 3, 8, 4, 5, 1, 2, 6] # (재귀) 3번째 노드(4, 7 교환)
+[0, 10, 9, 7, 3, 8, 4, 5, 1, 2, 6] 
+</code></pre></div></div>
+
+<p>코드 주고 다음을 실행하였을 때 배열의 값들이 어떻게 변화하는지 시험에 나올 것 같음.</p>
+
+<hr />
+
+<p>10-12</p>
+
+<h2 id="64-the-heapsort-algorithm">6.4 The heapsort algorithm</h2>
+
+<ul>
+  <li>asending order(오름차순)</li>
+  <li>내가 가진 값들 중 가장 큰 data를 가진 노드는 항상 1번 index 일 것인데 이 아이디어를 이용</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300936-6822d9df-46c3-4617-b777-5122c1a7cdba.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300950-090e7606-87ca-4657-acb9-28be9cf7b0c0.png" alt="image" /></p>
+
+<ol>
+  <li>제일 큰 값인 1번 index를 제일 작은 값인 마지막 index 간의 자리를 서로 바꾼다.</li>
+  <li>heap의 길이를 하나 줄인다.
+    <ul>
+      <li>이 과정을 통해 1번 index는 유일하게 heap property를 만족하지 않는 노드가 된다.</li>
+    </ul>
+  </li>
+  <li>맨 위에 있는 1번 index의 노드(최솟값)를 MAX_HEAPIFY를 통해 아래로 끌어내린다.</li>
+  <li>위의 3 과정을 계속해서 반복(재귀적으로)</li>
+</ol>
+
+<hr />
+
+<p>10-13</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300959-e0351038-43ac-4834-9af1-9a70e181a3d0.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167300968-55c758d1-16b3-4bfc-93b7-f883de690c14.png" alt="image" /></p>
+
+<hr />
+
+<p>10-14</p>
+
+<p>시험에 100% 나옴</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">heap_sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 31
+</span>        <span class="n">save</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[:]</span> <span class="c1"># shallow copy
+</span>        <span class="n">sorted_list</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># 35 ; 제일 마지막 노드부터
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">sorted_list</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1">#제일 큰 걸 가져와서 list에 넣는다.
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1">#list에 넣은 건 제거
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">max_heapify</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 39 ; root에 대한 heapify
+</span>            
+        <span class="bp">self</span><span class="p">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">save</span> <span class="c1"># 41 ; 망가진 h 복구
+</span>        <span class="k">return</span> <span class="n">sorted_list</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">h1</span><span class="p">.</span><span class="n">heap_sort</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">h1</span><span class="p">.</span><span class="n">h</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301108-705059c6-2c98-424e-8474-dfeffdf7f13d.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>save에 h를 copy를 하고나서 heapify를 진행하면 h에 대해 heapify가 진행 되어 h가 망가지기 때문에 저장했던 save를 h에 다시 복구해 준다.</p>
+  </li>
+  <li>
+    <p>max-heapify는 클래스에 내장된 h를 이용하기 때문에 save에 대해서 heapify가 진행되지 않고 무조건 h로 heapify가 진행된다. 그래서 root 노드와 가장 마지막 노드를 바꾸는 것 까지는 되지만 제일 중요한 heapify를 못하기 때문에 내가 질문 한 건 틀린 것이다.</p>
+    <ul>
+      <li>내가 한 질문: save로 heap sort를 진행하고 41번 라인을 없애면 안되나?</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>10-15</p>
+
+<h2 id="65-priority-queues">6.5 Priority queues</h2>
+
+<p>In this section, we present one of the most popular applications of a heap:</p>
+
+<ul>
+  <li><strong>as an efficient priority queue</strong>.</li>
+</ul>
+
+<p>As with heaps, priority queues come in two forms:</p>
+
+<ul>
+  <li>max-priority queues</li>
+  <li>min-priority queues.</li>
+</ul>
+
+<p>A <strong>priority queue</strong> is a data structure for maintaining a set S of elements, each with an associated value called a key. A <strong>max-priority queue</strong> supports the following operation:</p>
+
+<ul>
+  <li>INSERT(S, x) inserts the element <strong>x</strong> into the set <strong>S</strong>, which is equivalent to the operation</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301223-ed64658b-d17a-4801-9938-3df204a46113.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>MAXIMUM(S) returns the element of S with the largest key.</p>
+  </li>
+  <li>
+    <p>EXTRACT-MAX(S) <strong>removes</strong> and <strong>returns</strong> the element of S with the largest key.</p>
+  </li>
+</ul>
+
+<hr />
+
+<p>10-16</p>
+
+<p>procedure  HEAP-EXTRACT-MAX</p>
+
+<p>psuedo code</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#HEAP-EXTRACT-MAX(A) # max heap 리스트 
+</span><span class="k">if</span> <span class="n">A</span><span class="p">.</span><span class="n">heap_size</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># 1
+</span>    <span class="n">error</span> <span class="s">"heap underflow"</span>
+<span class="nb">max</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">A</span><span class="p">.</span><span class="n">heap_size</span><span class="p">]</span> <span class="c1"># 제일 끝에 있는 노드를 제일 첫 노드에 넣는다.
+</span><span class="n">A</span><span class="p">.</span><span class="n">heap_size</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">heap_size</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># heap size를 하나 줄인다.
+</span><span class="n">MAX</span><span class="o">-</span><span class="n">HEAPIFY</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># 제일 위에 있는 노드는 heap property를 만족하지 않으므로 끌어 내린다.
+</span><span class="k">return</span> <span class="nb">max</span> <span class="c1"># 7
+</span></code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301344-07df31c9-5fbd-43fc-9e71-44af92dbcb4d.png" alt="image" /></p>
+
+<hr />
+
+<p>10-17</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 44
+</span>        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># 48 
+</span>        <span class="c1"># copy the last item to root and remove it
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">max_heapify</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">item</span> <span class="c1"># 54
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">h1</span><span class="p">.</span><span class="n">size</span><span class="p">()):</span> <span class="c1"># 73
+</span>    <span class="k">print</span><span class="p">(</span><span class="n">h1</span><span class="p">.</span><span class="n">pop</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">h1</span><span class="p">.</span><span class="n">h</span><span class="p">)</span> <span class="c1"># 76
+</span></code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301444-3d2cfa76-682a-4e09-b0ee-53caaf3f3765.png" alt="image" /></p>
+
+<hr />
+
+<p>10-18</p>
+
+<h2 id="procedure-max-heap-insert">procedure MAX-HEAP-INSERT</h2>
+
+<p>데이터를 추가할 때는 그냥 집어 넣으면 안 되고 적절히 자기 자리를 찾아서 넣어주어야 한다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301460-430e65dd-16ec-41b6-bca1-52b2769ba409.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>heap property를 만족하도록 15를 추가하려고 한다.</p>
+  </li>
+  <li>
+    <p>새로 추가할 노드를 무조건 맨 밑, 맨 왼쪽에 붙인다. -&gt; 항상 nearly complete binary tree (heap 만족)</p>
+  </li>
+  <li>붙인 15를 heap property를 만족하도록 위로 올린다. (heapify)</li>
+  <li>위로 올리는 과정은 아래로 내리는 heapify보다 더 쉽다.
+    <ul>
+      <li><mark>부모 노드랑만 비교하면 되기 때문에 (부모 노드보다 크면 자식 노드보다는 무조건 클 것이기 때문에)</mark></li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>10-19</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span> <span class="c1"># 56
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        
+        <span class="c1"># move up the item to keep the max-heap property
+</span>        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="c1"># 60
+</span>        <span class="k">while</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="o">//</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="o">//</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">k</span> <span class="o">//=</span> <span class="mi">2</span> <span class="c1"># 내 index를 부모 node index와 바꿈.
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">h1</span> <span class="o">=</span> <span class="n">MaxHeap</span><span class="p">()</span> <span class="c1"># 80
+</span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="n">h1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">h1</span><span class="p">.</span><span class="n">h</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301573-6db7945d-9006-441d-88b2-76273d12a5f9.png" alt="image" /></p>
+
+<ul>
+  <li>먼저 heap의 제일 마지막에 붙이면 되기 때문에 그냥 append를 하고</li>
+  <li>heap이 비지 않았으면서(and) 새로 추가하는 노드가 부모 노드보다 크다면 둘이 바꿔줘야 한다.</li>
+  <li>바꿔주고 나서 내 인덱스를 바꾼 위치로 update해서 반복문을 계속 돌면서 올라간다.</li>
+  <li>이 과정을 거치면 새로 추가하는 노드는 자기의 위치를 찾아갈 것이다.</li>
+</ul>
+
+<hr />
+
+<p>10-20</p>
+
+<h2 id="time-complexity-of-building-a-heap">Time Complexity of Building a Heap</h2>
+
+<p>MaxHeap()의 time complexity는?</p>
+
+<p>Each call to <strong>MAX-HEAPIFY</strong> costs O(logn) time, and <strong>BUILD-MAX-HEAP</strong> makes O(n) such calls.</p>
+
+<ul>
+  <li>Thus, the running time is <strong>O(nlogn)</strong>.</li>
+  <li>MAX-HEAPIFY -&gt; root 노드부터 시작해서 재귀적으로 heapify</li>
+  <li>BUILD-MAX-HEAP -&gt; internal node의 가장 큰 애부터 root node까지 max-heapify를 진행하는 과정</li>
+</ul>
+
+<p>This upper bound, though correct, is not asymptotically(점근적으로) tight.</p>
+
+<p>We can derive a tighter bound by observing that the time for MAX-HEAPIFY to run at a node varies with the height of the node in the tree,  and the heights of most nodes are small.</p>
+
+<p>Out tighter analysis relies on the properties that <mark>an n-element heap has height [logn] and at most 
+[n/2<sup>h+1</sup>] nodes  of any height h</mark></p>
+
+<ul>
+  <li>[n/2<sup>h+1</sup>ㄱ -&gt; 반올림(ceiling)
+    <ul>
+      <li>
+        <p>It means nodes of any height h</p>
+      </li>
+      <li>
+        <p>각 층에 있을 수 있는 노드의 최대 갯수</p>
+      </li>
+    </ul>
+  </li>
+  <li>height = ㄴlogn] -&gt; 가우스 (괄호에서 위가 잘림 - ㄴ 모양)
+    <ul>
+      <li>It means height</li>
+    </ul>
+  </li>
+  <li>제일 아래 층이 h = 0! / n은 노드의 전체 갯수를 의미!</li>
+</ul>
+
+<p>worst time complexity</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301709-6b45a8b9-fabd-4c5f-be5b-f7a145e4b365.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>앞에 곱해지는 term</p>
+
+    <ul>
+      <li>Max heapify에서 loop를 도는 최대 횟수</li>
+      <li>0층은 leaf node이므로 loop를 0번 도는 것이고</li>
+      <li>1층은 그 위의 노드로 0층에 대한 loop를 1번 돌면 된다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>뒤에 곱해지는 term(ex.n/2 by 위에 있는 n/2<sup>h+1</sup>)</p>
+
+    <ul>
+      <li>
+        <p>n/2 : h=0에 있을 수 있는 노드의 최대 갯수</p>
+      </li>
+      <li>
+        <p>n/4: h=1에 있을 수 있는 노드의 최대 갯수</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>10-21</p>
+
+<p>The time required by MAX-HEAPIFY when called on a node of height h is <strong>O(h)</strong>, and so we can express the total cost of BUILD-MAX-HEAP as being bounded from above by</p>
+
+<p>-&gt; O(h) : max-heapify에서 loop를 도는 횟수</p>
+
+<ul>
+  <li>0x , 1x, 2x, …. 를 묶어 놓은 것</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301744-17e9fc6b-2a1a-4d92-af28-8802114dd8a0.png" alt="image" /></p>
+
+<ul>
+  <li>오른쪽 항에 앞에 n뒤에 붙은 sum의 의미는 n이 어떤 값을 갖던지 상관없이 2보다 작거나 같은 상수를 뜻한다.
+    <ul>
+      <li>O(n) 으로 퉁칠 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>We evaluate the last summation by substituting <code class="language-plaintext highlighter-rouge">x = 1/2</code> in the formula (A.8), yielding</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301805-612e2773-f69f-42e4-a40b-79af19ebe0d2.png" alt="image" /> <img src="https://user-images.githubusercontent.com/79521972/167301814-6a46139c-594f-4d36-a70e-6e8491b2fef7.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301820-f66a7a09-fbe8-4d9d-9fd1-bf0ceec3406a.png" alt="image" /></p>
+
+<hr />
+
+<p>10-22</p>
+
+<h2 id="why-should-one-ever-use-a-heap-instead-of-a-sorted-array">Why should one ever use a heap instead of a sorted array?</h2>
+
+<p><strong>정렬된 배열 대신 힙을 사용해야 하는 이유?</strong></p>
+
+<p>Thus, we can bound the running time of BUILD-MAX-HEAP as</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167301858-f9db4687-48c6-4482-8fa2-0339e357edde.png" alt="image" /></p>
+
+<p>Yes, <strong>building a heap</strong> takes linear time and <strong>inserts/deletes take O(logn)</strong>. While peeking the heap, which means finding the min/max stored element is, of course, O(1), popping the head is O(logn).</p>
+
+<p>The answer is simple. In some use cases, <strong>you don’t care about sorting all of your data</strong>, but you do care about constantly maintaining the smallest/largest element, which corresponds to a <strong>Priority Queue</strong>, a concept that is used extensively and in many applications.</p>
+
+<ul>
+  <li>삽입을 하는 상황에서
+    <ul>
+      <li>sorted list의 경우 -&gt; O(n)
+        <ul>
+          <li>하나하나 밀어야 되니까</li>
+        </ul>
+      </li>
+      <li>priority queue의 경우 -&gt; O(logn)</li>
+    </ul>
+  </li>
+  <li>
+    <p>큰 데이터를 뽑아내야 하는 상황에서</p>
+
+    <ul>
+      <li>sorting의 경우,  정렬을 하는데 O(nlogn)이고</li>
+      <li>priority queue의 경우 O(n)이기 때문에 prioriy queue가 훨씬 빠르다.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>10-23</p>
+
+<h2 id="heapq---heap-queue-algorithm">heapq - HEAP queue algorithm</h2>
+
+<p><strong>python 내장 heap module</strong></p>
+
+<p>heapq.heappush(heap, item)</p>
+
+<ul>
+  <li>Push the value item onto the heap, maintaining the heap invariant
+    <ul>
+      <li>insert 하는 함수</li>
+      <li>값이 제일 작은 애가 제일 앞에 나와있는 구조</li>
+    </ul>
+  </li>
+</ul>
+
+<p>heapq.heappop(heap)</p>
+
+<ul>
+  <li>Pop and return the smallest item from the heap, maintaining the heap invariant. If the heap is empty, <code class="language-plaintext highlighter-rouge">IndexError</code> is raised. To access the smallest item without popping it, use heap[0].</li>
+  <li>제일 앞에 있는 놈을 추출</li>
+</ul>
+
+<p>heapq.heappushpop(heap, item)</p>
+
+<ul>
+  <li>Push item on the heap, then pop and return the smallest item from the heap. The combined action runs more efficiently than heappush() followed by a separate call to heappop().</li>
+  <li>item을 insert하고, 제일 앞에 있는 data를 pop</li>
+</ul>
+
+<p>heapq.heapify(x)</p>
+
+<ul>
+  <li>Transform list x into a heap, in-place, in linear time.</li>
+  <li>주의할 점: minheap 이라는 점이다. (우리가 배운 maxheap과 다르게)</li>
+</ul>
+
+<p><a href="https://docs.python.org/3.8/library/heapq.html">https://docs.python.org/3.8/library/heapq.html</a></p>
+
+<hr />
+
+<p>10-24</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">heapq</span> <span class="c1"># 1
+</span>
+
+<span class="c1"># A heap sort algorithm
+</span><span class="k">def</span> <span class="nf">heapsort</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span> <span class="c1"># 5
+</span>    <span class="n">h</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span> <span class="c1"># heapify 하는 과정
+</span>        <span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">heapq</span><span class="p">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">))]</span> <span class="c1"># sorting 과정
+</span>
+
+<span class="c1"># You can transform a populated list into a heap
+</span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="c1"># 13 
+</span><span class="n">heapq</span><span class="p">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">heapsort</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+<span class="c1"># Or use a list initialized to []
+# Heap elements can be tuples.
+</span><span class="n">b</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># 20
+</span><span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">'write code'</span><span class="p">))</span>
+<span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s">'release product'</span><span class="p">))</span>
+<span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'write spec'</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">heapq</span><span class="p">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="c1"># 24
+</span></code></pre></div></div>
+
+<ul>
+  <li>실행 결과</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[1, 2, 3, 5, 6, 8, 7]
+[1, 2, 3, 5, 6, 7, 8]
+(1, 'write spec')
+</code></pre></div></div>
+
+<ul>
+  <li>튜플로 heap data가 구성되는 경우 <strong>무조건 맨 앞에 있는 element를 기준</strong>으로 우선순위가 결정 된다.
+    <ul>
+      <li>그래서 가장 작은 값을 가지는 1의 튜플을 반환한다.(min-heap이기 때문에)</li>
+    </ul>
+  </li>
+  <li>
+    <p>(별첨)max-heapify 되는 과정</p>
+
+    <ul>
+      <li>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0, 3, 5, 1, 2, 6, 8, 7] 
+[0, 3, 5, 8, 2, 6, 1, 7]
+[0, 3, 5, 8, 2, 6, 1, 7]
+[0, 3, 6, 8, 2, 5, 1, 7]
+[0, 3, 6, 8, 2, 5, 1, 7]
+[0, 8, 6, 3, 2, 5, 1, 7]
+[0, 8, 6, 7, 2, 5, 1, 3]
+</code></pre></div>        </div>
+      </li>
+      <li>heap의 크기가 7이므로 7//2 = 3번부터 1번까지 min-heapify가 진행된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>10-25</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167302249-4656f34c-a3f1-4470-87b3-f79a3f0b2d0d.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/14235">https://www.acmicpc.net/problem/14235</a></p>
+
+<hr />
+
+<p>10-26</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167302271-0321e0f1-966e-4253-9cb7-52e3ef9b5ec9.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>max heap으로 priority queue를 만들어서 큐가 비었으면 -1 아니면 queue에서 꺼내서 준다.</p>
+  </li>
+  <li>python은 minheap이기 때문에 max heap으로 하기 위해서는 queue에 저장할 데이터를 저장할 때 -를 붙였다가 다시 출력할 때 -를 붙여주면 된다.</li>
+  <li>2개를 충전하는데 첫번째는 3짜리 두번째는 2짜리
+    <ul>
+      <li>우선순위로 3을 먼저 줄 것이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">heapq</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="p">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'bj14235_in.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="n">present</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+    <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">present</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="o">-</span><span class="n">heapq</span><span class="p">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">present</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">heapq</span><span class="p">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">present</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+
+</code></pre></div></div>
+
+<hr />
+
+<p>10-27</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167302321-70d1219b-ed04-45b8-80b8-ca182e934363.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/14241">https://www.acmicpc.net/problem/14241</a></p>
+
+<hr />
+
+<p>10-28</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/167302355-1a03a64e-83e9-4600-9305-ebbb405472a2.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>큰 점수를 얻으려면 최대한 먼저 큰 놈끼리 합쳐야 한다.</p>
+  </li>
+  <li>
+    <p>queue에 데이터가 하나 남을 때까지 반복</p>
+    <ul>
+      <li>두 놈을 꺼내서 점수 계산하고 합친 놈을 다시 queue에 넣고</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code></code></pre></div></div>
+
+:ET

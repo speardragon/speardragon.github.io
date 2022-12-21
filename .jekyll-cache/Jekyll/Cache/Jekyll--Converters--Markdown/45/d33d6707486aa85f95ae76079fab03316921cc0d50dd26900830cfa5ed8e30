@@ -1,0 +1,548 @@
+I"2<h2 id="contents">Contents</h2>
+
+<ul>
+  <li>File system = file data + <u>**file attribute**</u>
+    <ul>
+      <li>File attributes(파일의 상태 정보)
+        <ul>
+          <li>Type, permission, size, time, user/group ID</li>
+        </ul>
+      </li>
+      <li>File attributes modification
+        <ul>
+          <li>chown, chmod, …</li>
+        </ul>
+      </li>
+      <li>Symbolic link</li>
+      <li>Directories</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="파일-상태file-status">파일 상태(file status)</h2>
+
+<ul>
+  <li>파일 상태
+    <ul>
+      <li>파일에 대한 모든 정보</li>
+      <li>블록수, 파일 타입, 사용 권한(Permission), <strong>링크수</strong>, 파일 소유자의 사용 자 ID 및 그룹 ID (user/group ID), 파일 크기, 최종 수정 시간 등</li>
+      <li>File attributes(file status) 수정
+        <ul>
+          <li>chown, chmod, …</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>예<strong>(시험)</strong></li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> hello.c
+2 <span class="nt">-rw-r--r--</span> 1 chang cs 617 11월 17일 15:53 hello.c
+</code></pre></div></div>
+
+<p>블록수/ 사용권한/ 링크수/ 사용자ID/ 그룹ID/ 파일 크기/ 최종 수정 시간/ 파일이름</p>
+
+<p><br /></p>
+
+<h2 id="상태-정보-stat">상태 정보: stat()</h2>
+
+<ul>
+  <li>파일 하나당 하나의 i-노드가 있으며</li>
+  <li>i-노드 내에 파일에 대한 모든 상태 정보가 저장되어 있다.</li>
+  <li>lstat는 대상 파일이 <strong>심볼릭 링크</strong>일 때 사용, 링크 자체에 대한 상태정보 읽어옴.</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">stat</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="k">struct</span> <span class="n">stat</span> <span class="o">*</span><span class="n">buf</span><span class="p">);</span><span class="c1">//filename에 해당하는 관리정보를 stat에 받음</span>
+<span class="kt">int</span> <span class="nf">fstat</span> <span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">stat</span> <span class="o">*</span><span class="n">buf</span><span class="p">);</span> <span class="c1">//file descriptor를 매개 변수로 전달</span>
+<span class="kt">int</span> <span class="nf">lstat</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="k">struct</span> <span class="n">stat</span> <span class="o">*</span><span class="n">buf</span><span class="p">);</span>
+<span class="c1">//파일의 상태 정보를 가져와서 stat 구조체 buf에</span>
+<span class="c1">//저장한다. 성공하면 0, 실패하면 -1을 리턴한다.</span>
+</code></pre></div></div>
+
+<ul>
+  <li>stat()이라는 시스템 콜을 호출하면 filename에 해당하는 관리정보를 stat 구조체에 깔아주게 된다.
+    <ul>
+      <li>stat이라는 모양으로 저장하겠다는 뜻</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>stat
+    <ul>
+      <li>Gets information about the named file.</li>
+    </ul>
+  </li>
+  <li>fstat
+    <ul>
+      <li>Gets information about the file that is already open.</li>
+    </ul>
+  </li>
+  <li>lstat
+    <ul>
+      <li>Gets information about the symbolic link itself.</li>
+      <li>If pathname is not a symbolic link, equivalent to stat.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="stat-구조체-sysstath에-정의">stat 구조체 &lt;sys/stat.h&gt;에 정의</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">stat</span> <span class="p">{</span>
+     <span class="n">mode_t</span> <span class="n">st_mode</span><span class="p">;</span> <span class="c1">// 파일 타입과 사용권한 (mode)</span>
+     <span class="n">ino_t</span> <span class="n">st_ino</span><span class="p">;</span> <span class="c1">// i-노드 번호</span>
+     <span class="n">dev_t</span> <span class="n">st_dev</span><span class="p">;</span> <span class="c1">// 장치 번호 (device number (file system))</span>
+     <span class="n">dev_t</span> <span class="n">st_rdev</span><span class="p">;</span> <span class="c1">// 특수 파일 장치 번호</span>
+     <span class="n">nlink_t</span> <span class="n">st_nlink</span><span class="p">;</span> <span class="c1">// 링크 수</span>
+     <span class="n">uid_t</span> <span class="n">st_uid</span><span class="p">;</span> <span class="c1">// 소유자의 사용자 ID</span>
+     <span class="n">gid_t</span> <span class="n">st_gid</span><span class="p">;</span> <span class="c1">// 소유자의 그룹 ID</span>
+     <span class="kt">off_t</span> <span class="n">st_size</span><span class="p">;</span> <span class="c1">// 파일 크기 (bytes)</span>
+     <span class="kt">time_t</span> <span class="n">st_atime</span><span class="p">;</span> <span class="c1">// 최종 접근 시간</span>
+     <span class="kt">time_t</span> <span class="n">st_mtime</span><span class="p">;</span> <span class="c1">// 최종 수정 시간</span>
+     <span class="kt">time_t</span> <span class="n">st_ctime</span><span class="p">;</span> <span class="c1">// 최종 상태 변경 시간</span>
+     <span class="kt">long</span> <span class="n">st_blksize</span><span class="p">;</span> <span class="c1">// 최적 블록 크기</span>
+     <span class="kt">long</span> <span class="n">st_blocks</span><span class="p">;</span> <span class="c1">// 파일의 블록 수</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="file-types">File types</h2>
+
+<ul>
+  <li>
+    <p>About file type</p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Regular file</code></li>
+      <li>Contains <strong>data</strong> of some form
+        <ul>
+          <li>
+            <p>실질적인 내용을 담는 파일</p>
+          </li>
+          <li>
+            <p>No distinction to UNIX kernel whether the data is <strong>text or binary</strong>. (Applications interpret the file contents.)</p>
+          </li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">Directory</code>
+        <ul>
+          <li>Contains <strong>the names of other files</strong> and <strong>pointers to information on these files</strong></li>
+          <li>다른 파일의 이름과 다른 파일을 가리키는 포인터를 담는 파일인 것이다.</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">Block special file</code>
+        <ul>
+          <li>
+            <p>Provides buffered I/O access in fixed-size units to devices</p>
+          </li>
+          <li>
+            <p>E.g. disk(하드 디스크)</p>
+          </li>
+        </ul>
+      </li>
+      <li>Character special file
+        <ul>
+          <li>Provides unbuffered I/O access in variable-sized units to devices</li>
+          <li>Keyboard, mouse, …</li>
+        </ul>
+      </li>
+      <li>FIFO
+        <ul>
+          <li>Is used for communication between processes.</li>
+          <li>Also called named pipe</li>
+        </ul>
+      </li>
+      <li>Socket
+        <ul>
+          <li>is used for network communication between processes.</li>
+        </ul>
+      </li>
+      <li>Symbolic link
+        <ul>
+          <li><strong>Points</strong> to another file.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="파일-타입">파일 타입</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161682038-be4622a0-16e7-4d3f-ab04-fb1b5ab30167.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="st_mode">st_mode</h2>
+
+<p>stat을 통해 파일 타입을 가져올 수 있는데 파일 타입의 형식은 다음과 같은 기호 상수로 선언되어 있음</p>
+
+<ul>
+  <li>
+    <p>file type</p>
+  </li>
+  <li>
+    <p>기호 상수를 사용</p>
+  </li>
+  <li>
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//&lt;type.h&gt;</span>
+<span class="cp">#define S_IFSOCK 0140000 </span><span class="cm">/* socket */</span><span class="cp">
+#define S_IFLNK 0120000 </span><span class="cm">/* symbolic link */</span><span class="cp">
+#define S_IFREG 0100000 </span><span class="cm">/* regular */</span><span class="cp">
+#define S_IFBLK 0060000 </span><span class="cm">/* block special */</span><span class="cp">
+#define S_IFDIR 0040000 </span><span class="cm">/* directory */</span><span class="cp">
+#define S_IFCHR 0020000 </span><span class="cm">/* character special */</span><span class="cp">
+#define S_IFIFO 0010000 </span><span class="cm">/* FIFO */</span><span class="cp">
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Q) 이게 4비트???</p>
+
+<p>A) 7비트인데 앞의 4bit가 파일 타입을 나타내는 것이고 뒤의 3bit가 특수용도를 나타내는 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="파일-타입-검사-함수">파일 타입 검사 함수</h2>
+
+<ul>
+  <li>파일 타입을 검사하기 위한 <strong>매크로 함수</strong>(Linux 제공)</li>
+  <li>Argument of macros is the <strong>st_mode</strong> from the stat structure
+    <ul>
+      <li>st_mode : 관리정보를 담고 있는 그릇(자료구조)</li>
+    </ul>
+  </li>
+  <li>#include &lt;sys/stat.h&gt;</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161682116-83020a03-3113-417d-9007-fcda803d1d5a.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="ftypec">ftype.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="cm">/* 파일 타입을 검사한다. */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">stat</span> <span class="n">buf</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//argv[0]는 실행 파일 이름이기 때문에 1부터 시작</span>
+    	<span class="n">printf</span><span class="p">(</span><span class="s">"%s: "</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    	<span class="k">if</span> <span class="p">(</span><span class="n">lstat</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">buf</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//argv[i]의 관리정보를 buf에 저장</span>
+    		<span class="n">perror</span><span class="p">(</span><span class="s">"lstat()"</span><span class="p">);</span>
+     		<span class="k">continue</span><span class="p">;</span>
+    	<span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">S_ISREG</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">st_mode</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">"일반 파일"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">S_ISDIR</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">st_mode</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">"디렉터리"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">S_ISCHR</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">st_mode</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">"문자 장치 파일"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">S_ISBLK</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">st_mode</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">"블록 장치 파일"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">S_ISFIFO</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">st_mode</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">"FIFO 파일"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">S_ISLNK</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">st_mode</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">"심볼릭 링크"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">S_ISSOCK</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">st_mode</span><span class="p">))</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%s </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">"소켓"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>     
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% a.out /etc /dev/ttya /bin a.out  //4개의 관리정보 출력
+/etc: 디렉터리
+/dev/ttya: 심볼릭 링크
+/bin: 심볼릭 링크
+a.out: 일반 파일
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="파일-사용권한file-permissions">파일 사용권한(File Permissions)</h2>
+
+<p>i node 안에 있는 st_mode</p>
+
+<ul>
+  <li>각 파일에 대한 권한 관리
+    <ul>
+      <li>각 파일마다 사용권한이 있다.</li>
+      <li>소유자(owner)/그룹(group)/기타(others)로 구분해서 관리한다.</li>
+    </ul>
+  </li>
+  <li>파일에 대한 권한
+    <ul>
+      <li>읽기 : r</li>
+      <li>쓰기 : w</li>
+      <li>실행 : x</li>
+    </ul>
+  </li>
+  <li>파일 사용권한(file access permission)</li>
+  <li>stat 구조체의 <span style="color:red">st_mode</span> 의 값</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+</span><span class="c1">//mode_t는 unsigned int</span>
+</code></pre></div></div>
+
+<ul>
+  <li>mode_t 라는 타입은 리눅스에서 사용하는 데이터 타입으로 의미를 specific하게 나타내기 위한 용도로 사용하는 데이터 타입으로 실질적인 타입은 unsigned int 타입이다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161682701-49178a10-6fe1-4c9d-a9d3-2e012f404ae6.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161682721-568b5699-5653-4eea-86c7-9179819368a2.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="file-access-permisisons">File access permisisons</h2>
+
+<p><span style="color:red"> 시험에 나올수도</span></p>
+
+<ul>
+  <li>user, group, others에 대해 R/W/X의 권한 부여
+    <ul>
+      <li>file과 direcotory에 적용되는 의미가 다름</li>
+      <li>Read
+        <ul>
+          <li>file: <strong>file data</strong>를 읽을 수 있는가?(copy 가능)
+            <ul>
+              <li>O_RDONLY O_RDWR 을 사용하여 파일을 열 수 있다</li>
+            </ul>
+          </li>
+          <li>Directory: <strong>file list</strong>를 read할 수 있는가?(즉 ls가 가능한가?)</li>
+        </ul>
+      </li>
+      <li>write
+        <ul>
+          <li>File: file data를 <strong>수정</strong>할 수 있는가?
+            <ul>
+              <li>O_WRONLY O_RDWR O_TRUNC 을 사용하여 파일을 열 수 있다.</li>
+            </ul>
+          </li>
+          <li>Directory: <strong>file을 생성, 삭제</strong>할 수 있는 권한이 있는가?</li>
+        </ul>
+      </li>
+      <li>execute
+        <ul>
+          <li>File: file을 <strong>실행</strong>할 수 있는가?</li>
+          <li>Directory:  <strong>이동</strong>할 수 있는가?(즉 cd가 가능한가?)
+            <ul>
+              <li>즉, 그 directory를 열어볼 수 있는 권한이 있는가? 혹은 해당 디렉토리를 들어갈 수 없는가?</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>디렉토리에 write 권한과 execute 권한이 있어야 <strong>(시험)</strong>
+    <ul>
+      <li>그 디렉토리에 파일을 생성할 수 있고</li>
+      <li>그 디렉토리의 파일을 삭제할 수 있다</li>
+      <li>삭제할 때 그 파일에 대한 read 권한은 없어도 됨</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="file-access-permissions">File access permissions</h2>
+
+<ul>
+  <li>File permission의 예</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161682893-56844b87-5aa0-4ce8-a528-b3fd4e1107a1.png" alt="image" /></p>
+
+<p>read를 못하는데 write이나 execute를 할 수 있지 않다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>Directory permission의 예</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/161682918-3524875a-d489-4eb6-90e9-4aea19a17b85.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="chmod-fchmod">chmod(), fchmod()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">chmod</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">);</span> <span class="c1">//파일의 경로명</span>
+<span class="kt">int</span> <span class="nf">fchmod</span> <span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">);</span>  <span class="c1">//파일 디스크립터</span>
+</code></pre></div></div>
+
+<ul>
+  <li>파일의 사용 권한(access permission)을 변경한다</li>
+  <li>리턴 값
+    <ul>
+      <li>성공하면 0, 실패하면 -1</li>
+    </ul>
+  </li>
+  <li>mode : bitwise OR
+    <ul>
+      <li>S_ISUID, S_ISGID</li>
+      <li>S_IRUSR, S_IWUSR, S_IXUSR</li>
+      <li>S_IRGRP, S_IWGRP, S_IXGRP</li>
+      <li>S_IROTH, S_IWOTH, S_IXOTH</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="ex-fchmodc---fchmod-664-youtxt">ex) fchmod.c – $ fchmod 664 you.txt</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="cm">/* 파일 사용권한을 변경한다. */</span>
+<span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]){</span>
+    <span class="kt">long</span> <span class="n">strtol</span><span class="p">(</span> <span class="p">);</span> <span class="c1">//string관련 library</span>
+    <span class="kt">int</span> <span class="n">newmode</span><span class="p">;</span>
+
+    <span class="n">newmode</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">strtol</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="c1">//8진수 int로 변환:664 입력</span>
+    <span class="cm">/* long strtol( const char *nptr, char **endptr, int base);*/</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">chmod</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">newmode</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>접근 권한이 664로 변경 되어있는 것을 확인할 수 있을 것이다.</p>
+
+<p><br /></p>
+
+<h2 id="chown">chown()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">chown</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">uid_t</span> <span class="n">owner</span><span class="p">,</span> <span class="n">gid_t</span> <span class="n">group</span> <span class="p">);</span>
+<span class="kt">int</span> <span class="nf">fchown</span> <span class="p">(</span><span class="kt">int</span> <span class="n">filedes</span><span class="p">,</span> <span class="n">uid_t</span> <span class="n">owner</span><span class="p">,</span> <span class="n">gid_t</span> <span class="n">group</span> <span class="p">);</span>
+<span class="kt">int</span> <span class="nf">lchown</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">uid_t</span> <span class="n">owner</span><span class="p">,</span> <span class="n">gid_t</span> <span class="n">group</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>파일의 user ID와 group ID를 변경한다. (오너를 변경)</li>
+  <li>리턴
+    <ul>
+      <li>성공하면 0, 실패하면 -1</li>
+    </ul>
+  </li>
+  <li>lchown()은 <strong>심볼릭 링크 자체를 변경</strong>한다.</li>
+  <li><strong>super-user만 변환 가능</strong>하다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="utime">utime()</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;utime.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">utime</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">utimbuf</span> <span class="o">*</span><span class="n">times</span> <span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>파일의 <strong>최종 접근 시간</strong>과 <strong>최종 변경 시간</strong>을 조정한다.
+    <ul>
+      <li>이 시스템 콜을 호출하면 시간 정보(times)를 file의 i노드가 갖고 있는 시간 정보에 반영 요구를 목적으로 하는 시스템 콜이다.</li>
+    </ul>
+  </li>
+  <li>times가 NULL 이면, <strong>현재시간으로 설정</strong>된다</li>
+  <li>리턴 값
+    <ul>
+      <li>성공하면 0, 실패하면 -1</li>
+    </ul>
+  </li>
+  <li>UNIX 명령어 touch 참고</li>
+  <li>used to <strong>update</strong> the <strong>access date</strong> and or <strong>modification date</strong> of a file or directory.</li>
+  <li>In its default usage, <strong>it is the equivalent</strong> of creating or opening a file and saving it <strong>without any change</strong> to the file contents</li>
+</ul>
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">utimbuf</span> <span class="p">{</span>
+ <span class="kt">time_t</span> <span class="n">actime</span><span class="p">;</span> <span class="cm">/* access time */</span>
+ <span class="kt">time_t</span> <span class="n">modtime</span><span class="p">;</span> <span class="cm">/* modification time */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>access time와 modification time에 대한 정보가 존재한다.</li>
+  <li>각 필드는 1970-1-1 00:00 부터 현재까지의 경과 시간을 초로 환산한 값</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="예제-cptimec">예제: cptime.c</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="c1"> </span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="c1"> </span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/time.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;utime.h&gt;</span><span class="c1"> </span><span class="cp">
+#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> </span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+     <span class="k">struct</span> <span class="n">stat</span> <span class="n">buf</span><span class="p">;</span> <span class="c1">// 파일 상태 저장을 위한 구조체 변수</span>
+     <span class="k">struct</span> <span class="n">utimbuf</span> <span class="n">time</span><span class="p">;</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"사용법: ./cptime file1 file2</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+         <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+     <span class="p">}</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">stat</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">buf</span><span class="p">)</span> <span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 상태(파일 정보) 가져오기</span>
+         <span class="n">perror</span><span class="p">(</span><span class="s">"stat()"</span><span class="p">);</span>
+         <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+     <span class="p">}</span>
+     <span class="n">time</span><span class="p">.</span><span class="n">actime</span> <span class="o">=</span> <span class="n">buf</span><span class="p">.</span><span class="n">st_atime</span><span class="p">;</span> <span class="c1">//최종 접근 시간(access)</span>
+     <span class="n">time</span><span class="p">.</span><span class="n">modtime</span> <span class="o">=</span> <span class="n">buf</span><span class="p">.</span><span class="n">st_mtime</span><span class="p">;</span> <span class="c1">// 최종 수정 시간(modification)</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">utime</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">time</span><span class="p">))</span> <span class="c1">// utime() 시스템 콜 호출 ; 접근, 수정 시간 구조체에 복사</span>
+    	 <span class="n">perror</span><span class="p">(</span><span class="s">"utime"</span><span class="p">);</span>
+     <span class="k">else</span> <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% <span class="nb">ls</span> –asl a.c b.c
+4 _rwxr-xr-x 2 chang faculty 0 2014-04-16 13:37 a.c
+4 <span class="nt">-rwxr-xr-x</span> 2 chang faculty 5 2014-04-16 14:37 b.c
+% cptime a.c b.c
+% <span class="nb">ls</span> –asl a.c b.c
+4 _rwxr-xr-x 2 chang faculty 0 2014-04-16 13:37 a.c
+4 <span class="nt">-rwxr-xr-x</span> 2 chang faculty 5 2014-04-16 13:37 b.c
+</code></pre></div></div>
+
+<p>a.c 의 시간을 b.c의 시간으로 수정했기 때문에 프로그램 실행 후에 두 파일의 시간이 같아졌다.</p>
+
+<p><br /></p>
+
+:ET

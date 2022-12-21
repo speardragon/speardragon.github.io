@@ -1,0 +1,2291 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[자료구조와 알고리즘] Stack and Queues | speardragon note</title>
+<meta name="description" content="Stacks and Queues">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[자료구조와 알고리즘] Stack and Queues">
+<meta property="og:url" content="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Stack-and-Queues/">
+
+
+  <meta property="og:description" content="Stacks and Queues">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-04-11T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Stack-and-Queues/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#data-structures-and-algorithms-with-python" itemprop="item"><span itemprop="name">Data structures and algorithms with python</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[자료구조와 알고리즘] Stack and Queues</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[자료구조와 알고리즘] Stack and Queues">
+    <meta itemprop="description" content="Stacks and Queues">
+    <meta itemprop="datePublished" content="2022-04-11T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Stack-and-Queues/" class="u-url" itemprop="url">[자료구조와 알고리즘] Stack and Queues
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h1 id="stacks-and-queues">Stacks and Queues</h1>
+
+<h2 id="stack-adt">Stack ADT</h2>
+
+<p><strong>Stacks</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162659075-854b0c3b-305d-4e02-bd65-8f7b52a14f73.png" alt="image" /></p>
+
+<p>stack은 부엌에서 접시를 쌓는 것과 유사한 방식으로 data를 저장하는 자료구조이다.</p>
+
+<p>스택의 제일 윗 부분(top)에 접시를 둘 수 있고, 접시가 필요할 때 이 스택의 제일 윗 부분(top)에서 가져올 수 있다. 스택에 추가되는 마지막 접시는 그 스택으로부터 제일 먼저 집어 들어지는 것이다.</p>
+
+<p>이와 유사하게 stack data structure는 우리로 하여금 one end로부터 data를 읽고 저장할 수 있도록 하고 마지막에 추가되는 element가 첫 번째로 집어진다.</p>
+
+<p>따라서, stack은 <code class="language-plaintext highlighter-rouge">last in, first out</code>(즉, LIFO) 구조라고 한다.</p>
+
+<p><br /></p>
+
+<h2 id="basic-operations">Basic operations</h2>
+
+<p>stack구조에서 INSERT(삽입) operation은 Push라고 불리고  DELETE operation은 element 인자를 받지않는 것으로 POP이라고 불린다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162659513-3ef7ce6f-8d38-47c6-a7d1-2c4375fd10e1.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="stack-implementation-using-linked-list">Stack implementation using Linked list</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162659696-efbceca6-54c4-4903-a5c1-88fb4ca9558a.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+        
+        
+<span class="k">class</span> <span class="nc">Stack</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>Stack을 사용하기 위해서는 Stack object(instance)를 만들고 해당 object로 stack class의 변수 및 함수에 접근한다.</p>
+
+<p><br /></p>
+
+<h3 id="push-operation">Push operation</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162659893-f54aa9e5-8d14-4ef2-9780-3f0388721bd4.png" alt="image" /></p>
+
+<p>self가 의미하는 것은 현재 method가 갖고 있는 object를 의미한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span><span class="p">:</span> <span class="c1">#스택이 비어있지 않다면
+</span>            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span> <span class="c1"># 1
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">node</span> <span class="c1"># 2
+</span>        <span class="n">sefl</span><span class="p">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<ul>
+  <li>가장 먼저 저장할 data를 가지고 있는 Node object를 하나 만든다.</li>
+  <li>이제 이 node를 stack 구조에 넣어야 할 차례이다.</li>
+  <li><code class="language-plaintext highlighter-rouge">if self.top</code>이 의미하는 것은 스택이 현재 비어 있지 않는지를 물어보는 것이다.
+    <ul>
+      <li>만약 비어있지 않다면 top을 새로 생성한 node의 next pointer가 가리키도록 한다.</li>
+      <li>만약 비어있다면 top이 새로 만든 node를 가리키게 한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="pop-operation">Pop operation</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162660455-349f6814-e59b-4e44-a115-b1ccbd49bf6b.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span><span class="p">.</span><span class="n">data</span> <span class="c1"># 1
+</span>    <span class="bp">self</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span><span class="p">.</span><span class="nb">next</span> <span class="c1"># 2
+</span>    <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span> 
+    <span class="k">return</span> <span class="n">data</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="peek-operation">Peek operation</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162660685-57fdb501-245f-4b10-963a-070c90609c45.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">peek</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span><span class="p">.</span><span class="n">data</span>
+</code></pre></div></div>
+
+<p>스택의 구조를 바꾸지 않고 top의 값은 read해 오기만 한다.</p>
+
+<p><strong>전체 코드</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+        
+        
+<span class="k">class</span> <span class="nc">Stack</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+        
+	<span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span><span class="p">:</span> <span class="c1">#스택이 비어있지 않다면
+</span>            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span> <span class="c1"># 1
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">node</span> <span class="c1"># 2
+</span>        <span class="n">sefl</span><span class="p">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+	<span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span><span class="p">.</span><span class="n">data</span> <span class="c1"># 1
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span><span class="p">.</span><span class="nb">next</span> <span class="c1"># 2
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span> 
+        <span class="k">return</span> <span class="n">data</span>   
+    
+    <span class="k">def</span> <span class="nf">peek</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">top</span><span class="p">.</span><span class="n">data</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="bracket-matching-application">Bracket-matching application</h2>
+
+<p>이제 stack 구현을 어떻게 할 수 있는지를 보여주기 위한 예제를 살펴보자</p>
+
+<p><strong>괄호 검사</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">check_brackets</span><span class="p">(</span><span class="n">statement</span><span class="p">):</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="n">Stack</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">statement</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ch</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'{'</span><span class="p">,</span> <span class="s">"["</span><span class="p">,</span> <span class="s">'('</span><span class="p">):</span>
+            <span class="n">stack</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ch</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'}'</span><span class="p">,</span> <span class="s">']'</span><span class="p">,</span> <span class="s">')'</span><span class="p">):</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">last</span> <span class="o">==</span> <span class="s">'{'</span> <span class="ow">and</span> <span class="n">ch</span> <span class="o">==</span> <span class="s">'}'</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">last</span> <span class="o">==</span> <span class="s">'['</span> <span class="ow">and</span> <span class="n">ch</span> <span class="o">==</span> <span class="s">']'</span><span class="p">:</span>
+				<span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">last</span> <span class="o">==</span> <span class="s">'('</span> <span class="ow">and</span> <span class="n">ch</span> <span class="o">==</span> <span class="s">')'</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">stack</span><span class="p">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+            
+
+<span class="n">sl</span> <span class="o">=</span> <span class="p">(</span><span class="s">"{(foo)(bar)}[hello](((this)is)a)test"</span><span class="p">,</span>
+      <span class="s">"{(foo)(bar)}[hello](((this)is)a test)"</span><span class="p">,</span>
+      <span class="s">"{(foo)(bar)}[hello](((this)is)a)test(("</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sl</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">check_brackets</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{}: {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{(foo)(bar)}[hello](((this)is)a)test: True
+{(foo)(bar)}[hello](((this)is)a test): True
+{(foo)(bar)}[hello](((this)is)a)test((: False
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="stack-implementation-using-python-list">Stack implementation using Python list</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="s">"nse*a*qys** **eu***ot*i***"</span>
+
+<span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+	<span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="s">'*'</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>python의 list와 관련된 method를 적절히 사용하여 stack구조를 충분히 구현해 낼 수 있다.</p>
+
+<p><br /></p>
+
+<p><strong>관련된 문제</strong></p>
+
+<p><a href="https://www.acmicpc.net/problem/9012">백준 9012 괄호</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">solution</span><span class="p">():</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="s">')'</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"NO"</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s">'('</span><span class="p">:</span>
+            
+            <span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s">')'</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"YES"</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"NO"</span><span class="p">)</span>
+        <span class="k">return</span>
+
+<span class="n">test_case</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">test_case</span><span class="p">):</span>
+    <span class="n">solution</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tc</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">Stack</span><span class="p">()</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">test</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="s">'('</span><span class="p">:</span>
+            <span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="s">')'</span> <span class="ow">and</span> <span class="n">s</span><span class="p">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+        
+    <span class="k">if</span> <span class="n">s</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"YES"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"NO"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<ul>
+  <li>스택을 계속해서 만들기 때문에 메모리 낭비일 것 같다고 스택을 새로 만들지 않고 쓰던 걸 계속 사용하면 스택 안에 값이 남아있게 되는 문제가 발생할 수 있다.</li>
+  <li>한 test case를 진행 할 때마다 Stack()를 만들어주는 이유는 한 스택을 계속해서 사용하게 되면 스택이 비어있지 않은 경우가 발생할 수 있기 때문이다.</li>
+</ul>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="stack-implementation-in-c">Stack Implementation in C</h2>
+
+<h3 id="array-implementation">Array implementation</h3>
+
+<p>아래 그림에서 볼 수 있듯이, S[1…n] 배열에서 최대 n element의 stack을 구현할 수 있다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/162662763-74c18a79-50f8-4d6b-bf3d-eda4e4e614f5.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>S 스택의 <strong>배열 구현</strong>.</p>
+  </li>
+  <li>스택 원소는 옅게 칠해진 위치에만 보인다.</li>
+  <li>
+    <p>index는 1부터 시작</p>
+  </li>
+  <li>(a)
+    <ul>
+      <li>Stack S는 4개의 element를 가진다.</li>
+      <li>top element는 9</li>
+    </ul>
+  </li>
+  <li>(b)
+    <ul>
+      <li>Push(S, 17)와 Push(S, 3) 를 호출한 후의 Stack S 모습이다.</li>
+    </ul>
+  </li>
+  <li>(c)
+    <ul>
+      <li>Pop(S)을 호출한 후 Stack S는 가장 최근에 pushed 된 요소 3을 반환하였다.</li>
+      <li>비록 배열에 3이라는 요소가 여전히 보이겠지만, 얘는 더 이상 stack 안에 있는 것이 아니다.</li>
+      <li>top element는 17</li>
+    </ul>
+  </li>
+  <li>즉, pop이라는 method는 배열 안의 값을 실제로 삭제할 필요없이 top의 위치만으로 기능을 구현할 수 있는 것이다. (top 이후의 index에는 값이 있더라도 없는 것처럼 생각하는 것이다.)</li>
+</ul>
+
+<p><br /></p>
+
+<p>top = 0 일 때, stack은 어떠한 element도 포함하지 않고 비어있는 것이다.</p>
+
+<p>query operation 인 STACK-EMPTY에 의해 stack이 비어 있는지 테스트해 볼 수 있다. 만약, 빈 stack을 pop하려고 시도하면 stack이 underflow 되었다고 하고 이는 보통 error로 다루어 진다.</p>
+
+<p>또한 만약 top이 n을 초과하였다면 stack은 overflows 되었다고 하고 이 역시도 error로 다루어 진다.</p>
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="cp">#define N 100
+</span><span class="kt">char</span> <span class="n">stack</span><span class="p">[</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">top</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">is_empty</span><span class="p">();</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">top</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">is_full</span><span class="p">();</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">top</span> <span class="o">=</span> <span class="n">N</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">push</span><span class="p">(</span><span class="kt">char</span> <span class="n">item</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_full</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"stack overflow</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">stack</span><span class="p">[</span><span class="o">++</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">char</span> <span class="nf">pop</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"stack underflow</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">stack</span><span class="p">[</span><span class="n">top</span><span class="o">--</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="s">"nse*a*qys** **eu***ot*i***"</span><span class="p">;</span>
+    
+    <span class="k">for</span> <span class="p">(;</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span> <span class="n">data</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">data</span> <span class="o">==</span> <span class="sc">'*'</span><span class="p">)</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%c"</span><span class="p">,</span> <span class="n">pop</span><span class="p">());</span>
+        <span class="k">else</span>
+            <span class="n">push</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nsea qyseyutoi
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="linked-list-implementation">Linked-list implementation</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163073108-d8f65cf0-d06a-4a45-b915-20627196b13a.png" alt="image" /></p>
+
+<h4 id="push">push</h4>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163073142-30557ae0-ac14-4cd6-917d-3e4bd4d748c1.png" alt="image" /></p>
+
+<h4 id="pop">pop</h4>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163073164-009e34fd-cb05-42bc-a589-d515101a3200.png" alt="image" /></p>
+
+<p>삭제할 노드를 del이라는 변수로 지칭하여 해당 노드 next 노드를 top이 가리킨다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">_Node</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">data</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">_Node</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">Node</span><span class="p">;</span>
+
+<span class="n">Node</span> <span class="o">*</span><span class="n">top</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span> <span class="c1">//stack top</span>
+
+<span class="kt">int</span> <span class="nf">is_empty</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">top</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">push</span><span class="p">(</span><span class="kt">char</span> <span class="n">item</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="n">ins</span><span class="p">;</span>
+    
+    <span class="n">ins</span> <span class="o">=</span> <span class="p">(</span><span class="n">Node</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Node</span><span class="p">));</span>
+    <span class="n">ins</span> <span class="o">-&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+    <span class="n">ins</span> <span class="o">-&gt;</span> <span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">is_empty</span><span class="p">())</span>
+        <span class="n">ins</span> <span class="o">-&gt;</span> <span class="n">next</span> <span class="o">=</span> <span class="n">top</span><span class="p">;</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">ins</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">char</span> <span class="nf">pop</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Node</span> <span class="o">*</span><span class="n">del</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">item</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"stack underflow!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">item</span> <span class="o">=</span> <span class="n">top</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+    <span class="n">del</span> <span class="o">=</span> <span class="n">top</span><span class="p">;</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">del</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">del</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">item</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h1 id="queue-adt">Queue ADT</h1>
+
+<h2 id="queues">Queues</h2>
+
+<p>queue는 다음과 같이 동작한다.</p>
+
+<ul>
+  <li>queue에 참석한 첫 번째 사람은 대게 첫 번째로 음식을 받는다.</li>
+  <li>그리고 모든사람은 그들 각자가 queue에 어떻게 참가했는지의 순서에 따라 음식을 받을 것이다.</li>
+  <li>FIFO가 queue의 개념을 가장 잘 설명한다.
+    <ul>
+      <li>FIFO: first in, first out(선입 선출)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163073865-4fa1d14d-d147-4e1d-bc53-74a7e5a83608.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="basic-operation">Basic operation</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163073912-c211f0c6-a9ec-4cb4-a404-cc6ebda042b3.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="queue-implementation-using-linked-list">Queue implementation using Linked list</h2>
+
+<p>Linked list로 구현하는 Queue는 tail을 이용하여 데이터를 집어넣고(enqueue) head를 통해 데이터를 제거한다.(dequeue)</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163073961-74ada31b-c247-482a-9f44-d87de8a6b2bb.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+        
+        
+<span class="k">class</span> <span class="nc">Queue</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="the-enqueue-operation">The enqueue operation</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">enqueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># 큐가 비어있는 경우
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">node</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">tail</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">node</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163076245-98c0a647-ed28-42d4-a5fd-26fb1cf1172c.png" alt="image" /></p>
+
+<ul>
+  <li>node 변수가 data를 가진 노드 instance를 가리킨다.</li>
+  <li>큐가 비어있는 경우
+    <ul>
+      <li>head 노드와 tail노드 모두 생성한 노드를 가리킨다.</li>
+    </ul>
+  </li>
+  <li>그렇지 않은 경우
+    <ul>
+      <li>tail 노드의 next pointer가 노드를 새 노드를 가리킨다.</li>
+      <li>tail 노드를 새 노드로 바꾼다.</li>
+    </ul>
+  </li>
+  <li>size 1 증가</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="the-dequeue-operation">The dequeue operation</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">dequeue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">data</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="nb">next</span>
+    
+    <span class="k">return</span> <span class="n">data</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163076251-96c9332c-2aa5-4f64-8e7b-0c01798b8a81.png" alt="image" /></p>
+
+<ul>
+  <li>큐가 빈 경우 당연하게 None 리턴</li>
+  <li>그렇지 않은 경우
+    <ul>
+      <li>size 1 감소</li>
+      <li>data 변수에 head 노드의 data 대입</li>
+      <li>head 노드의 next 노드를 head 노드로 변경</li>
+    </ul>
+  </li>
+  <li>data 반환</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="python-deque">Python Deque</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+<span class="n">deq</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+<span class="n">deq</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">deq</span><span class="p">.</span><span class="n">appendleft</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">deq</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">deq</span><span class="p">.</span><span class="n">pop</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">deq</span><span class="p">.</span><span class="n">popleft</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deque([5, 1, 2, 3, 4])
+4
+5
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163074579-b8bca512-bd6d-4f60-ac53-fe023de6f8f1.png" alt="image" /></p>
+
+<p>list의 경우 삽입과 삭제의 경우 리스트의 값들을 한 칸씩 밀어야 되기 때문에 O(n)의 시간 복잡도를 갖고</p>
+
+<p>deque의 경우 linked list로 구현이 되어 있기 때문에 노드들 간의 연결만 바꾸어 주면 되므로 O(1)의 시간 복잡도를 갖는다.</p>
+
+<p><br /></p>
+
+<h2 id="queue-implementation-using-python-deque">Queue implementation using Python deque</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="s">"ea*sy **q*ue***st*i*on****"</span>
+
+<span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="s">'*'</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">queue</span><span class="p">.</span><span class="n">popleft</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>easy question
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="백준-문제">백준 문제</h3>
+
+<p><a href="https://www.acmicpc.net/problem/2164">백준 2164번 카드 2</a></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163074901-4ba2c014-af21-47fd-91f5-6d18ddd6d3e4.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+
+    <span class="n">q</span><span class="p">.</span><span class="n">popleft</span><span class="p">()</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">popleft</span><span class="p">()</span>
+
+    <span class="n">q</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="queue-implementation-in-c">Queue implementation in C</h2>
+
+<h3 id="array-implementation-1">Array implementation</h3>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/163074951-a95240be-2446-4cda-a183-9456d7028517.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p>queue안의 element들은 head, head+1, ….. tail - 1 과같은 주소에 위치하고 있고 그러한 구조에서 우리는 location 1이 location n을 바로 뒤따라 가고 있는 circular order 라는 것을 이해하면 된다.</p>
+
+<p>head=tail 일 때, queue는 비어있다. 처음에 우리는 head = tail = 1로 설정한다. 만약 빈 queue로부터 element를 dequeue하려고 한다면, queue underflows가 발생한다.</p>
+
+<p>head = tail + 1일 때, queue는 가득 차 있고 만약 element를 enqueue하려고 한다면 queue는 overflows가 발생한다.</p>
+
+<p><br /></p>
+
+<p>우리는 array1의 size를 client가 queue에서 보기 원하는 element의 최대값보다 더 크도록 만든다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="cp">#define N 10
+</span><span class="kt">int</span> <span class="n">queue</span><span class="p">[</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">is_empty</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="n">tail</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">is_full</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//queue에서 한 공간만 남았을 때를 꽉찼다고 하는데 이는 배열이 실제로 꽉차게 되면 head와 tail이 같아져 빈 queue와 구분할 방법이 없기 때문이다.</span>
+    <span class="c1">//modulo 대신에 tail == N인 경우에 1로 되도록 하는 ternary operator를 사용하였다.</span>
+    <span class="c1">//head == tail + 1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="p">((</span><span class="n">tail</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span><span class="o">:</span> <span class="p">(</span><span class="n">tail</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)));</span>
+
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">q_size</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">temp</span> <span class="o">!=</span> <span class="n">tail</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">(</span><span class="n">temp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//circular 구조를 고려</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">enqueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">item</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_full</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"queue overflow</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">queue</span><span class="p">[</span><span class="n">tail</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+    <span class="n">tail</span> <span class="o">=</span> <span class="p">(</span><span class="n">tail</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">(</span><span class="n">tail</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//circular 고려한 tail += 1</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">dequeue</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">item</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"queue underflow</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">item</span> <span class="o">=</span> <span class="n">queue</span><span class="p">[</span><span class="n">head</span><span class="p">];</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">(</span><span class="n">head</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//head 노드를 이제 그 다음 노드로 바꿔야 한다.</span>
+    <span class="k">return</span> <span class="n">item</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="백준-문제요세푸스-문제">백준 문제(요세푸스 문제)</h3>
+
+<p><a href="https://www.acmicpc.net/problem/1158">백준 1158번 요세푸스 문제</a></p>
+
+<p>입력: 첫째 줄에 N과 K가 빈 칸을 사이에 두고 순서대로 주어진다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="cp">#define N 10
+</span><span class="kt">int</span> <span class="n">queue</span><span class="p">[</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">head</span><span class="p">,</span> <span class="n">tail</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">is_empty</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="n">tail</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">is_full</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//queue에서 한 공간만 남았을 때를 꽉찼다고 하는데 이는 배열이 실제로 꽉차게 되면 head와 tail이 같아져 빈 queue와 구분할 방법이 없기 때문이다.</span>
+    <span class="c1">//modulo 대신에 tail == N인 경우에 1로 되도록 하는 ternary operator를 사용하였다.</span>
+    <span class="c1">//head == tail + 1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="p">((</span><span class="n">tail</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span><span class="o">:</span> <span class="p">(</span><span class="n">tail</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)));</span>
+
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">q_size</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">temp</span> <span class="o">!=</span> <span class="n">tail</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">(</span><span class="n">temp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//circular 구조를 고려</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">enqueue</span><span class="p">(</span><span class="kt">int</span> <span class="n">item</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_full</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"queue overflow</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">queue</span><span class="p">[</span><span class="n">tail</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+    <span class="n">tail</span> <span class="o">=</span> <span class="p">(</span><span class="n">tail</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">(</span><span class="n">tail</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//circular 고려한 tail += 1</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">dequeue</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">item</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"queue underflow</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">item</span> <span class="o">=</span> <span class="n">queue</span><span class="p">[</span><span class="n">head</span><span class="p">];</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">(</span><span class="n">head</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//head 노드를 이제 그 다음 노드로 바꿔야 한다.</span>
+    <span class="k">return</span> <span class="n">item</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">M</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">index</span><span class="p">;</span>
+    
+    <span class="n">scanf</span><span class="p">(</span><span class="s">"%d %d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">M</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">K</span><span class="p">);</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">tail</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">M</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">enqueue</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"&lt;"</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">q_size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>	
+        <span class="n">index</span> <span class="o">+=</span> <span class="n">K</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">q_size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">index</span><span class="p">)</span>
+            <span class="n">index</span> <span class="o">%=</span> <span class="n">q_size</span><span class="p">();</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">q_size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%d, "</span><span class="p">,</span><span class="n">dequeue</span><span class="p">());</span>
+        <span class="k">else</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="n">dequeue</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"&gt;"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+
+<span class="n">jo</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">jo</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="s">'&lt;'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">index</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">%=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jo</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">', '</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">jo</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'&gt;'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span> 
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#data-structures" class="page__taxonomy-item p-category" rel="tag">Data structures</a><span class="sep">, </span>
+    
+      <a href="/tags/#queue" class="page__taxonomy-item p-category" rel="tag">Queue</a><span class="sep">, </span>
+    
+      <a href="/tags/#stack" class="page__taxonomy-item p-category" rel="tag">Stack</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a><span class="sep">, </span>
+    
+      <a href="/categories/#data-structures-and-algorithms-with-python" class="page__taxonomy-item p-category" rel="tag">Data structures and algorithms with Python</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-04-11T00:00:00+09:00">2022-04-11</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5B%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80+%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%5D+Stack+and+Queues%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520python%2F%25EC%259E%2590%25EB%25A3%258C%25EA%25B5%25AC%25EC%25A1%25B0%25EC%2599%2580-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598-Stack-and-Queues%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520python%2F%25EC%259E%2590%25EB%25A3%258C%25EA%25B5%25AC%25EC%25A1%25B0%25EC%2599%2580-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598-Stack-and-Queues%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520python%2F%25EC%259E%2590%25EB%25A3%258C%25EA%25B5%25AC%25EC%25A1%25B0%25EC%2599%2580-%25EC%2595%258C%25EA%25B3%25A0%25EB%25A6%25AC%25EC%25A6%2598-Stack-and-Queues%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/system/system%20programming/System-Programming-5.4-%EB%A7%81%ED%81%AC/" class="pagination--pager" title="[System Programming] 5.4 링크
+">이전</a>
+    
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-Single-Cycle-MIPS-microarchitecture-control/" class="pagination--pager" title="[Computer Architecture] Single Cycle MIPS microarchitecture - control
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Stack-and-Queues/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/data%20structures%20and%20algorithms%20with%20python/[자료구조와 알고리즘] Stack and Queues"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

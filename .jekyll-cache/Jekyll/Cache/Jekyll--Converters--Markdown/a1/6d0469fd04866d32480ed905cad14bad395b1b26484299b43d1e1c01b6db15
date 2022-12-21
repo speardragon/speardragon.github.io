@@ -1,0 +1,399 @@
+I"�?<p>[toc]</p>
+
+<h2 id="across-countries-and-cultures">Across countries and cultures</h2>
+
+<ul>
+  <li>Localisation &amp; internationalisation
+    <ul>
+      <li>changing interfaces for particular cultures/languages</li>
+    </ul>
+  </li>
+  <li>Globalisation
+    <ul>
+      <li>try to choose symbols etc. that work everywhere</li>
+    </ul>
+  </li>
+  <li>Simply change language?
+    <ul>
+      <li>use ‘resource’ database instead of literal text
+… but changes sizes, left-right order etc.</li>
+    </ul>
+  </li>
+  <li>Deeper issues
+    <ul>
+      <li>cultural assumptions and values</li>
+      <li>meanings of symbols</li>
+      <li>e.g tick(√) and cross(x) … +ve and -ve in some cultures
+… but … mean the same thing (mark this) in others</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="iteration-and-prototyping">Iteration and prototyping</h2>
+
+<ul>
+  <li>Getting better …</li>
+  <li>… And starting well</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="prototyping">Prototyping</h2>
+
+<ul>
+  <li>You never get it right first time</li>
+  <li>If at first you don’t succeed …</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141324873.png" alt="image-20221010141324873" /></p>
+
+<p><br /></p>
+
+<h2 id="pitfalls-of-prototyping">Pitfalls of prototyping</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141336534.png" alt="image-20221010141336534" /></p>
+
+<p><br /></p>
+
+<h2 id="some-methods-of-prototyping">Some methods of prototyping</h2>
+
+<ul>
+  <li>
+    <p>UI builders (Visual Studio, …)</p>
+
+    <ul>
+      <li>draw a GUI visually by dragging and dropping UI controls on screen</li>
+      <li>in the past, was done in simple languages like Visual Basic</li>
+      <li>modern IDEs have UI builders for more robust languages such as Java</li>
+    </ul>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141403988.png" alt="image-20221010141403988" /></p>
+  </li>
+  <li>
+    <p>implementation by hand</p>
+
+    <ul>
+      <li>writing a “quick” version of your code</li>
+    </ul>
+  </li>
+</ul>
+
+<p>​	<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141358972.png" alt="image-20221010141358972" /></p>
+
+<p><br /></p>
+
+<h2 id="paper-prototyping">Paper prototyping</h2>
+
+<ul>
+  <li>paper prototyping:
+a means of usability testing where representative users perform tasks by interacting with a paper version of a user interface</li>
+  <li>Why paper prototype?
+    <ul>
+      <li>paper prototype 말고 Why not just code up a working prototype?</li>
+    </ul>
+  </li>
+  <li>-&gt; <strong>paper prototype is much faster to create than code</strong></li>
+  <li>can make changes to paper faster than code (editable)</li>
+  <li>paper has more visual bandwidth (can see more at once)</li>
+  <li>paper prototyping is more conducive to working in teams than most programming or normal prototyping</li>
+  <li>paper prototyping can be done by non-technical people, or people with programming experience in different languages</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="comparison-of-techniques">Comparison of techniques</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141443031.png" alt="image-20221010141443031" /></p>
+
+<p><br /></p>
+
+<h2 id="where-does-pp-fit-in">Where does P.P. fit in?</h2>
+
+<ul>
+  <li>At what point in the software lifecycle should we do (paper) prototyping? When would it be most useful to do it? Why?</li>
+  <li>
+    <p>We talk about requirements being about “what” and design being about “how.” Which is paper prototyping?</p>
+  </li>
+  <li>PP helps us uncover requirements and also upcoming design issues</li>
+  <li>do PP during or after requirements analysis; before design</li>
+  <li>“what” vs. “how”: PP shows us “what” is in the UI, but it also shows us details of “how” the user can achieve their goals in the UI; I categorize it as “how”</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="a-paper-prot-usability-session">A paper prot. usability session</h2>
+
+<ul>
+  <li>user is given tasks to perform using the paper prototype</li>
+  <li>session can be observed by people or camera</li>
+  <li>one developer can “play computer“ – Wizard of Oz</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141534033.png" alt="image-20221010141534033" /></p>
+
+<p><br /></p>
+
+<h2 id="ui-design-components">UI design, components</h2>
+
+<ul>
+  <li>When should we use:
+    <ul>
+      <li>A button?</li>
+      <li>A check box?</li>
+      <li>A radio button?</li>
+      <li>A text field?</li>
+      <li>A list?</li>
+      <li>A combo box?</li>
+      <li>A menu?</li>
+      <li>A dialog box?</li>
+      <li>Other..?</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141558882.png" alt="image-20221010141558882" /></p>
+
+<p><br /></p>
+
+<h2 id="ui-design---buttons-menus">UI design - buttons, menus</h2>
+
+<ul>
+  <li>use buttons for single independent actions that are relevant to the current screen
+    <ul>
+      <li>try to use button text with verb phrases such as “Save” or “Cancel”, not generic: “OK”, “Yes”, “No”</li>
+      <li>use Mnemonics or Accelerators (Ctrl-S)</li>
+    </ul>
+  </li>
+  <li>use <strong>toolbars</strong> for common actions<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141632258.png" alt="image-20221010141632258" /></li>
+  <li>use <strong>menus</strong> for infrequent actions that may be applicable to many or all screens
+    <ul>
+      <li><strong>Users hate menus!</strong> Try not to rely too much on menus. Provide another way to access the same functionality (toolbar, hotkey, etc)<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141638288.png" alt="image-20221010141638288" /></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ui-design---checkboxes--radio">UI design - checkboxes / radio</h2>
+
+<ul>
+  <li>use <strong>check boxes</strong> for on/off switches, when any one switch can be toggled irrespective of the others (often correspond to boolean values)</li>
+  <li>use <strong>radio buttons</strong> for related choices, when only one choice can be activated at a time (often corresponds to enum / constant values)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141703659.png" alt="image-20221010141703659" /></p>
+
+<p><br /></p>
+
+<h2 id="ui-design---lists-combo-boxes">UI design - lists, combo boxes</h2>
+
+<ul>
+  <li>use <strong>text fields</strong> (usually with a label) when the user may type in anything they want<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141745950.png" alt="image-20221010141745950" /></li>
+  <li><strong>use</strong> lists when there are many fixed choices (too many for radio buttons) and you want all choices visible on screen at once – standard or drop-down<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141749737.png" alt="image-20221010141749737" /></li>
+  <li>use combo boxes when there are many fixed choices, but you don’t want to take up screen real estate by showing them all at once<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141754211.png" alt="image-20221010141754211" /></li>
+  <li>use a <strong>slider</strong> or <strong>spinner</strong> for a numeric value<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141757884.png" alt="image-20221010141757884" /></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="an-example-ui-screen">An example UI screen</h2>
+
+<ul>
+  <li>What can we say about this UI dialog? Did the designer choose the right components?
+    <ul>
+      <li>Let’s assume there are 20 collections and 3 ways to search (by title, author, relevancy)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141859025.png" alt="image-20221010141859025" /></p>
+
+<p><br /></p>
+
+<h2 id="ui-design---multiple-screens">UI design - multiple screens</h2>
+
+<ul>
+  <li>use a <strong>tabbed pane</strong> when there are many screens that the user may want to switch between at any moment<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141929036.png" alt="image-20221010141929036" /></li>
+  <li>use a <strong>CardLayout</strong> to “swap” between screens when necessary (not switchable by user)<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141932498.png" alt="image-20221010141932498" /></li>
+  <li>use <strong>dialog boxes</strong> or <strong>option panes</strong> to present temporary screens or options<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141935676.png" alt="image-20221010141935676" /></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="creating-a-paper-prototype">Creating a paper prototype</h2>
+
+<ul>
+  <li>gather materials
+    <ul>
+      <li>paper, pencils/pens</li>
+      <li>tape, scissors</li>
+      <li>highlighters, transparencies<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142002721.png" alt="image-20221010142002721" /></li>
+    </ul>
+  </li>
+  <li>identify the screens in your UI
+    <ul>
+      <li>consider use cases, inputs and outputs to user</li>
+    </ul>
+  </li>
+  <li>think about how to get from one screen to next
+    <ul>
+      <li>this will help choose between tabs, dialogs, etc.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="application-backgrounds">Application backgrounds</h2>
+
+<ul>
+  <li>draw the app background (the parts that matter for the prototyping) on its own, then lay the various subscreens on top of it</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142014568.png" alt="image-20221010142014568" /></p>
+
+<p><br /></p>
+
+<h2 id="representing-a-changing-ui">Representing a changing UI</h2>
+
+<ul>
+  <li>layers of UI can be placed on top of background as user clicks various options</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142028360.png" alt="image-20221010142028360" /></p>
+
+<p><br /></p>
+
+<h2 id="representing-interactive-widgets">Representing interactive widgets</h2>
+
+<ul>
+  <li>buttons / check boxes: tape</li>
+  <li>tabs, dialog boxes: index cards</li>
+  <li>text fields: removable tape</li>
+  <li>combo boxes: put the choices on a separate piece of paper that pops up when they click</li>
+  <li>selections: a highlighted piece of tape or transparency</li>
+  <li>disabled widgets: make a gray version that can sit on top of the normal enabled version</li>
+  <li>computer beeps: say “beep” (hah!)<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142047344.png" alt="image-20221010142047344" /></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-paper-prot-screen">Example paper prot. screen</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142054200.png" alt="image-20221010142054200" /></p>
+
+<p><br /></p>
+
+<h2 id="example-full-paper-prototype">Example full paper prototype</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142102538.png" alt="image-20221010142102538" /></p>
+
+<p><br /></p>
+
+<h2 id="paper-prototyping-tools">Paper Prototyping Tools</h2>
+
+<ul>
+  <li><strong>A marker and a sheet of paper</strong>
+    <ul>
+      <li>very basics: a marker and a sheet of paper.</li>
+      <li>Paper prototyping is a fast, easy and fun way to get a first impression on your concept.</li>
+      <li>Paper prototyping is very accessible for people of all backgrounds. The lack of details in paper prototypes will make people focus more on the idea.</li>
+      <li>colors and layouts are just not relevant at this stage of development.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142127026.png" alt="image-20221010142127026" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>PowerPoint / Keynote</strong>
+    <ul>
+      <li>You can create a digital prototype with Microsoft Office PowerPoint or Apple Keynote.</li>
+      <li>If you’re not a designer, you should really start from the software that you have already mastered and have on your desktop, rather than other professional services.<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142148368.png" alt="image-20221010142148368" />
+        <ul>
+          <li>디자이너가 아니라면 다른 전문 서비스보다는 이미 익혀 데스크톱에 있는 소프트웨어부터 시작해야 한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>Smartphone sketch templates</strong>
+    <ul>
+      <li>For apps and other digital services, smartphone sketches are a great way to start.</li>
+      <li>These useful templates with or without a precision grid to get you started. Translate your app ideas into real screen designs, perfect to test product assumptions with your customers.<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142214564.png" alt="image-20221010142214564" /></li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142211707.png" alt="image-20221010142211707" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li><strong>Explainer videos:</strong> 
+<strong>Whiteboard &amp; Animated Explainers</strong>
+    <ul>
+      <li>The easiest way to explain your solution is by telling a story.</li>
+      <li>Explainer videos give you the opportunity to share your concept with hundreds of potential customers via social media and to get instant quantitative and qualitative feedback.</li>
+      <li>You can use video capture tools for this purpose<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142317543.png" alt="image-20221010142317543" /></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>Graphic tools: Sketch/Photoshop</p>
+
+    <ul>
+      <li>Sketch is made solely for turning your wireframes into great looking designs. Sketch also has an abundance of templates to make your prototyping just that bit faster.
+        <ul>
+          <li>스케치는 와이어 프레임을 멋진 디자인으로 바꾸기 위해 만들어졌습니다. 또한 Sketch에는 프로토타입을 훨씬 더 빠르게 만들 수 있는 템플릿이 많이 있습니다.</li>
+        </ul>
+      </li>
+      <li>
+        <p>The downfall of this gem is that it’s only available on Apple computers.</p>
+      </li>
+      <li>
+        <p>Photoshop is a great tool to transform your wireframes into beautiful designs.</p>
+      </li>
+      <li>It’s not made for prototyping,but it does a great job of using it for that purpose.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142405505.png" alt="image-20221010142405505" /></p>
+
+<p><br /></p>
+
+<h2 id="dedicated-paper-prototyping-programs">Dedicated Paper Prototyping Programs</h2>
+
+<ul>
+  <li>POP by Marvel
+    <ul>
+      <li>The POP (Prototype On Paper) bridges the gap between paper and digital prototype by helping you make on screen links between several paper prototype sketches.</li>
+    </ul>
+  </li>
+  <li>Proto.io
+    <ul>
+      <li>Proto.io lets you create high-fidelity prototypes of Apps, with ready-made libraries and elements such as menus, buttons, and more.</li>
+    </ul>
+  </li>
+  <li>Invision
+    <ul>
+      <li>It is similar to POP. But Invision offers many cooperative work functions</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142447793.png" alt="image-20221010142447793" /></p>
+:ET

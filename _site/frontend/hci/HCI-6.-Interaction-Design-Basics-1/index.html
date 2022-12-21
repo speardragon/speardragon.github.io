@@ -1,0 +1,2183 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[HCI] 6. Interaction Design Basics 1 | speardragon note</title>
+<meta name="description" content="Interaction design basics">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[HCI] 6. Interaction Design Basics 1">
+<meta property="og:url" content="http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basics-1/">
+
+
+  <meta property="og:description" content="Interaction design basics">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-28T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basics-1/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#frontend" itemprop="item"><span itemprop="name">Frontend</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#hci" itemprop="item"><span itemprop="name">Hci</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[HCI] 6. Interaction Design Basics 1</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[HCI] 6. Interaction Design Basics 1">
+    <meta itemprop="description" content="Interaction design basics">
+    <meta itemprop="datePublished" content="2022-09-28T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basics-1/" class="u-url" itemprop="url">[HCI] 6. Interaction Design Basics 1
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#interaction-design-basics">Interaction design basics</a></li><li><a href="#interactions-and-interventions개입">Interactions and interventions(개입)</a></li><li><a href="#what-is-design">What is design?</a></li><li><a href="#for-humancomputer-interaction">for Human–Computer Interaction</a></li><li><a href="#to-err-is-human">To err is human</a></li><li><a href="#central-message-">Central message …</a></li><li><a href="#the-process-of-design">The process of design</a></li><li><a href="#steps">Steps…</a></li><li><a href="#-but-how-can-i-do-it-all--">… but how can I do it all ! !</a></li><li><a href="#user-focus">User focus</a></li><li><a href="#know-your-user">Know your user</a></li><li><a href="#user-interviews">User Interviews</a></li><li><a href="#persona">Persona</a></li><li><a href="#example-persona">Example persona</a></li><li><a href="#cultural-probes">Cultural probes</a></li><li><a href="#scenarios">Scenarios</a></li><li><a href="#scenarios-1">Scenarios</a></li><li><a href="#scenarios-is-about">Scenarios is about…</a></li><li><a href="#scenario--movie-player">Scenario – movie player</a></li><li><a href="#also-play-act-">Also play act …</a></li><li><a href="#-explore-the-depths">… Explore the depths</a></li><li><a href="#use-scenarios-to-">Use scenarios to ..</a></li><li><a href="#linearity">Linearity</a></li><li><a href="#navigation-design">Navigation design</a></li><li><a href="#levels">Levels</a></li><li><a href="#the-web">the Web…</a></li><li><a href="#physical-devices">Physical devices</a></li><li><a href="#think-about-structure">Think about structure</a></li><li><a href="#four-golden-rules">Four golden rules</a></li><li><a href="#where-you-are--breadcrumbs">Where you are – breadcrumbs</a></li><li><a href="#beware-the-big-button-trap">Beware the big button trap</a></li><li><a href="#modes">Modes</a></li><li><a href="#global">Global</a></li><li><a href="#hierarchical-diagrams">Hierarchical diagrams</a></li><li><a href="#hierarchical-diagrams-ctd">Hierarchical diagrams (ctd.)</a></li><li><a href="#navigating-hierarchies">Navigating hierarchies</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="interaction-design-basics">Interaction design basics</h2>
+
+<ul>
+  <li>design:
+    <ul>
+      <li>what it is, interventions, goals, constraints</li>
+    </ul>
+  </li>
+  <li>the design process
+    <ul>
+      <li>what happens when</li>
+    </ul>
+  </li>
+  <li>users
+    <ul>
+      <li>who they are, what they are like …</li>
+    </ul>
+  </li>
+  <li>scenarios
+    <ul>
+      <li>rich stories of design</li>
+    </ul>
+  </li>
+  <li>navigation
+    <ul>
+      <li>finding your way around a system</li>
+    </ul>
+  </li>
+  <li>iteration and prototypes
+    <ul>
+      <li>never get it right first time! 2</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="interactions-and-interventions개입">Interactions and interventions(개입)</h2>
+
+<ul>
+  <li>Design interactions not just interfaces
+    <ul>
+      <li>not just the immediate interaction</li>
+      <li>e.g. stapler in office – technology changes interaction style
+        <ul>
+          <li>manual: write, print, staple, write, print, staple, …</li>
+          <li>electric: write, print, write, print, …, staple</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Design interventions not just artefacts
+    <ul>
+      <li>not just the system, but also …
+        <ul>
+          <li>documentation, manuals, tutorials</li>
+          <li>what we say and do as well as what we make</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="what-is-design">What is design?</h2>
+
+<p>Achieving goals within constraints</p>
+
+<ul>
+  <li>Goals - purpose
+    <ul>
+      <li>who is it for, why do they want it</li>
+    </ul>
+  </li>
+  <li>Constraints
+    <ul>
+      <li>materials, platforms</li>
+    </ul>
+  </li>
+  <li>Trade-offs</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="for-humancomputer-interaction">for Human–Computer Interaction</h2>
+
+<p>Understand your materials</p>
+
+<ul>
+  <li>Understand computers
+    <ul>
+      <li>limitations, capacities, tools, platforms</li>
+    </ul>
+  </li>
+  <li>Understand people
+    <ul>
+      <li>psychological, social aspects</li>
+      <li>human error (mistake, slip)</li>
+    </ul>
+  </li>
+  <li>And their interaction …</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="to-err-is-human">To err is human</h2>
+
+<ul>
+  <li>accident reports ..
+    <ul>
+      <li>aircrash, industrial accident, hospital mistake</li>
+      <li>enquiry … blames … ‘human error’</li>
+    </ul>
+  </li>
+  <li>but …
+    <ul>
+      <li>concrete lintel breaks because too much weight
+        <ul>
+          <li>콘크리트 린텔이 너무 무거워서 부서진다</li>
+        </ul>
+      </li>
+      <li>blame ‘lintel error’ ? … no – design error we know how concrete behaves under stress
+        <ul>
+          <li>그렇다고 lintel error를 원망할 거야?</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>human ‘error’ is normal
+    <ul>
+      <li>we know how users behave under stress</li>
+      <li>so design for it!</li>
+    </ul>
+  </li>
+  <li>treat the user at least as well as physical materials!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="central-message-">Central message …</h2>
+
+<p><strong>the user</strong></p>
+
+<p><br /></p>
+
+<h2 id="the-process-of-design">The process of design</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766224-2a818d88-1036-4356-b697-ee205db4fe2f.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="steps">Steps…</h2>
+
+<ul>
+  <li>requirements
+    <ul>
+      <li>what is there and what is wanted …</li>
+    </ul>
+  </li>
+  <li>analysis
+    <ul>
+      <li>ordering and understanding</li>
+    </ul>
+  </li>
+  <li>design
+    <ul>
+      <li>what to do and how to decide</li>
+    </ul>
+  </li>
+  <li>iteration and prototyping
+    <ul>
+      <li>getting it right … and finding what is really needed!</li>
+    </ul>
+  </li>
+  <li>implementation and deployment
+    <ul>
+      <li>making it and getting it out there</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="-but-how-can-i-do-it-all--">… but how can I do it all ! !</h2>
+
+<ul>
+  <li>limited time =&gt; design trade-off</li>
+  <li>usability?
+    <ul>
+      <li>finding problems and fixing them?</li>
+      <li>deciding what to fix?</li>
+    </ul>
+  </li>
+  <li>a perfect system is badly designed
+    <ul>
+      <li>too good =&gt; too much effort in design</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-focus">User focus</h2>
+
+<ul>
+  <li>Know your user</li>
+  <li>Persona</li>
+  <li>Cultural probes</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="know-your-user">Know your user</h2>
+
+<ul>
+  <li>Who are they? Probably not like you!
+    <ul>
+      <li>“Know thy user, and YOU are not thy user.” – Arnie Lund</li>
+    </ul>
+  </li>
+  <li>Talk to them – User Interview</li>
+  <li>Watch them</li>
+  <li>Use your imagination</li>
+  <li>you must <strong>understand</strong> the needs of your users</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-interviews">User Interviews</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766325-ac9e90c2-9477-4d4e-a18b-69bb0530fbcb.png" alt="image" /></p>
+
+<ul>
+  <li>User’s task analysis usually focus on:
+    <ul>
+      <li>Who they are (profile);</li>
+      <li>What they do, when and where (context);</li>
+      <li>Why they do it (needs, goals, tasks) ;</li>
+      <li>How they do it (experience);</li>
+      <li>What they like or dislike (<strong>frustrations</strong>).</li>
+    </ul>
+  </li>
+  <li>Users’ emotions, beliefs, and feelings focus on:
+    <ul>
+      <li>How users feel (about the intended action);</li>
+      <li>What emotions are evoked(환기) in the process;</li>
+      <li>Their emotional motivations to complete the intended action;</li>
+      <li>Their barriers that prevent them from taking the intended action;</li>
+      <li>Their values and beliefs related to the intended action;</li>
+      <li>Social or cultural factors that may impact the experience.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="persona">Persona</h2>
+
+<ul>
+  <li>Description of an ‘example’ user
+    <ul>
+      <li>not necessarily a real person</li>
+    </ul>
+  </li>
+  <li>Use as surrogate(대리인의) user
+    <ul>
+      <li>what would Betty think</li>
+    </ul>
+  </li>
+  <li>Details matter
+    <ul>
+      <li>makes her ‘real’</li>
+    </ul>
+  </li>
+  <li>Benefits of Personas
+    <ul>
+      <li>Company wide understanding of who your users are</li>
+      <li>Deep understanding of customer behavior and needs</li>
+      <li>Stop people talking about someone they know as the user(s)
+        <ul>
+          <li>다른 사람이 사용자로 알고 있는 사람에 대해 이야기하는 것을 중지합니다.</li>
+        </ul>
+      </li>
+      <li>More effective, focused conversations and business meetings</li>
+      <li>Better decision making; focused on user needs and goals</li>
+      <li>Greater empathy with the customer</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-persona">Example persona</h2>
+
+<p>Betty is 37 years old, She has been Warehouse Manager for five years and worked for Simpkins Brothers Engineering for twelve years. She didn’t go to university, but has studied in her evenings for a business diploma. She has two children aged 15 and 7 and does not like to work late. She did part of an introductory in-house computer course some years ago, but it was interrupted when she was promoted and could no longer afford to take the time. Her vision is perfect, but her right-hand movement is slightly restricted following an industrial accident 3 years ago. She is enthusiastic about her work and is happy to delegate responsibility and take suggestions from her staff. However, she does feel threatened by the introduction of yet another new computer system (the third in her time at SBE).</p>
+
+<p><br /></p>
+
+<h2 id="cultural-probes">Cultural probes</h2>
+
+<ul>
+  <li>Direct observation
+    <ul>
+      <li>sometimes hard
+        <ul>
+          <li>in the home</li>
+          <li>psychiatric patients, …</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Probe packs
+    <ul>
+      <li>items to prompt responses
+        <ul>
+          <li>e.g. glass to listen at wall, camera, postcard</li>
+        </ul>
+      </li>
+      <li>given to people to open in their own environment they record what is meaningful to them</li>
+    </ul>
+  </li>
+  <li>Used to …
+    <ul>
+      <li>inform interviews, prompt ideas, enculture designers</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scenarios">Scenarios</h2>
+
+<ul>
+  <li>
+    <p>stories for design</p>
+  </li>
+  <li>
+    <p>use and reuse</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scenarios-1">Scenarios</h2>
+
+<ul>
+  <li>Stories for design
+    <ul>
+      <li>communicate with others</li>
+      <li>validate other models</li>
+      <li>understand dynamics</li>
+    </ul>
+  </li>
+  <li>Linearity
+    <ul>
+      <li>time is linear - our lives are linear</li>
+      <li>but don’t show alternatives</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scenarios-is-about">Scenarios is about…</h2>
+
+<ul>
+  <li>What will users want to do?</li>
+  <li>Step-by-step walkthrough
+    <ul>
+      <li>what can they see (sketches, screen shots)</li>
+      <li>what do they do (keyboard, mouse etc.)</li>
+      <li>what are they thinking?</li>
+    </ul>
+  </li>
+  <li>Use and reuse throughout design</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="scenario--movie-player">Scenario – movie player</h2>
+
+<p>Brian would like to see the new film “Moments of Significance” and wants to invite Alison, but he knows she doesn’t like “arty” films. He decides to take a look at it to see if she would like it and so connects to one of the movie sharing networks. He uses his work machine as it has a higher bandwidth connection, but feels a bit guilty. He knows he will be getting an illegal copy of the film, but decides it is OK as he is intending to go to the cinema to watch it. After it downloads to his machine he takes out his new personal movie player. He presses the ‘menu’ button and on the small LCD screen he scrolls using the arrow keys to ‘Bluetooth connect’ and presses the select button. On his computer the movie download program now has an icon showing that it has recognized a compatible device and he drags the icon of the film over the icon for the player. On the player the LCD screen says “downloading now”, a percent done indicator and small whirling icon. … … …</p>
+
+<p><br /></p>
+
+<h2 id="also-play-act-">Also play act …</h2>
+
+<ul>
+  <li>
+    <p>Mock-up device</p>
+  </li>
+  <li>
+    <p>Pretend you are doing it</p>
+  </li>
+  <li>
+    <p>Swiss army knife has a touchpad … 21</p>
+  </li>
+  <li>
+    <p><img src="https://user-images.githubusercontent.com/79521972/194766513-0ccc38a0-9aa1-4c1c-816e-2f616b963f15.png" alt="image" /></p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="-explore-the-depths">… Explore the depths</h2>
+
+<ul>
+  <li>Explore interaction
+    <ul>
+      <li>what happens when</li>
+    </ul>
+  </li>
+  <li>Explore cognition
+    <ul>
+      <li>what are the users thinking</li>
+    </ul>
+  </li>
+  <li>Explore architecture
+    <ul>
+      <li>what is happening inside</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="use-scenarios-to-">Use scenarios to ..</h2>
+
+<ul>
+  <li>Communicate with others
+    <ul>
+      <li>designers, clients, users</li>
+    </ul>
+  </li>
+  <li>Validate other models
+    <ul>
+      <li>‘play’ it against other models</li>
+    </ul>
+  </li>
+  <li>Express dynamics
+    <ul>
+      <li>screenshots – appearance</li>
+      <li>scenario – behaviour</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="linearity">Linearity</h2>
+
+<ul>
+  <li>Scenarios - one linear path through system</li>
+  <li>Pros:
+    <ul>
+      <li>life and time are linear</li>
+      <li>easy to understand (stories and narrative are natural)</li>
+      <li>concrete (errors less likely)</li>
+    </ul>
+  </li>
+  <li>Cons:
+    <ul>
+      <li>no choice, no branches, no special conditions</li>
+      <li>miss the unintended</li>
+    </ul>
+  </li>
+  <li>So:
+    <ul>
+      <li>use several scenarios</li>
+      <li>use several methods</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="navigation-design">Navigation design</h2>
+
+<ul>
+  <li>Local structure – single screen</li>
+  <li>Global structure – whole site</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766604-35e44af7-3b75-4577-948c-8e3f5bcfe03c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="levels">Levels</h2>
+
+<ul>
+  <li>Widget choice
+    <ul>
+      <li>menus, buttons etc.</li>
+    </ul>
+  </li>
+  <li>Screen design</li>
+  <li>Application navigation design</li>
+  <li>Environment
+    <ul>
+      <li>other apps, O/S</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="the-web">the Web…</h2>
+
+<ul>
+  <li>Widget choice</li>
+  <li>Screen design</li>
+  <li>Navigation design</li>
+  <li>
+    <p>Environment</p>
+  </li>
+  <li>Elements and tags
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">&lt;a href="..." &gt;</code></li>
+    </ul>
+  </li>
+  <li>Page design</li>
+  <li>Site structure</li>
+  <li>The web, browser, external links</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="physical-devices">Physical devices</h2>
+
+<ul>
+  <li>Widget choice</li>
+  <li>Screen design</li>
+  <li>Navigation design</li>
+  <li>
+    <p>Environment</p>
+  </li>
+  <li>Controls
+    <ul>
+      <li>buttons, knobs, dials</li>
+    </ul>
+  </li>
+  <li>Physical layout</li>
+  <li>Modes of device</li>
+  <li>The real world</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="think-about-structure">Think about structure</h2>
+
+<ul>
+  <li>Within a screen
+    <ul>
+      <li>later …</li>
+    </ul>
+  </li>
+  <li>Local
+    <ul>
+      <li>looking from this screen out</li>
+    </ul>
+  </li>
+  <li>Global
+    <ul>
+      <li>structure of site, movement between screens</li>
+    </ul>
+  </li>
+  <li>Wider still
+    <ul>
+      <li>relationship with other applications</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="four-golden-rules">Four golden rules</h2>
+
+<ul>
+  <li>Knowing where you are</li>
+  <li>Knowing what you can do</li>
+  <li>Knowing where you are going
+    <ul>
+      <li>or what will happen</li>
+    </ul>
+  </li>
+  <li>Knowing where you’ve been
+    <ul>
+      <li>or what you’ve done</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="where-you-are--breadcrumbs">Where you are – breadcrumbs</h2>
+
+<ul>
+  <li>Breadcrumb Trail shows path through web site hierarchy</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766760-bb08661e-e8a4-48ba-948a-4436902cc804.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="beware-the-big-button-trap">Beware the big button trap</h2>
+
+<ul>
+  <li>Where do they go?
+    <ul>
+      <li>Uninformative labels on buttons; lots of room for extra text!
+        <ul>
+          <li>Try to provide extra text to explain the purpose of each button (e.g. beside the button)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>​	<img src="https://user-images.githubusercontent.com/79521972/194766780-a7fb57b7-95c7-4593-8880-214d20a21785.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="modes">Modes</h2>
+
+<ul>
+  <li>Lock to prevent accidental use …
+    <ul>
+      <li>remove lock : ‘c’ + ‘yes’ to confirm</li>
+      <li>frequent practiced action</li>
+    </ul>
+  </li>
+  <li>If lock forgotten
+    <ul>
+      <li>in pocket ‘yes’ gets pressed</li>
+      <li>goes to phone book</li>
+      <li>in phone book …</li>
+      <li>‘c’ – delete entry</li>
+      <li>‘yes’ – confirm</li>
+      <li>… oops !</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="global">Global</h2>
+
+<ul>
+  <li>Between screens</li>
+  <li>Within the application</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hierarchical-diagrams">Hierarchical diagrams</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/194766816-64140bcb-dc41-48d6-81ee-bce470e45002.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="hierarchical-diagrams-ctd">Hierarchical diagrams (ctd.)</h2>
+
+<ul>
+  <li>Parts of application
+    <ul>
+      <li>screens or groups of screens</li>
+    </ul>
+  </li>
+  <li>Typically functional separation</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="navigating-hierarchies">Navigating hierarchies</h2>
+
+<ul>
+  <li>Deep is difficult!</li>
+  <li>Misuse of Miller’s 7 ± 2
+    <ul>
+      <li>short term memory, not menu size</li>
+    </ul>
+  </li>
+  <li>Optimal?
+    <ul>
+      <li>many items on each screen</li>
+      <li>but structured within screen</li>
+    </ul>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#hci" class="page__taxonomy-item p-category" rel="tag">HCI</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#frontend" class="page__taxonomy-item p-category" rel="tag">FrontEnd</a><span class="sep">, </span>
+    
+      <a href="/categories/#hci" class="page__taxonomy-item p-category" rel="tag">HCI</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-09-28T00:00:00+09:00">2022-09-28</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BHCI%5D+6.+Interaction+Design+Basics+1%20http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-6.-Interaction-Design-Basics-1%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-6.-Interaction-Design-Basics-1%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Ffrontend%2Fhci%2FHCI-6.-Interaction-Design-Basics-1%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/os/OS-Synchronization-Tools/" class="pagination--pager" title="[OS] Synchronization Tools
+">이전</a>
+    
+    
+      <a href="/os/OS-Synchronization-Examples/" class="pagination--pager" title="[OS] Synchronization Examples
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basics-1/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/frontend/hci/[HCI] 6. Interaction Design Basics 1"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

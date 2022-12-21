@@ -1,0 +1,3653 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[OS] Memory Management | speardragon note</title>
+<meta name="description" content="[toc]">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[OS] Memory Management">
+<meta property="og:url" content="http://localhost:4000/os/OS-Memory-Management/">
+
+
+  <meta property="og:description" content="[toc]">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-10-03T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/os/OS-Memory-Management/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#os" itemprop="item"><span itemprop="name">Os</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[OS] Memory Management</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[OS] Memory Management">
+    <meta itemprop="description" content="[toc]">
+    <meta itemprop="datePublished" content="2022-10-03T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/os/OS-Memory-Management/" class="u-url" itemprop="url">[OS] Memory Management
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          34 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#chapter-9-memory-management">Chapter 9: Memory Management</a><ul><li><a href="#objectives">Objectives</a></li><li><a href="#structure---top-level">Structure - Top Level</a></li><li><a href="#structure--the-cpu">Structure -The CPU</a></li><li><a href="#structure---the-control-unit">Structure - The Control Unit</a></li><li><a href="#von-neumann-architecture">Von Neumann architecture</a></li><li><a href="#what-is-a-program">What is a program?</a></li><li><a href="#instruction-cycle">Instruction Cycle</a></li><li><a href="#instruction-cycle-with-interrupts---state-diagram">Instruction Cycle (with Interrupts) - State Diagram</a></li><li><a href="#background">Background</a></li><li><a href="#base-and-limit-registers">Base and Limit Registers</a></li><li><a href="#hardware-address-protection-with-base-and-limit-registers">Hardware Address Protection with Base and Limit Registers</a></li><li><a href="#address-binding">Address Binding</a></li><li><a href="#background-1">Background</a></li><li><a href="#address-binding-1">Address Binding</a></li><li><a href="#address-binding-2">Address Binding</a></li><li><a href="#address-binding안중요">Address Binding(안중요)</a></li><li><a href="#address-binding안중요-1">Address Binding(안중요)</a></li><li><a href="#address-binding안중요-2">Address Binding(안중요)</a></li><li><a href="#binding-of-instructions-and-data-to-memory중요">Binding of Instructions and Data to Memory(중요)</a></li><li><a href="#multistep-processing-of-a-user-program">Multistep Processing of a User Program</a></li><li><a href="#logical-vs-physical-address-space">Logical vs. Physical Address Space</a></li><li><a href="#physical-logical-storage">Physical &amp; Logical storage</a></li><li><a href="#memory-management-unit-mmu">Memory-Management Unit (MMU)</a></li><li><a href="#dynamic-relocation-using-a-relocation-register">Dynamic relocation using a relocation register</a></li><li><a href="#dynamic-loading">Dynamic Loading</a></li><li><a href="#dynamic-linking">Dynamic Linking</a></li><li><a href="#swapping">Swapping</a></li><li><a href="#swapping-1">Swapping</a></li><li><a href="#schematic-view-of-swapping">Schematic View of Swapping</a></li><li><a href="#context-switch-time-including-swapping">Context Switch Time including Swapping</a></li><li><a href="#context-switch-time-including-swapping-1">Context Switch Time including Swapping</a></li><li><a href="#swapping-on-mobile-systems">Swapping on Mobile Systems</a></li><li><a href="#memory-management">Memory management</a></li><li><a href="#placement-of-modules-in-memory">Placement of modules in memory</a></li><li><a href="#contiguous-allocation">Contiguous Allocation</a></li><li><a href="#hardware-support-for-relocation-and-limit-registers">Hardware Support for Relocation and Limit Registers</a></li><li><a href="#single-partition-allocation">Single-partition allocation</a></li><li><a href="#multiple-fixed-parition">Multiple fixed parition</a></li><li><a href="#overlays생략">Overlays(생략)</a></li><li><a href="#multiple---variable-sized-partition-allocation">Multiple - Variable sized partition allocation</a></li><li><a href="#dynamic-storage-allocation-problem">Dynamic Storage-Allocation Problem</a></li><li><a href="#fragmentation---중요">Fragmentation - 중요</a></li><li><a href="#segmentation">Segmentation</a></li><li><a href="#users-view-of-a-program">User’s View of a Program</a></li><li><a href="#logical-view-of-segmentation">Logical View of Segmentation</a></li><li><a href="#segmentation-architecture">Segmentation Architecture</a></li><li><a href="#segmentation-architecture-cont">Segmentation Architecture (Cont.)</a></li><li><a href="#segmentation-hardware">Segmentation Hardware</a></li><li><a href="#example-of-segmentation">Example of Segmentation</a></li><li><a href="#sharing-of-segments">Sharing of segments</a></li><li><a href="#paging">Paging</a></li><li><a href="#address-translation-scheme">Address Translation Scheme</a></li><li><a href="#address-translation-scheme-1">Address Translation Scheme</a></li><li><a href="#paging-hardware">Paging Hardware</a></li><li><a href="#paging-model-of-logical-and-physical-memory">Paging Model of Logical and Physical Memory</a></li><li><a href="#paging-example">Paging Example</a></li><li><a href="#paging-cont">Paging (Cont.)</a></li><li><a href="#free-frames">Free Frames</a></li><li><a href="#implementation-of-page-table">Implementation of Page Table</a></li><li><a href="#associative-register">Associative Register</a></li><li><a href="#paging-hardware-with-tlb">Paging Hardware With TLB</a></li><li><a href="#effective-access-time">Effective Access Time</a></li><li><a href="#memory-protection">Memory Protection</a></li><li><a href="#valid-v-or-invalidi-bit-in-a-page-table">Valid (v) or Invalid(i) Bit In A Page Table</a></li><li><a href="#shared-pages">Shared Pages</a></li><li><a href="#shared-page-examples">Shared Page Examples</a></li><li><a href="#structure-of-the-page-table">Structure of the Page Table</a></li><li><a href="#hierarchical-page-tables">Hierarchical Page Tables</a></li><li><a href="#two-level-page-table-scheme">Two-Level Page-Table Scheme</a></li><li><a href="#two-level-paging-example">Two-Level Paging Example</a></li><li><a href="#address-translation-scheme-2">Address-Translation Scheme</a></li><li><a href="#multilevel-paging64-bit-logical-address-space">Multilevel Paging(64-bit Logical Address Space)</a></li><li><a href="#three-level-paging-scheme">Three-level Paging Scheme</a></li><li><a href="#four-level-paging-scheme">Four level paging scheme</a></li><li><a href="#hashed-page-tables">Hashed Page Tables</a></li><li><a href="#hashed-page-table">Hashed Page Table</a></li><li><a href="#inverted-page-table">Inverted Page Table</a></li><li><a href="#inverted-page-table-architecture">Inverted Page Table Architecture</a></li><li><a href="#os에-의한----안나옴">OS에 의한 ! - 안나옴</a></li><li><a href="#segmentation-with-paging---multics">Segmentation with Paging - MULTICS</a></li><li><a href="#multics-address-translation-scheme">MULTICS Address Translation Scheme</a></li><li><a href="#segmentation-with-paging---intel-386">Segmentation with Paging - Intel 386</a></li><li><a href="#example-the-intel-32-and-64-bit-architectures">Example: The Intel 32 and 64-bit Architectures</a></li><li><a href="#example-the-intel-ia-32-architecture">Example: The Intel IA-32 Architecture</a></li><li><a href="#example-the-intel-ia-32-architecture-cont">Example: The Intel IA-32 Architecture (Cont.)</a></li><li><a href="#logical-to-physical-address-translation-in-ia-32">Logical to Physical Address Translation in IA-32</a></li><li><a href="#intel-ia-32-segmentation">Intel IA-32 Segmentation</a></li><li><a href="#intel-ia-32-paging-architecture">Intel IA-32 Paging Architecture</a></li><li><a href="#intel-ia-32-page-address-extensions">Intel IA-32 Page Address Extensions</a></li><li><a href="#intel-x86-64">Intel x86-64</a></li><li><a href="#example-arm-architecture">Example: ARM Architecture</a></li><li><a href="#armv8-4-level-hierarchical-paging">ARMv8 4-level hierarchical paging</a></li><li><a href="#linear-address-in-linux">Linear Address in Linux</a></li><li><a href="#three-level-paging-in-linux">Three-level Paging in Linux</a></li><li><a href="#comparing-memory-management-startegies">Comparing Memory-Management Startegies</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>[toc]</p>
+
+<h1 id="chapter-9-memory-management">Chapter 9: Memory Management</h1>
+
+<ul>
+  <li>Background</li>
+  <li>Logical versus Physical Address Space</li>
+  <li>Swapping</li>
+  <li>Contiguous Memory Allocation</li>
+  <li><strong>Paging</strong> (시험)</li>
+  <li><strong>Segmentation</strong> (시험)</li>
+  <li>Segmentation with Paging</li>
+  <li>Structure of the Page Table</li>
+  <li>Example: The Intel 32 and 64-bit Architectures</li>
+  <li>Example: ARM Architecture</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="objectives">Objectives</h2>
+
+<ul>
+  <li>To provide a detailed description of various ways of organizing memory  hardware</li>
+  <li>To discuss various memory-management techniques, including paging  and segmentation</li>
+  <li>To provide a detailed description of the Intel Pentium, which supports both pure segmentation and segmentation with paging</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="structure---top-level">Structure - Top Level</h2>
+
+<ul>
+  <li>components are interleaved</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221127005647009.png" alt="image-20221127005647009" /></p>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002232502033.png" alt="image-20221002232502033" /></p>
+
+<p><br /></p>
+
+<h2 id="structure--the-cpu">Structure -The CPU</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002232615247.png" alt="image-20221002232615247" /></p>
+
+<p><br /></p>
+
+<h2 id="structure---the-control-unit">Structure - The Control Unit</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002232722331.png" alt="image-20221002232722331" /></p>
+
+<p><br /></p>
+
+<h2 id="von-neumann-architecture">Von Neumann architecture</h2>
+
+<ul>
+  <li>Instructions and data are stored in a single read-write memory</li>
+  <li>Contents of memory are <strong>addressable by location</strong> without regard to the type of data contained there</li>
+  <li>Execution occurs <strong>in sequential</strong> fashion unless explicitly modified
+    <ul>
+      <li>explicitly modified - loop, selection</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="what-is-a-program">What is a program?</h2>
+
+<ul>
+  <li>A sequence of steps (instructions)</li>
+  <li>For each step, an arithmetic or logical operation is done</li>
+  <li>
+    <p>For each operation, a different set of control signals is needed</p>
+  </li>
+  <li>instruction cycle의 무한 반복</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="instruction-cycle">Instruction Cycle</h2>
+
+<ul>
+  <li>Two steps:
+    <ul>
+      <li>Fetch</li>
+      <li>Execute</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002232821824.png" alt="image-20221002232821824" /></p>
+
+<ul>
+  <li>atomic program
+    <ul>
+      <li>외부에서 interrupt를 걸어도 그 즉시 멈추지 않음</li>
+      <li>나중에 처리</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="instruction-cycle-with-interrupts---state-diagram">Instruction Cycle (with Interrupts) - State Diagram</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002232849213.png" alt="image-20221002232849213" /></p>
+
+<p><br /></p>
+
+<h2 id="background">Background</h2>
+
+<ul>
+  <li>
+    <p>Program must be brought (from disk) into memory and placed within a  process for it to be run</p>
+  </li>
+  <li>
+    <p>Main memory and registers are only storage CPU can access directly</p>
+  </li>
+  <li>
+    <p>Memory unit only sees a stream of addresses + read requests, or address + data and write requests</p>
+  </li>
+  <li>
+    <p>Register access in one CPU clock (or less)</p>
+  </li>
+  <li>
+    <p>Main memory can take many cycles, causing a <strong>stall</strong></p>
+  </li>
+  <li>
+    <p><strong>Cache</strong> sits between main memory and CPU registers</p>
+  </li>
+  <li>Protection of memory required to ensure correct operation
+    <ul>
+      <li>Multi-programming에서의 security</li>
+      <li>여러 프로세스들간에 다른 프로세스의 메모리 영역 침범이 이루어지지 않도록 관리</li>
+    </ul>
+  </li>
+  <li>Memory resource 관리
+    <ul>
+      <li>As a result of CPU scheduling -&gt; improved cpu utilization, response</li>
+      <li>CPU scheduling과 같이 메모리를 resource 차원에서 관리해야함.  (분배 문제)</li>
+    </ul>
+  </li>
+  <li>A program resides on a disk as a <strong>binary executable file</strong> -&gt; a.out
+    <ul>
+      <li>Program must be brought into memory and placed within a process  for it to be executed.</li>
+      <li>Input queue – collection of processes on the disk that are waiting to be brought into memory for execution.
+        <ul>
+          <li>Select one of the processes in input queue, load that process  into memory (by longterm scheduler)</li>
+          <li>Sequence of memory addresses are generated by the running  program (Instruction execution cycles, addressing modes)</li>
+          <li>If process terminate, its memory space is made available</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="base-and-limit-registers">Base and Limit Registers</h2>
+
+<ul>
+  <li>A pair of base and limit registers define the logical address  space</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002233047756.png" alt="image-20221002233047756" /></p>
+
+<p>base register - limit register가 가리키는 범주에 벗어난 것은 illegal process로 간주</p>
+
+<p>실행되는 프로세스마다 바뀜 (by OS)</p>
+
+<p><br /></p>
+
+<h2 id="hardware-address-protection-with-base-and-limit-registers">Hardware Address Protection with Base and Limit Registers</h2>
+
+<ul>
+  <li>CPU must check every memory access generated in user mode to  be sure it is between base and limit for that user</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002233125230.png" alt="image-20221002233125230" /></p>
+
+<ul>
+  <li>the instructions to loading the base and limit registers are privileged</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="address-binding">Address Binding</h2>
+
+<ul>
+  <li>Programs on disk, ready to be brought into memory to execute form an <strong>input queue</strong>
+    <ul>
+      <li>Without support, must be loaded into address 0000</li>
+    </ul>
+  </li>
+  <li>Inconvenient to have first user process physical address always at 0000
+    <ul>
+      <li>How can it not be?</li>
+      <li>Most systems allow a user process to reside in any part of the physical memory</li>
+      <li><strong>First address</strong> of user process <strong>does not need to be 0</strong></li>
+    </ul>
+  </li>
+  <li>Further, addresses represented in different ways at different stages of a program’s life</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="background-1">Background</h2>
+
+<ul>
+  <li>User programs go through several steps before being executed.
+    <ul>
+      <li>Source code addresses usually symbolic address</li>
+      <li>Compiled code addresses <strong>bind</strong> to <code class="language-plaintext highlighter-rouge">relocatable addresses </code>
+        <ul>
+          <li>A compiler binds symbolic address to relocatable address</li>
+          <li>i.e. “14 bytes from beginning of this module”</li>
+        </ul>
+      </li>
+      <li>Linker or loader will bind relocatable addresses to absolute addresses
+        <ul>
+          <li>i.e. 74014  - 최종 주소</li>
+        </ul>
+      </li>
+      <li>Each binding maps one address space to another</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002233255372.png" alt="image-20221002233255372" /></p>
+
+<ul>
+  <li>Program
+    <ul>
+      <li>symbolic address</li>
+    </ul>
+  </li>
+  <li>1.c, 2.c</li>
+  <li>1.o, 2.o(by link module)
+    <ul>
+      <li>relocatable address</li>
+    </ul>
+  </li>
+  <li>a.out(by linker)
+    <ul>
+      <li>absolute address</li>
+    </ul>
+  </li>
+  <li>mm에 탑재(by loader)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="address-binding-1">Address Binding</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221127011733238.png" alt="image-20221127011733238" /></p>
+
+<ul>
+  <li>빈칸으로 되어있는 것은 채우지 못하는 경우
+    <ul>
+      <li>BLE NEXT가 BLE ___로 되어 있는 이유는 NEXT에 대한 부분의 주소를 아직 모르기 때문에 비워놔야 하는 것이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="address-binding-2">Address Binding</h2>
+
+<ul>
+  <li>Internal address(위 예제의 빈칸)는 pass1,2를 통하여 reconcile(조정)됨.
+    <ul>
+      <li>소스 코드를 두 번 읽으면 가능</li>
+    </ul>
+  </li>
+  <li>Reconcile : give actual address</li>
+  <li>But, How about addresses which cannot be reconciled at  assembly?
+    <ul>
+      <li>References to external modules</li>
+      <li>References to absolute address</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="address-binding안중요">Address Binding(안중요)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002233459847.png" alt="image-20221002233459847" /></p>
+
+<ul>
+  <li>What is done at each step ?
+    <ul>
+      <li>Assembler
+        <ul>
+          <li>Translate assembly language instruction into machine code
+            <ul>
+              <li>Format instruction words</li>
+              <li>Reconciles labels/variables location</li>
+              <li>Usually addresses are generated in relocatable form
+                <ul>
+                  <li>» Assumes first words of program at address zero</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>​</p>
+
+<p><br /></p>
+
+<h2 id="address-binding안중요-1">Address Binding(안중요)</h2>
+
+<ul>
+  <li>Linker
+    <ul>
+      <li>Takes various relocatable, assembled modules &amp; combines  them into 1 module
+        <ul>
+          <li>Reconcile external reference</li>
+          <li>Generates load module</li>
+          <li>What is in load module
+            <ul>
+              <li>Machine instruction / data</li>
+              <li>Information about size of various parts (code, table  data)</li>
+              <li>Relocation information
+                <ul>
+                  <li>» Addresses which need to be reconciled when  module is placed in a particular location in  memory</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="address-binding안중요-2">Address Binding(안중요)</h2>
+
+<ul>
+  <li>Loader
+    <ul>
+      <li>Accepts load module, places it into memory</li>
+      <li>Reconciling addresses where necessary</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="binding-of-instructions-and-data-to-memory중요">Binding of Instructions and Data to Memory(중요)</h2>
+
+<p>Address binding of instructions and data to memory addresses can happen at three different stages.</p>
+
+<p>absolute address가 언제 결정되냐에 따라 다르다! (binding)</p>
+
+<ul>
+  <li><strong>Compile time</strong>:
+    <ul>
+      <li>If it is known at compile time where the process will reside in memory, absolute code can be generated;
+        <ul>
+          <li>컴파일 할 때 이 프로그램이 MM에 탑재될 위치의 시작 주소를 알고있을 때 가능</li>
+        </ul>
+      </li>
+      <li>link module을 만들지 않고 바로 load module을 만듦</li>
+      <li>must recompile code if starting location changes.</li>
+    </ul>
+  </li>
+  <li><strong>Load time</strong>:
+    <ul>
+      <li>Must generate <strong>relocatable code</strong> if memory location is not known at compile time.</li>
+      <li>If the starting address changes, we need to reload the user code</li>
+    </ul>
+  </li>
+  <li><strong>Execution time</strong>:  (중요)
+    <ul>
+      <li><strong>Binding delayed</strong> until run time if the process can be moved during its execution from one memory segment to another.</li>
+      <li>binding이 컴파일을 할 때도 absolute address가 결정되지 않고 loading 할 때도 결정이 안 되고 오직 해당 instruction이 실행될 때만 결정되는 것이다.</li>
+      <li>Need hardware support for address maps (e.g., base and limit  registers).</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multistep-processing-of-a-user-program">Multistep Processing of a User Program</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002233809961.png" alt="image-20221002233809961" /></p>
+
+<p>object module - link module</p>
+
+<p>load module(a.out을 만들어냄)</p>
+
+<p><br /></p>
+
+<h2 id="logical-vs-physical-address-space">Logical vs. Physical Address Space</h2>
+
+<ul>
+  <li>The concept of a <strong>logical address space</strong> that is bound to a separate physical address space is central to proper memory management.
+    <ul>
+      <li>Logical address – generated by the <strong>CPU</strong>; also referred to as virtual  address.</li>
+      <li>Physical address – address seen by the memory unit.</li>
+      <li>MMU : 두 주소 간의 변환을 해주는 역할</li>
+    </ul>
+  </li>
+  <li>Logical and physical addresses are the same in compile-time and loadtime address-binding schemes; logical (virtual) and physical addresses  differ in execution-time address-binding scheme.
+    <ul>
+      <li><strong>Logical address space</strong> is the set of all logical addresses generated  by a program</li>
+      <li><strong>Physical address space</strong> is the set of all physical addresses  generated by a program</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="physical-logical-storage">Physical &amp; Logical storage</h2>
+
+<ul>
+  <li>Sharing of memory
+    <ul>
+      <li>Where is a process information placed?</li>
+      <li>How is it later accessed?</li>
+      <li>How is security insured?</li>
+      <li>Want the addressing to be transparent to user</li>
+    </ul>
+  </li>
+  <li>Physical storage
+    <ul>
+      <li>Actual storage in hardware memory of machine, usually start at zero</li>
+    </ul>
+  </li>
+  <li>Logical storage
+    <ul>
+      <li>Memory as perceived by process
+        <ul>
+          <li>Can be larger or smaller than physical storage (같지 않을 수 있음.)</li>
+          <li>Size usually limited by architecture (&lt;&gt;virtual address)</li>
+        </ul>
+      </li>
+      <li>Usually relocatable address</li>
+    </ul>
+  </li>
+  <li>Processes only see logical storage
+    <ul>
+      <li>Logical address must be translated to physical address
+        <ul>
+          <li>execution time binding의 경우 변환이 필요!!</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-management-unit-mmu">Memory-Management Unit (MMU)</h2>
+
+<ul>
+  <li>Hardware device that at run time maps virtual to physical address</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002234124953.png" alt="image-20221002234124953" /></p>
+
+<ul>
+  <li>Many methods possible, covered in the rest of this chapter</li>
+  <li>To start, consider simple scheme where the value in the relocation register is  added to every address generated by a user process at the time it is sent to  memory
+    <ul>
+      <li>Base register now called <strong>relocation register</strong></li>
+      <li>MS-DOS on Intel 80x86 used 4 relocation registers</li>
+    </ul>
+  </li>
+  <li>The user program deals with logical addresses; it never sees the real physical addresses
+    <ul>
+      <li>logical address만 알아도 physical address에 접근 가능하기 때문에 physical address를 몰라도 됨.</li>
+      <li>Execution-time binding occurs when reference is made to location in memory</li>
+      <li>Logical address bound to physical addresses</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dynamic-relocation-using-a-relocation-register">Dynamic relocation using a relocation register</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002234148212.png" alt="image-20221002234148212" /></p>
+
+<p>가장 간단한 형태의 주소 변환</p>
+
+<p><br /></p>
+
+<h2 id="dynamic-loading">Dynamic Loading</h2>
+
+<ul>
+  <li>Entire program and data of a process must be in physical memory for the process to execute
+    <ul>
+      <li>The size of process is limited to the size of physical memory</li>
+    </ul>
+  </li>
+  <li>To obtain better memory space utilization, dynamic loading can be used
+    <ul>
+      <li>Routine is not loaded until it is called</li>
+      <li>Better memory-space utilization; unused routine is never loaded.</li>
+      <li>All routines are kept on disk in a relocatable load format</li>
+      <li>When an unloaded routine is needed, relocatable loader is called to load the  desired routine into memory, then control is passed to newly loaded code</li>
+      <li>Useful when large amounts of code are needed to handle infrequently  occurring cases.</li>
+      <li>No special support from the operating system is required except providing  library routines to implement DL
+        <ul>
+          <li>implemented through program design.</li>
+          <li>OS can help by providing libraries to implement dynamic loading</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>불필요한 루틴의 메모리 탑재 방지</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dynamic-linking">Dynamic Linking</h2>
+
+<p>OS가 지원</p>
+
+<p>중복 탑재 방지</p>
+
+<ul>
+  <li>Static linking – system libraries and program code combined by the loader into the  binary program image
+    <ul>
+      <li>shared libraries</li>
+    </ul>
+  </li>
+  <li>Dynamic linking
+    <ul>
+      <li>Rather than <strong>loading</strong> being postponed until execution time, <strong>Linking</strong> is postponed until execution time.</li>
+    </ul>
+  </li>
+  <li>Usually used with system libraries such as language library
+    <ul>
+      <li>W/O this facility, all programs on a system need to have a copy of their language  library, wastes both disk and memory</li>
+    </ul>
+  </li>
+  <li>Small piece of code, <strong>stub</strong>, is included in the image for each library routine reference
+    <ul>
+      <li>Stub is used to locate the appropriate memory-resident library routine.</li>
+      <li>Stub replaces itself with the address of the routine, and executes the routine</li>
+    </ul>
+  </li>
+  <li>Operating system checks if routine is in processes’ memory address
+    <ul>
+      <li>If not in address space, add to address space</li>
+    </ul>
+  </li>
+  <li>Consider applicability to patching system libraries
+    <ul>
+      <li>Versioning may be needed</li>
+    </ul>
+  </li>
+  <li>Need OS support because of address space problem between different processes</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="swapping">Swapping</h2>
+
+<p>프로세스 전체 공간을 대상으로</p>
+
+<ul>
+  <li>(MM에 공간이 부족하면) A process can be <strong>swapped</strong> temporarily <strong>out</strong> of memory to a backing store, and  then(공간에 여유가 생기면) brought <strong>back into</strong> memory for continued execution</li>
+  <li>Total physical memory space of processes can exceed physical memory</li>
+  <li><span style="color:red">Need execution time binding </span></li>
+  <li><strong>Backing store</strong> – fast disk large enough to accommodate <strong>copies</strong> of all memory  images for all users; must provide direct access to these memory images</li>
+  <li><strong>Roll out, roll in</strong> – swapping variant used for priority-based scheduling  algorithms; lower-priority process is swapped out so higher-priority process can be loaded and executed</li>
+  <li>Major part of swap time is transfer time; total transfer time is directly proportional  to the amount of memory swapped</li>
+  <li>System maintains a <strong>ready queue</strong> of ready-to-run processes which have  memory images on disk</li>
+</ul>
+
+<p>Swapping은 <strong>우선순위가 높거나 중요한 프로세스가 메모리에 올라가려 할 때 공간이 부족하면</strong> <strong>현재 메모리 위에 올라가 있는 프로세스</strong> 중 수많은 알고리즘 중 하나를 이용하여 어떤 프로세스를 <strong>잠시 디스크에 저장</strong>을 하고 <strong>우선순위가 높은 프로세스를 수행</strong>하게 되는데요.</p>
+
+<p>이 프로세스가 <strong>작업을 마치면 디스크에 있던 프로세스를 다시 메모리에 올리게</strong> 됩니다. 이렇게 우선순위가 높거나 중요한 프로세스가 중간에 들어가는 것을 Swap-in이라 하며 자리를 내어주어 디스크로 빠지게 되는 과정을 Swap-out이라고 합니다.</p>
+
+<p><strong>Swap-out 된 프로세스가 다시 메모리에 올라갈 때는 원래 있던 자리로 돌아가지 않을 수 있습니다.</strong> 여기서 수많은 알고리즘 중 상황에 맞는 알고리즘을 고르는 것과 디스크와 메모리 간의 속도 차로 인해 발생하는 이슈들이 존재합니다.</p>
+
+<p><br /></p>
+
+<h2 id="swapping-1">Swapping</h2>
+
+<ul>
+  <li>Does the swapped out process need to swap back in to same physical addresses?
+    <ul>
+      <li>No!!!!!!!!!!</li>
+    </ul>
+  </li>
+  <li>Depends on address binding method
+    <ul>
+      <li>Plus consider pending I/O to / from process memory space</li>
+    </ul>
+  </li>
+  <li>Modified versions of swapping are found on many systems (i.e., UNIX,  Linux, and Windows)
+    <ul>
+      <li>Swapping normally disabled</li>
+      <li>Started if more than threshold amount of memory allocated</li>
+      <li>Disabled again once memory demand reduced below threshold</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="schematic-view-of-swapping">Schematic View of Swapping</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002234528490.png" alt="image-20221002234528490" /></p>
+
+<p><br /></p>
+
+<h2 id="context-switch-time-including-swapping">Context Switch Time including Swapping</h2>
+
+<ul>
+  <li>If next processes to be put on CPU is not in memory, need to swap out a process and  swap in target process</li>
+  <li>Context switch time can then be very high</li>
+  <li>100MB process swapping to hard disk with transfer rate of 50MB/sec
+    <ul>
+      <li>Plus disk latency of 8 ms</li>
+      <li>Swap out time of 2008 ms</li>
+      <li>Plus swap in of same sized process</li>
+      <li>Total context switch swapping component time of 4016ms (&gt; 4 seconds)</li>
+    </ul>
+  </li>
+  <li>Can reduce if reduce size of memory swapped – by knowing how much memory really  being used
+    <ul>
+      <li>System calls to inform OS of memory use via request memory and release  memory</li>
+      <li>request_memory() and release_memory()</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="context-switch-time-including-swapping-1">Context Switch Time including Swapping</h2>
+
+<ul>
+  <li>Other constraints as well on swapping
+    <ul>
+      <li>Pending I/O – can’t swap out as I/O would occur to wrong process</li>
+      <li>Or always transfer I/O to kernel space, then to I/O device
+        <ul>
+          <li>Known as double buffering, adds overhead
+            <ul>
+              <li>kernel space의 buffer에서 user space의 buffer로 또 다시 buffering을 해야 함.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Standard swapping not used in modern operating systems
+    <ul>
+      <li>But modified version common
+        <ul>
+          <li>Swap only when free memory extremely low</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="swapping-on-mobile-systems">Swapping on Mobile Systems</h2>
+
+<ul>
+  <li>Not typically supported
+    <ul>
+      <li>Flash memory based
+        <ul>
+          <li>Small amount of space</li>
+          <li>Limited number of write cycles</li>
+          <li>Poor throughput between flash memory and CPU on mobile platform</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Instead use other methods to free memory if low
+    <ul>
+      <li>iOS asks apps to voluntarily relinquish allocated memory (할당 받은 메모리 반납 요청)
+        <ul>
+          <li>Read-only data thrown out and reloaded from flash if needed</li>
+          <li>Failure to free can result in termination</li>
+        </ul>
+      </li>
+      <li>Android terminates apps if low free memory, but first writes application  state to flash for fast restart</li>
+      <li>Both OSes support paging as discussed below</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-management">Memory management</h2>
+
+<ul>
+  <li>How memory is allocated to different jobs to hold their (entire or parts of)  load module
+    <ul>
+      <li>Various levels of memory
+        <ul>
+          <li>Cache, main memory, secondary storage</li>
+          <li>Access slower storage (secondary storage) as infrequently as  possible</li>
+          <li>When need to access?
+            <ul>
+              <li>Fetch instruction</li>
+              <li>Fetch data/store data</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Use of main memory
+        <ul>
+          <li>Utilize to fullest</li>
+          <li>Must be shared</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="placement-of-modules-in-memory">Placement of modules in memory</h2>
+
+<ul>
+  <li>Main memory must support both OS and user processes
+    <ul>
+      <li>Kernel remains in main memory</li>
+      <li>Memory have security (between kernel and user, between users)</li>
+    </ul>
+  </li>
+  <li>Limited resource, must allocate efficiently</li>
+  <li>Determine different placement strategies for user processes</li>
+  <li>Compare strategies based on
+    <ul>
+      <li><strong>Internal fragmentation</strong>
+        <ul>
+          <li>block의 단위 할당으로 인해 요청하는 메모리 크기보다 큰 메모리를 할당해 주어 메모리 낭비가 일어나는 것</li>
+          <li>Pieces of memory which are associated with a process but which the  process cannot using
+            <ul>
+              <li>This space cannot be allocated</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>External fragmentation</strong>
+        <ul>
+          <li>메모리 공간을 연속적으로 할당해서 생기는 문제</li>
+          <li>메모리 공간 50이 남아있을 때 40을 요청해도 조각조각 나있으면 줄 수가 없다.</li>
+          <li>Pieces of free too small to be allocated and are therefore wasted
+            <ul>
+              <li>free space이긴 하지만 너무 작아서 다른 것에게 할당할 수 없는 공간</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>두가지 fragmentation을 최소화 시켜야 함.</li>
+    </ul>
+  </li>
+  <li>Degree of multi-programming
+    <ul>
+      <li>몇개의 프로그램이 동시에 실행 중인가</li>
+      <li>Measure of number of jobs which can be in system based on the allocation of  some portion of memory for the job’s use</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="contiguous-allocation">Contiguous Allocation</h2>
+
+<ul>
+  <li>Main memory usually into two partitions:
+    <ul>
+      <li>Resident operating system, usually held in low memory with interrupt vector.</li>
+      <li>User processes then held in high memory.</li>
+      <li>Each process contained <strong>in single contiguous section of memory</strong></li>
+    </ul>
+  </li>
+  <li>Relocation registers used to protect user processes from each other, and  from changing operating-system code and data
+    <ul>
+      <li><strong>Base register</strong> contains value of smallest physical address</li>
+      <li><strong>Limit register</strong> contains range of logical addresses – each logical  address must be less than the limit register</li>
+      <li>MMU maps logical address dynamically</li>
+      <li>Can then allow actions such as kernel code being <strong>transient</strong> and  kernel changing size</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hardware-support-for-relocation-and-limit-registers">Hardware Support for Relocation and Limit Registers</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002235106545.png" alt="image-20221002235106545" /></p>
+
+<p><br /></p>
+
+<h2 id="single-partition-allocation">Single-partition allocation</h2>
+
+<ul>
+  <li>Single job in memory (All or nothing)
+    <ul>
+      <li>Place the entire job in the user portion main memory</li>
+    </ul>
+  </li>
+  <li>Where is job placed?
+    <ul>
+      <li>User job can be at address directly next to kernel space</li>
+      <li>Kernel-user or user-kernel depending on interrupt h/w</li>
+      <li>Relocation-register scheme used to protect user processes from each other,  and from changing operating-system code and data.</li>
+      <li>Relocation register contains value of smallest physical address; limit register  contains range of logical addresses – each logical address must be less than  the limit register.</li>
+    </ul>
+  </li>
+  <li>Adv.: Compile time address binding</li>
+  <li>Dis, : need recompiling when kernel size changes
+    <ul>
+      <li>Kernel routine 중 자주 수행되지 않는 program을 불러들일때
+        <ul>
+          <li>Place user job at opposite end of memory and allow to grow toward  kernel space</li>
+          <li>Translation of logical to physical (execution time biding)
+            <ul>
+              <li>Security</li>
+              <li>Simple addressing</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multiple-fixed-parition">Multiple fixed parition</h2>
+
+<ul>
+  <li>MM is divided into a number of fixed size partition</li>
+  <li>When a process arrives, it is placed into one of the partition which are  larger than job itself     -&gt; process is assigned entire partition</li>
+  <li>Prob.
+    <ul>
+      <li>internal fragmentation</li>
+      <li>Degree of multiprogramming bounded by # of partitions</li>
+    </ul>
+  </li>
+  <li>Advantages
+    <ul>
+      <li>Address change easy, because simple addressing</li>
+      <li>Easy security</li>
+      <li>Easy bookeeping : no free memory management</li>
+    </ul>
+  </li>
+  <li>What if a job does not fit the partition/memory ? (larger than)
+    <ul>
+      <li>overlay</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="overlays생략">Overlays(생략)</h2>
+
+<ul>
+  <li>Keep in memory only those instructions and data that are needed at any  given time.
+    <ul>
+      <li>Breaks program into pieces (Fig. 8.2)</li>
+      <li>When other instructions are needed, they are loaded into space that  are occupied by instructions that are no longer needed</li>
+    </ul>
+  </li>
+  <li>Needed when process is larger than amount of memory allocated to it.</li>
+  <li>Implemented by user, no special support needed from operating system,  programming design of overlay structure is complex</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multiple---variable-sized-partition-allocation">Multiple - Variable sized partition allocation</h2>
+
+<ul>
+  <li>Multiple-partition allocation
+    <ul>
+      <li>Degree of multiprogramming limited by number of partitions</li>
+      <li><strong>Variable-partition</strong> sizes for efficiency (sized to a given process’ needs)</li>
+      <li>Hole – block of available memory; holes of various size are scattered  throughout memory.
+        <ul>
+          <li>연속적으로 메모리를 할당해주면 프로세스마다 할당된 메모리 공간 사이에 할당 되지 않은 빈공간이 생기게 되는데 이를 hole 이라고 한다.</li>
+        </ul>
+      </li>
+      <li>When a process arrives, it is allocated memory from a hole large enough to  accommodate it.</li>
+      <li>Process exiting frees its partition, adjacent free partitions combined</li>
+      <li>Operating system maintains information about: a) allocated partitions b) free partitions (hole)</li>
+      <li>Non internal, external Fragmentation</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002235500482.png" alt="image-20221002235500482" /></p>
+
+<p><br /></p>
+
+<h2 id="dynamic-storage-allocation-problem">Dynamic Storage-Allocation Problem</h2>
+
+<p>How to satisfy a request of size n from a list of free holes.</p>
+
+<p>연속된 메모리 공간을 할당해 주는 방법에 크게 세가지 내부적은 방법이 존재한다.</p>
+
+<ul>
+  <li><strong>First-fit</strong>: Allocate <strong>the first hole</strong> that is big enough.
+    <ul>
+      <li>메모리 요청이 들어왔을 때 요청한 크기를 만족하는 hole 중 가장 첫 번째 hole을 할당</li>
+      <li>Maintain free space information as a <strong>linked list</strong> sorted by  address (start, size)to allocate search list, assign first partition  whose size is larger than job</li>
+      <li>On fly compaction
+        <ul>
+          <li>Ability to combine adjacent free space</li>
+          <li>Easy to maintain list in order</li>
+        </ul>
+      </li>
+      <li>Long search time</li>
+      <li>External fragmentation
+        <ul>
+          <li>Decreases size of large block</li>
+          <li>Potentially increase search time</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Best-fit</strong>: Allocate <strong>the smallest hole</strong> that is big enough; must search entire list, unless ordered by size. Produces the smallest leftover hole.
+    <ul>
+      <li>메모리 요청이 들어왔을 때, 요청한 크기를 만족하는 hole 중 가장 작은 크기의 hole을 할당</li>
+      <li>Maintain free space as large of chunks as possible
+        <ul>
+          <li>Maintain list is sorted in increasing size order</li>
+        </ul>
+      </li>
+      <li>Elements may have to be moved in the list when they change in size</li>
+      <li>Remainder is going to be smaller</li>
+    </ul>
+  </li>
+  <li><strong>Worst-fit</strong>: Allocate the largest hole; must also search entire list.  Produces the largest leftover hole.
+    <ul>
+      <li><em>Best-Fit과 반대로 요청한 크기를 만족하는 Hole 중 가장 큰 크기의 Hole을 할당</em></li>
+      <li>Maintain list in decreasing size order</li>
+      <li>Try to avoid generating small pieces of free space</li>
+      <li>Decrease the amount of large free space</li>
+    </ul>
+  </li>
+  <li>First-fit and best-fit better than worst-fit in terms of speed and  storage utilization</li>
+  <li>First fit analysis reveals that given N blocks allocated, 0.5 N blocks lost to fragmentation
+    <ul>
+      <li>1/3 may be unusable -&gt; 50-percent rule</li>
+      <li>internal fragmentation 발생!!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fragmentation---중요">Fragmentation - 중요</h2>
+
+<ul>
+  <li>External fragmentation – total memory space exists to satisfy a request,  but it is not contiguous.</li>
+  <li>Internal fragmentation – allocated memory may be slightly larger than  requested memory; this size difference is memory internal to a partition,  but not being used.</li>
+  <li>Reduce external fragmentation by compaction (따닥따닥 붙여서!)
+    <ul>
+      <li>Shuffle memory contents to place all free memory together in one  large block.</li>
+      <li><strong>Compaction is possible only if relocation is dynamic</strong>, and is done at  execution time.</li>
+      <li>할당된 메모리 공간들을 한쪽으로 모아 연속된 공간을 확보하는 것</li>
+      <li>I/O problem
+        <ul>
+          <li>Latch job in memory while it is involved in I/O.</li>
+          <li>Do I/O only into OS buffers.</li>
+        </ul>
+      </li>
+      <li>하지만 이러한 방법들은 실행 시간에 주소 바인딩이 일어나는 프로그램들만 가능하며 그렇지 않은 경우 압축되었을 때 잘못된 메모리 공간의 주소에 접근하게 될 수 있다. -&gt; 상당히 제한적임</li>
+      <li>Now consider that backing store has same fragmentation problems</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>그래서 나온 방식이 애초에 메모리 공간을 연속하지 않게 할당해 주는 방법이다.</p>
+
+<ul>
+  <li>하나는 Paging 기법</li>
+  <li>하나는 Segmentation 기법</li>
+</ul>
+
+<h2 id="segmentation">Segmentation</h2>
+
+<ul>
+  <li>
+    <p>Memory-management scheme that supports user view of memory</p>
+  </li>
+  <li>
+    <p>A program is a collection of segments</p>
+
+    <ul>
+      <li>
+        <p>A segment is a logical unit such as:</p>
+
+        <p>​			main program</p>
+
+        <p>​			procedure</p>
+
+        <p>​			function</p>
+
+        <p>​			method</p>
+
+        <p>​			object</p>
+
+        <p>​			local variables, global variables</p>
+
+        <p>​			common block</p>
+
+        <p>​			stack</p>
+
+        <p>​			symbol tablearray</p>
+      </li>
+    </ul>
+  </li>
+  <li>Paging 기법은 Logical address를 page 단위로, physical address 를 같은 크기의 frame 단위로 나누어 올리고 접근</li>
+  <li>Segmentation은 모두 고정된 크기가 아니라 일련의 논리적 구조 단위(logical unit)로 나누어 진다.
+    <ul>
+      <li>이렇게 논리적 단위로 나누면 사용자가 메모리의 상태를 이해하는데 더욱 도움이 된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="users-view-of-a-program">User’s View of a Program</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002235912372.png" alt="image-20221002235912372" /></p>
+
+<p>사용자 프로그램은 logical segmentation으로 구성</p>
+
+<p><br /></p>
+
+<h2 id="logical-view-of-segmentation">Logical View of Segmentation</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002235931229.png" alt="image-20221002235931229" /></p>
+
+<p>사용자 프로세스(4개)가 메모리에 탑재 될 때 segment 별로 탑재 되기 때문에 비연속적인 공간에 할당된다.</p>
+
+<ul>
+  <li>순서도 맞지 않음</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="segmentation-architecture">Segmentation Architecture</h2>
+
+<ul>
+  <li>
+    <p>Logical address consists of a two tuple:</p>
+
+    <p>​	&lt;segment-number, offset&gt;</p>
+  </li>
+  <li>
+    <p><strong>Segment table</strong> – maps two-dimensional physical addresses; each table entry  has:</p>
+
+    <ul>
+      <li>
+        <p>base – contains the starting physical address where the segments reside in  memory</p>
+      </li>
+      <li>
+        <p>limit – specifies the length of the segment</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Segment-table base register (STBR) points to the segment table’s location in  memory</p>
+  </li>
+  <li>
+    <p>Segment-table length register (STLR) indicates number of segments used by a  program;</p>
+
+    <p>segment number s is legal if s &lt; STLR</p>
+  </li>
+  <li>
+    <p>paging은 모두 같은 크기이기 때문에 따로 크기에 대한 정보를 갖고 있지 않지만, segmentation은 크기가 제각기 다 다르기 때문에 크기를 알기 위해 해당 segmentation의 시작점을 알리는 base 정보와 끝을 알리는 limit을 갖고 있는다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="segmentation-architecture-cont">Segmentation Architecture (Cont.)</h2>
+
+<ul>
+  <li>Protection
+    <ul>
+      <li>With each entry in segment table associate:
+        <ul>
+          <li>validation bit = 0 -&gt; illegal segment</li>
+          <li>read/write/execute privileges</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Protection bits associated with segments; code sharing occurs at  segment level</p>
+  </li>
+  <li>
+    <p>Since segments vary in length, memory allocation is a dynamic storage-allocation problem</p>
+  </li>
+  <li>
+    <p>A segmentation example is shown in the following diagram</p>
+  </li>
+  <li>Relocation.
+    <ul>
+      <li>dynamic</li>
+      <li>by segment table</li>
+    </ul>
+  </li>
+  <li>Sharing.
+    <ul>
+      <li>shared segments</li>
+      <li>same segment number : self reference</li>
+    </ul>
+  </li>
+  <li>Allocation.
+    <ul>
+      <li>first fit/best fit</li>
+      <li>external fragmentation</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="segmentation-hardware">Segmentation Hardware</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000143452.png" alt="image-20221003000143452" /></p>
+
+<ul>
+  <li>
+    <p>CPU를 출발하는 주소 - logical address</p>
+
+    <ul>
+      <li>
+        <p>segment 번호</p>
+      </li>
+      <li>
+        <p>displacement</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>segmentation table에 접근하는 S값에 대해서 먼저 limit를 초과하는지에 대한 검사를 통해 잘못된 주소 접근을 막는다.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-of-segmentation">Example of Segmentation</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000157093.png" alt="image-20221003000157093" /></p>
+
+<ul>
+  <li>segmentation은 고정된 크기로 나누어 지지 않는 다는 점을 제외하고 paging 기법과 상당히 유사한 점이 많다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="sharing-of-segments">Sharing of segments</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000211184.png" alt="image-20221003000211184" /></p>
+
+<ul>
+  <li>code section은 segment table 정보(base+limit)를 동일하게 하면 공유가 가능!</li>
+  <li>segmentation 역시 paging과 마찬가지로 공통된 부분은 한 번씩만 올리고 그 주소를 같이 공유하는 shared code를 지원한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="paging">Paging</h2>
+
+<p>segmentation과의 차이는 단위임.</p>
+
+<ul>
+  <li>
+    <p>앞서 언급했듯이 프로세스에게 메모리를 연속적으로 할당해 주지 않기 위해 나온 방법이다.</p>
+  </li>
+  <li>Another solution to external fragmentation
+    <ul>
+      <li>Physical address space of a process can be noncontiguous; process is allocated physical memory whenever the latter is available.</li>
+      <li>Avoids external fragmentation</li>
+      <li>Avoids problem of varying sized memory chunks</li>
+    </ul>
+  </li>
+  <li>Divide physical memory into <strong>fixed-sized blocks</strong> called <strong>frames</strong> (size is power of 2,  between 512 bytes and 8192 bytes).</li>
+  <li>Divide logical memory into blocks of same size called pages.</li>
+  <li>Keep track of all free frames.</li>
+  <li>To run a program of size <strong>n pages</strong>, need to find <strong>n free frames</strong> and load program.
+    <ul>
+      <li>n page 크기의 프로그램을 실행하기 위해서 n개의 남는 frame을 찾고 프로그램을 로딩한다.</li>
+    </ul>
+  </li>
+  <li>Set up a page table to translate logical to physical addresses.</li>
+  <li>Backing store likewise split into pages</li>
+  <li><mark>Still have Internal fragmentation, External?</mark>
+    <ul>
+      <li>internal fragmentation 제거 불가능
+        <ul>
+          <li>할당의 기본단위가 frame이기 때문에 1바이트를 위해서도 반드시 한 개의 frame을 할당받아야 한다.</li>
+        </ul>
+      </li>
+      <li>external fragmentation 제거 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="address-translation-scheme">Address Translation Scheme</h2>
+
+<p>이러한 paging 기법은 메모리의 연속적인 공간에 올라가지 않기 때문에 각각이 어느 위치에 올라가는지 Page Table에 저장된 값으로 주소를 변환하여 원하는 위치에 접근해야 한다.</p>
+
+<ul>
+  <li>
+    <p>Address generated <strong>by CPU</strong> is divided into:</p>
+
+    <ul>
+      <li><strong>Page number</strong> (p) – used as an index into a page table which  contains base address of each page in physical memory</li>
+      <li><strong>Page offset</strong> (d) – combined with base address to define the  physical memory address that is sent to the memory unit</li>
+      <li>
+        <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000318696.png" alt="image-20221003000318696" /></p>
+      </li>
+      <li>For given logical address space 2<sup>m</sup> and page size 2<sup>n</sup></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="address-translation-scheme-1">Address Translation Scheme</h2>
+
+<ul>
+  <li>Address generated by CPU is divided into:
+    <ul>
+      <li>Page number (p) – used as an index into a page table which  contains base address of each page in physical memory.</li>
+      <li>Page offset (d) – combined with base address to define the physical  memory address that is sent to the memory unit.</li>
+      <li>Given page size P under logical address A
+        <ul>
+          <li>p = A div P</li>
+          <li>d = A mod P</li>
+          <li>Ex) page size = 10 , logical address = 31
+            <ul>
+              <li>P = 31 div 10 = 3</li>
+              <li>D = 31 mod 10 = 1</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h2 id="paging-hardware">Paging Hardware</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000440077.png" alt="image-20221003000440077" /></p>
+
+<p><br /></p>
+
+<h2 id="paging-model-of-logical-and-physical-memory">Paging Model of Logical and Physical Memory</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000459434.png" alt="image-20221003000459434" /></p>
+
+<p>compile time binding이나 load time binding은 이런 과정이 필요없음</p>
+
+<ul>
+  <li>logical address = physical address이기 때문에</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="paging-example">Paging Example</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000512397.png" alt="image-20221003000512397" /></p>
+
+<p><br /></p>
+
+<h2 id="paging-cont">Paging (Cont.)</h2>
+
+<ul>
+  <li>Calculating internal fragmentation
+    <ul>
+      <li>Page size = 2,048 bytes</li>
+      <li>Process size = 72,766 bytes</li>
+      <li>35 pages + 1,086 bytes</li>
+      <li>Internal fragmentation of 2,048 - 1,086 = 962 bytes</li>
+      <li>Worst case fragmentation = 1 frame – 1 byte</li>
+      <li>On average fragmentation = 1 / 2 frame size</li>
+      <li>So small frame sizes desirable?</li>
+      <li>But each page table entry takes memory to track</li>
+      <li>Page sizes growing over time
+        <ul>
+          <li>Solaris supports two page sizes – 8 KB and 4 MB</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Process view and physical memory now very different</li>
+  <li>By implementation process can only access its own memory</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="free-frames">Free Frames</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000622312.png" alt="image-20221003000622312" /></p>
+
+<p><br /></p>
+
+<h2 id="implementation-of-page-table">Implementation of Page Table</h2>
+
+<ul>
+  <li>Pages can be mapped into <strong>non-contiguous frames</strong></li>
+  <li><strong>Page table</strong> is kept in main memory.</li>
+  <li>page table을 사용하기 위해서는 page table 역시 main memory에 올라가 있어야 하는데, 이 때 PTBR은 page table의 메모리 위에서의 시작지점을 의미하고 PTLR은 page table의 크기를 나타낸다.
+    <ul>
+      <li>이 두 값으로 잘못된 주소 접근을 방지한다.</li>
+    </ul>
+  </li>
+  <li><strong>Page-table base register (PTBR)</strong> points to the page table
+    <ul>
+      <li>빨리 찾아가기 위함</li>
+    </ul>
+  </li>
+  <li><strong>Page-table length register (PTLR)</strong> indicates size of the page table
+    <ul>
+      <li>Rarely does a process use all its address range</li>
+      <li>entry 갯수를 줄이기 위함</li>
+    </ul>
+  </li>
+  <li>In this scheme every data/instruction access requires two memory  accesses( -&gt; 성능 저하). 
+<mark>One for the page table and one for the data/instruction. </mark>
+    <ul>
+      <li>page table을 보기 위해서 메모리에 접근해서 생기는 문제!</li>
+    </ul>
+  </li>
+  <li>The two memory access problem can be solved by the use of a special fastlookup hardware cache called <strong>associative memory</strong> or translation lookaside buffers (<strong>TLBs</strong>)
+    <ul>
+      <li>page table이 memory에 올라가 있기 때문에 data나 instruction에 접근하기 위해서는 두 번의 메모리 access가 일어나는데</li>
+      <li>하나의 데이터나 명령문에 접근하기 위해 메모리에 여러번 access 하는 건 비효율 적이기 때문에 그래서 나온 것이 Translation Look-aside Buffer(TLB)이다.</li>
+    </ul>
+  </li>
+  <li>Some <strong>TLBs</strong>(Translation Lookaside Buffer) store <strong>address-space identifiers (ASIDs)</strong> in each TLB entry
+    <ul>
+      <li>uniquely identifies each process to provide address-space protection for that process
+        <ul>
+          <li>(context switching 시에)Otherwise need to flush at every context switch</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>TLBs typically small (64 to 1,024 entries)</li>
+  <li>On a TLB miss, value is loaded into the TLB for faster access next time
+    <ul>
+      <li>Replacement policies must be considered</li>
+      <li>Some entries can be <strong>wired down</strong> for permanent fast access</li>
+    </ul>
+  </li>
+  <li>TLB hit면 MM에 접근하지 않아도 됨.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="associative-register">Associative Register</h2>
+
+<p>TLB는 일종의 캐시 역할을 하는 레지스터로 역할이 비슷핟.ㅏ</p>
+
+<p>메모리에 여러번 access 하는 걸 막고자 page table의 내용을 TLB에 저장하여 바로 메모리에 접근할 수 있게 한다.</p>
+
+<ul>
+  <li>
+    <p>시작은 비어있는 TLB로 page table을 통해 메모리를 두 번 access를 반드시 해야하지만 한 번 access 되기만 한다면 그 다음부터는 해당 page table 정보가 TLB에 저장이 되어 이것을 통해 바로 memory에 access 하는 것이 가능해 진다.</p>
+  </li>
+  <li>
+    <p>Associative registers – parallel search</p>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000741601.png" alt="image-20221003000741601" /></p>
+
+<ul>
+  <li>Address translation (p, d)
+    <ul>
+      <li>If p is in associative register, get frame # out.</li>
+      <li>Otherwise get frame # <strong>from page table in memory</strong></li>
+    </ul>
+  </li>
+  <li>ASID가 같이 저장될 수 있음</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="paging-hardware-with-tlb">Paging Hardware With TLB</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003000804647.png" alt="image-20221003000804647" /></p>
+
+<p>TLB hit의 overhead - TLB cache에서 searching time («« MM access time)</p>
+
+<p>TLB Miss의 overhead - TLB searching time + page table searching time + MM access time</p>
+
+<p><br /></p>
+
+<h2 id="effective-access-time">Effective Access Time</h2>
+
+<ul>
+  <li>
+    <p>Associative Lookup = ε time unit</p>
+
+    <ul>
+      <li>Can be &lt; 10% of memory access time</li>
+    </ul>
+  </li>
+  <li>
+    <p>(TLB) Hit ratio = α</p>
+
+    <ul>
+      <li>Hit ratio – percentage of times that a page number is found in the associative registers; ratio related to number of associative registers</li>
+    </ul>
+  </li>
+  <li>
+    <p>Consider α = 80%, ε = 20ns for TLB search, 100ns for memory access Assume memory cycle time is 1 microsecond</p>
+  </li>
+  <li>
+    <p><strong>Effective Access Time (EAT)</strong></p>
+
+    <p>EAT = (1 + ε) α + (2 + ε)(1 – α)</p>
+
+    <p>= 2 + ε – α</p>
+
+    <ul>
+      <li>(1 + ε) α -&gt;
+        <ul>
+          <li>TLB Hit : TLB seach  = 1 + ε (한번의 memory access)</li>
+        </ul>
+      </li>
+      <li>(2 + ε)(1 – α) -&gt;
+        <ul>
+          <li>TLB Miss: TLB search + page table search + physical m.m search = 2 + ε (2번의 memory access)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Consider α = 80%, ε = 20ns for TLB search, 100ns for memory access</p>
+
+    <ul>
+      <li>EAT = 0.80 x 120 + 0.20 x 220 = 140ns</li>
+    </ul>
+  </li>
+  <li>
+    <p>Consider slower memory but better hit ratio -&gt; α = 98%, ε = 20ns for TLB search,  140ns for memory access</p>
+
+    <ul>
+      <li>EAT = 0.98 x 160 + 0.02 x 300 = 162.8ns</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-protection">Memory Protection</h2>
+
+<p>page 단위 protection (by validation bit)</p>
+
+<ul>
+  <li>Memory protection implemented by associating protection bit with each  frame to indicate if read-only or read-write access is allowed
+    <ul>
+      <li>Read only, read-write, execution only bits</li>
+    </ul>
+  </li>
+  <li><strong>Valid-invalid</strong> bit attached to each entry in the page table:
+    <ul>
+      <li>“valid” indicates that the associated page is in the process’ logical  address space, and is thus a legal page</li>
+      <li>“invalid” indicates that the page is not in the process’ logical address  space</li>
+      <li>Or use PTLR</li>
+    </ul>
+  </li>
+  <li>Page-table length register (PRLR) indicates size of the page table.
+    <ul>
+      <li>Rarely does a process use all its address range</li>
+    </ul>
+  </li>
+  <li>Any violations(trap) result in a trap to the kernel</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="valid-v-or-invalidi-bit-in-a-page-table">Valid (v) or Invalid(i) Bit In A Page Table</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001217135.png" alt="image-20221003001217135" /></p>
+
+<ul>
+  <li>Logical memory가 page 단위로 나누어져 있는 모습을 가장 왼쪽 그림을 보면 알 수 있는데 이 경우 internal fragmentation이 발생할 수밖에 없다.</li>
+  <li>하지만 internal fragmentation되어 비어 있는 공간의 주소를 접근하는 것은 반드시 막아야 하기 때문에 valid-invalid Bit를 사용하게 된다.</li>
+  <li>v - 허용된 범위의 page table</li>
+  <li>i - 실제로 프로세스가 가리킬 수 있는 주소 공간 안에 포함 된 듯 하지만 실제로는 사용하지 않는 page</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="shared-pages">Shared Pages</h2>
+
+<ul>
+  <li>공통된 code를 갖는 여러 프로세스들이 page table을 가질 때 중복이 발생하게 되는데 아무래도 공통된 code를 공유하는 것이기 때문에 page table 역시 같은 부분이 존재하게 된다.</li>
+  <li>
+    <p>이런 경우 공통된 page table을 한 번만 메모리에 올리고 그것에 대한 주소를 서로 다른 프로세스들이 공유하면서 중복된 page table을 공유하며 메모리 공간의 낭비를 막는다.</p>
+  </li>
+  <li><strong>Shared code</strong>
+    <ul>
+      <li>One copy of read-only (<strong>reentrant</strong>; 값이 바뀌지 않는, 재진입 가능한) code shared among processes 
+(i.e., text editors, compilers, window systems)</li>
+      <li>Similar to multiple threads sharing the same process space</li>
+      <li>Also useful for interprocess communication(IPC) if sharing of read-write  pages is allowed</li>
+    </ul>
+  </li>
+  <li><strong>Private code and data</strong>
+    <ul>
+      <li>Each process keeps a separate copy of the code and data</li>
+      <li>The pages for the private code and data can appear anywhere in  the logical address space</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="shared-page-examples">Shared Page Examples</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001303441.png" alt="image-20221003001303441" /></p>
+
+<ul>
+  <li>ed1~3: read only
+    <ul>
+      <li>공유하기 때문에 같은 곳을 가리켜서 접근</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="structure-of-the-page-table">Structure of the Page Table</h2>
+
+<ul>
+  <li>두 가지 문제점
+    <ul>
+      <li>성능</li>
+      <li>메모리 - 메인메모리에 존재하기 때문에 어찌됐건 메인 메모리의 공간을 차지함.</li>
+    </ul>
+  </li>
+  <li>Memory structures for paging can get huge using straight-forward  methods
+    <ul>
+      <li>Consider a 32-bit logical address space as on modern computers</li>
+      <li>Page size of 4 KB (2<sup>12</sup>)</li>
+      <li>Page table would have 1 million entries (2<sup>32</sup> / 2<sup>12</sup>)</li>
+      <li>If each entry is 4 bytes -&gt; 4 MB of physical address space /  memory for page table alone
+        <ul>
+          <li>프로세스 하나당 4MB</li>
+          <li>That amount of memory used to cost a lot</li>
+          <li><strong>Don’t want to allocate that contiguously in main memory</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Hierarchical Paging</li>
+  <li>Hashed Page Tables</li>
+  <li>Inverted Page Tables</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hierarchical-page-tables">Hierarchical Page Tables</h2>
+
+<ul>
+  <li>Break up the logical address space into multiple page tables
+    <ul>
+      <li>하나의 페이지 테이블 안에 여러개의 페이지 테이블을 넣은 페이지 테이블을 의미한다.</li>
+      <li>A simple technique is a two-level page table</li>
+    </ul>
+  </li>
+  <li>
+    <p>We then <strong>page</strong> the page table</p>
+
+    <ul>
+      <li>사용자 프로세스의 logical address 공간을 paging 하는 것이 paging의 목적인데 여기서는(Hierarchical Page Tables) 사용자 프로세스를 지원하는 page table 자체를 또 다시 paging</li>
+      <li>용량을 줄이는 것이 목적이 아님!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="two-level-page-table-scheme">Two-Level Page-Table Scheme</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221127165929205.png" alt="image-20221127165929205" /></p>
+
+<ul>
+  <li>
+    <p>outer page table에 의해 mapping이 되기 때문에 page table에서 page들은 비연속적으로 깔려도 됨.</p>
+  </li>
+  <li>한 page가 1024개의 entry를 갖고 있음</li>
+  <li>original page table
+    <ul>
+      <li>4KB 짜리 page 1024개</li>
+      <li>original page table에서는 위 그림의 page table안에 있는 것들이 하나로 묶여 있었음.(continusouly)</li>
+    </ul>
+  </li>
+  <li>Two-level page table
+    <ul>
+      <li>original page table에서 어떤 page인지 구분하기 위해서 outer page table 하나를 더 두어서 사용하기 때문에 4KB가 더 추가되었음.</li>
+      <li>outer page table에 의해서 mapping이 되기 때문에 page가 비연속적으로 깔려도 된다!!!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="two-level-paging-example">Two-Level Paging Example</h2>
+
+<ul>
+  <li>A logical address (on 32-bit machine with 4K page size) is divided into:
+    <ul>
+      <li>a page number consisting of 20 bits</li>
+      <li>a page offset consisting of 12 bits.</li>
+    </ul>
+  </li>
+  <li>Since the page table is paged, the page number is further divided into:
+    <ul>
+      <li>a 10-bit page number.</li>
+      <li>a 10-bit page offset.</li>
+    </ul>
+  </li>
+  <li>Thus, a logical address is as follows:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001715427.png" alt="image-20221003001715427" /></p>
+
+<ul>
+  <li>
+    <p>single level page P가 p1, p2로 나눠짐</p>
+  </li>
+  <li>
+    <p>p1을 통해서 outer-page table의 index를 찾고 해당 index가 가리키는 page table entry 중 하나에서 p2를 통해 physical memory의 frame 번호를 찾는다. 마지막으로 d를 통해 physical 메모리에서의 위치를 찾는다.</p>
+  </li>
+  <li>where p1 is an index into the outer page table, and p2 is the displacement within the  page of the outer page table.
+    <ul>
+      <li>page entry 하나를 표현하는데 4byte, 하나의 page는 4KB
+        <ul>
+          <li>-&gt; 한 페이지가 수용할 수 있는 page entry의 갯수는 1K = 1000개</li>
+          <li>-&gt; 그래서 p2에 10bit가 할당 되어야지 1024까지 표현할 수 있음(2<sup>10</sup>)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Known as <strong>forward-mapped page table</strong></p>
+  </li>
+  <li>page table size / page table entry 한 개의 size = 한 페이지가 포함할 수 있는 page table entry 최대 갯수</li>
+  <li>한 page가 1024개의 entry를 갖고 있기 때문에 p2 = 10 bit</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="address-translation-scheme-2">Address-Translation Scheme</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001727500.png" alt="image-20221003001727500" /></p>
+
+<ul>
+  <li>outer page table에서 하나의 inner page table을 가리키게 되는데 inner page table은 page table 안에 1024개가 있고 각 inner page table마다 page entry가 1024개가 있다.
+    <ul>
+      <li>그리고 각 page entry 마다는 4KB이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multilevel-paging64-bit-logical-address-space">Multilevel Paging(64-bit Logical Address Space)</h2>
+
+<ul>
+  <li>
+    <p><strong>64bit</strong></p>
+  </li>
+  <li>
+    <p>If page size is 4 KB (2<sup>12</sup>)</p>
+
+    <ul>
+      <li>
+        <p>Then page table has 2<sup>52 </sup>entries</p>
+      </li>
+      <li>
+        <p>If we use 2-level paging scheme, inner page tables could be 1 page long  (2<sup>10</sup> 4 byte entries)</p>
+      </li>
+      <li>
+        <p>Address would look like</p>
+
+        <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001824871.png" alt="image-20221003001824871" /></p>
+      </li>
+      <li>
+        <p>Outer page table has 2<sup>42</sup> entries or 2<sup>44</sup> bytes</p>
+
+        <ul>
+          <li>outer page table이 너무 커지는데…?(심지어 연속적인 공간에 깔려야 함.)
+            <ul>
+              <li>One solution is to add a 2nd outer page table (<strong>Three level paging scheme</strong>)</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>But in the following example the 2nd outer page table is still 2<sup>34</sup> bytes in size</p>
+
+        <ul>
+          <li>And possibly 4 memory access (three level page + page offset) to get to one physical memory location</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="three-level-paging-scheme">Three-level Paging Scheme</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003001837935.png" alt="image-20221003001837935" /></p>
+
+<p><br /></p>
+
+<h2 id="four-level-paging-scheme">Four level paging scheme</h2>
+
+<ul>
+  <li>
+    <p>Since each level is stored as a separate table in memory, covering a  logical address to a physical one may take four memory accesses.  (p1,p2,p3,p4,d)</p>
+
+    <ul>
+      <li>-&gt; 32bit가 여전히 부담 스러워서</li>
+    </ul>
+  </li>
+  <li>
+    <p>Even though time needed for one memory access is quintupled, caching  permits performance to remain reasonable.</p>
+  </li>
+  <li>
+    <p>Cache hit rate of 98 percent yields:</p>
+
+    <p>effective access time = (0.98 x 120) + (0.02 x 520)</p>
+
+    <p>​									  = 128 nanoseconds.</p>
+
+    <ul>
+      <li>520: 5번의 access(500?) + TLB cache 검색 시간(20)
+        <ul>
+          <li>5번의 memory access -&gt; 4 level page + page offset(actual page access)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>which is only a 28 percent slowdown in memory access time.</p>
+
+<p><br /></p>
+
+<h2 id="hashed-page-tables">Hashed Page Tables</h2>
+
+<ul>
+  <li>A Common approach in case of address spaces &gt; 32 bits.
+    <ul>
+      <li>주로 주소 공간이 32bit보다 큰 경우 사용한다.</li>
+    </ul>
+  </li>
+  <li>The virtual page number is hashed into a page table.
+    <ul>
+      <li>VPN이 hash function의 key로 사용</li>
+      <li>해시형 테이블의 각 항목은 linked list를 갖고 있다.</li>
+      <li>This page table contains a chain of elements hashing to the same location.</li>
+    </ul>
+  </li>
+  <li>Each element contains (1) the virtual page number(q) (2) the value of the mapped  page frame(s) 
+(3) a pointer to the next element</li>
+  <li>Virtual page numbers are compared in this chain searching for a match.
+    <ul>
+      <li>If a match is found, the corresponding physical frame is extracted.</li>
+    </ul>
+  </li>
+  <li>Variation for 64-bit addresses is <strong>clustered page tables</strong>
+    <ul>
+      <li>Similar to hashed but each entry refers to several pages (such as 16) rather  than 1</li>
+      <li>한 개의 페이지 테이블 항목이 여러 페이지 프레임에 대한 매핑 정보를 지닐 수 있다.</li>
+      <li>Especially useful for <strong>sparse</strong> address spaces (where memory references are  non-contiguous and scattered)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hashed-page-table">Hashed Page Table</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002014031.png" alt="image-20221003002014031" /></p>
+
+<ul>
+  <li>서로 다른 p값에 대해 동일한 hash 값이 얻어지게 되면 오또케? -&gt; collision 발생
+    <ul>
+      <li>동의어(<strong>Synonym</strong>) : 충돌이 일어난 레코드의 집합. 키값이 같은 레코드의 집합으로, 동의어가 슬롯의 갯수보다 많으면 오버플로우가 일어날 수 있다.</li>
+    </ul>
+  </li>
+  <li>hash function에 의해 얻어지는 값이 unique 하면 hash table에 저장, 삽입
+    <ul>
+      <li>O(1)</li>
+    </ul>
+  </li>
+  <li>collision을 해결하기 위한 방법으로는 linked list를 활용해서 중복 값이 나오면 linked list로 쭉쭉 연결해 나가서 p값, 즉 page number가 내가 찾는 page number인지를 확인하여 찾는 방법이 있다.
+    <ul>
+      <li>O(n)</li>
+    </ul>
+  </li>
+  <li>hash table을 통해 linked list로 이어지기 때문에 이 역시 비연속적인 탑재가 가능하다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="inverted-page-table">Inverted Page Table</h2>
+
+<ul>
+  <li>메모리 프레임마다 한 항목씩을 할당한다.
+    <ul>
+      <li>각 항목은 프레임에 올라와 있는 페이지 주소, 그 페이지를 소유하고 있는 pid를 표시한다.</li>
+      <li>따라서 그 시스템에는 단 하나의 페이지 테이블만 존재하게 되어 공간을 절약할 수 있게 된다.</li>
+    </ul>
+  </li>
+  <li>Each process has a page table associated with it
+    <ul>
+      <li>Each page table may consists of millions of entries</li>
+    </ul>
+  </li>
+  <li>Rather than each process having a page table and keeping track of all possible  logical pages, track all physical pages
+    <ul>
+      <li>One entry for each real page (frame) of memory.</li>
+      <li>Entry consists of the virtual address of the page stored in that real memory  location, with information about the process that owns that page.</li>
+    </ul>
+  </li>
+  <li>Decreases memory needed to store each page table, but increases time needed to  search the table when a page reference occurs.
+    <ul>
+      <li>whole table might be searched</li>
+    </ul>
+  </li>
+  <li>Use hash table to limit the search to one — or at most a few — page-table entries.
+    <ul>
+      <li>TLB can accelerate access (Associated memory register)</li>
+    </ul>
+  </li>
+  <li>But how to implement shared memory?
+    <ul>
+      <li>One mapping of a virtual address to the shared physical address</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="inverted-page-table-architecture">Inverted Page Table Architecture</h2>
+
+<ul>
+  <li>each virtual address consists of &lt;process-id, page-number, offset&gt;</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002127392.png" alt="image-20221003002127392" /></p>
+
+<ul>
+  <li>시스템에 page table이 딱 하나만 존재
+    <ul>
+      <li>page table 탑재에 필요한 main memory 용량을 줄이는 효과를 볼 수 있음</li>
+    </ul>
+  </li>
+  <li>pid + p 가 일치하는 index를 찾는다.</li>
+  <li>physical memory에 enry가 100개 있으면 page table도 100개가 있음</li>
+</ul>
+
+<ol>
+  <li>
+    <p>가상 주소는 &lt;pid, page number, offset&gt; 으로 구성된다.</p>
+  </li>
+  <li>
+    <p>메모리 참조가 발생하면 page table에 가서 &lt;pid, page number&gt;가 일치하는 항목을 찾는다.</p>
+  </li>
+  <li>
+    <p>일치하는 것이 i번째 항목에서 발견되면 해당 physical address는 &lt;i, offset&gt;이 되고 일치하는 것이 없으면 잘못된 메모리로 간주한다.</p>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="os에-의한----안나옴">OS에 의한 ! - 안나옴</h2>
+
+<h2 id="segmentation-with-paging---multics">Segmentation with Paging - MULTICS</h2>
+
+<ul>
+  <li>The MULTICS system solved problems of external fragmentation  and lengthy search times by paging the segments.</li>
+  <li>Solution differs from pure segmentation in that the segment-table  entry contains <strong>not the base address of the segment, but rather the base address of a page table for this segment.</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multics-address-translation-scheme">MULTICS Address Translation Scheme</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002203270.png" alt="image-20221003002203270" /></p>
+
+<p>한 segment가 여러 개의 page로 나눠지니까 d -&gt; p+ d`가 되었다.</p>
+
+<p><br /></p>
+
+<h2 id="segmentation-with-paging---intel-386">Segmentation with Paging - Intel 386</h2>
+
+<ul>
+  <li>Intel 386 uses segmentation with paging for memory management with a  two-level paging scheme.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002226872.png" alt="image-20221003002226872" /></p>
+
+<p><br /></p>
+
+<h2 id="example-the-intel-32-and-64-bit-architectures">Example: The Intel 32 and 64-bit Architectures</h2>
+
+<ul>
+  <li>Dominant industry chips</li>
+  <li>Pentium CPUs are 32-bit and called IA-32 architecture (x-86)</li>
+  <li>Current Intel CPUs are 64-bit and called IA-64 architecture</li>
+  <li>Many variations in the chips, cover the main ideas here</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-the-intel-ia-32-architecture">Example: The Intel IA-32 Architecture</h2>
+
+<ul>
+  <li>Supports both <code class="language-plaintext highlighter-rouge">segmentation</code> and <code class="language-plaintext highlighter-rouge">segmentation with paging</code>
+    <ul>
+      <li>Each segment can be 4 GB (4*10<sup>9</sup> Bytes)</li>
+      <li>Up to 16 K segments per process</li>
+      <li>Logical address space of a process is divided into two partitions
+        <ul>
+          <li>First partition of up to 8 K segments are private to process (kept in <strong>local  descriptor table (LDT)</strong>)</li>
+          <li>Second partition of up to 8K segments shared among all processes (kept  in <strong>global descriptor table (GDT)</strong>)</li>
+          <li>Each entry in LDT &amp; GDT consists of an 8-byte segment descriptor with  detailed information about a particular segment including <span style="color:red">base location  and limit of a segment</span></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-the-intel-ia-32-architecture-cont">Example: The Intel IA-32 Architecture (Cont.)</h2>
+
+<ul>
+  <li>
+    <p>CPU generates logical address</p>
+
+    <ul>
+      <li>
+        <p>Logical address is a pair of (selector, offset)</p>
+      </li>
+      <li>
+        <p>Selector(16 bits) given to segmentation unit</p>
+
+        <ul>
+          <li>
+            <p>Which produces linear addresses</p>
+          </li>
+          <li>
+            <p>s designates the segment number,</p>
+          </li>
+          <li>
+            <p>g indicates whether the segment is in GDT or LDT</p>
+          </li>
+          <li>
+            <p>p deals with protection</p>
+          </li>
+          <li>
+            <p>offset (32 bits) specifying the location of the byte within the segment</p>
+
+            <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002437823.png" alt="image-20221003002437823" /></p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>Linear address given to paging unit</p>
+
+        <ul>
+          <li>Which generates physical address in main memory</li>
+          <li>Paging units form equivalent of MMU</li>
+          <li>Pages sizes can be 4 KB or 4 MB
+            <ul>
+              <li>For 4KB pages, two-level paging</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="logical-to-physical-address-translation-in-ia-32">Logical to Physical Address Translation in IA-32</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002502914.png" alt="image-20221003002502914" /></p>
+
+<p><br /></p>
+
+<h2 id="intel-ia-32-segmentation">Intel IA-32 Segmentation</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002513358.png" alt="image-20221003002513358" /></p>
+
+<p><br /></p>
+
+<h2 id="intel-ia-32-paging-architecture">Intel IA-32 Paging Architecture</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002529262.png" alt="image-20221003002529262" /></p>
+
+<p><br /></p>
+
+<h2 id="intel-ia-32-page-address-extensions">Intel IA-32 Page Address Extensions</h2>
+
+<ul>
+  <li>32-bit address limits led Intel to create <strong>page address extension (PAE)</strong>, allowing  32-bit apps access to more than 4GB of memory space
+    <ul>
+      <li>Paging went to a <strong>3-level scheme</strong></li>
+      <li>Top two bits refer to a <strong>page directory pointer table</strong></li>
+      <li>Page-directory and page-table entries moved from <strong>32 bits to 64-bits</strong> in size
+        <ul>
+          <li>Base address of page tables and page frames to extend from <strong>20 to 24 bits</strong></li>
+        </ul>
+      </li>
+      <li>Net effect of PAE is increasing address space (from 32 bits) to <strong>36 bits – 64GB of physical memory</strong> (24 + 12 bit offset)
+        <ul>
+          <li>24: page에서 특정 frame을 찾아가기 위한 용도</li>
+          <li></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002607170.png" alt="image-20221003002607170" /></p>
+
+<p><br /></p>
+
+<h2 id="intel-x86-64">Intel x86-64</h2>
+
+<ul>
+  <li>Current generation Intel x86 architecture</li>
+  <li>64 bits is ginormous (&gt; 16 exabytes 16*10<sup>18</sup> : 2<sup>64</sup> bytes)</li>
+  <li>In practice only implement 48 bit addressing for virtual addressing
+    <ul>
+      <li>Page sizes of 4 KB, 2 MB, 1 GB</li>
+      <li>Four levels of paging hierarchy</li>
+    </ul>
+  </li>
+  <li>Can also use PAE, so virtual addresses are 48 bits and physical addresses are 52 bits</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002651857.png" alt="image-20221003002651857" /></p>
+
+<p><br /></p>
+
+<h2 id="example-arm-architecture">Example: ARM Architecture</h2>
+
+<ul>
+  <li>Dominant mobile platform chip  (Apple iOS and Google Android  devices for example)</li>
+  <li>Modern, energy efficient, 32-bit  CPU</li>
+  <li>4 KB and 16 KB pages</li>
+  <li>1 MB and 16 MB pages (termed  <strong>sections</strong>)</li>
+  <li>One-level paging for sections, twolevel for smaller pages</li>
+  <li>Two levels of TLBs
+    <ul>
+      <li>Outer level has two micro  TLBs (one data, one  instruction)</li>
+      <li>Inner is single main TLB</li>
+      <li>First inner is checked, on  miss outers are checked,  and on miss page table  walk performed by CPU</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002726169.png" alt="image-20221003002726169" /></p>
+
+<p><br /></p>
+
+<h2 id="armv8-4-level-hierarchical-paging">ARMv8 4-level hierarchical paging</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002742974.png" alt="image-20221003002742974" /></p>
+
+<p>offset에 따라 paging level이 달라진다.</p>
+
+<ul>
+  <li>1GB region</li>
+  <li>2MB region</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="linear-address-in-linux">Linear Address in Linux</h2>
+
+<ul>
+  <li>
+    <p>Linux uses only 6 segments (kernel code, kernel data, user code, user  data, task-state segment (TSS), default LDT segment)</p>
+  </li>
+  <li>
+    <p>Linux only uses two of four possible modes – kernel and user</p>
+  </li>
+  <li>
+    <p>Uses a three-level paging strategy that works well for 32-bit and 64-bit  systems</p>
+  </li>
+  <li>
+    <p>Linear address broken into four parts:</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002815700.png" alt="image-20221003002815700" /></p>
+  </li>
+  <li>
+    <p>But the Pentium only supports 2-level paging?!</p>
+
+    <ul>
+      <li>linux의 3 level은 그러면 어떻게 사용해? -&gt; 한 level 그냥 사용 안 해버리긔~</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="three-level-paging-in-linux">Three-level Paging in Linux</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221003002833465.png" alt="image-20221003002833465" /></p>
+
+<p><br /></p>
+
+<h2 id="comparing-memory-management-startegies">Comparing Memory-Management Startegies</h2>
+
+<ul>
+  <li>Hardware support</li>
+  <li>Performance</li>
+  <li>Fragmentation</li>
+  <li>Relocation</li>
+  <li>Swapping</li>
+  <li>Sharing</li>
+  <li>Protection</li>
+  <li>-&gt; Refer to summary section in text boo</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#os" class="page__taxonomy-item p-category" rel="tag">OS</a><span class="sep">, </span>
+    
+      <a href="/tags/#%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C" class="page__taxonomy-item p-category" rel="tag">운영체제</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#os" class="page__taxonomy-item p-category" rel="tag">OS</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-10-03T00:00:00+09:00">2022-10-03</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BOS%5D+Memory+Management%20http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Memory-Management%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Memory-Management%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Memory-Management%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/os/OS-Deadlocks/" class="pagination--pager" title="[OS] Deadlocks
+">이전</a>
+    
+    
+      <a href="/frontend/hci/HCI-6.-Interaction-Design-Basic-2/" class="pagination--pager" title="[HCI] 6. Interaction Design Basics 2
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/os/OS-Memory-Management/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/os/[OS] Memory Management"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,793 @@
+I"B�<p><br /></p>
+
+<h1 id="8-trees">8. Trees</h1>
+
+<h2 id="terminology">Terminology</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150058-93fe90a7-0857-4433-ac89-0fca0807307e.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>tree 자료구조: 저장할 data를 노드에 저장하면서 노드들이 트리형태로 나열된 형태.</p>
+  </li>
+  <li>
+    <p>root node:44번 노드</p>
+  </li>
+  <li>
+    <p>parent node(ancestor;조상) / children node(desendant;후손)</p>
+
+    <ul>
+      <li>
+        <p>25번 노드의 ancestor -&gt; 20, 39, 44 번 노드</p>
+      </li>
+      <li>
+        <p>오른쪽 네모 박스는 67의 desendant node이지만 왼쪽 박스는 67의 desendant node가 아니다.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="binary-trees">Binary trees</h2>
+
+<p>Binary tree는 <strong>모든 노드가 두 자식을 최대로 갖는 구조</strong>이다.(자식 노드가 최대 2개)</p>
+
+<p>binary tree에서 노드는 왼쪽 서브 트리와 오른쪽 서브 트리의 형태로 조직화 되어 있다.</p>
+
+<p>다음 다이어그램은 다섯 개의 노드를 가진 이진트리의 예시이다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150084-aec98652-cb4b-436c-a63f-62e0d58693ed.png" alt="image" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">The number of children of a node x in a rooted tree T</code> equals the <strong>degree</strong> of x.</p>
+
+<p><code class="language-plaintext highlighter-rouge">The length of the simple path from the root r to a node x</code> is the <strong>depth</strong> of x in T.</p>
+
+<p>A <strong>level</strong> of a tree consists of <code class="language-plaintext highlighter-rouge">all nodes at the same depth. </code></p>
+
+<p>The <strong>height</strong> of a node in a tree is <code class="language-plaintext highlighter-rouge">the number of edges on the longest simple downward path from the node to a leaf</code>, and the height of a tree is the height of its root.</p>
+
+<ul>
+  <li>The height of a tree is also equal to the largest depth of any node in the tree.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166149348-88b2ffb5-d80f-4a8b-911c-55148a3ecf4b.png" alt="image" /></p>
+
+<p>leaf 노드에 자식 노드를 하나 추가하게 되면 root node의 height가 3에서 4로 바뀐다.</p>
+
+<p>keyword: 해당 노드에서 leaf node까지 갈 수 있는 simple path 까지의 높이</p>
+
+<h2 id="tree-traversal">Tree traversal</h2>
+
+<p>The method to visit all the nodes in a tree is called tree traversal. This can be done either depth-first search (DFS) or breadth-first search (BFS).</p>
+
+<ul>
+  <li>모든 노드를 하나도 빠짐 없이 한 번씩만 방문</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166149409-c34ba04c-8b32-4b53-9e04-0cf2ffb6a43d.png" alt="image" /></p>
+
+<hr />
+
+<p>08-6</p>
+
+<h2 id="depth-first-traversal">Depth-first traversal</h2>
+
+<ul>
+  <li>Start at the root and explore as far as possible before backtracking</li>
+  <li>Depth-first traversal can be implemented by recursive algorithms</li>
+  <li>Orders in depth-first traversal
+    <ul>
+      <li>[<span style="color:blue">preorder</span>] root → left subtree → right subtree</li>
+      <li>[<span style="color:blue">inorder</span>] left subtree → root → right subtree</li>
+      <li>[<span style="color:blue">postorder</span>] left subtree → right subtree → root</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166149817-b4952bb1-02b5-44c8-b103-82f6da5c774b.png" alt="image" /></p>
+
+<hr />
+
+<p>08-7</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166149513-3bd216b3-9a04-4e7f-99d8-5a405bdf0a7e.png" alt="image" /></p>
+
+<ul>
+  <li>Inorder → G-D-H-B-E-A-C-F</li>
+  <li>Preorder → A-B-D-G-H-E-C-F</li>
+  <li>Postorder → G-H-D-E-B-F-C-A</li>
+  <li>Breadth-first → A-B-C-D-E-F-G-H</li>
+</ul>
+
+<hr />
+
+<p>08-8</p>
+
+<h2 id="example-2">Example 2</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166149565-52e8119b-b0b9-4808-b3f8-eee4460e9bc5.png" alt="image" /></p>
+
+<hr />
+
+<p>08-9</p>
+
+<h2 id="tree-nodes">Tree nodes</h2>
+
+<ul>
+  <li>The trees are the non-linear data structure; they store the data <strong>differently from other linear data structures</strong> such as arrays, lists, stacks, and queues.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150111-a53b8c25-3294-46d2-8ad2-a86e2f46a116.png" alt="image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span> <span class="c1">#1
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>AL08-10</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">inorder</span><span class="p">(</span><span class="n">node</span><span class="p">):</span> <span class="c1">#8
+</span>    <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+        <span class="n">inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+        <span class="n">inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+        
+<span class="k">def</span> <span class="nf">preorder</span><span class="p">(</span><span class="n">node</span><span class="p">):</span> <span class="c1"># 15
+</span>    <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+        <span class="n">preorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="n">preorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+        
+<span class="k">def</span> <span class="nf">postorder</span><span class="p">(</span><span class="n">node</span><span class="p">):</span> <span class="c1"># 22
+</span>    <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+        <span class="n">postorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="n">postorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>AL08-11</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">root</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span> <span class="c1">#29
+</span><span class="n">root</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">'B'</span><span class="p">)</span>
+<span class="n">root</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">'C'</span><span class="p">)</span>
+<span class="n">root</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">'D'</span><span class="p">)</span>
+<span class="n">root</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">'E'</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"inorder: "</span><span class="p">)</span> <span class="c1"># 35
+</span><span class="n">inorder</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">preorder: "</span><span class="p">)</span>
+<span class="n">preorder</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">postorder: "</span><span class="p">)</span>
+<span class="n">postorder</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150297-eed1214c-e273-4f6d-9100-79aaaa6f372d.png" alt="image" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>inorder: 
+D B E A C 
+preorder: 
+A B D E C 
+postorder: 
+D E B C A 
+</code></pre></div></div>
+
+<p><br /></p>
+
+<hr />
+
+<p>AL08-12</p>
+
+<h2 id="breadth-first-traversal">Breadth-first traversal</h2>
+
+<p>This mode of traversal is implemented <mark>using a queue data structure</mark>. Starting with the root node, we push it into a <strong>queue</strong>.</p>
+
+<p>The node at the front of the queue is accessed (dequeued) and either printed <strong>or</strong> stored for <strong>later use</strong>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">breath_first</span><span class="p">(</span><span class="n">node</span><span class="p">):</span> <span class="c1"># 11
+</span>    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+    <span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">):</span> <span class="c1"># 15
+</span>        <span class="n">visit</span> <span class="o">=</span> <span class="n">queue</span><span class="p">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">visit</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">visit</span><span class="p">.</span><span class="n">left</span><span class="p">:</span>
+            <span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">visit</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">visit</span><span class="p">.</span><span class="n">right</span><span class="p">:</span>
+            <span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">visit</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150446-31bcd6a3-3837-4d5d-9db9-a48a2aafc8a2.png" alt="image" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A B C D E 
+</code></pre></div></div>
+
+<hr />
+
+<p>AL08-13</p>
+
+<h2 id="binary-search-treesbst">Binary search trees(BST)</h2>
+
+<ul>
+  <li>All items in the <strong>left</strong> subtree are <strong>less than</strong> the root</li>
+  <li>All items in the <strong>right</strong> subtree are <strong>greater than</strong> or equal to the root</li>
+  <li>Each subtree is itself a binary search tree(재귀적 구조)</li>
+  <li>노드의 이름: key</li>
+  <li>노드의 갯수가 n일 때, 원하는 값을 찾는데 걸리는 time complexity는 O(logn)이다.
+    <ul>
+      <li>binary search도 O(logn)을 갖지만 BST가 데이터를 insert하고 delet하는 속도가 압도적으로 빠르다.
+        <ul>
+          <li>데이터를 한 칸씩 미는 과정이 없기 때문</li>
+          <li>insert하는데 걸리는 시간은 O(1) : 항상 맨 밑(leaf node)에 집어넣게 되어있기 때문</li>
+        </ul>
+      </li>
+      <li>사실상 최악의 경우는 n의 경우 n번만에 찾을 수도 있기 때문에 O(n)이긴 하지만 그 경우를 제외하고는 모두 O(logn)이기 때문에 이를 감안한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150496-f7c5ab53-0913-457b-b75f-34a592ae33ca.png" alt="image" /></p>
+
+<hr />
+
+<p>AL08-14</p>
+
+<p>A <strong>binary search tree(BST)</strong> is a tree that is structurally a binary tree, and stores data in its nodes very efficiently.</p>
+
+<p>It provides very fast search operations, and other operations such as insertion and deletion are also very easy and convenient.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150552-2e6b262d-efa2-4d16-b2aa-42c7389360c6.png" alt="image" /></p>
+
+<p>Queries on a binary search tree.</p>
+
+<p>To <strong>search</strong> for the Key 13 in the tree, we follow the path 15 → 6 → 7 → 13 from the root.</p>
+
+<p>The <strong>minimum</strong> key in the tree is 2, which is found by following left pointers from the root.</p>
+
+<p>The <strong>maximum</strong> key 20 is found by following right pointers from the root.</p>
+
+<hr />
+
+<p>AL08-15</p>
+
+<h2 id="bst-traversal">BST traversal</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150685-8c99171b-ffe3-42e0-9e42-91968eccadaa.png" alt="image" /></p>
+
+<ul>
+  <li>Preorder 	  40 20 10 30 50 60</li>
+  <li><span style="color:blue">Inorder         10 20 30 40 50 60          (ascending sort) </span></li>
+  <li>Postorder     10 30 20 60 50 40</li>
+  <li><span style="color:blue">Reverse inorder      60 50 40 30 20 10                   (descending sort)</span>
+    <ul>
+      <li>Right -&gt; Root -&gt; Left</li>
+      <li>혹은 -를 붙이는 idea!</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>AL08-16</p>
+
+<h2 id="binary-search-tree-implementation">Binary search tree implementation</h2>
+
+<p>Let’s begin the implementation of a BST in Python.</p>
+
+<p>We need to <strong>keep track of the root node</strong> of the tree, so we start by creating a Tree class that holds a reference to the root node:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span> <span class="c1">#1
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">None</span>
+        
+
+<span class="k">class</span> <span class="nc">Tree</span><span class="p">:</span> <span class="c1"># 8
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>AL08-17</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">find_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#12
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span>
+        <span class="k">while</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span>
+        <span class="k">return</span> <span class="n">node</span>
+    
+    <span class="k">def</span> <span class="nf">find_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#18
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span>
+        <span class="k">while</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span>
+        <span class="k">return</span> <span class="n">node</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150899-779f770c-08c6-44f2-a2ae-f5edfc6a4194.png" alt="image" /></p>
+
+<hr />
+
+<p>AL08-18</p>
+
+<p>BST 구조를 만들기 위해서는 한 노드씩 순서대로 삽입을 진행해야 한다.</p>
+
+<p><mark>그런데 처음 root node를 무엇으로 하느냐에 따라 다른 BST가 만들어 질 수 있다.</mark></p>
+
+<h2 id="inserting-nodes">Inserting nodes</h2>
+
+<ul>
+  <li><strong>All BST insertions take place at a leaf node</strong>
+    <ul>
+      <li>노드 하나 추가는 항상 leaf node에서만 일어난다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Inserting an item with key 13 into a binary search tree.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150935-6061969f-5400-4d5a-83ea-2503595163aa.png" alt="image" /></p>
+
+<hr />
+
+<p>AL08-19</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166150967-d64a5d46-3859-4414-957f-988fc5c71f94.png" alt="image" /></p>
+
+<p>빨간색 포인터(변수)를 loop로 계속 돌리다가 None이 되면 그 곳에 매달면 된다.</p>
+
+<p>그런데 빨간색이 None이 되어버리면 지금 위치를 잃어버리기 때문에 그 전위치를 항상 따라오는 파란색 포인터를 지정해 준다.</p>
+
+<hr />
+
+<p>AL08-20</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span> <span class="c1">#24
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">None</span> <span class="c1">#파란색 포인터
+</span>        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="c1"># 빨간색 포인터
+</span>        
+        <span class="k">while</span> <span class="n">current</span><span class="p">:</span> <span class="c1"># 29
+</span>            <span class="n">parent</span> <span class="o">=</span> <span class="n">current</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">current</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">left</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># 추가할 노드가 더 크거나 같은 경우
+</span>                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">right</span>
+                
+                <span class="p">...</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166151061-5d28cb20-5a02-4d15-b3ca-4804b7b38d3c.png" alt="image" /></p>
+
+<hr />
+
+<p>AL08-21</p>
+
+<p>cont.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span> <span class="c1">#24
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1"># 삽입할 노드 생성
+</span>        <span class="n">parent</span> <span class="o">=</span> <span class="bp">None</span> <span class="c1"># 파란색 포인터
+</span>        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="c1"># 빨간색 포인터
+</span>        
+        <span class="k">while</span> <span class="n">current</span><span class="p">:</span> <span class="c1"># 29
+</span>            <span class="n">paraent</span> <span class="o">=</span> <span class="n">current</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">current</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">left</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">right</span>
+                
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c1"># 36 ; original tree가 비어있던 경우
+</span>            <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">parent</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">node</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166151061-5d28cb20-5a02-4d15-b3ca-4804b7b38d3c.png" alt="image" /></p>
+
+<hr />
+
+<p>AL08-22</p>
+
+<h2 id="searching-the-tree">Searching the tree</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span> <span class="c1"># 43
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c1"># 46 ; tree empty or data가 없음
+</span>                <span class="k">return</span> <span class="n">node</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">data</span>
+            <span class="k">elif</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span>
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166151213-0fc504ae-5c82-4a28-b760-22fb1041ebaf.png" alt="image" /></p>
+
+<hr />
+
+<p>AL08-23</p>
+
+<h2 id="in-order-traversal">In-order traversal</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#55
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">_inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span> <span class="c1">#58
+</span>        <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+            
+    <span class="k">def</span> <span class="nf">reverse_inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 64
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">_reverse_inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_reverse_inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span> <span class="c1"># 67
+</span>        <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_reverse_inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_reverse_inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>inorder vs. _inorder</p>
+
+<ul>
+  <li>
+    <p>만약 inorder 만을 쓰겠다 하면</p>
+
+    <ul>
+      <li>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    	<span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+       	 	<span class="bp">self</span><span class="p">.</span><span class="n">inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+        	<span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+        	<span class="bp">self</span><span class="p">.</span><span class="n">inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
+<span class="n">t</span><span class="p">.</span><span class="n">inorder</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>두 개로 만드는 경우</p>
+
+    <ul>
+      <li>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="k">def</span> <span class="nf">inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+            
+    <span class="k">def</span> <span class="nf">_inorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_inorder</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
+<span class="n">t</span><span class="p">.</span><span class="n">inorder</span><span class="p">()</span>
+</code></pre></div>        </div>
+      </li>
+      <li>inorder 함수를 호출할 때 인자를 넣어주지 않아도 되기 때문에 프로그래머 입장에서 번거롭게 느껴지지 않고 헷갈리지 않는다.</li>
+      <li>tree object를 생성할 때 root 변수가 자동으로 생성되는 것을 명심</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<p>AL08-24</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span> <span class="c1"># 74
+</span><span class="n">tree</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">tree</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">tree</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">tree</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">tree</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"min: %s"</span> <span class="o">%</span> <span class="n">tree</span><span class="p">.</span><span class="n">find_min</span><span class="p">().</span><span class="n">data</span><span class="p">)</span> <span class="c1"># 81
+</span><span class="k">print</span><span class="p">(</span><span class="s">"max: %s"</span> <span class="o">%</span> <span class="n">tree</span><span class="p">.</span><span class="n">find_max</span><span class="p">().</span><span class="n">data</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span> <span class="c1"># 84
+</span>    <span class="n">found</span> <span class="o">=</span> <span class="n">tree</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{}: {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">found</span><span class="p">))</span>
+    
+<span class="n">tree</span><span class="p">.</span><span class="n">inorder</span><span class="p">()</span> <span class="c1"># 88
+</span><span class="k">print</span><span class="p">()</span>
+<span class="n">tree</span><span class="p">.</span><span class="n">reverse_inorder</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>min: 1
+max: 9
+1: 1
+2: 2
+3: None
+4: None
+5: 5
+6: None
+7: 7
+8: None
+9: 9
+1 2 5 7 9 
+9 7 5 2 1 
+</code></pre></div></div>
+
+<hr />
+
+<p>AL08-25</p>
+
+<p><a href="https://www.acmicpc.net/problem/1620">백준 1620번 나는야 포켓몬 마스터 이다솜</a></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166151499-24b28499-c4f2-4384-aa33-8b34724bc510.png" alt="image" /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166151504-8325c643-5251-4a4c-a61c-0ab770fc4d06.png" alt="image" /></p>
+
+<hr />
+
+<p>AL08-26</p>
+
+<p>코드 작성해 보기</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span> <span class="c1">#1
+</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'bj1620_in.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Node</span><span class="p">:</span> <span class="c1">#5
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span> <span class="c1"># 노드의 이름 즉, key
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="n">num</span> <span class="c1"># 노드에 해당하는 번호
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">None</span> 
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span> <span class="c1"># 47
+</span><span class="n">name_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># 51
+</span>    <span class="n">name</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span> <span class="c1"># input speed를 위한 작업
+</span></code></pre></div></div>
+
+<ul>
+  <li>sys.stdin.readline()을 하면 input()과 다른게 맨 마지막의 \n 까지 그대로 받기 때문에 \n은 제거해 주는 것이다.</li>
+  <li>query[0].isalpha() 를 통해 숫자인지 string인지 판별 하여 경우를 나눠서 구현</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 정답 코드
+</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="p">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"bj1620_in.txt"</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="n">num</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">None</span>
+
+
+<span class="k">class</span> <span class="nc">Tree</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>  <span class="c1"># 24
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c1"># 파란색 포인터
+</span>        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span>  <span class="c1"># 빨간색 포인터
+</span>
+        <span class="k">while</span> <span class="n">current</span><span class="p">:</span>  <span class="c1"># 29
+</span>            <span class="n">parent</span> <span class="o">=</span> <span class="n">current</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">current</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">left</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">right</span>
+
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">parent</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">node</span>
+
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">num</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">idx</span>
+            <span class="k">elif</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span>
+
+
+<span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+<span class="n">name_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+    <span class="n">tree</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">name_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">query</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">isalpha</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">tree</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">name_list</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li>실행 결과</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Pikachu
+26
+Venusaur
+16
+14
+</code></pre></div></div>
+
+<hr />
+
+<p>AL08-27</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166151634-0dac6f5d-9698-498e-bf09-0955cb8802da.png" alt="image" /></p>
+
+<p><a href="https://www.acmicpc.net/problem/17219">백준 17219번 비밀번호 찾기</a></p>
+
+<hr />
+
+<p>AL08-28</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/166151662-fef52412-06d9-461d-9122-69810e0b2a83.png" alt="image" /></p>
+
+<p>사이트 이름 = key 값</p>
+
+<p>비밀 번호 = value</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="p">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'bj17129_in.txt'</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pd</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">pd</span> <span class="o">=</span> <span class="n">pd</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">None</span>
+
+
+<span class="k">class</span> <span class="nc">Tree</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>  <span class="c1"># 24
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c1"># 파란색 포인터
+</span>        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span>  <span class="c1"># 빨간색 포인터
+</span>
+        <span class="k">while</span> <span class="n">current</span><span class="p">:</span>  <span class="c1"># 29
+</span>            <span class="n">parent</span> <span class="o">=</span> <span class="n">current</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">current</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">left</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">.</span><span class="n">right</span>
+
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">parent</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">node</span>
+
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">pd</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">pd</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">node</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">pd</span>
+            <span class="k">elif</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span>
+
+
+<span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">site</span><span class="p">,</span> <span class="n">password</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">tree</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">site</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">tree</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>THEKINGOD
+UAENA
+IU
+ADREAMER
+</code></pre></div></div>
+
+<hr />
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">myFork</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="kt">int</span> <span class="n">me</span><span class="p">,</span> <span class="kt">int</span> <span class="n">max_depth</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">pid_t</span> <span class="n">psid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">psid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">psid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 자식 프로세스</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[%d]: i=%d (depth %d)</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">(),</span> <span class="n">i</span><span class="p">,</span> <span class="n">me</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">me</span> <span class="o">&lt;</span> <span class="n">max_depth</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">myFork</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">me</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">);</span> <span class="c1">// 재귀 호출</span>
+      <span class="n">myFork</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">me</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// 부모 프로세스</span>
+    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">waitpid</span><span class="p">(</span><span class="n">psid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"fork error</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">depth</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 인자로 depth 하나만을 반드시 받아야 프로그램 실행이 됨</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Usage: ./%s depth</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">depth</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// 인자로 숫자를 받아도 string 이기 때문에 int형으로 변환</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">depth</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// depth는 반드시 0 이상의 자연수이어야 함.</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"%s: negative depth error</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">myFork</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">depth</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+:ET

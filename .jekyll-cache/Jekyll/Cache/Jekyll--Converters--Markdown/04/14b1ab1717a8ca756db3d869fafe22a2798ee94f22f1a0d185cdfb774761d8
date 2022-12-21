@@ -1,0 +1,417 @@
+I"R+<h2 id="think-about-dialogue">Think about dialogue</h2>
+
+<ul>
+  <li>What does it mean in UI design?</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140232859.png" alt="image-20221010140232859" /></p>
+
+<p><br /></p>
+
+<h2 id="think-about-dialogue-1">Think about dialogue</h2>
+
+<ul>
+  <li>What does it mean in UI design?</li>
+  <li><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140251485.png" alt="image-20221010140251485" />
+    <ul>
+      <li>marriage service
+        <ul>
+          <li>general flow, generic – blanks for names</li>
+          <li>pattern of interaction between people</li>
+        </ul>
+      </li>
+      <li>computer dialogue
+        <ul>
+          <li>pattern of interaction between users and system</li>
+          <li>but details differ each time</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="network-diagrams">Network diagrams</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140305392.png" alt="image-20221010140305392" /></p>
+
+<ul>
+  <li>
+    <p>Show different paths through system</p>
+  </li>
+  <li>What leads to what</li>
+  <li>What happens when</li>
+  <li>Including branches</li>
+  <li>More task oriented then hierarchy</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="wider-still">Wider still</h2>
+
+<ul>
+  <li>Between applications</li>
+  <li>And beyond …</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="wider-still-">Wider still …</h2>
+
+<ul>
+  <li>Style issues:
+    <ul>
+      <li>platform standards, consistency: Windows vs MacOS</li>
+    </ul>
+  </li>
+  <li>Functional issues
+    <ul>
+      <li>cut and paste: ^C &amp; ^V</li>
+    </ul>
+  </li>
+  <li>Navigation issues
+    <ul>
+      <li>embedded applications</li>
+      <li>links to other apps … the web</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-action-and-control">User action and control</h2>
+
+<ul>
+  <li>Entering information</li>
+  <li>Knowing what to do</li>
+  <li>Affordances</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="entering-information">Entering information</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140405412.png" alt="image-20221010140405412" /></p>
+
+<ul>
+  <li>Forms, dialogue boxes
+    <ul>
+      <li>presentation + data input</li>
+      <li>similar layout issues</li>
+      <li>alignment – NB: different label lengths</li>
+    </ul>
+  </li>
+  <li>Logical layout
+    <ul>
+      <li>use task analysis</li>
+      <li>groupings</li>
+      <li>natural order for entering information
+        <ul>
+          <li>top-bottom, left-right (depending on culture)</li>
+          <li>set tab order for keyboard entry</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="knowing-what-to-do">Knowing what to do</h2>
+
+<ul>
+  <li>What is active, what is passive
+    <ul>
+      <li>where do you click</li>
+      <li>where do you type</li>
+    </ul>
+  </li>
+  <li>Consistent style helps
+    <ul>
+      <li>e.g. web underlined links</li>
+    </ul>
+  </li>
+  <li>Labels and icons
+    <ul>
+      <li>standards for common actions</li>
+      <li>language – bold = current state or action</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="affordances">Affordances</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140515453.png" alt="image-20221010140515453" /></p>
+
+<ul>
+  <li>Psychological term
+    <ul>
+      <li>The perceived and actual properties of an object that determine how it could possibly be used</li>
+    </ul>
+  </li>
+  <li>For physical objects
+    <ul>
+      <li>shape and size suggest actions
+        <ul>
+          <li>pick up, twist, throw</li>
+        </ul>
+      </li>
+      <li>also cultural – buttons ‘afford’ pushing</li>
+    </ul>
+  </li>
+  <li>For screen objects
+    <ul>
+      <li>button-like object ‘affords’ mouse click</li>
+      <li>physical-like objects suggest use</li>
+    </ul>
+  </li>
+  <li>Culture of computer use
+    <ul>
+      <li>icons ‘afford’ clicking</li>
+      <li>or even double clicking … not like real buttons!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="affordance-examples">Affordance Examples</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140525545.png" alt="image-20221010140525545" /></p>
+
+<p><br /></p>
+
+<h2 id="affordances-in-gui-design">Affordances in GUI Design</h2>
+
+<ul>
+  <li>Buttons drawn as 3D shapes appear to “stick out” and hence afford pushing.</li>
+  <li>Sliders and scroll bars afford dragging</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140542186.png" alt="image-20221010140542186" /></p>
+
+<p><br /></p>
+
+<h2 id="tabbed-dialogs">Tabbed Dialogs</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140552240.png" alt="image-20221010140552240" /></p>
+
+<p><br /></p>
+
+<h2 id="appropriate-appearance">Appropriate appearance</h2>
+
+<ul>
+  <li>Presenting information</li>
+  <li>Aesthetics and utility</li>
+  <li>Colour and 3D</li>
+  <li>Localisation &amp; internationalisation</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="screen-design-and-layout">screen design and layout</h2>
+
+<ul>
+  <li>basic principles</li>
+  <li>grouping, structure, order</li>
+  <li>alignment</li>
+  <li>use of white space</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140625190.png" alt="image-20221010140625190" /></p>
+
+<p><br /></p>
+
+<h2 id="basic-principles">basic principles</h2>
+
+<ul>
+  <li>ask
+    <ul>
+      <li>what is the user doing?</li>
+    </ul>
+  </li>
+  <li>think
+    <ul>
+      <li>what information, comparisons, order</li>
+    </ul>
+  </li>
+  <li>design
+    <ul>
+      <li>form follows function</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="available-tools">available tools</h2>
+
+<ul>
+  <li>grouping of items</li>
+  <li>order of items</li>
+  <li>decoration - fonts, boxes etc.</li>
+  <li>alignment of items</li>
+  <li>white space between items</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="grouping-and-structure">grouping and structure</h2>
+
+<p>logically together =&gt; physically together</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140708765.png" alt="image-20221010140708765" /></p>
+
+<p><br /></p>
+
+<h2 id="order-of-groups-and-items">order of groups and items</h2>
+
+<ul>
+  <li>think! - what is natural order</li>
+  <li>should match screen order!
+    <ul>
+      <li>use boxes, space etc.</li>
+      <li>set up tabbing right!</li>
+    </ul>
+  </li>
+  <li>instructions
+    <ul>
+      <li>beware the cake recipe syndrome!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140731151.png" alt="image-20221010140731151" /></p>
+
+<p><br /></p>
+
+<h2 id="decoration">decoration</h2>
+
+<ul>
+  <li>use boxes to group logical items</li>
+  <li>use fonts for emphasis, headings</li>
+  <li>but not too many!!</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140744037.png" alt="image-20221010140744037" /></p>
+
+<p><br /></p>
+
+<h2 id="alignment---text">alignment - text</h2>
+
+<ul>
+  <li>you read from left to right (English and European)
+==&gt; align left hand side</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140759570.png" alt="image-20221010140759570" /></p>
+
+<p><br /></p>
+
+<h2 id="alignment---names">alignment - names</h2>
+
+<ul>
+  <li>Usually scanning for surnames =&gt; make it easy!</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140812763.png" alt="image-20221010140812763" /></p>
+
+<p><br /></p>
+
+<h2 id="alignment---numbers">alignment - numbers</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140820622.png" alt="image-20221010140820622" /></p>
+
+<p><br /></p>
+
+<h2 id="alignment---numbers-1">alignment - numbers</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140829001.png" alt="image-20221010140829001" /></p>
+
+<p><br /></p>
+
+<h2 id="multiple-columns">multiple columns</h2>
+
+<ul>
+  <li>scanning across gaps hard:
+(often hard to avoid with large data base fields)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140843084.png" alt="image-20221010140843084" /></p>
+
+<p><br /></p>
+
+<h2 id="multiple-columns---2">multiple columns - 2</h2>
+
+<ul>
+  <li>use leaders</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140853776.png" alt="image-20221010140853776" /></p>
+
+<p><br /></p>
+
+<h2 id="multiple-columns---3">multiple columns - 3</h2>
+
+<ul>
+  <li>or greying (vertical too)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140908660.png" alt="image-20221010140908660" /></p>
+
+<p><br /></p>
+
+<h2 id="multiple-columns---4">multiple columns - 4</h2>
+
+<ul>
+  <li>or even (with care!) ‘bad’ alignment</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140922382.png" alt="image-20221010140922382" /></p>
+
+<p><br /></p>
+
+<h2 id="white-space---the-counter">white space - the counter</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140929942.png" alt="image-20221010140929942" /></p>
+
+<p><br /></p>
+
+<h2 id="space-to-separate">space to separate</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140937225.png" alt="image-20221010140937225" /></p>
+
+<p><br /></p>
+
+<h2 id="space-to-structure">space to structure</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140944019.png" alt="image-20221010140944019" /></p>
+
+<p><br /></p>
+
+<h2 id="space-to-highlight">space to highlight</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140952234.png" alt="image-20221010140952234" /></p>
+
+<p><br /></p>
+
+<h2 id="physical-controls">physical controls</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141000089.png" alt="image-20221010141000089" /></p>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141012253.png" alt="image-20221010141012253" /></p>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141022883.png" alt="image-20221010141022883" /></p>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010141030086.png" alt="image-20221010141030086" /></p>
+
+:ET

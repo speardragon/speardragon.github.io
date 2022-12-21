@@ -1,0 +1,2991 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[System Programming] 2장. Unix,Linux 기초 | speardragon note</title>
+<meta name="description" content="제 2장 유닉스 사용">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[System Programming] 2장. Unix,Linux 기초">
+<meta property="og:url" content="http://localhost:4000/system/system%20programming/System-Programming-2%EC%9E%A5.-Unix,-Linux-%EC%82%AC%EC%9A%A9/">
+
+
+  <meta property="og:description" content="제 2장 유닉스 사용">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-11T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/system/system%20programming/System-Programming-2%EC%9E%A5.-Unix,-Linux-%EC%82%AC%EC%9A%A9/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system" itemprop="item"><span itemprop="name">System</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#system-programming" itemprop="item"><span itemprop="name">System programming</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[System Programming] 2장. Unix,Linux 기초</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[System Programming] 2장. Unix,Linux 기초">
+    <meta itemprop="description" content="제 2장 유닉스 사용">
+    <meta itemprop="datePublished" content="2022-03-11T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/system/system%20programming/System-Programming-2%EC%9E%A5.-Unix,-Linux-%EC%82%AC%EC%9A%A9/" class="u-url" itemprop="url">[System Programming] 2장. Unix,Linux 기초
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          14 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#제-2장-유닉스-사용">제 2장 유닉스 사용</a></li><li><a href="#2-유닉스-사용">2. 유닉스 사용</a><ul><li><a href="#20-유닉스-기초">2.0 유닉스 기초</a><ul><li><a href="#logging-in">Logging in</a></li><li><a href="#shellprompt">Shell(prompt)</a></li><li><a href="#file-system">File system</a></li><li><a href="#input-and-output">Input and output</a></li><li><a href="#programs-and-processes">Programs and processes</a><ul><li><a href="#main-memory">Main memory</a></li><li><a href="#process-life-cycle">Process Life Cycle</a></li></ul></li><li><a href="#error-handling">Error handling</a></li><li><a href="#user-identification">User identification</a><ul><li><a href="#signals시험">Signals(시험)</a></li></ul></li><li><a href="#time-values">Time values</a></li></ul></li><li><a href="#21-기본-명령어">2.1 기본 명령어</a></li><li><a href="#22-파일-및-디렉토리">2.2 파일 및 디렉토리</a><ul><li><a href="#파일의-종류">파일의 종류</a></li></ul></li><li><a href="#디렉터리-계층-구조">디렉터리 계층 구조</a><ul><li><a href="#홈-디렉터리현재-작업-디렉터리">홈 디렉터리/현재 작업 디렉터리</a></li><li><a href="#디렉터리-관련-명령">디렉터리 관련 명령</a></li><li><a href="#경로명">경로명</a></li><li><a href="#파일-내용-리스트">파일 내용 리스트</a></li><li><a href="#cp-명령어copy">cp 명령어(copy)</a></li></ul></li><li><a href="#23-파일-속성">2.3 파일 속성</a><ul><li><a href="#파일-속성file-attribute">파일 속성(file attribute)</a></li><li><a href="#사용-권한permission-mode">사용 권한(permission mode)</a></li><li><a href="#chmodchange-mode">chmod(change mode)</a></li><li><a href="#chownchange-owner-chgrpchange-group">chown(change owner)/ chgrp(change group)</a></li></ul></li><li><a href="#24-입출력-재지정-및-파이프">2.4 입출력 재지정 및 파이프</a><ul><li><a href="#출력-재지정output-redirection">출력 재지정(output redirection)</a></li><li><a href="#출력-추가append">출력 추가(append)</a></li><li><a href="#입력-재지정input-redirection">입력 재지정(input redirection)</a></li><li><a href="#문서-내-입력here-document">문서 내 입력(here document)</a></li><li><a href="#파이프시험">파이프(시험)</a></li></ul></li><li><a href="#25-후면-처리-및-프로세스">2.5 후면 처리 및 프로세스</a><ul><li><a href="#전면-처리-vs-후면처리">전면 처리 vs. 후면처리</a></li><li><a href="#후면-처리-예">후면 처리 예</a></li><li><a href="#프로세스process">프로세스(process)</a><ul><li><a href="#kill-명령어">kill 명령어</a></li></ul></li></ul></li><li><a href="#26-문서-편집기">2.6 문서 편집기</a></li><li><a href="#2장-정리">2장 정리</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="제-2장-유닉스-사용">제 2장 유닉스 사용</h1>
+
+<h1 id="2-유닉스-사용">2. 유닉스 사용</h1>
+
+<h2 id="20-유닉스-기초">2.0 유닉스 기초</h2>
+
+<h3 id="logging-in">Logging in</h3>
+
+<ul>
+  <li>login
+    <ul>
+      <li>Unix는 multi-user system</li>
+      <li>따라서, “login name + password”로 시스템에 로그인</li>
+      <li>/etc/passwd라는 파일에 다음과 같은 정보(entry) 저장.
+        <ul>
+          <li>login name:password:UID:GID:comment:home directory:shell program</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157785790-a22cfb94-2443-4252-971d-2a1901e0b850.png" alt="image" /></p>
+
+<h3 id="shellprompt">Shell(prompt)</h3>
+
+<ul>
+  <li>Unix는 기본적으로 <strong>command line interface</strong>를 사용
+    <ul>
+      <li>command line interpreter라고도 함.</li>
+    </ul>
+  </li>
+  <li>사용자의 명령을 읽어들여 실행하는 명령어 해석기가 필요.(terminal or shell script)</li>
+  <li>로그인 시 아래와 같은 창이 뜸</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157786221-f0b63cb2-dad1-44b0-9b8d-416b07abefcc.png" alt="image" /></p>
+
+<ul>
+  <li>.(current directory)</li>
+  <li>
+    <p>..(parent directory)</p>
+  </li>
+  <li>Shell의 종류
+    <ul>
+      <li>Bourne shell, C shell, Korn shell, Tenex shell, Born Again shell</li>
+    </ul>
+  </li>
+  <li>Linux 계열(window도 마찬가지)의 파일 계층은 트리 구조를 갖는다.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="file-system">File system</h3>
+
+<ul>
+  <li>File system의 구성
+    <ul>
+      <li>File : 실제 정보(data)를 담고 있는 문서</li>
+      <li>Special file: IO장치와 같은 것 or network connection 등등</li>
+      <li>Directory: 여러 개의 <strong>파일들에 대한 정보</strong>를 담고 있는 것
+        <ul>
+          <li>Directory entry(file name + attribute pointer)들의 집합</li>
+          <li>Hard link</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Hierarchical structure
+    <ul>
+      <li>/ : root directory</li>
+      <li>동그라미: 일반 file</li>
+      <li>네모: directory entry</li>
+      <li><img src="https://user-images.githubusercontent.com/79521972/157786440-7dd4baf8-b69d-44cd-9781-30e343a5b357.png" alt="image" /></li>
+    </ul>
+  </li>
+  <li>Attribute
+    <ul>
+      <li>모든 directory entry는 모든 파일의 속성 정보를 전부 갖고 있음</li>
+      <li>Per file data sturcture</li>
+      <li><code class="language-plaintext highlighter-rouge">Type</code>, <code class="language-plaintext highlighter-rouge">size</code>, <code class="language-plaintext highlighter-rouge">owner</code>, <code class="language-plaintext highlighter-rouge">permission</code>, <code class="language-plaintext highlighter-rouge">access time</code> 등</li>
+    </ul>
+
+    <p><img src="https://user-images.githubusercontent.com/79521972/157786589-8f1e4308-fd8c-4706-93b6-f2103ccd3f04.png" alt="image" /></p>
+
+    <ul>
+      <li>d로 시작하는 것은 directory를 의미</li>
+      <li>-로 시작하는 것은 일반 파일을 의미</li>
+      <li>-a: all이라는 의미로 hidden file까지 전부 보여준다.</li>
+      <li>-l: long이라는 의미로 file의 자세하게 나오게 해 준다.</li>
+      <li>x: navigate할 수 있다.</li>
+      <li>rw: read/write</li>
+      <li>obama는 users 그룹의 멤버다.</li>
+      <li>4096: 해당 entry의 size(byte 단위)</li>
+      <li>가장 최근에 수정된 날짜와 시간</li>
+    </ul>
+  </li>
+  <li>ls: directory에 들어있는 모든 파일의 속성을 보여주는 명령어
+    <ul>
+      <li>맨 앞이 d로 시작하면 디렉토리라는 의미이고 맨앞이 ‘-‘로 시작하면 파일이라는 의미이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>Filename (파일 이름)</p>
+
+    <ul>
+      <li>NULL과 ‘/’를 <span style="color:red">제외한</span> 문자열로 구성.
+        <ul>
+          <li>’/’는 경로 이름을 구성하는데 있어서 각 경로를 구분하는데 사용되는 문자이기 때문이다.</li>
+          <li>Null 문자는 경로 이름을 종료한다
+            <ul>
+              <li>즉 Null은 path name의 마지막을 의미하기 때문에 사용하면 안된다.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Some Unix FS 14자로 제한, BSD의 경우 255자 이내</li>
+      <li>Special filenames (얘도 파일로 간주)
+        <ul>
+          <li>2개의 파일 이름은 새로운 디렉토리가 만들어질 때 항상 <span style="color:red">자동적으로 생성</span>된다.
+            <ul>
+              <li>. (current directory)</li>
+              <li>.. (parent directory)</li>
+            </ul>
+          </li>
+          <li>current directory와 parent directory의 속정 정보(commition, size,read/write 등)를 갖게 하기 위해(쉽게 찾기 위해)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Pathname (경로 이름)
+    <ul>
+      <li>파일 위치를 지정하기 위한 수단</li>
+      <li>/home/obama   -&gt; <strong>home directory (login시 위치)</strong></li>
+      <li>/home/obama/test -&gt; working directory (작업 위치)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157787269-b93fab90-ef77-47ad-81d4-d42644ddae4a.png" alt="image" /></p>
+
+<ul>
+  <li>
+    <p>pwd: print working directory</p>
+  </li>
+  <li><strong>Absolute path name(절대 경로)</strong>
+    <ul>
+      <li>root directory를 기점으로 원하는 경로를 전부 작성하여 들어가는 방법</li>
+      <li>A path name that begins with a slash</li>
+    </ul>
+  </li>
+  <li><strong>Relative path name(상대 경로)</strong>
+    <ul>
+      <li>current working directory를 기점으로 다음 경로로 들어가는 방법</li>
+      <li>A path name that begins with CWD</li>
+    </ul>
+  </li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>$ cd ~</th>
+      <th>is equivalent to ‘cd’</th>
+      <th>go to home directory</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>$ cd -</strong></td>
+      <td><strong>is equivalent to ‘$OLDPWD’</strong></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p>c프로그램으로 폰노이만 아키텍처를 구현해 보기</p>
+
+<h3 id="input-and-output">Input and output</h3>
+
+<p>외부 디바이스도 파일로 간주</p>
+
+<ul>
+  <li><strong>File descriptor</strong>
+    <ul>
+      <li>In C, fopen() 안에 있는 인자는 file 경로를 받는데 이 함수가 이 파일의 file descriptor를 return 한다.</li>
+      <li><strong>Non-negative integers</strong> that the kernel used to identify the files being accessed by a process</li>
+      <li>special file도 file이기 때문에 descriptor를 리턴한다.</li>
+      <li>file descriptor는 고정된 숫자가 아니라 매 실행마다 바뀔 수 있는 것이다.
+        <ul>
+          <li>하지만 0, 1, 2는 고정된 숫자이다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157791307-f4dda25f-30da-4892-92d7-4754d384beae.png" alt="image" /></p>
+
+<p>process가 어떤 program에서 생성이 될 때, 기본적으로 3 개의 file descriptor가 자동적으로 생성이 되고(0, 1, 2) process에서 첫 파일을 생성하게 되면 4번째 위치인 3번 index에 파일이 생성이 된다.</p>
+
+<p><br /></p>
+
+<h3 id="programs-and-processes">Programs and processes</h3>
+
+<ul>
+  <li>Program
+    <ul>
+      <li>instruction의 나열</li>
+      <li>An executable file residing on disk(program definition)</li>
+      <li>program의 성능을 결정하는 것은 algorithm+data structure</li>
+    </ul>
+  </li>
+  <li>Process
+    <ul>
+      <li>An executing instance of a program (also called task)</li>
+      <li>source file -&gt; 실행 파일
+        <ul>
+          <li>compile / assemble</li>
+          <li>default로 실행 파일이 만들어지면 a.out 이라는 이름을 갖게 된다.
+            <ul>
+              <li>a.out : <strong>program definition</strong></li>
+              <li>program definition은 지시(direction)만 내리고 실제 공간을 확보하지는 않는다.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>loader를 통해 위 a.out을 main memory에 탑재</li>
+      <li>program definition에 따라서 공간까지 실제로 확보하는 것은 <strong>program instance process</strong></li>
+      <li>Process id: a unique numeric identifier for process
+        <ul>
+          <li>non-fixed numeric identifier</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157791647-47465c41-8f27-4cf7-9f8c-2f90675eb69c.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h4 id="main-memory">Main memory</h4>
+
+<ul>
+  <li>text
+    <ul>
+      <li>instruction set</li>
+    </ul>
+  </li>
+  <li>data
+    <ul>
+      <li>global data, static 변수</li>
+      <li>함수 호출과 관계없이 프로그램 종료 때까지 살아있어야 하기 때문에 stack 공간에 저장되면 안됨</li>
+    </ul>
+  </li>
+  <li>heap
+    <ul>
+      <li>malloc(동적 할당)을 위해 남겨둔 공간</li>
+    </ul>
+  </li>
+  <li>완충지역
+    <ul>
+      <li>너무 많은 함수 호출로 인해 stack frame이 너무 많이 쌓여 위 메모리 공간을 침범하는 것을 막기 위한 공간</li>
+      <li>stackoverflow 발생</li>
+    </ul>
+  </li>
+  <li>stack
+    <ul>
+      <li>함수 호출에 의해 변수 등이 저장되는 공간</li>
+      <li>함수마다 stack frame이라는 것이 만들어진다.
+        <ul>
+          <li>함수의 지역변수는 해당 stack frame에 생기는 것이다.</li>
+          <li>함수가 리턴할 때 해당 데이터가 사라짐</li>
+        </ul>
+      </li>
+      <li><strong>stack frame</strong>
+        <ul>
+          <li>os가 main함수를 호출하면 stack 아래에 main function에 대한 stack frame이 생김</li>
+          <li>이곳에는 해당 함수에서 사용하는 local 변수들이 저장됨
+            <ul>
+              <li>parameter 변수, return address(함수 종료 후 다시 돌아가야 할 주소) 등도 포함</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>그래서 다른 함수에서 같은 변수 이름을 사용해도 둘은 다른 stack frame안에 존재하기 때문에 서로 달리 사용할 수 있는 것이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="process-life-cycle">Process Life Cycle</h4>
+
+<ul>
+  <li>program definition이 실행되는 것이 아니라 그것을 바탕으로 process life cycle이 실행되는 것이다.
+    <ul>
+      <li>프로그램 실행요구</li>
+    </ul>
+  </li>
+  <li>new : process를 만드는 과정
+    <ul>
+      <li>process control block(PCB) 생성</li>
+      <li>pid 생성</li>
+    </ul>
+  </li>
+  <li>ready
+    <ul>
+      <li>줄 서는 과정(실행을 기다림)</li>
+    </ul>
+  </li>
+  <li>running
+    <ul>
+      <li>누가 먼저 실행할지를 결정하는 과정</li>
+      <li>우선순위 scheduling, FIFO</li>
+    </ul>
+  </li>
+  <li>wait
+    <ul>
+      <li>I/O를 기다리는</li>
+    </ul>
+  </li>
+  <li>terminated
+    <ul>
+      <li>new에서 address 할당했던 것들과 같은 것들을 회수하여 흔적을 지우는 과정</li>
+    </ul>
+  </li>
+</ul>
+
+<p>이와 같이 program definition은 하드디스크에 계속 머물고 있는 것과 달리 process life cycles는 메모리를 동적으로 실행을 했다가 회수까지 전부 한다.</p>
+
+<p><br /></p>
+
+<hr />
+
+<p>교과서 밖 내용</p>
+
+<p>과거의 os는 multi programming을 지원하지 않았음. 즉, 한 program이 실행 중이면 다른 program을 실행하지 못했음.</p>
+
+<p>multi-programming이란 cpu가 쉬는 타임에 다른 프로그램을 실행시키는 것이다.</p>
+
+<ul>
+  <li>
+    <p>pre-emptive(강제로 뺏는) 스케쥴링: 실행중인 program이 우선순위가 떨어진다 판단되면 cpu 점유를 뺏어서 ready로 보내고 ready에서 차례를 기다리던 높은 우선순위를 갖는 program이 그 자리를 차지한다.</p>
+  </li>
+  <li>non-pre-emptive 스케쥴링</li>
+  <li>라운드 로빈 스케쥴링: 번갈아 가면서 우선순위 할당, 공정성(fairness)</li>
+</ul>
+
+<hr />
+
+<h3 id="error-handling">Error handling</h3>
+
+<ul>
+  <li>When an error occurs,
+    <ul>
+      <li>A <strong>negative value</strong> is often returned</li>
+      <li><span style="color:red">errno</span>(errorn number) is set to a value that gives additional informaion(error가 발생하면 발생한 이유가 환경 변수 errno에 저장이 된다.)
+        <ul>
+          <li>e.g. When open, returns -1 if an error occurs</li>
+          <li>error from open has 15 possible errno values
+            <ul>
+              <li>file doesn’t exit, permission problem, …</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <errno.h>
+</errno.h>
+        <ul>
+          <li>어떤 number가 어떤 error인지 정보가 담겨있는 헤더 파일</li>
+          <li>Defines errno symbols and constants for each error.</li>
+          <li>Each constant begins with the character E.(항상 E로 시작하는 단어임)
+            <ul>
+              <li>E.g. ENOENT, EACCESS,…</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="kt">char</span> <span class="o">*</span><span class="nf">strerror</span><span class="p">(</span><span class="kt">int</span> <span class="n">errnum</span><span class="p">);</span>
+<span class="cm">/* maps errnum(errno value) into an error message string &amp; returns a pointer to the string*/</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">perror</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">msg</span><span class="p">);</span>  <span class="cm">/*outputs the string pointed to by msg*/</span>
+						<span class="cm">/*output format"string pointed by msg:errormessage of errno"*/</span>
+</code></pre></div></div>
+
+<ul>
+  <li>strerror와 perror의 사용 예</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h"</span><span class="cp">
+#includ &lt;errno.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"EACCES: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">strerror</span><span class="p">(</span><span class="n">EACCES</span><span class="p">));</span> <span class="c1">//error number to message string</span>
+    <span class="n">errno</span> <span class="o">=</span> <span class="n">ENOENT</span><span class="p">;</span>
+    <span class="n">perror</span><span class="p">(</span><span class="n">argc</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>실행 예</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+EACCES: Permission denied
+./a.out: No such file or directory
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="user-identification">User identification</h3>
+
+<ul>
+  <li>user ID
+    <ul>
+      <li><strong>a numeric value</strong> that identifies the user</li>
+      <li>is assigned by the system administrator.</li>
+      <li><strong>0</strong>: superuser or root</li>
+    </ul>
+  </li>
+  <li>group ID
+    <ul>
+      <li>is used to collect users together into projects.</li>
+    </ul>
+  </li>
+  <li>If the full ASCII user/group name is used instead?(ASCII를 사용하지 않는 이유)
+    <ul>
+      <li>additional disk space will be required.</li>
+      <li><strong>the cost of string</strong> comparison for permission check is high.</li>
+    </ul>
+  </li>
+  <li>
+    <p>userID와 userName은 의미는 같다.</p>
+  </li>
+  <li>
+    <p>userID와 groupID의 출력 예제</p>
+
+    <ul>
+      <li>
+        <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"apue.h"</span><span class="cp">
+</span>    
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="c1">//userId, groupId 를 알려주는 함수</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"uid = %d, grid = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getuid</span><span class="p">(),</span> <span class="n">getgid</span><span class="p">());</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>실행 예</p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./a.out
+uid <span class="o">=</span> 205, grid <span class="o">=</span> 105
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="signals시험">Signals(시험)</h4>
+
+<p>통보(notofication) 수단</p>
+
+<ul>
+  <li>
+    <p><strong>Signal</strong></p>
+
+    <ul>
+      <li>is used to notify a process that some condition has occurred.(by kernal)</li>
+      <li>e.g. if divide by zero, SIGFPE(floating point exception) is sent to the process</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Action of process received the signal</strong>(받은 시그널에 대한 대응 방법) (시험에 나온 부분)</p>
+
+    <ul>
+      <li>ignore the signal.</li>
+      <li>let the <strong>default action</strong> occur.</li>
+      <li>execute your own action.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Signal의 예제</p>
+    <ul>
+      <li>
+        <p>kill</p>
+
+        <p><img src="https://user-images.githubusercontent.com/79521972/157793357-0d8855f1-879c-4195-9343-6d3270b3b1ea.png" alt="image" /></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="time-values">Time values</h3>
+
+<ul>
+  <li>calendar time
+    <ul>
+      <li># of seconds since the Epoch
+        <ul>
+          <li>Epoch is 00:00:00 January 1, 1970.</li>
+        </ul>
+      </li>
+      <li>time_t</li>
+    </ul>
+  </li>
+  <li>process time(CPU time)
+    <ul>
+      <li>CPU time used by a process (measured in clock ticks.)</li>
+      <li>clock ticks are 50, 60, 100 ticks/seconds.</li>
+      <li>clock_t</li>
+    </ul>
+  </li>
+  <li>Process time 의 표현
+    <ul>
+      <li><strong>clock time</strong>
+        <ul>
+          <li>the amount of time the process <strong>takes to run</strong></li>
+          <li>depends on <strong># of other processes</strong> being run on the system</li>
+          <li>그래서 하나의 프로세스를 가지고서만 clock time을 구하는 것이 의미가 있다.</li>
+        </ul>
+      </li>
+      <li><strong>user CPU time</strong>
+        <ul>
+          <li>CPU time attributed to <strong>user instruction</strong>.(user code)</li>
+        </ul>
+      </li>
+      <li><strong>system CPU time</strong>
+        <ul>
+          <li>CPU time attributed to <strong>the kernel</strong>.(kernal code)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157793722-84111232-36b7-4da6-9788-07aad10bbe3f.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="21-기본-명령어">2.1 기본 명령어</h2>
+
+<p>간단한 명령어 사용</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">date</span> // 날짜를 출력하거나 설정
+<span class="nv">$ </span><span class="nb">hostname</span>
+<span class="nv">$ </span><span class="nb">uname</span> //시스템 정보를 출력
+<span class="nv">$ </span><span class="nb">who</span> //시스템에 로그인되어 있는 사용자들을 로그인 정보와 같이 출력해주는 명령어
+<span class="nv">$ </span><span class="nb">ls</span> //list
+<span class="nv">$ </span>clear //터미널의 내용을 모두 지우는 명령어
+<span class="nv">$ </span>passwd //사용자 계정의 비밀번호를 입력 또는 변경하는 명령어
+</code></pre></div></div>
+
+<h2 id="22-파일-및-디렉토리">2.2 파일 및 디렉토리</h2>
+
+<h3 id="파일의-종류">파일의 종류</h3>
+
+<ul>
+  <li>일반 파일(ordinary file)
+    <ul>
+      <li>데이터를 갖고 있으면서 disk에 저장된다.</li>
+    </ul>
+  </li>
+  <li>디렉터리/폴더
+    <ul>
+      <li>디렉터리 자체도 하나의 파일로 한 디렉터리는 다른 디렉터리들을 포함함으로써 계층 구조를 이룬다.</li>
+      <li>부모 디렉터리는 다른 디렉터리들을 서브 디렉터리로 갖는다.</li>
+    </ul>
+  </li>
+  <li>특수 파일(special file)
+    <ul>
+      <li>물리적인 장치에 대한 내부적인 표현</li>
+      <li>키보드(stdin), 모니터(stdout), 프린터 등도 UNIX에서는 모두 파일처럼 사용</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="디렉터리-계층-구조">디렉터리 계층 구조</h2>
+
+<ul>
+  <li>유닉스의 디렉터리는 루트로부터 시작하여 계층 구조를 이룬다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157794129-fc8f9f79-bac9-43a9-8e1f-79f8da72d1d7.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>리눅스 디렉터리(유닉스 디렉터리와 유사한 계층 구조를 갖는다.)</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157794229-485771de-1283-424b-839a-f7dca2e36d27.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="홈-디렉터리현재-작업-디렉터리">홈 디렉터리/현재 작업 디렉터리</h3>
+
+<ul>
+  <li>홈 디렉터리(home directory)
+    <ul>
+      <li>각 사용자마다 별도의 홈 디렉터리가 있음</li>
+      <li>사용자가 <strong>로그인</strong>하면 홈 디렉터리에서 작업을 시작함</li>
+    </ul>
+  </li>
+  <li>현재 작업 디렉터리(curren working directory, cwd)
+    <ul>
+      <li>현재 작업 중인 디렉터리</li>
+      <li>로그인 하면 홈 디렉터리에서부터 작업이 시작된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="디렉터리-관련-명령">디렉터리 관련 명령</h3>
+
+<ul>
+  <li>
+    <p>pwd(print working directory) (시험)</p>
+
+    <ul>
+      <li>
+        <p><strong>현재</strong> 작업 디렉터리를 출력</p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">pwd</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>cd (change directory)</p>
+
+    <ul>
+      <li>
+        <p>현재 작업 디렉터리를 <strong>이동</strong></p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd</span> <span class="o">[</span>디렉터리]
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>mkdir (make directory)</p>
+
+    <ul>
+      <li>
+        <p>새 디렉터리를 <strong>만듦</strong></p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mkdir </span>디렉터리
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>ls(list)</p>
+
+    <ul>
+      <li>디렉터리의 내용을 리스트</li>
+    </ul>
+  </li>
+  <li>
+    <p>$ ls</p>
+
+    <p>cs1.txt</p>
+  </li>
+  <li>
+    <p>$ ls -s     -&gt; -s(size) ; 히든 파일 미포함</p>
+
+    <p>총 6</p>
+
+    <p>6cs1.txt</p>
+  </li>
+  <li>
+    <p>$ ls -a         -&gt; -a(all; 히든,special 파일 포함)</p>
+
+    <p>. .. cs1.txt</p>
+  </li>
+  <li>
+    <p>$ ls -l             -&gt; -l(long,자세하게)</p>
+
+    <p>-rw-r–r– 1 chang faculty 2088 4월 16일 13:37 cs1.txt</p>
+
+    <ul>
+      <li>2088 바이트</li>
+    </ul>
+  </li>
+  <li>
+    <p>$ ls -asl</p>
+
+    <p>총 10                              -&gt;    (10개의 block을 사용)</p>
+
+    <p>2 drwxr-xr-x 2 chang faculty 512 4월 16일 13:37 .
+2 drwxr-xr-x 3 chang faculty 512 4월 16일 13:37 ..
+6 -rw-r–r– 1 chang faculty 2088 4월 16일 13:37 cs1.txt</p>
+  </li>
+</ul>
+
+<p>(시험)</p>
+
+<p><br /></p>
+
+<p><strong>정리</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>명령어</th>
+      <th>의미</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ls</td>
+      <td>파일 및 디렉터리 리스트</td>
+    </tr>
+    <tr>
+      <td>ls -a</td>
+      <td>모든 파일과 디렉터리 리스트</td>
+    </tr>
+    <tr>
+      <td>ls -asl</td>
+      <td>모든 파일 자세히 리스트</td>
+    </tr>
+    <tr>
+      <td>mkdir</td>
+      <td>디렉터리 만들기</td>
+    </tr>
+    <tr>
+      <td>cd 디렉터리</td>
+      <td>디렉터리로 이동</td>
+    </tr>
+    <tr>
+      <td>cd</td>
+      <td>홈 디렉터리로 이동</td>
+    </tr>
+    <tr>
+      <td>cd ~</td>
+      <td>홈 디렉터리로 이동</td>
+    </tr>
+    <tr>
+      <td>cd ..</td>
+      <td>부모 디렉터리로 이동</td>
+    </tr>
+    <tr>
+      <td>pwd</td>
+      <td>현재 작업 디렉터리 프린트</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h3 id="경로명">경로명</h3>
+
+<ul>
+  <li>파일이나 디렉터리에 대한 정확한 이름</li>
+  <li><strong>절대 경로명</strong> (absolute pathname)
+    <ul>
+      <li><strong>루트 디렉터리</strong>로부터 시작하여 경로 이름을 <strong>정확하게</strong> 적는 것</li>
+    </ul>
+  </li>
+  <li><strong>상대 경로명</strong> (relative pathname)
+    <ul>
+      <li><strong>현재 작업 디렉터리</strong>부터 시작해서 경로 이름을 적는 것</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157795237-313eef89-6288-437a-abc9-7aaf95dda231.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="파일-내용-리스트">파일 내용 리스트</h3>
+
+<ul>
+  <li>파일 내용 출력과 관련된 다음 명령어들
+    <ul>
+      <li>cat(catalog), more, head, tail, wc, 등</li>
+    </ul>
+  </li>
+  <li>$ [명령어] [파일]</li>
+  <li>$ [명령어] [파일*]  : 파일 이름을 줄 수도 있고 안 줄 수도 있다.</li>
+  <li>$ [more] [파일+] : 파일을 한 개 이상을 줄 수 있다.</li>
+</ul>
+
+<p><br /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat cs1.txt        -&gt; cs1.txt의 내용을 모니터에 print
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$cat                 -&gt; 파일을 지정하지 않았기 때문에 키보드 입력을 출력하는 모드이다.
+
+...                  -&gt; 사용자 입력
+
+^D                   -&gt; 입력 종료
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat &gt; cs1.txt       -&gt; redirection: 키보드로 입력한 내용은 txt파일에 출력
+...
+^D
+</code></pre></div></div>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>more 명령어</p>
+
+    <ul>
+      <li>하나 이상의 파일 이름을 받을 수 있으며(한 페이지에 해당하는)</li>
+      <li>각 파일의 내용을 페이지 단위로 출력</li>
+      <li>텍스트 파일의 내용을 한 번에 한 화면씩 보여주기 위한 명령어</li>
+    </ul>
+  </li>
+  <li>
+    <p>head 명령어</p>
+
+    <ul>
+      <li>파일의 앞부분 (10줄)을 출력한다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>tail 명령어</p>
+
+    <ul>
+      <li>파일의 뒷부분 (10줄)을 출력한다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>wc(word count)</p>
+
+    <ul>
+      <li>
+        <p>파일에 저장된 줄, 단어, 문자의 개수를 세서 출력</p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">wc </span>cs1.txt
+38 318 2088 cs1.txt
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="cp-명령어copy">cp 명령어(copy)</h3>
+
+<ul>
+  <li>$ cp [파일1] [파일2]
+    <ul>
+      <li>파일 1의 복사본 파일 2를 현재 디렉터리 내에 만듦</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cp </span>cs1.txt cs2.txt
+<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> cs1.txt cs2.txt
+<span class="nt">-rw-r--r--</span> 1 chang faculty 2088 4월 16일 13:37 cs1.txt
+<span class="nt">-rw-r--r--</span> 1 chang faculty 2088 4월 16일 13:45 cs2.txt  <span class="c"># 더 나중에 수정된 것을 볼 수 있음</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>cp [파일] [디렉터리]</p>
+  </li>
+  <li>
+    <p>“파일 1의 복사본을 디렉터리 내에 만들어라.”</p>
+  </li>
+  <li>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cp </span>cs1.txt /tmp
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>mv(move)</p>
+
+    <ul>
+      <li>
+        <p>파일 1의 <strong>이름</strong>을 파일 2로 <strong>변경</strong>한다.</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">$ mv 파일1 파일2</code></p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mv </span>cs2.txt cs3.txt
+<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+<span class="nt">-rw-r--r--</span> 1 chang faculty 2088 4월 16일 13:37 cs1.txt
+<span class="nt">-rw-r--r--</span> 1 chang faculty 2088 4월 16일 13:56 cs3.txt
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>파일을 디렉터리 내로 <strong>이동</strong></p>
+
+        <ul>
+          <li>
+            <p><code class="language-plaintext highlighter-rouge">$ mv [파일] [디렉터리]</code></p>
+          </li>
+          <li>
+            <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mv </span>cs3.txt /tmp
+</code></pre></div>            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>rm(remove) 명령어</p>
+
+    <ul>
+      <li>
+        <p>명령줄 인수로 받은 파일(들)을 지운다.</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">$ rm 파일+</code></p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">rm </span>cs1.txt
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>$ rm -r 디렉터리</p>
+
+    <ul>
+      <li>디렉터리 내의 모든 파일 및 하위 디렉터리들을 <strong>단번에</strong> 지운다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>rmdir(remove dircectory) 명령어</p>
+
+    <ul>
+      <li>
+        <p>명령줄 인수로 받은 디렉터리(들)을 지운다.</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">$ rmdir 디렉터리+</code></p>
+      </li>
+      <li>
+        <p>주의: 디렉터리 내에 아무 것도 없어야 한다.</p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">rmdir test</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>정리</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>명령어</th>
+      <th>의미</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>cat 파일*</td>
+      <td>파일 디스플레이</td>
+    </tr>
+    <tr>
+      <td>more 파일+</td>
+      <td>한 번에 한 페이지씩 디스플레이</td>
+    </tr>
+    <tr>
+      <td>head 파일*</td>
+      <td>파일의 앞부분 디스플레이</td>
+    </tr>
+    <tr>
+      <td>tail 파일*</td>
+      <td>파일의 뒷부분 디스플레이</td>
+    </tr>
+    <tr>
+      <td>wc 파일*</td>
+      <td>줄/단어/문자 수 세기</td>
+    </tr>
+    <tr>
+      <td>cp 파일1 파일2</td>
+      <td>파일1을 파일2로 복사</td>
+    </tr>
+    <tr>
+      <td>mv 파일1 파일2</td>
+      <td>파일1을 파일2로 이름 변경</td>
+    </tr>
+    <tr>
+      <td>rm 파일+</td>
+      <td>파일 삭제</td>
+    </tr>
+    <tr>
+      <td>rmdir 디렉터리+</td>
+      <td>디렉터리 삭제</td>
+    </tr>
+    <tr>
+      <td>grep 키워드 파일</td>
+      <td>파일에서 키워드 찾기</td>
+    </tr>
+    <tr>
+      <td>who</td>
+      <td>호스트에 로그인한 사용자의 정보를 출력하는 명령어</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h2 id="23-파일-속성">2.3 파일 속성</h2>
+
+<h3 id="파일-속성file-attribute">파일 속성(file attribute)</h3>
+
+<ul>
+  <li>파일의 이름, 타입, 크기, 소유자, 사용 권한, 수정 시간</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-sl</span> cs1.txt 
+6 <span class="nt">-rw-r--r--</span> 1 chang faculty 2088 4월 16일 13:37 cs1.txt
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157796618-17da1bad-679c-4357-ba65-28c881bc8ff5.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h3 id="사용-권한permission-mode">사용 권한(permission mode)</h3>
+
+<ul>
+  <li>읽기(r), 쓰기(w), 실행(x) 권한</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157796686-2f914b09-5f01-4b7f-9b3a-3437a6143066.png" alt="image" /></p>
+
+<ul>
+  <li>파일의 사용 권한은 <code class="language-plaintext highlighter-rouge">소유자(owner)/그룹(group)/기타(others)</code>로 구분하여 관리한다.</li>
+  <li>예
+    <ul>
+      <li>소유자 그룹 기타</li>
+      <li>rw-r–r–</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="chmodchange-mode">chmod(change mode)</h3>
+
+<ul>
+  <li>
+    <p>커미션 정보를 변경할 때 사용하는 명령어</p>
+  </li>
+  <li>파일 혹은 디렉터리의 사용권한을 변경하는 명령어
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">$ chmod [-R] 사용 권한 파일</code></li>
+      <li>-R 옵션은 디렉터리 내의 <strong>모든</strong> 파일, 하위 디렉터리에 대해서도 적용</li>
+    </ul>
+  </li>
+  <li><img src="https://user-images.githubusercontent.com/79521972/157796858-c138ffc0-bdfb-4b3e-ab99-8b711087dae2.png" alt="image" />
+    <ul>
+      <li>3 digit으로 사용
+        <ul>
+          <li>owner, group, others</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="chownchange-owner-chgrpchange-group">chown(change owner)/ chgrp(change group)</h3>
+
+<ul>
+  <li>chown 명령어
+    <ul>
+      <li>파일이나 디렉터리의 소유자를 변경할 때 사용한다.</li>
+      <li><code class="language-plaintext highlighter-rouge">$ chown 사용자 파일</code></li>
+      <li><code class="language-plaintext highlighter-rouge">$ chown [-R] 사용자 디렉터리</code></li>
+    </ul>
+  </li>
+  <li>chgrp 명령어
+    <ul>
+      <li>파일의 그룹을 변경할 수 있다.</li>
+      <li><code class="language-plaintext highlighter-rouge">$ chgrp 그룹 파일</code></li>
+      <li><code class="language-plaintext highlighter-rouge">$ chgrp [-R] 그룹 디렉터리</code></li>
+    </ul>
+  </li>
+  <li>파일의 소유자 또한 슈퍼 유저(superuser)만이 사용 가능!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="24-입출력-재지정-및-파이프">2.4 입출력 재지정 및 파이프</h2>
+
+<h3 id="출력-재지정output-redirection">출력 재지정(output redirection)</h3>
+
+<ul>
+  <li>
+    <p>명령어의 표준 출력 내용을 모니터에 출력하는 대신에 파일에 저장</p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">$ 명령어 &gt; 파일</code></p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">who</span> <span class="o">&gt;</span> names.txt
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>기존 파일의 내용이 지워짐</p>
+      </li>
+      <li><img src="https://user-images.githubusercontent.com/79521972/157797328-13b40f4c-39ab-492e-8714-8dea1c08a2cb.png" alt="image" /></li>
+    </ul>
+  </li>
+  <li>
+    <p>출력 재지정 예</p>
+
+    <ul>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> <span class="o">&gt;</span> list1.txt
+Hi!
+This is the first list.
+^D
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> <span class="o">&gt;</span> list2.txt
+Hello <span class="o">!</span>
+This is the second list.
+^D
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <pre><code class="language-Shell">$ cat list1.txt list2.txt &gt;list3.txt
+</code></pre>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>list3.txt
+Hi!
+This is the first list.
+Hello <span class="o">!</span>
+This is the second list.
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>말 그대로 출력 재지정이다! (화면 -&gt; 파일)</p>
+
+<p><br /></p>
+
+<h3 id="출력-추가append">출력 추가(append)</h3>
+
+<ul>
+  <li>
+    <p>명령어의 표준 출력을 모니터 대신에 <strong>기존 파일</strong>에 추가</p>
+
+    <ul>
+      <li>
+        <p>$ 명령어 » 파일</p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> <span class="o">&gt;&gt;</span> list1.txt
+Bye <span class="o">!</span>
+This is the end of the first list.
+^D
+<span class="nv">$ </span><span class="nb">cat </span>list1.txt
+Hi <span class="o">!</span> 
+This is the first list.
+Bye <span class="o">!</span>
+This is the end of the first list.
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="입력-재지정input-redirection">입력 재지정(input redirection)</h3>
+
+<ul>
+  <li>
+    <p>명령어의 표준 입력을 키보드 대신에 파일에서 받는다.(방향이 반대 ‘&lt;’)</p>
+
+    <ul>
+      <li>
+        <p>$ 명령어 &lt; 파일</p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">wc</span> &lt; list1.txt         <span class="c">#word count</span>
+4 17 71 list1.txt
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="문서-내-입력here-document">문서 내 입력(here document)</h3>
+
+<ul>
+  <li>&lt; : 지정된 파일로부터 입력을 받음</li>
+  <li>&gt; : 지정된 파일로 출력</li>
+  <li>&gt;&gt; 출력을 지정된 파일에 추가(append)</li>
+  <li><strong>«</strong> : 실제 파일은 아니지만, 시스템에 입력되는 파일처럼 보이는 입력 라인</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>명령어의 표준 입력을 « 다음의 단어가 다시 나타날 때 까지의 내용으로 사용</p>
+  </li>
+  <li>
+    <p>명령어를 실행할 때 문서(script) 내에서 입력을 줄 때 사용</p>
+  </li>
+  <li>
+    <p>단어가 나올 때까지의 명령어를 실행 중인 프로그램에 <strong>입력</strong>해 줄 수 있다.</p>
+
+    <ul>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>명령어 &lt;&lt; 단어            <span class="c">#(delimeter 단어)</span>
+...
+단어
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">wc</span> <span class="o">&lt;&lt;</span> <span class="no">end</span><span class="sh">
+hello ! 
+word count
+</span><span class="no">end
+</span>2 420
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>list1.txt 파일의 워드 카운트 결과를 result 파일에 기록한다.</p>
+
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">wc</span> &lt; list1.txt <span class="o">&gt;</span> result
+</code></pre></div>        </div>
+      </li>
+      <li></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="파이프시험">파이프(시험)</h3>
+
+<ul>
+  <li>로그인 된 사용자들을 정렬해서 보여주기</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">who</span> <span class="o">&gt;</span> names.txt
+<span class="nv">$ </span><span class="nb">sort</span> &lt; names.txt
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>$ 명령어1</td>
+          <td>명령어2</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>명령어1의 표준 출력을 명령어2의 표준입력으로 바로 받는다.</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>기호</td>
+              <td>는 좌측의 출력을 우측의 입력으로 인가한다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">who</span> | <span class="nb">sort</span>
+</code></pre></div></div>
+
+<ul>
+  <li>첫 번째 방식과의 차이점은 위와 같이 작성하면 names.txt와 같은 임시 파일을 생성하지 않아도 된다는 점이다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/157798125-1df4be71-8192-4ba0-8ccf-0bd07ba2abcf.png" alt="image" /></p>
+
+<p><br /></p>
+
+<h2 id="25-후면-처리-및-프로세스">2.5 후면 처리 및 프로세스</h2>
+
+<h3 id="전면-처리-vs-후면처리">전면 처리 vs. 후면처리</h3>
+
+<ul>
+  <li>
+    <p><strong>전면 처리</strong></p>
+
+    <ul>
+      <li>명령어를 입력하면 명령어가 전면에서 실행되며 명령어 실행이 끝날 때까지 쉘이 기다려 준다.</li>
+      <li>명령어는 키보드와 모니터로 입출력</li>
+      <li>
+        <p><strong>한 명령어만 실행 가능</strong>, 실행 중인 명령어는 Ctrl-C 입력 시 강제 종료, Ctrl-Z 입력 시 실행 중단</p>
+      </li>
+      <li>중단 된 명령어는 prompt에서 <strong>fg</strong> 명령어 입력 시 실행이 계속 됨</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>후면 처리</strong></p>
+    <ul>
+      <li>명령어들을 후면에서 처리하고 전면에서는 다른 작업을 할 수 있으면 <strong>동시에 여러 작업</strong>을 수행할 수 있다.</li>
+      <li>$ [명령어] &amp;</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="후면-처리-예">후면 처리 예</h3>
+
+<p>fg(foreground)</p>
+
+<ul>
+  <li>현재 디렉토리에서 test.c라는 이름을 가진 파일을 찾아라</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="o">(</span><span class="nb">sleep </span>100<span class="p">;</span> <span class="nb">echo </span><span class="k">done</span><span class="o">)</span> &amp;      <span class="c">#두 명령어를 background로 실행</span>
+<span class="o">[</span>1] 8320
+<span class="nv">$ </span>find <span class="nb">.</span> <span class="nt">-name</span> test.c <span class="nt">-print</span> &amp;        <span class="c">#test.c 라는 파일을 찾아서 print(bg 실행)</span>
+<span class="o">[</span>2] 8325
+<span class="nv">$ </span><span class="nb">jobs</span> <span class="c"># 후면(bg)에서 실행되고 있는 작업들을 리스트</span>
+<span class="o">[</span>1] + Running <span class="o">(</span> <span class="nb">sleep </span>100<span class="p">;</span> <span class="nb">echo </span><span class="k">done</span> <span class="o">)</span>
+<span class="o">[</span>2] - Running find <span class="nb">.</span> <span class="nt">-name</span> test.c –print
+</code></pre></div></div>
+
+<ul>
+  <li>$ fg %작업 번호</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">fg</span> %1   <span class="c">#fg실행으로 바뀜</span>
+<span class="o">(</span> <span class="nb">sleep </span>100<span class="p">;</span> <span class="nb">echo </span><span class="k">done</span> <span class="o">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>후면 처리 입출력</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>find <span class="nb">.</span> <span class="nt">-name</span> test.c <span class="nt">-print</span> <span class="o">&gt;</span> find.txt &amp; <span class="c"># 출력 뒤섞임 방지(fg가 표준 출력이기 때문)</span>
+<span class="nv">$ </span>find <span class="nb">.</span> <span class="nt">-name</span> test.c <span class="nt">-print</span> | mail chang &amp; <span class="c"># test.c 내용을 mail의 입력으로</span>
+<span class="nv">$ </span><span class="nb">wc</span> &lt; inputfile &amp; <span class="c"># 후면처리는 키보드 입력 불가능, 파일로부터 받아야 함</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="프로세스process">프로세스(process)</h3>
+
+<ul>
+  <li>
+    <p>실행 중인 프로그램을 프로세스(process)라고 부른다.</p>
+  </li>
+  <li>
+    <p>각 프로세스는 유일한 프로세스 번호 PID를 갖는다.</p>
+  </li>
+  <li>
+    <p>ps(process) 명령어를 사용하여 나의 프로세스들을 볼 수 있다.(내가 실행시킨 프로세스)</p>
+
+    <ul>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ps
+PID TTY TIME CMD
+8695 pts/3 00:00:00 csh
+8720 pts/3 00:00:00 ps
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ps u <span class="c"># 자세한 정보 출력</span>
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+chang 8695 0.0 0.0 5252 1728 pts/3 Ss 11:12 0:00 <span class="nt">-csh</span>
+chang 8793 0.0 0.0 4252 940 pts/3 R+ 11:15 0:00 ps u
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>ps aux</p>
+
+    <ul>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ps aux <span class="c"># 시스템 내의 모든 프로세스 정보 출력</span>
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+root 1 0.0 0.0 2064 652 ? Ss 2011 0:27 init <span class="o">[</span>5]
+root 2 0.0 0.0 0 0 ? S&lt; 2011 0:01 <span class="o">[</span>migration/0]
+root 3 0.0 0.0 0 0 ? SN 2011 0:00 <span class="o">[</span>ksoftirqd/0]
+root 4 0.0 0.0 0 0 ? S&lt; 2011 0:00 <span class="o">[</span>watchdog/0]
+...
+root 8692 0.0 0.1 9980 2772 ? Ss 11:12 0:00 sshd: chang <span class="o">[</span><span class="nb">pr
+</span>chang 8694 0.0 0.0 9980 1564 ? R 11:12 0:00 sshd: chang@pts
+chang 8695 0.0 0.0 5252 1728 pts/3 Ss 11:12 0:00 <span class="nt">-csh</span>
+chang 8976 0.0 0.0 4252 940 pts/3 R+ 11:24 0:00 ps aux
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="kill-명령어">kill 명령어</h4>
+
+<ul>
+  <li>
+    <p>프로세서를 강제적으로 종료 시키는 명령어</p>
+
+    <ul>
+      <li>$ kill 프로세스 번호</li>
+      <li>
+        <p>$ kill %작업번호</p>
+      </li>
+      <li>
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">kill </span>8320  //or
+<span class="nv">$ </span><span class="nb">kill</span> %1
+<span class="o">[</span>1] Terminated<span class="o">(</span> <span class="nb">sleep </span>100<span class="p">;</span> <span class="nb">echo </span><span class="k">done</span> <span class="o">)</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="26-문서-편집기">2.6 문서 편집기</h2>
+
+<ul>
+  <li>
+    <p>gedit</p>
+  </li>
+  <li>
+    <p>kwrite</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="2장-정리">2장 정리</h2>
+
+<ul>
+  <li>유닉스의 디렉터리는 루트로부터 시작하여 계층 구조를 이룬다.</li>
+  <li>절대 경로명은 루트 디렉터리부터 시작하고 상대 경로명은 현재 디렉터리부터 시작한다.</li>
+  <li>파일의 사용권한은 소유자, 그룹, 기타로 구분하여 관리한다.</li>
+  <li>출력 재지정은 표준 출력 내용을 파일에 저장하고 입력 재지정은 표준 입력을 파일에서 받는다.</li>
+  <li>실행 중인 프로그램을 프로세스라고 한다.</li>
+</ul>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a><span class="sep">, </span>
+    
+      <a href="/tags/#unix" class="page__taxonomy-item p-category" rel="tag">Unix</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#system" class="page__taxonomy-item p-category" rel="tag">System</a><span class="sep">, </span>
+    
+      <a href="/categories/#system-programming" class="page__taxonomy-item p-category" rel="tag">System Programming</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-03-11T00:00:00+09:00">2022-03-11</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BSystem+Programming%5D+2%EC%9E%A5.+Unix%2CLinux+%EA%B8%B0%EC%B4%88%20http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-2%25EC%259E%25A5.-Unix%2C-Linux-%25EC%2582%25AC%25EC%259A%25A9%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-2%25EC%259E%25A5.-Unix%2C-Linux-%25EC%2582%25AC%25EC%259A%25A9%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fsystem%2Fsystem%2520programming%2FSystem-Programming-2%25EC%259E%25A5.-Unix%2C-Linux-%25EC%2582%25AC%25EC%259A%25A9%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/computer%20architecture/Computer-Architecture-03.10-CPU%EC%99%80-%EB%A9%94%EB%AA%A8%EB%A6%AC/" class="pagination--pager" title="[Computer Architecture] 03.10 CPU와 메모리
+">이전</a>
+    
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20python/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Searching-and-Complexity/" class="pagination--pager" title="[자료구조와 알고리즘] Searching and Complexity
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/system/system%20programming/System-Programming-2%EC%9E%A5.-Unix,-Linux-%EC%82%AC%EC%9A%A9/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/system/system%20programming/[System Programming] 2장. Unix, Linux 사용"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

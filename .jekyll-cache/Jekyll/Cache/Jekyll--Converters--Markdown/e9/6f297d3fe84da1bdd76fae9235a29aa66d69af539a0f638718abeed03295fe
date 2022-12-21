@@ -1,0 +1,1110 @@
+I"N�<p>1, 2 장은 중요도가 떨어짐(많은 시간을 투자해서 이해할 필요 X)</p>
+
+<p>대충 보면서 이해하고 나중에 관련 내용이 나왔을 때 돌아와서 보기</p>
+
+<h1 id="chapter-2-operating-system-structures">Chapter 2: Operating-System Structures</h1>
+
+<ul>
+  <li><strong>the services an OS provides to users, processes, and other systems</strong>
+    <ul>
+      <li>Operating System Services</li>
+      <li>User Operating System Interface</li>
+      <li>System Calls</li>
+      <li>System Programs</li>
+    </ul>
+  </li>
+  <li>the various ways of structuring an operating system
+    <ul>
+      <li>Operating System Design and Implementation</li>
+      <li>Operating System Structure (어떻게 구현하는 지)</li>
+    </ul>
+  </li>
+  <li>how operating systems are installed and customized and how they boot
+    <ul>
+      <li>Operating System Debugging</li>
+      <li>Operating System Generation</li>
+      <li>System Boot</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>리눅스는 monolothic 구조를 갖고 있음
+    <ul>
+      <li>OS는 성능이 최대 관건 vs. OS는 모듈화가 관건</li>
+    </ul>
+  </li>
+  <li>OS는 <strong>실행환경</strong>이다.
+    <ul>
+      <li>cloud OS 의 시대</li>
+      <li>JVM은 실행환경이지만 OS위에 있다.</li>
+      <li>쿠버네티스, docker -&gt; 전망이 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="operating-system-services">Operating System Services</h2>
+
+<ul>
+  <li>
+    <p>Operating systems provide an <strong>environment</strong> for execution of programs and <strong>services</strong> to programs and users</p>
+  </li>
+  <li>
+    <p>One set of operating-system <strong>services</strong> provides functions that are helpful to the user: (convinience 측면)</p>
+
+    <ul>
+      <li><strong>User interface</strong> - Almost all operating systems have a user interface (<strong>UI</strong>).
+        <ul>
+          <li>Varies between <strong>Command-Line Interface (CLI)</strong> – text command,</li>
+          <li><strong>Graphics User Interface (GUI)</strong>,</li>
+          <li><strong>Batch</strong> - file including several commands is executed – <strong>shell script</strong>
+            <ul>
+              <li>여러 CLI가 나열된 파일</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Program execution</strong> - The system must be able to <strong>load a program</strong> into <strong>memory</strong> and to run that program, end execution, either ‘normally’ or ‘abnormally’ (<strong>indicating error</strong>)
+        <ul>
+          <li>c 소스 파일에서 object 파일로 만드는 것은 compiler의 역할</li>
+          <li>여러 개의 object 파일을 하나로 모아서 실행파일로 만드는 역할은 linker</li>
+          <li>main memory에 탑재 시키는 것이 loader</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>I/O operations</strong> - A running program may require I/O, which may involve a file or an I/O device</p>
+      </li>
+      <li><strong>File-system manipulation</strong> - The file system is of particular interest. Programs need to read and write files and directories, create and delete them, search them, list file Information, permission management.
+        <ul>
+          <li>like 파일 탐색기</li>
+        </ul>
+      </li>
+      <li><strong>Communications</strong> – Processes may exchange information, on the <strong>same computer</strong> or between computers over a <strong>network</strong>
+        <ul>
+          <li>Communications may be via <strong>shared memory</strong> or through <strong>message passing</strong> (packets moved by the OS)</li>
+        </ul>
+      </li>
+      <li><strong>Error detection</strong> – OS needs to be constantly aware of possible errors
+        <ul>
+          <li>May occur in the CPU and memory hardware, in I/O devices, in user program</li>
+          <li>For each type of error, OS should take the <strong>appropriate action</strong> to ensure correct and consistent computing</li>
+          <li>Debugging facilities can greatly enhance the user’s and programmer ’s abilities to efficiently use the system</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Another set of OS <strong>functions</strong> exists for ensuring the <strong>efficient</strong> operation of the system itself via resource sharing</p>
+    <ul>
+      <li><strong>Resource allocation</strong> - When multiple users or multiple jobs running concurrently, resources must be allocated to each of them
+        <ul>
+          <li>OS가 제공하는 굉장히 중요한 기능</li>
+          <li>Many types of resources - CPU cycles, main memory, file storage, I/O devices…</li>
+        </ul>
+      </li>
+      <li><strong>Accounting</strong> - To keep track of which users use how much and what kinds of computer resources (얼마나 사용하는 지 모니터링)
+        <ul>
+          <li>과금 확인 목적 or 통계를 위한 기능</li>
+        </ul>
+      </li>
+      <li><strong>Protection and security</strong> - The owners of information stored in a multiuser or networked computer system may want to <strong>control</strong> use of that information, concurrent processes should not interfere with each other
+        <ul>
+          <li><strong>Protection</strong> involves ensuring that all access to system resources is controlled</li>
+          <li><strong>Security</strong> of the system from outsiders requires user <strong>authentication</strong>, extends to defending external I/O devices from <strong>invalid access attempts</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="a-view-of-operating-system-services">A View of Operating System Services</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907225450734.png" alt="image-20220907225450734" /></p>
+
+<ul>
+  <li>For convinience,
+    <ul>
+      <li>program execution, I/O operations, file systems, communication</li>
+    </ul>
+  </li>
+  <li>For efficiency,
+    <ul>
+      <li>resource allocation, accounting, error detection, proteection and security</li>
+    </ul>
+  </li>
+  <li>user interface
+    <ul>
+      <li>GUI, batch, command line(CLI)</li>
+      <li>사용자는 위 세 가지 중 하나의 interface를 통해서 OS가 제공하는 서비스를 사용할 수 있게 된다.</li>
+    </ul>
+  </li>
+  <li>사용자가 하드웨어를 직접 접근할 일은 없음 -&gt; OS가 하드웨어를 추상화 하였기 때문에</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="user-operating-system-interface---cli">User Operating System Interface - CLI</h2>
+
+<ul>
+  <li><strong>CLI</strong> or <strong>command interpreter</strong> allows direct command entry
+    <ul>
+      <li>Sometimes implemented in kernel, sometimes by systems program (Window/Unix)</li>
+      <li>Sometimes multiple flavors implemented – <strong>shells</strong>
+        <ul>
+          <li>Bourne shell, C shell, Bourne-Again shell, Korn shell</li>
+        </ul>
+      </li>
+      <li>Primarily fetches a command from user and executes it</li>
+      <li>Sometimes commands <strong>built-in</strong>, sometimes just <strong>names of programs</strong>
+        <ul>
+          <li>If the latter, adding new features doesn’t require shell modification</li>
+        </ul>
+      </li>
+      <li>ls와 같은 명령 또한 프로그램임.(시스템 프로그램)</li>
+      <li>shell은 명령을 기다렸다가 명령을 실행하고 다시 또 기다리는 것의 반복하는 프로그램</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bourne-shell-command-interpreter">Bourne Shell Command Interpreter</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907225743599.png" alt="image-20220907225743599" /></p>
+
+<p><br /></p>
+
+<h2 id="user-operating-system-interface---gui">User Operating System Interface - GUI</h2>
+
+<ul>
+  <li>User-friendly <strong>desktop</strong> metaphor interface
+    <ul>
+      <li>Usually mouse, keyboard, and monitor</li>
+      <li><strong>Icons</strong> represent files, programs, actions, etc</li>
+      <li>Various mouse buttons over objects in the interface cause various actions (provide information, options, execute function, open directory (known as a <strong>folder</strong>)</li>
+      <li>Invented at Xerox PARC (Palo Alto Research Center)</li>
+    </ul>
+  </li>
+  <li>Many systems now include both CLI and GUI interfaces
+    <ul>
+      <li>Microsoft Windows is GUI with CLI “command” shell</li>
+      <li>Apple Mac OS X is “Aqua” GUI interface with UNIX kernel underneath and shells available</li>
+      <li>Unix and Linux have CLI with optional GUI(optional) interfaces
+        <ul>
+          <li>Commercial- CDE(Common Desktop Environment), X-window</li>
+          <li>Open source - KDE, GNOME</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="touchscreen-interfaces">Touchscreen Interfaces</h2>
+
+<ul>
+  <li>
+    <p>어떻게 보면, GUI의 한 종류</p>
+  </li>
+  <li>Touchscreen devices require new interfaces
+    <ul>
+      <li><strong>Mouse not possible</strong> or not desired</li>
+      <li>Actions and selection based on gestures</li>
+      <li>Virtual keyboard for text entry</li>
+    </ul>
+  </li>
+  <li>Voice commands.(최근)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907230322554.png" alt="image-20220907230322554" /></p>
+
+<p><br /></p>
+
+<h2 id="the-mac-os-x-gui">The Mac OS X GUI</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907230350004.png" alt="image-20220907230350004" /></p>
+
+<p><br /></p>
+
+<h2 id="system-calls">System Calls</h2>
+
+<ul>
+  <li><strong>Programming interface</strong> to the services provided by the OS</li>
+  <li>Typically written in a high-level language (C or C++)</li>
+  <li>Mostly accessed by programs via a high-level <strong>Application Programming Interface (API)</strong> rather than direct <strong>system call</strong> use
+    <ul>
+      <li>API -&gt; system call 전환</li>
+    </ul>
+  </li>
+  <li>Three most common APIs are <strong>Win32 API</strong> for Windows, <strong>POSIX API</strong> for POSIX-based systems (including virtually all versions of UNIX, Linux, and Mac OS X), and <strong>Java API</strong> for the Java virtual machine (JVM)
+    <ul>
+      <li>3개의 API가 존재한다.</li>
+      <li>POSIX API를 사용하는 시스템은 모두 같은 API 형태를 사용하지만 UNIX와 LINUX는 각각 다른 OS이기 때문에 다른 시스템 콜의 형태를 사용하게 된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Note that the system-call names used throughout this text are generic</p>
+</blockquote>
+
+<ul>
+  <li>시스템콜 이름이 generic 스타일로 제공됨</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-of-system-calls">Example of System Calls</h2>
+
+<ul>
+  <li>System call sequence to copy the contents of one file to another file</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231055458.png" alt="image-20220907231055458" /></p>
+
+<p>system call은 커널 안에서 구현된 커널 함수이다.</p>
+
+<p><br /></p>
+
+<h2 id="example-of-standard-api">Example of Standard API</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231116093.png" alt="image-20220907231116093" /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">man read</code> 와 같이 입력하면 read에 대한 사용법이 좌르륵 나오게(display) 된다.
+    <ul>
+      <li>man page: POISX 계열의 API 사용법을 알려주는 기능</li>
+    </ul>
+  </li>
+  <li>반드시 unistd.h 를 include 해야 함.
+    <ul>
+      <li>ssize_t 나 size_t의 타입이 해당 라이브러리에 포함되어 있기 때문에</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="system-call-implementation">System Call Implementation</h2>
+
+<ul>
+  <li>Typically, a <strong>number</strong> associated with each system call (마치 interrupt vector가 숫자를 가진 것처럼)
+    <ul>
+      <li>과제 1번에서도 그래서 시스템콜을 만들 때 숫자를 등록했었음.</li>
+      <li><strong>System-call interface</strong> maintains a <strong>table</strong> indexed according to these numbers</li>
+    </ul>
+  </li>
+  <li>The system call interface invokes the intended system call in OS kernel and returns status of the system call and any return values</li>
+  <li>The caller need know nothing about how the system call is implemented
+    <ul>
+      <li>Just needs to obey API and understand what OS will do as a result call</li>
+      <li>Most details of OS interface hidden from programmer by API
+        <ul>
+          <li>Managed by run-time support library (set of functions built into libraries included with compiler)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="api---system-call---os-relationship">API - System Call - OS Relationship</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231213382.png" alt="image-20220907231213382" /></p>
+
+<ul>
+  <li>open() 시스템 콜의 number가 i라 할 때, 테이블의 i번째 entry를 찾아가게 되면 open() 시스템 콜 함수의 주소가 적혀 있어 이를 invoke 할 수 있게 된다.</li>
+  <li>사용자가 어떤 system call을 호출했냐에 따라서 system call table을 번호를 indexing해서 해당 시스템 콜 함수를 실행 후 리턴하게 된다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="standard-c-library-example">Standard C Library Example</h2>
+
+<ul>
+  <li>C program invoking printf() library call, which calls write() system call</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231241893.png" alt="image-20220907231241893" /></p>
+
+<ul>
+  <li>printf() -&gt; library call(API) -&gt; write()
+    <ul>
+      <li>API가 write을 대신 호출해 줌.</li>
+      <li>시스템콜에서 API로 리턴, API에서 사용자 쪽으로 리턴</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="system-call-parameter-passing">System Call Parameter Passing</h2>
+
+<ul>
+  <li>Often, more information is required than simply identity of desired system call
+    <ul>
+      <li>Exact type and amount of information <strong>vary according to OS and call.</strong></li>
+    </ul>
+  </li>
+  <li>Three general methods used to pass parameters to the OS
+    <ul>
+      <li>Simplest: pass the parameters in <strong>registers</strong>
+        <ul>
+          <li>In some cases, may be more parameters than registers</li>
+        </ul>
+      </li>
+      <li>Parameters stored in a block, or table, in memory, and <strong>address of block</strong> passed as a parameter in a register
+        <ul>
+          <li>많은 parameter를 memory에 block 형태로 저장하고 block의 주소를 register에 저장</li>
+          <li>This approach taken by Linux and Solaris</li>
+        </ul>
+      </li>
+      <li>Parameters placed, or <strong>pushed</strong>, onto the <strong>stack</strong> by the program and <strong>popped</strong> off the stack by the operating system</li>
+      <li><strong>Block and stack methods do not limit</strong> the number or length of parameters being passed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="parameter-passing-via-table">Parameter Passing via Table</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231734443.png" alt="image-20220907231734443" /></p>
+
+<ul>
+  <li>X라는 여러 파라미터가 있는 메모리 공간이 있는데</li>
+  <li>이것의 주소를 register에 load하고 system call 13을 호출하면 OS system call table에서 13번을 보면 해당 시스템 콜을 호출할 수 있는 주소가 있는데</li>
+  <li>이 시스템콜에서 register를 참조해서 파라미터 X를 전달받을 수 있게 되는 것이다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="types-of-system-calls">Types of System Calls</h2>
+
+<ul>
+  <li><strong>Process control</strong>
+    <ul>
+      <li>create process, terminate process</li>
+      <li>Normal termination, abort</li>
+      <li>load, execute</li>
+      <li>get process attributes, set process attributes</li>
+      <li>wait for time : wait_time()</li>
+      <li>wait event, signal event : wait_event(), signal_event()</li>
+      <li>allocate and free memory</li>
+      <li>Dump memory if error</li>
+      <li><strong>Debugger</strong> for determining <strong>bugs</strong>, <strong>single step</strong> execution</li>
+      <li><strong>Locks</strong> for managing access to shared data between processes
+        <ul>
+          <li>acquire_lock(), release_lock()</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="examples-of-windows-and-unix-system-calls">Examples of Windows and Unix System Calls</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231830253.png" alt="image-20220907231830253" /></p>
+
+<p><br /></p>
+
+<h2 id="standard-c-library-example-1">Standard C Library Example</h2>
+
+<ul>
+  <li>C program invoking printf() library call, which calls write() system call</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231850599.png" alt="image-20220907231850599" /></p>
+
+<p><br /></p>
+
+<p>system call을 실행시키는 환경</p>
+
+<h2 id="example-ms-dos">Example: MS-DOS</h2>
+
+<ul>
+  <li>No GUI</li>
+  <li><strong>Single-tasking</strong></li>
+  <li><strong>Shell</strong> invoked when system booted</li>
+  <li>Simple method to run program
+    <ul>
+      <li>No process created</li>
+    </ul>
+  </li>
+  <li>Single memory space</li>
+  <li>Loads program into memory, overwriting all but the kernel</li>
+  <li>Program exit -&gt; shell reloaded
+    <ul>
+      <li>overwriting 하는 경우 reload</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907231923235.png" alt="image-20220907231923235" /></p>
+
+<p><br /></p>
+
+<h2 id="example-freebsd">Example: FreeBSD</h2>
+
+<ul>
+  <li>Unix variant</li>
+  <li><strong>Multitasking</strong>
+    <ul>
+      <li>여러 프로그램이 동시에 실행</li>
+    </ul>
+  </li>
+  <li>User login -&gt; invoke user’s choice of shell</li>
+  <li>Shell executes <strong>fork()</strong> system call to create process
+    <ul>
+      <li>Executes <strong>exec()</strong> to load program into process</li>
+      <li>Shell <strong>waits for process</strong> to terminate or continues with user commands</li>
+    </ul>
+  </li>
+  <li>Process exits with:
+    <ul>
+      <li>code = 0 – no error</li>
+      <li>code &gt; 0 – error code</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907232028166.png" alt="image-20220907232028166" /></p>
+
+<p><br /></p>
+
+<h2 id="types-of-system-calls-1">Types of System Calls</h2>
+
+<ul>
+  <li><strong>File management</strong>
+    <ul>
+      <li>create file, delete file</li>
+      <li>open, close file</li>
+      <li>read, write, reposition</li>
+      <li>get and set file attributes</li>
+      <li>Same for directories</li>
+    </ul>
+  </li>
+  <li><strong>Device management</strong>
+    <ul>
+      <li>physical device (disk drives), logical device (file)</li>
+      <li>request device, release device (similar to open, close files)</li>
+      <li>read, write, reposition</li>
+      <li>get device attributes, set device attributes</li>
+      <li>logically attach or detach devices</li>
+    </ul>
+  </li>
+  <li><strong>Information maintenance</strong>
+    <ul>
+      <li>get time or date, set time or date</li>
+      <li>get system data, set system data</li>
+      <li>get and set process, file, or device attributes</li>
+    </ul>
+  </li>
+  <li><strong>Communications</strong>
+    <ul>
+      <li>create, delete <strong>communication connection</strong></li>
+      <li>send, receive messages if <strong>message passing model</strong> to <strong>host name</strong> or <strong>process name</strong>
+        <ul>
+          <li>From <strong>client</strong> to <strong>server</strong></li>
+          <li>받을 host name과 메세지를 수신할 process name이 필요로 됨</li>
+        </ul>
+      </li>
+      <li><strong>Shared-memory model</strong> create and gain access to memory regions
+        <ul>
+          <li>allows memory transfer speed, but may have <strong>synch problem</strong> (읽고 쓰는 시간의 차이 때문에 발생하는 problem)</li>
+          <li>shared_memory create, shared_memory attach</li>
+        </ul>
+      </li>
+      <li>transfer status information</li>
+      <li>attach and detach remote devices</li>
+    </ul>
+  </li>
+  <li>Protection
+    <ul>
+      <li>Control access to <strong>resources</strong></li>
+      <li>Get and set <strong>permissions</strong></li>
+      <li><strong>Allow</strong> and <strong>deny</strong> user access</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="system-programs">System Programs</h2>
+
+<ul>
+  <li>kernel 위에서 실행되는 프로그램(사용자 모드에서 돌고 있음)
+    <ul>
+      <li>utility program이라고 하기도 함.</li>
+    </ul>
+  </li>
+  <li>System programs provide a convenient environment for program development and execution. They can be divided into:
+    <ul>
+      <li>File manipulation</li>
+      <li>Status information sometimes stored in a File modification</li>
+      <li>Programming language support</li>
+      <li>Program loading and execution</li>
+      <li>Communications</li>
+      <li>Background services</li>
+      <li>Application programs</li>
+    </ul>
+  </li>
+  <li>
+    <p>Most users’ <strong>view</strong> of the operation system is defined by system programs, not the actual system calls</p>
+  </li>
+  <li>Provide a convenient environment for program development and execution
+    <ul>
+      <li>Some of them are simply user interfaces to system calls; others are considerably more complex</li>
+    </ul>
+  </li>
+  <li><strong>File management</strong> - Create, delete, copy, rename, print, dump, list, and generally manipulate files and directories</li>
+  <li><strong>Status information</strong>
+    <ul>
+      <li>Some ask the system for info - date, time, amount of available memory, disk space, number of users</li>
+      <li>Others provide detailed performance, logging, and debugging information</li>
+      <li>Typically, these programs format and print the output to the terminal or other output devices</li>
+      <li>Some systems implement a <strong>registry</strong> - used to store and retrieve configuration information</li>
+    </ul>
+  </li>
+  <li><strong>File modification</strong>
+    <ul>
+      <li>Text editors to create and modify files</li>
+      <li>Special commands to search contents of files or perform transformations of the text</li>
+    </ul>
+  </li>
+  <li><strong>Programming-language support</strong> - Compilers, assemblers, debuggers and interpreters sometimes provided</li>
+  <li><strong>Program loading and execution</strong>- <code class="language-plaintext highlighter-rouge">Absolute loaders</code>, <code class="language-plaintext highlighter-rouge">relocatable loaders</code>, linkage editors, and overlay-loaders, debugging systems for higher-level and machine language</li>
+  <li><strong>Communications</strong> - Provide the mechanism for creating virtual connections among processes, users, and computer systems
+    <ul>
+      <li>Allow users to send messages to one another’s screens, browse web pages, send electronic-mail messages, log in remotely, transfer files from one machine to another</li>
+    </ul>
+  </li>
+  <li><strong>Background Services</strong>
+    <ul>
+      <li>Launch system program-process at <strong>boot</strong> time
+        <ul>
+          <li>Some for system startup, then terminate</li>
+          <li>Some from system boot to shutdown</li>
+        </ul>
+      </li>
+      <li>Provide facilities like disk checking, process scheduling, error logging, printing</li>
+      <li>Run in user context <strong>not kernel context</strong></li>
+      <li>Known as <strong>services</strong>, <strong>subsystems</strong>, <strong>daemons</strong></li>
+      <li>background의 의미: 모니터를 통해서 사용자와 interaction이 일어나지 않는 프로그램</li>
+    </ul>
+  </li>
+  <li><strong>Application programs</strong>
+    <ul>
+      <li>Don’t pertain to system</li>
+      <li>사용자가 짠 프로그램이 아님
+        <ul>
+          <li>일반 사용자에게 제공하는 프로그램</li>
+        </ul>
+      </li>
+      <li>Word processor, web browser . ..</li>
+      <li>Run by users</li>
+      <li><strong>Not typically considered part of OS</strong></li>
+      <li>Launched by command line, mouse click, finger poke</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="linker-loader">Linker &amp; Loader</h2>
+
+<ul>
+  <li>Will be explained later(memory management part)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="operating-system-design-and-implementation">Operating System Design and Implementation</h2>
+
+<ul>
+  <li>Design and Implementation of OS is <strong>not easy</strong>, but some approaches have been proven successful</li>
+  <li>Internal structure of different Operating Systems can vary widely</li>
+  <li>Start the design by defining <strong>goals</strong> and <strong>specifications</strong>
+    <ul>
+      <li><strong>Affected</strong> by <strong>choice</strong> of hardware, type of system
+        <ul>
+          <li>Batch, time-sharing, multi-user, distributed, real-time …</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>User</strong> goals and <strong>System</strong> goals
+    <ul>
+      <li><strong>User goals</strong> – operating system should be convenient to use, <strong>easy</strong> to learn, reliable, safe, and fast
+        <ul>
+          <li>May not be useful in the system design</li>
+        </ul>
+      </li>
+      <li><strong>System goals</strong> – operating system should be easy to design, implement, and maintain, as well as flexible, reliable, error-free, and efficient</li>
+      <li>No unique solution</li>
+    </ul>
+  </li>
+  <li>Important principle to separate the following for flexibility
+    <ul>
+      <li><strong>Policy</strong>: <u>What</u> will be done?</li>
+      <li><strong>Mechanism</strong>: <u>How</u> to do it?</li>
+    </ul>
+  </li>
+  <li>Mechanisms determine how to do something, policies decide what will be done</li>
+  <li>The <strong>separation</strong> of policy from mechanism is a very important principle, it allows maximum flexibility if policy decisions are to be changed later (example – timer)
+    <ul>
+      <li>둘이 묶여 있으면 둘 중 하나를 바꿀 때 생기는 dependency가 있기 때문에 둘 간의 dependency를 줄일 수 있음</li>
+    </ul>
+  </li>
+  <li>Specifying and designing an OS is highly creative task(창의적 업무) of <strong>software engineering</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="implementation">Implementation</h2>
+
+<ul>
+  <li>Much variation
+    <ul>
+      <li>Early OSes in assembly language</li>
+      <li>Then system programming languages like Algol, PL/1</li>
+      <li>Now C, C++</li>
+    </ul>
+  </li>
+  <li>Actually usually a mix of languages
+    <ul>
+      <li>Lowest levels in assembly (실행속도가 빠름)</li>
+      <li>Main body in C</li>
+      <li>Systems programs in C, C++, scripting languages like PERL, Python, shell scripts</li>
+    </ul>
+  </li>
+  <li>More high-level language easier to <strong>port</strong> to other hardware (port-한 시스템에서 작동되는 걸 다른 시스템에서도 작동되도록 해 주는)
+    <ul>
+      <li>Can be written faster, easy to understand, debug (compiler의 발전으로 assembly만큼 빨라짐)</li>
+      <li>But slower. Require more memory (기술의 발전으로 gap이 그렇게 크진 않음.)</li>
+      <li>Linux is written in C, so it can be available on various CPUs</li>
+    </ul>
+  </li>
+  <li>MS-DOS written in Intel 8088 assembly language
+    <ul>
+      <li>It runs natively only on Intel X86 family.</li>
+      <li><strong>Emulators</strong> of X86 instruction set allow OS to run <strong>on other CPUs</strong></li>
+    </ul>
+  </li>
+  <li><strong>Emulation</strong> can allow an OS to run on <strong>non-native hardware</strong> by <strong>duplicating</strong> functionalities between two systems</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="operating-system-structure">Operating System Structure</h2>
+
+<ul>
+  <li>General-purpose OS is very large program
+    <ul>
+      <li>Monolithic structure vs. Modular structure</li>
+    </ul>
+  </li>
+  <li>Various ways to structure ones (위로 갈 수록 monolithic, 아래로 갈 수록 modular)
+    <ul>
+      <li>Simple structure – MS-DOS</li>
+      <li>More complex – UNIX</li>
+      <li>Layered – an abstraction</li>
+      <li>Microkernel -Mach</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="simple-structure--ms-dos">Simple Structure – MS-DOS</h2>
+
+<ul>
+  <li>MS-DOS – written to provide the most functionality in the least space
+    <ul>
+      <li><strong>Not divided</strong> into modules (monolithic)</li>
+      <li>application program이 직접 device drivers에 interface -&gt; 굉장한 문제가 발생할 확률이 높다.</li>
+      <li>Although MS-DOS has some structure, its interfaces and levels of functionality are not well separated</li>
+      <li>8088 provides no dual mode, hardware protection
+        <ul>
+          <li>되도록 적은 자원으로 OS 구현하려고 시도</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233015240.png" alt="image-20220907233015240" /></p>
+
+<p><br /></p>
+
+<h2 id="non-simple-structure--unix">Non Simple Structure – UNIX</h2>
+
+<ul>
+  <li>original UNIX – <strong>limited</strong> by hardware functionality, the original UNIX operating system had limited structuring.</li>
+  <li>The UNIX OS consists of two separable parts
+    <ul>
+      <li>Systems programs</li>
+      <li>The kernel
+        <ul>
+          <li>Consists of everything <strong>below</strong> the <strong>system-call interface</strong> and <strong>above the physical hardware</strong></li>
+          <li>Provides the file system, CPU scheduling, memory management, and other operating-system functions; a large number of functions for one level</li>
+          <li>Layered some extent, but basically <strong>monolithic</strong>
+            <ul>
+              <li>hardware 기능이 매우 제한적이기 때문에</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="traditional-unix-system-structure">Traditional UNIX System Structure</h3>
+
+<p>Beyond simple but not fully layered</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233156659.png" alt="image-20220907233156659" /></p>
+
+<p>OS kernel 부분이 그렇게 막 well-structured 되진 않음, 단지 사용자와 kernel사이가 잘 구분 되어 있음</p>
+
+<p><br /></p>
+
+<h2 id="layered-approach">Layered Approach</h2>
+
+<ul>
+  <li><strong>Modular structure</strong></li>
+  <li>Information hiding
+    <ul>
+      <li>higher layer의 설계, 사용자가 lower layer의 구조를 알 필요 없음</li>
+    </ul>
+  </li>
+  <li>The operating system is <strong>divided</strong> into a number of layers (levels), each built on top of lower layers. The bottom layer (layer 0), is the hardware; the highest (layer N) is the user interface.</li>
+  <li>With modularity, layers are selected such that each uses functions (operations) and <strong>services of only lower-level layers</strong></li>
+  <li>Simple construction, debugging</li>
+  <li>Overhead in each layer(단점)
+    <ul>
+      <li>monolithic - interaction이 하나의 계층에서만 이루어지지만 modular는 layer에 걸쳐서 이루어 지기 때문에 response 시간이 느려진다.</li>
+    </ul>
+  </li>
+  <li>그렇지만! 성능은 그렇다고 하지만 엔지니어링 시간이나 유지보수 기간 등을 따져 보았을 때 modular가 압도적으로 좋다.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233427206.png" alt="image-20220907233427206" /></p>
+
+<p><br /></p>
+
+<h2 id="microkernel-system-structure">Microkernel System Structure</h2>
+
+<ul>
+  <li><strong>seperation</strong> between policy and mechanism
+    <ul>
+      <li>Policy free mechanisms of building blocks (kernel mode 모듈)
+        <ul>
+          <li>다른 것이 변경되는 것과 상관이 없도록!</li>
+        </ul>
+      </li>
+      <li>Modularized Kernel (커다란 OS의 터전)</li>
+    </ul>
+  </li>
+  <li>Moves as much from the kernel into user space</li>
+  <li><strong>Mach (CMU)</strong> example of <strong>microkernel</strong>
+    <ul>
+      <li>Mac OS X kernel (<strong>Darwin</strong>) partly based on Mach</li>
+    </ul>
+  </li>
+  <li>Communication takes place between user modules using <strong>message passing</strong></li>
+  <li>Benefits:
+    <ul>
+      <li>Easier to extend a microkernel (얹기만 하면 됨)</li>
+      <li>Easier to <strong>port</strong> the operating system to new architectures</li>
+      <li>More reliable (less code is running in kernel mode)</li>
+      <li>More secure</li>
+    </ul>
+  </li>
+  <li>Detriments:
+    <ul>
+      <li><strong>Performance overhead</strong> of user space to kernel space communication
+        <ul>
+          <li>due to message passing’s communication</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>​</p>
+
+<p><br /></p>
+
+<h2 id="microkernel-system-structure-1">Microkernel System Structure</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233551710.png" alt="image-20220907233551710" /></p>
+
+<ul>
+  <li>일부 kernel의 내용이 밖에 나올 수 있음</li>
+  <li>microkernel: 최소한의 기능만을 가진 kernel
+    <ul>
+      <li>나머지는 user mode</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="modules">Modules</h2>
+
+<ul>
+  <li>loadable kernel modules approach
+    <ul>
+      <li>기존의 modular approach에서 진보한 구조</li>
+      <li>performance에 지장이 없으면서 유지보수를 문제없이 할 수 있도록 하는 시도</li>
+    </ul>
+  </li>
+  <li>Many modern operating systems implement <strong>loadable kernel modules</strong>
+    <ul>
+      <li><strong>Kernel</strong> provides <strong>core services</strong> while <strong>other services</strong> are implemented (<mark>via modules</mark>) dynamically (<strong>dynamic linking</strong> rather than recompiling)
+        <ul>
+          <li>dynamic linking의 대상이 되는 것이 loadable kernel modules</li>
+          <li>core service가 아니기 때문에 처음부터 linking 되어 탑재 되어 있진 않다.</li>
+        </ul>
+      </li>
+      <li>Uses object-oriented approach</li>
+      <li>Each core component is separate</li>
+      <li>Each talks to the others over <strong>known interfaces</strong></li>
+      <li>Each is loadable as needed within the kernel</li>
+    </ul>
+  </li>
+  <li>Overall, <strong>similar to layers but with more flexible</strong>
+    <ul>
+      <li>Linux, Solaris, etc</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solaris-modular-approach">Solaris Modular Approach</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233817812.png" alt="image-20220907233817812" /></p>
+
+<p><br /></p>
+
+<h2 id="hybrid-systems">Hybrid Systems</h2>
+
+<ul>
+  <li>Most modern operating systems are actually not one pure model
+    <ul>
+      <li><strong>Hybrid</strong> combines multiple approaches to address <code class="language-plaintext highlighter-rouge">performance, security, usability </code>needs</li>
+      <li>Linux and Solaris kernels in kernel address space, <strong>so monolithic</strong>(<mark>because of performance</mark>), plus modular for <strong>dynamic loading</strong> of functionality(core가 아닌 경우에 대하여)</li>
+      <li><strong>Windows</strong> mostly monolithic, plus microkernel for different subsystem personalities</li>
+    </ul>
+  </li>
+  <li>Apple Mac OS X hybrid, <strong>layered</strong>, Aqua UI plus Cocoa programming environment
+    <ul>
+      <li>Below is kernel consisting of Mach microkernel and BSD Unix parts, plus I/O kit and dynamically loadable modules (called <strong>kernel extensions</strong>)</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>핵심 기능은 성능을 위해 monolithic으로, 나머지 기능은 dependency, 유지보수를 위해 dynamic loading(즉, modular 방식)으로 구현한 것이다.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h2 id="mac-os-x-structure">Mac OS X Structure</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907233918782.png" alt="image-20220907233918782" /></p>
+
+<hr />
+
+<p><mark>이 아래는 생략</mark></p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="ios">iOS</h2>
+
+<ul>
+  <li>Apple mobile OS for iPhone, iPad
+    <ul>
+      <li>Structured on Mac OS X, added functionality</li>
+      <li>Does not run OS X applications natively
+        <ul>
+          <li>Also runs on different CPU architecture (ARM vs. Intel)</li>
+        </ul>
+      </li>
+      <li>Cocoa Touch Objective-C API for developing apps</li>
+      <li>Media services layer for graphics, audio, video</li>
+      <li>Core services provides cloud computing, databases</li>
+      <li>Core operating system, based on Mac OS X kernel</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234000505.png" alt="image-20220907234000505" /></p>
+
+<p><br /></p>
+
+<h2 id="android">Android</h2>
+
+<ul>
+  <li>Developed by Open Handset Alliance (mostly Google)
+    <ul>
+      <li>Open Source</li>
+    </ul>
+  </li>
+  <li>Similar stack to IOS</li>
+  <li>Based on Linux kernel but modified
+    <ul>
+      <li>Provides process, memory, device-driver management</li>
+      <li>Adds power management</li>
+    </ul>
+  </li>
+  <li>Runtime environment includes core set of libraries and Dalvik virtual machine
+    <ul>
+      <li>Apps developed in Java plus Android API
+        <ul>
+          <li>Java class files compiled to Java bytecode then translated to executable than runs in Dalvik VM</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Libraries include frameworks for web browser (webkit), database (SQLite), multimedia, smaller libc</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="android-architecture">Android Architecture</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234053174.png" alt="image-20220907234053174" /></p>
+
+<p><br /></p>
+
+<h2 id="operating-system-debugging">Operating-System Debugging</h2>
+
+<ul>
+  <li>Debugging is finding and fixing errors, or bugs</li>
+  <li>Failure analysis
+    <ul>
+      <li>If a process fails, OS generate log files containing error information and Failure of an application can generate core(memory) dump file capturing memory of the process
+        <ul>
+          <li>Running program and core dump can be probed by debugger</li>
+        </ul>
+      </li>
+      <li>OS failure is called crash. Error info is saved on log files, and crash dump file containing kernel memory is saved</li>
+    </ul>
+  </li>
+  <li>Beyond crashes, performance tuning can optimize system performance
+    <ul>
+      <li>Sometimes using trace listings of activities, recorded for analysis</li>
+      <li>Unix command top</li>
+      <li>Windows Task Manager</li>
+    </ul>
+  </li>
+  <li>Kernighan’s Law: “Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.”</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="performance-tuning">Performance Tuning</h2>
+
+<ul>
+  <li>Improve performance by removing bottlenecks</li>
+  <li>To identify bottleneks, we need monitoring system performance</li>
+  <li>OS must provide means of computing and displaying measures of system behavior</li>
+  <li>For example, “top” program or Windows Task Manager
+    <ul>
+      <li>Display resources used</li>
+      <li>CPU. Memory usuage, networking 통계</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234204265.png" alt="image-20220907234204265" /></p>
+
+<p><br /></p>
+
+<h2 id="dtrace">DTrace</h2>
+
+<ul>
+  <li>DTrace tool in Solaris, FreeBSD, Mac OS X allows live instrumentation on production systems</li>
+  <li>Probes fire when code is executed within a provider, capturing state data and sending it to consumers of those probes</li>
+  <li>Example of following XEventsQueued system call move from libc library to kernel and back</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234230584.png" alt="image-20220907234230584" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>DTrace code enables scheduler to probe and record amount of time of each process running with UserID 101 in running mode (on CPU) in nanoseconds</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234305805.png" alt="image-20220907234305805" /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220907234310961.png" alt="image-20220907234310961" /></p>
+
+<p><br /></p>
+
+<h2 id="operating-system-generationbuilding-an-os">Operating System Generation(Building an OS)</h2>
+
+<ul>
+  <li>Building OS
+    <ul>
+      <li>Write OS source code, or obtain written source code</li>
+      <li>Configure the OS for specific machine</li>
+      <li>Compile the OS</li>
+      <li>Install the OS</li>
+      <li>Boot the computer and its OS</li>
+    </ul>
+  </li>
+  <li>Operating systems are designed to run on any of a class of machines; the system must be configured for each specific computer site
+    <ul>
+      <li>The computer system must be configured and generated for each computer site – need system generation</li>
+    </ul>
+  </li>
+  <li>SYSGEN program obtains information concerning the specific configuration of the hardware system from OS distribution file
+    <ul>
+      <li>Used to build system-specific compiled kernel or system-tuned</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="system-boot">System Boot</h2>
+
+<ul>
+  <li>When power initialized on system, execution starts at a fixed memory location
+    <ul>
+      <li>Firmware ROM used to hold initial boot code</li>
+    </ul>
+  </li>
+  <li>Operating system must be made available to hardware so hardware can start it
+    <ul>
+      <li>Small piece of code – bootstrap program, stored in ROM or EEPROM locates the kernel, loads it into memory, and starts it
+        <ul>
+          <li>Sometimes two-step process where small bootstrap loader (BIOS), stored in ROM, load a second boot loader at fixed location (boot block) of disk</li>
+        </ul>
+      </li>
+      <li>Kernel initializes hardware, Inspecting memory, CPU.</li>
+      <li>root file system is mounted</li>
+    </ul>
+  </li>
+  <li>Common open source bootstrap loader for unix, GRUB, allows selection of kernel from multiple disks, versions, kernel options</li>
+</ul>
+:ET

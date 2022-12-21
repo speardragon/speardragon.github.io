@@ -1,0 +1,2134 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[Algorithm] Quick Sort(퀵 정렬) | speardragon note</title>
+<meta name="description" content="이번시간에는 퀵 정렬에 대해서 배워 보도록 하겠다.">
+
+
+  <meta name="author" content="Kang Chang Ryong">
+  
+  <meta property="article:author" content="Kang Chang Ryong">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="speardragon note">
+<meta property="og:title" content="[Algorithm] Quick Sort(퀵 정렬)">
+<meta property="og:url" content="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/sorting/Algorithm-Quick-Sort(%ED%80%B5-%EC%A0%95%EB%A0%AC)/">
+
+
+  <meta property="og:description" content="이번시간에는 퀵 정렬에 대해서 배워 보도록 하겠다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-02-15T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/sorting/Algorithm-Quick-Sort(%ED%80%B5-%EC%A0%95%EB%A0%AC)/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Kang Chang Ryong",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="naver-site-verification" content="cd7b9197fb220245e1da6b83be8b0feaf0434524">
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="speardragon note Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon.ico/apple-icon-57x57.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon.ico/favicon-16x16.png">
+<link rel="manifest" href="/assets/favicon.ico/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="/assets/favicon.ico/mstile-150x150.png">
+<meta name="theme-color" content="#ffffff">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/image_initial.jpg" alt="speardragon note"></a>
+        
+        <a class="site-title" href="/">
+          speardragon note
+          <span class="site-subtitle">Believe in yourself</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tag</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">Search</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#computer-science" itemprop="item"><span itemprop="name">Computer science</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#data-structures-and-algorithms-with-java" itemprop="item"><span itemprop="name">Data structures and algorithms with java</span></a>
+          <meta itemprop="position" content="3" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#algorithm" itemprop="item"><span itemprop="name">Algorithm</span></a>
+          <meta itemprop="position" content="4" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#sorting" itemprop="item"><span itemprop="name">Sorting</span></a>
+          <meta itemprop="position" content="5" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">[Algorithm] Quick Sort(퀵 정렬)</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image_face.png" alt="Kang Chang Ryong" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Kang Chang Ryong</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Republic of Korea, Uijeongbu</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:rkdckdfyyd@naver.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://speardragon.github.io" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer me"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+  
+
+  
+    <!--전체 글 수를 세기 위한 연산. sum 변수에 전체 글 수 저장-->
+
+
+
+<nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <!--전체 글 수-->
+      <li>
+            📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글</style> <span style="font-family:'Coming Soon';">(146)</style> <span style="font-family:'Cafe24Oneprettynight';"></style> 
+      </li>
+
+      <li>
+      <!-------------------------------------- 상위 카테고리: Language-------------------------------------->
+        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
+        <span class="nav__sub-title">🌎 Language: 프로그래밍 언어</span>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!-- 하위 카테고리 -->
+                <!--Python 카테고리 글들을 모아둔 페이지인 /categories/python 주소의 글로 링크 연결-->
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/python" class="">Python (4)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/kotlin" class="">Kotlin (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+            
+      <!-------------------------------------- 상위 카테고리: BackEnd-------------------------------------->
+      <span class="nav__sub-title">💻 BackEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/nodejs" class="">NodeJs (6)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: FrontEnd-------------------------------------->
+      <span class="nav__sub-title">🎨 FrontEnd</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/reactnative" class="">ReactNative (3)</a></li>
+          
+          
+          
+          
+          <li><a href="/categories/hci" class="">HCI (15)</a></li>
+          
+          
+      </ul> 
+
+      <!-------------------------------------- 상위 카테고리: System-------------------------------------->
+      <span class="nav__sub-title">📟 System</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/systemprogramming" class="">System Programming (22)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>              
+            
+      <!-------------------------------------- 상위 카테고리: Computer Science-------------------------------------->
+        <span class="nav__sub-title">🖥️ Computer Science</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithJava" class="">Data structures and algorithms(Java) (30)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/computerarchitecture" class="">Computer Architecture (26)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/datalgorithmwithPython" class="">Data structures and algorithms(Python) (14)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/os" class="">OS (10)</a></li>
+                
+                
+                
+                
+            </ul>              
+
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">📱 Android</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/android" class="">Android (3)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>               
+            
+     <!-------------------------------------- 상위 카테고리: Project-------------------------------------->
+     <span class="nav__sub-title">🧪 Project: 프로젝트</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>   
+
+      <!-------------------------------------- 상위 카테고리: Algorithm-------------------------------------->
+      <span class="nav__sub-title">🔠 Algorithm: 문제 풀이(백준, 프로그래머스)</span>
+      <ul>
+          <!-- 하위 카테고리 -->
+          
+          
+          
+          <li><a href="/categories/math" class="">Math (1)</a></li>
+          
+          
+          <li><a href="/categories/bruteforce" class="">BruteForce (4)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/implementation" class="">Implementation (4)</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/categories/linkedList" class="">LinkedList (3)</a></li>
+          
+          
+          <li><a href="/categories/stack" class="">Stack (2)</a></li>
+          
+          
+          <li><a href="/categories/queue" class="">Queue (2)</a></li>
+          
+          
+          <li><a href="/categories/hash" class="">Hash (2)</a></li>
+          
+          
+          <li><a href="/categories/binarysearch" class="">BinarySearch (3)</a></li>
+          
+          
+          <li><a href="/categories/sorting" class="">Sorting (7)</a></li>
+          
+          
+          <li><a href="/categories/tree" class="">Tree (1)</a></li>
+          
+          
+          <li><a href="/categories/heap" class="">Heap (1)</a></li>
+          
+          
+          <li><a href="/categories/graph" class="">Graph (4)</a></li>
+          
+          
+          <li><a href="/categories/dijkstra" class="">Dijkstra (1)</a></li>
+          
+          
+          <li><a href="/categories/dynamicprogramming" class="">DynamicProgramming (1)</a></li>
+          
+          
+          <li><a href="/categories/greedy" class="">Greedy (1)</a></li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+      </ul>            
+      <!-------------------------------------- 상위 카테고리: ETC-------------------------------------->
+        <span class="nav__sub-title">💬 ETC: 기타</span>
+            <ul>
+                <!-- 하위 카테고리 -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/history" class="">History (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a href="/categories/tip" class="">Tip (1)</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            </ul>
+      </li>
+  </ul>
+</nav>
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[Algorithm] Quick Sort(퀵 정렬)">
+    <meta itemprop="description" content="이번시간에는 퀵 정렬에 대해서 배워 보도록 하겠다.">
+    <meta itemprop="datePublished" content="2022-02-15T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/sorting/Algorithm-Quick-Sort(%ED%80%B5-%EC%A0%95%EB%A0%AC)/" class="u-url" itemprop="url">[Algorithm] Quick Sort(퀵 정렬)
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 분 소요
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On This Page</h4></header>
+              <ul class="toc__menu"><li><a href="#퀵-정렬이란">퀵 정렬이란?</a><ul><li><a href="#퀵-정렬의-개념">퀵 정렬의 개념</a></li><li><a href="#pivot-결정의-중요성">Pivot 결정의 중요성</a></li></ul></li><li><a href="#퀵-정렬-구현">퀵 정렬 구현</a><ul><li><a href="#퀵-정렬의-시간복잡도">퀵 정렬의 시간복잡도</a></li><li><a href="#정렬-간-시간복잡도-비교">정렬 간 시간복잡도 비교</a></li></ul></li><li><a href="#참고-자료">참고 자료</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>이번시간에는 퀵 정렬에 대해서 배워 보도록 하겠다.</p>
+
+<p>저번 포스팅에서 설명했던 정렬 방식들(버블 정렬, 삽입 정렬, 선택 정렬) 은 가장 기본적인 수준의 정렬 방식들이다.</p>
+
+<p>그러나 이것들은 일반적으로 좋은 성능은 낼 수 없기 때문에 실제로 개발 시에는 잘 사용하지 않는다.</p>
+
+<p>앞으로 배울 Merge / Quick 정렬은 굉장히 중요하기 때문에 자세히 알아보도록 하자.</p>
+
+<p><br /></p>
+
+<h2 id="퀵-정렬이란">퀵 정렬이란?</h2>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155835114-17a1d93a-bcb2-4ea0-842e-fdd239d818d6.gif" alt="img (3)" /></p>
+
+<p>먼저 퀵정렬의 특징은 다음과 같다.</p>
+
+<p><br /></p>
+
+<ul>
+  <li>퀵 정렬(Quick Sort)은 합병 정렬(Merge Sort)과 마찬가지로 배열을 둘 씩 분할하며 정렬하는 과정을 거치기 때문에 시간복잡도 O(nlog<sub>2</sub>n)을 갖는다. 
+하지만 같은 시간 복잡도라도 실제 정렬에서는 합병 정렬보다 퀵 정렬이 훨씬 더 빠른 시간 안에 정렬이 가능하다.(이름처럼 매우 빠른 속도를 갖는다.)
+    <ul>
+      <li>리스트 파트에서 배웠던 <strong>ArrayList</strong>가 메모리 공간 상에서 인접하게 위치해 있기 때문에 연산에 더 유리했다고 했던 것처럼 <strong>퀵 정렬</strong> 역시 컴퓨터의 하드웨어 특성 덕분에 더 빠른 연산 성질을 가질 수 있게 됩니다. → 참조 지역성(locality of reference)의 원리
+        <ul>
+          <li>퀵 정렬은 알고리즘 자체의 특성 상 동일한 배열 내에서 자리를 이동시킨다. 그래서 인접한 데이터들 사이의 이동이 발생하기 때문에 제일 처음 배열에 접근 할 때만 실제 메모리에서 데이터를 가져오고 이후에는 캐시(cache)로 배열에 접근하기 때문에 메모리로 접근할 때보다 훨씬 더 빠른 접근이 가능한 것이다.
+이후 더 자세한 내용은 운영체제 수업에서 다루도록 하겠다.</li>
+        </ul>
+      </li>
+      <li>한 번 위치가 결정된 pivot 값은 이후의 연산에서는 해당 값을 제외하고 연산을 진행하기 때문에 정렬이 진행 될 수록, 즉 분할이 점점 진행 될 수록 계산해야 할 데이터의 수가 점점 줄어드는 특성이 있다. 따라서 데이터가 줄어들기 때문에 이에 따라서 정리할 속도도 줄어들게 되는 것이다.</li>
+    </ul>
+  </li>
+  <li>merge sort에서는 인메모리 정렬로 구현을 하더라도 정렬을 보조해 주는 추가 메모리 공간이 필요하다는 단점이 있었지만</li>
+  <li>quick sort에서는 추가 공간을 더 사용하지 않고 합병 정렬과 비슷하기 <strong>divide and conquer</strong> 방식으로 진행이 된다다.
+    <ul>
+      <li>분할 정복(Divide and Conquer) 방법
+        <ul>
+          <li>문제를 작은 2개의 문제로 분리하고 각각을 해결한 다음, 결과를 모아서 원래의 문제를 해결하는 전략</li>
+          <li>대개 순환(재귀) 호출을 이용하여 구현</li>
+          <li><strong>분할 정복 알고리즘</strong>의 설명은 <a href=""><u><span style="color:blue">이곳</span></u></a>을 참조<br /></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>퀵 정렬은 <strong>불안정 정렬</strong> 방식에 속하며, 다른 원소와 비교만으로 정렬을 수행하는 <strong>비교 정렬</strong>에 속한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="퀵-정렬의-개념">퀵 정렬의 개념</h3>
+
+<ul>
+  <li>
+    <p>리스트 안에 있는 한 요소를 특정 기준에 따라 선택한다. 이렇게 고른 원소를 피벗(pivot)이라고 한다.</p>
+  </li>
+  <li>
+    <p>하나의 리스트를 pivot을 기준으로 두 개의 비균등한 크기로 <strong>분할</strong>하고 분할된 부분 리스트를 정렬한 다음, 두 개의 정렬된 부분 리스트를 합하여 전체가 정렬된 리스트가 되게 하는 방법이다.</p>
+
+    <ul>
+      <li>피벗을 기준으로 피벗보다 작은 요소들은 피벗의 왼쪽에 위치시키고 피벗보다 큰 요소는 오른쪽에 위치시킨다.</li>
+      <li>피벗을 제외한 왼쪽 리스트와 오른쪽 리스트 각각을 다시 정렬한다.
+        <ul>
+          <li>분할된 서브 리스트에 대해서는 순환 호출을 이용하여 정렬을 반복한다.</li>
+          <li>서브 리스트에서도 재차 피벗을 정하고 이를 기준으로 2개의 서브 리스트로 다시 나누어 주는 과정을 반복한다.</li>
+        </ul>
+      </li>
+      <li>부분 리스트들이 더 이상 분할이 불가능할 때까지 반복한다.
+        <ul>
+          <li>리스트의 크기가 0이나 1이 될 때까지 반복한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>단계는 다음과 같이 이루어져 있다.</p>
+    <ol>
+      <li><strong>분할(Divide)</strong>: 입력 배열을 pivot을 기준으로 비균등하게 2개의 서브 리스트(pivot을 중심으로 왼쪽: pivot보다 작은 요소들, 오른쪽: pivot보다 큰 요소들)로 분할한다.</li>
+      <li><strong>정복(Conquer)</strong>: 서브 리스트를 정렬한다. 서브 리스트의 크기가 조금 크다고 생각이 들면 재귀 호출을 이용하여 다시 분할 정복 방법(Divide and conquer)을 적용한다.</li>
+      <li><strong>결합(Combine)</strong>: 정렬된 부분 배열들을 하나의 배열에 합병한다.</li>
+    </ol>
+
+    <ul>
+      <li>재귀 호출이 한 번 진행될 때마다 최소한 하나의 pivot은 최종적으로 위치가 정해지기 때문에 이 알고리즘은 반드시 끝난다는 것을 보장 받을 수 있는 것이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<hr />
+
+<p>자 그럼 이제 그림으로 한 번 퀵 정렬을 이해해 보도록 하겠다.</p>
+
+<ol>
+  <li>pivot값을 먼저 정해준다.</li>
+</ol>
+
+<ul>
+  <li>pivot값은 리스트의 가장 앞에 위치한 원소도 가능하고 가장 뒤에 위치한 원소도 가능하다. 어느 원소로 잡아도 되지만 나는 가장 중간에 위치한 ‘5’로 정하였다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153881076-391ba485-1f88-41f1-86b9-f41099d05ee8.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ol>
+  <li>그렇게 해서 이 pivot값을 기준으로 원소들을 <strong>재배치</strong>한다.</li>
+</ol>
+
+<ul>
+  <li>재배치하는 방식은 아래와 같이 5보다 작은 값들은 5의 왼쪽으로 5보다 큰 값들은 5의 오른쪽으로 이동시키는 방식이다.</li>
+</ul>
+
+<p><img src="C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20220214232337193.png" alt="image-20220214232337193" /></p>
+
+<p>이 때 pivot값의 index가 바뀌는 것은 자연스러운 일로 pivot값 자체가 중요한 것이기 때문에 크게 신경 쓰시지 않아도 된다.</p>
+
+<ul>
+  <li>그럼 pivot값을 중심으로 두 개의 서브 리스트가 생긴 것이다.</li>
+</ul>
+
+<p><br /></p>
+
+<ol>
+  <li>이 서브 리스트들에서 각각 pivot값을 다시 정해 준다.</li>
+</ol>
+
+<ul>
+  <li>나는 왼쪽 서브 리스트에서는 중간 값인 1, 오른쪽 서브리스트에서는 6으로 잡았다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153882595-17470368-e60e-43db-aaca-b98b128eb5ff.png" alt="image" /></p>
+
+<ol>
+  <li>그럼 다시 이 pivot값을 중심으로 대소 비교를 통한 재배치 과정을 진행한다.</li>
+</ol>
+
+<ul>
+  <li>여기서 오른쪽의 서브 리스트는 원소의 갯수가 하나만 남았기 때문에 더 이상 분할 할 수가 없으므로 오른쪽의 퀵 정렬은 종료가 된다.
+왼쪽의 서브 리스트는 아직 정렬 할 원소가 남아있기 때문에 해당 리스트에서 pivot값을 정해 계속해서 정렬해 주도록 하겠다.</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>pivot값을 중간값인 3으로 잡고 진행해 보겠다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153884073-7aa8b019-3a32-467e-988f-38c4f01aa986.png" alt="image" /></p>
+
+<ul>
+  <li>또 다시 pivot값을 기준으로 재배치하여 분할을 진행한다.</li>
+  <li>분할을 통해 나온 양쪽 서브 리스트 원소의 갯수가 1개씩만 남았으므로 퀵 정렬이 완전히 종료가 되고 실제로 정렬된 배열을 보면 오름차순으로 잘 정렬 되었음을 볼 수있을 것이다.</li>
+</ul>
+
+<p><br /></p>
+
+<p>퀵 정렬을 움직이는 애니메이션을 통해 보면 다음과 같다.</p>
+
+<p>여기서는 pivot값을 서브 리스트의 중간 값이 아니라 가장 맨 오른쪽 값으로 정하여 진행한 모습이다.</p>
+
+<ul>
+  <li>실제로 퀵 정렬을 할 때 정하는 피벗값을 리스트의 맨 오른쪽 값으로 정하는 경우가 많다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153884489-eb997f20-34e2-4275-afa8-54b85494dcad.gif" alt="Sorting_quicksort_anim" /></p>
+
+<p><a href="https://ko.wikipedia.org/wiki/%ED%80%B5_%EC%A0%95%EB%A0%AC">출처: 위키백과 - 퀵 정렬</a></p>
+
+<p><br /></p>
+
+<h3 id="pivot-결정의-중요성">Pivot 결정의 중요성</h3>
+
+<p>아래와 같은 배열을 정렬해야 한다고 하고 피벗값을 가장 좌측에 있는 값으로 잡는다고 해보자.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155835775-b44ae36f-37ef-4f71-8537-c513e6d30ae1.png" alt="image" /></p>
+
+<p><br /></p>
+
+<p>이를 오름차순으로 정렬하려 하는데 뒤의 모든 값들이 내림차순으로 정렬되어 있고 41이 이미 가장 큰 숫자이다.</p>
+
+<p>이 상태에서 1차 정렬을 진행하면 다음과 같이 된다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155835938-d4582793-f139-4e84-940b-ff85f932c39d.png" alt="image" /></p>
+
+<p>이처럼 피벗의 위치를 찾았더니 모든 값과 비교하였을 때 전부 swap이 되었을 것이고, 또 가장 마지막에 위치해 있을 것이다.</p>
+
+<p><br /></p>
+
+<p>피벗이 적당히 중간쯤에 위치했다면 양 쪽의 부분 집합이 균등하게 분배돼서 전체 비교 횟수를 월등하게 줄일 수있었음에도 이러한 현상이 반복되었다면 비교해야 하는 횟수는 계속해서 늘어날 수 밖에 없는 것이다.</p>
+
+<ul>
+  <li>사실상 버블 정렬과 다를게 없는 것이다.</li>
+</ul>
+
+<p><br /></p>
+
+<p>이런 최악의 경우, 시간 복잡도는 O(n<sup>2</sup>)를 갖게 되며 퀵 정렬이 더 이상 제 기능을 하지 못하게 되는 것이다.(<del>slow 정렬?</del>)</p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>그래서 이처럼 피벗값을 어떤 것으로 잡을 지는 상황에 따라 매우 다르다. 항상 최 우측 혹은 좌측 값을 피벗값을 설정하는 것도 때에 따라서는 최악의 성능을 갖게 될 수 있기 때문이다.</p>
+
+<p>그렇기 때문에 피벗을 정하는 방법을 다음과 같이 생각해 볼 수 있다.</p>
+
+<p><br /></p>
+
+<p><strong>1) 그냥 무작위로 선택하기</strong></p>
+
+<ul>
+  <li>랜덤하게 설정하면 항상 최악의 경우가 되진 않을 것이다. 그러나 여전히 최악의 case가 생겨날 수 있다.
+    <ul>
+      <li>평균적으로 O(nlog<sub>2</sub>n)의 시간 복잡도를 유지한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>2) Median-Of-3 method</strong></p>
+
+<p>이 방법은 배열의 여러 값들 중에서 가장 좌측, 우측, 중간 이렇게 3개의 값들을 뽑고, 이 3개의 값들에 대해서 정렬을 한 뒤, 그 중 중간 값을 가장 좌측 또는 우측으로 이동시켜서 피벗으로 설정하는 방법이다.</p>
+
+<p><br /></p>
+
+<p>이 값이 피벗으로 사용되어 전체 배열을 균등하게 분할할 수 있다는 보장은 없지만, 최소한 이 값이 전체 중 최대/최소 값에는 해당 되지 않는 다는 것을 보장하기 때문에 중심 극한 정리에 따라서 평균 O(nlog<sub>2</sub>n)의 시간 복잡도를 유지할 수 있는 것이다.</p>
+
+<p>예를 들어, 다음과 같은 배열을 보자</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>35</td>
+      <td>33</td>
+      <td>42</td>
+      <td>10</td>
+      <td>14</td>
+      <td>19</td>
+      <td>27</td>
+      <td>44</td>
+      <td>26</td>
+      <td>31</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>이 배열에서 left는 35, mid는 14, right는 31인데 정렬을 하면 right값인 31이 median값이 되고 이 값을 pivot 값으로 사용한다는 의미이다.</p>
+
+<p><br /></p>
+
+<h2 id="퀵-정렬-구현">퀵 정렬 구현</h2>
+
+<p>퀵 정렬 또한 <strong>분할 정복 방법</strong>으로 구현할 것이기 때문에 quickSort라는 메소드를 재귀호출하여 구현해 보도록 하겠다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">sort</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">QuickSort</span> <span class="kd">implements</span> <span class="nc">ISort</span> <span class="o">{</span>
+    
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>sort()</strong></p>
+
+<p>sort() 메소드에서는 본격적으로 퀵 정렬을 시작할 것이기 때문에 quickSort에 배열과 시작 인덱스는 0 마지막 인덱스는 배열의 마지막 인덱스를 넣어주면서 호출한다.</p>
+
+<p><br /></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">void</span> <span class="nf">quickSort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">low</span><span class="o">,</span> <span class="kt">int</span> <span class="n">high</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">low</span> <span class="o">&gt;=</span> <span class="n">high</span><span class="o">)</span> <span class="o">{</span> <span class="c1">//종료조건</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kt">int</span> <span class="n">pivot</span> <span class="o">=</span> <span class="n">low</span> <span class="o">+</span> <span class="o">(</span><span class="n">high</span> <span class="o">-</span> <span class="n">low</span><span class="o">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">pivotValue</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">pivot</span><span class="o">];</span>
+    
+    <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="n">low</span><span class="o">;</span>
+   	<span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="n">high</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">left</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">pivotValue</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">left</span><span class="o">++;</span>
+        <span class="o">}</span>
+        
+        <span class="k">while</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">right</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">pivotValue</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">right</span><span class="o">--;</span>
+        <span class="o">}</span>
+        
+        <span class="k">if</span> <span class="o">(</span><span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">right</span><span class="o">];</span>
+            <span class="n">arr</span><span class="o">[</span><span class="n">right</span><span class="o">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">left</span><span class="o">];</span>
+            <span class="n">arr</span><span class="o">[</span><span class="n">left</span><span class="o">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">;</span>
+            <span class="n">left</span><span class="o">++;</span>
+            <span class="n">right</span><span class="o">--;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">low</span><span class="o">,</span> <span class="n">right</span><span class="o">);</span>
+    <span class="n">quickSort</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">low</span><span class="o">,</span> <span class="n">high</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>가장 먼저 quickSort도 종료 조건으로 low가 high와 같아지는 상황, 즉 분할을 모두 마쳐 서브 리스트의 크기가 1인 상황, 즉 원소가 하나인 상황에 return을 한다.</li>
+  <li>이제 퀵 정렬을 시작해 볼 것이다. 퀵 정렬에서는 가장 먼저 <strong>pivot</strong>값을 정해주어야 한다.
+여태 그래왔듯 중간 값으로 pivot값을 정해주도록 한다. ‘(low + high) / 2’와 같이 해주지 않은 이유는 overflowException을 방지하기 위함이다.
+    <ul>
+      <li>int형 변수의 크기 범위는 2<sup>-31</sup>~2<sup>31</sup> 이기 때문이다.</li>
+    </ul>
+  </li>
+  <li>pivotValue에는 pivot인덱스에 해당 하는 pivot값을 넣어주도록 한다.
+    <ul>
+      <li>우리는 이 값을 아주 중요하게 다룰 것이다.</li>
+    </ul>
+  </li>
+  <li>left와 right에는 배열의 low(시작), high(끝)값을 각각 넣어준다.</li>
+  <li>첫 번째 while문
+    <ul>
+      <li>left의 값과 right의 값이 겹치지 않을 때 까지 다음 내용을 반복한다.</li>
+      <li>내부 while문_1
+        <ul>
+          <li>배열의 left값이 pivot값보다 작다면 잘 배치 되어있는 것으로 다음 left index를 순회해야 하기 때문에 left 값을 1 증가시켜 다음 index로 이동한다.</li>
+        </ul>
+      </li>
+      <li>내부 while문_2
+        <ul>
+          <li>배열의 right값이 pivot값보다 크다면 잘 배치 되어있는 것으로 다음 right index를 순회해야 하기 때문에 right값을 1 감소시켜 다음 index로 이동한다.</li>
+        </ul>
+      </li>
+      <li>만약 left 와 right이 이동하다가 서로 만나게 되었거나 서로 교차하지 않은 상황이라면 배열의 left의 값과 right의 값을 서로 바꾸어 주는 과정을 진행 후 left와 right의 index를 각자 방향으로 이동시킨다.</li>
+    </ul>
+  </li>
+  <li>이를 재귀함수를 통해 왼쪽과 오른쪽 각각에 대하여 퀵 정렬을 진행한다.</li>
+</ul>
+
+<p><br /></p>
+
+<p>이해를 위해 그림을 통해 설명하도록 하겠다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153900024-530417b3-9082-41c2-9e5f-bac31ab2fb44.png" alt="image" /></p>
+
+<ul>
+  <li>pivot값이 5로 잡혔기 때문에 처음 left의 index는 0번에서 pivot이 위치한 곳까지 오게되고 right은 맨 끝에서 2가 위치한 곳까지 오게된다.
+    <ul>
+      <li>left 서브 리스트의 원소는 모두 5보다 작기 때문에 pivot까지 온 것이고</li>
+      <li>right 서브 리스트의 원소중 5보다 크지 않은 2가 존재하여 해당 위치에서 멈춘 모습이다.</li>
+    </ul>
+  </li>
+  <li>그리고 왼쪽 인덱스와 오른쪽 인덱스가 아직 교차하지 않은 상태이므로 left와 right의 값을 바꿔준다.</li>
+  <li>swap이후 다시 while문으로 돌아와 진행한다.</li>
+  <li>이 상태에서 left는 7을 만나 멈추고 right은 이미 pivot이기 때문에 그대로이다.</li>
+  <li>이 때도 역시 left와 right index가 아직 서로 교차하기 전이므로 left값과 right값을 바꾸어 준다.
+    <ul>
+      <li>그러고 나서 left와 right가 교차하게 되어 왼쪽 리스트와 오른쪽 리스트가 pivot에 의해 정렬되었다.</li>
+    </ul>
+  </li>
+  <li>이를 서브 리스트의 크기가 1이 될 때까지 반복하는 것이다.</li>
+</ul>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>또 다른 예로 pivot을 맨 왼쪽으로 잡은 경우를 도식화한 것을 보고 마무리 하도록 하겠다.</p>
+
+<p>image](https://user-images.githubusercontent.com/79521972/153901057-238955ac-bb29-453b-9ff0-6978bf6a308f.png)</p>
+
+<p><strong>[장점]</strong></p>
+
+<ol>
+  <li>
+    <p>특정 상태가 아닌 이상 평균 시간 복잡도는 nlog<sub>2</sub>n이며, 다른 nlog<sub>2</sub>n 알고리즘에 비해 대체적으로 속도가 매우 빠르다. 유사하게 nlog<sub>2</sub>n 정렬 알고리즘 중 <span style="color:red">분할정복 방식인 merge sort에 비해 2~3배정도 빠르다.</span> (정리 부분의 표 참고)</p>
+  </li>
+  <li>
+    <p>추가적인 별도의 메모리를 필요로하지 않으며 재귀 호출 스택프레임에 의한 공간복잡도는 log<sub>2</sub>n으로 메모리를 적게 소비한다.</p>
+  </li>
+</ol>
+
+<p><strong>[단점]</strong></p>
+
+<ol>
+  <li>특정 조건하에 성능이 급격하게 떨어진다.
+    <ul>
+      <li>내림 차순으로 정렬되어 있는데 피벗 값을 배열의 첫 index로 잡는 경우</li>
+      <li>피벗값을 Median-Of-3 방법을 통해 잘 정하도록 하자.</li>
+    </ul>
+  </li>
+  <li>재귀 호출을 사용하기 때문에 재귀를 사용하지 못하는 환경일 경우 그 구현이 매우 복잡해진다.</li>
+</ol>
+
+<p><br /></p>
+
+<h3 id="퀵-정렬의-시간복잡도">퀵 정렬의 시간복잡도</h3>
+
+<ul>
+  <li>
+    <p>최선의 경우</p>
+
+    <ul>
+      <li>비교 횟수</li>
+      <li>
+        <p><img src="https://user-images.githubusercontent.com/79521972/153885858-13e1f947-e1c5-4f82-9187-1c32abbd63d1.png" alt="image" /></p>
+      </li>
+      <li>재귀 호출의 depth
+        <ul>
+          <li>레코드 개수 n이 2의 거듭제곱이라고 가정(n=2<sup>k</sup>)했을 때, n = 2<sup>3</sup>인 경우,
+2<sup>3</sup> -&gt; 2<sup>2</sup> -&gt; 2<sup>1</sup> -&gt; 2<sup>0</sup> 순으로 줄어들어 재귀 호출의 depth가 3인 것을 확인 할 수 있을 것이다. 이를 일반화하면 n = 2<sup>k</sup>인 경우, k(k = log<sub>2</sub>n) 임을 알 수 있다.</li>
+          <li>k = log<sub>2</sub>n</li>
+        </ul>
+      </li>
+      <li>각 재귀 호출 단계에서의 비교 연산
+        <ul>
+          <li>각 재귀 호출에서는 전체 리스트의 대부분의 데이터 값을 비교해야 하므로 평균 n번 정도의 비교가 이루어진다.</li>
+          <li>평균 n번</li>
+        </ul>
+      </li>
+      <li><span style="color:red">재귀 호출의 깊이</span> ×  <span style="color:red">각 재귀 호출 단계의 비교 연산</span> = <strong>nlog<sub>2</sub>n</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p>이동 횟수</p>
+
+    <ul>
+      <li>비교 횟수보다 적기때문에 무시할 수 있다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>최선의 경우, 시간 복잡도 T(n) = <strong>O(nlog₂n)</strong></p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>최악의 경우 (Solution : <u>Median of Three</u>)
+    <ul>
+      <li>리스트가 계속 불균형하게 나누어지는 경우
+        <ul>
+          <li>위에서 설명한 예시에 더불어 이미 정렬되어 있는 리스트에 대하여 퀵 정렬을 실행하는 경우도 있다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153885774-c5aac689-ce6e-4008-9f36-d31648096eb7.png" alt="image" /></p>
+
+<ul>
+  <li>비교 횟수
+    <ul>
+      <li>재귀 호출의 depth
+        <ul>
+          <li>레코드의 개수 n이 2의 거듭제곱이라고 가정(n=2<sup>k</sup>)했을 때, 재귀 호출의 depth는 n이다.</li>
+          <li>n번</li>
+        </ul>
+      </li>
+      <li>각 순환 호출 단계의 비교 연산
+        <ul>
+          <li>각 순환 호출에서는 전체 리스트의 대부분의 데이터 값을 비교해야 하므로 평균 n번 정도의 비교가 이루어진다.</li>
+          <li>평균 n번</li>
+        </ul>
+      </li>
+      <li><span style="color:red">재귀 호출의 깊이</span> ×  <span style="color:red">각 재귀 호출 단계의 비교 연산</span> = <strong>n<sup>2</sup></strong></li>
+    </ul>
+  </li>
+  <li>이동 횟수
+    <ul>
+      <li>비교 횟수보다 적기 때문에 무시할 수 있다.</li>
+    </ul>
+  </li>
+  <li>최악의 경우, 시간 복잡도 T(n) = <strong>O(n<sup>2</sup>)</strong></li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>평균
+    <ul>
+      <li>평균 T(n) = <strong>O(nlog₂n)</strong></li>
+      <li>시간 복잡도가 O(nlog₂n)를 가지는 다른 정렬 알고리즘과 비교했을 때도 퀵 정렬이 월등히 빠르다.</li>
+      <li>퀵 정렬이 불필요한 데이터의 이동을 줄이고 <strong>먼 거리의 데이터를 교환</strong>할 뿐만 아니라, <span style="color:blue">한 번 결정된 pivot들이 추후 연산에서 제외되는 특성</span> 때문이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="정렬-간-시간복잡도-비교">정렬 간 시간복잡도 비교</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>정렬 방식</th>
+      <th>Average</th>
+      <th>Worst</th>
+      <th>Memory</th>
+      <th>Stable 여부</th>
+      <th>In-Place 여부</th>
+      <th>Run-time(정수 60,000개) 단위: sec</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bubble 정렬</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>O</td>
+      <td>O</td>
+      <td>7.438</td>
+    </tr>
+    <tr>
+      <td>Selection 정렬</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>X</td>
+      <td>O</td>
+      <td>10.842</td>
+    </tr>
+    <tr>
+      <td>Insertion 정렬</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>O</td>
+      <td>O</td>
+      <td>22.894</td>
+    </tr>
+    <tr>
+      <td>Shell 정렬</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>X</td>
+      <td>O</td>
+      <td>0.056</td>
+    </tr>
+    <tr>
+      <td>Merge 정렬</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(n)</td>
+      <td>O</td>
+      <td>X</td>
+      <td>0.014</td>
+    </tr>
+    <tr>
+      <td><mark>Quick 정렬</mark></td>
+      <td><strong>O(nlog<sub>2</sub>n)</strong></td>
+      <td><strong>O(n<sup>2</sup>)</strong></td>
+      <td><strong>O(1)</strong></td>
+      <td><strong>X</strong></td>
+      <td><strong>O</strong></td>
+      <td><strong>0.034</strong></td>
+    </tr>
+    <tr>
+      <td>Heap 정렬</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(1)</td>
+      <td>X</td>
+      <td>O</td>
+      <td>0.026</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p><strong>정렬(Sorting)</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/sorting/Algorithm-Sorting(%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Bubble 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/sorting/Algorithm-Bubble-Sort(%EB%B2%84%EB%B8%94-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Shell 정렬</strong>의 설명은 <a href=""><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Insertion 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/sorting/Algorithm-Insert-Sort(%EC%82%BD%EC%9E%85-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Merge 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/sorting/Algorithm-Merge-Sort(%ED%95%A9%EB%B3%91-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Heap 정렬</strong>은 우선순위 큐에서 사용하는 정렬이므로 해당 포스팅 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/heap/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Heap-&amp;-Priority-Queue(%ED%9E%99%EA%B3%BC-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Topological 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-Topological-Sorting(%EC%9C%84%EC%83%81-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><br /></p>
+
+<h2 id="참고-자료">참고 자료</h2>
+
+<p>.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#algorithm" class="page__taxonomy-item p-category" rel="tag">Algorithm</a><span class="sep">, </span>
+    
+      <a href="/tags/#data-structure" class="page__taxonomy-item p-category" rel="tag">Data structure</a><span class="sep">, </span>
+    
+      <a href="/tags/#quick-sort" class="page__taxonomy-item p-category" rel="tag">Quick sort</a><span class="sep">, </span>
+    
+      <a href="/tags/#sorting" class="page__taxonomy-item p-category" rel="tag">Sorting</a><span class="sep">, </span>
+    
+      <a href="/tags/#%EC%A0%95%EB%A0%AC" class="page__taxonomy-item p-category" rel="tag">정렬</a><span class="sep">, </span>
+    
+      <a href="/tags/#%ED%80%B5-%EC%A0%95%EB%A0%AC" class="page__taxonomy-item p-category" rel="tag">퀵 정렬</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#algorithm" class="page__taxonomy-item p-category" rel="tag">Algorithm</a><span class="sep">, </span>
+    
+      <a href="/categories/#computer-science" class="page__taxonomy-item p-category" rel="tag">Computer Science</a><span class="sep">, </span>
+    
+      <a href="/categories/#data-structures-and-algorithms-with-java" class="page__taxonomy-item p-category" rel="tag">Data structures and algorithms with Java</a><span class="sep">, </span>
+    
+      <a href="/categories/#sorting" class="page__taxonomy-item p-category" rel="tag">Sorting</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2022-02-15T00:00:00+09:00">2022-02-15</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BAlgorithm%5D+Quick+Sort%28%ED%80%B5+%EC%A0%95%EB%A0%AC%29%20http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fsorting%2FAlgorithm-Quick-Sort%28%25ED%2580%25B5-%25EC%25A0%2595%25EB%25A0%25AC%29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fsorting%2FAlgorithm-Quick-Sort%28%25ED%2580%25B5-%25EC%25A0%2595%25EB%25A0%25AC%29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fcomputer%2520science%2Fdata%2520structures%2520and%2520algorithms%2520with%2520java%2Falgorithm%2Fsorting%2FAlgorithm-Quick-Sort%28%25ED%2580%25B5-%25EC%25A0%2595%25EB%25A0%25AC%29%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/sorting/Algorithm-Merge-Sort(%ED%95%A9%EB%B3%91-%EC%A0%95%EB%A0%AC)/" class="pagination--pager" title="[Algorithm] Merge Sort(합병 정렬)
+">이전</a>
+    
+    
+      <a href="/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/tree/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Tree,-Binary-Tree(%ED%8A%B8%EB%A6%AC,-%EC%9D%B4%EC%A7%84-%ED%8A%B8%EB%A6%AC)/" class="pagination--pager" title="[자료구조] Tree, Binary Tree(트리, 이진 트리)
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/os/OS-Virtual-Memory/" rel="permalink">[OS] Virtual Memory
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 11/20/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶OS
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          41 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/" rel="permalink">[HCI] 10. Universal Design-Multi-Sensory Systems
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/23/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Universal Design Principles - NCSU
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/" rel="permalink">[HCI] 9. Dialogue Notations and Design 2
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/19/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">O/X
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/" rel="permalink">[HCI] 9. Dialogue Notations and Design 1
+</a>
+      
+    </h2>
+
+    
+    <p class="archive__item-excerpt"><i class="far fa-calendar-alt"></i> 10/17/2022 &nbsp; 
+      <i class="far fa-folder-open"></i> 
+      ▶FrontEnd
+      ▶HCI
+      
+    </p>
+  
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 분 소요
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Dialogue Notations and Design
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/speardragon" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kang Chang Ryong. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/sorting/Algorithm-Quick-Sort(%ED%80%B5-%EC%A0%95%EB%A0%AC)/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/computer%20science/data%20structures%20and%20algorithms%20with%20java/algorithm/sorting/[Algorithm] Quick Sort(퀵 정렬)"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sppeardragon.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

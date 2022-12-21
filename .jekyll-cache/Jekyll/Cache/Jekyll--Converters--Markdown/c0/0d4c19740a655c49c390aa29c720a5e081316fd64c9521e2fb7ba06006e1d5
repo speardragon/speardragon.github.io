@@ -1,0 +1,241 @@
+I"U=<table>
+  <thead>
+    <tr>
+      <th>시간 제한</th>
+      <th>메모리 제한</th>
+      <th>정답 비율</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1 초</td>
+      <td>128 MB</td>
+      <td>46.180%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="문제">문제</h2>
+
+<p>카지노에서 제일 인기 있는 게임 블랙잭의 규칙은 상당히 쉽다. 카드의 합이 21을 넘지 않는 한도 내에서, 카드의 합을 최대한 크게 만드는 게임이다. 블랙잭은 카지노마다 다양한 규정이 있다.</p>
+
+<p>한국 최고의 블랙잭 고수 김정인은 새로운 블랙잭 규칙을 만들어 상근, 창영이와 게임하려고 한다.</p>
+
+<p>김정인 버전의 블랙잭에서 각 카드에는 양의 정수가 쓰여 있다. 그 다음, 딜러는 N장의 카드를 모두 숫자가 보이도록 바닥에 놓는다. 그런 후에 딜러는 숫자 M을 크게 외친다.</p>
+
+<p>이제 플레이어는 제한된 시간 안에 N장의 카드 중에서 3장의 카드를 골라야 한다. 블랙잭 변형 게임이기 때문에, 플레이어가 고른 카드의 합은 M을 넘지 않으면서 M과 최대한 가깝게 만들어야 한다.</p>
+
+<p>N장의 카드에 써져 있는 숫자가 주어졌을 때, M을 넘지 않으면서 M에 최대한 가까운 카드 3장의 합을 구해 출력하시오.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>첫째 줄에 카드의 개수 N(3 ≤ N ≤ 100)과 M(10 ≤ M ≤ 300,000)이 주어진다. 둘째 줄에는 카드에 쓰여 있는 수가 주어지며, 이 값은 100,000을 넘지 않는 양의 정수이다.</p>
+
+<p>합이 M을 넘지 않는 카드 3장을 찾을 수 있는 경우만 입력으로 주어진다.</p>
+
+<h2 id="출력">출력</h2>
+
+<p>첫째 줄에 M을 넘지 않으면서 M에 최대한 가까운 카드 3장의 합을 출력한다.</p>
+
+<h2 id="예제-입력-1">예제 입력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5 21
+5 6 7 8 9
+</code></pre></div></div>
+
+<h2 id="예제-출력-1">예제 출력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>21
+</code></pre></div></div>
+
+<h2 id="예제-입력-2">예제 입력 2</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>10 500
+93 181 245 214 315 36 185 138 216 295
+</code></pre></div></div>
+
+<h2 id="예제-출력-2">예제 출력 2</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>497
+</code></pre></div></div>
+
+<h2 id="알고리즘-분류">알고리즘 분류</h2>
+
+<ul>
+  <li><a href="https://speardragon.github.io/lecture/data%20structures%20and%20algorithms%20with%20java/algorithm/bruteforce/Algorithm-Brute-Force(%EB%B8%8C%EB%A3%A8%ED%8A%B8-%ED%8F%AC%EC%8A%A4,-%EC%99%84%EC%A0%84-%ED%83%90%EC%83%89)/">브루트포스 알고리즘</a></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="문제-풀이">문제 풀이</h2>
+
+<p>for문과 문자열만으로 푼 문제였으나 여러 장의 카드 중에서 3장을 뽑는 행위는 순열과도 같은 것이기 때문에 이 문제를 딱 보았을 때 순열을 사용하고 싶었으나 사용 방법을 몰라 for문으로 특정 패턴을 찾아서 풀었다.</p>
+
+<p>어떤 것이 더 좋은 풀이일지는 모르겠으나 내가 푼 풀이와 순열으로 푼 풀이를 둘 다 올려 비교해 보겠다.</p>
+
+<p><strong><mark>제출 코드 1: 성공</mark></strong></p>
+
+<p>패턴을 찾아 푼 내 풀이 방법이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">'''
+0 1 2 3 4 5 6 7 8 9
+'''</span>
+
+<span class="k">def</span> <span class="nf">solution</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">card</span><span class="p">):</span>
+    
+    <span class="nb">max</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">):</span> <span class="c1">#0~7
+</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span> <span class="c1">#1~8
+</span>            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span> <span class="c1">#2~9
+</span>                <span class="n">count</span> <span class="o">=</span> <span class="n">card</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">card</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">card</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="nb">max</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="nb">max</span> <span class="o">=</span> <span class="n">count</span>
+                      
+    <span class="k">return</span> <span class="nb">max</span>
+
+
+<span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+
+<span class="n">card</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">solution</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">card</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>위 코드를 보면 알 수 있겠지만 고민의 흔적이 보일 것이다. 일단 케이스는 카드를 10장 뽑는 경우라고 생각하고 패턴을 찾아보았다.</p>
+
+<ul>
+  <li>먼저 가장 바깥 for문에서는 카드 3 장을 뽑을 때 가장 왼쪽에 있는 경우이기 때문에 8, 9번 인덱스까지 포함해 버리면 이  index가 가장 왼쪽에 있으면서 카드 3장을 뽑는 것이 불가능하다.</li>
+  <li>
+    <p>2 번째 for문은 중간에 위치한 카드이므로 현재 왼쪽에 위치한 카드의 바로 다음부터 시작하여 8번 인덱스 까지 진행하였다.(이유는 위와 같음)</p>
+  </li>
+  <li>가장 안쪽 for문은 마지막에 위치한 카드로 중간에 위치한 카드의 바로 다음부터 시작하여 가장 마지막 인덱스까지 접근하면 모든 경우를 다룰 수 있게 되는 것이다.</li>
+</ul>
+
+<p>이제 각 경우의 i, j ,k 의 값들을 모두 더하였을 때 M의 크기보다 작으면서 max 보다 크게 되면 max에 계속해서 업데이트 되는 식으로 코드를 짰다.</p>
+
+<p><br />
+<mark>추가 코드: 순열 사용</mark></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+
+<span class="n">card_num</span><span class="p">,</span> <span class="n">target_num</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+<span class="n">card_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+<span class="n">biggest_num</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">cards</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">card_list</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="n">temp_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cards</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">biggest_sum</span> <span class="o">&lt;</span> <span class="n">temp_sum</span> <span class="o">&lt;=</span> <span class="n">target_sum</span><span class="p">:</span>
+        <span class="n">biggest_sum</span> <span class="o">=</span> <span class="n">temp_sum</span>
+        
+<span class="k">print</span><span class="p">(</span><span class="n">biggest_sum</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>위처럼 파이썬에서 제공하는 순열 조합 라이브러리 itertools 모듈의 combinations라는 함수를 사용하면 된다.</p>
+
+<p><br /></p>
+
+<p>추가적으로 itertools에 대한 설명을 진행하겠다.</p>
+
+<p><strong>combinations(iterable, r)</strong> : iterable 에서 원소 개수가 r개인 조합 뽑기</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+
+<span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+	<span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="s">'''
+출력 결과:
+(1, 2)
+(1, 3)
+(2, 3)
+'''</span>
+</code></pre></div></div>
+
+<p>파이썬 공식문서에 따르면 입력 iterable의 순서에 따라 사전식 순서로 release 된다. 따라서 입력 iterable이 정렬되어있으면, 조합 튜플이 정렬된 순서로 생성된다.</p>
+
+<p><br /></p>
+
+<p><strong>combinations_with_replacement(iterable,r) : iterable에서 원소 개수가 r개인 중복 조합 뽑기</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations_with_replacement</span>
+
+<span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">combinations_with_replacement</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+	<span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="s">'''
+출력결과:
+('A', 'A')
+('A', 'B')
+('A', 'C')
+('B', 'B')
+('B', 'C')
+('C', 'C')
+'''</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<p><strong>permutations(iterable,r=None) : iterable에서 원소 개수가 r개인 순열 뽑기</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">permutations</span>
+
+<span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">permutations</span><span class="p">(</span><span class="n">l</span><span class="p">):</span> <span class="c1">#r을 지정하지 않거나 r=None으로 하면 최대 길이의 순열이 리턴된다!
+</span>	<span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="s">'''
+출력결과:
+('A', 'B', 'C')
+('A', 'C', 'B')
+('B', 'A', 'C')
+('B', 'C', 'A')
+('C', 'A', 'B')
+('C', 'B', 'A')
+'''</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<p><strong>product(*iterables, repeat=1) : 여러 iterable의 데카르트곱 리턴</strong></p>
+
+<p>product는 다른 함수와 달리 인자로 여러 iterable을 넣어줄 수 있고 그 친구들간의 모든 짝을 지어서 리턴한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+
+<span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'B'</span><span class="p">]</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="p">[</span><span class="s">'1'</span><span class="p">,</span> <span class="s">'2'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">l2</span><span class="p">,</span><span class="n">repeat</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span> <span class="c1">#l1과 l2의 모든 쌍을 지어 리턴한다
+</span>	<span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="s">'''
+출력결과:
+('A', '1')
+('A', '2')
+('B', '1')
+('B', '2')
+'''</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">repeat</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span> <span class="c1">#product(l1,l1,l1,repeat=1)과 동일한 출력
+</span>	<span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="s">'''
+출력결과:
+('A', 'A', 'A')
+('A', 'A', 'B')
+('A', 'B', 'A')
+('A', 'B', 'B')
+('B', 'A', 'A')
+('B', 'A', 'B')
+('B', 'B', 'A')
+('B', 'B', 'B')
+'''</span>
+</code></pre></div></div>
+
+:ET

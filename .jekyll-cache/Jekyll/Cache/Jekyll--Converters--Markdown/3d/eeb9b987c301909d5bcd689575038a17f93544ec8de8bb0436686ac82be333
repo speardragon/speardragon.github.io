@@ -1,0 +1,390 @@
+I"�0<p>그 동안 배운 자료구조를 통해 데이터를 다루는 방법에 대해 알아 보도록 하겠다.</p>
+
+<p>이번 시간에는 정렬에 대해서 먼저 설명하겠다.</p>
+
+<p><br /></p>
+
+<h2 id="정렬-알고리즘이란">정렬 알고리즘이란?</h2>
+
+<p>가장 기본적으로 자료 구조에 정의된 데이터들을 어떻게 정렬할 수 있는지에 대해서 알아보자. 정렬 알고리즘은 다양하게 존재하는데 우선 기본적인 종류는 다음과 같다.</p>
+
+<p><br /></p>
+
+<p><strong>1) 간단하지만(simple) 느린(slow) 방식</strong></p>
+
+<ul>
+  <li>Bubble Sort</li>
+  <li>Selection Sort</li>
+  <li>Insertion Sort</li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>2) 약간 복잡하지만 빠른 방식</strong></p>
+
+<ul>
+  <li>Shell Sort</li>
+  <li>Merge Sort</li>
+  <li>Quick Sort</li>
+  <li>Heap Sort</li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>3) 아주 빠르지만 제한적으로만 사용 가능한 방식</strong></p>
+
+<ul>
+  <li>Counting Sort</li>
+  <li>Radix Sort</li>
+  <li>Bucket Sort</li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>4) 기타 필요에 따라 사용되는 방식</strong></p>
+
+<ul>
+  <li>Topological Sort</li>
+</ul>
+
+<p><br /></p>
+
+<p>정렬 알고리즘은 특정 방식에 따라 여러 종류로 나뉠 수 있다.</p>
+
+<p><br /></p>
+
+<p><strong>실행 방법에 따라</strong></p>
+
+<ul>
+  <li>비교식(Comparative) 정렬
+    <ul>
+      <li>비교식 정렬은 정렬을 수행하면서 두 개의 데이터를 서로 비교하여 필요하면 교환하는 방식으로 실행한다.</li>
+    </ul>
+  </li>
+  <li>분산식(Distribute) 정렬
+    <ul>
+      <li>정렬할 데이터를 부분적으로 나누어 분해한 뒤 다시 그 집합을 정렬하고 합치면서 전체를 정렬하는 방식이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>정렬 장소에 따라</strong></p>
+
+<ul>
+  <li>내부(Internal) 정렬
+    <ul>
+      <li>내부 정렬은 정렬 자료를 메인 메모리에 저장하며 정렬하여 속도가 빠르지만 용량에 따라 수행가능한 수준이 제한적이다.</li>
+    </ul>
+  </li>
+  <li>외부(External) 정렬
+    <ul>
+      <li>외부 정렬은 정렬 자료를 보조 기억장치에서 정렬하며 대용량이므로 큰 데이터를 정렬할 수 있지만 속도는 제한적이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>저장되는 방식에 따라</strong></p>
+
+<ul>
+  <li>안정(Stable) 정렬
+    <ul>
+      <li>안정 정렬은 정렬이 진행됨에 따라 같은 수준의 순서를 갖는 객체를 정렬할 때는 원래의 순서를 바꾸지 않는 정렬 방식이다.
+예를 들어, 객체 A와 B는 순서상으로 완전히 동일하다면 정렬이 끝난 뒤와 정렬 전의 A, B의 순서는 유지되는 경우를 의미한다.</li>
+    </ul>
+  </li>
+  <li>불안정(Unstable) 정렬
+    <ul>
+      <li>불안정 정렬은 해당 내용이 반드시 유지되지 않을 수 있는 모든 정렬을 의미한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>메모리 사용 방식에 따라</strong></p>
+
+<ul>
+  <li>In-Place 정렬
+    <ul>
+      <li>In-place 정렬은 데이터를 정렬 시 입력된 n 사이즈의 크기 배열 공간이 추가로 필요하지 않은 경우이다.</li>
+    </ul>
+  </li>
+  <li>Out-of-place 정렬
+    <ul>
+      <li>Not-in-place라고도 하며, 정렬 시에 기존 데이터가 저장된 배열 외에 추가적인 공간을 더 필요로 하는 경우를 의미한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>안정 정렬 / 불안정 정렬, 그리고 In-place 정렬/ Out-of-place 정렬에 대해서 더 자세히 알아보자.</p>
+
+<h3 id="안정stable-정렬-vs-불안정unstable-정렬">안정(stable) 정렬 vs. 불안정(unstable) 정렬</h3>
+
+<p>앞서 말했듯 저장되는 방식에 따라  <code class="language-plaintext highlighter-rouge">안정 정렬</code>과 <code class="language-plaintext highlighter-rouge">불안정 정렬</code>로 구분되어 있다.</p>
+
+<p>아래와 같은 리스트를 생각해 보자.</p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153802812-b8ab7009-9867-4189-ab4f-4adac17c12da.png" alt="image" /></p>
+
+<p>이 리스트에는 1이라는 중복된 데이터가 들어있어 a와 b로 표시하여 구분하였다. 이 리스트를 정렬해 보도록 하겠다.</p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/153803153-54e2db15-3807-4cf1-b33c-d400c1b4390c.png" alt="image" /></p>
+
+<p>첫 번째 리스트는 <span style="color:red">중복된 숫자의 순서까지도 보장이 되어 정렬</span>된 모습이고 두 번째 리스트는 그렇지 못한 모습입니다. 이 때, 첫 번째 리스트를 <mark>안정 정렬</mark> 되었다 하고 두 번째 리스트를 <mark>불안정 정렬</mark> 되었다 합니다.</p>
+
+<p>이번 예시는 중복된 숫자로 예시를 들어 크게 와닿지 않을 수 있다.(<del>이게 왜 필요한 거지?라는 의문</del>) 그래서 더 이해하기 쉬운 예시를 들어보겠다.</p>
+
+<p><br /></p>
+
+<p>아래와 같이 <strong>이름 순</strong>으로 정렬 된 파일이 있다고 가정하자.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>이름 순 정렬</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>국어과제1.pdf</td>
+      <td>2021-06-01</td>
+    </tr>
+    <tr>
+      <td>국어과제2.pdf</td>
+      <td>2021-06-01</td>
+    </tr>
+    <tr>
+      <td>영어과제1.pdf</td>
+      <td>2021-04-01</td>
+    </tr>
+    <tr>
+      <td>영어과제2.pdf</td>
+      <td>2021-04-01</td>
+    </tr>
+    <tr>
+      <td>한문과제1.pdf</td>
+      <td>2021-07-01</td>
+    </tr>
+    <tr>
+      <td>한문과제2.pdf</td>
+      <td>2021-07-01</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>이 파일들을 날짜 순으로 재 정렬 해 보자.</p>
+
+<p><br /></p>
+
+<p>중복된 날짜가 있을 때 <strong>안정 정렬</strong>을 하게 되면 아래와 같이 <strong>이름 순으로 정렬 된 파일을 보장</strong> 받는다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>날짜 순 정렬(안정)</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>영어과제1.pdf</td>
+      <td>2021-04-01</td>
+    </tr>
+    <tr>
+      <td>영어과제2.pdf</td>
+      <td>2021-04-01</td>
+    </tr>
+    <tr>
+      <td>국어과제1.pdf</td>
+      <td>2021-06-01</td>
+    </tr>
+    <tr>
+      <td>국어과제2.pdf</td>
+      <td>2021-06-01</td>
+    </tr>
+    <tr>
+      <td>한문과제1.pdf</td>
+      <td>2021-07-01</td>
+    </tr>
+    <tr>
+      <td>한문과제2.pdf</td>
+      <td>2021-07-01</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p>반면 <strong>불안정 정렬</strong>로 하게 되면 아래와 같이 날짜 순으로는 정렬이 되지만 <strong>파일의 이름 순으로 정렬되어 있는 것은 보장 받지 못한다.</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>날짜 순 정렬(안정)</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>영어과제2.pdf</td>
+      <td>2021-04-01</td>
+    </tr>
+    <tr>
+      <td>영어과제1.pdf</td>
+      <td>2021-04-01</td>
+    </tr>
+    <tr>
+      <td>국어과제2.pdf</td>
+      <td>2021-06-01</td>
+    </tr>
+    <tr>
+      <td>국어과제1.pdf</td>
+      <td>2021-06-01</td>
+    </tr>
+    <tr>
+      <td>한문과제2.pdf</td>
+      <td>2021-07-01</td>
+    </tr>
+    <tr>
+      <td>한문과제1.pdf</td>
+      <td>2021-07-01</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h3 id="in-place-정렬-vs-out-of-place-정렬">In-place 정렬 vs. Out-of-place 정렬</h3>
+
+<p><code class="language-plaintext highlighter-rouge">구현 방식</code>에 따라 In-place 정렬과 Out-of-place 정렬로 나뉘게 된다.</p>
+
+<p><strong>In-place 정렬</strong>은 <span style="color:red">원본 데이터 내에서 정렬이 이루어 지게 되는 정렬</span>을 말하는 것이고 <span style="color:red">원본 데이터가 아닌 새로운 배열로 정리된 output 결과를 만드는 것</span>을 <strong>Out-of-place 정렬</strong>이라고 한다.</p>
+
+<p><br /></p>
+
+<p>따라서 정렬을 할 때에는</p>
+
+<ul>
+  <li>시간 복잡도</li>
+  <li>안정/ 불안정 정렬</li>
+  <li>구현 방식</li>
+  <li>저장되는 방식</li>
+</ul>
+
+<p>위와 같은 것들을 생각하여 정렬이 진행된다.</p>
+
+<p><br /></p>
+
+<h3 id="정렬-간-시간복잡도-비교">정렬 간 시간복잡도 비교</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>정렬 방식</th>
+      <th>Average</th>
+      <th>Worst</th>
+      <th>Memory</th>
+      <th>Stable 여부</th>
+      <th>In-Place 여부</th>
+      <th>Run-time(정수 60,000개) 단위: sec</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bubble 정렬</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>O</td>
+      <td>O</td>
+      <td>7.438</td>
+    </tr>
+    <tr>
+      <td>Selection 정렬</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>X</td>
+      <td>O</td>
+      <td>10.842</td>
+    </tr>
+    <tr>
+      <td>Insertion 정렬</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>O</td>
+      <td>O</td>
+      <td>22.894</td>
+    </tr>
+    <tr>
+      <td>Shell 정렬</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>X</td>
+      <td>O</td>
+      <td>0.056</td>
+    </tr>
+    <tr>
+      <td>Merge 정렬</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(n)</td>
+      <td>O</td>
+      <td>X</td>
+      <td>0.014</td>
+    </tr>
+    <tr>
+      <td>Quick 정렬</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(n<sup>2</sup>)</td>
+      <td>O(1)</td>
+      <td>X</td>
+      <td>O</td>
+      <td>0.034</td>
+    </tr>
+    <tr>
+      <td>Heap 정렬</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(nlog<sub>2</sub>n)</td>
+      <td>O(1)</td>
+      <td>X</td>
+      <td>O</td>
+      <td>0.026</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p><strong>Bubble 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/sorting/Algorithm-Bubble-Sort(%EB%B2%84%EB%B8%94-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Insertion 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/sorting/Algorithm-Insert-Sort(%EC%82%BD%EC%9E%85-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Shell 정렬</strong>의 설명은 <a href=""><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Merge 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/sorting/Algorithm-Merge-Sort(%ED%95%A9%EB%B3%91-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Quick 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/sorting/Algorithm-Quick-Sort(%ED%80%B5-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Heap 정렬</strong>은 우선순위 큐에서 사용하는 정렬이므로 해당 포스팅 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/heap/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-Heap-&amp;-Priority-Queue(%ED%9E%99%EA%B3%BC-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Counting 정렬</strong>의 설명은 <a href=""><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Radix 정렬</strong>의 설명은 <a href=""><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Bucket 정렬</strong>의 설명은 <a href=""><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+<p><strong>Topological 정렬</strong>의 설명은 <a href="https://speardragon.github.io/lecture/data%20structure%20and%20algorithms/algorithm/graph/Algorithm-Topological-Sorting(%EC%9C%84%EC%83%81-%EC%A0%95%EB%A0%AC)/"><u><span style="color:blue">이곳</span></u></a>을 참조<br /></p>
+
+:ET

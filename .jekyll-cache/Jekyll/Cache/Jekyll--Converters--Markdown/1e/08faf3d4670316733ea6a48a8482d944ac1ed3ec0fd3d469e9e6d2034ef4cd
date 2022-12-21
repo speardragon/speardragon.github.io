@@ -1,0 +1,1878 @@
+I"-<p>[toc]</p>
+
+<h1 id="chapter-6-synchronization-tools">Chapter 6: Synchronization Tools</h1>
+
+<ul>
+  <li>Background</li>
+  <li>The Critical-Section Problem</li>
+  <li>Peterson’s Solution</li>
+  <li>Synchronization Hardware</li>
+  <li>Mutex Locks</li>
+  <li>Semaphores</li>
+  <li>Classical Problems of Synchronization</li>
+  <li>Monitors</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="objectives">Objectives</h2>
+
+<ul>
+  <li>To present the <strong>concept</strong> of process synchronization.</li>
+  <li>To introduce the <strong>critical-section problem</strong>, whose solutions can be used to ensure the <strong>consistency</strong> of shared data</li>
+  <li>To present both software and hardware solutions of the critical-section problem</li>
+  <li>To examine several classical process-synchronization problems</li>
+  <li>To explore several tools that are used to solve process synchronization problems</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="background">Background</h2>
+
+<p>그래도 결국 thread of control은 두 개가 아니라 하나.</p>
+
+<ul>
+  <li>Processes can execute concurrently or in parallel
+    <ul>
+      <li>CPU scheduler switches between processes to provide concurrent execution</li>
+      <li>May be interrupted at any time, partially completing execution at any point in its instruction stream
+        <ul>
+          <li>언제든지 interrupt가 걸릴 수 있음
+            <ul>
+              <li>time quatum expired(software interrupt)</li>
+              <li>외부에서의 이벤트 발생 -&gt; interrupt -&gt; control이 잠시 OS로 내려가서 판단</li>
+            </ul>
+          </li>
+          <li>Processing core may be assigned to execute instructions of another process (<strong>concurrent execution</strong>)</li>
+        </ul>
+      </li>
+      <li>Two instruction streams (different processes) execute simultaneously on separating processing cores (<strong>parallel execution</strong>)
+        <ul>
+          <li>2개의 core에서 찐 parallel 하게 실행</li>
+          <li>외부에서 interrupt가 걸리지 않아도 두개 이상의 stream이 동시에 실행된다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Concurrent access to shared data may result in data inconsistency
+    <ul>
+      <li>1번을 다 끝내지 못한 상태에서 2번을 실행하게 되버리면 1번에서 사용하던 데이터를 2번에서 공유데이터로 쓰게 되어 버릴 수 있다.</li>
+      <li>믿을 만한 데이터인지 -&gt; 데이터의 신뢰성이 떨어짐</li>
+      <li>은행 계좌 얘기 - 각자 계좌를 따로 쓰면 문제가 없겠지만 가족끼리 계좌를 같이 쓰면 이것이 사실상 공유 데이터 인 것이다. 만약 동시에 10만원을 뽑게 되면 자칫해서 은행은 10만원을 손해를 볼 수 있음
+        <ul>
+          <li>그래서 synchronization이 굉장히 중요한 것</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Maintaining data consistency requires mechanisms to ensure the <strong>orderly execution</strong> of cooperating processes
+    <ul>
+      <li>협력 관계의 프로세스 간에는 반드시 실행의 순서를 제어할 필요가 있다.</li>
+      <li>독립적이면 필요없음</li>
+    </ul>
+  </li>
+  <li>parallel processing이나 pseudo parallel processing이나 얻을 수 있는 장점이 있음.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="cooperating-processes">Cooperating Processes</h2>
+
+<ul>
+  <li><strong>Independent process</strong> cannot affect or be affected by the execution of another process.</li>
+  <li><strong>Cooperating process</strong> can affect or be affected by the execution of another process
+    <ul>
+      <li>Directly share a logical address space (code and data)</li>
+      <li>Share data through shared memory or message passing</li>
+    </ul>
+  </li>
+  <li>Advantages of process cooperation
+    <ul>
+      <li>Information sharing</li>
+      <li>Computation speed-up</li>
+      <li>Modularity</li>
+      <li>Convenience</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="producer-consumer-problem">Producer-Consumer Problem</h2>
+
+<ul>
+  <li>Illustration of the problem:
+    <ul>
+      <li>Suppose that we wanted to provide a solution to the consumer-producer problem that fills all the buffers.</li>
+      <li>We can do so by having an integer <strong>counter</strong> that keeps track of the  number of full buffers.</li>
+      <li>Initially, counter is set to 0. It is incremented by the producer after it  produces a new buffer and is decremented by the consumer after it  consumes a buffer.</li>
+    </ul>
+  </li>
+  <li>Paradigm for cooperating processes, <strong>producer process</strong> produces  information that is consumed by a <strong>consumer process.</strong>
+    <ul>
+      <li>unbounded-buffer places no practical limit on the size of the buffer.</li>
+      <li>bounded-buffer assumes that there is a fixed buffer size.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="ch-3-bounded-buffer-shared-memory-solution">Ch 3 Bounded-Buffer Shared-Memory Solution</h2>
+
+<ul>
+  <li>
+    <p>Shared data</p>
+
+    <ul>
+      <li>
+        <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define BUFFER_SIZE 10
+</span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="p">.</span> <span class="p">.</span> <span class="p">.</span>
+<span class="p">}</span> <span class="n">item</span><span class="p">;</span>
+<span class="n">item</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">in</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>10개의 item을 저장할 수 있는 buffer</p>
+  </li>
+  <li>
+    <p>if <strong>in=out</strong>, buffer is empty</p>
+  </li>
+  <li>
+    <p>if <strong>(in+1) mod n = out</strong>, buffer is full</p>
+  </li>
+  <li>
+    <p>Solution is correct, but can only use BUFFER_SIZE-1 elements</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---producer">Bounded-Buffer - Producer</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="cm">/* produce an item in next produced */</span> 
+    <span class="k">while</span> <span class="p">(((</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span> <span class="o">==</span> <span class="n">out</span><span class="p">)</span> 
+        <span class="p">;</span> <span class="cm">/* do nothing */</span> 
+    <span class="n">buffer</span><span class="p">[</span><span class="n">in</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_produced</span><span class="p">;</span> 
+    <span class="n">in</span> <span class="o">=</span> <span class="p">(</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="bounded-buffer---consumer">Bounded Buffer - Consumer</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">item</span> <span class="n">next_consumed</span><span class="p">;</span> 
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">in</span> <span class="o">==</span> <span class="n">out</span><span class="p">)</span> 
+        <span class="p">;</span> <span class="cm">/* do nothing */</span>
+    <span class="n">next_consumed</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">[</span><span class="n">out</span><span class="p">];</span> 
+    <span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span>
+    <span class="cm">/* consume the item in next consumed */</span> 
+<span class="p">}</span> 
+
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="producer-counter">Producer (counter)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* produce an item in next produced */</span> 
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">counter</span> <span class="o">==</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span> <span class="p">;</span> 
+    	<span class="cm">/* do nothing */</span> 
+    <span class="n">buffer</span><span class="p">[</span><span class="n">in</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_produced</span><span class="p">;</span> 
+    <span class="n">in</span> <span class="o">=</span> <span class="p">(</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span> 
+    <span class="n">counter</span><span class="o">++</span><span class="p">;</span> 
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>버퍼를 하나 비워야만 하던 문제를 해결하기 위해 counter 변수로 버퍼의 데이터 갯수를 센다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="consumer-counter">Consumer (counter)</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> 
+        <span class="p">;</span> <span class="cm">/* do nothing */</span> 
+    <span class="n">next_consumed</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">[</span><span class="n">out</span><span class="p">];</span> 
+    <span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span> 
+    <span class="n">counter</span><span class="o">--</span><span class="p">;</span> <span class="c1">//이 부분을 atomic하게 실행하도록 만들어 주어야 함</span>
+    <span class="cm">/* consume the item in next consumed */</span> 
+<span class="p">}</span> 
+</code></pre></div></div>
+
+<p>producer가 증가시키는 동안에는 consumer가 감소하지 않도록 해야 함.</p>
+
+<p><br /></p>
+
+<h2 id="race-condition">Race Condition</h2>
+
+<p>위 코드는 잘못된 코드임 -&gt; atomic 하지 않음!</p>
+
+<ul>
+  <li>
+    <p>조작하고 있는 사이에 Context Switching이 일어나게 되면 그 값은 원하는 결과를 가져오지 못할 것이다.</p>
+  </li>
+  <li>
+    <p>counter++ could be implemented in machine language as:</p>
+
+    <p>register1 = counter [r1=5]</p>
+
+    <p>register1 = register1 + 1 [r1=6]</p>
+
+    <p>counter = register1 [counter=6]</p>
+
+    <ul>
+      <li>counter를 증가시키는 문장이 atomic하지 않다(아래도 마찬가지)</li>
+    </ul>
+  </li>
+  <li>
+    <p>counter– could be implemented in machine language as:</p>
+
+    <p>register2 = counter [r2=5]</p>
+
+    <p>register2 = register2 - 1 [r2=4]</p>
+
+    <p>counter = register2 [counter=4]</p>
+  </li>
+  <li>하나의 instruction이 실행되는 동안에는 어떤 interrupt가 와도 반응하지 않음(atomic instruction)</li>
+  <li>그러나 instruction 사이사이에는 interrutpt가 발생할 수 있어서 context switching이 일어난다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="race-condition---중요">Race Condition - 중요</h2>
+
+<ul>
+  <li>
+    <p>If both the producer and consumer <strong>attempt to update the buffer concurrently</strong>, the assembly language statements may get interleaved.</p>
+
+    <ul>
+      <li>
+        <p>한 번에 2개 이상의 Writer 프로세스가 접근하는 경우 =&gt; Writer는 한 번에 1개만 접근가능</p>
+      </li>
+      <li>
+        <p>critical section의 실행은 동시에 실행되지 않도록!</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Interleaving depends upon how the producer and consumer processes  are scheduled.</p>
+  </li>
+  <li>
+    <p>Assume <strong>counter</strong> is initially 5. One interleaving of statements is:</p>
+
+    <p>producer: register1 = counter (register1 = 5) 
+producer: register1 = register1 + 1 (register1 = 6) 
+consumer: register2 = counter (register2 = 5) 
+consumer: register2 = register2 – 1 (register2 = 4) 
+producer: counter = register1 (counter = 6) 
+consumer: counter = register2 (counter = 4)</p>
+  </li>
+  <li>
+    <p>The value of count may be either 4 or 6, where the correct result  should be 5.</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>
+    <p>More than one process accessing a shared variable  –&gt; race condition</p>
+
+    <ul>
+      <li>race condition에서 문제는 발생할 수도 있지만 문제가 발생할 수도 있는데 발생하면 큰일 난다.
+        <ul>
+          <li>낙하산이 펴질 때도 있고 안 펴질 때도 있다? -&gt; ……</li>
+        </ul>
+      </li>
+      <li>Timing factors (interrupts) can cause incorrect results
+        <ul>
+          <li>Intermediate results are used</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>The statements:</p>
+
+    <ul>
+      <li>
+        <p>counter := counter + 1;</p>
+      </li>
+      <li>
+        <p>counter := counter - 1;</p>
+
+        <p>must be executed atomically.  -&gt; data consistency 보장</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><mark>Atomic operation means an operation that completes in its entirety  without interruption. </mark></p>
+  </li>
+  <li>
+    <p><strong>Race condition</strong>: The situation where several processes access – and  manipulate shared data concurrently. The final value of the shared data  depends upon which process finishes last.</p>
+  </li>
+  <li>
+    <p>To prevent race conditions, concurrent processes must be  <strong>synchronized</strong>.</p>
+
+    <ul>
+      <li>race condition을 원천 봉쇄하는 것 -&gt; 동기화의 목적!</li>
+    </ul>
+  </li>
+  <li>
+    <p>공유 데이터에 대한 접근을 동기화!</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="critical-section-problem">Critical Section Problem</h2>
+
+<ul>
+  <li>Consider system of n processes {p0 , p1 , … pn-1 }</li>
+  <li>n processes all competing to use some shared data</li>
+  <li>Each process has <strong>critical section</strong> segment of code
+    <ul>
+      <li>Process may be changing common variables(공유 데이터를 변경 가능!), updating table, writing file,  etc</li>
+      <li>When one process in critical section, no other may be in its critical section</li>
+    </ul>
+  </li>
+  <li><strong>Critical section problem</strong> is to design protocol to solve this
+    <ul>
+      <li>ensure that when one process is executing in its critical section, no other process is allowed to execute in its critical section.</li>
+    </ul>
+  </li>
+  <li>Each process must ask permission to enter critical section in <strong>entry section</strong>, may follow critical section with <strong>exit section</strong>, then <strong>remainder section</strong></li>
+  <li>Especially <strong>challenging</strong> with preemptive kernels
+    <ul>
+      <li>preemptive kernel: kernel 안에서 preemption을 허용</li>
+      <li>이 경우 더 어려움</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="critical-section">Critical Section</h2>
+
+<ul>
+  <li>Structure of process P<sub>i</sub></li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002203915957.png" alt="image-20221002203915957" /></p>
+
+<ul>
+  <li>원래 코드는 critical section과 remainder section이 뭉쳐져서 한 부분을 이루어져 있었는데 race condition을 일으키는 부분이 있어서 이 부분을 따로 빼야 했음.
+    <ul>
+      <li>–&gt; entry section</li>
+    </ul>
+  </li>
+  <li>딱 한 개만 돌도록 하기 위해서 순서를 결정하는 것임!
+    <ul>
+      <li>entry section에 진입할 때 티켓을 뽑고 exit section에서 나갈 때 티켓 반납</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-to-critical-section-problem">Solution to Critical-Section Problem</h2>
+
+<p>critical section problem을 제대로 해결했는지 확인하기 위해서는 다음 세 조건을 만족시키는 지를 확인하면 된다.</p>
+
+<ol>
+  <li>
+    <p><strong>Mutual Exclusion</strong>.</p>
+
+    <ul>
+      <li>critical section을 실행 중인 process는 반드시 오직 하나여야만 한다.
+        <ul>
+          <li>즉, 하나의 process가 critical section에 접근했으면 다른 프로세스는 접근하지 못해야 한다.</li>
+        </ul>
+      </li>
+      <li>If process Pi is executing in its critical section, then no other processes can be executing <strong>in their critical sections.</strong></li>
+      <li>mutual exclusion은 critical section 문제를 해결했는지를 따지는 중요한 근간이 되는 조건이지만 이를 만족하기 위해 노력하다 보면 아래와 같은 역효과가 생기기 마련이다.
+        <ul>
+          <li>그래서 아래 두 조건도 만족 시켜야 문제를 완전히 해결했다고 할 수 있음</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Progress</strong>.</p>
+
+    <ul>
+      <li>아무도 critical section에 들어갈 수 없는 상황이 만들어 지면 안된다. (그래서 아무도 critical section에 없는 상황)</li>
+      <li><mark>한 critical section에서 실행되고 있는 프로세스가 없는 상황에서, 어떤 프로세스가 그 critical section에 들어가고 싶다고 선언했으면 들어갈 수 있어야 한다.!</mark></li>
+    </ul>
+
+    <ol>
+      <li>A process outside of its CS can not block another process from entering  its own CS
+        <ul>
+          <li>critical section에 막 들어가려고 하는 프로세스가 CS 밖에서 돌고 있는 process의 영향을 받아 CS 안으로 들어가지 못하는 경우</li>
+        </ul>
+      </li>
+      <li>If no process is executing in its critical section and there exist some processes that wish to enter their critical section, then the selection of the processes that will enter the critical section next cannot be postponed indefinitely.
+        <ul>
+          <li>CS를 실행 중인 프로세스가 없는 상황에서 여러 프로세스가 동시에 CS에 들어가려고 하고 싶을 때 경쟁에 가담하는 프로세스들은 그들의 remainder section에서 실행중이지 않는 프로세스여야 한다.</li>
+          <li>누가 들어갈 지 선택해야 함.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <ul>
+      <li>그리고 결정과정은 무한정으로 지연돼서는 안된다.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Bounded Waiting</strong>.</p>
+
+    <ul>
+      <li>입장권을 받기 위해 기다리고 있는데 FCFS로 하면 당연히 먼저온 사람이 먼저 들어가니까 기다려야 되는 시간은 내 앞이 몇 명이 서 있냐에 따라 결정되는데 번호표를 나눠주는 방법에 문제가 있으면 일찍 왔어도 늦게 들어갈 수 있게 된다.</li>
+      <li>
+        <p>A bound must exist on the number of times that other processes are allowed to enter their critical sections after a process has made a request to enter its critical section and before that request is granted.</p>
+      </li>
+      <li>
+        <p>Assume that each process executes at a nonzero speed</p>
+      </li>
+      <li>
+        <p>No assumption concerning relative speed of the n processes.</p>
+      </li>
+      <li>프로세스가 Critical Section에 들어가기로 했으면 무한정 기다려서는 안된다. 일정 시간 안에 들어가야 한다.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="critical-section-handling-in-os">Critical-Section Handling in OS</h2>
+
+<ul>
+  <li>Two approaches depending on if kernel is preemptive or non-preemptive
+    <ul>
+      <li><strong>Preemptive</strong> – allows preemption of process when running in kernel mode</li>
+      <li><strong>Non-preemptive</strong> – runs until exits kernel mode, blocks, or voluntarily yields CPU
+        <ul>
+          <li>Essentially free of race conditions in kernel mode</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="algorithm-for-process-pi">Algorithm for Process Pi</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204108801.png" alt="image-20221002204108801" /></p>
+
+<p><br /></p>
+
+<h2 id="initial-attempt-1-to-solve-problem">Initial Attempt 1 to Solve Problem</h2>
+
+<ul>
+  <li>가정: <strong>Only 2 processes</strong>, Pi and Pj</li>
+  <li>turn - i =&gt; Pi can enter its critical section</li>
+  <li>initially turn = i</li>
+  <li>line 2: entry section</li>
+  <li>line 4: exit section</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204145030.png" alt="image-20221002204145030" /></p>
+
+<ul>
+  <li>mutex가 보장됨
+    <ul>
+      <li>initial 값이 i이기 때문에 처음에는 Pi만 들어갈 수 있기 때문</li>
+      <li>critical section에 들어감. -&gt; critical section을 빠져 나올 때 <code class="language-plaintext highlighter-rouge">turn = j;</code> 라는 exit section을 거쳐서 Pj가 들어갈 수 있게 된다.</li>
+      <li>turn이라는 변수에는 i 이거나 j 둘 중 하나의 값만 가질 수 있음</li>
+    </ul>
+  </li>
+  <li>Satisfies mutual exclusion, but not progress (<strong>strict alternation</strong>)
+    <ul>
+      <li>strict alternation: 반드시 i후에 j가 올 수 있음(내가 원할 때 critical section에 들어가지 못함)
+        <ul>
+          <li>i - j - i - j -i - j - …….</li>
+        </ul>
+      </li>
+      <li>i가 critical section에서 빠져나오면서 turn을 j로 바꿔주는데 이 때 프로세스j는 while문에 갖혀있거나 remainder section을 실행 중일 것이다.
+        <ul>
+          <li>근데 j가 remainder section을 실행 중인 경우
+            <ul>
+              <li>j가 remainder section에서 시간이 오래 걸려서 <strong>i가 먼저</strong> remainder section을 모두 수행하고 다시 while 문에 들어가 critical section에 들어가고 싶어하는 상황이 생겨버리면 i는 앞서 이미 turn을 j에게 넘겨주었기 때문에 critical section에 아무 프로세스가 없음에도 불구하고 들어가지 못하는 상황이 생기고 만다.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>deadlock - 서로가 양보해서 어느 것도 들어가지 못함</li>
+      <li>bounded wait: 한 번만 기다리면 들어갈 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="initial-attempt-2-to-solve-problem">Initial Attempt 2 to Solve Problem</h2>
+
+<ul>
+  <li>
+    <p>turn 말고 flag를 쓰자(진입 의사를 나타내는)</p>
+
+    <ul>
+      <li>
+        <p>양보를 하기 때문에 mutex가 보장이 된다.</p>
+      </li>
+      <li>
+        <p>하지만 bounded waiting과 progress 요구 사항이 충족되지 않는다.</p>
+      </li>
+    </ul>
+  </li>
+  <li>initially flag [i] = flag [j] = false.</li>
+  <li>flag [i] = true</li>
+  <li>Pi ready to enter its critical section</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204223532.png" alt="image-20221002204223532" /></p>
+
+<ul>
+  <li>Satisfies mutual exclusion, but not progress requirement.
+    <ul>
+      <li>상대방의 진입 의사가 있으면 반드시 양보하기 때문에 mutual exclusion은 만족하지만,</li>
+      <li>atomic한 instruction이 아니기 때문에 flag[i]와 flag[j]가 모두 true인 상황이 있을 수 있다.
+        <ul>
+          <li>그러면 서로 양보하기 때문에 progress 조건을 만족시키지 못함.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>If switch 2 statements in entry section, then no mutual exclusion</li>
+</ul>
+
+<p><br /></p>
+
+<p><span style="color:red">시험 나올 듯 3번!</span></p>
+
+<ol>
+  <li>
+    <p>MTX requirement is met</p>
+  </li>
+  <li>
+    <p>Progress Requirement is not met</p>
+
+    <p>T0: Pi sets flag[i] = true</p>
+
+    <p>T1: Pj sets flag[j] = true</p>
+
+    <p>both processes are looping forever</p>
+  </li>
+  <li>
+    <p><mark>Bounded-waiting Requirement ?</mark></p>
+
+    <ul>
+      <li>내가 들어가고 싶은데 계속 못들어갈 수가 있느냐?( <strong>두 프로세스 모두 동시에 들어가고 싶어하는 경우</strong> )</li>
+      <li>그런 경우에 둘 다 양보하는데 이것이 bounded -waiting 조건을 만족 시키는 것인지 아닌지</li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="petersons-solution">Peterson’s Solution</h2>
+
+<p>위의 결함으로 나온 것이 peterson’s solution</p>
+
+<ul>
+  <li>Good algorithmic description of solving the problem</li>
+  <li>Two process solution</li>
+  <li>Assume that the LOAD and STORE machine-language instructions  are atomic; that is, cannot be interrupted</li>
+  <li>The two processes share two variables:
+    <ul>
+      <li>int <strong>turn</strong>;</li>
+      <li>Boolean <strong>flag</strong>[2]</li>
+      <li>initially flag [0] = flag [1] = false</li>
+    </ul>
+  </li>
+  <li>The variable ‘turn’ indicates whose turn it is to enter the critical  section
+    <ul>
+      <li>누가 critical section에 들어갈 차례인지</li>
+    </ul>
+  </li>
+  <li>The flag array is used to indicate if a process is ready to enter the  critical section. flag[i] = true implies that process Pi is ready to enter its critical section!
+    <ul>
+      <li>각 프로세스가 critical section에 들어갈 준비가 되었는지(while문 직전에 true가 됨)</li>
+    </ul>
+  </li>
+  <li>프로세스를 2개인 경우를 가정한 것이므로 프로세스의 갯수가 N개로 늘어나면 코드를 수정해야 함.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="algorithm-for-process-pi-1">Algorithm for Process Pi</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204443244.png" alt="image-20221002204443244" /></p>
+
+<ul>
+  <li>상대방이 들어갈 수 없는 경우에 들어갈 수 있음
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>flag[j] == false</td>
+              <td> </td>
+              <td>turn == i 인 경우에 CS에 들어갈 수 있음</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>상대방이 의사진입을 희망하고 있고 turn도 상대방으로 되어 있으면 못 들어감</li>
+    </ul>
+  </li>
+  <li>상대방이 들어갈 의사가 없는 경우 -&gt; 무조건 들어감</li>
+  <li>나도 상대방도 들어갈 의사가 있으면 turn 값을 보고 결정!</li>
+  <li>Combined shared variables of initial attempts 1 and 2.</li>
+  <li>Meets all three requirements; solves the critical-section problem for two processes.</li>
+  <li>Problem: does not generalize well
+    <ul>
+      <li>n개의 process 상황으로 확장하기가 어려움</li>
+      <li>Very difficult to expand to more than 2 processes</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="petersons-solution-cont">Peterson’s Solution (Cont.)</h2>
+
+<ul>
+  <li>
+    <p>to enter the CS, process Pi first sets flag[i] to be true and then sets turn to value j , thereby asserting that if the other process wishes to enter CS it can do so.</p>
+
+    <ul>
+      <li>들어가고 싶다는 의사 표시는 하지만 turn은 상대방에게 양보</li>
+    </ul>
+  </li>
+  <li>
+    <p>Provable that the three CS requirement are met:</p>
+
+    <ol>
+      <li>
+        <p>Mutual exclusion is preserved 
+Pi enters CS only if: 
+either <code class="language-plaintext highlighter-rouge">flag[j] = false or turn = i </code></p>
+      </li>
+      <li>
+        <p>Progress requirement is satisfied</p>
+      </li>
+      <li>
+        <p>Bounded-waiting requirement is met</p>
+
+        <p>Pi will enter CS (progress) after at most one entry by Pj</p>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="multiple-process-solution-bakery-algorithm">Multiple-Process Solution: Bakery Algorithm</h2>
+
+<p>Critical section <strong>for n processes</strong></p>
+
+<ul>
+  <li>Before entering its critical section, process <strong>receives a number</strong>.
+    <ul>
+      <li>Holder of the smallest number enters the critical section.</li>
+      <li>가장 작은 숫자를 가진 애가 들어감</li>
+    </ul>
+  </li>
+  <li>If processes Pi and Pj receive the same number, if i &lt; j, then Pi is  served first; else Pj is served next .
+    <ul>
+      <li>이 번호들은 unique한 번호가 아니기 때문에 문제가 생김!</li>
+      <li>만약 같은 number를 부여 받으면 pid가 더 작은 애가 들어갈 권리가 주어짐.</li>
+    </ul>
+  </li>
+  <li>The numbering scheme always generates numbers in increasing order of enumeration; i.e., 1,2,3,3,3,3,4,5…
+    <ul>
+      <li>왜 똑같은 번호를 받는 프로세스가 생길까…?</li>
+      <li>이 경우 pid가 작은 프로세스가 들어가는 것으로 해결</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bakery-algorithm-cont중요">Bakery Algorithm (Cont.)(중요)</h2>
+
+<p><strong>프로세스가 N개일 때도 만족하는 알고리즘</strong></p>
+
+<ul>
+  <li>
+    <p>Notation &lt;= lexicographical order (<strong>ticket #, process id #</strong>)</p>
+
+    <ul>
+      <li>(a,b) &lt; (c,d) if a &lt; c or if a = c and b &lt; d</li>
+      <li>max (a<sub>0</sub> ,…, a<sub>n-1</sub> ) is a number, k, such that k &gt;= a<sub>i</sub> for i - 0,…, n – 1</li>
+    </ul>
+  </li>
+  <li>
+    <p>Shared data</p>
+
+    <p><strong>var</strong> choosing: <strong>array</strong> [0..n – 1] <strong>of</strong> boolean;  –&gt; 번호표를 할당 받고 있는 상태
+		number: <strong>array</strong> [0..n – 1] <strong>of</strong> integer,</p>
+
+    <p>Data structures are initialized to <strong>false</strong> and <strong>0</strong> respectively</p>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002204837783.png" alt="image-20221002204837783" /></p>
+
+<ul>
+  <li>
+    <p>i, j는 pid</p>
+  </li>
+  <li>하지만 보면 알겠지만 entry section이 너무 복잡함
+    <ul>
+      <li>사용자가 하는 것은 사실상 불가능</li>
+    </ul>
+  </li>
+  <li>두 번째 문장이 atomic하지 않아서(번호표 뽑는 문장 - number[i] = max ….) 동일한 번호가 발부 되는 것
+    <ul>
+      <li>그러나 같은 번호를 발급받지 못해야 한다.</li>
+    </ul>
+  </li>
+  <li>같은 번호면 pid가 작은 애를 찾음(loop를 돌면서)</li>
+  <li>맨 위 세 문장을 실행시키고 있는 애들은
+    <ul>
+      <li>choosing number가 false가 아니라면(즉 true라면) 발급 받는 중인 애인 것이다.</li>
+    </ul>
+  </li>
+  <li>number[i] = 0
+    <ul>
+      <li>발부 받은 번호표를 반납했거나 아직 번호표를 받지 못한 상태(임계 영역에 들어가지 않겠다는 의미)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p>1) MTX requirement is met 
+   consider Pi in its CS and Pk trying to enter CS. 
+   when Pk executes the second while statement for j==1, it finds  that</p>
+<ul>
+  <li>number[j] ≠ 0</li>
+  <li>(number[j], j) &lt; (number[i], i) 
+2) Progress Requirement is met</li>
+  <li>critical section 밖에 있는 프로세스의 number[i]는 0이다. lexical order에 의해서 누군가 하나는 CS에 들어가게 된다.</li>
+  <li>그래서 CS에 아무도 없는데 못들어가는 경우는 있을 수 없음.
+3) Bounded-waiting Requirement - ensures fairness - process enters CS on FCFS basis</li>
+  <li>늦게 온 프로세스가 먼저 될 수도 있긴하지만 번호표 + pid에 의해서 입장하기 때문에</li>
+</ul>
+
+<p><br /></p>
+
+<hr />
+
+<p>peterson과 bakery는 FCFS가 보장되지 않음</p>
+
+<ul>
+  <li>CPU busy waiting 때문에(먼저 왔다고 먼저 실행된다는 보장이 되지 않음)</li>
+</ul>
+
+<hr />
+
+<h2 id="reordering-of-instructions---xxxx">Reordering of instructions - XXXX</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221118124543252.png" alt="image-20221118124543252" /></p>
+
+<ul>
+  <li>컴파일러가 code optimization(코드의 실행속도를 빠르게 하기 위해 크게 문제가 없다고 판단하면 문장 순서를 바꾸는 것, 즉 reordering) 을 진행.</li>
+  <li>좋을라고 instruction reordering을 하지만 예기치 않은 상황이 일어날 수 있음(동기화 문제)
+    <ul>
+      <li>dependency에 의해</li>
+    </ul>
+  </li>
+  <li>그래서 memory_barrier();
+    <ul>
+      <li>flag값이 x 값이 바뀌기 전에 바뀌면 안되게끔 - 즉 reordering이 되지 않게 해 준다.</li>
+      <li>reordering이 되지 않기를 원하는 instruction 사이에 껴준다.</li>
+    </ul>
+  </li>
+  <li>그래서 사용자는 이런 경우까지 고려해야 되므로 굉장히 골치 아픔.</li>
+  <li>만약 위 예제에서 thread 2의 순서를 바꾸지 않는다면 100이 출력 되겠지만 순서를 바꾼다면 flag를 true로 바꾸어 버려 기존 값인 0을 출력하고 그 후에 x값이 100으로 바뀐다.
+    <ul>
+      <li>이는 분명히 문제가 있는 경우이다. -&gt; reordering을 하면 안됨</li>
+    </ul>
+  </li>
+  <li>reordering을 하려면 하기 전과 후의 결과가 반드시 같음을 보장해야 함!</li>
+  <li>memory_barrier() : instruction reordering을 못하도록</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="hardware-support-for-synchronization-memory-barrier---xxxx">Hardware Support for Synchronization: Memory barrier - XXXX</h2>
+
+<ul>
+  <li>Memory model
+    <ul>
+      <li>Strongly ordered
+        <ul>
+          <li>Where a memory modification on one processor is immediately visible to all other processors</li>
+        </ul>
+      </li>
+      <li>Weakley ordered
+        <ul>
+          <li>Where a memory modification on one processor may not be immediately visible to all other processors</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Memory model vary by processor type
+    <ul>
+      <li>Kernel can not make any assumption regarding the visibility of modification of memory on a shared memory multiprocessor</li>
+    </ul>
+  </li>
+  <li><strong>Memory barriers</strong> or <strong>memory fences</strong> instruction
+    <ul>
+      <li>Ensure that memory modifications are visible to threads running on other processors</li>
+      <li>When they are executed, it ensures that all loads and stores are completed before any subsequent loads or stores are performed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="effects-of-instruction-reordering---xxxx">Effects of Instruction reordering - XXXX</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221118151759725.png" alt="image-20221118151759725" /></p>
+
+<ul>
+  <li>instruction reordering을 하면 무슨일이 벌어지는 지</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="synchronization-hardware">Synchronization Hardware</h2>
+
+<ul>
+  <li>Many systems provide hardware support for implementing the critical section code.</li>
+  <li>All solutions below based on idea of <strong>locking</strong>
+    <ul>
+      <li>Protecting critical regions via locks</li>
+    </ul>
+  </li>
+  <li>Uniprocessors – could disable interrupts
+    <ul>
+      <li>Currently running code would execute without preemption</li>
+      <li>Generally too inefficient on multiprocessor systems
+        <ul>
+          <li>Operating systems using this not broadly scalable</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Modern machines provide special atomic hardware instructions
+    <ul>
+      <li>Atomic = non-interruptable</li>
+      <li>Either test memory word and set value</li>
+      <li>Or swap contents of two memory words</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-to-critical-section-problem-using-locks">Solution to Critical-section Problem Using Locks</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205101587.png" alt="image-20221002205101587" /></p>
+
+<p><br /></p>
+
+<h2 id="test_and_set-instruction">test_and_set Instruction</h2>
+
+<ul>
+  <li>
+    <p>Test and modify the content of a word atomically.</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205126651.png" alt="image-20221002205126651" /></p>
+  </li>
+  <li>위는 atomic하지 않음. but hardware로 구현되어 있기 떄문에 interrupt가 걸리지 않는다.</li>
+  <li>Executed atomically (Non-interruptible)</li>
+  <li>Returns the original value of passed parameter (lock)</li>
+  <li>Set the new value of passed parameter to “TRUE”.</li>
+  <li>
+    <p>If multiple processes attempting to execute instruction, first successful  process will have value false returned to it</p>
+  </li>
+  <li>return 값이 통과가능 통과 불가능을 결정</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-using-test_and_set---중요">Solution using test_and_set() - 중요</h2>
+
+<ul>
+  <li>
+    <p>Shared Boolean variable lock, initialized to FALSE</p>
+  </li>
+  <li>
+    <p>Solution:</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205221103.png" alt="image-20221002205221103" /></p>
+
+    <ul>
+      <li>test_and_set을 쓰면 복잡하게 쓰던 entry section 코드와 다르게 한 줄이면 끝난다.
+        <ul>
+          <li>test_and_set이 true이면 do nothing을 실행하므로 lock이 걸리게 된다.</li>
+        </ul>
+      </li>
+      <li>hardware가 직접 해 주겠다.</li>
+      <li>mutual exclusion 보장, progress도 보장, but bouned waiting은 보장 X</li>
+    </ul>
+  </li>
+  <li>It works fine</li>
+  <li>Problem:
+    <ul>
+      <li>fairness (starvation) – no bounded waiting (한 놈이 계속 잡을 가능성이 있음.)</li>
+      <li>Waste CPU cycle
+        <ul>
+          <li>CPU cycles to check test&amp;set routine</li>
+          <li>CPU에 의해 저 문장이 계속 실행됨(useless) - CPU 시간 낭비</li>
+          <li>CPU busy waiting!! -&gt; 기다리는데 CPU를 바쁘게 만드는 것, 쓸데 없이</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><mark>**왜 test_and_set은 no bounded waiting 문제가 일어나는가?</mark></p>
+
+<ul>
+  <li>사용자가 짠 프로그램이기 때문에 while 문장</li>
+  <li>내가 먼저 while문장에 들어갔다고 나 다음에 while문에 들어와서 lock이 걸린 애들이 줄을 서고 있을 때 어떤 애가 먼저 한다는 보장이 있는가? -&gt; No
+    <ul>
+      <li>누가 먼저 도착했다고 기록되는 것이 없기 때문,</li>
+      <li>최악의 경우 계속 들어가지 못할 수 있음</li>
+      <li>아무리 오래 기다렸어도 계속 못들어갈 수도 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>피터슨, 베이커리 - 직접</p>
+
+<p>하드웨어의 도움 - swap</p>
+
+<p>OS의 도움 - semaphore</p>
+
+<p><br /></p>
+
+<h2 id="compare_and_swap-instruction---xxxx">compare_and_swap Instruction - XXXX</h2>
+
+<p>구현 내용만 다르고 동작은 test_and_set과 거의 동일함.</p>
+
+<p>Definition:</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205311507.png" alt="image-20221002205311507" /></p>
+
+<ul>
+  <li>Executed atomically</li>
+  <li>Returns the original value of passed parameter “value”</li>
+  <li>Set the variable “value” the value of the passed parameter “new_value” but  only if “value” ==“expected”. That is, the swap takes place only under this  condition.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="solution-using-compare_and_swap---xxxx">Solution using compare_and_swap - XXXX</h2>
+
+<ul>
+  <li>Shared integer “lock” initialized to 0;</li>
+  <li>Solution:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205409806.png" alt="image-20221002205409806" /></p>
+
+<ul>
+  <li>Problem:
+    <ul>
+      <li>fairness (starvation) – no bounded waiting</li>
+      <li>Waste CPU cycle</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="bounded-waiting-mutual-exclusion-with-test_and_set">Bounded-Waiting Mutual Exclusion with Test_and_Set</h2>
+
+<p>중요</p>
+
+<p>test_and_set은 entry section이 flag를 false로 바꿔주는 것으로 끝났지만 아래 코드는 bounded waiting을 보장하기 위하다 보니 코드가 굉장히 복잡해짐</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205506699.png" alt="image-20221002205506699" /></p>
+
+<ul>
+  <li>Shared data (initialized to false):</li>
+  <li>boolean lock;</li>
+  <li>boolean waiting[n];</li>
+  <li>Satisfies all the CS requirements</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// ---- 1. 각각의 프로세스들이 해당 코드에 진입하게 되면 각 프로세스의 해당하는 waiting 배열의 값을 TRUE로 바꿈으로써
+Critical Section에 들어갈 준비가 됐다는 것을 의미합니다. 예를 들어 P0, P2, P4, P5가 진입하여 준비가 되었다고 하고
+그중에 P2가 가장 먼저 도착했다고 가정해봅시다.
+
+// ---- 2. P2가 먼저 도착하여 while 문을 들어가게 되면 TestAndSet 함수를 통해 lock을 얻고 P2는 진입한다는 의미로 waiting 배열의 값을 FALSE로 바꿔 준 후 Critical Section에 진입하고 나머지 프로세스들은 lock이 TRUE로 인한 TestAndSet의 반환값이 TRUE이므로 계속해서 while 문에서 대기하게 됩니다.
+
+// ---- 3. P2가 Critical Section을 수행하고 자기 보다 큰 번호의 프로세스들 중 가장 작은 프로세스를 선택하게 됩니다. i는 현재 2이고 배열의 크기는 7이기 때문에 j의 값은 3이 되게 됩니다. 하지만 P3은 준비가 되어 있지 않은 상태이기 때문에 다시 한번 while 문 안으로 들어가 다음 프로세스가 준비되어 있는지를 검사하게 됩니다. 그리하여 j는 4가 되어 P4가 선택되고 waiting[j]가 FALSE가 되기 때문에 P4는 2번의 while 문을 벗어나 Critical Section을 들어가게 됩니다. 이런 식으로 모든 waiting 배열의 값이 FALSE가 되어 전부 통과되었다면 마지막 프로세스의 차례에서는 i와 j가 같아지게 됩니다. 그렇게 되면 서로 돌려가지던 lock을 최종 반납하고 모두 Critical Section을 벗어나게 됩니다.
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>MTX</p>
+
+    <ul>
+      <li>
+        <p>Pi can enter CS only if either  waiting[i] == false or key == false</p>
+      </li>
+      <li>Value of key can become false only if  testAndSet is executed</li>
+      <li>waiting[i] can become false only if  another process leaves CS</li>
+      <li>-&gt; Only one waiting[i] can become  false</li>
+    </ul>
+  </li>
+  <li>
+    <p>Progress Requirement</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205639849.png" alt="image-20221002205639849" /></p>
+  </li>
+</ol>
+
+<ul>
+  <li>a process exiting CS either sets lock to false, or sets  waiting[j] to false to allow a process that is waiting to enter CS to proceed</li>
+</ul>
+
+<ol>
+  <li>
+    <p>Bounded-waiting Requirement</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205716160.png" alt="image-20221002205716160" /></p>
+  </li>
+</ol>
+
+<ul>
+  <li>any process waiting to enter CS will do so within n-1 times</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="mutex-locks">Mutex Locks</h2>
+
+<p>user도 bounded waiting 보장이 안되고 HW도 not bad이지만 그냥 그렇기 때문에 <strong>OS의</strong> 도움을 한 번 받아볼까?</p>
+
+<ol>
+  <li>Mutex_lock</li>
+  <li>semaphore</li>
+  <li>monitor</li>
+</ol>
+
+<ul>
+  <li>Previous solutions are complicated and generally inaccessible to  application programmers</li>
+  <li>OS designers build software tools to solve critical section problem</li>
+  <li>Simplest is mutex lock</li>
+  <li>Product critical regions with it by first <strong>acquire()</strong> a lock then <strong>release()</strong> it
+    <ul>
+      <li>Boolean variable indicating if lock is available or not</li>
+    </ul>
+  </li>
+  <li>Calls to acquire() and release() must be atomic
+    <ul>
+      <li>Usually implemented via hardware atomic instructions</li>
+    </ul>
+  </li>
+  <li>But this solution requires <strong>busy waiting</strong>  - 완전 중요
+    <ul>
+      <li>This lock therefore called a <strong>spinlock</strong></li>
+      <li>Good locking mechanism used in multiprocessor system when lock is held for a short duration (duration of less than 2 context switches)</li>
+      <li>mutex lock도 사실상 semaphore인데 CPU busy waiting 하는 semaphore를 spin lock이라고 한다.</li>
+      <li>lock이 금방 풀리는 경우에는 original semaphore를 쓰게 되면 context swtich가 많이 일어나 overhead가 크다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="acquire-and-release">acquire() and release()</h2>
+
+<p>사용자 코드 기반에서 critical section을 들어갈 수 있는지 없는지를 판단하는 것은 OS가 할 수도, H/W가 할 수도 있음.</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002205926375.png" alt="image-20221002205926375" /></p>
+
+<ul>
+  <li>
+    <p>lock이 이미 걸려 있으면 즉, not available이면 기다린다.</p>
+  </li>
+  <li>
+    <p>내가 lock을 획득하면 다시 available을 false로 바꾸고 들어가는 거고, 획득하지 못하면 기다리고,마지막으로 나갈 때는 다시 lock을 반납</p>
+  </li>
+  <li>
+    <p>그렇다면 차이는?</p>
+
+    <ul>
+      <li>
+        <p>test_set은 hardware로 구현</p>
+      </li>
+      <li>
+        <p>mutex lock은 OS 코드로 구현한 software</p>
+      </li>
+    </ul>
+  </li>
+  <li>available 하면 들어가고 available = false가 됨. -&gt; CPU busy waiting
+    <ul>
+      <li>다른애가 못들어 가도록 false</li>
+      <li>CPU time을 할애하면서 available이 true가 될 때까지 기다림</li>
+      <li>critical section을 바로 들어가지 못하면 busy waiting(?)</li>
+    </ul>
+  </li>
+  <li>test_and_set보다 더 좋지 않지만 그럼에도 제공하는 이유?</li>
+  <li>acquire 함수가 atomic하게 실행됨</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semaphore">Semaphore</h2>
+
+<p>얘는 CPU time을 낭비하지 않음 - CPU busy waiting을 필요로 하지 않는 locking mechanism</p>
+
+<ul>
+  <li>
+    <p>Synchronization tool that provides more sophisticated ways (than Mutex locks) for  process to synchronize their activities.</p>
+  </li>
+  <li>
+    <p>Each process must perform operations on semaphore before entering its own CS</p>
+
+    <ul>
+      <li>Spinlock : no context switch required</li>
+      <li>When locks are expected to be held for short times, spinlocks are useful</li>
+    </ul>
+  </li>
+  <li>
+    <p>Semaphore <strong>S</strong> – integer variable</p>
+  </li>
+  <li>
+    <p>Can only be accessed via two indivisible (atomic) operations</p>
+
+    <ul>
+      <li><strong>wait() (acquire)</strong> and <strong>signal()</strong>(release)
+        <ul>
+          <li>Originally called <strong>P()</strong> and <strong>V()</strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Definition of the <strong>wait() operation</strong></p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">wait</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">while</span> <span class="p">(</span><span class="n">S</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// busy wait</span>
+    <span class="n">S</span><span class="o">--</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Definition of the <strong>signal() operation</strong></p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">signal</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">S</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>S가 lock</p>
+
+<p>S값을 초기에 1로 해야 처음에는 들어가고 1이 감소하여 그 다음에 들어오는 애들은 busy waiting</p>
+
+<p>그렇다면 CPU time을 낭비하지 않고 기다릴 수 있는 방법은 없나? -&gt; 코드를 좀 수정해 보자(Implementation with no Busy waiting 코드)</p>
+
+<p><br /></p>
+
+<h2 id="semaphore-usage">Semaphore Usage</h2>
+
+<ul>
+  <li>
+    <p><strong>Counting semaphore</strong> – integer value can range over an unrestricted domain (값의 범위에 제한이 없음)</p>
+  </li>
+  <li>
+    <p><strong>Binary semaphore</strong> – integer value can range only between 0 and 1 (오직 0 and 1)</p>
+
+    <ul>
+      <li>Same as a <strong>mutex lock</strong></li>
+    </ul>
+  </li>
+  <li>
+    <p>Can solve various synchronization problems</p>
+
+    <ul>
+      <li>
+        <p>semaphore “mutex” initialized to 1</p>
+
+        <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002210231403.png" alt="image-20221002210231403" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Consider P<sub>1</sub> and P<sub>2</sub> that require S<sub>1</sub> to happen before S<sub>2</sub></p>
+
+    <p>Create a semaphore “synch” initialized to 0</p>
+
+    <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002210337294.png" alt="image-20221002210337294" /></p>
+  </li>
+  <li>
+    <p>Can implement a counting semaphore S as a binary semaphore</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semaphore-implementation">Semaphore Implementation</h2>
+
+<ul>
+  <li>Must guarantee that no two processes can execute the <strong>wait()</strong> and  <strong>signal()</strong> on the same semaphore at the same time
+    <ul>
+      <li>한 semaphore에 대해서 wait()이 끝나야지 만이 signal()이 호출될 수 있음</li>
+    </ul>
+  </li>
+  <li>Thus, the implementation becomes the critical section problem where  the wait and signal code are placed in the critical section
+    <ul>
+      <li>Could now have busy waiting in critical section implementation
+        <ul>
+          <li>But implementation code is short</li>
+          <li>Little busy waiting if critical section rarely occupied</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Note that applications may spend lots of time in critical sections and  therefore this is not a good solution</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semaphore-implementation-with-no-busy-waiting">Semaphore Implementation with no Busy waiting</h2>
+
+<ul>
+  <li>With each semaphore there is an associated waiting queue</li>
+  <li>Each entry in a waiting queue has two data items: 구조체 변수에 다음을 포함
+    <ul>
+      <li>value (of type integer)</li>
+      <li>pointer to next record in the list (queue)</li>
+    </ul>
+  </li>
+  <li>Two operations:
+    <ul>
+      <li><strong>block</strong> – place the process invoking the operation on the appropriate <strong>waiting queue</strong></li>
+      <li><strong>wakeup</strong> – remove one of processes in the waiting queue and place it in the <strong>ready queue</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">process</span> <span class="o">*</span><span class="n">list</span><span class="p">;</span> <span class="o">/*</span> <span class="n">list</span> <span class="n">of</span> <span class="n">process</span><span class="p">(</span><span class="n">waitlist</span><span class="p">)</span> <span class="o">/*</span>
+<span class="p">}</span> <span class="n">semaphore</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>linked list
+    <ul>
+      <li>critical section 진입을 기다리는 프로세스들의 리스트 -&gt; waitlist</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="implementation-with-no-busy-waiting-cont-시험">Implementation with no Busy waiting (Cont.) 시험!</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">wait</span><span class="p">(</span><span class="n">semaphore</span> <span class="o">*</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">--</span><span class="p">;</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">add</span> <span class="n">this</span> <span class="n">process</span> <span class="n">to</span> <span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span> 
+        <span class="n">block</span><span class="p">();</span> 
+    <span class="p">}</span> 
+<span class="p">}</span>
+<span class="n">signal</span><span class="p">(</span><span class="n">semaphore</span> <span class="o">*</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">remove</span> <span class="n">a</span> <span class="n">process</span> <span class="n">P</span> <span class="n">from</span> <span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span> 
+        <span class="n">wakeup</span><span class="p">(</span><span class="n">P</span><span class="p">);</span> <span class="cm">/* place P onto ready queue */</span>
+    <span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>S나 lock은 int 변수였음.</li>
+  <li>근데 여기서는 history log를 저장하기 위해서 semaphore 구조체 타입이 된다.</li>
+  <li>S값이 0보다 작다는 것은 나 말고 다른 애가 들어가 있다는 뜻
+    <ul>
+      <li>while -&gt; if 로 바뀜
+        <ul>
+          <li>busy waiting을 막기 위함!</li>
+        </ul>
+      </li>
+      <li>그 대신 linked-list의 대기 순번이 진입시킨다.</li>
+      <li>그러고 block 시킴 -&gt; 왜?
+        <ul>
+          <li>코드가 실행중인 것이 OS인데 wait()을 호출 시킨 프로세스를 block(runnung-&gt; waiting)시키는 것</li>
+          <li>bounded waiting도 보장 - FCFS</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>S값은 1이 최대값임, 대기는 여러명이 할 수 있기 때문에 -1, -2, -3, … 이 가능함</li>
+  <li>S가 0이라는 것은 signal을 호출한 프로세스가 유일하게 wait함수를 호출했던 프로세스였다는 뜻</li>
+  <li>하지만 잘못 사용하면 deadlock이 걸릴 수 있음
+    <ul>
+      <li>entry section에서 잘못 사용하면 아무도 critical section을 진입하지 못하는 경우가 생길 수 있음</li>
+      <li>하지만 제일 강력한 방법</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="semaphore-as-general-synchronization-tool중요">Semaphore as General Synchronization Tool(중요)</h2>
+
+<ul>
+  <li>Execute B in Pj only after A executed in Pi
+    <ul>
+      <li>B라는 instruction을 반드시 A라는 instruction 이후에 실행하도록 제어하고 싶은 경우</li>
+    </ul>
+  </li>
+  <li>Use semaphore flag initialized to 0</li>
+  <li>Code:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002210808139.png" alt="image-20221002210808139" /></p>
+
+<ul>
+  <li>A는 계에에속 해서 찍히지만 B는 그러지 못함
+    <ul>
+      <li>wait(flag) - 1에서 0으로</li>
+      <li>signal(flag) - 0에서 1로</li>
+      <li>그래서 A는 무한대 반복될 수 있음</li>
+      <li>B는 A가 실행된 후 딱 한 번 실행 가능</li>
+      <li>B가 연속으로 두 번 나올 수는 없음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="two-types-of-semaphores">Two Types of Semaphores</h2>
+
+<ul>
+  <li>Counting semaphore - integer value can range over an  unrestricted domain.</li>
+  <li>Binary semaphore – integer value can range only between 0  and 1; can be simpler to implement.</li>
+  <li>Can implement a counting semaphore S as a binary semaphore.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="implementing-s-as-a-binary-semaphore">Implementing S as a Binary Semaphore</h2>
+
+<ul>
+  <li>
+    <p>Data structures:</p>
+
+    <p>var S1: binary-semaphore;</p>
+
+    <p>S2: binary-semaphore;</p>
+
+    <p>C: integer;</p>
+  </li>
+  <li>
+    <p>Initialization:</p>
+
+    <p>S1 = 1</p>
+
+    <p>S2 = 0</p>
+
+    <p>C = initial value of semaphore S</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="implementing-s-cont---중요">Implementing S (Cont.) - 중요</h2>
+
+<ul>
+  <li>wait operation</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211023675.png" alt="image-20221002211023675" /></p>
+
+<ul>
+  <li>signal operation</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211037875.png" alt="image-20221002211037875" /></p>
+
+<p><br /></p>
+
+<h2 id="problems-with-semaphores">Problems with Semaphores</h2>
+
+<p>semaphore 사용할 때 주의점</p>
+
+<ul>
+  <li>Incorrect use of semaphore operations:
+    <ul>
+      <li>signal (mutex) …. wait (mutex)</li>
+      <li>wait (mutex) … wait (mutex)</li>
+      <li>Omitting of wait (mutex) or signal (mutex) (or both)</li>
+    </ul>
+  </li>
+  <li>Deadlock and starvation are possible.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitors">Monitors</h2>
+
+<p>semaphore보다 사용하기는 아주 편하지만 semaphore보다 powerful 하지는 않음</p>
+
+<ul>
+  <li>
+    <p><mark>A **Monitor** is an object designed to be accessed from multiple threads.</mark></p>
+  </li>
+  <li>A high-level abstraction that provides a convenient and effective mechanism for process synchronization</li>
+  <li>Abstract data type(like class), internal variables only accessible by code within the procedure
+    <ul>
+      <li>Ensure mutex at higher level, within monitor
+        <ul>
+          <li><strong>Only one process at a time</strong> can be executing within monitor</li>
+        </ul>
+      </li>
+      <li>Encapsulates data, procedures to manipulate data into one module</li>
+    </ul>
+  </li>
+  <li>Only one process may be active within the monitor at a time</li>
+  <li>But not powerful enough to model some synchronization schemes</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211222031.png" alt="image-20221002211222031" /></p>
+
+<ul>
+  <li>
+    <p>모니터에는 p1, p2,.. pn이 있을 것임.</p>
+  </li>
+  <li>한 프로세스가 실행되는 동안에 다른 프로세스가 호출되면
+    <ul>
+      <li>공유 데이터에 접근하게 되므로 monitor 안에 race condition이 생기기 때문에 하나로 제한시키는 것이다.</li>
+    </ul>
+  </li>
+  <li>그래서 한 번에 하나의 프로세스만 모니터 안에서 실행이 가능</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>모니터 는 여러 스레드에서 액세스하도록 설계된 개체입니다. 모니터 개체의 멤버 함수 또는 메서드는 상호 배제를 시행하므로 지정된 시간에 하나의 스레드만 개체에 대한 작업을 수행할 수 있습니다. 한 스레드가 현재 개체의 멤버 함수를 실행 중이면 해당 개체의 멤버 함수를 호출하려는 다른 스레드는 첫 번째가 완료될 때까지 기다려야 합니다.
+
+세마포어 는 하위 수준 개체입니다. 세마포어를 사용하여 모니터를 구현할 수 있습니다. 세마포어는 기본적으로 카운터일 뿐입니다. 카운터가 양수일 때 스레드가 세마포어를 얻으려고 시도하면 허용되고 카운터가 감소합니다. 스레드가 완료되면 세마포어를 해제하고 카운터를 증가시킵니다.
+
+스레드가 세마포어를 얻으려고 할 때 카운터가 이미 0이면 다른 스레드가 세마포어를 해제할 때까지 기다려야 합니다. 스레드가 세마포어를 해제할 때 여러 스레드가 대기 중인 경우 그 중 하나가 세마포어를 가져옵니다. 세마포어를 해제하는 스레드는 이를 획득한 스레드와 동일할 필요는 없습니다.
+
+모니터는 공중 화장실과 같습니다. 한 번에 한 사람만 입장할 수 있습니다. 그들은 다른 사람이 들어오지 못하도록 문을 잠그고, 할 일을 하고, 나갈 때 문을 엽니다.
+
+세마포어는 자전거 대여소와 같습니다. 그들은 특정한 수의 자전거를 가지고 있습니다. 자전거를 빌리려고 하는데 무료 자전거가 있으면 가져갈 수 있고 그렇지 않으면 기다려야 합니다. 누군가 자전거를 반납하면 다른 사람이 가져갈 수 있습니다. 자전거가 있다면 다른 사람에게 돌려주도록 할 수 있습니다. --- 자전거 대여소는 자전거를 돌려받기만 하면 누가 돌려주든 상관하지 않습니다.
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="monitors-continued">Monitors (continued)</h2>
+
+<ul>
+  <li>Initialization code is executed when monitor is declared
+    <ul>
+      <li>생성될 때 한 번만 실행</li>
+    </ul>
+  </li>
+  <li>Monitor procedures can only access variables declared within  monitor, procedures
+    <ul>
+      <li>Variables within monitor can not be accesses outside of monitor</li>
+      <li>Only access to monitor is via calls to its procedures labeled entry</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="schematic-view-of-a-monitor">Schematic view of a monitor</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211359527.png" alt="image-20221002211359527" /></p>
+
+<ul>
+  <li>
+    <p>생성자 - initialization code</p>
+  </li>
+  <li>
+    <p>메소드 - procedure operation</p>
+  </li>
+  <li><mark>모니터 안에서 생성될 수 있는 프로세스는 한 개로 제한</mark></li>
+  <li>entry queue: 모니터 안에서 정의된 procedure에 대해서 호출을 한 프로세스가 여러개 인 경우 그중 한 프로세스만 실행이 허용되고 나머지는 이 큐에서 순서대로 기다리는 개념</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitors-continued---시험">Monitors (continued) - 시험</h2>
+
+<p>procedure를 실행하다가 문제가 생긴 경우(event) - 모니터 안에서 기다리면 아무 것도 실행이 되지 않는 문제 발생(동기화에 대한 문제를 완전히 해결하지 못했음)</p>
+
+<p>​	-&gt; condition variable개념 도입</p>
+
+<ul>
+  <li>
+    <p>To allow a process to wait within the monitor, a condition variable must  be declared, as</p>
+
+    <p>​		condition x, y;</p>
+
+    <ul>
+      <li>Associated with each condition is a queue</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Two operations</strong> are allowed on a condition variable:</p>
+  </li>
+  <li>
+    <p>Processes placed onto / removed from queue via wait and signal (모니터에서 정의한)</p>
+
+    <ul>
+      <li>x means condition!</li>
+      <li><strong>x.wait()</strong> – means that the process that invokes this operation is <u>suspended</u> until another process invokes x.signal()
+        <ul>
+          <li>event를 기다리는데 condition queue에 가서 기다리기</li>
+        </ul>
+      </li>
+      <li><strong>x.signal()</strong> – <u>resumes</u> exactly one suspended process (if any) that invoked x.wait()
+        <ul>
+          <li>If no x.wait() on the variable, then it has no effect on the  variable
+            <ul>
+              <li><mark>semaphore는 no effect가 아니라 value가 0에서 1로 바뀐다!!!</mark></li>
+            </ul>
+          </li>
+          <li>If no process is suspended, then the signal operation has no effect.
+            <ul>
+              <li>x.wait에 의해 suspend된 프로세스를 살려줌</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>semaphore의 wait과 signal과 혼돈하지 말 것
+        <ul>
+          <li>condition 변수의 함수임</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-with-condition-variables">Monitor with condition variables</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211530941.png" alt="image-20221002211530941" /></p>
+
+<ul>
+  <li>
+    <p>기본적인 모니터는 여러 동기화 기법 모델링을 위해서 충분히 강력하지가 않다.</p>
+
+    <ul>
+      <li>공통된 자원에 대한 경쟁을 막기 위해서 mutex lock, semaphore를 사용하는데 이러한 semaphore와  mutex lock을 가지려는 대상들이 2개 이상일 때 condition variables을 통해서 그 대상들의 순서를 결정해 준다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>shared data의 queue는 무슨 역할?</p>
+
+    <ul>
+      <li>condition queue - 어떤 condition이 발생할 때까지 대기</li>
+    </ul>
+  </li>
+  <li>
+    <p>실행을 하다가 event가 발생하여 더 이상 실행을 하지 못하는 경우 기다려야 하므로 손해</p>
+  </li>
+  <li>
+    <p>x라는 event가 발생하기를 기다리고 있는 프로세스</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitors-continued-1">Monitors (continued)</h2>
+
+<ul>
+  <li>Suppose that, when the x.signal is invoked by a process P, there is a  suspended process Q associated with condition x
+    <ul>
+      <li>P -&gt; x.signal 호출</li>
+      <li>Q -&gt; x.signal이 호출되어져 살아남</li>
+      <li>즉, P가 x.signal()을 주고 Q는 x.wait()에 걸려있는 상태이다.</li>
+    </ul>
+  </li>
+  <li>If the suspended process Q is allowed to resume its execution, the signaling process P must wait, otherwise, both P and Q will be active  <strong>simultaneously</strong> within the monitor
+    <ul>
+      <li>이는 모니터 방식에 위배</li>
+    </ul>
+  </li>
+  <li>2 possibilities
+    <ul>
+      <li><strong>Signal and wait</strong> – P either waits until Q leaves the monitor, or  waits for another condition
+        <ul>
+          <li>살려준 프로세스가 기다릴 것이냐</li>
+          <li>P는 Q가 monitor를 떠나거나 다른 조건을 기다릴 때까지 기다린다.</li>
+        </ul>
+      </li>
+      <li><strong>Signal and continue</strong> - Q either waits until P leaves the monitor, or  waits for another condition
+        <ul>
+          <li>살려진 프로세스가 기다릴 것이냐</li>
+          <li>Q는 P가 monitor를 떠나거나 다른 조건을 기다릴 때까지 기다린다.</li>
+        </ul>
+      </li>
+      <li>Both have pros and cons – language implementer can decide</li>
+      <li>Monitors implemented in Concurrent Pascal compromise
+        <ul>
+          <li>P executing signal immediately leaves the monitor, Q is resumed</li>
+        </ul>
+      </li>
+      <li>Implemented in other languages including Mesa, C#, Java</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation-using-semaphores">Monitor Implementation Using Semaphores</h2>
+
+<ul>
+  <li>Variables</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211654825.png" alt="image-20221002211654825" /></p>
+
+<ul>
+  <li>Each procedure <strong>F</strong> will always be replaced by</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211711850.png" alt="image-20221002211711850" /></p>
+
+<ul>
+  <li>signal and wait
+    <ul>
+      <li>wait(mutex) - entry section</li>
+      <li>if-else  : exit section</li>
+      <li>body of F : critical section</li>
+    </ul>
+  </li>
+  <li>Mutual exclusion within a monitor is ensured by mutex semaphore</li>
+  <li>Signaling process must wait until the resumed process either leaves or waits
+    <ul>
+      <li>Next semaphore on which signaling processes may suspend themselves</li>
+      <li>Next-count counts the number of processes suspended on next</li>
+    </ul>
+  </li>
+  <li>signal(next) - next</li>
+  <li><mark>제일 우선순위 높은 ; next queue, entry queue, 새로들어온 애</mark>
+    <ul>
+      <li>condition queue에 있는 애들은 우선순위 대상이 들어가지 않는 이유
+        <ul>
+          <li>남을 위해서 일부러 기다려주거나(next q) 다른 사람이 있기 때문에 기다리는 것(entry q)이 아니라 x 혹은 y라는 event를 기다리는 것이기 때문에 event에 의존하여 살려줘도 의미가 없는 경우가 있을 수 있다.</li>
+          <li>따라서 얘는 조건적으로 살아남</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation---condition-variables">Monitor Implementation - Condition Variables</h2>
+
+<ul>
+  <li>For each condition variable x, we have:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211754045.png" alt="image-20221002211754045" /></p>
+
+<ul>
+  <li>The operation <strong>x.wait</strong> can be implemented as:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211807215.png" alt="image-20221002211807215" /></p>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation-cont">Monitor Implementation (Cont.)</h2>
+
+<ul>
+  <li>The operation <strong>x.signal</strong> can be implemented as:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002211833560.png" alt="image-20221002211833560" /></p>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation-cont-1">Monitor Implementation (Cont.)</h2>
+
+<ul>
+  <li>Resuming Processes within a Monitor (monitor 내 프로세스들 재개하기!)
+    <ul>
+      <li>If several processes queued on condition x, and x.signal()  executed, which should be resumed?</li>
+      <li>FCFS frequently not adequate</li>
+    </ul>
+  </li>
+  <li>Condition operation with <strong>priority</strong> (process resumption order)
+    <ul>
+      <li>Conditional-wait construct: x.wait(c);</li>
+      <li>c – integer expression evaluated when the wait operation is  executed. (우선순위)</li>
+      <li>value of c (<strong>priority number</strong>) stored with the name of the process  that is suspended.</li>
+      <li>when x.signal is executed, process with smallest associated  priority number is resumed next.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="single-resource-allocation">Single Resource allocation</h2>
+
+<ul>
+  <li>Allocate a single resource among competing processes using  priority numbers that specify the maximum time a process plans to use the resource</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212138116.png" alt="image-20221002212138116" /></p>
+
+<ul>
+  <li>Where R is an instance of type ResourceAllocator
+    <ul>
+      <li>ex) ResourceAllocator R;</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="a-monitor-to-allocate-single-resource---중요">A Monitor to Allocate Single Resource - 중요</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212250416.png" alt="image-20221002212250416" /></p>
+
+<ul>
+  <li>release()에서 x.signal()을 하면 누가먼저 살아나야 할까? -&gt; 위에서 말했음</li>
+  <li>time의 시간이 작을 수록 우선순위가 높다면, time이 짧은 애가 먼저 wait을 빠져나간다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="monitor-implementation-cont-2">Monitor Implementation (Cont.)</h2>
+
+<ul>
+  <li>Check to establish correctness of system:
+    <ul>
+      <li>User processes must always make their calls on the monitor in a  correct sequence.</li>
+      <li>Must ensure that an uncooperative process does not ignore the  mutual-exclusion gateway provided by the monitor, and try to  access the shared resource directly, without using the access  protocols.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<hr />
+
+<p>이 아래는 뒤에서 배울 것이므로 무시</p>
+
+<h2 id="liveness---무시-xxxx">Liveness - 무시 XXXX</h2>
+
+<ul>
+  <li>Deadlock – two or more processes are waiting indefinitely for an event that can  be caused by only one of the waiting processes.</li>
+  <li>Let S and Q be two semaphores initialized to 1</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002212403259.png" alt="image-20221002212403259" /></p>
+
+<ul>
+  <li>Starvation – indefinite blocking.
+    <ul>
+      <li>A process may never be removed from the semaphore queue in which it  is suspended.</li>
+    </ul>
+  </li>
+  <li>Priority Inversion – Scheduling problem when lower-priority process holds a  lock needed by higher-priority process
+    <ul>
+      <li>Solved via priority-inheritance protocol</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="atomic-transactions--xxxx">Atomic Transactions -XXXX</h2>
+
+<ul>
+  <li>System Model</li>
+  <li>Log-based Recovery</li>
+  <li>Checkpointing</li>
+  <li>Concurrent Atomic Transactions</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="system-model---xxxx">System Model - XXXX</h2>
+
+<ul>
+  <li>Assures that operations happen as a single logical unit of work, in its  entirety, or not at all</li>
+  <li>Related to field of database systems</li>
+  <li>Challenge is assuring atomicity despite computer system failures</li>
+  <li><strong>Transaction</strong> - collection of instructions or operations that performs  single logical function
+    <ul>
+      <li>Here we are concerned with changes to stable storage – disk</li>
+      <li>Transaction is series of <strong>read</strong> and <strong>write</strong> operations</li>
+      <li>Terminated by <strong>commit</strong> (transaction successful) or abort (transaction failed) operation</li>
+      <li>Aborted transaction must be <strong>rolled back</strong> to undo any changes it  performed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="types-of-storage-media---xxxx">Types of Storage Media - XXXX</h2>
+
+<ul>
+  <li>
+    <p>Volatile storage – information stored here does not survive system  crashes</p>
+
+    <ul>
+      <li>Example: main memory, cache</li>
+    </ul>
+  </li>
+  <li>
+    <p>Nonvolatile storage – Information usually survives crashes</p>
+
+    <ul>
+      <li>Example: disk and tape</li>
+    </ul>
+  </li>
+  <li>
+    <p>Stable storage – Information never lost</p>
+
+    <ul>
+      <li>Not actually possible, so approximated via replication or RAID to  devices with independent failure modes</li>
+    </ul>
+
+    <p>Goal is to assure transaction atomicity where failures cause loss of  information on volatile storag</p>
+  </li>
+</ul>
+
+<p><br /></p>
+:ET

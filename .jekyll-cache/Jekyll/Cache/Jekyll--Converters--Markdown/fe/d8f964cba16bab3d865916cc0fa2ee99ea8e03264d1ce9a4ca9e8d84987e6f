@@ -1,0 +1,2149 @@
+I"�><p><br /></p>
+
+<p>[toc]</p>
+
+<h1 id="chapter-10-virtual-memory">Chapter 10: Virtual Memory</h1>
+
+<ul>
+  <li>Background</li>
+  <li>Demand Paging</li>
+  <li>Performance of Demand Paging</li>
+  <li>Copy-on-Write</li>
+  <li>Page Replacement</li>
+  <li>Allocation of Frames</li>
+  <li>Thrashing</li>
+  <li>Memory-Mapped Files</li>
+  <li>Allocating Kernel Memory</li>
+  <li>Other Considerations</li>
+  <li>Demand Segmentation</li>
+  <li>Operating-System Examples</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="objectives">Objectives</h2>
+
+<ul>
+  <li>To describe the benefits of a virtual memory system</li>
+  <li>To explain the concepts of demand paging, page-replacement algorithms, and allocation of page frames</li>
+  <li>To discuss the principle of the working-set model</li>
+  <li>To examine the relationship between shared memory and memorymapped files</li>
+  <li>
+    <p>To explore how kernel memory is managed</p>
+  </li>
+  <li>전체적인 흐름은 virtual memory를 관리하는 기법 중 하나인 demand paging에 대해서 공부를 하고 이 기법에 사용되는 알고리즘인 page replacement schemes에 관해 공부를 한다.</li>
+  <li>마지막으로 이러한 가상 메모리를 사용함으로써 발생할 문제점 중 하나인 Thrasing에 대해서 공부해 보도록 한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="background">Background</h2>
+
+<ul>
+  <li>In Ch 9, MM strategies have same goal
+    <ul>
+      <li>To keep many processes in memory simultaneously to allow MP</li>
+      <li>Requires that an entire process to be in memory before process can execute</li>
+    </ul>
+  </li>
+  <li>Code needs to be in memory to execute, but entire program rarely used
+    <ul>
+      <li><strong>사용되지 않는 것들도 탑재되는 문제</strong></li>
+      <li>Error code, unusual routines, large data structures</li>
+      <li>Entire program code not needed at same time</li>
+    </ul>
+  </li>
+  <li>Consider ability to execute <mark>partially-loaded </mark>program
+    <ul>
+      <li>Program no longer constrained by limits of physical memory
+        <ul>
+          <li>Program and programs could be larger than physical memory</li>
+        </ul>
+      </li>
+      <li>Each program takes less memory while running -&gt; more programs run at the same time
+        <ul>
+          <li>Increased CPU <strong>utilization</strong> and <strong>throughput</strong> with no increase in response time or turnaround time</li>
+        </ul>
+      </li>
+      <li>Less I/O needed to load or swap programs into memory
+        <ul>
+          <li>each user program runs faster</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Ch9에서 배웠던 Memory Management는 하나의 프로그램 전체를 실제 메모리에 올리는 방식을 사용했는데 virtual memory를 사용하면 당장 실행에 사용되는, 즉 필요한 부분만 딱 physical memory에 올려서 실행할 수 있다.</li>
+  <li>이것을 통해 생기는 장점은?
+    <ol>
+      <li>프로그램은 더 이상 physical memory의 실제 남은 공간이 얼마나 되는지에 대해서 program 시작 전에 고민할 필요가 없다.</li>
+      <li>프로그램이 전체가 다 올라가는 것이 아니기 때문에 더 많은 프로그램은 동시에 메모리에 올려 작업을 수행할 수 있다.</li>
+      <li>한 번에 올리는 소스의 양이 적기 때문에 HDD와 Main Memory간에 I/O 작업 속도가 빨라진다.</li>
+    </ol>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="background-1">Background</h2>
+
+<ul>
+  <li><strong>Virtual memory</strong>
+    <ul>
+      <li>A technique that allows the execution of processes that are <strong>not completely</strong> in memory
+        <ul>
+          <li>모든 것을 다 탑재 시키지 않고도 프로세스를 실행시킬 수 있도록</li>
+        </ul>
+      </li>
+      <li>separation of user logical memory from physical memory.</li>
+      <li>Only part of the program needs to be in memory for execution
+        <ul>
+          <li>Need to allow pages to be swapped in and out. – Logical address space can therefore be much larger than physical address space  (거의 무한대처럼 보임)
+            <ul>
+              <li>each process has appearance of infinite memory (virtual address space) available to it</li>
+              <li>Can deal with jobs with high memory requirement which system may not want to fulfill (in terms of multiprogramming)</li>
+              <li>Overlay, dynamic loading (restriction)</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Allows address spaces to be shared by several processes</li>
+      <li>Allows for more efficient process creation</li>
+      <li>More programs running concurrently</li>
+      <li>Less I/O needed to load or swap processes</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="background-cont">Background (Cont.)</h2>
+
+<ul>
+  <li><strong>Virtual address space</strong> – logical view of how process is stored in memory
+    <ul>
+      <li>Usually start at address 0, <strong>contiguous</strong> addresses until end of space</li>
+      <li>Meanwhile, <strong>physical memory</strong> organized in <strong>non-contiguous</strong> page frames</li>
+      <li><strong>MMU</strong> must map logical to physical (translation)</li>
+    </ul>
+  </li>
+  <li>Virtual memory can be implemented via:
+    <ul>
+      <li>Demand paging</li>
+      <li>Demand segmentation</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123231958407.png" alt="image-20221123231958407" /></p>
+
+<p><br /></p>
+
+<h2 id="virtual-memory-that-is-larger-than-physical-memory">Virtual Memory That is Larger Than Physical Memory</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232013232.png" alt="image-20221123232013232" /></p>
+
+<p><br /></p>
+
+<h2 id="what-should-be-done-by-os">What should be done by OS</h2>
+
+<ul>
+  <li>To perform the idea, OS must maintain the following perspectives
+    <ul>
+      <li>Which portion of a process will be in memory -&gt; locality(집중적으로 사용되는 page 집합)
+        <ul>
+          <li>In general, process is broken into pages</li>
+        </ul>
+      </li>
+      <li>When is a portion of job brought into memory
+        <ul>
+          <li><strong>On demand</strong></li>
+        </ul>
+      </li>
+      <li>Maintain information regarding which portion of job are in memory</li>
+      <li>Where they are located</li>
+      <li>When they are taken out of memory</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="virtual-address-space">Virtual-address Space</h2>
+
+<ul>
+  <li>Usually design logical address space for stack to start at Max logical address and grow “down” while heap grows “up”
+    <ul>
+      <li>Maximizes address space use</li>
+      <li>Unused address space between the two is <strong>hole</strong>
+        <ul>
+          <li>No physical memory needed until heap or stack grows to a given new page</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Enables <strong>sparse address spaces</strong>(중간이 비어있으니까) with holes left for growth, dynamically linked libraries, etc</li>
+  <li>System libraries shared via mapping into virtual address space</li>
+  <li>Shared memory by mapping pages read-write into virtual address space</li>
+  <li>Pages can be shared during fork(), speeding process creation
+    <ul>
+      <li>code는 여러 프로세스와 공유하는 부분(read-only라서)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232146128.png" alt="image-20221123232146128" /></p>
+
+<p><br /></p>
+
+<h2 id="shared-library-using-virtual-memory">Shared Library Using Virtual Memory</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232200391.png" alt="image-20221123232200391" /></p>
+
+<p><br /></p>
+
+<h2 id="demand-paging">Demand Paging</h2>
+
+<ul>
+  <li>
+    <p>demand paging의 basic concept은 virtual memory가 추구하는 방식을 구현하는 기법으로 오로지 사용 중인 부분만 memory에 올리는 방법이다.</p>
+  </li>
+  <li>Could bring entire process into memory at load time</li>
+  <li>Or bring a page into memory o<strong>nly when it is needed</strong>
+    <ul>
+      <li>Less I/O needed, no unnecessary I/O</li>
+      <li>Less memory needed</li>
+      <li>Faster response</li>
+      <li>More users</li>
+    </ul>
+  </li>
+  <li>Similar to <strong>paging system</strong> with <strong>swapping</strong> (diagram on below)
+    <ul>
+      <li>앞에서 배웠던 swapping은 process 전체가 swap in, swap out 되는 것이었다면 paging system에서는 page단위로 swap in, swap out된다.</li>
+    </ul>
+  </li>
+  <li>
+    <p>이를 구현하기 위해서 hardware의 support가 필요한데 그 이유는 valid-invalid Bit를 사용하기 때문이다.</p>
+  </li>
+  <li>Page is needed =&gt; reference to it
+    <ul>
+      <li>invalid reference =&gt; abort</li>
+      <li>valid reference
+        <ul>
+          <li>not-in-memory =&gt; bring to memory
+            <ul>
+              <li>valid한 page지만 memory에는 탑재되지 않음!</li>
+            </ul>
+          </li>
+          <li>in-memory =&gt; OK (just referencing)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Lazy swapper</strong>(on demand로 paging되기 때문) - never swaps a page into memory unless page will be needed
+    <ul>
+      <li>필요하지 않으면 절대 memory 안 가져올 거임 ㅡㅡ
+        <ul>
+          <li>on-demand means -&gt; reference 되어질 때</li>
+        </ul>
+      </li>
+      <li>Swapper that deals with pages is a pager</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232418351.png" alt="image-20221123232418351" /></p>
+
+<ul>
+  <li>When is a portion of process (page) brought into memory ?
+    <ul>
+      <li>Demand paging (<strong>on-demand</strong>)
+        <ul>
+          <li>Page is only brought into memory when needed
+            <ul>
+              <li>lazy swapper:</li>
+              <li>Swapper that deals with pages is a pager
+                <ul>
+                  <li>» view a process as a sequence of pages rather than one large contiguous address space</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>Paging system with swapping ?</li>
+        </ul>
+      </li>
+      <li>Pre-fetching (Taking Guess)
+        <ul>
+          <li>추측하고 미리 fetch(하드웨어에서 읽어오는 시간을 줄임)</li>
+          <li>Bring page into memory before it is needed</li>
+          <li>Because I/O is slow, if guess is wrong then it costs high
+            <ul>
+              <li>만약 틀리면 그 대가가…크흠…</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="basic-concepts">Basic Concepts</h2>
+
+<ul>
+  <li>If pages needed are already <strong>memory resident</strong>
+    <ul>
+      <li>No difference from non demand-paging</li>
+    </ul>
+  </li>
+  <li>If page needed and not memory resident
+    <ul>
+      <li>Need to detect and load the page into memory from storage
+        <ul>
+          <li>Without changing program behavior</li>
+          <li>Without programmer needing to change code</li>
+        </ul>
+      </li>
+      <li>virtual memory는 application program logic 과 상관없이 OS에 의해서만 제공되는 기능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="valid-invalid-bit">Valid-Invalid Bit</h2>
+
+<ul>
+  <li>With each page table entry a valid–invalid bit is associated 
+(<strong>v</strong> =&gt; in-memory – <strong>memory resident</strong>, 
+  <strong>i</strong> =&gt; not-in-memory)</li>
+  <li>Initially valid–invalid bit is set to i on all entries</li>
+  <li>Example of a page table snapshot:</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232634353.png" alt="image-20221123232634353" /></p>
+
+<ul>
+  <li>During address translation, if valid–invalid bit in page table entry is I
+    <ul>
+      <li>page fault
+        <ul>
+          <li>처리 -&gt; i를 v로 바꿔주는 일 동작</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="page-table-when-some-pages-are-not-in-main-memory">Page Table When Some Pages Are Not in Main Memory</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232719163.png" alt="image-20221123232719163" /></p>
+
+<p><br /></p>
+
+<h2 id="page-fault">Page Fault</h2>
+
+<ul>
+  <li>Occurs when an attempt is made to access a location which is not in memory
+    <ul>
+      <li>지금 실행 시켜야 할 page가 physical memory에 올라와 있지 않는 것을 말한다.</li>
+    </ul>
+  </li>
+  <li>If there is a reference to a page, first reference will trap to OS
+    <ul>
+      <li>CPU는 OS에게 이를 알리고(by trap) OS는 잠시 동안 CPU 작업을 멈춘다.</li>
+      <li>page fault</li>
+    </ul>
+  </li>
+  <li>Cold faults
+    <ul>
+      <li>Faults which occur in a process’s <strong>initial execution</strong> when its first page are brought into memory</li>
+      <li>절대 피할 방법 없음(얘 말고 일반적인 page fault를 줄이려고 노력해야 함.)</li>
+    </ul>
+  </li>
+</ul>
+
+<ol>
+  <li>
+    <p>OS looks at another table to decide:</p>
+
+    <ol>
+      <li>
+        <p>Invalid reference(뒤쪽에 붙어있는 테이블) =&gt; abort.</p>
+      </li>
+      <li>
+        <p>Just not in memory.</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>Get empty frame. (확보)</p>
+  </li>
+  <li>
+    <p>Swap page into frame via scheduled disk operation (disk I/O 요구)</p>
+  </li>
+  <li>
+    <p>Reset tables, to indicate page now in memory Set validation bit = <strong>v</strong></p>
+  </li>
+  <li>
+    <p>Restart instruction that caused the page fault</p>
+  </li>
+</ol>
+
+<ul>
+  <li>page fault를 일으켰던 명령어를 다시 실행하여 작업을 재개</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="steps-in-handling-a-page-fault---시험">Steps in Handling a Page Fault - 시험</h2>
+
+<p>위의 1~5 step을 그림으로 표현한 것(mapping 할 줄 알아야 함.)</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123232911116.png" alt="image-20221123232911116" /></p>
+
+<p><br /></p>
+
+<h2 id="aspects-of-demand-paging">Aspects of Demand Paging</h2>
+
+<ul>
+  <li>Extreme case – start process with no pages in memory
+    <ul>
+      <li>OS sets instruction pointer to first instruction of process, non-memory-resident -&gt; page fault</li>
+      <li>And for every other process pages on first access</li>
+      <li><strong>Pure demand paging</strong> (아무것도 탑재되지 않은)</li>
+      <li>성능 저해 요소가 있음</li>
+    </ul>
+  </li>
+  <li>Actually, a given instruction could access multiple pages -&gt; multiple page faults
+    <ul>
+      <li>Consider fetch and decode of instruction which adds 2 numbers (add와 같은 instruction을 생각해 보면 알겠지만 한 instruction 당 page가 3개는 있어야 함)
+        <ul>
+          <li>이는 3개의 page fault를 필수적으로 요구해야지 하나의 instruction이 실행됨.</li>
+        </ul>
+      </li>
+      <li>Pain decreased because of <strong>locality of reference</strong></li>
+    </ul>
+  </li>
+  <li>Hardware support needed for demand paging (same as hardware for paging/swapping)
+    <ul>
+      <li>Page table with valid / invalid bit</li>
+      <li>Secondary memory (swap device with swap space)</li>
+      <li>Instruction restart</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="instruction-restart">Instruction Restart</h2>
+
+<ul>
+  <li>
+    <p>Consider an instruction that could access <strong>several different locations</strong> (add 같은 instruction)</p>
+
+    <ul>
+      <li>
+        <p>block move</p>
+
+        <ul>
+          <li>
+            <p>Either block straddles a page boundary</p>
+
+            <p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123233034654.png" alt="image-20221123233034654" /></p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>auto increment/decrement location</p>
+      </li>
+      <li>
+        <p>Restart the whole operation?</p>
+
+        <ul>
+          <li>What if source and destination overlap?</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="performance-of-demand-paging-when-page-fault-occurs">Performance of Demand Paging (When page fault occurs)</h2>
+
+<p>normal page fault</p>
+
+<p>cold faults</p>
+
+<ul>
+  <li>Stages in Demand Paging (worse case)</li>
+</ul>
+
+<ol>
+  <li>Trap to the operating system (interrupt)</li>
+  <li>Save the user registers and process state (context switch) - handler가기 전에 이전 상태를 save</li>
+  <li>Determine that the interrupt was a page fault (interrupt 종류가 머임?)</li>
+  <li>Check that the page reference was legal and determine the location of the page on the disk (legal함?)</li>
+  <li>Issue a read from the disk to a free frame: (읽어서 copy하라고 disk에게 요구)
+    <ol>
+      <li>Wait in a queue for this device until the read request is serviced</li>
+      <li>Wait for the device seek and/or latency time (HDD라서 필요한 부분)</li>
+      <li>Begin the transfer of the page to a free frame</li>
+    </ol>
+  </li>
+  <li>While waiting, allocate the CPU to other process</li>
+  <li>Receive an interrupt from the disk I/O subsystem (<strong>I/O completed</strong>)</li>
+  <li>Save the registers and process state for the other process (context switch)</li>
+  <li>Determine that the interrupt was from the disk</li>
+  <li>Correct the page table and other tables to show page is now in memory (v -&gt; i)</li>
+  <li>Wait for the CPU to be allocated to this process again
+    <ul>
+      <li>Job becomes <strong>ready</strong>, wait CPU to restart instruction</li>
+    </ul>
+  </li>
+  <li><strong>Restore</strong> the user registers, process state, and new page table, (context switch) and then <strong>resume</strong> the interrupted instruction</li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="performance-of-demand-paging-cont">Performance of Demand Paging (Cont.)</h2>
+
+<ul>
+  <li>Three major activities
+    <ul>
+      <li>Service the <strong>interrupt</strong> - careful coding means just several hundred instructions needed</li>
+      <li><strong>Read</strong> the page - lots of time (HDD한테서 읽어야 돼서 오래 걸림)</li>
+      <li><strong>Restart</strong> the process – again just a small amount of time</li>
+    </ul>
+  </li>
+  <li>Page Fault Rate 0 ≤ p ≤ 1.0
+    <ul>
+      <li>if p = 0 no page faults (demand paging을 하지 않는다)</li>
+      <li>if p = 1, every reference is a fault (매 reference 마다 page fault가 일어남.)
+        <ul>
+          <li><mark>이 때, reference는 특정 address에 대한 reference를 말하는 것이 아니라 page에 대한 reference임.</mark></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Effective Access Time (EAT)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123233316821.png" alt="image-20221123233316821" /></p>
+
+<p>swap out이 왜 있지? -&gt; swap in 을 하기 위해서 free frame을 찾아보았는데 free frame이 없으면 기존에 사용하던 page 중 일부를 swap out 해야해서 생기는 과정</p>
+
+<p><br /></p>
+
+<h2 id="demand-paging-example">Demand Paging Example</h2>
+
+<ul>
+  <li>Memory access time = 100 nanoseconds</li>
+  <li>Average page fault service time = 25 milliseconds
+    <ul>
+      <li>EAT = (1 – p) x 100 + p (25,000,000) 
+ 	= 100 + 24,999,900 X p</li>
+      <li><strong>effective access time is directly proportional to page fault rate</strong></li>
+    </ul>
+  </li>
+  <li>If one access out of 1000 causes a page fault, the effective access time is 25 micro seconds</li>
+  <li>
+    <p>Computer would be slow down by a factor of 250 because of demand paging</p>
+  </li>
+  <li>cold faults가 아닌 일반 page fault를 줄이는 방법 ? -&gt; TLB cache! (cache의 hit ratio를 증가시킴으로써!)</li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Memory access time = 200 nanoseconds (demand paging을 안한 경우)</li>
+  <li>Average page-fault service time = 8 milliseconds</li>
+  <li>EAT = (1 – p) x 200 + p (8 milliseconds) 
+        = (1 – p) x 200 + p x 8,000,000 
+        = 200 + p x 7,999,800</li>
+  <li>If one access out of 1,000 causes a page fault, then
+    <ul>
+      <li>EAT = 8.2 microseconds.</li>
+      <li>This is a slowdown by a factor of 40!! (demand paging을 안할 때보다 40배만큼 느려짐)</li>
+    </ul>
+  </li>
+  <li>If want performance degradation &lt; 10 percent
+    <ul>
+      <li>220 &gt; 200 + 7,999,800 x p 
+ 20 &gt; 7,999,800 x p</li>
+      <li>p &lt; .0000025</li>
+      <li>&lt; one page fault in every 400,000 memory accesses</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="demand-paging-example-1">Demand Paging Example</h2>
+
+<ul>
+  <li>
+    <p>Memory access time = 1 microsecond</p>
+  </li>
+  <li>
+    <p>50% of the time the page that is being replaced has been modified and therefore needs to be swapped out.</p>
+  </li>
+  <li>
+    <p>Swap Page Time = 10 msec = 10,000 msec</p>
+
+    <p>​	EAT = (1 – p) x 1 + p (15000)</p>
+
+    <p>​			1 + 15000P (in msec)</p>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="demand-paging-optimizations---handling-of-swap-space">Demand Paging Optimizations - Handling of Swap Space</h2>
+
+<p>demand paging 성능을 올리는 방법</p>
+
+<ul>
+  <li>I/O to <strong>Swap space is faster than file system I/O</strong> even if on the same device
+    <ul>
+      <li>Swap space is allocated in larger chunks, less management needed than file system
+        <ul>
+          <li>(file을 찾아가기 위해서는) File lookups and indirect allocation methods are not used</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>For better paging performance,
+    <ul>
+      <li>First option: Copy entire process image to swap space at process load time
+        <ul>
+          <li>Then performing demand paging (page in and out) <strong>from the swap space</strong></li>
+          <li>Disadvantage: copying of the file image at program start-up(부담됨.)</li>
+        </ul>
+      </li>
+      <li>Second option: demand paging from the file system initially, but to write the pages to swap space as they are replaced
+        <ul>
+          <li>file system에서 demand paging을 바로 하긴 하는데 memory 탑재되었던 page가 replace(swap-out) 될 때, swap space로 swap-out한다.
+            <ul>
+              <li>즉 최초의 page가 read 될 때만 file system으로부터!</li>
+            </ul>
+          </li>
+          <li>Ensure that only needed pages are read from the file system but that all subsequent paging is done from swap space</li>
+          <li>Used in Linux, Windows</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<ul>
+  <li>Demand page in from program binary executable files on disk, but <strong>discard</strong> rather than paging out when freeing frame
+    <ul>
+      <li>수정되지 않은 부분의 swap-out은 그냥 버림.</li>
+      <li>Because they are not modified, 상관없음</li>
+      <li>can reduce the size of swap space</li>
+      <li>Still need to write to swap space
+        <ul>
+          <li>Swap space is used for the pages not associated with a file (like stack and heap) – <strong>anonymous memory</strong></li>
+          <li><strong>Pages modified in memory but not yet written back to the file system</strong></li>
+          <li>Used in Linux, BSD Unix</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Mobile systems
+    <ul>
+      <li>Typically don’t support swapping</li>
+      <li>Instead, demand page from file system and reclaim read-only pages (such as code) from applications if memory becomes constrained</li>
+      <li>Such data can be demand-paged from the file systems if it is later needed</li>
+      <li>Under iOS, anonymous memory pages are never reclaimed from an application unless the application is terminated or explicitly releases the memory</li>
+      <li>Compressed memory (alternative to swapping) is used in mobile systems</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="copy-on-write">Copy-on-Write</h2>
+
+<ul>
+  <li><strong>Copy-on-Write</strong> (COW) allows both parent and child processes to initially share the same pages in memory (똑같은 프로세스 이미지를 copy하여 가지는 것이 아니라 똑같은 주소 공간을 공유함)
+    <ul>
+      <li>child는 별도의 주소 공간이 만들어지지 않음</li>
+      <li>If either process <strong>modifies</strong> a shared page, only then is the page <strong>copied</strong>
+        <ul>
+          <li>write 하는 경우 copy를 만든다!</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>COW allows more efficient process creation as only modified pages are copied
+    <ul>
+      <li>시간도 적게 걸리고 메모리 효율도 good!</li>
+    </ul>
+  </li>
+  <li>In general, free pages are allocated from a <strong>pool</strong> of <strong>zero-fill-on-demand pages</strong>
+    <ul>
+      <li>Pool should always(항상, 미리) have free frames for fast demand page execution
+        <ul>
+          <li>Don’t want to have to free a frame as well as other processing on page fault</li>
+        </ul>
+      </li>
+      <li>Why zero-out a page before allocating it?</li>
+    </ul>
+  </li>
+  <li><strong>vfork()</strong> variation on fork() system call has <strong>parent suspend</strong> and child using copy-on-write address space of parent
+    <ul>
+      <li>Designed to have child call <strong>exec()</strong></li>
+      <li>Very efficient</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="before-process-1-modifies-page-c">Before Process 1 Modifies Page C</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234106691.png" alt="image-20221123234106691" /></p>
+
+<p><br /></p>
+
+<h2 id="after-process-1-modifies-page-c">After Process 1 Modifies Page C</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234120807.png" alt="image-20221123234120807" /></p>
+
+<p><br /></p>
+
+<h2 id="what-happens-if-there-is-no-free-frame---시험">What Happens if There is no Free Frame? - 시험</h2>
+
+<ul>
+  <li>왜 free frame이 없음? -&gt; Used up by process pages (process page에 의해 모두 사용되었기 때문)</li>
+  <li>Also in demand from the kernel, I/O buffers, etc</li>
+  <li>How much to allocate to each?
+    <ul>
+      <li>프로세스 당 사용할 수 있는 free frame의 개수 제한
+        <ul>
+          <li>모든 page가 다 사용되는 것이 아니기 때문에</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><em>“실제 메모리에 비어있는 Frame이 존재하지 않으면 어떡하지?”</em></p>
+  </li>
+  <li><strong>Page replacement</strong> – find some page in memory, but not really in use, page it out</li>
+  <li>즉, 현재 자신이 차지하고 있는 Frame을 지금 당장 실행해야 할 Page에게 넘겨 줄 Victim Frame을 찾는 과정</li>
+  <li>제한된 페이지 개수를 가진 프로세스가 페이지를 교체할 때 뭘(실제로 사용되지 않는) 빼고 넣을지 결정하는</li>
+  <li>Algorithm – terminate? swap out? replace the page? 
+    - What page (of a job) in memory is going to be replaced by a new page which must be brought in ? (기준이 뭐임?)</li>
+  <li><mark>Performance – want an algorithm which will result in minimum number of page faults </mark>
+    <ul>
+      <li>잘 사용되지 않는 page를 교체하는 것으로 목표로 해야지 성능이 극대화됨.</li>
+    </ul>
+  </li>
+  <li>Same page may be brought into memory several times</li>
+  <li>Reduce the # of page faults</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="page-replacement">Page Replacement</h2>
+
+<ul>
+  <li>Prevent <strong>over-allocation</strong> of memory by modifying page-fault service routine to include page replacement</li>
+  <li>Use <strong>modify (dirty) bit</strong> to reduce overhead of page transfers – only modified pages are written to disk
+    <ul>
+      <li>page in을 하고 읽기만 했으면 page out을 하지 않아도 되는데 page in을 하고 수정을 했다면 <strong>반드시</strong> page out을 해주어야 한다.</li>
+      <li>page out이 되어야 하는지 아닌지를 알려주는 bit가 modify bit(dirty bit)</li>
+      <li>즉, Modify Bit는 현재 메모리에 올라가 있는 Page들 중에서 내부 데이터가 바뀌었는지를 알려주는 Bit이며, 내부 데이터가 바뀌었다면 Disk와의 동기화를 위해 Swap-out 될 필요가 있다.
+        <ul>
+          <li>이러한 Swap-In/Swap-out은 많은 cost를 발생시키는데, 그래서 Victim Frame을 찾을 때는 Modify bit가 0, 즉 Swap-out 될 필요 없는 Frame을 우선적으로 찾아야 한다.(Swap-out 될 필요가 없으니 그 자리에 덮어 씌워버리면 그만이기 때문)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Page replacement completes separation between logical memory and physical memory – large virtual memory can be provided on a smaller physical memory</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="need-for-page-replacement">Need For Page Replacement</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234231861.png" alt="image-20221123234231861" /></p>
+
+<p><br /></p>
+
+<h2 id="basic-page-replacement">Basic Page Replacement</h2>
+
+<ol>
+  <li>Find the location of the desired page on disk. (원하는 Page를 Disk에서 찾는다.)</li>
+  <li>
+    <p>Find a free frame: (비어있는 Frame을 찾는다.)</p>
+
+    <ul>
+      <li>
+        <p>If there is a free frame, use it.</p>
+      </li>
+      <li>
+        <p><strong>If there is no free frame</strong>, use a page replacement algorithm to select a <strong>victim frame</strong>.</p>
+        <ul>
+          <li>Write victim frame to disk if dirty (만약 dirty면 <strong>swap out</strong>을 먼저 해줘야 함.)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Bring the desired page into the (newly) free frame. Update the page and frame tables.
+    <ul>
+      <li>Disk에서 가져온 Page를 2번 과정에서 찾은 Frame 위치에 swap-in 하고 Frame Table과 Page Table을 update 시킨다.</li>
+    </ul>
+  </li>
+  <li>Continue the process by restarting the instruction that caused the trap
+    <ul>
+      <li>instruction 재 실행</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Note now potentially 2 page transfers for page fault – increasing EAT</p>
+
+<p><br /></p>
+
+<h2 id="page-replacement-1">Page Replacement</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234316255.png" alt="image-20221123234316255" /></p>
+
+<ul>
+  <li>1번에 의해서 f 위치에 있는 victim frame을 swap out하기 때문에 page table에서 f에 대한 것을 v -&gt; i로 바꿔준다.</li>
+  <li>3번에 의해서 page in 되기 때문에 다시 f 는 i-&gt;v로 바뀐다. (새로운 것으로 바뀌었음!)</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="page-and-frame-replacement-algorithms">Page and Frame Replacement Algorithms</h2>
+
+<ul>
+  <li><strong>Frame-allocation algorithm</strong> determines
+    <ul>
+      <li>How many frames to give each process</li>
+      <li>Which frames to replace</li>
+    </ul>
+  </li>
+  <li><strong>Page-replacement algorithm</strong>
+    <ul>
+      <li>Want lowest page-fault rate on both first access and re-access</li>
+    </ul>
+  </li>
+  <li>Evaluate algorithm by running it on a particular string of memory references (<strong>reference string</strong>) and computing <strong>the number of page faults</strong> on that string
+    <ul>
+      <li><strong>String is just page numbers, not full addresses</strong></li>
+      <li>Repeated access to the same page does not cause a page fault</li>
+      <li>Results depend on number of frames available</li>
+    </ul>
+  </li>
+  <li>In all our examples, the reference string is</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234425976.png" alt="image-20221123234425976" /></p>
+
+<p><br /></p>
+
+<h2 id="graph-of-page-faults-versus-the-number-of-frames">Graph of Page Faults Versus The Number of Frames</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234436585.png" alt="image-20221123234436585" /></p>
+
+<p>성능이 나빠지지 않는 선에서 frame수를 최소화</p>
+
+<p>frame 수를 너무 늘려도 overhead</p>
+
+<p><br /></p>
+
+<h2 id="first-in-first-out-fifo-algorithm">First-In-First-Out (FIFO) Algorithm</h2>
+
+<ul>
+  <li>말 그대로 실제 메모리에 올라온 지 (Frame을 차지한 지) 가장 오래된 Frame을 선택한다.</li>
+  <li>Reference string: 7,0,1,2,0,3,0,4,2,3,0,3,0,3,2,1,2,0,1,7,0,1</li>
+  <li>Replace page which has been in memory for the largest period of time (탑재된 시점이 가장 오래된 것)</li>
+  <li>3 frames (3 pages can be in memory at a time per process)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234511222.png" alt="image-20221123234511222" /></p>
+
+<ul>
+  <li>가장 오래된 걸 갈아치우면서 진행</li>
+  <li>Can vary by reference string: consider 1,2,3,4,1,2,5,1,2,3,4,5
+    <ul>
+      <li>Adding more frames can cause more page faults!
+        <ul>
+          <li>Belady’s Anomaly (규칙성이 없드라.)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>How to track ages of pages?
+    <ul>
+      <li>Just use a FIFO queue</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="first-in-first-out-fifo-algorithm-1">First-In-First-Out (FIFO) Algorithm</h2>
+
+<ul>
+  <li>Reference string: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5</li>
+  <li>3 frames (3 pages can be in memory at a time per process)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234549107.png" alt="image-20221123234549107" /></p>
+
+<ul>
+  <li>4 frames</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234600941.png" alt="image-20221123234600941" /></p>
+
+<ul>
+  <li>FIFO Replacement – Belady’s Anomaly
+    <ul>
+      <li>more frames =&gt; less page faults</li>
+      <li>frame을 더 줬더니 page faults가 늘어났네? -&gt; 모순이 존재</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fifo-illustrating-beladys-anamoly">FIFO Illustrating Belady’s Anamoly</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234627860.png" alt="image-20221123234627860" /></p>
+
+<p><br /></p>
+
+<h2 id="beladys-anomaly---시험">Belady’s Anomaly - 시험</h2>
+
+<ul>
+  <li>For certain replacement strategies, the page fault rate may increase for certain strings as the number of allocated frames increases</li>
+  <li>Stack property
+    <ul>
+      <li><img src="https://media.geeksforgeeks.org/wp-content/uploads/stackbased.png" alt="img" /></li>
+      <li>At each point in any page reference string, the set of pages which would be in memory, if n pages were saved, is a subset of the pages which would be in memory if (n+1) pages were saved
+        <ul>
+          <li>페이지 참조 문자열의 각 지점에서, n개의 페이지가 저장되면 메모리에 있는 페이지 집합은 (n+1)개의 페이지가 저장되면 메모리에 있는 페이지의 하위 집합입니다.</li>
+        </ul>
+      </li>
+      <li><strong>FIFO</strong> exhibits belady’s anomaly because <strong>it does not have stack property</strong></li>
+      <li><mark>왜 FIFO는 stack property를 갖지 않을까?</mark>
+        <ul>
+          <li>Belady’s Anomaly  때문에 어쩌고 저쩌고</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>belady’s anomaly 현상이 일어나는 이유는 stack property를 갖고 있지 않기 때문</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="optimal-algorithm">Optimal Algorithm</h2>
+
+<ul>
+  <li>Replace page that will not be used for longest period of time
+    <ul>
+      <li>가장 오랫동안 사용되지 않을 Frame을 Victim Frame으로 선택</li>
+      <li>Replace page whose next reference is furthest in the future</li>
+      <li>9 is optimal for the example</li>
+      <li>가장 좋은 알고리즘이라서 optimal이라는 이름이 붙음</li>
+    </ul>
+  </li>
+  <li>How do you know this?
+    <ul>
+      <li>Can’t read the future (구현이 불가능함… - 미래의 패턴을 보고 해야 하기 때문에)</li>
+    </ul>
+  </li>
+  <li>Used for measuring how well your algorithm performs(다른 알고리즘의 성능이 좋냐 안 좋냐 비교만 가능)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234718477.png" alt="image-20221123234718477" /></p>
+
+<p><br /></p>
+
+<ul>
+  <li>Idea is to postpone next fault as long as possible</li>
+  <li>4 frames example</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234738988.png" alt="image-20221123234738988" /></p>
+
+<ul>
+  <li>얘는 stack property를 갖고 있어서 page faults가 줄었어!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="least-recently-used-lru-algorithm">Least Recently Used (LRU) Algorithm</h2>
+
+<ul>
+  <li><strong>Use past</strong> knowledge rather than future (과거의 패턴을 가지고 algorithm 결정)
+    <ul>
+      <li>가장 오랫동안 사용되지 않은 Page의 Frame을 선택!</li>
+    </ul>
+  </li>
+  <li>Select page for replacement which has not been used for the longest period of time</li>
+  <li>Associate time of last use with each page
+    <ul>
+      <li>사용된 지 가장 오래된 page가 victim이 되어야 함(과거에도 사용 안 됐으면 나중에도 사용 안되겠지~)</li>
+    </ul>
+  </li>
+  <li>Idea: recent past reflects behavior of near future
+    <ul>
+      <li>Page least likely to be used in near future is page used furthest in the past</li>
+      <li>FIFO: time, LRU: Use</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234803960.png" alt="image-20221123234803960" /></p>
+
+<ul>
+  <li>12 faults – better than FIFO but worse than OPT</li>
+  <li>Generally good algorithm and frequently used</li>
+  <li>But how to implement?</li>
+  <li>사용 시점을 표현하는 방식이 LRU에서 핵심 포인트</li>
+  <li>가장 최근에 실행되었으면 걔는 victim이 될 수 없음</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="more-example">More example</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234840541.png" alt="image-20221123234840541" /></p>
+
+<ul>
+  <li>NF - No fault</li>
+  <li>CF - Cold Faults</li>
+  <li>F - Fault</li>
+  <li>새로 들어오는 걸 top에 계속해서 두는 표현 방식 - 뒤에 있는 것들은 하나씩 아래로 밀어서 제일 아래 있던 것이 victim이 된다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="lru-algorithm-cont">LRU Algorithm (Cont.)</h2>
+
+<ul>
+  <li>We can expect god performance, “if past is reflections of future behavior”</li>
+  <li>Problem: <strong>difficult</strong> to implement efficiently: <strong>Stack</strong>, <strong>Counter</strong></li>
+  <li><strong>Counter implementation</strong>
+    <ul>
+      <li>Every page entry has a counter; every <strong>time</strong> page is referenced through this entry, copy the clock into the counter. (page가 reference가 될 때마다)</li>
+      <li>When a page needs to be changed, look at the counters to find <strong>smallest value</strong> (to determine which are to change).
+        <ul>
+          <li>Search through table needed (비교를 해야 하기 때문에 각각을 search 해야 함.)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Stack implementation</strong>
+    <ul>
+      <li>keep a stack of page numbers in a doubly linked list form:</li>
+      <li>Page referenced:
+        <ul>
+          <li>move it to the top</li>
+          <li>최대 : requires 6 pointers to be changed -&gt; why?
+            <ul>
+              <li>현재 page가 stack에 존재한다면 해당 값을 stack의 top으로 옮겨 주어야 하기 때문에 최대 6개의 포인터를 바꾸어 주어야 하는 overhead가 생길 수 있다.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>But each update more expensive</li>
+      <li>No search for replacement (스택의 top이 LRU 일것이고(가장 최근 사용) 맨 아래 깔린 게 victim이 될 것이기 때문 )</li>
+    </ul>
+  </li>
+  <li>LRU and OPT are cases of <strong>stack algorithms</strong> that don’t have Belady’ s
+    <ul>
+      <li>stack property를 가짐!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="use-of-a-stack-to-record-the-most-recent-page-references">Use Of A Stack to Record The Most Recent Page References</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123234932918.png" alt="image-20221123234932918" /></p>
+
+<p><mark>한 번 해 보기!</mark></p>
+
+<p><br /></p>
+
+<h2 id="lru-approximation-algorithms유사-lru">LRU Approximation Algorithms(유사 LRU)</h2>
+
+<ul>
+  <li>
+    <p>LRU needs special hardware and still slow</p>
+  </li>
+  <li>Inexact LRU
+    <ul>
+      <li>Select page for replacement which has not been used recently</li>
+    </ul>
+  </li>
+  <li>Reference bit 사용 (by hardware 구현)
+    <ul>
+      <li>With each page associate a bit, initially = 0</li>
+      <li>When page is referenced bit set to 1</li>
+      <li>Periodically clear bits.</li>
+      <li>Replace the one which is 0 (if one exists).
+        <ul>
+          <li>We do not know the order, however (누가 레퍼런스가 먼저 됐는 지 모름)</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3 id="1-additional-reference-bit-사용-앞선-문제-해결">1. Additional reference bit 사용 (앞선 문제 해결)</h3>
+
+    <ul>
+      <li>Shift register</li>
+      <li>Maintain use bit for each page</li>
+      <li>at periods, shift use bit into register</li>
+      <li>Will shift in a 1 if used in that period, shift in 0 otherwise</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123235025452.png" alt="image-20221123235025452" /></p>
+
+<p>가장 작은 값이 제일 오래있었던 page</p>
+
+<ul>
+  <li>오른쪽으로 shift 되기 때문에 가장 오래 된 것은 msb부터 쭉 0일 것이기 때문에</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="3-second-chance-algorithm">3. Second chance algorithm</h3>
+
+<ul>
+  <li>Generally <strong>FIFO</strong>, plus hardware-provided reference bit  (FIFO + reference bit)</li>
+  <li>Clock replacement.</li>
+  <li>reference 되면 reference bit를 1로 바꿈</li>
+  <li>If page to be replaced (in clock order) has
+    <ul>
+      <li>Reference bit = 0 -&gt; replace it</li>
+      <li>Reference bit = 1. then:
+        <ul>
+          <li>set reference bit 0, leave page in memory. (한 번 더 기회를 준다.)</li>
+          <li>replace next page (in clock order), subject to same rules.(-&gt; 다른 victim을 찾아 떠남)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>모든 page의 reference bit가 1이라면 결국은 FIFO와 똑같이 작동</li>
+</ul>
+
+<p><br /></p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123235108592.png" alt="image-20221123235108592" /></p>
+
+<p>1번으로 setting 되어 있으면 바로 victim으로 선정하지 않고 두번 째 다시 체크하겠다.</p>
+
+<p><br /></p>
+
+<h3 id="3-enhanced-second-chance-algorithm">3. Enhanced Second-Chance Algorithm</h3>
+
+<ul>
+  <li>Improve algorithm by using <strong>reference bit</strong> and <strong>modify bit</strong> (if available) in concert</li>
+  <li>Take ordered pair (reference, modify)</li>
+</ul>
+
+<ol>
+  <li>(0, 0) neither recently used not modified – best page to replace</li>
+  <li>(0, 1) not recently used but modified – not quite as good, must write out before replacement</li>
+  <li>(1, 0) recently used but clean – probably will be used again soon</li>
+  <li>(1, 1) recently used and modified – probably will be used again soon and need to write out before replacement</li>
+</ol>
+
+<ul>
+  <li>When page replacement called for, use the clock scheme but use the four classes replace page in lowest non-empty class
+    <ul>
+      <li>Might need to search circular queue several times</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="counting-algorithms">Counting Algorithms</h2>
+
+<ul>
+  <li>Keep a counter of the number of references that have been made to each page.
+    <ul>
+      <li>Not common</li>
+      <li>Access 된 횟수를 Page table의 각 Page에다가 저장을 해서 그 값으로 Victim page를 선택한다.</li>
+    </ul>
+  </li>
+  <li><strong>1. LFU (Least Frequently Used)</strong>
+    <ul>
+      <li>Algorithm: replaces page with smallest count.
+        <ul>
+          <li>count 값, 즉 access 된 횟수가 가장 적은 페이지를 선택</li>
+        </ul>
+      </li>
+      <li>Suffers from the situation in which a page is used heavily during initial phase, but then is never used again
+        <ul>
+          <li>초반에만 많이 사용되고 나중에 잘 사용되지 않는 page와 초반엔 잘 사용되지 않다가 후반부에 많이 사용되는 페이지의 경우 LRU를 잘 찾아내지 못할 것이다.</li>
+        </ul>
+      </li>
+      <li>Solution is to shift the counts right by 1 bit at regular intervals, forming an exponentially decaying average usage</li>
+    </ul>
+  </li>
+  <li><strong>2. MFU (Most Frequently Used) Algorithm</strong>
+    <ul>
+      <li>count 값, 즉 access 된 횟수가 가장 많은 페이지를 victim으로 선택</li>
+      <li>based on the argument that the page with the smallest count was probably just brought in and has yet to be used.
+        <ul>
+          <li>count값이 작은 페이지는 최근에 탑재된 페이지일 가능성이 높다.라고 해석</li>
+        </ul>
+      </li>
+      <li>많이 access 되었다면 앞으로는 참조되지 않을 것이라고 판단</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="page-buffering-algorithms">Page-Buffering Algorithms</h2>
+
+<p>demand paging의 성능을 높이기 위한 과정의 일종들</p>
+
+<ul>
+  <li>Keep a <strong>pool</strong> of free frames, always (pool을 사용)
+    <ul>
+      <li>Then frame available when needed, not found at fault time</li>
+      <li>Read page into free frame and select victim to evict and add to free pool</li>
+      <li>When convenient(편할 때 아무 때나), evict(쫓아내다) victim</li>
+    </ul>
+  </li>
+  <li>Possibly, keep list of <strong>modified pages</strong> (수정된 페이지 리스트로 관리)
+    <ul>
+      <li>When backing store otherwise idle, write pages there and set to non-dirty</li>
+    </ul>
+  </li>
+  <li>Possibly, keep free frame contents intact and note what is in them
+    <ul>
+      <li>victim으로 선정되었던 frame를 zero-out(초기화)을 하지 않게 되면 LRU 페이지 선정이 잘못 되어진 것을 조금 보정할 수 있게된다.</li>
+      <li>If referenced again before reused, no need to load contents again from disk</li>
+      <li>Generally useful to reduce penalty if wrong victim frame selected</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="applications-and-page-replacement">Applications and Page Replacement</h2>
+
+<ul>
+  <li>All of these algorithms have OS guessing about future page access</li>
+  <li>Some applications have better knowledge – i.e. databases
+    <ul>
+      <li>미래의 패턴을 알고 있음</li>
+    </ul>
+  </li>
+  <li><strong>Memory intensive applications</strong> can cause double buffering</li>
+  <li>OS keeps copy of page in memory as I/O buffer</li>
+  <li>Application keeps page in memory for its <strong>own work</strong></li>
+  <li>Operating system can given direct access to the disk, getting out of the way of the applications</li>
+  <li>Raw disk mode</li>
+  <li>Bypasses buffering, locking, etc</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="allocation-of-frames">Allocation of Frames</h2>
+
+<ul>
+  <li>Demand paging 에서는 프로세스가 당장 수행해야 할 부분에 대해서 최소한의 Frame 만을 할당하게 된다.
+    <ul>
+      <li>이러한 Frame을 할당해 주는 방법에도 몇 가지가 존재함.</li>
+    </ul>
+  </li>
+  <li>Each process needs minimum number of pages.</li>
+  <li>Example: IBM 370 – <strong>6 pages</strong> to handle SS MOVE instruction:
+    <ul>
+      <li>instruction is 6 bytes, might span 2 pages.</li>
+      <li>2 pages to handle <strong>from</strong>.</li>
+      <li>2 pages to handle <strong>to</strong>.</li>
+    </ul>
+  </li>
+  <li>Maximum of course is total frames in the system</li>
+  <li>Two major allocation schemes.
+    <ul>
+      <li>fixed allocation</li>
+      <li>priority allocation</li>
+    </ul>
+  </li>
+  <li>Many variations</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="fixed-allocation">Fixed Allocation</h2>
+
+<ul>
+  <li>Equal allocation
+    <ul>
+      <li>프로세스 목적과 성격에 상관없이 모든 프로세스에게 고정된 양의 Frame을 할당</li>
+      <li>For example, if there are 100 frames (after allocating frames for the OS) and 5 processes, give each process 20 frames</li>
+      <li>Keep some as free frame buffer pool</li>
+    </ul>
+  </li>
+  <li>Proportional allocation – Allocate according to the size of process.
+    <ul>
+      <li>프로세스 크기에 비례해서 Frame을 할당해 주는 방법</li>
+      <li>Dynamic as degree of multiprogramming, process sizes change</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123235451540.png" alt="image-20221123235451540" /></p>
+
+<p><br /></p>
+
+<h2 id="priority-allocation">Priority Allocation</h2>
+
+<ul>
+  <li>
+    <p>우선순위가 높은 프로세스에게 그만큼 더 많은 양의 Frame을 할당해 주는 방법.</p>
+  </li>
+  <li>Use a proportional allocation scheme using priorities rather than size.</li>
+  <li>If process Pi generates a page fault,
+    <ul>
+      <li>select for replacement one of its frames.</li>
+      <li>select for replacement a frame from a process with lower priority number.</li>
+    </ul>
+  </li>
+  <li>FIFO를 제외하고는 frame을 많이 주면 page fault가 줄어듦.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="global-vs-local-allocation">Global vs. Local Allocation</h2>
+
+<ul>
+  <li><strong>Global replacement</strong> – process selects a replacement frame from the set of all frames; one process can take a frame from another
+    <ul>
+      <li>모든 프로세스의 모든 페이지에 victim을 찾음
+        <ul>
+          <li>다른 프로세스가 갖고 있는 frame도 victim으로 선정가능.</li>
+        </ul>
+      </li>
+      <li>But then process execution time can vary greatly</li>
+      <li>But greater throughput so more common</li>
+    </ul>
+  </li>
+  <li><strong>Local replacement</strong> – each process selects from only its own set of allocated frames
+    <ul>
+      <li>해당 프로세스 내에서만 victim을 찾음</li>
+      <li>More consistent per-process performance</li>
+      <li>But possibly underutilized memory</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="non-uniform-memory-access">Non-Uniform Memory Access</h2>
+
+<ul>
+  <li>So far we assume that all memory accessed equally</li>
+  <li>Many systems are NUMA – speed of access to memory varies
+    <ul>
+      <li>Consider system boards containing CPUs and memory, interconnected over a system bus</li>
+    </ul>
+  </li>
+  <li>When a process incurs a page fault, a NUMA-aware virtual memory system will allocate that process a frame as close as possible to the CPU on which the process is running</li>
+  <li>Optimal performance comes from allocating memory “close to” the CPU on which the thread is scheduled
+    <ul>
+      <li>And modifying the scheduler to schedule the thread on the same system board when possible</li>
+      <li>Solved by Solaris by creating <strong>lgroups (locality group)</strong>
+        <ul>
+          <li>Structure to track CPU / Memory low latency groups</li>
+          <li>Used my schedule and pager</li>
+          <li>When possible schedule all threads of a process and allocate all memory for that process within the lgroup</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="numa-multiprocessing-architecture">NUMA Multiprocessing Architecture</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123235737223.png" alt="image-20221123235737223" /></p>
+
+<p><br /></p>
+
+<h2 id="thrashing">Thrashing</h2>
+
+<ul>
+  <li>If a process does not have “enough” pages, the page-fault rate is very high.
+    <ul>
+      <li>Page fault to get page</li>
+      <li>Replace existing frame</li>
+      <li>But quickly need replaced frame back</li>
+      <li>This leads to:
+        <ul>
+          <li>low CPU utilization.
+            <ul>
+              <li>Spending more time paging than executing</li>
+            </ul>
+          </li>
+          <li>operating system thinks that it needs to increase the degree of multiprogramming.</li>
+          <li>another process added to the system.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Thrashing = a process is busy swapping pages in and out. (page in-out을 너무 많이 함.)</li>
+  <li>Solution :
+    <ul>
+      <li>provide a process as many frames as it needs
+        <ul>
+          <li>그것이 필요한 만큼 많은 프로세스를 제공한다.</li>
+          <li>demanding page의 장점이 하나도 없어짐</li>
+        </ul>
+      </li>
+      <li>Then, How much ? =&gt; Working set model</li>
+    </ul>
+  </li>
+  <li>virtual memory 기법의 구현 원리는 그때 그때 필요한 부분만을 memory에 올려서 실행하는 것이고 당장 실행하지 않을 것 같은 부분은 디스크에 보관하는 것이다.</li>
+  <li>메모리에 올라간 부분들은 page table에 표시되어 각각 할당 받은 frame에 올라가게 된다.</li>
+  <li>하지만 만약 현재 실행 시점에서 필요한 부분이 메모리 상에 존재하지 않고 디스크에 존재하여 여유 frame이 없다면 디스크에서 필요한 부분을 찾아 swap-out 시킬 victim frame을 찾아 디스크로 보내거나 덮어씌운 후 새로 올린 부분의 명령어를 다시 실행시킨다.</li>
+  <li>이러한 현상을 Page Fault라고 하며 CPU 자원 효율성을 떨어뜨리는 현상 중 하나이다. 왜냐하면 resource를 할당 받은 시간 내에 CPU 자원을 사용하기보다는 I/O 작업에 시간을 더 소비하기 때문이다.</li>
+  <li>Multi-programming은 CPU 자원의 효율성을 높이기 위해 보다 많은 프로세스에게 CPU를 할당해 주면서 자원을 더욱 바쁘게 효율적으로 관리하는 기법이다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="thrashing-cont">Thrashing (Cont.)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221123235909542.png" alt="image-20221123235909542" /></p>
+
+<ul>
+  <li>한정된 자원 안에서 OS는 efficiency를 높이기 위해 더 많은 process를 동시에 실행시키기 위해서 memory에 <strong>많은 프로세스를 올리게 된다.</strong></li>
+  <li>이로써 CPU utilization은 높아지긴 하지만 동시에 실행 중인 <strong>process 의 개수 자체가 많아지기 때문에</strong> 각 프로세스가 할당받을 수 있는 자원의 양은 줄어들 수 밖에 없다.</li>
+  <li>그말인 즉슨, 할당 받을 수 있는 frame의 수도 줄어든다는 뜻인데, frame의 수가 줄어들면 앞서 말했던 것처럼 그 만큼 page fault가 많이 발생하게 되고, 그러면 자원의 활용보단 I/O 작업에 시간을 더 소비하게 된다.</li>
+  <li>이렇게 되면 프로그램의 진행속도는 굉장히 느려지고 CPU utilization 또한 굉장히 떨어지게 된다.
+    <ul>
+      <li>그런데 문제는 OS는 이러한 CPU 효율성이 떨어지는 것을 막기 위해 memory에 프로세스를 더욱 올리게 된다.(헉?)</li>
+    </ul>
+  </li>
+  <li>이런 악순환으로 인해 CPU 효율성은 기하 급수적으로 떨어지게 되고(위 그래프와 같이) 결국 프로그램의 비정상적인 종료로 이어지는데</li>
+  <li>바로 이런 현상을 Thrasing이라고 한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="thrashing-diagram">Thrashing Diagram</h2>
+
+<ul>
+  <li>Why does demand paging work?
+    <ul>
+      <li>Locality model: Program references cluster(집합) in localities
+        <ul>
+          <li>goto를 사용하면 locality를 위배하기 쉬움</li>
+        </ul>
+      </li>
+      <li>Locality is set of pages actively being used together</li>
+      <li>Once start referring to page within a locality, will continue to refer them for some time</li>
+      <li>Process migrates from one locality to another.
+        <ul>
+          <li>Once locality is exited (stop referring pages in locality), those pages will be referred to in frequently (in near future)</li>
+        </ul>
+      </li>
+      <li>Localities may <strong>overlap</strong>.</li>
+    </ul>
+  </li>
+  <li>Why does thrashing occur?
+    <ul>
+      <li>∑ size of locality &gt; total memory size
+        <ul>
+          <li>Limit effects by using local or priority page replacement</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="locality-in-a-memory-reference-pattern">Locality In A Memory-Reference Pattern</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124000045242.png" alt="image-20221124000045242" /></p>
+
+<ul>
+  <li>이러한 Locality map을 보면 알 수 있듯이 현 시점에서부터 일정 시점 전의 locality를 바탕으로 현재의 locality 영역을 추정하게 된다.</li>
+  <li>그래서 locality가 분기되는 시점(즉, locality의 영역이 급변하는 구간)에서는 순간적으로 page fault의 횟수가 치솟게 되지만 시간이 지날 수록 수치는 안정화 된다.</li>
+  <li>이렇듯 현재 시점으로부터 과거의 locality를 측정하게 될 때 이 시점의 간격을 Working set Size라고 한다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="working-set-model">Working-Set Model</h2>
+
+<p>적정선의 frame 개수가 얼마를 말하는 것이냐?</p>
+
+<ul>
+  <li>Based on locality</li>
+  <li>Strategy :
+    <ul>
+      <li><strong>prevents thrashing</strong> while keeping the degree of multiprogramming as high as possible</li>
+      <li>Increase/decrease # of frames allocated to a job <strong>based on locality</strong></li>
+    </ul>
+  </li>
+  <li>△ = working-set window = a fixed number of page references
+    <ul>
+      <li>Approximate of program’s locality</li>
+      <li>Example: 10,000 instruction</li>
+    </ul>
+  </li>
+  <li>WSSi (working set of Process Pi ) = total number of pages referenced in the most recent △ (varies in time)
+    <ul>
+      <li>if △ too small will not encompass entire locality, lead too many page faults.</li>
+      <li>if △ too large will encompass several localities.</li>
+      <li>if △ = ∞ =&gt; will encompass entire program.</li>
+    </ul>
+  </li>
+  <li>D = ∑ WSSi = total demand frames
+    <ul>
+      <li>approximation of locality</li>
+    </ul>
+  </li>
+  <li>if D &gt; m =&gt; Thrashing</li>
+  <li>Policy if D &gt; m, then suspend one of the processes.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="working-set-model-1">Working-set model</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124000545018.png" alt="image-20221124000545018" /></p>
+
+<ul>
+  <li>10개의 page가 reference 되는 것을 working set window로 잡았다.
+    <ul>
+      <li>10개의 page가 reference 되는 동안 5개의 page가 reference 되었다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="keeping-track-of-the-working-set">Keeping Track of the Working Set</h2>
+
+<ul>
+  <li>Approximate with <strong>interval timer</strong> + <strong>a reference bit</strong></li>
+  <li>Example: △ = 10,000
+    <ul>
+      <li>Timer interrupts after every 5000 time units.</li>
+      <li>Keep in memory 2 bits for each page.</li>
+      <li>Whenever a timer interrupts copy and sets the values of all reference bits to 0.</li>
+      <li>If one of the bits in memory = 1 =&gt; page in working set.</li>
+    </ul>
+  </li>
+  <li>Why is this not completely accurate?</li>
+  <li>Improvement = 10 bits and interrupt every 1000 time units.</li>
+  <li>of frames allocated to a job can vary, based on the # of pages in its working set</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="page-fault-frequency-scheme">Page-Fault Frequency Scheme</h2>
+
+<ul>
+  <li>More direct approach than WSS</li>
+  <li>How to prevent thrashing -&gt; control the page fault rate</li>
+  <li>Establish “acceptable” page-fault rate &amp; control it.
+    <ul>
+      <li>If actual rate too low, process loses frame.</li>
+      <li>If actual rate too high, process gains frame.</li>
+    </ul>
+  </li>
+  <li>Check for reallocation only when a job experiences a fault</li>
+  <li>upper bound와 lower bound 사이에 잘 있도록</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124000710522.png" alt="image-20221124000710522" /></p>
+
+<p><br /></p>
+
+<h2 id="working-sets-and-page-fault-rates">Working Sets and Page Fault Rates</h2>
+
+<ul>
+  <li>Direct relationship between working set of a process and its page-fault rate</li>
+  <li>Working set changes over time</li>
+  <li>Peaks and valleys over time</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124000732898.png" alt="image-20221124000732898" /></p>
+
+<ul>
+  <li>We use a “use bit” &amp; “clock”</li>
+  <li>Define some parameter t, length of time</li>
+  <li>When a page fault occurs</li>
+  <li>if time_since_last_fault &lt;= t then place new page in working set</li>
+  <li>else 
+mark for reallocation all pages not referenced since last fault</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="process-creation">Process Creation</h2>
+
+<ul>
+  <li>Virtual memory allows other benefits during process creation:</li>
+  <li>Copy-on-Write</li>
+  <li>Memory-Mapped Files</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-mapped-files">Memory-Mapped Files</h2>
+
+<ul>
+  <li>File I/O using open(), read(), write() requires system call &amp; disk access
+    <ul>
+      <li>Open(), read(), write() 시스템 호출을 사용하여 디스크에 있는 파일을 사용하면 파일이 매번 접근될 때마다 시스템 호출을 해야 하고 디스크를 접근해야 한다. 이와같은 방법 대신 입/출력을 메모리 참조 방식으로 대신할 수도 있다.</li>
+    </ul>
+  </li>
+  <li>Memory-mapped file I/O allows file I/O to be treated as routine memory access by <strong>mapping</strong> a disk block to a page in memory
+    <ul>
+      <li>메모리 매핑(memory mapping)이라고 불리는 접근 방식은 프로세스의 가상 주소 공간 중 일부를 관련된 파일에 할애하는 것을 말한다.</li>
+    </ul>
+  </li>
+  <li>A file is initially read using demand paging
+    <ul>
+      <li>A page-sized portion of the file is read from the file system into a physical page</li>
+      <li>Subsequent reads/writes to/from the file are treated as ordinary memory accesses</li>
+    </ul>
+  </li>
+  <li>Simplifies and speeds file access by driving file I/O through memory rather than read() and write() system calls</li>
+  <li>Also allows several processes to map the same file allowing the pages in memory to be shared</li>
+  <li>But when does written data make it to disk? –
+    <ul>
+      <li>Periodically and / or at file close() time</li>
+      <li>For example, when the pager scans for dirty pages</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-mapped-file-technique-for-all-io">Memory-Mapped File Technique for all I/O</h2>
+
+<ul>
+  <li>Some OS choose to memory-map a file regardless of whether the file was specified as memory-mapped</li>
+  <li>Some OS provide memory mapping only through a specific system call and uses the standard system calls to perform file I/O
+    <ul>
+      <li>memory mapped files for standard I/O</li>
+      <li>In Solaris, process can explicitly request memory mapping a file via mmap() system call</li>
+      <li>Now file mapped into process address space</li>
+      <li>For standard I/O (open(), read(), write(), close()), mapping file into kernel address space</li>
+      <li>Process still does read() and write()
+        <ul>
+          <li>Copies data to and from kernel space and user space</li>
+        </ul>
+      </li>
+      <li>Uses efficient memory management subsystem
+        <ul>
+          <li>Avoids needing separate subsystem</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>COW can be used for read/write non-shared pages</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-mapped-files-1">Memory Mapped Files</h2>
+
+<p>Memory mapped files can be used for shared memory (although again via separate system calls)</p>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124001024607.png" alt="image-20221124001024607" /></p>
+
+<p><br /></p>
+
+<h2 id="memory-mapped-shared-memory-in-windows">Memory-Mapped Shared Memory in Windows</h2>
+
+<p>생략</p>
+
+<p><br /></p>
+
+<h2 id="shared-memory-in-windows-api---생략">Shared Memory in Windows API - 생략</h2>
+
+<ul>
+  <li>First create a file mapping for file to be mapped
+    <ul>
+      <li>Then establish a view of the mapped file in process’s virtual address space</li>
+    </ul>
+  </li>
+  <li>Consider producer / consumer
+    <ul>
+      <li>Producer create shared-memory object using memory mapping features</li>
+      <li>Open file via CreateFile(), returning a HANDLE</li>
+      <li>Create mapping via CreateFileMapping() creating a named shared-memory object</li>
+      <li>Create view via MapViewOfFile()</li>
+    </ul>
+  </li>
+  <li>Sample code in Textbook</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="memory-compression">Memory Compression</h2>
+
+<ul>
+  <li><strong>An alternative to paging</strong></li>
+  <li>Rather than paging out modified frames to swap space, <strong>compress</strong> several frames into a single frame, <mark>enabling the system to reduce memory usage without resorting(의지) to swapping pages </mark></li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124001214880.png" alt="image-20221124001214880" /></p>
+
+<p><br /></p>
+
+<h2 id="allocating-kernel-memory">Allocating Kernel Memory</h2>
+
+<ul>
+  <li>Treated <strong>differently</strong> from user memory</li>
+  <li>Often allocated from a <strong>free-memory pool</strong>
+    <ul>
+      <li>Kernel requests memory for structures of varying sizes</li>
+      <li>Some kernel memory needs to be contiguous
+        <ul>
+          <li>I.e. for device I/O</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>결국 kernel도 메모리에 존재하고 코드가 수행되어야 하는데 커널도 메모리 할당을 받아야 하기 때문에 해당 방식에 대해서 소개해 보도록 하겠다.
+    <ul>
+      <li>그 전에 대부분 kernel에서의 코드들은 paging 기법을 사용하지 않는다. 왜냐하면 page-in, page-out과 같은 동작을 하면 속도가 느려지기 때문에 이것이 시스템 전체에 영향을 미칠 여지가 충분하기 때문이다.</li>
+    </ul>
+  </li>
+  <li>그래서 나온 메모리 할당 방식에는  Buddy System과 Slab Allocator가 있다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="buddy-system---동작원리-중요">Buddy System - 동작원리 중요</h2>
+
+<ul>
+  <li>Allocates memory from fixed-size segment consisting of physically-contiguous pages
+    <ul>
+      <li>고정된 크기의 segment를 할당해 준다.</li>
+      <li>고정된 크기라는 것은 2의 지수성 크기를 가져야 함을 말한다.(최소 4K)</li>
+    </ul>
+  </li>
+  <li>Memory allocated using <strong>power-of-2 allocator</strong>
+    <ul>
+      <li>Satisfies requests in units sized as power of 2</li>
+      <li>Request rounded up to next highest power of 2</li>
+      <li>When smaller allocation needed than is available, current chunk split into two buddies of next-lower power of 2
+        <ul>
+          <li>Continue until appropriate sized chunk available</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>For example, assume 256KB chunk available, kernel requests 21KB
+    <ul>
+      <li><strong>Split</strong> into A<sub>L</sub> and A<sub>r</sub> of 128KB each
+        <ul>
+          <li>One further divided into BL and BR of 64KB
+            <ul>
+              <li>One further into CL and CR of 32KB each – one used to satisfy request</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>만약 21KB를 요청하는데 256KB가 사용가능하다면 그것을 2개로 계속 나누어서 적당한 크기를 할당해 준다.</li>
+      <li>그런데 한쪽만 나눠지는 게 아니라 모두 짝을 맞춰서 나눠진다.</li>
+    </ul>
+  </li>
+  <li>Advantage – quickly coalesce unused chunks into larger chunk (크기가 큰 요청이 오면 재빨리 합쳐서 주면 된다.)</li>
+  <li>Disadvantage - <strong>fragmentation</strong></li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="buddy-system-allocators">Buddy System AllocatorS</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124001505542.png" alt="image-20221124001505542" /></p>
+
+<p><br /></p>
+
+<h2 id="slab-allocator---동작원리-중요">Slab Allocator - 동작원리 중요</h2>
+
+<ul>
+  <li>Alternate strategy</li>
+  <li><strong>Slab</strong> is one or more physically contiguous pages
+    <ul>
+      <li>물리적으로 연속된 하나 이상의 페이지로 구성된 영역</li>
+    </ul>
+  </li>
+  <li><strong>Cache</strong> consists of one or more slabs
+    <ul>
+      <li>slab에서 사용하는 하나의 임시 보관소 개념 (우리가 아는 cache X)</li>
+    </ul>
+  </li>
+  <li>Single cache for each unique kernel data structure
+    <ul>
+      <li>Each cache filled with <strong>objects</strong> – instantiations of the data structure</li>
+    </ul>
+  </li>
+  <li>When cache created, filled with objects marked as free</li>
+  <li>When structures stored, objects marked as used</li>
+  <li>If slab is full of used objects, next object allocated from empty slab
+    <ul>
+      <li>If no empty slabs, new slab allocated</li>
+    </ul>
+  </li>
+  <li>Benefits include <strong>no fragmentation</strong>, fast memory request satisfaction
+    <ul>
+      <li>메모리의 기본 단위가 kernel object인데 그 size 만큼 cache를 구성하기 때문에 fragmentation이 존재하지 않음.</li>
+    </ul>
+  </li>
+  <li>정리하자면 이 방식은 미리 다양한 size의 cache를 만들어 놓는 것이다. 즉, 하나의 kernel data structure에 대한 빈 object를 만들어 놓는 것.</li>
+  <li>kernel에서 자주 사용되는 structure를 미리 만들어 놓으면 요청이 있을 때 바로바로 할당해 주면 된다. 그리고 사용이 완료되면 회수하는 형식으로 하면 굉장히 빠르게 처리할 수 있다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="slab-allocation">Slab Allocation</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124001551700.png" alt="image-20221124001551700" /></p>
+
+<p>이렇게 되면 다양한 size를 만들어 놓을 수 있기 때문에 fragmentation을 줄일 수 있고, 메모리 요청에 대해서 빨리 처리할 수 있다.</p>
+
+<p><br /></p>
+
+<h2 id="slab-allocator-in-linux">Slab Allocator in Linux</h2>
+
+<ul>
+  <li>
+    <p>For example process descriptor is of type <code class="language-plaintext highlighter-rouge">struct task_struct </code> - PCB</p>
+  </li>
+  <li>
+    <p>Approx 1.7KB of memory</p>
+  </li>
+  <li>
+    <p>New task -&gt; allocate new struct from cache</p>
+  </li>
+  <li>
+    <p>Will use existing free <code class="language-plaintext highlighter-rouge">struct task_struct </code></p>
+  </li>
+  <li>
+    <p>Slab can be in three possible states</p>
+
+    <ol>
+      <li>
+        <p>Full – all used</p>
+      </li>
+      <li>
+        <p>Empty – all free</p>
+      </li>
+      <li>
+        <p>Partial – mix of free and used</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>Upon request, slab allocator</p>
+
+    <ol>
+      <li>
+        <p>Uses free struct in partial slab</p>
+      </li>
+      <li>
+        <p>If none, takes one from empty slab</p>
+      </li>
+      <li>
+        <p>If no empty slab, create new empty</p>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="slab-allocator-in-linux-cont">Slab Allocator in Linux (Cont.)</h2>
+
+<ul>
+  <li>Slab started in Solaris, now wide-spread for both kernel mode and user memory in various OSes</li>
+  <li>Linux 2.2 had SLAB, now has both SLOB and SLUB allocators
+    <ul>
+      <li>SLOB for systems with limited memory
+        <ul>
+          <li>Simple List of Blocks – maintains 3 list objects for small, medium, large objects</li>
+        </ul>
+      </li>
+      <li>SLUB is performance-optimized SLAB removes per-CPU queues, metadata stored in page structure</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="other-considerations--prepaging">Other Considerations – Prepaging</h2>
+
+<ul>
+  <li>Prepaging
+    <ul>
+      <li>To reduce the large number of page faults that occurs at process startup</li>
+      <li>Prepage all or some of the pages a process will need, before they are referenced
+        <ul>
+          <li>Bring in last working set</li>
+        </ul>
+      </li>
+      <li>But if prepaged pages are unused, I/O and memory was wasted</li>
+      <li>Assume s pages are prepaged and α of the pages is used
+        <ul>
+          <li>Is cost of s * α save pages faults &gt; or &lt; than the cost of prepaging s * (1- α) unnecessary pages?</li>
+          <li>α near zero =&gt; prepaging loses</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="other-issues--page-size">Other Issues – Page Size</h2>
+
+<ul>
+  <li>Sometimes OS designers have a choice
+    <ul>
+      <li>Especially if running on custom-built CPU</li>
+    </ul>
+  </li>
+  <li>Page size selection must take into consideration:
+    <ul>
+      <li>Memory utilization : favors small page, internal fragmentation</li>
+      <li>Page table size : : favors larger pages (fewer entries)</li>
+      <li><strong>Resolution</strong></li>
+      <li>I/O overhead
+        <ul>
+          <li>Transfer once located pages relatively fast
+            <ul>
+              <li>favor large pages</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Number of page faults: : favor larger pages</li>
+      <li>Locality
+        <ul>
+          <li>Favors small pages because
+            <ul>
+              <li>Better estimate of locality</li>
+              <li>Remind portions job which are not being used</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>TLB size and effectiveness</li>
+    </ul>
+  </li>
+  <li>Always power of 2, usually in the range 2<sup>12</sup> (4,096 bytes) to 2<sup>22</sup> (4,194,304 bytes)</li>
+  <li>On average, growing over time</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="other-issues--tlb-reach">Other Issues – TLB Reach</h2>
+
+<ul>
+  <li>TLB Reach - The amount of memory accessible from the TLB</li>
+  <li>TLB Reach = (TLB Size) X (Page Size)</li>
+  <li>Ideally, the working set of each process is stored in the TLB
+    <ul>
+      <li>Otherwise there is a high degree of page faults</li>
+    </ul>
+  </li>
+  <li>Increase the Page Size
+    <ul>
+      <li>This may lead to an increase in fragmentation as not all applications require a large page size</li>
+    </ul>
+  </li>
+  <li>Provide Multiple Page Sizes
+    <ul>
+      <li>This allows applications that require larger page sizes the opportunity to use them without an increase in fragmentation</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="other-considerations">Other Considerations</h2>
+
+<ul>
+  <li>How many pages allocated to a job?
+    <ul>
+      <li>Minimum is related to architecture
+        <ul>
+          <li>PDP-8: at most 1 memory address in an instruction
+            <ul>
+              <li>1 page instruction, 2 page operand (indirection) -&gt; 3 page</li>
+            </ul>
+          </li>
+          <li>PDP-11
+            <ul>
+              <li>2 memory addresses in instruction</li>
+              <li>Instruction could be 2 or 3 words long
+                <ul>
+                  <li>» 2 pages for instruction, 4 pages for operands
+                    <ul>
+                      <li>=&gt; 6 pages</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="other-consideration-cont">Other Consideration (Cont.)</h2>
+
+<ul>
+  <li>Thrashing
+    <ul>
+      <li>More time spent moving pages in &amp; out of memory than doing actual work</li>
+      <li>Occurs when too few frames allocated to job</li>
+      <li>Situation can be made worse by CPU scheduling strategy
+        <ul>
+          <li>Since jobs in I/O queue when waiting for pages, CPU can become under-utilized</li>
+          <li>More jobs can be brought into system, further degrading performance</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Too many pages
+    <ul>
+      <li>It is possible to have too low fault rate</li>
+      <li>Memory. CPU under-utilized</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="other-consideration-cont---xxxx">Other Consideration (Cont.) - XXXX</h2>
+
+<ul>
+  <li>Page size selection
+    <ul>
+      <li>table size : favors larger pages (fewer entries)</li>
+      <li>Memory utilization: favors small page, internal fragmentation</li>
+      <li>I/O overhead
+        <ul>
+          <li>Transfer once located pages relatively fast</li>
+        </ul>
+      </li>
+      <li>favor large pages</li>
+      <li>Locality
+        <ul>
+          <li>Favors small pages because
+            <ul>
+              <li>Better estimate of locality</li>
+              <li>Remind portions job which are not being used</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Page fault : favor larger pages •</li>
+    </ul>
+  </li>
+  <li>Trend is toward larger page size
+    <ul>
+      <li>Cpu speed, MM increasing faster than disk speed</li>
+      <li>Page faults are more costly today</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="other-consideration-cont-1">Other Consideration (Cont.)</h2>
+
+<ul>
+  <li>Program structure</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124002349853.png" alt="image-20221124002349853" /></p>
+
+<p><br /></p>
+
+<h2 id="other-issues--io-interlock---xxxx">Other Issues – I/O interlock - XXXX</h2>
+
+<ul>
+  <li>I/O interlock and addressing</li>
+  <li>Consider I/O - Pages that are used for copying a file from a device must be locked from being selected for eviction by a page replacement algorithm
+    <ul>
+      <li>** When demand paging is used, we sometimes need to allow some of the pages to be locked in memory</li>
+      <li>A process issues an I/O request, and is put in a queue for that I/O device</li>
+      <li>Meanwhile CPU is given to other processes</li>
+      <li>These processes cause page fault, uses global replacement</li>
+      <li>One of them replaces the page containing the memory buffer for the waiting process</li>
+      <li>The pages are paged out</li>
+      <li>Later, when the I/O request advances to the head of the device queue, I/O occurs to the specified address</li>
+      <li>However, this frame belongs to another process</li>
+    </ul>
+  </li>
+  <li>Solution
+    <ul>
+      <li>Never to execute I/O to user memory: copy overhead (system memory, I/O device)</li>
+      <li>Allow pages to be locked into memory : do not select for replacement</li>
+    </ul>
+  </li>
+  <li>Between high &amp; low priority processes</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="reason-why-frames-used-for-io-must-be-in-memory---xxxx">Reason Why Frames Used For I/O Must Be In Memory - XXXX</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221124002457581.png" alt="image-20221124002457581" /></p>
+
+<p><br /></p>
+
+<h2 id="demand-segmentation---xxxx">Demand Segmentation - XXXX</h2>
+
+<ul>
+  <li>Demand paging is the most efficient virtual memory system</li>
+  <li>Used when insufficient hardware to implement demand paging.
+    <ul>
+      <li>Intel 80286 does not include paging features, but does have segments</li>
+    </ul>
+  </li>
+  <li>OS/2 allocates memory in segments, which it keeps track of through segment descriptors</li>
+  <li>Segment descriptor contains a valid bit to indicate whether the segment is currently in memory.
+    <ul>
+      <li>If segment is in main memory, access continues,</li>
+      <li>If not in memory, segment fault.</li>
+    </ul>
+  </li>
+</ul>
+:ET

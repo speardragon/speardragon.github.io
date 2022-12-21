@@ -1,0 +1,339 @@
+I"�N<p>이번 시간에는 보간 탐색(Interpolation Search), 삼진 탐색(Ternary Search), 지수 탐색(Exponential Search)에 대해서 알아 보도록 하겠다.</p>
+
+<p><br /></p>
+
+<h2 id="보간-탐색">보간 탐색</h2>
+
+<p>보간 탐색(Interpoation search)은 <strong>정렬된 리스트</strong>에서 범위를 좁혀 가면서 탐색해 나가는 알고리즘이다.</p>
+
+<p>보간 탐색은 전화부에서 이름(책의 항목이 정렬되는 키 값)을 검색하는 방법과 매우 유사하다.</p>
+
+<p><br /></p>
+
+<p>동작하는 방식이 이진 탐색과 거의 유사하지만 탐색 위치를 정하는 방식에 있어서 차이점이 존재한다.</p>
+
+<p><br /></p>
+
+<p>이진 탐색과 보간 탐색에서 탐색 위치를 정하는 공식은 다음과 같다.</p>
+
+<ul>
+  <li>arr[]: 데이터가 들어가 있는 배열</li>
+  <li>low: arr[] 배열의 시작 index</li>
+  <li>high: arr[] 배열의 마지막 index</li>
+  <li>target: 검색 값</li>
+  <li>pos: 탐색 위치 index</li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>이진 탐색은 탐색 위치</strong>가 중간 값을 잡았기 때문에 다음과 같은 공식이 나왔다.</p>
+
+<ul>
+  <li>
+    <blockquote>
+      <p>pos = (low + high) /2</p>
+    </blockquote>
+  </li>
+  <li>
+    <blockquote>
+      <p>or    = low + (high - low) / 2</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<p><strong>보간 탐색의 탐색 위치</strong>를 정하는 공식은 다음과 같다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pos = low + (target - arr[low]) * (high - low) / (arr[high] - arr[low])
+
+* low : 현재 구간의 시작 index
+* high: 현재 구간의 마지막 index
+* target: 찾고자 하는 Data(key)
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155676400-c3452525-92d9-4b0c-8cdf-5ccc34d733ac.png" alt="image" /></p>
+
+<p>위 그림은 검색 값 <strong>3</strong>을 찾을 때 첫 번째 탐색 위치를 보여준다.</p>
+
+<p>이진 탐색은 항상 중간 위치로 탐색 위치를 결정하는 반면, 보간 탐색은 검색 key값에 따라 다른 위치로 이동하게 된다.</p>
+
+<p>예를 들어, 검색 key 값이 상대적으로 앞쪽에 있다고 판단되면 비교적 앞쪽에서 탐색을 진행하게 되고 뒷쪽에 있다고 판단되면 뒷쪽에서 탐색을 진행하는 것이다.</p>
+
+<p><br /></p>
+
+<p>데이터가 선형으로 분포되어 있다면 위의 그림처럼 보간 탐색은 한 번에 데이터를 찾을 수 있기도 하다. 이처럼 보간 탐색은 <mark>데이터가 선형으로 분포되어 있을 때 가장 검색 효율이 좋다.</mark></p>
+
+<blockquote>
+  <p>데이터가 선형으로 분포되어 있다는 것은 데이터가 인덱스 값에 비례하여 분포해 있다는 의미이다.</p>
+</blockquote>
+
+<p><br /></p>
+
+<h3 id="보간-탐색-방식">보간 탐색 방식</h3>
+
+<p>보간 탐색의 방식을 살펴보자.</p>
+
+<p>보간 탐색은 다른 탐색과 마찬가지로 정렬된 배열에서만 사용할 수 있고 이진 탐색과 동작 방식은 동일하다.</p>
+
+<p>그 과정은 다음과 같다.</p>
+
+<ol>
+  <li>탐색 위치(pos)를 구한다.</li>
+  <li>탐색 위치(pos) 값과 구하고자 하는 검색 key값을 비교한다.
+    <ul>
+      <li>값이 같다면 종료</li>
+      <li>arr[pos] &lt; key(검색 값이 더 큰) 인 경우, 탐색 위치 기준 배열의 오른쪽 구간을 대상으로 탐색한다.
+        <ul>
+          <li>low = pos + 1</li>
+        </ul>
+      </li>
+      <li>arr[pos] &gt; key(검색 값이 더 작은) 인 경우, 탐색 위치 기준 배열의 왼쪽 구간을 대상으로 탐색한다.
+        <ul>
+          <li>high = pos - 1</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<h3 id="종료-조건">종료 조건</h3>
+
+<p>보간 탐색의 종료 조건에도 두 가지 방법이 존재하며 이 중 한 가지라도 만족하면 탐색이 종료된다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li>데이터 탐색에 성공한 경우
+    <ul>
+      <li>검색 key 값을 발견한 경우</li>
+      <li>arr[pos] == key</li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<ol>
+  <li>검색에 실패한 경우</li>
+</ol>
+
+<ul>
+  <li>검색 범위를 벗어나게 되는 경우(반복문 종료)</li>
+  <li>target &lt; arr[low] &amp;&amp; target &gt; arr[high]</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="search-방식">Search 방식</h3>
+
+<p>아래의 그림을 보면서 보간 탐색이 어떻게 이루어 지는지 보도록 하겠다.</p>
+
+<p>보간 탐색을 통해 다음 배열에서 32라는 key값을 찾는 과정을 보도록 하자.</p>
+
+<ol>
+  <li>탐색 위치 pos를 구한다.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pos = low + (target - arr[low])*(high - low)/(arr[high] - arr[low])
+    = 0 + (32 - 5)*(9 - 0)/(60 - 5) = 4.42 = 4
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155677713-b0450c59-082f-463f-9d09-55127c6337cf.png" alt="image" /></p>
+
+<p>계산 결과 나온 pos값은 4이고 배열의 4번 index가 pos가 된다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li>arr[pos] (27)와 검색 key값(32)을 비교한다.
+    <ul>
+      <li>arr[pos] &lt; target 이므로 배열의 오른쪽 구간을 탐색 범위로 하여 탐색을 진행한다.</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>low = pos + 1 = 4 + 1 =5
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155678105-1a9724f5-9e89-4743-80d6-6b822439be44.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ol>
+  <li>바뀐 값으로 다시 탐색 위치 pos를 구한다.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pos = low + (target - arr[low])*(high - low)/(arr[high] - arr[low])
+    = 5 + (32 - 32)*(9 - 5)/(60 - 32) = 5
+</code></pre></div></div>
+
+<p><img src="https://user-images.githubusercontent.com/79521972/155678303-42d1f576-5a41-4a25-a979-b84476ea9ec9.png" alt="image" /></p>
+
+<p><br /></p>
+
+<ol>
+  <li>arr[pos] 값과 검색 key값을 비교한다.
+    <ul>
+      <li>두 값이 같기 때문에 원하는 key값을 찾은 것이므로 탐색을 종료한다.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><br /></p>
+
+<h2 id="보간-탐색-구현">보간 탐색 구현</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">interpolationSearch</span><span class="o">(</span><span class="kt">int</span> <span class="n">arr</span><span class="o">[],</span> <span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="kt">int</span> <span class="n">target</span><span class="o">)</span>
+<span class="o">{</span>
+   
+  <span class="kt">int</span> <span class="n">low</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">high</span> <span class="o">=</span> <span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+  <span class="k">while</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">low</span><span class="o">]</span> <span class="o">!=</span> <span class="n">arr</span><span class="o">[</span><span class="n">high</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">target</span> <span class="o">&gt;=</span> <span class="n">arr</span><span class="o">[</span><span class="n">low</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">target</span> <span class="o">&lt;=</span> <span class="n">arr</span><span class="o">[</span><span class="n">high</span><span class="o">])</span> <span class="o">{</span>
+       <span class="n">pos</span> <span class="o">=</span> <span class="n">low</span> <span class="o">+</span> <span class="o">(((</span><span class="kt">double</span><span class="o">)(</span><span class="n">high</span> <span class="o">-</span> <span class="n">low</span><span class="o">)</span> <span class="o">/</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">high</span><span class="o">]</span> <span class="o">-</span> <span class="n">arr</span><span class="o">[</span><span class="n">low</span><span class="o">]))</span> <span class="o">*</span> <span class="o">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">arr</span><span class="o">[</span><span class="n">low</span><span class="o">]));</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">pos</span><span class="o">]</span> <span class="o">==</span> <span class="n">target</span><span class="o">)</span>
+          <span class="k">return</span> <span class="n">pos</span><span class="o">;</span>
+        <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">pos</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">target</span><span class="o">)</span>
+          <span class="n">high</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="k">else</span>
+          <span class="n">low</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+  <span class="o">}</span>      
+
+  <span class="k">if</span> <span class="o">(</span><span class="n">target</span> <span class="o">==</span> <span class="n">arr</span><span class="o">[</span><span class="n">low</span><span class="o">])</span>
+    <span class="k">return</span> <span class="n">low</span><span class="o">;</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>위에서 진행한 것을 통해 코드로 구현한다.</li>
+</ul>
+
+<p>몇몇 특징 적인 부분만 설명을 하겠다.</p>
+
+<ol>
+  <li>arr[low] == arr[high] 일 때 pos값은 low이다.</li>
+  <li>pos값을 구할 때 드는 시간 소모를 줄이기 위해 arr[low] != arr[high] 조건을 추가하여 반복문을 벗어나면 target값과 arr[low] 값을 비교하는 logic을 추가하였다.</li>
+</ol>
+
+<p><br /></p>
+
+<h3 id="시간-복잡도">시간 복잡도</h3>
+
+<p>보간 탐색은 데이터가 선형적으로 균등하게 분포가 되어 있다면 평균 O(log(logn))의 시간 복잡도가 요구 되지만 최악의 경우 데이터가 기하 급수적으로 늘어난다면 O(n)의 시간 복잡도를 소모할 수도 있다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>연산</th>
+      <th>Best</th>
+      <th>Average</th>
+      <th>Worst</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Search</td>
+      <td>O(1)</td>
+      <td>O(log(logn))</td>
+      <td>O(n)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h2 id="삼진-탐색ternary-search">삼진 탐색(Ternary Search)</h2>
+
+<p>삼진 탐색은 이진 탐색과 진짜 거의 동일하다고 볼 수 있는데, 이진 탐색은 중앙을 기준으로 좌/우로 구간을 나누었다면 <span style="color:red">삼진은 왼쪽, 중간, 오른쪽 3개의 구간으로 나누는 방식이다.</span></p>
+
+<p><br /></p>
+
+<p>mid1 값을 좌측 중간값, mid2 값을 우측 중간값이라고 하자. 그러면 다음과 같은 식을 통해 탐색 범위가 정해진다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mid1 = low + (high - low) / 3
+mid2 = right - (high - low) / 3
+</code></pre></div></div>
+
+<p>이 식을 보고 드는 의문이 있을 것이다.</p>
+
+<blockquote>
+  <p>동일한 O(logn)의 시간 복잡도가 요구외어도 밑의 같이 삼진은 3이고 이진 2이기 때문에 더 효과 적인 것인가?</p>
+</blockquote>
+
+<p><br /></p>
+
+<p>하지만 예상과 다르기 실제로는 <mark>이진 탐색이 훨씬 더 선호된다</mark>. 그 이유는 최악의 경우, 삼진 탐색 방식은 비교를 더 많이 해야하기 때문이다.</p>
+
+<p><br /></p>
+
+<h4 id="삼진-탐색-구현">삼진 탐색 구현</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 재귀 호출 사용</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">recursiveSearch</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">start</span><span class="o">,</span> <span class="kt">int</span> <span class="n">end</span><span class="o">){</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">start</span> <span class="o">&gt;</span> <span class="n">end</span><span class="o">)</span> 
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+    
+    <span class="kt">int</span> <span class="n">mid1</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="o">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="o">)</span> <span class="o">/</span> <span class="mi">3</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">mid2</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="o">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="o">)</span> <span class="o">/</span> <span class="mi">3</span><span class="o">;</span>
+
+    <span class="k">if</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">mid1</span><span class="o">]</span> <span class="o">==</span> <span class="n">x</span><span class="o">){</span>
+        <span class="k">return</span> <span class="n">mid1</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">mid2</span><span class="o">]</span> <span class="o">==</span> <span class="n">x</span><span class="o">){</span>
+        <span class="k">return</span> <span class="n">mid2</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span><span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">[</span><span class="n">mid1</span><span class="o">]){</span>
+        <span class="k">return</span> <span class="nf">recursiveSearch</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">mid1</span><span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">arr</span><span class="o">[</span><span class="n">mid2</span><span class="o">]){</span>
+        <span class="k">return</span> <span class="nf">recursiveSearch</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">mid2</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="n">end</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">recursiveSearch</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">mid1</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="n">mid2</span><span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="지수-탐색exponential-search">지수 탐색(Exponential Search)</h2>
+
+<p>이것도 크게 다른 점은 없지만 찾는 방식이 조금 다르다.</p>
+
+<p>1, 2, 4, 8, … 이런 식으로 탐색 index 값을 지수 형태로 높여가면서 구간을 탐색하는 방식이다. 다른 탐색과 마찬가지로 이런 과정을 통해 탐색을 진행하다가 해당되는 범위를 찾으면 그 안에서 다시 선형 혹은 이진 탐색을 통해 최종 값을 찾는 것이다.</p>
+
+<p>시간 복잡도는 O(logn)이다.</p>
+
+<p><br /></p>
+
+<h4 id="지수-탐색-구현">지수 탐색 구현</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">search</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">,</span> <span class="kt">int</span> <span class="n">x</span><span class="o">){</span>
+
+        <span class="c1">// 가장 앞의 위치에 있다면 바로 반환, 1부터 시작할 것이기 때문</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="n">x</span><span class="o">){</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span>
+        <span class="c1">// index 값이 배열 크기보다 작아야 그 안에서 구간을 찾는다.</span>
+        <span class="c1">// 또한 배열의 값이 더 작은 동안에만 수행하여 구간을 찾는다.</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span> <span class="o">&amp;&amp;</span> <span class="n">arr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="o">){</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c1">// 찾아낸 구간에서 이진 탐색으로 수행</span>
+        <span class="c1">// i값이 전체 배열의 범위를 넘어갈 수 있으니 Math.min으로 설정</span>
+        <span class="k">return</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">binarySearch</span><span class="o">(</span><span class="n">arr</span><span class="o">,</span> <span class="n">i</span><span class="o">/</span><span class="mi">2</span><span class="o">,</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="mi">1</span><span class="o">),</span> <span class="n">x</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+:ET

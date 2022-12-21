@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kang Chang Ryong</title>
+    <description>speardragon note</description>
+    <link>http://localhost:4000</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+	<lastBuildDate>Sun, 20 Nov 2022 00:00:00 +0900</lastBuildDate>
+	
+	<item>
+		<title>[OS] Virtual Memory</title>
+        
+        
+            <description>&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</description>
+        
+        <pubDate>Sun, 20 Nov 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/os/OS-Virtual-Memory/</link>
+        <guid isPermaLink="true">http://localhost:4000/os/OS-Virtual-Memory/</guid>
+      </item>
+    
+	<item>
+		<title>[HCI] 10. Universal Design-Multi-Sensory Systems</title>
+        
+        
+            <description>&lt;h2 id=&quot;universal-design-principles---ncsu&quot;&gt;Universal Design Principles - NCSU&lt;/h2&gt;
+</description>
+        
+        <pubDate>Sun, 23 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/</link>
+        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/</guid>
+      </item>
+    
+	<item>
+		<title>[HCI] 9. Dialogue Notations and Design 2</title>
+        
+        
+            <description>&lt;p&gt;O/X&lt;/p&gt;
+</description>
+        
+        <pubDate>Wed, 19 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/</link>
+        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/</guid>
+      </item>
+    
+	<item>
+		<title>[HCI] 9. Dialogue Notations and Design 1</title>
+        
+        
+            <description>&lt;h2 id=&quot;dialogue-notations-and-design&quot;&gt;Dialogue Notations and Design&lt;/h2&gt;
+</description>
+        
+        <pubDate>Mon, 17 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/</link>
+        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/</guid>
+      </item>
+    
+	<item>
+		<title>[HCI] 8. Evaluation Techniques</title>
+        
+        
+            <description>&lt;p&gt;[toc]&lt;/p&gt;
+</description>
+        
+        <pubDate>Wed, 12 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/frontend/hci/HCI-8.-Evaluation-Techniques/</link>
+        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-8.-Evaluation-Techniques/</guid>
+      </item>
+    
+	<item>
+		<title>[HCI] 7. Development Methodology</title>
+        
+        
+            <description>&lt;h2 id=&quot;hci-development-methodology&quot;&gt;HCI Development Methodology&lt;/h2&gt;
+</description>
+        
+        <pubDate>Mon, 10 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/frontend/hci/HCI-7.-Development-Methodology/</link>
+        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-7.-Development-Methodology/</guid>
+      </item>
+    
+	<item>
+		<title>[HCI] 6. Interaction Design Basics 3</title>
+        
+        
+            <description>&lt;p&gt;[toc]&lt;/p&gt;
+</description>
+        
+        <pubDate>Wed, 05 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basics-3/</link>
+        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basics-3/</guid>
+      </item>
+    
+	<item>
+		<title>[HCI] 6. Interaction Design Basics 2</title>
+        
+        
+            <description>&lt;h2 id=&quot;think-about-dialogue&quot;&gt;Think about dialogue&lt;/h2&gt;
+</description>
+        
+        <pubDate>Mon, 03 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basic-2/</link>
+        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basic-2/</guid>
+      </item>
+    
+	<item>
+		<title>[OS] Memory Management</title>
+        
+        
+            <description>&lt;p&gt;[toc]&lt;/p&gt;
+</description>
+        
+        <pubDate>Mon, 03 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/os/OS-Memory-Management/</link>
+        <guid isPermaLink="true">http://localhost:4000/os/OS-Memory-Management/</guid>
+      </item>
+    
+	<item>
+		<title>[OS] Deadlocks</title>
+        
+        
+            <description>&lt;p&gt;[toc]&lt;/p&gt;
+</description>
+        
+        <pubDate>Mon, 03 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/os/OS-Deadlocks/</link>
+        <guid isPermaLink="true">http://localhost:4000/os/OS-Deadlocks/</guid>
+      </item>
+    
+  </channel>
+</rss>

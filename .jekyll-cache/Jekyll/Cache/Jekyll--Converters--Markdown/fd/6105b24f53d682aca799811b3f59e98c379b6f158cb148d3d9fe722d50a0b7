@@ -1,0 +1,510 @@
+I"�<<h2 id="dialogue-notations-and-design">Dialogue Notations and Design</h2>
+
+<ul>
+  <li>Dialogue Notations
+    <ul>
+      <li>Diagrammatic
+        <ul>
+          <li>State transition networks, JSD (Jackson Structured Design) diagrams,Flow charts</li>
+        </ul>
+      </li>
+      <li>Textual
+        <ul>
+          <li>Formal grammars, Production rules, CSP (Communication Sequential
+Process)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Dialogue linked to
+    <ul>
+      <li>The semantics of the system – what it does</li>
+      <li>The presentation of the system – how it looks</li>
+    </ul>
+  </li>
+  <li>Formal descriptions can be analyzed
+    <ul>
+      <li>For inconsistent actions</li>
+      <li>For difficult to reverse actions</li>
+      <li>For missing actions</li>
+      <li>For potential miskeying errors</li>
+    </ul>
+  </li>
+</ul>
+
+<p>​</p>
+
+<p><br /></p>
+
+<h2 id="what-is-dialogue">What is dialogue?</h2>
+
+<ul>
+  <li>Conversation between two or more parties</li>
+  <li>Usually cooperative</li>
+  <li>In user interfaces<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155431809.png" alt="image-20221010155431809" />
+    <ul>
+      <li>Refers to the structure of the interaction</li>
+      <li>Syntactic level of human–computer ‘conversation’</li>
+    </ul>
+  </li>
+  <li>Levels
+    <ul>
+      <li>Lexical – shape of icons, actual keys pressed</li>
+      <li>Syntactic – order of inputs and outputs</li>
+      <li>Semantic – effect on internal application/data</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="structured-human-dialogue">Structured Human Dialogue</h2>
+
+<ul>
+  <li>Human-computer dialogue is very constrained</li>
+  <li>Some human-human dialogue is formal too …</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155444821.png" alt="image-20221010155444821" /></p>
+
+<p><br /></p>
+
+<h2 id="lessons-about-dialogue">Lessons about Dialogue</h2>
+
+<ul>
+  <li>Wedding service
+    <ul>
+      <li>Sort of script for three parties</li>
+      <li>Specifies order</li>
+      <li>Some contributions fixed – “I do”</li>
+      <li>Others variable – “do you man’s name …”</li>
+      <li>Instructions for ringconcurrent with saying words “with this ring …”</li>
+    </ul>
+  </li>
+  <li>If you say these words, are you married?
+    <ul>
+      <li>Only if in the right place, with marriage licence</li>
+      <li>Syntax is not semantics</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="-and-more">… and more</h2>
+
+<ul>
+  <li>What if woman says “I don’t”?</li>
+  <li>Real dialogues often have alternatives:
+    <ul>
+      <li><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155528104.png" alt="image-20221010155528104" /></li>
+      <li>The process of the trial depends on the defendants response</li>
+    </ul>
+  </li>
+  <li>Focus on normative responses
+    <ul>
+      <li>Doesn’t cope with judge saying “off with her head”</li>
+      <li>Or in computer dialogue user standing on keyboard!</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="dialogue-design-notations">Dialogue Design Notations</h2>
+
+<ul>
+  <li>Dialogue gets buried in the program</li>
+  <li>In a big system can we:
+    <ul>
+      <li>Analyse the dialogue:
+        <ul>
+          <li>e.g. Can the user always get to see current shopping basket</li>
+        </ul>
+      </li>
+      <li>Change platforms
+        <ul>
+          <li>e.g. migration from Windows to Mac</li>
+        </ul>
+      </li>
+      <li>Dialogue notations helps us to
+        <ul>
+          <li>Analyse systems</li>
+          <li>Separate lexical from semantic</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>… and before the system is built
+    <ul>
+      <li>Notations help us understand proposed designs</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="graphical-notations">Graphical Notations</h2>
+
+<ul>
+  <li>State-Transition Nets (STN)</li>
+  <li>Petri Nets</li>
+  <li>State Charts</li>
+  <li>Flow Charts</li>
+  <li>Jackson Structured Design (JSD) Diagrams</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="state-transition-networks-stn">State Transition Networks (STN)</h2>
+
+<ul>
+  <li>Circles - states</li>
+  <li>Arcs – actions (output) / events (input)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155630038.png" alt="image-20221010155630038" /></p>
+
+<p><br /></p>
+
+<h2 id="state-transition-networks---events">State Transition Networks - Events</h2>
+
+<ul>
+  <li>Arc labels a bit cramped because:</li>
+  <li>Notation is ‘state heavy’</li>
+  <li>The events require most detail</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155649582.png" alt="image-20221010155649582" /></p>
+
+<p><br /></p>
+
+<h2 id="state-transition-networks---states">State Transition Networks - States</h2>
+
+<ul>
+  <li>Labels in circles a bit uninformative:</li>
+  <li>States are hard to name</li>
+  <li>But easier to visualise</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155707130.png" alt="image-20221010155707130" /></p>
+
+<p><br /></p>
+
+<h2 id="example-bottle-dispense-stn">Example: Bottle Dispense STN</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155718677.png" alt="image-20221010155718677" /></p>
+
+<p><br /></p>
+
+<h2 id="hierarchical-stns">Hierarchical STNs</h2>
+
+<ul>
+  <li>Managing complex dialogues</li>
+  <li>Named sub-dialogues</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155731957.png" alt="image-20221010155731957" /></p>
+
+<p><br /></p>
+
+<h2 id="strengths-and-limitations">Strengths and Limitations</h2>
+
+<ul>
+  <li>Strengths
+    <ul>
+      <li>Easy to interpret</li>
+      <li>Allows choice and iteration to be modelled.</li>
+    </ul>
+  </li>
+  <li>Limitations
+    <ul>
+      <li>Concurrent dialogue</li>
+      <li>Unusual actions (esc, help)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="concurrent-dialogues---isimple-dialogue-box">Concurrent dialogues - ISimple dialogue box</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155756039.png" alt="image-20221010155756039" /></p>
+
+<p><br /></p>
+
+<h2 id="concurrent-dialogues---iithree-toggles---individual-stns">Concurrent dialogues - IIThree toggles - Individual STNs</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155816898.png" alt="image-20221010155816898" /></p>
+
+<p><br /></p>
+
+<h2 id="concurrent-dialogues---iii-bold-and-italic-combined">Concurrent dialogues - III Bold and Italic combined</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155829177.png" alt="image-20221010155829177" /></p>
+
+<p><br /></p>
+
+<h2 id="concurrent-dialogues---iv-all-together---combinatorial-explosion">Concurrent dialogues - IV All together - Combinatorial explosion</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155838527.png" alt="image-20221010155838527" /></p>
+
+<p><br /></p>
+
+<h2 id="escapes">Escapes</h2>
+
+<ul>
+  <li>‘Back’ in web, escape/cancel keys
+    <ul>
+      <li>Similar behavior everywhere</li>
+      <li>End up with spaghetti of identical behaviors</li>
+    </ul>
+  </li>
+  <li>Try to avoid this</li>
+  <li>e.g. on high level diagram
+    <ul>
+      <li>‘Normal’ exit foreach submenu</li>
+      <li>Separateescape arc active‘everywhere’ in submenu</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="help-menus">Help menus</h2>
+
+<ul>
+  <li>Similar problems
+    <ul>
+      <li>Nearly the same everywhere</li>
+      <li>But return to same point in dialogue</li>
+      <li>Could specify on STN … but very messy</li>
+      <li>Usually best added at a ‘meta’ level</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155927059.png" alt="image-20221010155927059" /></p>
+
+<p><br /></p>
+
+<h2 id="petri-nets">Petri Nets</h2>
+
+<ul>
+  <li>One of the oldest notations in computing!<img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010155950985.png" alt="image-20221010155950985" />
+    <ul>
+      <li>A simple model of active behavior</li>
+      <li>Provide a graphical explanation for easy understanding.</li>
+    </ul>
+  </li>
+  <li>Four elements of Flow graph:
+    <ul>
+      <li>Places: Used to symbolize passive elements of the reactive system. A place is represented by a circle.</li>
+      <li>Transitions: Used to symbolize active elements of the reactive system. Transitions are represented by squares/rectangles.</li>
+      <li>Arc: Used to represent causal relations. Arc is represented by arrows.</li>
+      <li>Token: Sit on places (current state). Subject to change. Tokens are represented by small filled circles.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="role-of-a-token">Role of a Token</h2>
+
+<ul>
+  <li>A physical object, for example a product, a part, a drug, a person</li>
+  <li>An information object, for example a message, a 
+signal, a report</li>
+  <li>A collection of objects, for example a truck with products, a warehouse with parts, or an address file</li>
+  <li>An indicator of a state, for example the indicator of the state in which a process is, or the state of an object</li>
+  <li>An indicator of a condition: the presence of a token indicates whether a certain condition is fulfilled</li>
+  <li>Several tokens allowed: Concurrent dialogue states</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="role-of-a-place">Role of a Place</h2>
+
+<ul>
+  <li>A type of communication medium, like a telephone line, a middleman, or a communication network</li>
+  <li>A buffer: for example, a depot, a queue or a post bin</li>
+  <li>A geographical location, like a place in a warehouse, office or hospital</li>
+  <li>A possible state or state condition: for example, the floor where an elevator is, or the condition that a specialist is available</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="role-of-a-transition">Role of a Transition</h2>
+
+<ul>
+  <li>An event (e.g., starting an operation, the switching of a traffic light from red to green)</li>
+  <li>A transformation of an object, like adapting a product, updating a database, or updating a document</li>
+  <li>A transport of an object: for example, transporting goods, or sending a file</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="construction-rules">Construction Rules</h2>
+
+<ul>
+  <li>Connections are directed</li>
+  <li>No connections between two places or two transitions is allowed</li>
+  <li>Places may hold zero or more tokens</li>
+  <li>A transition is enabled if each of its input places contains at least one token</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160101228.png" alt="image-20221010160101228" /></p>
+
+<p><br /></p>
+
+<h2 id="petri-net-example">Petri Net example</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160112486.png" alt="image-20221010160112486" /></p>
+
+<p><br /></p>
+
+<h2 id="example-in-a-restaurant">Example: In a Restaurant</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160120866.png" alt="image-20221010160120866" /></p>
+
+<p><br /></p>
+
+<h2 id="example-in-a-restaurant-scenarios">Example: In a Restaurant (Scenarios)</h2>
+
+<ul>
+  <li>Scenario 1:
+    <ul>
+      <li>Start
+        <ul>
+          <li>Waiter takes order from customer 1</li>
+          <li>-&gt; serves customer 1</li>
+          <li>-&gt; takes order from customer 2</li>
+          <li>-&gt; serves customer 2 =&gt; End</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Scenario 2:
+    <ul>
+      <li>Start -&gt; Waiter takes order from customer 1
+        <ul>
+          <li>-&gt; takes order from customer 2</li>
+          <li>-&gt; serves customer 2</li>
+          <li>-&gt; serves customer 1 =&gt; End</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="example-in-a-restaurant-scenario-1">Example: In a Restaurant (Scenario 1)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160226413.png" alt="image-20221010160226413" /></p>
+
+<p><br /></p>
+
+<h2 id="example-in-a-restaurant-scenario-2">Example: In a Restaurant (Scenario 2)</h2>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160235640.png" alt="image-20221010160235640" /></p>
+
+<p><br /></p>
+
+<h2 id="state-charts">State Charts</h2>
+
+<ul>
+  <li>Harel’s state charts are a form of STN, to address problems.</li>
+  <li>Hierarchy is used within a single diagram to show alternative and concurrent states.</li>
+  <li>Used in UML (Unified Modelling Language)</li>
+  <li>Extension to STN</li>
+  <li>Example Problem: A television control panel.
+    <ul>
+      <li>The controller has five buttons “on”, “off”, “mute”, “sel” and “reset”</li>
+      <li>The TV is either ON or in STANDBY mode</li>
+      <li>When On, user can control the sound with the Mute button and the channel with the Sel Button.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="state-charts-a-television-control-panel">State Charts (A television control panel)</h2>
+
+<ul>
+  <li>Extension to STN</li>
+  <li>Hierarchy</li>
+  <li>Two concurrent sub-nets</li>
+  <li>Escapes</li>
+  <li>OFF always active</li>
+  <li>History</li>
+  <li>Link marked Hgoes back to laststate on re-enteringsubdialogue</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160313667.png" alt="image-20221010160313667" /></p>
+
+<p><br /></p>
+
+<h2 id="three-toggles">Three Toggles</h2>
+
+<ul>
+  <li>Toggles now tidy to represent in State Charts</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160325130.png" alt="image-20221010160325130" /></p>
+
+<p><br /></p>
+
+<h2 id="flowcharts">Flowcharts</h2>
+
+<ul>
+  <li>Familiar toprogrammers</li>
+  <li>Boxes
+    <ul>
+      <li>Process/Event</li>
+      <li>Not state</li>
+    </ul>
+  </li>
+  <li>Use for dialogue (not internal algorithm)</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160345767.png" alt="image-20221010160345767" /></p>
+
+<p><br /></p>
+
+<h2 id="it-works">It works!</h2>
+
+<ul>
+  <li>Formal notations – too much work?</li>
+  <li>COBOL transaction processing
+    <ul>
+      <li>Event-driven – like web interfaces</li>
+      <li>Programs structure ≠ dialogue structure</li>
+    </ul>
+  </li>
+  <li>Used dialogue flow charts
+    <ul>
+      <li>Discuss with clients</li>
+      <li>Transform to code</li>
+      <li>Systematic testing</li>
+      <li>1000% productivity gain</li>
+    </ul>
+  </li>
+  <li>Formalism saves time!!</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="jsd-diagrams">JSD Diagrams</h2>
+
+<ul>
+  <li>Jackson Structured Design (JSD)</li>
+  <li>For tree structured dialogues</li>
+  <li>Sequence determined left to right</li>
+  <li>Less expressive</li>
+  <li>Greater clarity</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010160427780.png" alt="image-20221010160427780" /></p>
+
+:ET
