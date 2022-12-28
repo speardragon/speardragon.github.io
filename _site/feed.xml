@@ -1,130 +1,390 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Kang Chang Ryong</title>
-    <description>speardragon note</description>
-    <link>http://localhost:4000</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-	<lastBuildDate>Sun, 20 Nov 2022 00:00:00 +0900</lastBuildDate>
-	
-	<item>
-		<title>[OS] Virtual Memory</title>
-        
-        
-            <description>&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-</description>
-        
+    <title>Jekflix | A blog theme for Jekyll</title>
+    <description>Jekflix is a template for Jekyll inspired by Netflix and made by Thiago Rossener.</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 21 Dec 2022 23:57:26 +0900</pubDate>
+    <lastBuildDate>Wed, 21 Dec 2022 23:57:26 +0900</lastBuildDate>
+    <generator>Jekyll v3.9.2</generator>
+    
+      <item>
+        <title>[OS] Virtual Memory</title>
+        <description>&lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;p&gt;[toc]&lt;/p&gt; &lt;h1 id=&quot;chapter-10-virtual-memory&quot;&gt;Chapter 10: Virtual Memory&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;Background&lt;/li&gt; &lt;li&gt;Demand Paging&lt;/li&gt; &lt;li&gt;Performance of Demand Paging&lt;/li&gt; &lt;li&gt;Copy-on-Write&lt;/li&gt; &lt;li&gt;Page Replacement&lt;/li&gt; &lt;li&gt;Allocation of Frames&lt;/li&gt; &lt;li&gt;Thrashing&lt;/li&gt; &lt;li&gt;Memory-Mapped Files&lt;/li&gt; &lt;li&gt;Allocating Kernel Memory&lt;/li&gt; &lt;li&gt;Other Considerations&lt;/li&gt; &lt;li&gt;Demand Segmentation&lt;/li&gt; &lt;li&gt;Operating-System Examples&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;objectives&quot;&gt;Objectives&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;To describe the benefits of a virtual memory system&lt;/li&gt; &lt;li&gt;To explain the concepts of demand paging, page-replacement algorithms, and allocation of page frames&lt;/li&gt; &lt;li&gt;To discuss the principle of the working-set model&lt;/li&gt; &lt;li&gt;To examine the relationship between shared memory and memorymapped files&lt;/li&gt; &lt;li&gt; &lt;p&gt;To explore how kernel memory is managed&lt;/p&gt; &lt;/li&gt; &lt;li&gt;전체적인 흐름은 virtual memory를 관리하는 기법 중 하나인 demand paging에...</description>
         <pubDate>Sun, 20 Nov 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/os/OS-Virtual-Memory/</link>
-        <guid isPermaLink="true">http://localhost:4000/os/OS-Virtual-Memory/</guid>
+        <link>http://localhost:4000/OS-Virtual-Memory/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-Virtual-Memory/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[HCI] 10. Universal Design-Multi-Sensory Systems</title>
-        
-        
-            <description>&lt;h2 id=&quot;universal-design-principles---ncsu&quot;&gt;Universal Design Principles - NCSU&lt;/h2&gt;
-</description>
-        
+      <item>
+        <title>[HCI] 10. Universal Design-Multi-Sensory Systems</title>
+        <description>&lt;h2 id=&quot;universal-design-principles---ncsu&quot;&gt;Universal Design Principles - NCSU&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;To guide a wide range of design disciplines including environments, products, and communications &lt;ol&gt; &lt;li&gt;Equitable use&lt;/li&gt; &lt;li&gt;Flexibility in use&lt;/li&gt; &lt;li&gt;Simple and intuitive to use&lt;/li&gt; &lt;li&gt;Perceptible information&lt;/li&gt; &lt;li&gt;Tolerance for error&lt;/li&gt; &lt;li&gt;Low physical effort&lt;/li&gt; &lt;li&gt;Size and space for approach and use&lt;/li&gt; &lt;/ol&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;1-equitable-use&quot;&gt;1. Equitable Use&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;The design is useful and marketable to people with diverse abilities&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;Guidelines: 1a. Provide the same means of use for all users: identical whenever possible; equivalent when not.&lt;/p&gt; &lt;p&gt;1b. Avoid segregating or stigmatizing any users.&lt;/p&gt; &lt;p&gt;1c. Provisions for privacy, security, and safety should...</description>
         <pubDate>Sun, 23 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/</link>
-        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-10.-Universal-DesignMulti-Sensory-Systems/</guid>
+        <link>http://localhost:4000/HCI-10.-Universal-DesignMulti-Sensory-Systems/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-10.-Universal-DesignMulti-Sensory-Systems/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[HCI] 9. Dialogue Notations and Design 2</title>
-        
-        
-            <description>&lt;p&gt;O/X&lt;/p&gt;
-</description>
-        
+      <item>
+        <title>[HCI] 9. Dialogue Notations and Design 2</title>
+        <description>&lt;p&gt;O/X&lt;/p&gt; &lt;p&gt;short answer&lt;/p&gt; &lt;p&gt;화면에서 HCI적 property를 찾아내고 왜 그런지 설명하고 논리만 맞으면 ok&lt;/p&gt; &lt;p&gt;최대한 많이 쓸 것&lt;/p&gt; &lt;h2 id=&quot;textual-notations&quot;&gt;textual Notations&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Grammars&lt;/li&gt; &lt;li&gt;Production rules&lt;/li&gt; &lt;li&gt;Communication Sequential Process (CSP) and event algebras&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;textual---grammars&quot;&gt;Textual - Grammars&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Regular expressionssel-line click click* double-click &lt;ul&gt; &lt;li&gt;Equivalent expressiveness to JSD&lt;/li&gt; &lt;li&gt;Good for certain kinds of dialogue such as command line syntax&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;BNF (Backus Normal Form) expr ::= empty | atom expr | ‘(‘ expr ‘)’ expr &lt;ul&gt; &lt;li&gt;More powerful than regular exp. or STNs&lt;/li&gt; &lt;li&gt;Iteration through recursive definitions&lt;/li&gt; &lt;li&gt;Still NO concurrent dialogue&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;p&gt;(사진 슬라이드)&lt;/p&gt;...</description>
         <pubDate>Wed, 19 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/</link>
-        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-9.-Dialogue-Notations-Design-2/</guid>
+        <link>http://localhost:4000/HCI-9.-Dialogue-Notations-Design-2/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-9.-Dialogue-Notations-Design-2/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[HCI] 9. Dialogue Notations and Design 1</title>
-        
-        
-            <description>&lt;h2 id=&quot;dialogue-notations-and-design&quot;&gt;Dialogue Notations and Design&lt;/h2&gt;
-</description>
-        
+      <item>
+        <title>[HCI] 9. Dialogue Notations and Design 1</title>
+        <description>&lt;h2 id=&quot;dialogue-notations-and-design&quot;&gt;Dialogue Notations and Design&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Dialogue Notations &lt;ul&gt; &lt;li&gt;Diagrammatic(그림으로 그릴 수 있는) &lt;ul&gt; &lt;li&gt;State transition networks, JSD (Jackson Structured Design) diagrams, Flow charts(플로우차트)&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Textual(텍스트 형식) &lt;ul&gt; &lt;li&gt;Formal grammars, Production rules, CSP (Communication Sequential Process)&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Dialogue linked to &lt;ul&gt; &lt;li&gt;The semantics of the system – what it does&lt;/li&gt; &lt;li&gt;The presentation of the system – how it looks&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Formal descriptions can be analyzed &lt;ul&gt; &lt;li&gt;For inconsistent actions&lt;/li&gt; &lt;li&gt;For difficult to reverse actions&lt;/li&gt; &lt;li&gt;For missing actions&lt;/li&gt; &lt;li&gt;For potential miskeying errors(엉뚱한 거 잘못눌러서 생기는 error)&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;​&lt;/p&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;what-is-dialogue&quot;&gt;What is dialogue?&lt;/h2&gt;...</description>
         <pubDate>Mon, 17 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/</link>
-        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-9.-Dialogue-Notations-and-Design-1/</guid>
+        <link>http://localhost:4000/HCI-9.-Dialogue-Notations-and-Design-1/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-9.-Dialogue-Notations-and-Design-1/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[HCI] 8. Evaluation Techniques</title>
-        
-        
-            <description>&lt;p&gt;[toc]&lt;/p&gt;
-</description>
-        
+      <item>
+        <title>[HCI] 8. Evaluation Techniques</title>
+        <description>&lt;p&gt;[toc]&lt;/p&gt; &lt;h2 id=&quot;evaluation-techniques&quot;&gt;Evaluation Techniques&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Evaluation &lt;ul&gt; &lt;li&gt;Tests usability and functionality of system&lt;/li&gt; &lt;li&gt;Occurs in laboratory, field and/or in collaboration with users&lt;/li&gt; &lt;li&gt;Evaluates both design and implementation&lt;/li&gt; &lt;li&gt;&lt;strong&gt;Should be considered at all stages in the design life cycle&lt;/strong&gt;&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;goals-of-evaluation&quot;&gt;Goals of Evaluation&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Assess extent of system functionality&lt;/li&gt; &lt;li&gt;Assess effect of interface on user&lt;/li&gt; &lt;li&gt;Identify specific problems&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;evaluating-designs&quot;&gt;Evaluating Designs&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Expert-based Evaluation &lt;ul&gt; &lt;li&gt;Cognitive Walkthrough&lt;/li&gt; &lt;li&gt;Heuristic Evaluation&lt;/li&gt; &lt;li&gt;Review-based Evaluation&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Model-based Evaluation&lt;/li&gt; &lt;li&gt;User-based Evaluation&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;cognitive-walkthrough&quot;&gt;Cognitive Walkthrough&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Proposed by Polson et al. &lt;ul&gt; &lt;li&gt;Evaluates design on...</description>
         <pubDate>Wed, 12 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/frontend/hci/HCI-8.-Evaluation-Techniques/</link>
-        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-8.-Evaluation-Techniques/</guid>
+        <link>http://localhost:4000/HCI-8.-Evaluation-Techniques/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-8.-Evaluation-Techniques/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[HCI] 7. Development Methodology</title>
-        
-        
-            <description>&lt;h2 id=&quot;hci-development-methodology&quot;&gt;HCI Development Methodology&lt;/h2&gt;
-</description>
-        
+      <item>
+        <title>[HCI] 7. Development Methodology</title>
+        <description>&lt;h2 id=&quot;hci-development-methodology&quot;&gt;HCI Development Methodology&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Roadmap&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010142539478.png&quot; alt=&quot;image-20221010142539478&quot; /&gt;&lt;/p&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;hci-methodology&quot;&gt;HCI Methodology&lt;/h2&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;&lt;strong&gt;System Development Methodology:&lt;/strong&gt;&lt;/p&gt; &lt;p&gt;a standardized development process that defines &lt;strong&gt;a set of activities,&lt;/strong&gt; &lt;strong&gt;methods and techniques,&lt;/strong&gt; &lt;strong&gt;best practices,&lt;/strong&gt; &lt;strong&gt;deliverables,&lt;/strong&gt; &lt;strong&gt;and automated tools&lt;/strong&gt; that systems developers and project managers are to use to develop and continuously improve information systems&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;the-role-of-hci-development-in-sdlc&quot;&gt;The Role of HCI Development in SDLC&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;&lt;strong&gt;System Development Philosophy:&lt;/strong&gt; follow formal scientific and engineering practice, yet make room for a strong &lt;strong&gt;creative&lt;/strong&gt; element.&lt;/li&gt; &lt;li&gt;The general principles of user-centered systems development include&lt;/li&gt; &lt;li&gt;(1) involving users as much as...</description>
         <pubDate>Mon, 10 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/frontend/hci/HCI-7.-Development-Methodology/</link>
-        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-7.-Development-Methodology/</guid>
+        <link>http://localhost:4000/HCI-7.-Development-Methodology/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-7.-Development-Methodology/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[HCI] 6. Interaction Design Basics 3</title>
-        
-        
-            <description>&lt;p&gt;[toc]&lt;/p&gt;
-</description>
-        
+      <item>
+        <title>[HCI] 6. Interaction Design Basics 3</title>
+        <description>&lt;p&gt;[toc]&lt;/p&gt; &lt;h2 id=&quot;across-countries-and-cultures&quot;&gt;Across countries and cultures&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Localisation &amp;amp; internationalisation &lt;ul&gt; &lt;li&gt;changing interfaces for particular cultures/languages&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Globalisation &lt;ul&gt; &lt;li&gt;try to choose symbols etc. that work everywhere&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Simply change language? &lt;ul&gt; &lt;li&gt;use ‘resource’ database instead of literal text … but changes sizes, left-right order etc.&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Deeper issues &lt;ul&gt; &lt;li&gt;cultural assumptions and values&lt;/li&gt; &lt;li&gt;meanings of symbols&lt;/li&gt; &lt;li&gt;e.g tick(√) and cross(x) … +ve and -ve in some cultures … but … mean the same thing (mark this) in others&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;iteration-and-prototyping&quot;&gt;Iteration and prototyping&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Getting better …&lt;/li&gt; &lt;li&gt;… And starting well&lt;/li&gt; &lt;/ul&gt;...</description>
         <pubDate>Wed, 05 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basics-3/</link>
-        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basics-3/</guid>
+        <link>http://localhost:4000/HCI-6.-Interaction-Design-Basics-3/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-6.-Interaction-Design-Basics-3/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[HCI] 6. Interaction Design Basics 2</title>
-        
-        
-            <description>&lt;h2 id=&quot;think-about-dialogue&quot;&gt;Think about dialogue&lt;/h2&gt;
-</description>
-        
+      <item>
+        <title>[HCI] 6. Interaction Design Basics 2</title>
+        <description>&lt;h2 id=&quot;think-about-dialogue&quot;&gt;Think about dialogue&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;What does it mean in UI design?&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140232859.png&quot; alt=&quot;image-20221010140232859&quot; /&gt;&lt;/p&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;think-about-dialogue-1&quot;&gt;Think about dialogue&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;What does it mean in UI design?&lt;/li&gt; &lt;li&gt;&lt;img src=&quot;https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140251485.png&quot; alt=&quot;image-20221010140251485&quot; /&gt; &lt;ul&gt; &lt;li&gt;marriage service &lt;ul&gt; &lt;li&gt;general flow, generic – blanks for names&lt;/li&gt; &lt;li&gt;pattern of interaction between people&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;computer dialogue &lt;ul&gt; &lt;li&gt;pattern of interaction between users and system&lt;/li&gt; &lt;li&gt;but details differ each time&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;network-diagrams&quot;&gt;Network diagrams&lt;/h2&gt; &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221010140305392.png&quot; alt=&quot;image-20221010140305392&quot; /&gt;&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;Show different paths through system&lt;/p&gt; &lt;/li&gt; &lt;li&gt;What leads to what&lt;/li&gt; &lt;li&gt;What happens when&lt;/li&gt; &lt;li&gt;Including branches&lt;/li&gt; &lt;li&gt;More...</description>
         <pubDate>Mon, 03 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basic-2/</link>
-        <guid isPermaLink="true">http://localhost:4000/frontend/hci/HCI-6.-Interaction-Design-Basic-2/</guid>
+        <link>http://localhost:4000/HCI-6.-Interaction-Design-Basic-2/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-6.-Interaction-Design-Basic-2/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[OS] Memory Management</title>
-        
-        
-            <description>&lt;p&gt;[toc]&lt;/p&gt;
-</description>
-        
+      <item>
+        <title>[OS] Memory Management</title>
+        <description>&lt;p&gt;[toc]&lt;/p&gt; &lt;h1 id=&quot;chapter-9-memory-management&quot;&gt;Chapter 9: Memory Management&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;Background&lt;/li&gt; &lt;li&gt;Logical versus Physical Address Space&lt;/li&gt; &lt;li&gt;Swapping&lt;/li&gt; &lt;li&gt;Contiguous Memory Allocation&lt;/li&gt; &lt;li&gt;&lt;strong&gt;Paging&lt;/strong&gt; (시험)&lt;/li&gt; &lt;li&gt;&lt;strong&gt;Segmentation&lt;/strong&gt; (시험)&lt;/li&gt; &lt;li&gt;Segmentation with Paging&lt;/li&gt; &lt;li&gt;Structure of the Page Table&lt;/li&gt; &lt;li&gt;Example: The Intel 32 and 64-bit Architectures&lt;/li&gt; &lt;li&gt;Example: ARM Architecture&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;objectives&quot;&gt;Objectives&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;To provide a detailed description of various ways of organizing memory hardware&lt;/li&gt; &lt;li&gt;To discuss various memory-management techniques, including paging and segmentation&lt;/li&gt; &lt;li&gt;To provide a detailed description of the Intel Pentium, which supports both pure segmentation and segmentation with paging&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;structure---top-level&quot;&gt;Structure - Top Level&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;components are interleaved&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221127005647009.png&quot; alt=&quot;image-20221127005647009&quot;...</description>
         <pubDate>Mon, 03 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/os/OS-Memory-Management/</link>
-        <guid isPermaLink="true">http://localhost:4000/os/OS-Memory-Management/</guid>
+        <link>http://localhost:4000/OS-Memory-Management/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-Memory-Management/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
       </item>
     
-	<item>
-		<title>[OS] Deadlocks</title>
-        
-        
-            <description>&lt;p&gt;[toc]&lt;/p&gt;
-</description>
-        
+      <item>
+        <title>[OS] Deadlocks</title>
+        <description>&lt;p&gt;[toc]&lt;/p&gt; &lt;h1 id=&quot;chapter-8-deadlocks&quot;&gt;Chapter 8: Deadlocks&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;System Model&lt;/li&gt; &lt;li&gt;Deadlock Characterization&lt;/li&gt; &lt;li&gt;Methods for Handling Deadlocks&lt;/li&gt; &lt;li&gt;Deadlock Prevention&lt;/li&gt; &lt;li&gt;Deadlock Avoidance&lt;/li&gt; &lt;li&gt;Deadlock Detection&lt;/li&gt; &lt;li&gt;Recovery from Deadlock&lt;/li&gt; &lt;li&gt;Combined Approach to Deadlock Handling&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;chapter-objectives&quot;&gt;Chapter Objectives&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Illustrate how deadlock can occur when &lt;strong&gt;mutex locks&lt;/strong&gt; are used&lt;/li&gt; &lt;li&gt;Define the &lt;strong&gt;four necessary conditions&lt;/strong&gt; that characterize deadlock&lt;/li&gt; &lt;li&gt;Identify a deadlock situation in a &lt;strong&gt;resource allocation graph&lt;/strong&gt;&lt;/li&gt; &lt;li&gt;Evaluate the four different approaches for &lt;strong&gt;preventing deadlocks&lt;/strong&gt;&lt;/li&gt; &lt;li&gt;Apply the banker’s algorithm for &lt;strong&gt;deadlock avoidance&lt;/strong&gt;&lt;/li&gt; &lt;li&gt;Apply the &lt;strong&gt;deadlock detection&lt;/strong&gt; algorithm&lt;/li&gt; &lt;li&gt;Evaluate approaches for recovering from deadlock&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;bridge-crossing-example&quot;&gt;Bridge Crossing Example&lt;/h2&gt; &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20221002222310399.png&quot; alt=&quot;image-20221002222310399&quot; /&gt;&lt;/p&gt; &lt;ul&gt;...</description>
         <pubDate>Mon, 03 Oct 2022 00:00:00 +0900</pubDate>
-        <link>http://localhost:4000/os/OS-Deadlocks/</link>
-        <guid isPermaLink="true">http://localhost:4000/os/OS-Deadlocks/</guid>
+        <link>http://localhost:4000/OS-Deadlocks/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-Deadlocks/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[OS] Synchronization Examples</title>
+        <description>&lt;p&gt;[toc]&lt;/p&gt; &lt;h1 id=&quot;chapter-7-synchronization-examples&quot;&gt;Chapter 7: Synchronization Examples&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;Classic Problems of Synchronization &lt;ul&gt; &lt;li&gt;the bounded-buffer synchronization problem&lt;/li&gt; &lt;li&gt;the readers-writers synchronization problem&lt;/li&gt; &lt;li&gt;The dining-philosophers synchronization problems&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Synchronization within the &lt;strong&gt;Kernel&lt;/strong&gt;&lt;/li&gt; &lt;li&gt;the tools used by Linux and Windows to solve synchronization problems.&lt;/li&gt; &lt;li&gt;POSIX Synchronization&lt;/li&gt; &lt;li&gt;Synchronization in Java&lt;/li&gt; &lt;li&gt;Alternative Approaches&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;classical-problems-of-synchronization&quot;&gt;Classical Problems of Synchronization&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Classical problems used to test newly-proposed synchronization schemes &lt;ul&gt; &lt;li&gt;Bounded-Buffer Problem&lt;/li&gt; &lt;li&gt;Readers and Writers Problem&lt;/li&gt; &lt;li&gt;Dining-Philosophers Problem&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;bounded-buffer-problem&quot;&gt;Bounded-Buffer Problem&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;&lt;strong&gt;n&lt;/strong&gt; buffers, each can hold one item &lt;ul&gt; &lt;li&gt;producer와 consumer간의 shared buffer&lt;/li&gt; &lt;li&gt;in, out index로 조절 -...</description>
+        <pubDate>Sun, 02 Oct 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/OS-Synchronization-Examples/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-Synchronization-Examples/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[HCI] 6. Interaction Design Basics 1</title>
+        <description>&lt;h2 id=&quot;interaction-design-basics&quot;&gt;Interaction design basics&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;design: &lt;ul&gt; &lt;li&gt;what it is, interventions, goals, constraints&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;the design process &lt;ul&gt; &lt;li&gt;what happens when&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;users &lt;ul&gt; &lt;li&gt;who they are, what they are like …&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;scenarios &lt;ul&gt; &lt;li&gt;rich stories of design&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;navigation &lt;ul&gt; &lt;li&gt;finding your way around a system&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;iteration and prototypes &lt;ul&gt; &lt;li&gt;never get it right first time! 2&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;interactions-and-interventions개입&quot;&gt;Interactions and interventions(개입)&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Design interactions not just interfaces &lt;ul&gt; &lt;li&gt;not just the immediate interaction&lt;/li&gt; &lt;li&gt;e.g. stapler in office – technology changes interaction style &lt;ul&gt; &lt;li&gt;manual: write, print, staple,...</description>
+        <pubDate>Wed, 28 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/HCI-6.-Interaction-Design-Basics-1/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-6.-Interaction-Design-Basics-1/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[OS] Synchronization Tools</title>
+        <description>&lt;p&gt;[toc]&lt;/p&gt; &lt;h1 id=&quot;chapter-6-synchronization-tools&quot;&gt;Chapter 6: Synchronization Tools&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;Background&lt;/li&gt; &lt;li&gt;The Critical-Section Problem&lt;/li&gt; &lt;li&gt;Peterson’s Solution&lt;/li&gt; &lt;li&gt;Synchronization Hardware&lt;/li&gt; &lt;li&gt;Mutex Locks&lt;/li&gt; &lt;li&gt;Semaphores&lt;/li&gt; &lt;li&gt;Classical Problems of Synchronization&lt;/li&gt; &lt;li&gt;Monitors&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;objectives&quot;&gt;Objectives&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;To present the &lt;strong&gt;concept&lt;/strong&gt; of process synchronization.&lt;/li&gt; &lt;li&gt;To introduce the &lt;strong&gt;critical-section problem&lt;/strong&gt;, whose solutions can be used to ensure the &lt;strong&gt;consistency&lt;/strong&gt; of shared data&lt;/li&gt; &lt;li&gt;To present both software and hardware solutions of the critical-section problem&lt;/li&gt; &lt;li&gt;To examine several classical process-synchronization problems&lt;/li&gt; &lt;li&gt;To explore several tools that are used to solve process synchronization problems&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt; &lt;p&gt;그래도 결국 thread of control은 두 개가 아니라 하나.&lt;/p&gt; &lt;ul&gt; &lt;li&gt;Processes can execute...</description>
+        <pubDate>Tue, 27 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/OS-Synchronization-Tools/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-Synchronization-Tools/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[OS] CPU Scheduling</title>
+        <description>&lt;p&gt;1, 2 장 출제 x (참고자료로 사용) - 여기까지 시험범위&lt;/p&gt; &lt;p&gt;[toc]&lt;/p&gt; &lt;h1 id=&quot;chapter-5-cpu-scheduling&quot;&gt;Chapter 5: CPU Scheduling&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;Basic Concepts&lt;/li&gt; &lt;li&gt;Scheduling Criteria&lt;/li&gt; &lt;li&gt;Scheduling Algorithms&lt;/li&gt; &lt;li&gt;Thread Scheduling&lt;/li&gt; &lt;li&gt;Multiple-Processor Scheduling&lt;/li&gt; &lt;li&gt;Real-Time CPU Scheduling&lt;/li&gt; &lt;li&gt;Operating Systems Examples&lt;/li&gt; &lt;li&gt;Algorithm Evaluation&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;objectives&quot;&gt;Objectives&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;To introduce &lt;strong&gt;CPU scheduling&lt;/strong&gt;, which is the basis for multiprogrammed operating systems&lt;/li&gt; &lt;li&gt;To describe various CPU-scheduling algorithms&lt;/li&gt; &lt;li&gt;To discuss evaluation criteria for selecting a CPU-scheduling algorithm for a particular system&lt;/li&gt; &lt;li&gt;To examine the scheduling algorithms of several operating systems&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;basic-concepts&quot;&gt;Basic Concepts&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;목적: &lt;strong&gt;Maximum CPU utilization&lt;/strong&gt; obtained with multiprogramming &lt;span style=&quot;color:green&quot;&gt;(시험)&lt;/span&gt; &lt;ul&gt; &lt;li&gt;When one process...</description>
+        <pubDate>Tue, 27 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/OS-CPU-Scheduling/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-CPU-Scheduling/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[HCI] 5. HCI in The Software Process</title>
+        <description>&lt;h2 id=&quot;hci-in-the-software-process&quot;&gt;HCI in the software process&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Software engineering and the design process for interactive systems&lt;/li&gt; &lt;li&gt;Usability engineering&lt;/li&gt; &lt;li&gt;Iterative design and prototyping&lt;/li&gt; &lt;li&gt;Design rationale&lt;/li&gt; &lt;/ul&gt; &lt;h2 id=&quot;the-software-development-life-cycle&quot;&gt;the Software Development Life-Cycle&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Software engineering is the discipline for understanding the software design process, or life cycle&lt;/li&gt; &lt;li&gt;Designing for usability occurs at all stages of the life cycle, not as a single isolated activity&lt;/li&gt; &lt;li&gt;Four Essential Phases of any Software Development Process &lt;ul&gt; &lt;li&gt;Requirements Elicitation(끌어내기), Analysis, Specification&lt;/li&gt; &lt;li&gt;System Design&lt;/li&gt; &lt;li&gt;Program Implementation&lt;/li&gt; &lt;li&gt;Test&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;activities-in-the-life-cycle&quot;&gt;Activities in the Life Cycle&lt;/h2&gt; &lt;p&gt;폰트와 같은 것도 굉장히 중요할 수 있다.(저작권 문제 등)&lt;/p&gt;...</description>
+        <pubDate>Mon, 26 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/HCI-5.-HCI-in-The-Software-Process/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-5.-HCI-in-The-Software-Process/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[OS] Thread</title>
+        <description>&lt;p&gt;[toc]&lt;/p&gt; &lt;h1 id=&quot;chapter-4-multithreaded-programming&quot;&gt;Chapter 4: Multithreaded Programming&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;Overview&lt;/li&gt; &lt;li&gt;Multicore Programming&lt;/li&gt; &lt;li&gt;Multithreading Models&lt;/li&gt; &lt;li&gt;Thread Libraries&lt;/li&gt; &lt;li&gt;Implicit Threading&lt;/li&gt; &lt;li&gt;Threading Issues&lt;/li&gt; &lt;li&gt;Operating System Examples &lt;ul&gt; &lt;li&gt;Windows XP Threads&lt;/li&gt; &lt;li&gt;Linux Threads&lt;/li&gt; &lt;li&gt;Java Threads&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;objectives&quot;&gt;Objectives&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;To introduce the notion of a thread &lt;ul&gt; &lt;li&gt;a fundamental unit of CPU utilization(CPU 활용의 기본 단위) that forms the basis of multithreaded computer systems&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;To discuss the APIs for the Pthreads, Win32, and Java thread libraries&lt;/li&gt; &lt;li&gt;To explore several strategies that provide implicit threading&lt;/li&gt; &lt;li&gt;To examine issues related to multithreaded programming&lt;/li&gt; &lt;li&gt;To cover operating system support for threads in Windows...</description>
+        <pubDate>Mon, 26 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/OS-Thread/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-Thread/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[HCI] 4. Interaction</title>
+        <description>&lt;h2 id=&quot;what-is-interaction&quot;&gt;What is interaction?&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;communication &lt;ul&gt; &lt;li&gt;user &amp;lt;-&amp;gt; system&lt;/li&gt; &lt;li&gt;이를 어떻게 모델링 할 수 있는지?&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;interaction models &lt;ul&gt; &lt;li&gt;translations between user and system&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;ergonomics (인간 공학) &lt;ul&gt; &lt;li&gt;physical characteristics of interaction&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;interaction styles &lt;ul&gt; &lt;li&gt;the nature of user/system dialog&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;context &lt;ul&gt; &lt;li&gt;social, organizational, motivational&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;1-models-of-interaction-some-terms-of-interaction&quot;&gt;1. Models of interaction: Some terms of interaction&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;&lt;strong&gt;domain&lt;/strong&gt; – the area of work under study &lt;ul&gt; &lt;li&gt;e.g. graphic design&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;&lt;strong&gt;goal&lt;/strong&gt; – what you want to achieve; &lt;strong&gt;or&lt;/strong&gt; final result to be achieved &lt;ul&gt; &lt;li&gt;e.g. create a solid...</description>
+        <pubDate>Wed, 21 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/HCI-4.-Interaction/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-4.-Interaction/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[HCI] 3. Computer</title>
+        <description>&lt;h2 id=&quot;the-computer&quot;&gt;The Computer&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;a computer system is made up of various elements&lt;/li&gt; &lt;li&gt;each of these elements affects the interaction &lt;ul&gt; &lt;li&gt;input devices – text entry and pointing&lt;/li&gt; &lt;li&gt;output devices – screen (small&amp;amp;large), digital paper&lt;/li&gt; &lt;li&gt;virtual reality – special interaction and display devices&lt;/li&gt; &lt;li&gt;physical interaction – e.g. sound, haptic, bio-sensing&lt;/li&gt; &lt;li&gt;paper – as output (print) and input (scan)&lt;/li&gt; &lt;li&gt;memory – RAM &amp;amp; permanent media, capacity &amp;amp; access&lt;/li&gt; &lt;li&gt;processing – speed of processing, networks&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;interacting-with-computers&quot;&gt;Interacting with computers&lt;/h2&gt; &lt;p&gt;to understand human–computer interaction … need to understand computers!&lt;/p&gt; &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/speardragon/save-image-repo/main/img/image-20220909221050687.png&quot; alt=&quot;image-20220909221050687&quot; /&gt;&lt;/p&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;a-typical-computer-system&quot;&gt;A ‘typical’...</description>
+        <pubDate>Mon, 19 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/HCI-3.-Computer/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-3.-Computer/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[OS] Process Concept</title>
+        <description>&lt;p&gt;일부 내용은 시험에서 제외됨 (시험기간 직전에 알려줌)&lt;/p&gt; &lt;h1 id=&quot;chapter-3-process-concept&quot;&gt;Chapter 3: Process Concept&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;Process Concept&lt;/li&gt; &lt;li&gt;Process Scheduling&lt;/li&gt; &lt;li&gt;Operation on Processes&lt;/li&gt; &lt;li&gt;Inter-process Communication&lt;/li&gt; &lt;li&gt;Examples of IPC Systems&lt;/li&gt; &lt;li&gt;Communication in Client-Server Systems&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;process-concept&quot;&gt;Process Concept&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;An operating system executes a variety of programs: &lt;ul&gt; &lt;li&gt;Batch system – jobs&lt;/li&gt; &lt;li&gt;Time-shared systems – user programs or tasks&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Textbook uses the terms &lt;strong&gt;job&lt;/strong&gt; and &lt;strong&gt;process&lt;/strong&gt; almost interchangeably.&lt;/li&gt; &lt;li&gt;Process – a program in execution; process execution must progress in sequential fashion.&lt;/li&gt; &lt;li&gt;A process includes: &lt;ul&gt; &lt;li&gt;&lt;strong&gt;Resources&lt;/strong&gt;: timers, pending signals, open files, network connections, hardware, and IPC mechanisms&lt;/li&gt; &lt;li&gt;&lt;strong&gt;state, and a...</description>
+        <pubDate>Mon, 19 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/OS-Process-Concept/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-Process-Concept/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[HCI] 2. Human 2</title>
+        <description>&lt;h2 id=&quot;thinking&quot;&gt;Thinking&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Reasoning(추론) - 앞 뒤를 생각해서 이건 이렇게 될 것 같아! 처럼 추측하는 행위 &lt;ul&gt; &lt;li&gt;deduction, induction, abduction&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Problem solving - reasoning과는 달리 답이 없는 상태에서 답을 찾아내려고 하는 방식&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;deductive-reasoning&quot;&gt;Deductive Reasoning&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Deduction(연역): If A, then B &lt;ul&gt; &lt;li&gt;Derive logically necessary conclusion from given premises(전제). &lt;ul&gt; &lt;li&gt;e.g. If it is Friday then she will go to work&lt;/li&gt; &lt;li&gt;It is Friday&lt;/li&gt; &lt;li&gt;Therefore she will go to work.&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Logical conclusion &lt;strong&gt;not necessarily true&lt;/strong&gt;: &lt;ul&gt; &lt;li&gt;e.g. If it is raining then the ground is dry&lt;/li&gt; &lt;li&gt;It is raining&lt;/li&gt; &lt;li&gt;Therefore the ground is...</description>
+        <pubDate>Wed, 14 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/HCI-2.-Human-2/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-2.-Human-2/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[HCI] 2. Human 1</title>
+        <description>&lt;h2 id=&quot;the-human&quot;&gt;the human&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Information I/O … &lt;ul&gt; &lt;li&gt;visual, auditory, haptic, movement&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Information stored in &lt;strong&gt;memory&lt;/strong&gt; &lt;ul&gt; &lt;li&gt;sensory, short-term, long-term&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Information processed and applied &lt;ul&gt; &lt;li&gt;reasoning, problem solving, skill, error&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Emotion influences human capabilities&lt;/li&gt; &lt;li&gt;Each person is different&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;vision&quot;&gt;Vision&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Two stages in vision &lt;ul&gt; &lt;li&gt;Physical reception of stimulus (입력을 받아들이는 감각) &lt;ul&gt; &lt;li&gt;Eyes&lt;/li&gt; &lt;li&gt;Ears&lt;/li&gt; &lt;li&gt;Fingers&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Processing and interpretation of stimulus (카메라로 사진을 찍고 나서의 처리과정과 같은 과정) &lt;ul&gt; &lt;li&gt;Perception&lt;/li&gt; &lt;li&gt;Memory&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;the-eye---physical-reception&quot;&gt;The Eye - physical reception&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Mechanism for &lt;strong&gt;receiving...</description>
+        <pubDate>Mon, 12 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/HCI-2.-Human-1/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-2.-Human-1/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[OS] OS Structure</title>
+        <description>&lt;p&gt;1, 2 장은 중요도가 떨어짐(많은 시간을 투자해서 이해할 필요 X)&lt;/p&gt; &lt;p&gt;대충 보면서 이해하고 나중에 관련 내용이 나왔을 때 돌아와서 보기&lt;/p&gt; &lt;h1 id=&quot;chapter-2-operating-system-structures&quot;&gt;Chapter 2: Operating-System Structures&lt;/h1&gt; &lt;ul&gt; &lt;li&gt;&lt;strong&gt;the services an OS provides to users, processes, and other systems&lt;/strong&gt; &lt;ul&gt; &lt;li&gt;Operating System Services&lt;/li&gt; &lt;li&gt;User Operating System Interface&lt;/li&gt; &lt;li&gt;System Calls&lt;/li&gt; &lt;li&gt;System Programs&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;the various ways of structuring an operating system &lt;ul&gt; &lt;li&gt;Operating System Design and Implementation&lt;/li&gt; &lt;li&gt;Operating System Structure (어떻게 구현하는 지)&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;how operating systems are installed and customized and how they boot &lt;ul&gt; &lt;li&gt;Operating System Debugging&lt;/li&gt; &lt;li&gt;Operating System Generation&lt;/li&gt; &lt;li&gt;System Boot&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;ul&gt; &lt;li&gt;리눅스는...</description>
+        <pubDate>Mon, 12 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/OS-OS-Structure/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-OS-Structure/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[HCI] 1. Introduction to HCI</title>
+        <description>&lt;h1 id=&quot;1-introduction-to-hci&quot;&gt;1. Introduction to HCI&lt;/h1&gt; &lt;p&gt;사람과&lt;/p&gt; &lt;p&gt;그것이 포함된 모든 것을 총괄하는 것이 HCI&lt;/p&gt; &lt;p&gt;실제로는 유저 인터페이스 뿐만 아니라&lt;/p&gt; &lt;p&gt;HCI의 C가 computer에 한정되지 않고 모든 인간이 사용하는 도구로 확장 가능함&lt;/p&gt; &lt;h2 id=&quot;hci-in-the-1970s&quot;&gt;HCI in the 1970s&lt;/h2&gt; &lt;p&gt;예전에는 생산성이 더 강조되던 시기&lt;/p&gt; &lt;p&gt;그 당시 개발은 waterfall 방식 사용&lt;/p&gt; &lt;ul&gt; &lt;li&gt;유저 - 극단적인 이분법 &lt;ul&gt; &lt;li&gt;“자연과 스무고개를 해서 이길 수 없다.”&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;실험적으로 usability를 연구 &lt;ul&gt; &lt;li&gt;특별한 정보를 주지 않는 경우가 많았음&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;h2 id=&quot;hci-in-the-1980s&quot;&gt;HCI in the 1980s&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;결과를 보고 하는 것이 아니라 설계를 한다음에 유저에게 확인&lt;/li&gt; &lt;li&gt;설계 끝까지 가는 것이 아니라 중간 단계에서 유저와의 interaction을 통해 수정에 수정을 거침...</description>
+        <pubDate>Wed, 07 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/HCI-1.-Introduction-to-HCI/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-1.-Introduction-to-HCI/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[HCI] 0. Course Introduction</title>
+        <description>&lt;h2 id=&quot;course-information&quot;&gt;Course Information&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Instructor &lt;ul&gt; &lt;li&gt;Prof. Lee&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Textbook &lt;ul&gt; &lt;li&gt;Handouts &amp;amp; Reading Assignments&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Other Readings (If you want to know more…) &lt;ul&gt; &lt;li&gt;Alan Dix &amp;amp; Janet Finlay , “Human Computer Interaction, 3rd Ed.,” Prentice Hall, 2003.&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;Grading Policy &lt;ul&gt; &lt;li&gt;Midterm (30%), Final Project (40%), HWs (20%), Attnd. (10%)&lt;/li&gt; &lt;li&gt;Or TBA…&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;course-outline&quot;&gt;Course Outline&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Introduction&lt;/li&gt; &lt;li&gt;Human, Computer, &amp;amp; Interaction&lt;/li&gt; &lt;li&gt;Principles of HCI&lt;/li&gt; &lt;li&gt;HCI Development Methodology&lt;/li&gt; &lt;li&gt;Utilizing Computer Systems for HCI&lt;/li&gt; &lt;li&gt;HCI Tools&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;what-is-hci&quot;&gt;What is HCI?&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;The study of how people interact with computers...</description>
+        <pubDate>Mon, 05 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/HCI-0.-Course-Introduction/</link>
+        <guid isPermaLink="true">http://localhost:4000/HCI-0.-Course-Introduction/</guid>
+        
+        <category>HCI</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[OS] Introduction</title>
+        <description>&lt;h2 id=&quot;what-is-an-operating-system&quot;&gt;What is an Operating System?&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;A program that acts as an intermediary between &lt;strong&gt;a user of a computer&lt;/strong&gt; and &lt;strong&gt;the computer hardware&lt;/strong&gt;&lt;/li&gt; &lt;li&gt;Operating system goals: &lt;ul&gt; &lt;li&gt;Execute user programs and make solving user problems &lt;strong&gt;easier&lt;/strong&gt;&lt;/li&gt; &lt;li&gt;Provide an execution environment in which a user can execute programs &lt;ul&gt; &lt;li&gt;Make the computer system convenient to use (convenience)&lt;/li&gt; &lt;li&gt;Use the computer hardware in an efficient manner (efficiency)&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;computer-system-structure&quot;&gt;Computer System Structure&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Computer system can be divided into four components: &lt;ul&gt; &lt;li&gt;&lt;strong&gt;Hardware&lt;/strong&gt; – provides basic computing resources &lt;ul&gt; &lt;li&gt;CPU, memory, I/O devices&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt;...</description>
+        <pubDate>Mon, 05 Sep 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/OS-Introduction/</link>
+        <guid isPermaLink="true">http://localhost:4000/OS-Introduction/</guid>
+        
+        <category>운영체제</category>
+        
+        <category>OS</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[React Native] 함수 컴포넌트와 리액트 훅</title>
+        <description>&lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;p&gt;리액트 훅과 커스텀 훅&lt;/p&gt; &lt;p&gt;훅을 이용하면 클래스를 만들지 않고도 여러가지 리액트 기능을 사용 가능하다.&lt;/p&gt; &lt;h3 id=&quot;리액트-훅-사용-시-주의해야-할-점&quot;&gt;리액트 훅 사용 시 주의해야 할 점&lt;/h3&gt; &lt;ol&gt; &lt;li&gt;같은 리액트 훅을 여러 번 호출할 수 있다.&lt;/li&gt; &lt;li&gt;함수 컴포넌트 몸통이 아닌, 몸통 안 복합 실행문(compound statement)의 { }에서는 호출할 수 없다.&lt;/li&gt; &lt;li&gt;비동기 함수(async 키워드가 붙은 함수)는 콜백 함수로 사용할 수 없다.&lt;/li&gt; &lt;/ol&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;usememo와-usecallback-훅&quot;&gt;useMemo와 useCallback 훅&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;전역 변수 &lt;ul&gt; &lt;li&gt;people 데이터는 한 번 만들어지면 바뀌지 않게 하고 싶었기 때문에 전역 변수로 설정했었음&lt;/li&gt; &lt;/ul&gt; &lt;/li&gt; &lt;li&gt;리액트 훅의 등장 배경 &lt;ul&gt; &lt;li&gt;로컬 변수인 people을 마치 전역 변수처럼 사용하고 싶다는 데서 시작&lt;/li&gt; &lt;li&gt;로컬 변수...</description>
+        <pubDate>Sat, 09 Jul 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/React-Native-%ED%95%A8%EC%88%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%99%80-%EB%A6%AC%EC%95%A1%ED%8A%B8-%ED%9B%85/</link>
+        <guid isPermaLink="true">http://localhost:4000/React-Native-%ED%95%A8%EC%88%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EC%99%80-%EB%A6%AC%EC%95%A1%ED%8A%B8-%ED%9B%85/</guid>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[Nodejs] 에러 핸들링</title>
+        <description>&lt;h2 id=&quot;error-handling&quot;&gt;Error Handling&lt;/h2&gt; &lt;h3 id=&quot;status-code&quot;&gt;Status Code&lt;/h3&gt; &lt;ul&gt; &lt;li&gt;1xx(정보) : 요청을 받았고, 프로세스를 계속 진행함&lt;/li&gt; &lt;li&gt;2xx(성공) : 요청을 성공적으로 받았고, 실행함&lt;/li&gt; &lt;li&gt;3xx(리다이렉션) : 요청 완료를 위한 추가 작업이 필요&lt;/li&gt; &lt;li&gt;4xx(클라이언트 오류) : 요청 문법이 잘못되었거나 요청을 처리할 수 없음&lt;/li&gt; &lt;li&gt;5xx(서버 오류) 서버가 요청에 대해 실패함&lt;/li&gt; &lt;/ul&gt; &lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// @ts-ignore&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;USERS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Error&lt;/span&gt;&lt;span...</description>
+        <pubDate>Tue, 05 Jul 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/Nodejs-%EC%97%90%EB%9F%AC-%ED%95%B8%EB%93%A4%EB%A7%81/</link>
+        <guid isPermaLink="true">http://localhost:4000/Nodejs-%EC%97%90%EB%9F%AC-%ED%95%B8%EB%93%A4%EB%A7%81/</guid>
+        
+        <category>Nodejs</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[Nodejs] REST api 라우팅하기</title>
+        <description>&lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;rest-api-라우팅하기&quot;&gt;REST API 라우팅하기&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;지난 시간 코드&lt;/li&gt; &lt;/ul&gt; &lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// @ts-check&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* eslint-disable no-console */&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;express&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;express&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PORT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5000&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;use&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Middleware 1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span...</description>
+        <pubDate>Mon, 04 Jul 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/Nodejs-REST-api-%EB%9D%BC%EC%9A%B0%ED%8C%85%ED%95%98%EA%B8%B0/</link>
+        <guid isPermaLink="true">http://localhost:4000/Nodejs-REST-api-%EB%9D%BC%EC%9A%B0%ED%8C%85%ED%95%98%EA%B8%B0/</guid>
+        
+        <category>Nodejs</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[Nodejs] express 모듈로 서버 구축</title>
+        <description>&lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;p&gt;이번 시간엔 node.js에서 가장 대표적인 웹 프레임워크 중 하나인 express.js에 대해서 알아보도록 하겠다.&lt;/p&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;express란&quot;&gt;Express란?&lt;/h2&gt; &lt;p&gt;Express.js는 Node.js를 위한 빠르고 개방적이고 간결한 웹 프레임워크이며, python의 Django, Java의 Sprint bott와 같은 프레임워크들 처럼 javascript에서 사용하는 웹 프레임워크 중 하나이다.&lt;/p&gt; &lt;p&gt;또한 여러 코어 등을 비롯해 노드 웹 프레임워크 중에 가장 대표적인 것으로 가장 많이 쓰인다.&lt;/p&gt; &lt;p&gt;물론 express만이 답이다! 라는 것은 아니지만 express가 가장 대표적이기 때문에 express의 사용법만 잘 익혀 놓더라도 노드 기반의 다른 웹 프레임워크로 넘어가더라도 큰 무리 없이 적응 할 수 있을 것이다.&lt;/p&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;p&gt;**express? 왜? **&lt;/p&gt; &lt;p&gt;Express.js 프레임워크를 사용해야 하는 이유는 웹서버를 구현할 때 이미 만들어진...</description>
+        <pubDate>Sun, 03 Jul 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/Nodejs-express-%EB%AA%A8%EB%93%88%EB%A1%9C-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%B6%95/</link>
+        <guid isPermaLink="true">http://localhost:4000/Nodejs-express-%EB%AA%A8%EB%93%88%EB%A1%9C-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%B6%95/</guid>
+        
+        <category>Nodejs</category>
+        
+        <category></category>
+      </item>
+    
+      <item>
+        <title>[Nodejs] npm, yarn 등 패키지 매니저 그리고 package.json 파일의 의미</title>
+        <description>&lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;h2 id=&quot;nodejs의-핵심-개념-정리&quot;&gt;nodejs의 핵심 개념 정리&lt;/h2&gt; &lt;p&gt;자바 스크립트에서 특정 변수나 객체를 보내기 위해 파일들끼리 서로 보내고 가져올 수 있는 require에 대해서 알아보자&lt;/p&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;p&gt;만약 아래와 같은 animals.js 파일에 animals라는 배열을 가져오고 싶다고 하자.&lt;/p&gt; &lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;animals&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;dog&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;cat&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;animals&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt; &lt;p&gt;이 변수를 main.js 파일에서 사용하고 싶다면 그냥 단지 해당 변수를 적기만 하면 없다고 에러를 띄우기 때문에 해당 변수를 가지고 있는 파일에서 특정 객체에 대해 export(수출, 내보내기)를 명시해 주어야 한다.&lt;/p&gt; &lt;p&gt;&lt;br /&gt;&lt;/p&gt; &lt;p&gt;그래서 이 변수를 사용할...</description>
+        <pubDate>Sat, 02 Jul 2022 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/Nodejs-npm,-yarn-%EB%93%B1-%ED%8C%A8%ED%82%A4%EC%A7%80-%EB%A7%A4%EB%8B%88%EC%A0%80-%EA%B7%B8%EB%A6%AC%EA%B3%A0-package.json-%ED%8C%8C%EC%9D%BC%EC%9D%98-%EC%9D%98%EB%AF%B8/</link>
+        <guid isPermaLink="true">http://localhost:4000/Nodejs-npm,-yarn-%EB%93%B1-%ED%8C%A8%ED%82%A4%EC%A7%80-%EB%A7%A4%EB%8B%88%EC%A0%80-%EA%B7%B8%EB%A6%AC%EA%B3%A0-package.json-%ED%8C%8C%EC%9D%BC%EC%9D%98-%EC%9D%98%EB%AF%B8/</guid>
+        
+        <category>Nodejs</category>
+        
+        <category></category>
       </item>
     
   </channel>

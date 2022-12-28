@@ -1,0 +1,600 @@
+<!DOCTYPE html> <html lang="en" class="no-js"> <head> <meta charset="utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>[Android] Kotlin 문법 총 정리 | Jekflix</title> <meta name="description" content="Jekflix is a template for Jekyll inspired by Netflix and made by Thiago Rossener."> <meta name="keywords" content="Android, Intro"> <!-- Social: Twitter --> <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="[Android] Kotlin 문법 총 정리 | Jekflix"> <meta name="twitter:description" content="Jekflix is a template for Jekyll inspired by Netflix and made by Thiago Rossener."> <meta property="twitter:image" content="http://localhost:4000/assets/img/blog-image.png"> <meta name="twitter:site" content="@twitter_username"> <!-- Social: Facebook / Open Graph --> <meta property="og:url" content="http://localhost:4000/Android-Kotlin-%EB%AC%B8%EB%B2%95-%EC%B4%9D-%EC%A0%95%EB%A6%AC/"> <meta property="og:title" content="[Android] Kotlin 문법 총 정리 | Jekflix"> <meta property="og:image" content="http://localhost:4000/assets/img/blog-image.png"> <meta property="og:description" content="Jekflix is a template for Jekyll inspired by Netflix and made by Thiago Rossener."> <meta property="og:site_name" content="Jekflix | A blog theme for Jekyll"> <!-- Favicon --> <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> <!-- Apple Touch Icons --> <link rel="apple-touch-icon" href="/assets/img/icons/apple-touch-icon.png" /> <link rel="apple-touch-icon" sizes="57x57" href="/assets/img/icons/apple-touch-icon-57x57.png" /> <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/icons/apple-touch-icon-72x72.png" /> <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/icons/apple-touch-icon-114x114.png" /> <link rel="apple-touch-icon" sizes="144x144" href="/assets/img/icons/apple-touch-icon-144x144.png" /> <link rel="apple-touch-icon" sizes="60x60" href="/assets/img/icons/apple-touch-icon-60x60.png" /> <link rel="apple-touch-icon" sizes="120x120" href="/assets/img/icons/apple-touch-icon-120x120.png" /> <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/icons/apple-touch-icon-76x76.png" /> <link rel="apple-touch-icon" sizes="152x152" href="/assets/img/icons/apple-touch-icon-152x152.png" /> <!-- Windows 8 Tile Icons --> <meta name="application-name" content="Jekflix"> <meta name="msapplication-TileColor" content="#141414"> <meta name="msapplication-square70x70logo" content="smalltile.png" /> <meta name="msapplication-square150x150logo" content="mediumtile.png" /> <meta name="msapplication-wide310x150logo" content="widetile.png" /> <meta name="msapplication-square310x310logo" content="largetile.png" /> <!-- Android Lolipop Theme Color --> <meta name="theme-color" content="#141414"> <!-- Fonts --> <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,700" rel="stylesheet"> <link rel="stylesheet" href="/assets/css/styles.css"> <link rel="canonical" href="http://localhost:4000/Android-Kotlin-%EB%AC%B8%EB%B2%95-%EC%B4%9D-%EC%A0%95%EB%A6%AC/"> <link rel="alternate" type="application/rss+xml" title="Jekflix | A blog theme for Jekyll" href="http://localhost:4000/feed.xml" /> <!-- Include extra styles --> <!-- JavaScript enabled/disabled --> <script> document.querySelector('html').classList.remove('no-js'); </script> </head> <body class="has-push-menu"> <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" display="none" version="1.1"><defs><symbol id="icon-menu" viewBox="0 0 1024 1024"><path class="path1" d="M128 213.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5zM128 725.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5zM128 469.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5z"/></symbol><symbol id="icon-search" viewBox="0 0 951 1024"><path class="path1" d="M658.286 475.429q0-105.714-75.143-180.857t-180.857-75.143-180.857 75.143-75.143 180.857 75.143 180.857 180.857 75.143 180.857-75.143 75.143-180.857zM950.857 950.857q0 29.714-21.714 51.429t-51.429 21.714q-30.857 0-51.429-21.714l-196-195.429q-102.286 70.857-228 70.857-81.714 0-156.286-31.714t-128.571-85.714-85.714-128.571-31.714-156.286 31.714-156.286 85.714-128.571 128.571-85.714 156.286-31.714 156.286 31.714 128.571 85.714 85.714 128.571 31.714 156.286q0 125.714-70.857 228l196 196q21.143 21.143 21.143 51.429z"/></symbol><symbol id="icon-close" viewBox="0 0 1000 1000"><path d="M969.8,870.3c27,27.7,27,71.8,0,99.1C955.7,983,937.9,990,920,990c-17.9,0-35.7-7-49.7-20.7L500,599L129.6,969.4C115.6,983,97.8,990,79.9,990s-35.7-7-49.7-20.7c-27-27.3-27-71.4,0-99.1L400.9,500L30.3,129.3c-27-27.3-27-71.4,0-99.1c27.3-27,71.8-27,99.4,0L500,400.9L870.4,30.2c27.7-27,71.8-27,99.4,0c27,27.7,27,71.8,0,99.1L599.1,500L969.8,870.3z"/></symbol><symbol id="icon-twitter" viewBox="0 0 951 1024"><path class="path1" d="M925.714 233.143q-38.286 56-92.571 95.429 0.571 8 0.571 24 0 74.286-21.714 148.286t-66 142-105.429 120.286-147.429 83.429-184.571 31.143q-154.857 0-283.429-82.857 20 2.286 44.571 2.286 128.571 0 229.143-78.857-60-1.143-107.429-36.857t-65.143-91.143q18.857 2.857 34.857 2.857 24.571 0 48.571-6.286-64-13.143-106-63.714t-42-117.429v-2.286q38.857 21.714 83.429 23.429-37.714-25.143-60-65.714t-22.286-88q0-50.286 25.143-93.143 69.143 85.143 168.286 136.286t212.286 56.857q-4.571-21.714-4.571-42.286 0-76.571 54-130.571t130.571-54q80 0 134.857 58.286 62.286-12 117.143-44.571-21.143 65.714-81.143 101.714 53.143-5.714 106.286-28.571z"/></symbol><symbol id="icon-facebook" viewBox="0 0 585 1024"><path class="path1" d="M548 6.857v150.857h-89.714q-49.143 0-66.286 20.571t-17.143 61.714v108h167.429l-22.286 169.143h-145.143v433.714h-174.857v-433.714h-145.714v-169.143h145.714v-124.571q0-106.286 59.429-164.857t158.286-58.571q84 0 130.286 6.857z"/></symbol><symbol id="icon-clock" viewBox="0 0 1000 1000"><path d="M500,10C229.8,10,10,229.8,10,500c0,270.2,219.8,490,490,490c270.2,0,490-219.8,490-490C990,229.8,770.2,10,500,10z M500,910.2c-226.2,0-410.2-184-410.2-410.2c0-226.2,184-410.2,410.2-410.2c226.2,0,410.2,184,410.2,410.2C910.2,726.1,726.2,910.2,500,910.2z M753.1,374c8.2,11.9,5.2,28.1-6.6,36.3L509.9,573.7c-4.4,3.1-9.6,4.6-14.8,4.6c-4.1,0-8.3-1-12.1-3c-8.6-4.5-14-13.4-14-23.1V202.5c0-14.4,11.7-26.1,26.1-26.1c14.4,0,26.1,11.7,26.1,26.1v300l195.6-135.1C728.7,359.2,744.9,362.1,753.1,374z"/></symbol><symbol id="icon-calendar" viewBox="0 0 1000 1000"><path d="M920,500v420H80V500H920 M990,430H10v490c0,38.7,31.3,70,70,70h840c38.7,0,70-31.3,70-70V430L990,430z"/><path d="M850,80v105c0,57.9-47.2,105-105,105c-58,0-105-47.1-105-105V80H360v105c0,57.9-47.2,105-105,105c-58,0-105-47.1-105-105V80C72.8,80,10,142.7,10,220v140h980V220C990,142.7,927.2,80,850,80z"/><path d="M255,10c-19.3,0-35,15.8-35,35v140c0,19.2,15.7,35,35,35c19.3,0,35-15.8,35-35V45C290,25.8,274.3,10,255,10z"/><path d="M745,10c-19.3,0-35,15.8-35,35v140c0,19.2,15.7,35,35,35c19.3,0,35-15.8,35-35V45C780,25.8,764.3,10,745,10z"/></symbol><symbol id="icon-github" viewBox="0 0 12 14"><path d="M6 1q1.633 0 3.012 0.805t2.184 2.184 0.805 3.012q0 1.961-1.145 3.527t-2.957 2.168q-0.211 0.039-0.312-0.055t-0.102-0.234q0-0.023 0.004-0.598t0.004-1.051q0-0.758-0.406-1.109 0.445-0.047 0.801-0.141t0.734-0.305 0.633-0.52 0.414-0.82 0.16-1.176q0-0.93-0.617-1.609 0.289-0.711-0.062-1.594-0.219-0.070-0.633 0.086t-0.719 0.344l-0.297 0.187q-0.727-0.203-1.5-0.203t-1.5 0.203q-0.125-0.086-0.332-0.211t-0.652-0.301-0.664-0.105q-0.352 0.883-0.062 1.594-0.617 0.68-0.617 1.609 0 0.664 0.16 1.172t0.41 0.82 0.629 0.523 0.734 0.305 0.801 0.141q-0.305 0.281-0.383 0.805-0.164 0.078-0.352 0.117t-0.445 0.039-0.512-0.168-0.434-0.488q-0.148-0.25-0.379-0.406t-0.387-0.187l-0.156-0.023q-0.164 0-0.227 0.035t-0.039 0.090 0.070 0.109 0.102 0.094l0.055 0.039q0.172 0.078 0.34 0.297t0.246 0.398l0.078 0.18q0.102 0.297 0.344 0.48t0.523 0.234 0.543 0.055 0.434-0.027l0.18-0.031q0 0.297 0.004 0.691t0.004 0.426q0 0.141-0.102 0.234t-0.312 0.055q-1.812-0.602-2.957-2.168t-1.145-3.527q0-1.633 0.805-3.012t2.184-2.184 3.012-0.805zM2.273 9.617q0.023-0.055-0.055-0.094-0.078-0.023-0.102 0.016-0.023 0.055 0.055 0.094 0.070 0.047 0.102-0.016zM2.516 9.883q0.055-0.039-0.016-0.125-0.078-0.070-0.125-0.023-0.055 0.039 0.016 0.125 0.078 0.078 0.125 0.023zM2.75 10.234q0.070-0.055 0-0.148-0.062-0.102-0.133-0.047-0.070 0.039 0 0.141t0.133 0.055zM3.078 10.562q0.062-0.062-0.031-0.148-0.094-0.094-0.156-0.023-0.070 0.062 0.031 0.148 0.094 0.094 0.156 0.023zM3.523 10.758q0.023-0.086-0.102-0.125-0.117-0.031-0.148 0.055t0.102 0.117q0.117 0.047 0.148-0.047zM4.016 10.797q0-0.102-0.133-0.086-0.125 0-0.125 0.086 0 0.102 0.133 0.086 0.125 0 0.125-0.086zM4.469 10.719q-0.016-0.086-0.141-0.070-0.125 0.023-0.109 0.117t0.141 0.062 0.109-0.109z"></path></symbol><symbol id="icon-medium" viewBox="0 0 1000 1000"><path d="M336.5,240.2v641.5c0,9.1-2.3,16.9-6.8,23.2s-11.2,9.6-20,9.6c-6.2,0-12.2-1.5-18-4.4L37.3,782.7c-7.7-3.6-14.1-9.8-19.4-18.3S10,747.4,10,739V115.5c0-7.3,1.8-13.5,5.5-18.6c3.6-5.1,8.9-7.7,15.9-7.7c5.1,0,13.1,2.7,24.1,8.2l279.5,140C335.9,238.6,336.5,239.5,336.5,240.2L336.5,240.2z M371.5,295.5l292,473.6l-292-145.5V295.5z M990,305.3v576.4c0,9.1-2.6,16.5-7.7,22.1c-5.1,5.7-12,8.5-20.8,8.5s-17.3-2.4-25.7-7.1L694.7,784.9L990,305.3z M988.4,239.7c0,1.1-46.8,77.6-140.3,229.4C754.6,621,699.8,709.8,683.8,735.7L470.5,389l177.2-288.2c6.2-10.2,15.7-15.3,28.4-15.3c5.1,0,9.8,1.1,14.2,3.3l295.9,147.7C987.6,237.1,988.4,238.2,988.4,239.7L988.4,239.7z"/></symbol><symbol id="icon-instagram" viewBox="0 0 489.84 489.84"><path d="M249.62,50.46c65.4,0,73.14.25,99,1.43C372.47,53,385.44,57,394.07,60.32a75.88,75.88,0,0,1,28.16,18.32,75.88,75.88,0,0,1,18.32,28.16c3.35,8.63,7.34,21.6,8.43,45.48,1.18,25.83,1.43,33.57,1.43,99s-0.25,73.14-1.43,99c-1.09,23.88-5.08,36.85-8.43,45.48a81.11,81.11,0,0,1-46.48,46.48c-8.63,3.35-21.6,7.34-45.48,8.43-25.82,1.18-33.57,1.43-99,1.43s-73.15-.25-99-1.43c-23.88-1.09-36.85-5.08-45.48-8.43A75.88,75.88,0,0,1,77,423.86,75.88,75.88,0,0,1,58.69,395.7c-3.35-8.63-7.34-21.6-8.43-45.48-1.18-25.83-1.43-33.57-1.43-99s0.25-73.14,1.43-99c1.09-23.88,5.08-36.85,8.43-45.48A75.88,75.88,0,0,1,77,78.64a75.88,75.88,0,0,1,28.16-18.32c8.63-3.35,21.6-7.34,45.48-8.43,25.83-1.18,33.57-1.43,99-1.43m0-44.13c-66.52,0-74.86.28-101,1.47s-43.87,5.33-59.45,11.38A120.06,120.06,0,0,0,45.81,47.44,120.06,120.06,0,0,0,17.56,90.82C11.5,106.4,7.36,124.2,6.17,150.27s-1.47,34.46-1.47,101,0.28,74.86,1.47,101,5.33,43.87,11.38,59.45a120.06,120.06,0,0,0,28.25,43.38,120.06,120.06,0,0,0,43.38,28.25c15.58,6.05,33.38,10.19,59.45,11.38s34.46,1.47,101,1.47,74.86-.28,101-1.47,43.87-5.33,59.45-11.38a125.24,125.24,0,0,0,71.63-71.63c6.05-15.58,10.19-33.38,11.38-59.45s1.47-34.46,1.47-101-0.28-74.86-1.47-101-5.33-43.87-11.38-59.45a120.06,120.06,0,0,0-28.25-43.38,120.06,120.06,0,0,0-43.38-28.25C394.47,13.13,376.67,9,350.6,7.8s-34.46-1.47-101-1.47h0Z" transform="translate(-4.7 -6.33)" /><path d="M249.62,125.48A125.77,125.77,0,1,0,375.39,251.25,125.77,125.77,0,0,0,249.62,125.48Zm0,207.41a81.64,81.64,0,1,1,81.64-81.64A81.64,81.64,0,0,1,249.62,332.89Z" transform="translate(-4.7 -6.33)"/><circle cx="375.66" cy="114.18" r="29.39" /></symbol><symbol id="icon-linkedin" viewBox="0 0 12 14"><path d="M2.727 4.883v7.742h-2.578v-7.742h2.578zM2.891 2.492q0.008 0.57-0.395 0.953t-1.059 0.383h-0.016q-0.641 0-1.031-0.383t-0.391-0.953q0-0.578 0.402-0.957t1.051-0.379 1.039 0.379 0.398 0.957zM12 8.187v4.437h-2.57v-4.141q0-0.82-0.316-1.285t-0.988-0.465q-0.492 0-0.824 0.27t-0.496 0.668q-0.086 0.234-0.086 0.633v4.32h-2.57q0.016-3.117 0.016-5.055t-0.008-2.313l-0.008-0.375h2.57v1.125h-0.016q0.156-0.25 0.32-0.438t0.441-0.406 0.68-0.34 0.895-0.121q1.336 0 2.148 0.887t0.813 2.598z"></path></symbol><symbol id="icon-heart" viewBox="0 0 34 30"><path d="M17,29.7 L16.4,29.2 C3.5,18.7 0,15 0,9 C0,4 4,0 9,0 C13.1,0 15.4,2.3 17,4.1 C18.6,2.3 20.9,0 25,0 C30,0 34,4 34,9 C34,15 30.5,18.7 17.6,29.2 L17,29.7 Z M9,2 C5.1,2 2,5.1 2,9 C2,14.1 5.2,17.5 17,27.1 C28.8,17.5 32,14.1 32,9 C32,5.1 28.9,2 25,2 C21.5,2 19.6,4.1 18.1,5.8 L17,7.1 L15.9,5.8 C14.4,4.1 12.5,2 9,2 Z" id="Shape"></path></symbol><symbol id="icon-arrow-right" viewBox="0 0 25.452 25.452"><path d="M4.471,24.929v-2.004l12.409-9.788c0.122-0.101,0.195-0.251,0.195-0.411c0-0.156-0.073-0.31-0.195-0.409L4.471,2.526V0.522c0-0.2,0.115-0.384,0.293-0.469c0.18-0.087,0.396-0.066,0.552,0.061l15.47,12.202c0.123,0.1,0.195,0.253,0.195,0.409c0,0.16-0.072,0.311-0.195,0.411L5.316,25.34c-0.155,0.125-0.372,0.147-0.552,0.061C4.586,25.315,4.471,25.13,4.471,24.929z"/></symbol><symbol id="icon-star" viewBox="0 0 48 48"><path fill="currentColor" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"/><path fill="#ffffff" d="M24,11l3.898,7.898l8.703,1.301l-6.301,6.102l1.5,8.699L24,30.898L16.199,35l1.5-8.699l-6.301-6.102 l8.703-1.301L24,11z"/></symbol><symbol id="icon-read" viewBox="0 0 32 32"><path fill="currentColor" d="M29,4H3C1.343,4,0,5.343,0,7v18c0,1.657,1.343,3,3,3h10c0,0.552,0.448,1,1,1h4c0.552,0,1-0.448,1-1h10 c1.657,0,3-1.343,3-3V7C32,5.343,30.657,4,29,4z M29,5v20H18.708c-0.618,0-1.236,0.146-1.789,0.422l-0.419,0.21V5H29z M15.5,5 v20.632l-0.419-0.21C14.528,25.146,13.91,25,13.292,25H3V5H15.5z M31,25c0,1.103-0.897,2-2,2H18v1h-4v-1H3c-1.103,0-2-0.897-2-2V7 c0-0.737,0.405-1.375,1-1.722V25c0,0.552,0.448,1,1,1h10.292c0.466,0,0.925,0.108,1.342,0.317l0.919,0.46 c0.141,0.07,0.294,0.106,0.447,0.106c0.153,0,0.306-0.035,0.447-0.106l0.919-0.46C17.783,26.108,18.242,26,18.708,26H29 c0.552,0,1-0.448,1-1V5.278C30.595,5.625,31,6.263,31,7V25z M6,12.5C6,12.224,6.224,12,6.5,12h5c0.276,0,0.5,0.224,0.5,0.5 S11.776,13,11.5,13h-5C6.224,13,6,12.776,6,12.5z M6,14.5C6,14.224,6.224,14,6.5,14h5c0.276,0,0.5,0.224,0.5,0.5S11.776,15,11.5,15 h-5C6.224,15,6,14.776,6,14.5z M6,16.5C6,16.224,6.224,16,6.5,16h5c0.276,0,0.5,0.224,0.5,0.5S11.776,17,11.5,17h-5 C6.224,17,6,16.776,6,16.5z M20,12.5c0-0.276,0.224-0.5,0.5-0.5h5c0.276,0,0.5,0.224,0.5,0.5S25.776,13,25.5,13h-5 C20.224,13,20,12.776,20,12.5z M20,14.5c0-0.276,0.224-0.5,0.5-0.5h5c0.276,0,0.5,0.224,0.5,0.5S25.776,15,25.5,15h-5 C20.224,15,20,14.776,20,14.5z M20,16.5c0-0.276,0.224-0.5,0.5-0.5h5c0.276,0,0.5,0.224,0.5,0.5S25.776,17,25.5,17h-5 C20.224,17,20,16.776,20,16.5z"></path></symbol></defs></svg> <header class="bar-header"> <a id="menu" role="button"> <svg id="open" class="icon-menu"><use xlink:href="#icon-menu"></use></svg> </a> <h1 class="logo"> <a href="/"> Jekflix <span class="version">v3.1.2</span> </a> </h1> <a id="search" class="dosearch" role="button"> <svg class="icon-search"><use xlink:href="#icon-search"></use></svg> </a> <a href="https://github.com/thiagorossener/jekflix-template" class="get-theme" role="button"> Get this theme! </a> </header> <div id="mask" class="overlay"></div> <aside class="sidebar" id="sidebar"> <nav id="navigation"> <h2>Menu</h2> <ul> <li> <a href="http://localhost:4000/">Home</a> </li> <li> <a href="http://localhost:4000/about">About</a> </li> <li> <a href="http://localhost:4000/contact">Contact</a> </li> <li> <a href="http://localhost:4000/feed.xml">Feed</a> </li> </ul> </nav> </aside> <div class="search-wrapper"> <div class="search-form"> <input type="text" class="search-field" placeholder="Search"> <svg class="icon-remove-sign"><use xlink:href="#icon-close"></use></svg> <ul class="search-results search-list"></ul> </div> </div> <section class="content"> <div id="main" role="main"> <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork"> <meta itemprop="headline" content="[Android] Kotlin 문법 총 정리"> <meta itemprop="description" content=""> <meta itemprop="datePublished" content="2022-03-05T00:00:00+09:00"> <div class="page__inner-wrap"> <header> <h1 id="page-title" class="page__title p-name" itemprop="headline"> <a href="http://localhost:4000/Android-Kotlin-%EB%AC%B8%EB%B2%95-%EC%B4%9D-%EC%A0%95%EB%A6%AC/" class="u-url" itemprop="url">[Android] Kotlin 문법 총 정리 </a> </h1> </header> <section class="page__content e-content" itemprop="text"> <aside class="sidebar__right sticky"> <nav class="toc"> <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header> <!-- Add your table of contents here --> </nav> </aside> <p><br /></p> <p>이 카테고리는 안드로이드에 관한 프로젝트를 구현해 보는 카테고리로써 여러 프로젝트를 해 보기 전에 안드로이드 문법인 코틀린 언어에 대해서 먼저 알아보도록 할 것이다.</p> <p>안드로이트 스튜디오 사용방법에 대해 익히는 것보다 프로젝트를 하나씩 해 보면서 여러가지를 배우는 것이 재미적인 측면에서나 효율적인 측면에서 더 좋을 것이다.</p> <p>그럼 이 프로젝트를 해 보기에 앞서 사용할 언어인 코틀린 언어에 대해서 알아보도록 하겠다. 참고로 코틀린 문법을 최대한 많이 정리를 해 놓으려고 하고 있고 계속 해서 추가할 예정이므로 이 포스팅의 길이는 매우 길 것이므로 유의하면서 읽기 바란다.</p> <p><img src="https://user-images.githubusercontent.com/79521972/156873100-79d876aa-91ca-4d3e-a43d-2251ec53edfb.png" alt="image" /></p> <p>Kotlin이라는 언어를 들어본 사람도 있을 것이고 들어보지 못한 사람도 있을 것이다.</p> <p>통상적으로 안드로이드 개발을 하기 위해서는 Kotlin 혹은 Java언어를 사용해서 구현을 한다. 만약 안드로이드 개발을 해봤다면 자바로 안드로이드 개발을 했던 사람도 있을 것이고 아니면 안드로이드 개발은 처음하지만 바로 코틀린 언어로 개발을 하기 위한 사람도 있을 것이다.</p> <p>이 Android 프로젝트(개발?) 챕터에서는 코틀린 문법으로 30여개의 프로젝트 및 실습을 진행할 것인데 이에 앞서 이 포스팅에서는 Kotlin 문법에 대한 정리를 먼저 해 볼것이다.</p> <p><br /></p> <h2 id="1-코틀린-이란">1. 코틀린 이란?</h2> <p><img src="https://user-images.githubusercontent.com/79521972/156873252-36b7b1f9-3b02-41d1-94c2-436cfd7d5668.png" alt="image" style="zoom: 67%;" /><img src="https://user-images.githubusercontent.com/79521972/156873266-bbc5e978-e666-4a01-9ae9-55bb99bb44d1.png" alt="image" style="zoom: 67%;" /></p> <p>코틀린은 JETBRAIN에서 만든 프로그래밍 언어이다. 이 JETBRAIN은 자바 통합 개발 환경 tool인 Intellij를 만든 기업이다.</p> <p>이 Intellij를 기반으로 만든 프로그램인 우리가 계속 사용 하게 될 Android Studio이고 앞으로 4.1.2버전을 기반으로 사용 할 것이다.</p> <p><br /></p> <p>코틀린은 자바 언어의 단점을 보완하기 위해 나온 언어이기 때문에 자바가 동작하는 환경에서는 100% 호환성을 보여주고 있다. 그렇기 때문에 자바로 개발할 수 있는 것들은 모두 코틀린으로 개발할 수 있는 것이다.</p> <p>그래서 보통 앱개발을 한다고 하면 자바로 개발을 하는 경우가 거의 대다수였지만 코틀린이 나온 이후로 인기가 많아지면서 요즘은 거의 코틀린 언어를 사용하는 경우가 더 많다.</p> <p><img src="https://user-images.githubusercontent.com/79521972/156873432-8d3cc0ea-ddb7-4b3b-9ce5-0b9499d4ce3a.png" alt="image" /></p> <p>또한 Zetbrain과 긴밀한 관계를 갖고 있는 회사인 <code class="language-plaintext highlighter-rouge">Google</code>에서도 2017년도에 코틀린을 자바에 이어 안드로이드 공식 언어로 선언한 바가 있다.</p> <p><br /></p> <h2 id="2-why-kotlin">2. Why Kotlin?</h2> <p>2017년도에는 코틀린이 공식언어로 지정되기도 하였고 2019년도에는 안드로이드 퍼스트 언어로 선정된 코틀린을 왜 사용해야 할까?</p> <p>자바를 보완하여 나온 언어이기 때문에 코틀린이 자바보다 우세한 점이 있기 때문에 더 사용하기 좋고 비교적 최신에 나온 언어이기 때문에 현대 언어적인 부분이 가미가 되어있다.</p> <p><br /></p> <p>다음과 같은 코틀린의 특성을 보면서 왜 코틀린을 사용하면 좋은지 보도록 하겠다.</p> <ul> <li>호환성(Compatibility) <ul> <li>코틀린은 JDK6 (Java Development Kit 6)와 완벽하게 호환가능하다.</li> <li>구형 안드로이드 기기 지원이 된다.</li> <li>안드로이드 스튜디오에서 지원이 되는 언어이기 때문에 안드로이드의 빌드 시스템과 완벽 호환이 가능하다.</li> </ul> </li> </ul> <p><br /></p> <h2 id="3-kotlin-문법-훑어보기">3. Kotlin 문법 훑어보기</h2> <p><strong>0. Hello World!</strong></p> <p>우리가 컴퓨터 언어를 처음 배울 때 처음 보고 작성해 보는 코드는 <code class="language-plaintext highlighter-rouge">'Hello World'</code> 일 것이다. 코틀린 언어로 이 코드를 작성하면 다음과 같다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;)</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"Hello World"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><br /></p> <blockquote> <p><strong>1. Function</strong></p> </blockquote> <p>코틀린에서 함수는 다음과 같이 작성한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">sum</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="nc">Int</span><span class="p">):</span> <span class="nc">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="p">+</span> <span class="n">b</span>
+<span class="p">}</span>
+<span class="k">fun</span> <span class="nf">sum</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="nc">Int</span><span class="p">)</span> <span class="p">=</span> <span class="n">a</span> <span class="p">+</span> <span class="n">b</span>
+</code></pre></div></div> <ul> <li>fun: 함수(function)의 약자인 fun을 사용하여 함수를 정의한다.</li> <li> <p>sum: 함수 이름을 적는다.</p> </li> <li>괄호 안에 Input value를 적어준다. <ul> <li><code class="language-plaintext highlighter-rouge">인자명: dataType</code>식으로 작성한다.</li> </ul> </li> <li>Return하는 데이터 타입은 괄호 뒤에 콜론(:)과 함께 작성한다. <ul> <li>return 타입이 void인 경우 생략 가능하다.</li> </ul> </li> </ul> <p><br /></p> <ul> <li>두 번째로 작성한 함수는 <code class="language-plaintext highlighter-rouge">표현식 함수</code>로 동작은 동일하다. <ul> <li>첫 번쨰로 작성된 함수는 <code class="language-plaintext highlighter-rouge">구문식 함수</code>이다.</li> </ul> </li> <li>표현식만 작성할 수 있는 것이 아니라 아래와 같은 문장도 작성 가능하다.</li> </ul> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">max</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">=</span> <span class="k">if</span><span class="p">(</span><span class="n">a</span> <span class="p">&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="n">a</span> <span class="k">else</span> <span class="n">b</span>
+</code></pre></div></div> <p>여기서 쓰이는 if문에 대해서는 뒤에서 더 다루어 보도록 할 것이니 이런 식으로 작성이 가능하다 정도만 알아가도록 하자.</p> <p><br /></p> <blockquote> <p><strong>2. Value, Variable</strong></p> </blockquote> <p>코틀린에서 변수와 상수 선언 방법에 대해 알아보도록 하자.</p> <ul> <li>var <ul> <li>var는 변수를 선언할 때 사용되는 keyword이다.</li> <li>var로 선언한 변수는 값을 이후에 변경할 수 있다.</li> </ul> </li> <li>val <ul> <li>val은 상수를 선언할 때 사용되는 keyword이다.</li> <li>val로 선언한 상수는 값을 이후에 변경하는 것이 불가능하다.</li> </ul> </li> </ul> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">a</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="kd">val</span> <span class="py">b</span> <span class="p">=</span> <span class="mi">2</span>    <span class="c1">// Int 형으로 추론</span>
+<span class="kd">val</span> <span class="py">c</span> <span class="p">=</span> <span class="mf">3.14</span> <span class="c1">// Double 형으로 추론</span>
+<span class="kd">val</span> <span class="py">d</span><span class="p">:</span> <span class="nc">String</span>
+<span class="n">d</span> <span class="p">=</span> <span class="s">"필수로 있어야 하는 구문"</span>
+<span class="c1">//d = "d의 초기값이 없으면 null 될 수 있는데, d는 null이 될 수 없기 때문에."</span>
+<span class="kd">val</span> <span class="py">e</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span>
+
+<span class="kd">var</span> <span class="py">d</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"첫 번째 초기화"</span>
+<span class="n">e</span> <span class="p">=</span> <span class="s">"두 번째 초기화"</span>
+</code></pre></div></div> <p>상수는 value의 약자인 val을 사용하여 변수를 선언하며 이때 자바가 데이터 타입을 표현했던 것처럼 코틀린도 콜론(:)과 함께 표현할 수도 있지만 코틀린에서는 데이터 타입 추론이 가능하기 때문에 생략하여도 문제없다.</p> <p>정수를 입력하면 Int형으로 추론하고 실수를 입력하면 Double형으로 추론한다.</p> <p>String 형 변수 d를 선언하고 초기화를 하지 않았는데 코틀린에서는 null safe라는 개념이 존재하여 반드시 선언을 하고 초기화를 해 주어야 한다. 그래서 그 다음줄에 문자열로 초기화를 해 준 모습이다.</p> <p><br /></p> <p>val은 다른 언어의 상수와 마찬가지로 한 번 초기화가 되면 다시 초기화가 불가능하며 var은 변수와 마찬가지로 한 번 초기화 후에 다시 초기화 하는 것이 가능하다.</p> <p><br /></p> <blockquote> <p><strong>3. Data Type</strong></p> </blockquote> <p>코틀린은 자바와 100% 호환이 되기 때문에 자바의 데이터 타입과 동일한 데이터 타입들이 존재한다.</p> <ul> <li> <p>Numbers(숫자)</p> <ul> <li>정수형 <ul> <li>Byte</li> <li>Short</li> <li>Int : 123</li> <li>Long: 123L</li> <li>위 처럼 정수를 Long형으로 추론하도록 하기 위해선 숫자 뒤에 “L”을 붙여준다.</li> </ul> </li> <li>실수형 <ul> <li>Float : 123.4f</li> <li>Double: 123.4</li> <li>위 처럼 실수를 Float형으로 추론하도록 하기 위해선 숫자 뒤에 “f”을 붙여준다.</li> </ul> </li> </ul> </li> <li> <p>그 외</p> <ul> <li> <p>Char</p> </li> <li> <p>String</p> <ul> <li> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="py">str</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"abcd"</span>
+<span class="n">str</span> <span class="p">=</span> <span class="s">"abcd"</span> <span class="p">+</span> <span class="mi">1</span>     <span class="c1">//abcd1</span>
+<span class="n">str</span> <span class="p">=</span> <span class="s">"abcd"</span> <span class="p">+</span> <span class="s">"efg"</span> <span class="c1">//abcdefg</span>
+</code></pre></div> </div> </li> <li> <p>String 타입에서의 덧셈(+) 연산은 문자열이 붙여지는 개념이며 위 코드의 두 번째 줄과 같이 뒤에 number가 오더라도 string으로 변환되어 뒤에 더해지는 것을 확인할 수 있다.</p> </li> <li> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ar</span> <span class="n">a</span><span class="p">:</span><span class="nc">Int</span> <span class="p">=</span> <span class="mi">10</span>
+<span class="n">ar</span> <span class="n">longStr</span> <span class="p">=</span> <span class="s">"""문자열을
+	여러줄로 쓰고 싶을 땐 이렇게
+	합시다.
+"""</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">longStr</span><span class="p">)</span>
+<span class="c1">//문자열을</span>
+<span class="c1">//여러줄로 쓰고 싶을 땐 이렇게</span>
+<span class="c1">//합시다.</span>
+</code></pre></div> </div> </li> <li></li> </ul> </li> <li> <p>Boolean</p> <ul> <li> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">myTrue</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="k">true</span>
+<span class="kd">val</span> <span class="py">myFalse</span><span class="p">:</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="k">false</span>
+<span class="kd">val</span> <span class="py">boolNull</span><span class="p">:</span> <span class="nc">Boolean</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+</code></pre></div> </div> </li> <li>위 코드의 세 번째 줄처럼 Boolean 뒤에 “?”가 붙게 되면 이는 <code class="language-plaintext highlighter-rouge">Nullable</code>하다는 의미로 붙지 않은 것과 다르게 <code class="language-plaintext highlighter-rouge">true, false</code>와 더불어 <code class="language-plaintext highlighter-rouge">null</code>도 들어갈 수 있다는 것을 의미한다.</li> </ul> </li> </ul> </li> </ul> <p><br /></p> <blockquote> <p><strong>4. For 반복문</strong></p> </blockquote> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">..</span><span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">// 1 2 3 4 5</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">6</span> <span class="n">downTo</span> <span class="mi">0</span> <span class="n">step</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">//6 4 2 0</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">..</span><span class="mi">5</span> <span class="n">step</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">//1 4</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">0</span> <span class="n">until</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">// 0 1 2 3 4</span>
+
+<span class="kd">val</span> <span class="py">numberList</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span> <span class="p">,</span><span class="mi">300</span><span class="p">)</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">number</span> <span class="k">in</span> <span class="n">numberList</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">//100  200  300</span>
+</code></pre></div></div> <p>코틀린에서 반복문은 자바보다 파이썬 문법과 더 비슷한 것을 볼 수 있다.</p> <ul> <li>자바와 다르게 i를 선언하지 않아도 된다.</li> <li>for i in iterable객체 으로 표현된다.</li> <li>1..5 : 1부터 5까지 (python으로 따지면 range(1,6))</li> <li>6 downTo 0 step 2 : 6부터 0까지 내려가면서 숫자를 counting하는데 간격(step)이 2이다.</li> <li>정리하자면 올라가는 것은 <code class="language-plaintext highlighter-rouge">..</code>으로 내려가는 것은 <code class="language-plaintext highlighter-rouge">downTo</code>를 사용한다.</li> <li>리스트를 만들 때는 listOf() 함수를 사용한다.</li> <li>until의 의미는 크기 - 1을 의미한다.(0 until 5 : 0부터 5까지 즉, 0 1 2 3 4)</li> </ul> <p>위 코드를 보면 그래도 다른 언어와 비슷하여 이해할 수 있을 것이다. 하지만 코틀린 언어가 조금 더 사람 언어와 비슷하게 작성한다는 점을 알 수 있을 것이다.</p> <p><br /></p> <blockquote> <p><strong>5. While 반복문</strong></p> </blockquote> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="py">x</span> <span class="p">=</span> <span class="mi">5</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x--</span>
+<span class="p">}</span>
+<span class="c1">//5 4 3 2 1</span>
+
+<span class="n">x</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x--</span>
+<span class="p">}</span>
+<span class="c1">//출력 없음</span>
+
+<span class="kd">var</span> <span class="py">y</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="k">do</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">y--</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">y</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<span class="c1">// 0</span>
+</code></pre></div></div> <p>코틀린에서 While문은 자바와 비슷하게 사용된다.</p> <p>while, do~while문 존재</p> <p><br /></p> <blockquote> <p><strong>6. If 문</strong></p> </blockquote> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="py">max</span><span class="p">:</span> <span class="nc">Int</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="p">&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">max</span> <span class="p">=</span> <span class="n">a</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">max</span> <span class="p">=</span> <span class="n">b</span>
+<span class="p">}</span>
+
+<span class="c1">//As expression</span>
+<span class="kd">val</span> <span class="py">max</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="p">&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"Choose a"</span><span class="p">)</span>
+    <span class="n">a</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"Choose b"</span><span class="p">)</span>
+    <span class="n">b</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>if 문도 자바언어와 크게 다를 것이 없다.</p> <p><br /></p> <blockquote> <p><strong>7. When 문</strong></p> </blockquote> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">when</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+     <span class="mi">1</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"x == 1"</span><span class="p">)</span>
+     <span class="mi">2</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"x == 2"</span><span class="p">)</span>
+     <span class="k">else</span> <span class="p">-&gt;</span> <span class="p">{</span>
+         <span class="nf">print</span><span class="p">(</span><span class="s">"x is neither 1 nor 2"</span><span class="p">)</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+ 
+ <span class="k">when</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+     <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"x == 0 or x == 1"</span><span class="p">)</span>
+     <span class="k">else</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"otherwise"</span><span class="p">)</span>
+ <span class="p">}</span>
+ 
+ <span class="k">when</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">in</span> <span class="mi">1</span><span class="o">..</span><span class="mi">10</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"x는 1부터 10 범위 안에 있음"</span><span class="p">)</span>
+     <span class="p">!</span><span class="k">in</span> <span class="mi">10</span><span class="o">..</span><span class="mi">20</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"x는 10부터 20 범위 안에 없음"</span><span class="p">)</span>
+     <span class="k">else</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"otherwise"</span><span class="p">)</span>
+ <span class="p">}</span>
+ 
+ <span class="k">when</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">is</span> <span class="nc">Int</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"x는 int type"</span><span class="p">)</span>
+     <span class="k">else</span> <span class="p">-&gt;</span> <span class="nf">print</span><span class="p">(</span><span class="s">"x is not a int type object"</span><span class="p">)</span>
+ <span class="p">}</span>
+</code></pre></div></div> <p>코틀린은 사람이 말하는 것과 비슷하게 만들어졌기 때문에 코드만 봐도 무슨 말을 하는지 알 수 있을 것이다.</p> <p>자바에는 switch문 대신 when문이 있다.</p> <p>평소 자바나 c언어를 하면 switch문이 왜 switch라는 이름을 가지고 있는지 의문이 든 적이 많았는데 코틀린은 직관적으로 when이라는 문자를 사용하여 <strong>변수 x가 특정 상태일 때</strong> 화살표(-&gt;)뒤의 문장을 실행하는 구조를 가지고 있다.</p> <p><br /></p> <blockquote> <p><strong>8. 배열</strong></p> </blockquote> <p>배열의 타입을 코틀린에서 Array이다. Array라는 타입을 코틀린 컴파일러에서 충분히 유추할 수 있다면 생략할 수 있다.</p> <p>배열의 생성은 arrayOf()라는 함수를 이용하며 배열의 생성과 초기화를 한 번에 할 수도 있다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">numbers1</span> <span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">arrayOf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">numbers2</span> <span class="p">=</span> <span class="nf">arrayOf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div></div> <p><br /></p> <p>지금까지는 코틀린의 기초 문법으로 이것만 알아도 어플제작이 가능하다. 이보다 심화적인 내용은 계속 이어나가겠다.</p> <h1 id="심화-문법">심화 문법</h1> <h2 id="1-클래스">1. 클래스</h2> <h3 id="0-data-class">0) Data Class</h3> <p>코틀린에서는 data class라는 데이터만을 초기화하는 클래스를 별도로 구현이 가능하다. 이는 자바에서 굉장히 긴 코드를 한 줄만에 구현할 수 있기 때문에 강력한 키워드 이다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">JavaObject</span><span class="p">(</span><span class="kd">val</span> <span class="py">s</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span>
+</code></pre></div></div> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//In Java</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JavaObject</span> <span class="o">{</span>
+     
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">s</span><span class="o">;</span>
+    
+    <span class="nc">JavaObject</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getS</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setS</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="c1">//copy</span>
+    <span class="c1">//toStrin</span>
+    <span class="c1">//hashCode 등등 생략</span>
+<span class="o">}</span>
+</code></pre></div></div> <h3 id="1-클래스-선언">1) 클래스 선언</h3> <p>자바에서 클래스를 만들고 이를 객체로 생성하는 과정에서 사용했던 new 키워드를 코틀린에서는 사용하지 않는다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Fruit</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">fruit</span> <span class="p">=</span> <span class="nc">Fruit</span><span class="p">()</span>
+</code></pre></div></div> <h3 id="2-생성자">2) 생성자</h3> <p><strong>간단한 구조의 생성자</strong></p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Fruit</span> <span class="p">(</span><span class="kd">var</span> <span class="py">weight</span> <span class="p">:</span> <span class="nc">Double</span><span class="p">){</span>
+
+<span class="p">}</span>
+</code></pre></div></div> <p><br /></p> <p>constructor 구문에서 초기화 구문을 작성할 수 있다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Fruit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">weight</span><span class="p">:</span> <span class="nc">Double</span> <span class="p">=</span> <span class="mf">0.0</span>
+
+    <span class="k">constructor</span><span class="p">(</span><span class="n">weight</span> <span class="p">:</span> <span class="nc">Double</span><span class="p">){</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">weight</span> <span class="p">=</span> <span class="n">weight</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>constructor 구문이 하나일 경우 이것을 primary constructor로 변환하라는 경고문구가 나타난다. primary constructor라는 것은 클래스 이름 옆에 () 안에 멤버변수들을 나열하는 것을 의미한다. primary constructor를 사용하는 구문으로 변경한 것은 아래와 같다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Fruit</span><span class="p">(</span><span class="k">private</span> <span class="kd">var</span> <span class="py">weight</span><span class="p">:</span> <span class="nc">Double</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">init</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"weight :: $weight"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="3-프로퍼티">3) 프로퍼티</h3> <p>자바에서 클래스의 멤버필드라고 하던 것을 코틀린에서는 프로퍼티라고 한다. 멤버필드에 getter/setter로 접근할 수도 있지만 직접적으로 프로퍼티에 접근한다.</p> <p>코틀린 클래스 파일에서 작성했지만 자바 코드에서 사용하려면 바로 프로퍼티에 접근이 불가능하기 때문에 코틀린 클래스 생성 시 getter/setter가 자동으로 생성된다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 생성자와 함께 클래스를 선언</span>
+<span class="kd">class</span> <span class="nc">Fruit</span> <span class="p">(</span><span class="kd">var</span> <span class="py">weight</span><span class="p">:</span> <span class="nc">Double</span><span class="p">){</span>
+<span class="p">}</span>
+
+<span class="c1">// 생성자를 이용한 객체생성 (1)</span>
+<span class="kd">val</span> <span class="py">banana</span> <span class="p">:</span> <span class="nc">Fruit</span> <span class="p">=</span> <span class="nc">Fruit</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"weight of an banana is ${banana.weight} kg"</span><span class="p">)</span>
+
+<span class="c1">// 생성자를 이용한 객체생성 (2) : weight 프로퍼티(=필드)를 명시적으로 지정해 초기화했다.</span>
+<span class="kd">val</span> <span class="py">apple</span> <span class="p">:</span> <span class="nc">Fruit</span> <span class="p">=</span> <span class="nc">Fruit</span><span class="p">(</span><span class="n">weight</span> <span class="p">=</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"weight of an apple is ${apple.weight} kg"</span><span class="p">)</span>
+
+<span class="c1">// 프로퍼티(=멤버 필드) 접근시 getter/setter 없이 접근 가능하다.</span>
+<span class="n">apple</span><span class="p">.</span><span class="n">weight</span> <span class="p">=</span> <span class="mf">0.15</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"weight of an apple is ${apple.weight} kg"</span><span class="p">)</span>
+</code></pre></div></div> <p>생성자에 인자가 많을 때는 Fruit(weight = 0.2) 와 같은 식을 이용해 인자를 지정해주는 것 역시 다른 언어와 마찬가지로 가능하다. (자바는 불가능)</p> <p><br /></p> <p>출력을 해 본 결과 필드에 직접 접근해 apple의 weight을 변경한 결과가 제대로 반영된 것을 확인 가능하다.</p><pre><code class="language-null">weight of an banana is 0.1 kg
+weight of an apple is 0.2 kg
+weight of an apple is 0.15 kg
+</code></pre><h3 id="4-접근제한자">4) 접근제한자</h3> <p>변수, 함수의 접근 범위를 지정할 때 사용하는 키워드이다. 이도 자바와 비슷하나 조금 다른 점(internal)이 있다. 좀 더 키워드의 뜻과 그 의미가 일맥상통 하도록 수정한 것 같다.</p> <ul> <li>public <ul> <li>전체공개</li> </ul> </li> <li>private <ul> <li>현재 파일 내에서만 사용가능</li> </ul> </li> <li>internal <ul> <li>같은 모듈 내에서만 사용가능</li> <li>예를 들어 app 모듈 내에 tv, smartphone, watch 모듈이 있고, app 모듈 내에 Fruit 클래스에 internal로 선언한 필드 weight 이 있다면, tv, smartphone, watch 모듈에서 모두 weight 필드에 접근 가능한 것이다.</li> </ul> </li> <li>protected <ul> <li>상속받은 클래스에서 사용할 수 있다.</li> </ul> </li> </ul> <p>앞에 어떠한 접근 제한자도 적지 않으면 public으로 간주한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">open</span> <span class="kd">class</span> <span class="nc">Fruit</span><span class="p">{</span>
+    <span class="kd">val</span> <span class="py">name</span> <span class="p">=</span> <span class="s">"전체공개"</span>   <span class="c1">// 아무 키워드도 주지 않으면 기본적으로 public 으로 세팅</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">vendor</span><span class="p">:</span><span class="nc">String</span> <span class="p">=</span> <span class="s">"private"</span>
+    <span class="k">protected</span> <span class="kd">val</span> <span class="py">vender1</span><span class="p">:</span><span class="nc">String</span> <span class="p">=</span> <span class="s">"protected"</span>
+    <span class="k">internal</span> <span class="kd">val</span> <span class="py">vender2</span><span class="p">:</span><span class="nc">String</span> <span class="p">=</span> <span class="s">"internal"</span>
+
+    <span class="k">fun</span> <span class="nf">getVender1</span><span class="p">():</span><span class="nc">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">vender1</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">Apple</span> <span class="p">:</span> <span class="nc">Fruit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">get_vender1</span><span class="p">()</span> <span class="p">:</span> <span class="nc">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">vender1</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">aFruit</span> <span class="p">:</span> <span class="nc">Fruit</span> <span class="p">=</span> <span class="nc">Fruit</span><span class="p">()</span>
+<span class="kd">val</span> <span class="py">anApple</span> <span class="p">:</span> <span class="nc">Apple</span> <span class="p">=</span> <span class="nc">Apple</span><span class="p">()</span>
+
+<span class="c1">// public 멤버 접근</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">aFruit</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1">// private 멤버 접근</span>
+<span class="c1">//println(aFruit.vender) // 컴파일 에러</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">aFruit</span><span class="p">.</span><span class="nf">getVender1</span><span class="p">())</span>
+
+<span class="c1">// protected 멤버 접근</span>
+<span class="c1">// 확장클래스(상속받은 클래스)에서 protected 멤버인 vender1 에 접근</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">anApple</span><span class="p">.</span><span class="nf">get_vender1</span><span class="p">())</span>
+
+<span class="c1">// internal 멤버 접근 </span>
+<span class="c1">// 확장클래스(상속받은 클래스)에서 internal 멤버인 vender2 에 접근</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">anApple</span><span class="p">.</span><span class="n">vender2</span><span class="p">)</span>
+</code></pre></div></div> <h3 id="5-클래스-상속">5) 클래스 상속</h3> <p>코틀린에서 클래스는 기본적으로 상속이 금지되는 것이 원칙이다. 상속이 가능하도록 허용하기 위해서는 open 키워드를 클래스 선언 앞에 추가하면 된다.</p> <p>어쩌면 이런 방식이 조금 더 명확해서 다른 클래스에서 상속하고 있다는 것을 보여줄 수 있는 장점이 된다.</p> <p>하지만 어떤 면에서는 라이브러리(예를 들면 resilience4j) 등을 만드는 설계자들의 입장에서는 기존에 만들었던 클래스를 상속하고자 할 때 open 키워드를 새로 추가하게 되어 구버전과 신버전사이의 호환이 어려워지도록 할 수 있다는 단점 또한 있는 듯 하다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">open</span> <span class="kd">class</span> <span class="nc">Fruit</span><span class="p">{}</span>
+<span class="kd">class</span> <span class="nc">Apple</span> <span class="p">:</span> <span class="nc">Fruit</span><span class="p">(){}</span>
+
+<span class="k">open</span> <span class="kd">class</span> <span class="nc">Person</span><span class="p">(</span><span class="kd">var</span> <span class="py">name</span> <span class="p">:</span> <span class="nc">String</span><span class="p">)</span>
+<span class="kd">class</span> <span class="nc">Student</span><span class="p">(</span><span class="kd">var</span> <span class="py">grade</span> <span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">:</span> <span class="nc">Person</span><span class="p">(</span><span class="s">"Jordan"</span><span class="p">)</span>
+</code></pre></div></div> <h3 id="6-내부-클래스">6) 내부 클래스</h3> <p>다른 언어들에서와 같이 클래스 내부에 클래스를 선언하는 것을 내부ㅜ클래스라고 한다. 내부 클래스 선언시에는 inner 키워드를 사용한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Student</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="py">name</span> <span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"Jordan"</span>
+
+    <span class="nf">init</span><span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"My name is $name"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">inner</span> <span class="kd">class</span> <span class="nc">Personality</span> <span class="p">{</span>
+        <span class="k">fun</span> <span class="nf">doSomething</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Unit</span> <span class="p">{</span>
+            <span class="n">name</span> <span class="p">+=</span> <span class="s">", He is Chicago Bulls No.23 Basketball Start"</span>
+            <span class="nf">println</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">student</span> <span class="p">:</span> <span class="nc">Student</span> <span class="p">=</span> <span class="nc">Student</span><span class="p">()</span>
+<span class="n">student</span><span class="p">.</span><span class="nc">Personality</span><span class="p">().</span><span class="nf">doSomething</span><span class="p">()</span>
+</code></pre></div></div> <p><strong>출력결과</strong></p><pre><code class="language-null">My name is Jordan
+Jordan, He is Chicago Bulls No.23 Basketball Start
+</code></pre><h3 id="7-추상-클래스">7) 추상 클래스</h3> <p>추상 클래스는 미구현 메소드를 포함하는 클래스다. 이 역시도 자바와 마찬가지의 개념이며java 에서 지원하는 abstract 키워드를 사용한다.</p> <p>클래스와 미구현 메서드 앞에는 abstract 키워드를 붙인다. 추상 클래스는 직접 인스턴스화 할 수 없고 다른 클래스에서 직접 상속(확장)해서 미구현 메서드를 구현해야 한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="kd">class</span> <span class="nc">Printer</span> <span class="p">{</span>
+    <span class="k">abstract</span> <span class="k">fun</span> <span class="nf">doPrint</span><span class="p">():</span> <span class="nc">Printer</span>
+    <span class="k">fun</span> <span class="nf">sayCategory</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Unit</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"This Product is a type of Printer"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">LaserPrinter</span> <span class="p">:</span> <span class="nc">Printer</span><span class="p">(){</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">doPrint</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Printer</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"치직치직~ ... 프린트가 완료되었습니당~"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">this</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">InkJetPrinter</span> <span class="p">:</span> <span class="nc">Printer</span><span class="p">(){</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">doPrint</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Printer</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"위잉위잉~ ... 프린트가 완료되었습니다~"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">this</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">laserPrinter</span> <span class="p">:</span> <span class="nc">LaserPrinter</span> <span class="p">=</span> <span class="nc">LaserPrinter</span><span class="p">()</span>
+<span class="kd">val</span> <span class="py">inkJetPrinter</span> <span class="p">:</span> <span class="nc">InkJetPrinter</span> <span class="p">=</span> <span class="nc">InkJetPrinter</span><span class="p">()</span>
+<span class="n">laserPrinter</span><span class="p">.</span><span class="nf">doPrint</span><span class="p">().</span><span class="nf">sayCategory</span><span class="p">()</span>
+<span class="n">inkJetPrinter</span><span class="p">.</span><span class="nf">doPrint</span><span class="p">().</span><span class="nf">sayCategory</span><span class="p">()</span>
+
+<span class="kd">val</span> <span class="py">printer</span> <span class="p">:</span> <span class="nc">Printer</span> <span class="p">=</span> <span class="nc">Printer</span><span class="p">()</span>           <span class="c1">// 에러</span>
+                                            <span class="c1">// abstract 클래스를 인스턴스로 생성하려 했으므로 에러</span>
+<span class="kd">var</span> <span class="py">lPrinter</span> <span class="p">:</span> <span class="nc">Printer</span> <span class="p">=</span> <span class="nc">LaserPrinter</span><span class="p">()</span>
+</code></pre></div></div> <p><strong>출력결과</strong></p><pre><code class="language-null">치직치직~ ... 프린트가 완료되었습니당~
+This Product is a type of Printer
+위잉위잉~ ... 프린트가 완료되었습니다~
+This Product is a type of Printer
+</code></pre><h3 id="8-인터페이스">8) 인터페이스</h3> <p>추상클래스가 인터페이스와 다른점은 하나의 클래스에서 여러개의 인터페이스를 구현할 수 있다는 점이다.</p> <p>추상 클래스의 경우 클래스 개념이기 때문에 하나의 클래스에서 하나의 추상클래스만을 상속받아 구현할 수 밖에 없다.</p> <p>java 8 부터 인터페이스는 default 메서드라고 불리는 구현된 메서드를 포함할 수 있게 되었는데 이 개념을 코틀린에서도 역시 사용 가능하다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Eat</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">eat</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Eat</span>
+
+    <span class="c1">// java 8 부터 인터페이스는 default 메서드라고 불리는 구현된 메서드를 포함할 수 있다.</span>
+    <span class="k">fun</span> <span class="nf">pay</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Unit</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"계산"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">interface</span> <span class="nc">Workout</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">workout</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Unit</span>
+<span class="p">}</span>
+
+<span class="k">open</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">walk</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Unit</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"걷는다"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">Student</span> <span class="p">:</span> <span class="nc">Person</span><span class="p">()</span> <span class="p">,</span><span class="nc">Eat</span><span class="p">,</span> <span class="nc">Workout</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">eat</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Eat</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"점심을 먹는다"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">this</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">workout</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"헬스장에 간다"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">student</span> <span class="p">:</span> <span class="nc">Student</span> <span class="p">=</span> <span class="nc">Student</span><span class="p">()</span>
+<span class="n">student</span><span class="p">.</span><span class="nf">walk</span><span class="p">()</span>
+<span class="n">student</span><span class="p">.</span><span class="nf">eat</span><span class="p">().</span><span class="nf">pay</span><span class="p">()</span>
+<span class="n">student</span><span class="p">.</span><span class="nf">workout</span><span class="p">()</span>
+</code></pre></div></div> <p>출력결과</p><pre><code class="language-null">걷는다. 
+점심을 먹는다
+계산
+헬스장에 간다.
+</code></pre><h2 id="2-null-처리-null-가능성-nullable">2. Null 처리, null 가능성, nullable</h2> <p>코틀린에서는 기본적으로 객체를 불변으로 취급하고 null 값을 허용하지 않는다.</p> <p>null 값을 허용하기 위해서는 별도의 연산자를 사용해 초기화한다. null 값이 허용된 자료형을 사용할 때에서 별도의 연산자를 통해 안전하게 호출해야 한다.</p> <p>null 이 허용되는 변수를 선언할 때는 <code class="language-plaintext highlighter-rouge">?</code> 와 같이 표현식을 사용하면 null 이 허용되는 대입연산을 수행하게 된다. 그래서 String? 와 String 타입은 엄연히 다른 것이다.</p> <h3 id="1--연산자---null-허용">1) ? 연산자 - null 허용</h3> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">sample</span> <span class="p">:</span> <span class="nc">String</span>          <span class="c1">// 초기화를 진행하지 않았기 때문에 에러 발생</span>
+<span class="kd">val</span> <span class="py">a</span> <span class="p">:</span> <span class="nc">String</span>  <span class="p">=</span> <span class="k">null</span>       <span class="c1">// 일반적으로는 null로 초기화할 수 없기 때문에 에러 발생</span>
+<span class="kd">var</span> <span class="py">a</span> <span class="p">:</span> <span class="nc">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>       <span class="c1">// 정상</span>
+</code></pre></div></div> <h3 id="2-lateinit-키워드-var-변수의-늦은-초기화">2) lateinit 키워드 (var 변수의 늦은 초기화)</h3> <p>초기값이 없는 변수를 초기화 하고 싶을 때 사용하는 키워드이다.(코틀린에서는 초기값없이 변수 선언이 불가능하기 때문에)</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="py">nullableNumber</span><span class="p">:</span> <span class="nc">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+
+<span class="k">lateinit</span> <span class="kd">var</span> <span class="py">lateinitNumber</span><span class="p">:</span> <span class="nc">Int</span>
+
+<span class="c1">//추후 초기화하는 코드</span>
+<span class="n">lateinitNumber</span> <span class="p">=</span> <span class="mi">10</span>
+
+<span class="c1">//사용할 때</span>
+<span class="n">nullableNumber</span><span class="o">?.</span><span class="nf">add</span><span class="p">()</span>
+
+<span class="n">lateinitNumber</span><span class="p">.</span><span class="nf">add</span><span class="p">()</span>
+</code></pre></div></div> <p>var 로 선언한 변수를 일단 선언만 해놓고 초기화는 나중에 진행하는 경우 lateinit 키워드를 사용한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lateinit</span> <span class="kd">var</span> <span class="py">a</span> <span class="p">:</span> <span class="nc">String</span>
+<span class="n">a</span> <span class="p">=</span> <span class="s">"안녕 세상~"</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="k">lateinit</span> <span class="kd">var</span> <span class="py">b</span> <span class="p">:</span> <span class="nc">String</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</code></pre></div></div> <ul> <li>var 키워드를 사용하여 선언한 경우에만 사용 가능</li> <li>null타입이 아닌 경우에만 사용가능</li> <li>초기화 전에는 변수를 사용할 수 없다.</li> <li>int, Long, Double, Float 에는 사용할 수 없다.</li> </ul> <h3 id="3-lazy-키워드-val-변수의-늦은-초기화">3) lazy 키워드 (val 변수의 늦은 초기화)</h3> <p>NullSate한 코드를 사용하기 위해서 non-null Type으로 변수를 선언함. 변수는 미리 선언해 놓고 사용할 때 할당해 주기 위함.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">lazyNumber</span> <span class="p">:</span><span class="nc">Int</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span>
+    <span class="mi">100</span>
+<span class="p">}</span>
+
+<span class="c1">//사용하기 전까지는 lazyNumer라는 변수에 100이 할당되지 않음</span>
+
+<span class="n">lazyNumber</span><span class="p">.</span><span class="nf">add</span><span class="p">()</span>
+<span class="c1">//사용할 때 100이 할당 됨</span>
+</code></pre></div></div> <p><br /></p> <p>val로 선언한 변수를 일단 선언만 해놓고 초기화는 나중에 진행할 때 사용한다. 따라서 val을 사용하는 경우에만 사용이 가능하다.</p> <p>val 선언뒤에 by lazy 블록에 초기화에 필요한 코드를 작성한다. 마지막줄에는 초기화 할 값을 작성해준다.</p> <p>아래 예제에서는 a 라는 상수를 초기화 할 때 println() 으로 “안녕세상~”이라는 문구를 출력하고 있다. 그런데 상수 a는 두번 참조되어 진다. 여기서 처음 참조될 때에만 by lazy {…} 구문내의 초기화 구문이 실행되고 그 이후부터는 초기화구문 없이 값의 반환만을 수행하게 된다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">a</span> <span class="p">:</span> <span class="nc">String</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"안녕세상~"</span><span class="p">)</span>
+    <span class="s">"헬로~"</span>
+<span class="p">}</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div></div> <p>참고)</p> <ul> <li>lateinit <ul> <li>var 로 선언한 변수를 늦은 초기화 할 때 사용</li> </ul> </li> <li>by lazy { … } <ul> <li>val 로 선언한 변수를 늦은 초기화 할 때 사용</li> </ul> </li> </ul> <h3 id="4-null-값이-아님을-보증-">4) null 값이 아님을 보증 (!!)</h3> <p>변수 뒤에 <code class="language-plaintext highlighter-rouge">!!</code>을 추가하면 null 값이 아님을 보증한다는 의미이다.</p> <p>아래의 예제를 보면 name1 의 타입은 String? 이다. String? 타입은 String 타입과 명백히 다르다.</p> <p>String? 타입의 변수를 다른 변수에 저장할 때는</p> <ul> <li>String? 타입의 변수는 String? 타입에 저장하거나</li> <li>String? 타입의 변수의 뒤에 !!을 붙여서 String 타입으로 변환시켜주어야 한다.</li> </ul> <p>참고)</p> <p>연산자 <code class="language-plaintext highlighter-rouge">!!</code>가 실제로 String? 을 String 타입으로 변환하는 것과 같은 동작을 하는지는 확실히 모른다. 일단 예제가 이런 예제가 있어서 정리해봤다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">name1</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span> <span class="p">=</span> <span class="s">"과일"</span>
+<span class="kd">val</span> <span class="py">name2</span><span class="p">:</span> <span class="nc">String</span>  <span class="p">=</span> <span class="n">name1</span>            <span class="c1">// 에러</span>
+<span class="kd">val</span> <span class="py">name3</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span> <span class="p">=</span> <span class="n">name1</span>            <span class="c1">// 정상</span>
+<span class="kd">val</span> <span class="py">name4</span><span class="p">:</span> <span class="nc">String</span>  <span class="p">=</span> <span class="n">name1</span><span class="o">!!</span>          <span class="c1">// 정상</span>
+</code></pre></div></div> <h3 id="5-안전한-호출-">5) 안전한 호출 (?.)</h3> <p>메서드 호출시 . 대신 ?. 연산자를 사용하면 <strong>null 값이 아닌 경우에만 호출하게 된다.</strong></p><pre><code class="language-Kotlin">Integer a = 100;
+
+val b: Int? 100
+val c: Int = 100 
+</code></pre><div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">///중략///</span>
+<span class="n">a</span><span class="p">.</span><span class="nf">sum</span><span class="p">();</span> <span class="c1">// NullPointerException 발생 가능</span>
+
+<span class="c1">//null safe code</span>
+<span class="k">if</span><span class="p">(</span><span class="n">a</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">a</span><span class="p">.</span><span class="nf">sum</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">b</span><span class="o">?.</span><span class="nf">sum</span><span class="p">()</span> <span class="c1">// null일 경우 실행하지 않음.</span>
+<span class="n">c</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span>  <span class="c1">// 애초에 nullsafe함(c 변수 정의에 의해)</span>
+</code></pre></div></div> <h3 id="6-엘비스-연산자-">6) 엘비스 연산자 ‘?:’</h3> <p>안전한 호출 키워드인 ?. 을 사용시 null 아닌 기본 값을 반환하고 싶을경우 엘비스 연산자를 함께 사용한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">str</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="kd">var</span> <span class="py">upperCase</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">str</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="n">str</span> <span class="k">else</span> <span class="k">null</span>
+<span class="n">upperCase</span> <span class="p">=</span> <span class="n">str</span><span class="o">?.</span><span class="nf">toUpperCase</span><span class="p">()</span> <span class="o">?:</span> <span class="s">"str 변수는 초기화를 해야만 upperCase() 가 가능합니다."</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">upperCase</span><span class="p">)</span>
+</code></pre></div></div> <p><strong>출력결과</strong></p><pre><code class="language-null">str 변수는 초기화를 해야만 upperCase()가 가능합니다.
+</code></pre><p><br /></p> <h2 id="3-컬렉션">3. 컬렉션</h2> <p><strong>1) 리스트</strong></p> <p>리스트는 배열 또는 java의 리스트와 같은 자료구조다.</p> <ul> <li>중복된 아이템을 가질 수 있다.</li> <li>추가/삭제/교체 메서드 등을 제공한다.</li> <li>listOf(), mutableListOf() 메서드로 리스트를 생성가능하다.</li> <li>listOf는 요소를 변경할 수 없는 읽기 전용 리스트를 생성할 때 사용한다.</li> <li>mutableListOof는 요소를 변경할 수 있는 리스트를 작성할 때 사용한다.</li> </ul> <p>자바에서 리스트의 특정 요소에 접근할 때 .get(i)를 사용했는데 코틀린에서는 단순하게 [i]를 통해 접근가능하다.</p> <p><strong>listOf</strong></p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//요소를 변경할 수 없는 읽기 전용 리스트 생성은 listOf() 메서드로 생성</span>
+<span class="kd">val</span> <span class="py">fwPlayers1</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="s">"손흥민"</span><span class="p">,</span> <span class="s">"황희찬"</span><span class="p">,</span> <span class="s">"황의조"</span><span class="p">)</span>
+<span class="c1">//타입 추론으로 자료형을 생략 가능하다.</span>
+<span class="kd">val</span> <span class="py">fwPlayers2</span> <span class="p">=</span> <span class="nf">listOf</span><span class="p">(</span><span class="s">"손흥민"</span><span class="p">,</span> <span class="s">"황희찬"</span><span class="p">,</span> <span class="s">"황의조"</span><span class="p">)</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="s">"left wing : ${fwPlayers1[0]}"</span><span class="p">)</span>
+</code></pre></div></div> <p>출력결과</p><pre><code class="language-null">left wing : 손흥민
+</code></pre><p><strong>mutableListOf</strong></p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">fwPlayers2</span> <span class="p">=</span> <span class="nf">mutableListOf</span><span class="p">(</span><span class="s">"손흥민"</span><span class="p">,</span> <span class="s">"황희찬"</span><span class="p">,</span> <span class="s">"황의조"</span><span class="p">)</span>
+<span class="n">fwPlayers2</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="s">"윤종신"</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="py">removed</span> <span class="p">=</span> <span class="n">fwPlayers2</span><span class="p">.</span><span class="nf">removeAt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"${removed} was removed."</span><span class="p">)</span>
+
+<span class="n">fwPlayers2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">=</span> <span class="s">"황의조"</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"${fwPlayers2[2]} was added"</span><span class="p">)</span>
+</code></pre></div></div> <p><strong>출력결과</strong></p><pre><code class="language-null">황의조 was removed.
+황의조 was added
+</code></pre><h3 id="2-맵">2) 맵</h3> <p>mapOf() 메서드로 읽기 전용 맵 자료를 만들수 있다. mutableMapOf() 메서드로 수정이 가능한 맵을 만들 수 잇다. 대괄호 ([]) 안에 key 를 요소명으로 지정해서 접근가능하다. (마치 javascript와 유사한 쓰임새이다.)</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 읽기전용 맵</span>
+<span class="kd">val</span> <span class="py">map1</span> <span class="p">=</span> <span class="nf">mapOf</span><span class="p">(</span><span class="s">"left"</span> <span class="n">to</span> <span class="s">"손흥민"</span><span class="p">,</span> <span class="s">"center"</span> <span class="n">to</span> <span class="s">"헤리케인"</span><span class="p">,</span> <span class="s">"right"</span> <span class="n">to</span> <span class="s">"루카스 모우라"</span><span class="p">)</span>
+
+<span class="c1">// 변경가능한 맵</span>
+<span class="kd">val</span> <span class="py">map2</span> <span class="p">=</span> <span class="nf">mutableMapOf</span><span class="p">(</span><span class="s">"left"</span> <span class="n">to</span> <span class="s">"손흥민"</span><span class="p">,</span> <span class="s">"center"</span> <span class="n">to</span> <span class="s">"헤리케인"</span><span class="p">,</span> <span class="s">"right"</span> <span class="n">to</span> <span class="s">"루카스 모우라"</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">map2</span><span class="p">.</span><span class="nf">toString</span><span class="p">())</span>
+
+<span class="n">map2</span><span class="p">[</span><span class="s">"center"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"가레스 베일"</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">map2</span><span class="p">.</span><span class="nf">toString</span><span class="p">())</span>
+
+<span class="c1">//맵 전체의 키,값을 순회하기</span>
+<span class="k">for</span> <span class="p">((</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="k">in</span> <span class="n">map2</span><span class="p">){</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"$k : $v"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>출력결과</strong></p><pre><code class="language-null">{left=손흥민, center=헤리케인, right=루카스 모우라}
+{left=손흥민, center=가레스 베일, right=루카스 모우라}
+left : 손흥민
+center : 가레스 베일
+right : 루카스 모우라
+</code></pre><h3 id="3-셋set-집합">3) 셋(Set), 집합</h3> <p>Set 은 중복되지 않는 요소들로 구성된 자료구조이다. setOf() 메서드로 읽기 전용 집합을 생성할 수 있고, mutableSetOf() 메서드로 수정가능한 집합을 생성한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">citySet</span> <span class="p">=</span> <span class="nf">setOf</span><span class="p">(</span><span class="s">"손흥민"</span><span class="p">,</span> <span class="s">"헤리 케인"</span><span class="p">,</span> <span class="s">"루카스 모우라"</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">citySet2</span> <span class="p">=</span> <span class="nf">mutableSetOf</span><span class="p">(</span><span class="s">"손흥민"</span><span class="p">,</span> <span class="s">"헤리 케인"</span><span class="p">,</span> <span class="s">"루카스 모우라"</span><span class="p">)</span>
+
+<span class="n">citySet2</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="s">"가레스 베일"</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">citySet2</span><span class="p">.</span><span class="nf">toString</span><span class="p">())</span>
+
+<span class="n">citySet2</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="s">"루카스 모우라"</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">citySet2</span><span class="p">.</span><span class="nf">toString</span><span class="p">())</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="s">"size of 'citySet2' is ${citySet2.size}"</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"'citySet2' contains '루카스 모우라' :: ${citySet2.contains("</span><span class="err">루카스</span> <span class="err">모우라</span><span class="s">")}"</span><span class="p">)</span>
+
+<span class="n">citySet2</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="s">"루카스 모우라"</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"'citySet2' contains '루카스 모우라' :: ${citySet2.contains("</span><span class="err">루카스</span> <span class="err">모우라</span><span class="s">")}"</span><span class="p">)</span>
+</code></pre></div></div> <p>출력결과</p><pre><code class="language-null">[손흥민, 헤리 케인, 루카스 모우라, 가레스 베일]
+[손흥민, 헤리 케인, 가레스 베일]
+
+size of 'citySet2' is 3
+'citySet2' contains '루카스 모우라' :: false
+'citySet2' contains '루카스 모우라' :: true
+</code></pre><p><br /></p> <h2 id="3-람다식">3. 람다식</h2> <p>java 8 에서는 람다식을 만들때 interface를 선언해서 사용해왔다. 코틀린에서는 기본으로 함수 자체를 람다식으로 생성하는 것을 지원한다.</p> <h3 id="함수-자체를-람다식으로-선언하기">함수 자체를 람다식으로 선언하기</h3> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">addNormal</span> <span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">):</span> <span class="nc">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="p">+</span> <span class="n">y</span>
+<span class="p">}</span>
+
+<span class="k">fun</span> <span class="nf">addByLambda</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> <span class="p">+</span> <span class="n">y</span>
+</code></pre></div></div> <h3 id="1-sam-변환">1) SAM 변환</h3> <p>코틀린에서는 추상 메서드 하나를 인수로 사용할 때 함수를 인수로 전달할수 있어서 편하다.</p> <p>자바 기반의 인터페이스 들 중 메서드가 하나인 인터페이스를 구현할 때는 이 것을 람다식으로 변경가능하다.</p> <p>ex)</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">button</span><span class="p">.</span><span class="nf">setOnClickListener</span><span class="p">(</span> <span class="kd">object</span> <span class="err">: </span><span class="nc">View</span><span class="p">.</span><span class="nc">OnClickListener</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onClick</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nc">View</span><span class="p">?){</span>
+        <span class="c1">// 클릭 이벤트에 대한 처리</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div> <p>위의 코드는 아래와 같이 람다식으로 줄여서 표현 가능하다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">button</span><span class="p">.</span><span class="nf">setOnClickListener</span><span class="p">({</span> <span class="n">v</span><span class="p">:</span><span class="nc">View</span> <span class="p">?</span> <span class="p">-&gt;</span> 
+    <span class="nf">println</span><span class="p">(</span><span class="s">"hello"</span><span class="p">)</span> <span class="c1">// 클릭시 처리: 쓸게 없어서 println 을 입력했다.</span>
+<span class="p">})</span>
+</code></pre></div></div> <p><br /></p> <p>메서드 호출 시 맨뒤(마지막)에 전달되는 인자가 람다식일 경우 람다식을 괄호 바깥으로 빼는것 역시 가능하다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">button</span><span class="p">.</span><span class="nf">setOnClickListener</span> <span class="p">{</span> <span class="n">v</span><span class="p">:</span><span class="nc">View</span><span class="p">?</span> <span class="p">-&gt;</span> 
+    <span class="nf">println</span><span class="p">(</span><span class="s">"hello"</span><span class="p">)</span> <span class="c1">// 클릭시 처리</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>클릭 Listener 와 같은 리스너 작성시 v 인수를 사용하지 않을 경우 v 라는 이름의 인자는 _ 기호로 대치가능하다. 이건 무슨뜻인지 모르지만 일단 정리 (TODO)</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">button</span><span class="p">.</span><span class="nf">setOnClickListener</span> <span class="p">{</span> <span class="n">_</span> <span class="p">-&gt;</span> 
+    <span class="c1">// 클릭 시 처리</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>람다식에서 인자가 하나인 경우 이를 아예 생략하고 람다 블록 내에서 인수를 it로 접근할 수 있다. 아래 코드에서 it는 View? 타입의 v 인수를 가리킨다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">button</span><span class="p">.</span><span class="nf">setOnClickListener</span><span class="p">{</span>
+    <span class="n">it</span><span class="p">.</span><span class="n">visibility</span> <span class="p">=</span> <span class="nc">View</span><span class="p">.</span><span class="nc">GONE</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><br /></p> <h2 id="5-기타-기능scope-function">5. 기타 기능(Scope Function)</h2> <p>코틀린 기본 라이브러리는 유용한 함수들을 제공한다. 이에 대해 알아보자.</p> <ul> <li> <p>확장함수</p> <ul> <li>원래 있던 클래스에 기능을 추가하는 함수</li> </ul> </li> <li> <p>형변환</p> <ul> <li>숫자형 자료형끼리 쉽게 형변환 가능</li> </ul> </li> <li> <p>타입 체크</p> <ul> <li>변수의 형이 무엇인지 검사하는 기능</li> </ul> </li> <li> <p>고차 함수</p> <ul> <li>인자로 함수를 전달하는 기능</li> </ul> </li> <li> <p>동반 객체</p> <ul> <li>클래스의 인스턴스 생성 없이 사용할 수 있는 객체</li> </ul> </li> <li> <p>let() 함수</p> <ul> <li> <p>null이 아닌 객체에서 lambda를 실행(?.으로 null이 아님을 보장 받음)</p> </li> <li> <p>블록에 자기 자신을 전달하고 수행된 결과를 반환하는 함수</p> </li> <li> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">numver</span><span class="p">:</span> <span class="nc">Int</span><span class="p">?</span>
+    
+<span class="kd">val</span> <span class="py">sumNumberStr</span> <span class="p">=</span> <span class="n">number</span><span class="o">?.</span><span class="nf">let</span> <span class="p">{</span>
+    <span class="s">"${sum(10, it)}"</span>
+<span class="p">}.</span><span class="nf">orEmpty</span><span class="p">()</span>
+<span class="c1">//.orEmpty를 추가하게 되면 null인 경우는 빈 값으로 치환하는 과정이 이루어 진다.</span>
+</code></pre></div> </div> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//In Java</span>
+<span class="nc">Integer</span> <span class="n">number</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="nc">String</span> <span class="n">sumnumberStr</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    
+<span class="k">if</span> <span class="o">(</span><span class="n">number</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">sumNumberStr</span> <span class="o">=</span> <span class="s">""</span> <span class="o">+</span> <span class="n">sum</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="n">number</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div> </div> </li> </ul> </li> <li> <p>with() 함수</p> <ul> <li> <p>인자로 객체를 받고 블록에서 수행된 결과를 반환하는 함수</p> </li> <li> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">person</span> <span class="p">=</span> <span class="nf">person</span><span class="p">()</span>
+    
+<span class="nf">with</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">work</span><span class="p">()</span>
+    <span class="nf">sleep</span><span class="p">()</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">age</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div> </div> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//In Java</span>
+<span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">();</span>
+    
+<span class="n">person</span><span class="o">.</span><span class="na">work</span><span class="o">();</span>
+<span class="n">person</span><span class="o">.</span><span class="na">sleep</span><span class="o">();</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">person</span><span class="o">.</span><span class="na">age</span><span class="o">);</span>
+</code></pre></div> </div> </li> </ul> </li> <li> <p>apply() 함수</p> <ul> <li> <p>블록에 자기 자신을 전달하고 이 객체를 반환하는 함수</p> </li> <li> <p>주로 객체를 초기화 할 때</p> </li> <li> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Kotlin</span>
+<span class="kd">val</span> <span class="py">person</span> <span class="p">=</span> <span class="nc">Person</span><span class="p">().</span><span class="nf">apply</span> <span class="p">{</span>
+    <span class="n">firstName</span> <span class="p">=</span> <span class="s">"ChangRyong"</span>
+    <span class="n">lastName</span> <span class="p">=</span> <span class="s">"Kang"</span>
+<span class="p">}</span>
+    
+<span class="c1">//Java에서는 이렇게 사용하던 것</span>
+<span class="nc">Person</span> <span class="n">person</span> <span class="p">=</span> <span class="n">new</span> <span class="nc">Person</span><span class="p">();</span>
+<span class="n">person</span><span class="p">.</span><span class="n">firstName</span> <span class="p">=</span> <span class="s">"ChangRyong"</span>
+<span class="n">person</span><span class="p">.</span><span class="n">lastName</span> <span class="p">=</span> <span class="s">"Kang"</span>
+</code></pre></div> </div> </li> </ul> </li> <li> <p>run() 함수</p> <ul> <li> <p>익명함수 처럼 사용하거나, 블록에 자기 자신을 전달하고 수행된 결과를 반환하는 함수</p> </li> <li> <p>어떤 값을 계산할 필요가 있거나 객체 구성과 결과 계산이 한 번에 있을 때 유용</p> </li> <li> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">service</span><span class="p">.</span><span class="nf">run</span> <span class="p">{</span>
+    <span class="n">port</span> <span class="p">=</span> <span class="mi">8080</span>
+    <span class="nf">query</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div> </div> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//In java</span>
+<span class="n">service</span><span class="o">.</span><span class="na">port</span> <span class="o">=</span> <span class="mi">8080</span><span class="o">;</span>
+<span class="nc">Result</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">query</span><span class="o">()</span>
+</code></pre></div> </div> </li> </ul> </li> <li> <p>also 함수</p> <ul> <li> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Random</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">(</span><span class="mi">100</span><span class="p">).</span><span class="nf">also</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"getRandomInt() generated value $it"</span><span class="p">)</span>
+<span class="p">}</span>
+    
+<span class="nc">Random</span><span class="p">.</span><span class="nf">nextInt</span><span class="p">(</span><span class="mi">100</span><span class="p">).</span><span class="nf">also</span> <span class="p">{</span> <span class="n">value</span> <span class="p">-&gt;</span>
+         <span class="nf">print</span><span class="p">(</span><span class="s">"getRandomInt() generated value $ value"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div> </div> </li> <li> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//자바에서는 이렇게 해야함</span>
+<span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="nc">Random</span><span class="o">().</span><span class="na">nextInt</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+</code></pre></div> </div> </li> </ul> </li> </ul> <p><br /></p> <h3 id="1-확장함수">1) 확장함수</h3> <p>기존 클래스에 함수를 추가할 수 있다. [클래스명].[추가하려는 메서드명] 으로 원하는 클래스에 함수를 추가할 수 있다. 확장함수 내에서는 자기 자신이 속한 클래스에 대한 객체를 this로 접근할 수 있고, 이 객체를 리시버 객체라고 부른다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Fish</span><span class="p">(</span><span class="kd">var</span> <span class="py">age</span><span class="p">:</span><span class="nc">Int</span><span class="p">,</span> <span class="kd">var</span> <span class="py">weight</span><span class="p">:</span><span class="nc">Double</span><span class="p">){}</span>
+<span class="c1">// 확장함수 선언 및 정의</span>
+<span class="k">fun</span> <span class="nc">Fish</span><span class="p">.</span><span class="nf">printAge</span><span class="p">()</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="s">"이 물고기의 나이는 ... ${age}살입니다."</span><span class="p">)</span>
+<span class="k">fun</span> <span class="nc">Fish</span><span class="p">.</span><span class="nf">printWeight</span><span class="p">()</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="s">"이 물고기의 무게는 ... ${weight}kg 입니다."</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="err">고등어:</span><span class="py">Fish</span> <span class="p">=</span> <span class="nc">Fish</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+
+<span class="err">고등어</span><span class="p">.</span><span class="nf">printAge</span><span class="p">()</span>
+<span class="err">고등어</span><span class="p">.</span><span class="nf">printWeight</span><span class="p">()</span>
+</code></pre></div></div> <p>예제에서는 ‘고등어’라는 변수를 추가했는데, 한글 변수명이 지원되나 봤는데 지원된다는 점이 신기하기는 하다.</p> <p>객체 ‘고등어’에 printAge(), printWeight() 메서드를 추가했는데, 이렇게 printAge(), printWeight()을 확장함수라고 한다. 컴파일 타임이 아닌 런타임에 어떤 동작을 추가할때 사용하지 않을ㄲ ㅏ싶다.</p> <p>또 다른 예로 Int 자료형에 대한 예를 살펴보자</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nc">Int</span><span class="p">.</span><span class="nf">product1000</span><span class="p">()</span> <span class="p">=</span> <span class="k">this</span><span class="p">*</span><span class="mi">1000</span>
+
+<span class="kd">val</span> <span class="py">one</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="kd">val</span> <span class="py">two</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">2</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="s">"일천원 : ${one.product1000()}"</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"이천원 : ${two.product1000()}"</span><span class="p">)</span>
+
+<span class="c1">//## 고차함수</span>
+<span class="k">fun</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="p">(</span><span class="n">sum</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">){</span>
+    <span class="nf">callback</span><span class="p">(</span><span class="n">x</span> <span class="p">+</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>자바에서는 기본 자료형에 기능을 추가하려면 상속을 받고 추가 메서드를 작성해야 했다. String 클래스의 경우 final로 상속이 막혀있어 이 마저도 불가능했다.</p> <h3 id="2-형변환">2) 형변환</h3> <ul> <li>숫자형 데이터간 형변환 <ul> <li>숫자형 자료형 끼리 서로 다른 타입으로 형변환이 가능하다.</li> <li>to<a href="https://velog.io/@gosgjung/코틀린언어-기본개념-총정리-스압주의">숫자타입종류</a> 메서드를 사용한다.</li> </ul> </li> <li>문자열을 숫자로 변환시 <ul> <li>java에서와 같이 Integer.parseInt() 를 사용한다.</li> <li>Long.parseLong(), Double.parseDouble() 이 없다는것은 조금 아쉽긴 하다.</li> </ul> </li> <li>일반 클래스 간에 형변환을 할 때는 as 키워드를 사용한다. <ul> <li>ex) 고등어 as Fish</li> </ul> </li> </ul> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//### 숫자형 데이터간 형변환</span>
+<span class="kd">val</span> <span class="py">a</span> <span class="p">=</span> <span class="mi">10L</span>
+<span class="kd">val</span> <span class="py">b</span> <span class="p">=</span> <span class="mi">20</span>
+
+<span class="kd">val</span> <span class="py">c</span> <span class="p">=</span> <span class="n">a</span><span class="p">.</span><span class="nf">toInt</span><span class="p">()</span>
+<span class="kd">val</span> <span class="py">d</span> <span class="p">=</span> <span class="n">b</span><span class="p">.</span><span class="nf">toDouble</span><span class="p">()</span>
+<span class="kd">val</span> <span class="py">e</span> <span class="p">=</span> <span class="n">a</span><span class="p">.</span><span class="nf">toString</span><span class="p">()</span>
+
+<span class="c1">//### 문자열을 숫자로 변환시</span>
+<span class="kd">val</span> <span class="py">strSeven</span> <span class="p">=</span> <span class="s">"7"</span>
+<span class="kd">val</span> <span class="py">str</span> <span class="p">=</span> <span class="nc">Integer</span><span class="p">.</span><span class="nf">parseInt</span><span class="p">(</span><span class="n">strSeven</span><span class="p">)</span>
+
+<span class="c1">//### 일반 클래스 간에 형변환을 할 때는 as 키워드를 사용한다.</span>
+<span class="k">open</span> <span class="kd">class</span> <span class="nc">SeaFood</span><span class="p">{}</span>
+<span class="kd">class</span> <span class="nc">Abalone</span> <span class="p">:</span> <span class="nc">SeaFood</span><span class="p">(){}</span> <span class="c1">// Abalone 은 '전복'이다.</span>
+
+<span class="kd">val</span> <span class="py">abalone</span> <span class="p">=</span> <span class="nc">Abalone</span><span class="p">()</span>
+<span class="kd">val</span> <span class="py">seafood</span> <span class="p">=</span> <span class="n">abalone</span> <span class="k">as</span> <span class="nc">SeaFood</span>
+</code></pre></div></div> <h3 id="3-타입-체크">3) 타입 체크</h3> <p>애플리케이션을 개발하다 보면 타입을 체크해야 하는 경우가 자주 있다. 타입 체크는 is 키워드를 사용한다. java의 instanceOf 키워드와 동일한 역할을 수행한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">strMsg</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"안녕하세용~"</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">strMsg</span> <span class="k">is</span> <span class="nc">String</span><span class="p">){</span>
+    <span class="nf">println</span><span class="p">(</span><span class="n">strMsg</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div> <h3 id="4-고차-함수">4) 고차 함수</h3> <p>코틀린에서는 함수의 인자로 함수를 전달할수 있고, 함수를 반환하는 것 역시 가능하다. 이렇게 함수를 인자로 받거나 반환할 수 있는 매개체 역할의 함수를 고차함수(High Order Fucntion)이라고 부른다. react 등을 접해본 사람이라면 고계함수, 고차함수 라는 단어에 익숙할 수 있을 것 같다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">callback</span><span class="p">:</span> <span class="p">(</span><span class="n">sum</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">){</span>
+    <span class="nf">callback</span><span class="p">(</span><span class="n">x</span> <span class="p">+</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">{</span> <span class="nf">println</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">})</span>
+<span class="nf">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span> <span class="nf">println</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div> <p>add 함수는 x, y, callback 을 인수로 전달받는다. callback 이라는 인자는 함수타입을 파라미터로 전달받는다. (callback 이라는 이름의 파라미터는 Int를 인자로 받고 Unit을 반환형으로 하는 함수 파라미터이다.) 자바에서는 인터페이스를 이용해 람다식을 반들어 전달하는 편인데, 코틀린에서는 그렇게까지 하지 않아도 된다는 점이 편하다. 거기에 성능까지 빠르니 좋다고 볼수 있다.</p> <p>함수는 {} 으로 감싸서 내부에서는 반환값을 it로 접근할 수 있다. 그런데 이렇게 {} 로 감싸는 것은 함수 호출 바깥에서 {}으로 감싸서 함수의 body(몸체)를 구현할 수도 있는 것 같다. 어차피 함수를 리턴하는 함수이기 때문인듯 하다. (IDE에서 권장되는 문법을 추천해준다.)</p> <h3 id="5-동반-객체">5) 동반 객체</h3> <p>애플리케이션을 개발하다보면 팩토리 메서드를 사용하는 경우가 있다. Fragment 를 사용하게 되는 경우을 예로 들 수 있다. Java에서는 static과 같은 정적인 메서드로 팩토리 메서드를 구현이 가능하다. 하지만 코틀린에서는 static과 같은 정적인 타이핑이 가능한 키워드를 제공하지 않는다.</p> <p>코틀린에서는 동반객체(companion object)로 static 키워드와 같은 역할을 수행가능하다. (TODO 이부분 다시 공부가 필요하다.)</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Fragment</span> <span class="p">{</span>
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+        <span class="k">fun</span> <span class="nf">newInstance</span><span class="p">():</span> <span class="nc">Fragment</span> <span class="p">{</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"생성됨"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">fragment</span> <span class="p">=</span> <span class="nc">Fragment</span><span class="p">.</span><span class="nf">newInstance</span><span class="p">()</span>
+</code></pre></div></div> <h3 id="6-let-함수">6) let() 함수</h3> <p>let() 함수는 블록에 자기 자신을 인수로 전달하고 수행된 결과를 반환한다. 인수로 전달되는 자기 자신은 it로 참조하면 된다. let() 함수는 안전한 호출연산자인 ?. 와 함께 사용하면 null 값이 아닐 때만 실행하는 코드를 아래와 같이 표현 가능하다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// fun&lt;T,R&gt; T.let (block: (T) -&gt; R): R</span>
+<span class="kd">var</span> <span class="py">strNum1</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"1"</span>
+<span class="kd">val</span> <span class="py">result</span><span class="p">:</span><span class="nc">Int</span> <span class="p">=</span> <span class="n">strNum1</span><span class="o">?.</span><span class="nf">let</span> <span class="p">{</span>
+    <span class="nc">Integer</span><span class="p">.</span><span class="nf">parseInt</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"let 을 통해 parseInt 한 결과는 ${result} 입니다.\n"</span><span class="p">)</span>
+</code></pre></div></div> <p>출력결과</p><pre><code class="language-null">let 을 통해 parseInt 한 결과는 1 입니다.
+</code></pre><h3 id="7-with-함수">7) with() 함수</h3> <p>with() 함수는 인자로 객체를 전달 받는데, 이 객체는 블록 내에 리시버 객체로 전달된다. 그리고 수행된 결과를 리턴(반환)한다. 리시버 객체로 전달된 객체는 this로 접근할 수 있는데, 이 this는 생략이 가능하다. 아래 예제처럼 this를 통한 연산은 모두 this. 을 제거하고 작성해도 된다.</p> <p>with는 ?. 을 이용한 안전한 호출이 불가능하므로 strWorld가 null 이 아닐 경우에만 사용해야 한다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// fun&lt;T,R&gt; with (receiver: T, block T.() -&gt; R): R</span>
+<span class="kd">var</span> <span class="py">strWorld</span> <span class="p">=</span> <span class="s">"world"</span>
+<span class="nf">with</span><span class="p">(</span><span class="n">strWorld</span><span class="p">){</span>
+    <span class="nf">println</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nf">toUpperCase</span><span class="p">())</span>
+    <span class="nf">println</span><span class="p">(</span><span class="nf">toUpperCase</span><span class="p">())</span>          <span class="c1">// this 는 생략이 가능하다.</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>출력결과</p><pre><code class="language-null">WORLD
+WORLD
+</code></pre><h3 id="8-apply-함수">8) apply() 함수</h3> <p>apply() 함수는 블록내에 객체 자신이 리시버 객체로 전달된다. 그리고 이 객체가 반환된다. 객체의 상태를 변화시키고 그 객체를 다시 반환할 때 주로 사용된다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// fun &lt;T&gt; T.apply(block: T.() -&gt; Unit): T</span>
+<span class="kd">class</span> <span class="nc">Fruit</span> <span class="p">(</span><span class="kd">var</span> <span class="py">name</span> <span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="kd">var</span> <span class="py">price</span> <span class="p">:</span> <span class="nc">Int</span><span class="p">){}</span>
+<span class="kd">val</span> <span class="py">f</span><span class="p">:</span> <span class="nc">Fruit</span> <span class="p">=</span> <span class="nc">Fruit</span><span class="p">(</span><span class="s">"APPLE"</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="kd">var</span> <span class="py">test</span> <span class="p">=</span> <span class="n">f</span><span class="o">?.</span><span class="nf">apply</span><span class="p">{</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="s">"apple"</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">price</span> <span class="p">=</span> <span class="mi">1500</span>
+<span class="p">}</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"f      = ${f.name}, ${f.price}"</span><span class="p">)</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"result = ${test.name}, ${test.price}"</span><span class="p">)</span>
+</code></pre></div></div> <p>출력결과</p><pre><code class="language-null">f      = apple, 1500
+result = apple, 1500
+</code></pre><h3 id="9-run-함수">9) run() 함수</h3> <p>run() 함수는 마치 javascript에서 사용하던 즉시실행함수, 익명함수 등의 형식과 비슷해보인다.</p> <ul> <li>익명함수 형식으로 사용되는 방식</li> <li>객체 내에서 호출하는 방식</li> </ul> <p>run() 함수는 익명함수처럼 사용하는 방법, 객체에서 호출하는 방법 모두를 제공한다.</p> <p><br /></p> <p><strong>익명함수처럼 사용하는 벙법</strong></p> <p>익명함수처럼 사용할 때는 블록의 결과를 반환한다. 블록 안에 선언된 변수는 모두 임시로 사용되는 변수다.</p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// fun &lt;R&gt; run(block: () -&gt; R): R</span>
+<span class="kd">var</span> <span class="py">avg</span> <span class="p">=</span> <span class="nf">run</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">kor</span> <span class="p">=</span> <span class="mi">100</span>
+    <span class="kd">val</span> <span class="py">english</span> <span class="p">=</span> <span class="mi">80</span>
+    <span class="kd">val</span> <span class="py">math</span> <span class="p">=</span> <span class="mi">50</span>
+
+    <span class="p">(</span><span class="n">kor</span> <span class="p">+</span> <span class="n">english</span> <span class="p">+</span> <span class="n">math</span><span class="p">)/</span><span class="mf">3.0</span>
+<span class="p">}</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="n">avg</span><span class="p">)</span>
+</code></pre></div></div> <p><strong>출력결과</strong></p><pre><code class="language-null">76.66666666666667
+</code></pre><p><br /></p> <p><strong>객체에서 호출하는 방법</strong></p> <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// fun &lt;R&gt; run(block: () -&gt; R): R</span>
+<span class="kd">var</span> <span class="py">str1</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"hello"</span>
+
+<span class="n">str1</span><span class="p">.</span><span class="nf">run</span><span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="nf">toUpperCase</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div> <p><strong>출력결과</strong></p><pre><code class="language-null">HELLO
+</code></pre><p><br /></p> <h2 id="6-로그log">6. 로그(log)</h2> <ul> <li>안드로이드 스튜디오로 개발을 할때는 이 로그를 많이 보게 될 것이다. Log 클래스를 코드 중간에 적재적소에 사용할 수 있다면 내가 만드는 어플이 어떤 flow로 실행되는지와 디버깅을 할 수 있게 된다.</li> </ul> <blockquote> <p>자주 사용하는 로그 사용법</p> <blockquote> <p>log.v()</p> </blockquote> <p>https://velog.io/@soyoung-dev/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EB%A1%9C%EA%B7%B8-%ED%99%9C%EC%9A%A9</p> </blockquote> <p>코틀린 문법에 대해서 더 자세히 알고 싶으면 다음 링크를 참고하면 좋을 것이다.</p> <ul> <li><a href="https://kotlinlang.org">코틀린 공식 사이트</a></li> </ul> </section> <footer class="page__meta"> <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-03-05T00:00:00+09:00">March 5, 2022</time></p> </footer> <nav class="pagination"> <a href="/Baekjoon-15829%EB%B2%88-Hashing/" class="pagination--pager" title="[Baekjoon] 15829번 hashing ">Previous</a> <a href="/System-Programming-1%EC%9E%A5.-Unix%EC%99%80-Linux-%EC%86%8C%EA%B0%9C/" class="pagination--pager" title="[System Programming] 1장. Unix와 Linux 소개 ">Next</a> </nav> </div> </article> </div> </section> <footer> <p> <a href="https://github.com/github_username" title="Github"> <svg><use xlink:href="#icon-github"></use></svg> </a> <a href="https://www.facebook.com/facebook_username" title="Facebook"> <svg><use xlink:href="#icon-facebook"></use></svg> </a> <a href="https://twitter.com/twitter_username" title="Twitter"> <svg><use xlink:href="#icon-twitter"></use></svg> </a> <a href="https://medium.com/@medium_username" title="Medium"> <svg><use xlink:href="#icon-medium"></use></svg> </a> <a href="https://www.instagram.com/instagram_username" title="Instagram"> <svg><use xlink:href="#icon-instagram"></use></svg> </a> <a href="https://www.linkedin.com/in/linkedin_username" title="LinkedIn"> <svg><use xlink:href="#icon-linkedin"></use></svg> </a> </p> <ul> <li> <a href="http://localhost:4000/">Home</a> </li> <li> <a href="http://localhost:4000/about">About</a> </li> <li> <a href="http://localhost:4000/contact">Contact</a> </li> <li> <a href="http://localhost:4000/feed.xml">Feed</a> </li> </ul> <p> <span>Jekflix</span> was made with <svg class="love"><use xlink:href="#icon-heart"></use></svg> by <a href="https://rossener.com" target="_blank" class="creator">Thiago Rossener</a> </p> </footer> <script type="application/ld+json"> { "@context": "http://schema.org", "@type": "Organization", "name": "Jekflix", "description": "Jekflix is a template for Jekyll inspired by Netflix and made by Thiago Rossener.", "url": "http://localhost:4000/", "logo": { "@type": "ImageObject", "url": "http://localhost:4000/assets/img/icons/mediumtile.png", "width": "600", "height": "315" }, "sameAs": [ "https://github.com/github_username","https://www.facebook.com/facebook_username","https://twitter.com/twitter_username","https://medium.com/@medium_username","https://www.instagram.com/instagram_username","https://www.linkedin.com/in/linkedin_username" ] } </script> <!-- Include the script that allows Netlify CMS login --> <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> <!-- Include the website scripts --> <script src="/assets/js/scripts.min.js"></script> <!-- Include Google Analytics script --> <!-- Global site tag (gtag.js) - Google Analytics --> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script> <script> var host = window.location.hostname; if (host != 'localhost') { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-XXXXXXXX-X'); } </script> <!-- Include extra scripts --> </body> </html>
